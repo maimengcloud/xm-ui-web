@@ -301,6 +301,7 @@
 				this.dicts=res.data.data;
 			}) 
 			this.initData();   
+			this.open();
 			
 		}//end mounted
 	}

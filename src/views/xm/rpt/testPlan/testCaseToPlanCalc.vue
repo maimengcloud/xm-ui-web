@@ -287,8 +287,9 @@
 		mounted() { 
  			initSimpleDicts('all',['testStepTcode'] ).then(res=>{
 				this.dicts=res.data.data;
-			}) 
-			this.initData();   
+			})  
+			this.initData();
+			this.open(); 
 			
 		}//end mounted
 	}

@@ -6,20 +6,20 @@
                     <el-select v-model="filters.category" clearable>
                         <el-option v-for="(item,index) in categorys" :label="item" :value="item" :key="index"></el-option>
                     </el-select>
-                </el-row>
-                <el-row  :style="{overflowX:'hidden',height:maxTableHeight+'px'}" :category="filters.category" ref="table" :gutter="5">
-                    <el-col  v-cloak v-for="(p,i) in rptListCpd" :key="i" :body-style="{ padding: '0px' }">
-                        <el-card @click.native="intoInfo(p,i)" class="project-card" shadow="always" id="prj-view-box">
+                </el-row> 
+                <el-row  :style="{overflowX:'hidden',height:maxTableHeight+'px'}" ref="table">
+                         <el-card v-for="(p,i) in rptListCpd" :key="i" @click.native="intoInfo(p,i)" :class="{itemActive:p.isChecked}" shadow="always" id="prj-view-box">
+                            <div slot="header" class="clearfix">
+                                {{ i+1 }}.<span>{{p.rptName}}</span>  <span><i v-if="p.isChecked" class="el-icon-success"></i></span>
+                            </div>
                             <img :src="p.img" class="image" style="width:100%;float:center;">
-                            <div style="padding: 14px;">
-                                <span>{{p.rptName}}</span> 
+                            <div> 
                                 <div class="bottom clearfix">
-                                <time class="time">{{ p.desc }}</time>
+                                <div class="desc">{{ p.desc }}</div>
                                 <el-button type="text" class="button"></el-button>
                                 </div> 
-                            </div>
-                        </el-card>
-                    </el-col>
+                            </div>  
+                        </el-card> 
                 </el-row>
             </el-col>
             <el-col :span="20">
@@ -199,57 +199,57 @@
                 maxTableHeight:300,
                 rptList:[/**{name:'报表名称',category:'报表分类，组织级、产品级、项目级、迭代级、需求、测试、任务',path:'路由路径',imgUrl:'图片路径',query:{参数}} */
                     //迭代报表
-                    {rptName:'迭代燃尽图',category:'迭代级',ref:'xmIterationBurnout',desc:'跟踪迭代的剩余工作量按日期变化趋势，识别迭代当前进度情况',img:ranjintu },
-                    {rptName:'需求每日趋势',category:'迭代级',ref:'xmIterationMenuDayTrend',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期变化趋势，识别需求工作情况',img:lineStack  },
-                    {rptName:'需求每日累积',category:'迭代级',ref:'xmIterationMenuDayAccumulate',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期累积情况，识别需求工作的瓶颈',img:areaStack  },
-                    {rptName:'迭代工作项每日趋势',category:'迭代级',ref:'xmIterationWorkItemDayList',desc:'统计迭代每日工作项数量分布情况',img:datasetLink  },  
-                    {rptName:'迭代缺陷每日趋势',category:'迭代级',ref:'xmIterationQuestionDayTrend',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:lineStack  },
-                    {rptName:'迭代缺陷每日累积',category:'迭代级',ref:'xmIterationQuestionDayAccumulate',desc:'跟踪一段时间内，各种程度和类别的缺陷累积情况，监控缺陷的变化趋势',img:areaStack  },
+                    {isChecked:false,rptName:'迭代燃尽图',category:'迭代级',ref:'xmIterationBurnout',desc:'跟踪迭代的剩余工作量按日期变化趋势，识别迭代当前进度情况',img:ranjintu },
+                    {isChecked:false,rptName:'需求每日趋势',category:'迭代级',ref:'xmIterationMenuDayTrend',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期变化趋势，识别需求工作情况',img:lineStack  },
+                    {isChecked:false,rptName:'需求每日累积',category:'迭代级',ref:'xmIterationMenuDayAccumulate',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期累积情况，识别需求工作的瓶颈',img:areaStack  },
+                    {isChecked:false,rptName:'迭代工作项每日趋势',category:'迭代级',ref:'xmIterationWorkItemDayList',desc:'统计迭代每日工作项数量分布情况',img:datasetLink  },  
+                    {isChecked:false,rptName:'迭代缺陷每日趋势',category:'迭代级',ref:'xmIterationQuestionDayTrend',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:lineStack  },
+                    {isChecked:false,rptName:'迭代缺陷每日累积',category:'迭代级',ref:'xmIterationQuestionDayAccumulate',desc:'跟踪一段时间内，各种程度和类别的缺陷累积情况，监控缺陷的变化趋势',img:areaStack  },
                    
                     //企业级报表
-                    {rptName:'企业工作项每日趋势',category:'企业级',ref:'xmBranchWorkItemDayList',desc:'统计迭代每日工作项数量分布情况',img:datasetLink  },  
-                    {rptName:'企业缺陷每日趋势',category:'企业级',ref:'xmBranchQuestionDayTrend',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:lineStack  },
-                    {rptName:'企业缺陷每日累积',category:'企业级',ref:'xmBranchQuestionDayAccumulate',desc:'跟踪一段时间内，各种程度和类别的缺陷累积情况，监控缺陷的变化趋势',img:areaStack  },
-                    {rptName:'需求每日趋势',category:'企业级',ref:'xmBranchMenuDayTrend',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期变化趋势，识别需求工作情况',img:lineStack  },
-                    {rptName:'需求每日累积',category:'企业级',ref:'xmBranchMenuDayAccumulate',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期累积情况，识别需求工作的瓶颈',img:areaStack  },
+                    {isChecked:false,rptName:'企业工作项每日趋势',category:'企业级',ref:'xmBranchWorkItemDayList',desc:'统计迭代每日工作项数量分布情况',img:datasetLink  },  
+                    {isChecked:false,rptName:'企业缺陷每日趋势',category:'企业级',ref:'xmBranchQuestionDayTrend',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:lineStack  },
+                    {isChecked:false,rptName:'企业缺陷每日累积',category:'企业级',ref:'xmBranchQuestionDayAccumulate',desc:'跟踪一段时间内，各种程度和类别的缺陷累积情况，监控缺陷的变化趋势',img:areaStack  },
+                    {isChecked:false,rptName:'需求每日趋势',category:'企业级',ref:'xmBranchMenuDayTrend',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期变化趋势，识别需求工作情况',img:lineStack  },
+                    {isChecked:false,rptName:'需求每日累积',category:'企业级',ref:'xmBranchMenuDayAccumulate',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期累积情况，识别需求工作的瓶颈',img:areaStack  },
                    
                     //产品报表
-                    {rptName:'需求每日趋势',category:'产品级',ref:'xmMenuDayTrend',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期变化趋势，识别需求工作情况',img:lineStack  },
-                    {rptName:'需求每日累积',category:'产品级',ref:'xmMenuDayAccumulate',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期累积情况，识别需求工作的瓶颈',img:areaStack  },
-                    {rptName:'需求属性分布',category:'产品级,迭代级,企业级',ref:'xmMenuAttDist',desc:'统计所有需求任意属性数量分布情况（实时数据）',img:pieSimple  },
-                    {rptName:'需求年龄分布',category:'产品级,迭代级,企业级',ref:'xmMenuAgeDist',desc:'统计所有需求年龄分布情况（实时数据）',img:pieSimple  },
-                    {rptName:'需求排行榜',category:'产品级,迭代级,企业级',ref:'xmMenuSort',desc:'需求提出人、负责人的用户故事数量排行（实时数据）',img:bar  },
-                    {rptName:'产品工作项每日趋势',category:'产品级',ref:'xmProductWorkItemDayList',desc:'统计产品每日工作项数量分布情况',img:datasetLink  },  
-                    {rptName:'产品缺陷每日趋势',category:'产品级',ref:'xmQuestionDayTrend',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:lineStack  },
-                    {rptName:'产品缺陷每日累积',category:'产品级',ref:'xmQuestionDayAccumulate',desc:'跟踪一段时间内，各种程度和类别的缺陷累积情况，监控缺陷的变化趋势',img:areaStack  },
+                    {isChecked:false,rptName:'需求每日趋势',category:'产品级',ref:'xmMenuDayTrend',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期变化趋势，识别需求工作情况',img:lineStack  },
+                    {isChecked:false,rptName:'需求每日累积',category:'产品级',ref:'xmMenuDayAccumulate',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期累积情况，识别需求工作的瓶颈',img:areaStack  },
+                    {isChecked:false,rptName:'需求属性分布',category:'产品级,迭代级,企业级',ref:'xmMenuAttDist',desc:'统计所有需求任意属性数量分布情况（实时数据）',img:pieSimple  },
+                    {isChecked:false,rptName:'需求年龄分布',category:'产品级,迭代级,企业级',ref:'xmMenuAgeDist',desc:'统计所有需求年龄分布情况（实时数据）',img:pieSimple  },
+                    {isChecked:false,rptName:'需求排行榜',category:'产品级,迭代级,企业级',ref:'xmMenuSort',desc:'需求提出人、负责人的用户故事数量排行（实时数据）',img:bar  },
+                    {isChecked:false,rptName:'产品工作项每日趋势',category:'产品级',ref:'xmProductWorkItemDayList',desc:'统计产品每日工作项数量分布情况',img:datasetLink  },  
+                    {isChecked:false,rptName:'产品缺陷每日趋势',category:'产品级',ref:'xmQuestionDayTrend',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:lineStack  },
+                    {isChecked:false,rptName:'产品缺陷每日累积',category:'产品级',ref:'xmQuestionDayAccumulate',desc:'跟踪一段时间内，各种程度和类别的缺陷累积情况，监控缺陷的变化趋势',img:areaStack  },
                     
                     //项目报表
-                    {rptName:'任务每日趋势',category:'项目级',ref:'xmTaskDayTrend',desc:'跟踪未开始、执行中、已完成、已关闭状态的任务数量按日期变化趋势，识别任务工作情况',img:lineStack  },
-                    {rptName:'任务每日累积',category:'项目级',ref:'xmTaskDayAccumulate',desc:'跟踪未开始、执行中、已完成、已关闭状态的任务数量按日期累积情况，识别任务工作的瓶颈',img:areaStack  },
-                    {rptName:'任务属性分布',category:'项目级,企业级',ref:'xmTaskAttDist',desc:'统计所有任务任意属性数量分布情况（实时数据）',img:pieSimple  },
-                    {rptName:'任务年龄分布',category:'项目级,企业级',ref:'xmTaskAgeDist',desc:'统计所有任务年龄分布情况（实时数据）',img:pieSimple  },
-                    {rptName:'任务排行榜',category:'项目级,企业级',ref:'xmTaskSort',desc:'任务提出人、负责人的用户故事数量排行（实时数据）',img:bar  },
-                    {rptName:'项目工作项每日趋势',category:'项目级',ref:'xmProjectWorkItemDayList',desc:'统计项目每日工作项数量分布情况',img:datasetLink  },
-                    {rptName:'项目结算工时每日趋势',category:'项目级',ref:'xmProjectWorkloadSetDayList',desc:'统计项目每日登记工时、结算工时数量分布情况',img:datasetLink  },
-                    {rptName:'项目结算工时每月趋势',category:'项目级',ref:'xmProjectWorkloadSetMonthList',desc:'统计项目每月登记工时、结算工时数量分布情况',img:datasetLink  },
+                    {isChecked:false,rptName:'任务每日趋势',category:'项目级',ref:'xmTaskDayTrend',desc:'跟踪未开始、执行中、已完成、已关闭状态的任务数量按日期变化趋势，识别任务工作情况',img:lineStack  },
+                    {isChecked:false,rptName:'任务每日累积',category:'项目级',ref:'xmTaskDayAccumulate',desc:'跟踪未开始、执行中、已完成、已关闭状态的任务数量按日期累积情况，识别任务工作的瓶颈',img:areaStack  },
+                    {isChecked:false,rptName:'任务属性分布',category:'项目级,企业级',ref:'xmTaskAttDist',desc:'统计所有任务任意属性数量分布情况（实时数据）',img:pieSimple  },
+                    {isChecked:false,rptName:'任务年龄分布',category:'项目级,企业级',ref:'xmTaskAgeDist',desc:'统计所有任务年龄分布情况（实时数据）',img:pieSimple  },
+                    {isChecked:false,rptName:'任务排行榜',category:'项目级,企业级',ref:'xmTaskSort',desc:'任务提出人、负责人的用户故事数量排行（实时数据）',img:bar  },
+                    {isChecked:false,rptName:'项目工作项每日趋势',category:'项目级',ref:'xmProjectWorkItemDayList',desc:'统计项目每日工作项数量分布情况',img:datasetLink  },
+                    {isChecked:false,rptName:'项目结算工时每日趋势',category:'项目级',ref:'xmProjectWorkloadSetDayList',desc:'统计项目每日登记工时、结算工时数量分布情况',img:datasetLink  },
+                    {isChecked:false,rptName:'项目结算工时每月趋势',category:'项目级',ref:'xmProjectWorkloadSetMonthList',desc:'统计项目每月登记工时、结算工时数量分布情况',img:datasetLink  },
 
 
                     //测试级报表 
-                    {rptName:'测试用例规划分析',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmTestCaseToPlanCalc',desc:'显示用例被规划到测试计划中的次数统计',img:bar  },
+                    {isChecked:false,rptName:'测试用例规划分析',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmTestCaseToPlanCalc',desc:'显示用例被规划到测试计划中的次数统计',img:bar  },
  
-                    {rptName:'测试用例执行状态分布',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmTestPlanCaseExecStatusDist',desc:'按测试用例执行结果统计，通过、失败、忽略、阻塞',img:pieSimple  },
-                    {rptName:'测试用例执行用户分布',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmTestPlanCaseUserDist',desc:'统计测试用例负责人用例执行情况',img:bar  },
-                    {rptName:'缺陷回归分布',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionRetestDist',desc:'统计项目中缺陷在回归测试中分布情况，跟踪缺陷的重新打开率；',img:pieSimple  },
-                    {rptName:'测试次数每日统计',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmTestDayTimesCalc',desc:'统计每日测试用例执行数量',img:bar  },
-                    {rptName:'缺陷状态分布',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionStateDist',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:pieSimple  },
+                    {isChecked:false,rptName:'测试用例执行状态分布',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmTestPlanCaseExecStatusDist',desc:'按测试用例执行结果统计，通过、失败、忽略、阻塞',img:pieSimple  },
+                    {isChecked:false,rptName:'测试用例执行用户分布',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmTestPlanCaseUserDist',desc:'统计测试用例负责人用例执行情况',img:bar  },
+                    {isChecked:false,rptName:'缺陷回归分布',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionRetestDist',desc:'统计项目中缺陷在回归测试中分布情况，跟踪缺陷的重新打开率；',img:pieSimple  },
+                    {isChecked:false,rptName:'测试次数每日统计',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmTestDayTimesCalc',desc:'统计每日测试用例执行数量',img:bar  },
+                    {isChecked:false,rptName:'缺陷状态分布',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionStateDist',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:pieSimple  },
 
-                    {rptName:'缺陷排行榜',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
-                    {rptName:'缺陷提出人排行榜',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionAskUserSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
-                    {rptName:'缺陷负责人排行榜',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionHandlerUserSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
-                    {rptName:'缺陷模块排行榜',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionFuncSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
-                    {rptName:'缺陷需求排行榜',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionMenuSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
-                    {rptName:'缺陷属性分布',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionAttDist',desc:'统计所有缺陷任意属性数量分布情况（实时数据）',img:pieSimple  },
-                    {rptName:'缺陷年龄分布',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionAgeDist',desc:'统计所有缺陷按照年龄的分布情况，跟踪缺陷的生命周期和响应情况',img:pieSimple  },
+                    {isChecked:false,rptName:'缺陷排行榜',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
+                    {isChecked:false,rptName:'缺陷提出人排行榜',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionAskUserSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
+                    {isChecked:false,rptName:'缺陷负责人排行榜',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionHandlerUserSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
+                    {isChecked:false,rptName:'缺陷模块排行榜',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionFuncSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
+                    {isChecked:false,rptName:'缺陷需求排行榜',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionMenuSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
+                    {isChecked:false,rptName:'缺陷属性分布',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionAttDist',desc:'统计所有缺陷任意属性数量分布情况（实时数据）',img:pieSimple  },
+                    {isChecked:false,rptName:'缺陷年龄分布',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionAgeDist',desc:'统计所有缺陷按照年龄的分布情况，跟踪缺陷的生命周期和响应情况',img:pieSimple  },
                     
 
                 ],
@@ -263,6 +263,8 @@
                 params.xmIteration=this.xmIteration 
                 params.xmTestCasedb=this.xmTestCasedb
                 params.category=this.filters.category 
+                this.rptListCpd.forEach(k=>k.isChecked=false)
+                row.isChecked=true
                 this.showRptRef=row.ref
 			},
 				
@@ -297,14 +299,25 @@
 
 </script>
 
-<style scoped> 
-  .time {
+
+<style lang="scss">
+.moduleset .el-dialog__header {
+    padding: 0;
+}
+.moduleset .el-divider--horizontal {
+    margin: 0 !important;
+}
+</style>
+
+<style lang="scss" scoped>
+  .desc {
     font-size: 13px;
     color: #999;
+    line-height:16px;
   }
   
   .bottom {
-    margin-top: 13px;
+    margin-top: 5px;
     line-height: 12px;
     height: 30px;
   }
@@ -329,4 +342,19 @@
   .clearfix:after {
       clear: both
   }
+
+   
+ 
+
+i {  
+    position:absolute;   
+    right:20px;
+    font-size: 32px;
+    line-height: 32px;
+    color: #90B1F4;
+}
+
+.itemActive {
+    border: 1px solid #90B1F4; 
+}
 </style>
