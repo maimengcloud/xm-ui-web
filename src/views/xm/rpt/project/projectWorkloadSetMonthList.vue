@@ -67,7 +67,29 @@
 			},
 			
 			title(){
-				return "项目工时每月分布"
+				
+				var preName=""
+				if(this.filters.testPlan && this.filters.testPlan.id){
+					preName=`测试计划【${this.filters.testPlan.name}】`
+				}else if(this.filters.testCasedb && this.filters.testCasedb.id){
+					preName=`测试库【${this.filters.testCasedb.name}】`
+				}else if(this.filters.iteration && this.filters.iteration.id){
+					preName=`迭代【${this.filters.iteration.iterationName}】`
+				}else if(this.filters.project && this.filters.project.id){ 
+					if(this.filters.project.name){
+						preName=`项目【${this.filters.project.name}】`
+					}else{
+						preName=`项目【${this.filters.project.id}】`
+					}
+				}else if(this.filters.product && this.filters.product.id){
+					if(this.filters.product.productName){
+						preName=`产品【${this.filters.product.productName}】`
+					}else{
+						preName=`产品【${this.filters.product.id}】`
+					}
+					
+				}
+				return  preName+"项目工时每月分布"
 			}
 			
         }, 
