@@ -235,7 +235,7 @@
 
 
                     //测试级报表 
-                    {isChecked:false,rptName:'测试用例规划分析',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmTestCaseToPlanCalc',desc:'显示用例被规划到测试计划中的次数统计',img:bar  },
+                    {isChecked:false,rptName:'测试用例规划分析',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmTestCaseToPlanCalc',desc:'显示用例被规划到测试计划中的次数统计',img:pieSimple  },
  
                     {isChecked:false,rptName:'测试用例执行状态分布',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmTestPlanCaseExecStatusDist',desc:'按测试用例执行结果统计，通过、失败、忽略、阻塞',img:pieSimple  },
                     {isChecked:false,rptName:'测试用例执行用户分布',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmTestPlanCaseUserDist',desc:'统计测试用例负责人用例执行情况',img:bar  },
