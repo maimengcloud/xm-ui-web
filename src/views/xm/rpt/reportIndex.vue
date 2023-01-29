@@ -3,20 +3,20 @@
 		<el-row>
             <el-col :span="4"> 
                 <el-row> 
-                    <el-select v-model="filters.category" clearable>
+                    <el-select v-model="filters.category" clearable @change="onCategroySelect">
                         <el-option v-for="(item,index) in categorys" :label="item" :value="item" :key="index"></el-option>
                     </el-select>
                 </el-row> 
                 <el-row  :style="{overflowX:'hidden',height:maxTableHeight+'px'}" ref="table">
-                         <el-card v-for="(p,i) in rptListCpd" :key="i" @click.native="intoInfo(p,i)" :class="{itemActive:p.isChecked}" shadow="always" id="prj-view-box">
+                         <el-card v-for="(p,i) in rptListCpd" :key="i" @click.native="intoInfo(p,i)" :class="{itemActive:p.isChecked}" shadow="always" style="margin-bottom:5px;">
                             <div slot="header" class="clearfix">
                                 {{ i+1 }}.<span>{{p.rptName}}</span>  <span><i v-if="p.isChecked" class="el-icon-success"></i></span>
                             </div>
                             <img :src="p.img" class="image" style="width:100%;float:center;">
                             <div> 
                                 <div class="bottom clearfix">
-                                <div class="desc">{{ p.desc }}</div>
-                                <el-button type="text" class="button"></el-button>
+                                    <div class="desc">{{ p.desc }}</div>
+                                    <el-button type="text" class="button"></el-button>
                                 </div> 
                             </div>  
                         </el-card> 
@@ -214,22 +214,22 @@
                     {isChecked:false,rptName:'需求每日累积',category:'企业级',ref:'xmBranchMenuDayAccumulate',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期累积情况，识别需求工作的瓶颈',img:areaStack  },
                    
                     //产品报表
+                    {isChecked:false,rptName:'产品工作项每日趋势',category:'产品级',ref:'xmProductWorkItemDayList',desc:'统计产品每日工作项数量分布情况',img:datasetLink  },  
                     {isChecked:false,rptName:'需求每日趋势',category:'产品级',ref:'xmMenuDayTrend',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期变化趋势，识别需求工作情况',img:lineStack  },
                     {isChecked:false,rptName:'需求每日累积',category:'产品级',ref:'xmMenuDayAccumulate',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期累积情况，识别需求工作的瓶颈',img:areaStack  },
                     {isChecked:false,rptName:'需求属性分布',category:'产品级,迭代级,企业级',ref:'xmMenuAttDist',desc:'统计所有需求任意属性数量分布情况（实时数据）',img:pieSimple  },
                     {isChecked:false,rptName:'需求年龄分布',category:'产品级,迭代级,企业级',ref:'xmMenuAgeDist',desc:'统计所有需求年龄分布情况（实时数据）',img:pieSimple  },
                     {isChecked:false,rptName:'需求排行榜',category:'产品级,迭代级,企业级',ref:'xmMenuSort',desc:'需求提出人、负责人的用户故事数量排行（实时数据）',img:bar  },
-                    {isChecked:false,rptName:'产品工作项每日趋势',category:'产品级',ref:'xmProductWorkItemDayList',desc:'统计产品每日工作项数量分布情况',img:datasetLink  },  
                     {isChecked:false,rptName:'产品缺陷每日趋势',category:'产品级',ref:'xmQuestionDayTrend',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:lineStack  },
                     {isChecked:false,rptName:'产品缺陷每日累积',category:'产品级',ref:'xmQuestionDayAccumulate',desc:'跟踪一段时间内，各种程度和类别的缺陷累积情况，监控缺陷的变化趋势',img:areaStack  },
                     
                     //项目报表
+                    {isChecked:false,rptName:'项目工作项每日趋势',category:'项目级',ref:'xmProjectWorkItemDayList',desc:'统计项目每日工作项数量分布情况',img:datasetLink  },
                     {isChecked:false,rptName:'任务每日趋势',category:'项目级',ref:'xmTaskDayTrend',desc:'跟踪未开始、执行中、已完成、已关闭状态的任务数量按日期变化趋势，识别任务工作情况',img:lineStack  },
                     {isChecked:false,rptName:'任务每日累积',category:'项目级',ref:'xmTaskDayAccumulate',desc:'跟踪未开始、执行中、已完成、已关闭状态的任务数量按日期累积情况，识别任务工作的瓶颈',img:areaStack  },
                     {isChecked:false,rptName:'任务属性分布',category:'项目级,企业级',ref:'xmTaskAttDist',desc:'统计所有任务任意属性数量分布情况（实时数据）',img:pieSimple  },
                     {isChecked:false,rptName:'任务年龄分布',category:'项目级,企业级',ref:'xmTaskAgeDist',desc:'统计所有任务年龄分布情况（实时数据）',img:pieSimple  },
                     {isChecked:false,rptName:'任务排行榜',category:'项目级,企业级',ref:'xmTaskSort',desc:'任务提出人、负责人的用户故事数量排行（实时数据）',img:bar  },
-                    {isChecked:false,rptName:'项目工作项每日趋势',category:'项目级',ref:'xmProjectWorkItemDayList',desc:'统计项目每日工作项数量分布情况',img:datasetLink  },
                     {isChecked:false,rptName:'项目结算工时每日趋势',category:'项目级',ref:'xmProjectWorkloadSetDayList',desc:'统计项目每日登记工时、结算工时数量分布情况',img:datasetLink  },
                     {isChecked:false,rptName:'项目结算工时每月趋势',category:'项目级',ref:'xmProjectWorkloadSetMonthList',desc:'统计项目每月登记工时、结算工时数量分布情况',img:datasetLink  },
 
@@ -263,12 +263,14 @@
                 params.xmIteration=this.xmIteration 
                 params.xmTestCasedb=this.xmTestCasedb
                 params.category=this.filters.category 
-                this.rptListCpd.forEach(k=>k.isChecked=false)
+                this.rptList.forEach(k=>k.isChecked=false)
                 row.isChecked=true
                 this.showRptRef=row.ref
 			},
 				
-			
+			onCategroySelect(){
+                this.intoInfo(this.rptListCpd[0])
+            }
 		},//end method
 		mounted() {
 			/**
@@ -290,24 +292,17 @@
                 }else{
                     this.filters.category="企业级"
                 }
-            }
-           
+            } 
             this.maxTableHeight = this.source == 'GZT' ? this.maxTableHeight : util.calcTableMaxHeight(this.$refs.table.$el); 
+            
+            this.intoInfo(this.rptListCpd[0])
 			
 		}//end mounted
 	}
 
 </script>
 
-
-<style lang="scss">
-.moduleset .el-dialog__header {
-    padding: 0;
-}
-.moduleset .el-divider--horizontal {
-    margin: 0 !important;
-}
-</style>
+ 
 
 <style lang="scss" scoped>
   .desc {
