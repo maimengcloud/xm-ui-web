@@ -194,12 +194,12 @@
 						}, 
 						
 						tooltip: {
-							trigger: 'item',
-							formatter:'{b} {c}次',
+							trigger: 'axis', 
 						},
 						barMaxWidth: 100,
 						toolbox: {
 							show: true,
+							right:"20px",
 							feature: {
 							dataView: { show: true, readOnly: false },
 							magicType: { show: true, type: ['line', 'bar'] },
@@ -213,7 +213,6 @@
 						legend: { 
 							top:'5%',
 							left: 'center',
-							data: ['次数']
 						},
 						xAxis: {
 							type: 'category',

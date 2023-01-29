@@ -194,6 +194,7 @@
 					},
 					toolbox: {
 						show: true,
+						right:"20px",
 						feature: {
 						dataView: { show: true, readOnly: false },
 						magicType: { show: true, type: ['line', 'bar'] },

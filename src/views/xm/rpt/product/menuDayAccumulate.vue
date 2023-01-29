@@ -174,6 +174,17 @@
 							}
 							}
 						},
+						
+						toolbox: {
+							show: true,
+							right:"20px",
+							feature: {
+							dataView: { show: true, readOnly: false },
+							magicType: { show: true, type: ['line', 'bar'] },
+							restore: { show: true },
+							saveAsImage: { show: true }
+							}
+						},
 						legend: {
 							top:'5%',
 							left: 'center',
@@ -184,12 +195,7 @@
 							right: '4%',
 							bottom: '3%',
 							containLabel: true
-						},
-						toolbox: {
-							feature: {
-							saveAsImage: {}
-							}
-						},
+						}, 
 						xAxis: {
 							type: 'category',
 							boundaryGap: false,
