@@ -152,7 +152,28 @@
 			drawCharts() {
 				this.myChart = this.$echarts.init(document.getElementById("iterationQuestionDayTrend")); 
 				this.myChart.setOption(  
-					{	
+					{		
+						title: {
+							text: this.title, 
+							left: 'center'
+						}, 
+						
+						tooltip: {
+							trigger: 'item',
+							formatter:'{b} {c}次',
+						},
+						barMaxWidth: 100,
+						toolbox: {
+							show: true,
+							feature: {
+							dataView: { show: true, readOnly: false },
+							magicType: { show: true, type: ['line', 'bar'] },
+							restore: { show: true },
+							saveAsImage: { show: true }
+							}
+						},
+
+						calculable: true,
 						legend: {
 							right: 40,
 							data: ['新提出','执行中','已解决','已关闭']

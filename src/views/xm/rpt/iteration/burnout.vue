@@ -192,7 +192,8 @@
 						trigger: 'axis'
 					},
 					legend: {
-						right: 40,
+							top:'5%',
+							left: 'center',
 						data: ['理想线','预估剩余工时', '剩余工时']
 					},
 					xAxis: {

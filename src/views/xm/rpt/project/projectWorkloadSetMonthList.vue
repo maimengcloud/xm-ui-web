@@ -153,17 +153,31 @@
 					});
 					}
 				});
-				this.myChart.setOption({
+				this.myChart.setOption({	
 					title: {
-						text: '工作项分布',
-					},
-					tooltip: {
-						trigger: 'axis',
-      					showContent: false
-					},
+						text: this.title, 
+						left: 'center'
+					}, 
 					
+					tooltip: {
+						trigger: 'item',
+						formatter:'{b} {c}次',
+					},
 					barMaxWidth: 100,
+					toolbox: {
+						show: true,
+						feature: {
+						dataView: { show: true, readOnly: false },
+						magicType: { show: true, type: ['line', 'bar'] },
+						restore: { show: true },
+						saveAsImage: { show: true }
+						}
+					},
+
+					calculable: true,
 					legend: { 
+							top:'5%',
+							left: 'center',
 					},
 
 					dataset: {

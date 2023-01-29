@@ -192,11 +192,6 @@
 							text: this.title, 
 							left: 'center'
 						}, 
-						legend: { 
-							top:'5%',
-							left: 'center',
-							data: ['次数']
-						},
 						
 						tooltip: {
 							trigger: 'item',
@@ -215,6 +210,11 @@
 
 						calculable: true,
 						
+						legend: { 
+							top:'5%',
+							left: 'center',
+							data: ['次数']
+						},
 						xAxis: {
 							type: 'category',
 							data: this.datesCpd

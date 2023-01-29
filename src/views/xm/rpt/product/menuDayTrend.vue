@@ -163,10 +163,30 @@
 				this.myChart = this.$echarts.init(document.getElementById("menuDayTrend")); 
 				this.myChart.setOption(  
 					{	
+						title: {
+							text: this.title, 
+							left: 'center'
+						}, 
 						
+						tooltip: {
+							trigger: 'item',
+							formatter:'{b} {c}次',
+						},
 						barMaxWidth: 100,
+						toolbox: {
+							show: true,
+							feature: {
+							dataView: { show: true, readOnly: false },
+							magicType: { show: true, type: ['line', 'bar'] },
+							restore: { show: true },
+							saveAsImage: { show: true }
+							}
+						},
+
+						calculable: true,
 						legend: {
-							right: 40,
+							top:'5%',
+							left: 'center',
 							data: ['未开始故事数','执行中故事数','已完成故事数','已关闭故事数']
 						},
 						xAxis: {
