@@ -96,7 +96,7 @@
 					return this.xmIterationStateHiss.map(i=>i.budgetWorkload-i.estimateWorkload)
 				}
 			},
-			dialogTitle(){
+			title(){
 				if(this.xmIteration && this.xmIteration.id){
 					return (this.xmIteration?'迭代【'+this.xmIteration.iterationName+'】':'')+'燃尽图'
 				}else{

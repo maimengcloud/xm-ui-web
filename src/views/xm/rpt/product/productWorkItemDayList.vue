@@ -55,7 +55,7 @@
 					['已关缺陷',...this.xmProductStateHiss.map(i=>i.closedBugs)]
 				]
 			}, 
-			dialogTitle(){
+			title(){
 				var productName=""; 
 				if(this.filters.product && this.filters.product.id){
 					if(this.filters.product.productName){

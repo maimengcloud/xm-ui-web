@@ -132,7 +132,7 @@
 					return this.xmQuestionSorts.map(i=>i.name)
 				}
 			},
-			dialogTitle(){
+			title(){
 				if(this.xmIteration && this.xmIteration.id){
 					return (this.xmIteration?'迭代【'+this.xmIteration.iterationName+'】':'')+'缺陷数量排行榜'
 				}else {

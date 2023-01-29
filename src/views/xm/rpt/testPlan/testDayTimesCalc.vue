@@ -94,7 +94,7 @@
 			}, 
 			
 			
-			dialogTitle(){
+			title(){
 				var productName=""; 
 				if(this.filters.product && this.filters.product.id){
 					if(this.filters.product.productName){
@@ -189,7 +189,7 @@
 				this.myChart.setOption(  
 					{	
 						title: {
-							text: this.dialogTitle, 
+							text: this.title, 
 							left: 'center'
 						}, 
 						legend: { 
@@ -201,13 +201,6 @@
 						tooltip: {
 							trigger: 'item',
 							formatter:'{b} {c}次',
-						},
-						xAxis: {
-							type: 'category',
-							data: this.datesCpd
-						},
-						yAxis: {
-							type: 'value'
 						},
 						barMaxWidth: 100,
 						toolbox: {
@@ -221,6 +214,14 @@
 						},
 
 						calculable: true,
+						
+						xAxis: {
+							type: 'category',
+							data: this.datesCpd
+						},
+						yAxis: {
+							type: 'value'
+						},
 						series: [ 
 							{
 								name:'次数',

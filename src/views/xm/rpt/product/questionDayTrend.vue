@@ -84,7 +84,7 @@
 			},
 			
 			
-			dialogTitle(){
+			title(){
 				var productName=""; 
 				if(this.filters.product && this.filters.product.id){
 					if(this.filters.product.productName){

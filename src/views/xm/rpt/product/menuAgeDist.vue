@@ -97,7 +97,7 @@
 			title(){
 				return '需求年龄数量分布'
 			},
-			dialogTitle(){
+			title(){
 				if(this.xmIteration && this.xmIteration.id){
 					return (this.xmIteration?'迭代【'+this.xmIteration.iterationName+'】':'')+'需求年龄数量分布'
 				}else {

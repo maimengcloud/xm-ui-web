@@ -78,7 +78,7 @@
 					return this.xmProductStateHiss.map(i=>i.menuFinishCnt)
 				}
 			},
-			dialogTitle(){
+			title(){
 				if(this.xmIteration && this.xmIteration.id){
 					return (this.xmIteration?'迭代【'+this.xmIteration.iterationName+'】':'')+'需求每日趋势图'
 				}else {

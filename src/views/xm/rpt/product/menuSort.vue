@@ -99,7 +99,7 @@
 				}
 				
 			},
-			dialogTitle(){
+			title(){
 				if(this.xmIteration && this.xmIteration.id){
 					return (this.xmIteration?'迭代【'+this.xmIteration.iterationName+'】':'')+'用户故事数量排行榜'
 				}else {

@@ -129,7 +129,7 @@
 			legendCpd(){
 				 return ['0-2天','3-5天','6-7天','8-15天','16-30天','30天以上']
 			},
-			dialogTitle(){
+			title(){
 				if(this.xmIteration && this.xmIteration.id){
 					return (this.xmIteration?'迭代【'+this.xmIteration.iterationName+'】':'')+'缺陷年龄数量分布'
 				}else {

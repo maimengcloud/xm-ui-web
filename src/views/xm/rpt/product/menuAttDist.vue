@@ -123,7 +123,7 @@
 
 				return this.dicts[itemId].map(i=>i.name)
 			},
-			dialogTitle(){
+			title(){
 				if(this.xmIteration && this.xmIteration.id){
 					return (this.xmIteration?'迭代【'+this.xmIteration.iterationName+'】':'')+'需求属性数量分布'
 				}else {

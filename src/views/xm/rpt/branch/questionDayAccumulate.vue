@@ -76,7 +76,7 @@
 					return this.xmProductStateHiss.map(i=>i.resolvedBugs)
 				}
 			},
-			dialogTitle(){
+			title(){
 				if(this.xmIteration && this.xmIteration.id){
 					return (this.xmIteration?'迭代【'+this.xmIteration.iterationName+'】':'')+'缺陷每日累积图'
 				}else {

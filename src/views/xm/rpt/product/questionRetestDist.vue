@@ -146,7 +146,7 @@
 			legendCpd(){ 
 				return ["1次","2次","3次","4次","5次","5次以上"] 
 			},
-			dialogTitle(){
+			title(){
 				if(this.xmIteration && this.xmIteration.id){
 					return (this.xmIteration?'迭代【'+this.xmIteration.iterationName+'】':'')+'缺陷回归分布'
 				}else {

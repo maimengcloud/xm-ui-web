@@ -62,7 +62,7 @@
 					['已关缺陷',...this.xmProductStateHiss.map(i=>i.closedBugs)]
 				]
 			},
-			dialogTitle(){
+			title(){
 				if(this.xmIteration && this.xmIteration.id){
 					return (this.xmIteration?'迭代【'+this.xmIteration.iterationName+'】':'')+'工作项每日趋势图'
 				}else{
