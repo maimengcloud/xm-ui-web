@@ -172,7 +172,8 @@
 				this.myChart.setOption(  
 					{
 						title: {
-							text: '缺陷累积图'
+							text: '缺陷累积图',
+							left: 'center'
 						}, 
 
 						tooltip: {

@@ -166,7 +166,8 @@
 				this.myChart.setOption(  
 					{
 						title: {
-							text: '需求累积图'
+							text: '需求累积图',
+							left: 'center'
 						}, 
 
 						tooltip: {
@@ -179,6 +180,8 @@
 							}
 						},
 						legend: {
+							top:'5%',
+							left: 'center',
 							data: ['未开始', '执行中', '已完成', '已关闭']
 						},
 						grid: {

@@ -153,7 +153,8 @@
 				this.myChart.setOption(  
 					{
 						title: {
-							text: '缺陷累积图'
+							text: '缺陷累积图',
+							left: 'center'
 						}, 
 
 						tooltip: {
@@ -166,6 +167,8 @@
 							}
 						},
 						legend: {
+							top:'5%',
+							left: 'center',
 							data: ['新提出', '执行中', '已解决', '已关闭']
 						},
 						grid: {

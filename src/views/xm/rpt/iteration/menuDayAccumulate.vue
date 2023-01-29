@@ -174,7 +174,8 @@
 				this.myChart.setOption(  
 					{
 						title: {
-							text: '需求累积图'
+							text: '需求累积图',
+							left: 'center'
 						}, 
 
 						tooltip: {
