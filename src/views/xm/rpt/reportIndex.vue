@@ -1,76 +1,81 @@
 <template>
 	<section class="padding">
-		<el-row> 
-            <el-select v-model="filters.category" clearable>
-                <el-option v-for="(item,index) in categorys" :label="item" :value="item" :key="index"></el-option>
-            </el-select>
-		</el-row>
 		<el-row>
-			 <el-row  :style="{overflowX:'hidden',height:maxTableHeight+'px'}"  :category="filters.category" ref="table" :gutter="5">
-                <el-col  v-cloak v-for="(p,i) in rptListCpd" :key="i" :xl="4" :lg="6" :md="8" :sm="12" :body-style="{ padding: '0px' }">
-                    <el-card @click.native="intoInfo(p,i)" class="project-card" shadow="always" id="prj-view-box">
-                        <img :src="p.img" class="image" style="width:100%;float:center;">
-                        <div style="padding: 14px;">
-                            <span>{{p.rptName}}</span> 
-                            <div class="bottom clearfix">
-                            <time class="time">{{ p.desc }}</time>
-                            <el-button type="text" class="button"></el-button>
-                            </div> 
-                        </div>
-                    </el-card>
-                </el-col>
-            </el-row>
+            <el-col :span="4"> 
+                <el-row> 
+                    <el-select v-model="filters.category" clearable>
+                        <el-option v-for="(item,index) in categorys" :label="item" :value="item" :key="index"></el-option>
+                    </el-select>
+                </el-row>
+                <el-row  :style="{overflowX:'hidden',height:maxTableHeight+'px'}" :category="filters.category" ref="table" :gutter="5">
+                    <el-col  v-cloak v-for="(p,i) in rptListCpd" :key="i" :body-style="{ padding: '0px' }">
+                        <el-card @click.native="intoInfo(p,i)" class="project-card" shadow="always" id="prj-view-box">
+                            <img :src="p.img" class="image" style="width:100%;float:center;">
+                            <div style="padding: 14px;">
+                                <span>{{p.rptName}}</span> 
+                                <div class="bottom clearfix">
+                                <time class="time">{{ p.desc }}</time>
+                                <el-button type="text" class="button"></el-button>
+                                </div> 
+                            </div>
+                        </el-card>
+                    </el-col>
+                </el-row>
+            </el-col>
+            <el-col :span="20">
+                <xm-iteration-burnout  v-if="showRptRef=='xmIterationBurnout'" :category="filters.category" ref="xmIterationBurnout" :xm-iteration="xmIteration" :xm-product="xmProduct" :xm-project="xmProject"></xm-iteration-burnout>
+                <xm-menu-day-trend  v-if="showRptRef=='xmMenuDayTrend'" :category="filters.category" ref="xmMenuDayTrend" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-menu-day-trend>
+                <xm-menu-day-accumulate  v-if="showRptRef=='xmMenuDayAccumulate'" :category="filters.category" ref="xmMenuDayAccumulate" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-menu-day-accumulate>
+                <xm-iteration-menu-day-trend  v-if="showRptRef=='xmIterationMenuDayTrend'" :category="filters.category" ref="xmIterationMenuDayTrend" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-iteration-menu-day-trend>
+                <xm-iteration-menu-day-accumulate  v-if="showRptRef=='xmIterationMenuDayAccumulate'" :category="filters.category" ref="xmIterationMenuDayAccumulate" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-iteration-menu-day-accumulate>
+                <xm-menu-att-dist  v-if="showRptRef=='xmMenuAttDist'" :category="filters.category" ref="xmMenuAttDist" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-menu-att-dist>
+                <xm-menu-age-dist  v-if="showRptRef=='xmMenuAgeDist'" :category="filters.category" ref="xmMenuAgeDist" :xm-product="xmProduct" :xm-project="xmProject" :xm-iteration="xmIteration"></xm-menu-age-dist>
+                <xm-menu-sort  v-if="showRptRef=='xmMenuSort'" :category="filters.category" ref="xmMenuSort" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-menu-sort>
+
+                
+                <xm-task-day-trend  v-if="showRptRef=='xmTaskDayTrend'" :category="filters.category" ref="xmTaskDayTrend" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-task-day-trend>
+                <xm-task-day-accumulate  v-if="showRptRef=='xmTaskDayAccumulate'" :category="filters.category" ref="xmTaskDayAccumulate" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-task-day-accumulate>
+                <xm-task-att-dist  v-if="showRptRef=='xmTaskAttDist'" :category="filters.category" ref="xmTaskAttDist" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-task-att-dist>
+                <xm-task-age-dist  v-if="showRptRef=='xmTaskAgeDist'" :category="filters.category" ref="xmTaskAgeDist" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-task-age-dist>
+                <xm-task-sort  v-if="showRptRef=='xmTaskSort'" :category="filters.category" ref="xmTaskSort" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-task-sort>
+                <xm-project-work-item-day-list  v-if="showRptRef=='xmProjectWorkItemDayList'" :category="filters.category" ref="xmProjectWorkItemDayList" :xm-product="xmProduct" :xm-project="xmProject" ></xm-project-work-item-day-list>
+                <xm-project-workload-set-day-list  v-if="showRptRef=='xmProjectWorkloadSetDayList'" :category="filters.category" ref="xmProjectWorkloadSetDayList" :xm-product="xmProduct" :xm-project="xmProject"></xm-project-workload-set-day-list>
+                <xm-project-workload-set-month-list  v-if="showRptRef=='xmProjectWorkloadSetMonthList'" :category="filters.category" ref="xmProjectWorkloadSetMonthList" :xm-product="xmProduct" :xm-project="xmProject"></xm-project-workload-set-month-list>
+                
+
+                <xm-iteration-question-day-trend  v-if="showRptRef=='xmIterationQuestionDayTrend'" :category="filters.category" ref="xmIterationQuestionDayTrend" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-iteration-question-day-trend>
+                <xm-iteration-question-day-accumulate  v-if="showRptRef=='xmIterationQuestionDayAccumulate'" :category="filters.category" ref="xmIterationQuestionDayAccumulate" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-iteration-question-day-accumulate>
+                <xm-question-day-trend  v-if="showRptRef=='xmQuestionDayTrend'" :category="filters.category" ref="xmQuestionDayTrend" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-day-trend>
+                <xm-question-day-accumulate  v-if="showRptRef=='xmQuestionDayAccumulate'" :category="filters.category" ref="xmQuestionDayAccumulate" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-day-accumulate>
+                <xm-question-att-dist  v-if="showRptRef=='xmQuestionAttDist'" :category="filters.category" ref="xmQuestionAttDist" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-question-att-dist>
+                <xm-question-state-dist  v-if="showRptRef=='xmQuestionStateDist'" :category="filters.category" ref="xmQuestionStateDist" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-question-state-dist>
+
+                <xm-question-age-dist  v-if="showRptRef=='xmQuestionAgeDist'" :category="filters.category" ref="xmQuestionAgeDist" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-question-age-dist>
+                <xm-question-sort v-if="showRptRef=='xmQuestionSort'" :category="filters.category" ref="xmQuestionSort" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-question-sort>
+                <xm-question-ask-user-sort v-if="showRptRef=='xmQuestionAskUserSort'" :category="filters.category" ref="xmQuestionAskUserSort" init-group-by="ask_userid" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-question-ask-user-sort>
+                <xm-question-handler-user-sort v-if="showRptRef=='xmQuestionHandlerUserSort'" :category="filters.category" ref="xmQuestionHandlerUserSort" init-group-by="handler_userid"  :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-question-handler-user-sort>
+                <xm-question-func-sort v-if="showRptRef=='xmQuestionFuncSort'" :category="filters.category" ref="xmQuestionFuncSort" init-group-by="func_id"  :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-question-func-sort>
+                <xm-question-menu-sort v-if="showRptRef=='xmQuestionMenuSort'" :category="filters.category" ref="xmQuestionMenuSort" init-group-by="menu_id"  :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-question-menu-sort>
+                
+                <xm-question-retest-dist  v-if="showRptRef=='xmQuestionRetestDist'" :category="filters.category" ref="xmQuestionRetestDist" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-retest-dist>
+                <xm-product-work-item-day-list  v-if="showRptRef=='xmProductWorkItemDayList'" :category="filters.category" ref="xmProductWorkItemDayList" :xm-product="xmProduct" :xm-project="xmProject"></xm-product-work-item-day-list>
+                <xm-iteration-work-item-day-list  v-if="showRptRef=='xmIterationWorkItemDayList'" :category="filters.category" ref="xmIterationWorkItemDayList" :xm-product="xmProduct" :xm-project="xmProject" :xm-iteration="xmIteration"></xm-iteration-work-item-day-list>
+            
+                <!--测试计划-->
+                <xm-test-plan-case-exec-status-dist  v-if="showRptRef=='xmTestPlanCaseExecStatusDist'" :category="filters.category" ref="xmTestPlanCaseExecStatusDist" :xm-product="xmProduct" :xm-project="xmProject" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-test-plan-case-exec-status-dist> 
+                <xm-test-plan-case-user-dist  v-if="showRptRef=='xmTestPlanCaseUserDist'" :category="filters.category" ref="xmTestPlanCaseUserDist" :xm-product="xmProduct" :xm-project="xmProject" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-test-plan-case-user-dist>
+                <xm-test-day-times-calc  v-if="showRptRef=='xmTestDayTimesCalc'" :category="filters.category" ref="xmTestDayTimesCalc" :xm-product="xmProduct" :xm-project="xmProject" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-test-day-times-calc>
+                <xm-test-case-to-plan-calc  v-if="showRptRef=='xmTestCaseToPlanCalc'" :category="filters.category" ref="xmTestCaseToPlanCalc" :xm-product="xmProduct" :xm-project="xmProject" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-test-case-to-plan-calc>
+                
+                <!--企业级报表-->
+                <xm-branch-question-day-trend  v-if="showRptRef=='xmBranchQuestionDayTrend'" :category="filters.category" ref="xmBranchQuestionDayTrend" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-branch-question-day-trend>
+                <xm-branch-question-day-accumulate  v-if="showRptRef=='xmBranchQuestionDayAccumulate'" :category="filters.category" ref="xmBranchQuestionDayAccumulate" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-branch-question-day-accumulate>
+                <xm-branch-work-item-day-list  v-if="showRptRef=='xmBranchWorkItemDayList'" :category="filters.category" ref="xmBranchWorkItemDayList" :xm-product="xmProduct" :xm-project="xmProject" :xm-iteration="xmIteration"></xm-branch-work-item-day-list>
+                <xm-branch-menu-day-trend  v-if="showRptRef=='xmBranchMenuDayTrend'" :category="filters.category" ref="xmBranchMenuDayTrend" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-branch-menu-day-trend>
+                <xm-branch-menu-day-accumulate  v-if="showRptRef=='xmBranchMenuDayAccumulate'" :category="filters.category" ref="xmBranchMenuDayAccumulate" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-branch-menu-day-accumulate>
+                
+            </el-col>
 		</el-row>
-        <xm-iteration-burnout :category="filters.category" ref="xmIterationBurnout" :xm-iteration="xmIteration" :xm-product="xmProduct" :xm-project="xmProject"></xm-iteration-burnout>
-        <xm-menu-day-trend :category="filters.category" ref="xmMenuDayTrend" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-menu-day-trend>
-        <xm-menu-day-accumulate :category="filters.category" ref="xmMenuDayAccumulate" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-menu-day-accumulate>
-        <xm-iteration-menu-day-trend :category="filters.category" ref="xmIterationMenuDayTrend" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-iteration-menu-day-trend>
-        <xm-iteration-menu-day-accumulate :category="filters.category" ref="xmIterationMenuDayAccumulate" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-iteration-menu-day-accumulate>
-        <xm-menu-att-dist :category="filters.category" ref="xmMenuAttDist" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-menu-att-dist>
-        <xm-menu-age-dist :category="filters.category" ref="xmMenuAgeDist" :xm-product="xmProduct" :xm-project="xmProject" :xm-iteration="xmIteration"></xm-menu-age-dist>
-        <xm-menu-sort :category="filters.category" ref="xmMenuSort" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-menu-sort>
-
-        
-        <xm-task-day-trend :category="filters.category" ref="xmTaskDayTrend" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-task-day-trend>
-        <xm-task-day-accumulate :category="filters.category" ref="xmTaskDayAccumulate" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-task-day-accumulate>
-        <xm-task-att-dist :category="filters.category" ref="xmTaskAttDist" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-task-att-dist>
-        <xm-task-age-dist :category="filters.category" ref="xmTaskAgeDist" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-task-age-dist>
-        <xm-task-sort :category="filters.category" ref="xmTaskSort" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-task-sort>
-        <xm-project-work-item-day-list :category="filters.category" ref="xmProjectWorkItemDayList" :xm-product="xmProduct" :xm-project="xmProject" ></xm-project-work-item-day-list>
-        <xm-project-workload-set-day-list :category="filters.category" ref="xmProjectWorkloadSetDayList" :xm-product="xmProduct" :xm-project="xmProject"></xm-project-workload-set-day-list>
-        <xm-project-workload-set-month-list :category="filters.category" ref="xmProjectWorkloadSetMonthList" :xm-product="xmProduct" :xm-project="xmProject"></xm-project-workload-set-month-list>
-        
-
-        <xm-iteration-question-day-trend :category="filters.category" ref="xmIterationQuestionDayTrend" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-iteration-question-day-trend>
-        <xm-iteration-question-day-accumulate :category="filters.category" ref="xmIterationQuestionDayAccumulate" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-iteration-question-day-accumulate>
-        <xm-question-day-trend :category="filters.category" ref="xmQuestionDayTrend" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-day-trend>
-        <xm-question-day-accumulate :category="filters.category" ref="xmQuestionDayAccumulate" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-day-accumulate>
-        <xm-question-att-dist :category="filters.category" ref="xmQuestionAttDist" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-question-att-dist>
-        <xm-question-state-dist :category="filters.category" ref="xmQuestionStateDist" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-question-state-dist>
-
-        <xm-question-age-dist :category="filters.category" ref="xmQuestionAgeDist" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-question-age-dist>
-        <xm-question-sort :category="filters.category" ref="xmQuestionSort" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-question-sort>
-        <xm-question-ask-user-sort :category="filters.category" ref="xmQuestionAskUserSort" init-group-by="ask_userid" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-question-ask-user-sort>
-        <xm-question-handler-user-sort :category="filters.category" ref="xmQuestionHandlerUserSort" init-group-by="handler_userid"  :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-question-handler-user-sort>
-        <xm-question-func-sort :category="filters.category" ref="xmQuestionFuncSort" init-group-by="func_id"  :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-question-func-sort>
-        <xm-question-menu-sort :category="filters.category" ref="xmQuestionMenuSort" init-group-by="menu_id"  :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-question-menu-sort>
-        
-        <xm-question-retest-dist :category="filters.category" ref="xmQuestionRetestDist" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-retest-dist>
-        <xm-product-work-item-day-list :category="filters.category" ref="xmProductWorkItemDayList" :xm-product="xmProduct" :xm-project="xmProject"></xm-product-work-item-day-list>
-        <xm-iteration-work-item-day-list :category="filters.category" ref="xmIterationWorkItemDayList" :xm-product="xmProduct" :xm-project="xmProject" :xm-iteration="xmIteration"></xm-iteration-work-item-day-list>
-	
-        <!--测试计划-->
-        <xm-test-plan-case-exec-status-dist :category="filters.category" ref="xmTestPlanCaseExecStatusDist" :xm-product="xmProduct" :xm-project="xmProject" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-test-plan-case-exec-status-dist> 
-        <xm-test-plan-case-user-dist :category="filters.category" ref="xmTestPlanCaseUserDist" :xm-product="xmProduct" :xm-project="xmProject" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-test-plan-case-user-dist>
-        <xm-test-day-times-calc :category="filters.category" ref="xmTestDayTimesCalc" :xm-product="xmProduct" :xm-project="xmProject" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-test-day-times-calc>
-        <xm-test-case-to-plan-calc :category="filters.category" ref="xmTestCaseToPlanCalc" :xm-product="xmProduct" :xm-project="xmProject" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-test-case-to-plan-calc>
-        
-        <!--企业级报表-->
-        <xm-branch-question-day-trend :category="filters.category" ref="xmBranchQuestionDayTrend" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-branch-question-day-trend>
-        <xm-branch-question-day-accumulate :category="filters.category" ref="xmBranchQuestionDayAccumulate" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-branch-question-day-accumulate>
-        <xm-branch-work-item-day-list :category="filters.category" ref="xmBranchWorkItemDayList" :xm-product="xmProduct" :xm-project="xmProject" :xm-iteration="xmIteration"></xm-branch-work-item-day-list>
-        <xm-branch-menu-day-trend :category="filters.category" ref="xmBranchMenuDayTrend" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-branch-menu-day-trend>
-        <xm-branch-menu-day-accumulate :category="filters.category" ref="xmBranchMenuDayAccumulate" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-branch-menu-day-accumulate>
         
 
     </section>
@@ -187,6 +192,7 @@
                 filters:{
                     category:'项目级', 
                 },
+                showRptRef:'',
 				dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, edit: false, del: false, add: false },//查询中... 
 				dateRanger:[], 
@@ -256,8 +262,8 @@
                 params.xmProject=this.xmProject
                 params.xmIteration=this.xmIteration 
                 params.xmTestCasedb=this.xmTestCasedb
-                params.category=this.filters.category
-                this.$refs[row.ref].open(params);
+                params.category=this.filters.category 
+                this.showRptRef=row.ref
 			},
 				
 			

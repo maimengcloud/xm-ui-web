@@ -1,7 +1,7 @@
 <template>
 	<section>
-        <el-dialog fullscreen :title="(filters.project?'【'+filters.project.name+'】':'')+'任务排行榜'" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
-			<el-row :gutter="5" v-if="visible">
+        
+			<el-row :gutter="5" >
 				<el-col :span="18"> 
 					<div>
 						<div class="main" id="xmTaskSort"
@@ -51,7 +51,6 @@
 					</el-form>
 				</el-col>
 			</el-row>
-        </el-dialog>
 	</section>
 </template>
 
@@ -130,7 +129,7 @@
 			}//end return
 		},//end data
 		methods: { 
-			open(params){
+			open(){
 				this.visible=true;
 				this.filters.product=this.xmProduct
 				this.filters.project=this.xmProject
@@ -237,7 +236,7 @@
 				this.dicts=res.data.data;
 			}) 
 			//this.charts();
-			//this.drawCharts();
+			this.open();
 			
 		}//end mounted
 	}

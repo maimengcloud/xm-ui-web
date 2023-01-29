@@ -1,8 +1,8 @@
 <template>
 	<section>
-        <el-dialog :title="(filters.project?'【'+filters.project.name+'】':'')+'工作项按日分布趋势图'" fullscreen append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
+        
  
-			<el-row :gutter="5" v-if="visible">
+			<el-row :gutter="5" >
 				<el-col :span="18"> 
 					<div> 
 						<div class="main" id="projectWorkItemDayList" style="width:100%;height:600px;margin:0 auto;"></div> 
@@ -24,7 +24,6 @@
 					</el-form>
 				</el-col>
 			</el-row>
-        </el-dialog>
 	</section>
 </template>
 
@@ -101,7 +100,7 @@
 					this.xmProjectStateHiss=res.data.tips.isOk?res.data.data:this.xmProjectStateHiss;
 				})
 			},
-			open(params){
+			open(){
 				this.visible=true;
 				this.filters.product=this.xmProduct
 				this.filters.project=this.xmProject
@@ -235,7 +234,7 @@
 			}) 
              */
 			//this.charts();
-			//this.drawCharts();
+			this.open();
 			
 		}//end mounted
 	}

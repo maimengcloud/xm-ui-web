@@ -1,7 +1,6 @@
 <template>
-	<section>
-        <el-dialog fullscreen :title="dialogTitle" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
-			<el-row :gutter="5" v-if="visible">
+	<section >
+ 			<el-row :gutter="5" >
 				<el-col :span="18"> 
 					<div>
 						<div class="main" id="xmQuestionSort"
@@ -90,8 +89,7 @@
 				</el-col>
 			</el-row>
 			<xm-test-plan-select  ref="xmTestPlanSelectRef" :casedb-id="xmTestCasedb?xmTestCasedb.id:null" :product-id="xmProduct?xmProduct.id:null" :project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @select="onXmTestPlanSelected" @clear="onXmTestPlanClear"></xm-test-plan-select >
-
-        </el-dialog>
+ 
 	</section>
 </template>
 
@@ -112,7 +110,7 @@
 		components: {   
 			XmProjectSelect,XmIterationSelect,XmProductSelect,xmTestPlanSelect,
 		},
-        props:['xmProject','xmProduct','xmIteration','xmTestCasedb','xmTestPlan','initGroupBy'],
+        props:['xmProject','xmProduct','xmIteration','xmTestCasedb','xmTestPlan','initGroupBy','visible'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -156,6 +154,11 @@
 		watch: {  
 			xmQuestionSortsCpd(){
 				this.drawCharts();
+			},
+			visible(val){
+				if(val){
+					this.open()
+				}
 			}
 	    },
 		data() {
@@ -193,8 +196,7 @@
 			}//end return
 		},//end data
 		methods: { 
-			open(params){
-				this.visible=true;
+			open(){ 
 				this.filters.testPlan=this.xmTestPlan
 				this.filters.product=this.xmProduct
 				this.filters.project=this.xmProject
@@ -337,7 +339,7 @@
 				this.dicts=res.data.data;
 			}) 
 			//this.charts();
-			//this.drawCharts();
+			this.open();
 			
 		}//end mounted
 	}

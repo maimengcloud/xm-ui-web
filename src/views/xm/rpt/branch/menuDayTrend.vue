@@ -1,8 +1,7 @@
 <template>
 	<section>
-        <el-dialog fullscreen :title="dialogTitle" append-to-body modal-append-to-body width="80%" top="20px" :visible.sync="visible">
-			
-			<el-row :gutter="5" v-if="visible">
+ 			
+			<el-row :gutter="5" >
 				<el-col :span="18"> 
 					<div>
 						<div class="main" id="iterationMenuDayTrend"
@@ -21,8 +20,7 @@
 					</el-form-item>  
 					</el-form>
 				</el-col>
-			</el-row>
-        </el-dialog>
+			</el-row> 
 	</section>
 </template>
 
@@ -137,11 +135,13 @@
 					this.xmProductStateHiss=res.data.tips.isOk?res.data.data:this.xmProductStateHiss;
 				})
 			},
-			open(params){
+			open(){
 				this.visible=true;
-				this.filters.product=params.xmProduct
-				this.filters.project=params.xmProject 
-				this.filters.iteration=params.xmIteration 
+				this.filters.testPlan=this.xmTestPlan
+				this.filters.product=this.xmProduct
+				this.filters.project=this.xmProject
+				this.filters.iteration=this.xmIteration
+				this.filters.testCasedb=this.xmTestCasedb
 				if(this.$refs['xmProductSelect'])this.$refs['xmProductSelect'].clearSelect();
 				if(this.$refs['xmIterationSelect'])this.$refs['xmIterationSelect'].clearSelect();
 				 
@@ -264,7 +264,7 @@
 			}) 
              */
 			//this.charts();
-			//this.drawCharts();
+			this.open();
 			
 		}//end mounted
 	}
