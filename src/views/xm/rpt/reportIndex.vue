@@ -1,13 +1,13 @@
 <template>
 	<section class="padding">
-		<el-row>
+		<el-row gutter="5">
             <el-col :span="4"> 
                 <el-row> 
-                    <el-select v-model="filters.category" clearable @change="onCategroySelect">
+                    <el-select v-model="filters.category" clearable @change="onCategroySelect" style="width:100%;">
                         <el-option v-for="(item,index) in categorys" :label="item" :value="item" :key="index"></el-option>
                     </el-select>
                 </el-row> 
-                <el-row  :style="{overflowX:'hidden',height:maxTableHeight+'px'}" ref="table">
+                <el-row :style="{overflowX:'hidden',height:maxTableHeight+'px'}" ref="table">
                          <el-card v-for="(p,i) in rptListCpd" :key="i" @click.native="intoInfo(p,i)" :class="{itemActive:p.isChecked,card:true,}" shadow="always">
                             <div slot="header" class="clearfix">
                                 {{ i+1 }}.<span>{{p.rptName}}</span>  <span><i v-if="p.isChecked" class="el-icon-success"></i></span>
