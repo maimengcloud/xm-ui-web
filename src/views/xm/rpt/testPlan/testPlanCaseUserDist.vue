@@ -174,8 +174,7 @@
 						}, 
 						
 						tooltip: {
-							trigger: 'item',
-							formatter:'{b} {c}个',
+							trigger: 'item', 
 						},
 						barMaxWidth: 100,
 						toolbox: {

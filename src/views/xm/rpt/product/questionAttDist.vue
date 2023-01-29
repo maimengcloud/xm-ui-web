@@ -259,7 +259,7 @@
 						}, 
 						tooltip: {
 							trigger: 'item',
-							formatter:'{b} {c}个 {d}%',
+							
 						},
 						
 						toolbox: {
@@ -292,7 +292,7 @@
 
 							label: {
 								show: true, 
-								formatter:'{b} {c}个 {d}%',
+								
 							},
 							}
 						]
