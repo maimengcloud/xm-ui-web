@@ -161,11 +161,6 @@
 							text: this.title, 
 							left: 'center'
 						}, 
-						legend: { 
-							top:'5%',
-							left: 'center',
-							data:this.legendCpd,
-						},
 						tooltip: {
 							trigger: 'item',
 							formatter:'{b} {c}个 {d}%',
@@ -173,15 +168,19 @@
 						
 						toolbox: {
 							show: true,
+							right:"20px",
 							feature: {
-							dataView: { show: true, readOnly: false },
-							magicType: { show: true, type: ['line', 'bar'] },
-							restore: { show: true },
-							saveAsImage: { show: true }
+								dataView: { show: true, readOnly: false },  
+								saveAsImage: { show: true }, 
 							}
-						},
-
+						}, 
 						calculable: true,
+						
+						legend: { 
+							top:'5%',
+							left: 'center',
+							data:this.legendCpd,
+						},
 						series: [
 							{
 							type: 'pie',

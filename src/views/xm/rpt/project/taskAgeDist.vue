@@ -123,10 +123,22 @@
 						title: {
 							text: this.title, 
 							left: 'center'
-						},
+						}, 
 						tooltip: {
-							trigger: 'item'
+							trigger: 'item',
+							formatter:'{b} {c}个 {d}%',
 						},
+						
+						toolbox: {
+							show: true,
+							right:"20px",
+							feature: {
+								dataView: { show: true, readOnly: false },  
+								saveAsImage: { show: true }, 
+							}
+						}, 
+						calculable: true,
+						
 						legend: { 
 							top:'5%',
 							left: 'center',
@@ -146,8 +158,8 @@
 							},
 
 							label: {
-								show: true,
-								position: 'center'
+								show: true, 
+								formatter:'{b} {c}个 {d}%',
 							},
 							}
 						]
