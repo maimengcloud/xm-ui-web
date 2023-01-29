@@ -194,7 +194,7 @@
 						}, 
 						
 						tooltip: {
-							trigger: 'axis', 
+							trigger: 'axis',  
 						},
 						barMaxWidth: 100,
 						toolbox: {
@@ -208,12 +208,7 @@
 							}
 						},
 
-						calculable: true,
-						
-						legend: { 
-							top:'5%',
-							left: 'center',
-						},
+						calculable: true, 
 						xAxis: {
 							type: 'category',
 							data: this.datesCpd
@@ -225,7 +220,7 @@
 							{
 								name:'次数',
 								data: this.testDayTimesCpd,
-								type: 'bar',
+								type: 'line',
 								label:{
 									show: true, 
 								},								

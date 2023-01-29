@@ -65,8 +65,11 @@
 					['已审核',...this.xmProjectWorkloadSetDays.map(i=>i.hadAgreeSworkload)],
 					['已结算',...this.xmProjectWorkloadSetDays.map(i=>i.hadSetSworkload)]
 				]
-			}
+			},
 			
+			title(){
+				return "项目工时每日分布"
+			}
         }, 
 		watch: {  
 			dataSetCpd(){  
@@ -244,7 +247,7 @@
 							type: 'pie',
 							id: 'pie',
 							radius: '30%',
-							center: ['50%', '25%'],
+							center: ['50%', '30%'],
 							emphasis: {
 								focus: 'self'
 							},

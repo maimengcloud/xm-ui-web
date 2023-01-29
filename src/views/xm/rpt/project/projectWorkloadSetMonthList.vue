@@ -64,6 +64,10 @@
 					['已审核',...this.xmProjectWorkloadSetMonths.map(i=>i.hadAgreeSworkload)],
 					['已结算',...this.xmProjectWorkloadSetMonths.map(i=>i.hadSetSworkload)]
 				]
+			},
+			
+			title(){
+				return "项目工时每月分布"
 			}
 			
         }, 
@@ -244,7 +248,7 @@
 							type: 'pie',
 							id: 'pie',
 							radius: '30%',
-							center: ['50%', '25%'],
+							center: ['50%', '30%'],
 							emphasis: {
 								focus: 'self'
 							},
