@@ -97,8 +97,8 @@
 				}
 			},
 			title(){
-				if(this.xmIteration && this.xmIteration.id){
-					return (this.xmIteration?'迭代【'+this.xmIteration.iterationName+'】':'')+'燃尽图'
+				if(this.filters.iteration && this.filters.iteration.id){
+					return (this.filters.iteration?'迭代【'+this.filters.iteration.iterationName+'】':'')+'燃尽图'
 				}else{
 					return "迭代燃尽图"
 				}
@@ -186,10 +186,20 @@
 				this.myChart = this.$echarts.init(document.getElementById("burnout")); 
 				this.myChart.setOption({
 					title: {
-						text: '燃尽图：',
+						text: this.title,
+						left:'center'
 					},
 					tooltip: {
 						trigger: 'axis'
+					},
+					toolbox: {
+						show: true,
+						feature: {
+						dataView: { show: true, readOnly: false },
+						magicType: { show: true, type: ['line', 'bar'] },
+						restore: { show: true },
+						saveAsImage: { show: true }
+						}
 					},
 					legend: {
 							top:'5%',
@@ -275,8 +285,7 @@
 			
 			onIterationSelected(iteration){
 				this.filters.iteration=iteration
-				this.xmProductStateHiss=[];
-				this.listXmIterationStateHis();
+				this.xmProductStateHiss=[]; 
 			},
 			
 			onIterationClear(){
