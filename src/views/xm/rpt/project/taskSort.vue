@@ -199,12 +199,6 @@
 							type: 'bar',
 							label:{
 								show: true, 
-							},
-							markPoint: {
-								data: [
-								{ type: 'max', name: 'Max' },
-								{ type: 'min', name: 'Min' }
-								]
 							}, 
 							}
 						]

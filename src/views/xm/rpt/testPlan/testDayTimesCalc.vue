@@ -233,13 +233,7 @@
 								label:{
 									show: true, 
 								},								
-								smooth: true,  
-								markPoint: {
-									data: [
-									{ type: 'max', name: 'Max' },
-									{ type: 'min', name: 'Min' }
-									]
-								}, 
+								smooth: true,   
 							}
 						]
 					}
