@@ -7,7 +7,8 @@
             </el-col>
             <el-col :span="(xmTestCase&&xmTestCase.id)?24:18">
                 <el-row>
-                    <el-input v-model="filters.key" style="width:40%;" placeholder="模糊查询"  clearable></el-input>
+                    <el-input v-model="filters.key" style="width:30%;" placeholder="模糊查询"  clearable></el-input>
+                    <el-input v-model="filters.caseId" style="width:20%;" placeholder="用例编号"  clearable></el-input>
                     <el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestPlanCases" icon="el-icon-search">查询</el-button> 
                 </el-row>
                 <el-row>
@@ -18,16 +19,19 @@
                             <span class="cell-text">  {{scope.row.username}}}  </span>
                             <span class="cell-bar"><el-input style="display:inline;" v-model="scope.row.username" placeholder="" @change="editSomeFields(scope.row,'username',$event)" :maxlength="22"></el-input></span>
                         </el-table-column>
-                        -->                         
-                        <el-table-column prop="caseName" label="用例名称" min-width="350"> 
-                        </el-table-column>	
+                        -->       
+                        
+                        <el-table-column prop="planId" label="测试计划" width="150" sortable> 
+                        </el-table-column>	                  
+                        <el-table-column prop="caseName" label="用例名称" min-width="250"> 
+                        </el-table-column>	    
                         <el-table-column prop="caseStatus" label="用例状态" width="100" show-overflow-tooltip>
                             <template slot-scope="scope"> 
                                 <mdp-select-dict-tag :dict="dicts['testCaseStatus']" v-model="scope.row.caseStatus" effect="dark" :disabled="true"></mdp-select-dict-tag> 
                             </template>
                         </el-table-column>    
                         
-                        <el-table-column prop="execStatus" label="执行结果" width="120" show-overflow-tooltip>
+                        <el-table-column prop="execStatus" label="执行结果" width="100" show-overflow-tooltip>
                             <template slot-scope="scope"> 
                                 <mdp-select-dict-tag :dict="dicts['testStepTcode']" v-model="scope.row.execStatus" effect="dark" :disabled="true"></mdp-select-dict-tag> 
                             </template>
@@ -43,7 +47,7 @@
                                 <mdp-select-dict-tag :dict="dicts['priority']" v-model="scope.row.priority" :disabled="true"></mdp-select-dict-tag>  
                             </template>
                         </el-table-column>
-                        <el-table-column  label="操作" width="150" fixed="right">
+                        <el-table-column  label="操作" width="100" fixed="right">
                             <template slot-scope="scope">
                                 <el-button type="primary" @click="$emit('select',scope.row)">选择</el-button>
                             </template>
@@ -70,7 +74,7 @@ export default {
     components: {
         XmFuncSelect,MdpSelectUserXm,
     },
-    props:['visible','xmTestPlan','xmTestCasedb','xmTestCase','xmProduct','select'],
+    props:['visible','xmTestPlan','xmTestCasedb','xmTestCase','xmProduct','select','xmProject'],
     computed: {
         ...mapGetters(['userInfo']),
         xmProductCpd(){ 
@@ -198,6 +202,9 @@ export default {
             }
             if(this.xmProductCpd && this.xmProductCpd.id){
                 params.productId=this.xmProductCpd.id
+            }
+            if(this.xmProject && this.xmProject.id){
+                params.projectId=this.xmProject.id
             }
             params.caseStatus="2"
             this.load.list = true;

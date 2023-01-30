@@ -17,6 +17,9 @@
 				  <el-row class="padding-bottom">
 					<my-input v-model="editForm.name" placeholder="计划名称" :maxlength="255" @change="editSomeFields(editForm,'name',$event)"></my-input>
  				  </el-row>
+				   <el-row >
+					 <span class="label-font-color padding-left">测试计划编号:{{ editForm.id }}</span>
+ 				  </el-row>
 				  </el-form-item>
 				<el-row class="padding">
 					<el-col :span="8">

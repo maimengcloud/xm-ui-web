@@ -27,12 +27,16 @@
                          <el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit"  circle title="编辑用例"></el-button> 
                         </span>
                     </template>
+				</el-table-column>  
+                <el-table-column prop="projectName" label="项目" min-width="120" show-overflow-tooltip> 
 				</el-table-column> 
                 <el-table-column prop="cusername" label="负责人" min-width="120" show-overflow-tooltip>
 				    <template slot-scope="scope"> 
                         <mdp-select-user-xm  userid-key="cuserid" username-key="cusername" v-model="scope.row" :disabled="true"> 
                                     </mdp-select-user-xm>
                     </template>
+				</el-table-column> 
+                <el-table-column prop="totalCases" label="用例数" width="120" show-overflow-tooltip> 
 				</el-table-column> 
 				<el-table-column prop="status" label="状态" width="120" show-overflow-tooltip>
 				    <template slot-scope="scope"> 

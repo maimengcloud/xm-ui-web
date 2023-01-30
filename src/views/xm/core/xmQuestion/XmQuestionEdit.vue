@@ -197,7 +197,7 @@
 			</el-dialog>
 			
 			<el-dialog append-to-body title="执行用例选择"  :visible.sync="caseVisible" width="80%" top="20px"  :close-on-click-modal="false">
-				<xm-test-plan-case-mng  v-if="caseVisible" :select="true" :visible="caseVisible" :xm-test-plan="xmTestPlan" :xm-product="editForm.productId?{id:editForm.productId,productName:editForm.productName}:xmProductCpd" @select="onTestPlanCaseSelected" ></xm-test-plan-case-mng>
+				<xm-test-plan-case-mng  v-if="caseVisible" :select="true" :visible="caseVisible" :xm-project="selProject&&selProject.id?selProject:(editForm.projectId?{id:editForm.projectId}:null)" :xm-test-plan="xmTestPlan" :xm-product="editForm.productId?{id:editForm.productId,productName:editForm.productName}:xmProductCpd" @select="onTestPlanCaseSelected" ></xm-test-plan-case-mng>
 			</el-dialog>
 	</section>
 </template>
