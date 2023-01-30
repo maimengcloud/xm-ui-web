@@ -102,33 +102,66 @@
 						title: {
 							text: this.title, 
 							left: 'center'
-						},
+						}, 
+						
 						tooltip: {
-							trigger: 'item'
+							trigger: 'item', 
 						},
-						legend: { 
+						barMaxWidth: 100,
+						toolbox: {
+							show: true,
+							right:"20px",
+							feature: {
+							dataView: { show: true, readOnly: false },
+							magicType: { show: true, type: ['line', 'bar'] },
+							
+							saveAsImage: { show: true }
+							}
+						},
+
+						calculable: true,
+						
+						legend: {
 							top:'5%',
 							left: 'center',
-							data:this.legendCpd,
+							data: ['已执行', '未执行']
 						},
-						series: [
+						xAxis: {
+							type: 'category',
+							data: this.legendCpd
+						},
+						yAxis: {
+							type: 'value'
+						},
+						series: [ 
 							{
-							type: 'pie',
-							radius: '50%',
-							data: this.xmTestPlanCaseUserDistsCpd,
-							emphasis: {
-								itemStyle: {
-								shadowBlur: 10,
-								shadowOffsetX: 0,
-								shadowColor: 'rgba(0, 0, 0, 0.5)'
-								}
+								name: '已执行',
+								type: 'bar', 
+								data: this.hadExecCpd, 
+								label:{
+									show: true, 
+								},
+								markPoint: {
+									data: [
+									{ type: 'max', name: 'Max' },
+									{ type: 'min', name: 'Min' }
+									]
+								}, 
 							},
-
-							label: {
-								show: true,
-								position: 'center'
+							{
+								name: '未执行',
+								type: 'bar',  
+								data: this.notExecCpd,
+								label:{
+									show: true, 
+								},
+								markPoint: {
+									data: [
+									{ type: 'max', name: 'Max' },
+									{ type: 'min', name: 'Min' }
+									]
+								}, 
 							},
-							}
 						]
 					}
 				)

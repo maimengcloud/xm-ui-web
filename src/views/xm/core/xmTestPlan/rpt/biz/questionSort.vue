@@ -1,7 +1,6 @@
 <template>
 	<section>
-		<el-row class="padding">
-			<span>{{compCfg?compCfg.name:'缺陷排行榜'}}</span>
+		<el-row class="padding"> 
 			<el-popover   trigger="manual" v-model="conditionBtnVisible" style="float:right;" width="300">  
 				<el-button slot="reference" icon="el-icon-more" @click="conditionBtnVisible=!conditionBtnVisible"></el-button> 
 				<el-row>
@@ -150,6 +149,27 @@
 				this.myChart = this.$echarts.init(document.getElementById(this.id)); 
 				this.myChart.setOption(   
 					{
+						title: {
+							text: this.title, 
+							left: 'left'
+						}, 
+						
+						tooltip: {
+							trigger: 'axis', 
+						},
+						barMaxWidth: 100,
+						toolbox: {
+							show: true,
+							right:"20px",
+							feature: {
+							dataView: { show: true, readOnly: false },
+							magicType: { show: true, type: ['line', 'bar'] },
+							
+							saveAsImage: { show: true }
+							}
+						},
+
+						calculable: true,
 						xAxis: {
 							type: 'category',
 							data: this.legendCpd
@@ -160,7 +180,16 @@
 						series: [
 							{
 							data: this.xmQuestionSortsCpd,
-							type: 'bar'
+							type: 'bar',								
+							label:{
+									show: true, 
+								},
+							markPoint: {
+									data: [
+									{ type: 'max', name: 'Max' },
+									{ type: 'min', name: 'Min' }
+									]
+								}, 
 							}
 						]
 					}
