@@ -43,7 +43,7 @@
                                 <mdp-select-dict-tag :dict="dicts['priority']" v-model="scope.row.priority" :disabled="true"></mdp-select-dict-tag>  
                             </template>
                         </el-table-column>
-                        <el-table-column  label="操作" width="150">
+                        <el-table-column  label="操作" width="150" fixed="right">
                             <template slot-scope="scope">
                                 <el-button type="primary" @click="$emit('select',scope.row)">选择</el-button>
                             </template>
