@@ -170,11 +170,11 @@
 				});
 				this.myChart.setOption({
 	
-				title: {
+					title: {
 						text: this.title, 
 						left: 'center'
-					}, 
-					
+					},  
+					trigger: 'axis',
 					tooltip: {
 						trigger: 'axis', 
 					},
@@ -256,7 +256,7 @@
 							},
 							encode: {
 								itemName: '日期',
-								value: '日期',
+								value:this.dataSetCpd[0][1],
 								tooltip: '日期'
 							}
 						}

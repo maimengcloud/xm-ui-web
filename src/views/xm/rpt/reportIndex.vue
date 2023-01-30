@@ -143,6 +143,7 @@
     import ranjintu from './images/ranjintu.png'
     import datasetLink from './images/dataset-link.png'
     import bar from './images/bar.png'
+    import store from '@/store'
     
 	export default { 
         
@@ -293,6 +294,7 @@
                     this.filters.category="产品级"
                 }else{
                     this.filters.category="企业级"
+                    store.dispatch("toggleSideBar",false)
                 }
             } 
             this.maxTableHeight = this.source == 'GZT' ? this.maxTableHeight : util.calcTableMaxHeight(this.$refs.table.$el); 

@@ -99,7 +99,7 @@
 					testPlan:null,
 					iteration:null,
 					testCasedb:null,
-					
+
                     category:'',   
 					startBizDate:'',
 					endBizDate:'',
@@ -251,7 +251,7 @@
 							},
 							encode: {
 								itemName: '日期',
-								value: '日期',
+								value:this.dataSetCpd[0][1],
 								tooltip: '日期'
 							}
 						}
