@@ -364,6 +364,7 @@
             margin-top: 10px;
             width:100%;
             img {
+                object-fit:cover;
                 width: 94px;
                 height: 94px;
                 margin: 0 18px;
