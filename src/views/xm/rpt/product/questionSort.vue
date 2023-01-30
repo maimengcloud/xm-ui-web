@@ -4,12 +4,12 @@
 				<el-col :span="18"> 
 					<div>
 						<div class="main" id="xmQuestionSort"
-							style="width:100%;height:600px;margin:0 auto;"></div>
+						:style="{width:'100%',height:maxTableHeight+'px',overflow: 'hidden'}"></div>
 						<div class="progress"></div>
 					</div>
 				</el-col>
 				<el-col :span="6" class="border">
-					<el-form :model="filters" class="padding">
+					<el-form :model="filters" class="padding" :style="{width:'100%',maxHeight:maxTableHeight+'px',overflow: 'auto'}" ref="filtersRef">
 						<el-form-item label="分组属性">
 							<el-select   v-model="groupBy"  @change="onXmQuestionSomeFieldsChange('groupBy',$event)" clearable>
 									<el-option v-for="i in this.groupBys" :label="i.name" :key="i.id" :value="i.id"></el-option>
@@ -380,6 +380,8 @@
  			initSimpleDicts('all',['bugSeverity','bugSolution','bugStatus','bugType','priority','bugRepRate','bugReason'] ).then(res=>{
 				this.dicts=res.data.data;
 			}) 
+			
+            this.maxTableHeight = util.calcTableMaxHeight(this.$refs.filtersRef.$el)
 			//this.charts();
 			this.open();
 			
