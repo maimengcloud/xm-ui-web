@@ -29,7 +29,7 @@
                             :h="item.h"
                             :i="item.i"
                             :key="index" @resize="sizeAutoChange(item)">
-                            <component :is="item.compId" :xm-test-plan="xmTestPlan" :comp-cfg="item" :ref="item.id" @delete="doDelete"></component>
+                            <component :is="item.compId" :xm-test-plan="xmTestPlan" :comp-cfg="item" :ref="item.id" @delete="doDelete" :id="item.id+'-id'"></component>
                         </grid-item>
                     </grid-layout>
                 </div>
@@ -93,9 +93,10 @@ export default {
         "xmQuestionBugStatusDist":()=>import("./biz/questionBugStatusDist.vue"), 
         "xmQuestionBugTypeDist":()=>import("./biz/questionBugTypeDist.vue"), 
         "xmQuestionRepRateDist":()=>import("./biz/questionRepRateDist.vue"), 
-        "xmQuestionBugSeverityDist":()=>import("./biz/questionBugSeverityDist.vue"), 
-        "xmQuestionPriorityDist":()=>import("./biz/questionPriorityDist.vue"), 
-
+        "xmQuestionBugSeverityDist":()=>import("./biz/questionBugSeverityDist.vue"),
+        "xmQuestionSolutionDist":()=>import("./biz/questionSolutionDist.vue"),
+        "xmQuestionPriorityDist":()=>import("./biz/questionPriorityDist.vue"),
+        
     },
     props:['xmTestPlan','rptConfigVisible'],
     computed: {
@@ -122,7 +123,7 @@ export default {
                 })
                 
             }
-        }
+        }, 
     },
 
     data() {
@@ -176,6 +177,13 @@ export default {
             }
         },
         onCompSelect(comp){ 
+            if(this.compCfgList.some(k=>k.compId==comp.compId)){ 
+                var compCfg=this.compCfgList.find(k=>k.compId==comp.compId)
+                this.$nextTick(()=>{
+                    this.scrollToComp(compCfg)   
+                }) 
+                 return;
+            }
             var compCfgListTemp=JSON.parse(JSON.stringify(this.compCfgList))
             compCfgListTemp.sort((i1,i2)=>{
                 return i2.i-i1.i
@@ -186,7 +194,19 @@ export default {
             })
             var maxY=(compCfgListTemp.length>0?(compCfgListTemp[0].y+6):0);
             var compCfg={i:maxI, x: 0,  y: maxY,  w: 12, h: 6, compId:comp.compId,name:comp.name,id:comp.compId+seq.sn(),params:{}} 
-                this.compCfgList.push(compCfg) 
+            this.compCfgList.push(compCfg) 
+            this.$nextTick(()=>{ 
+                setTimeout(()=>{
+                    this.scrollToComp(compCfg) 
+                },100)
+            })
+           
+        },
+        scrollToComp(compCfg){    
+            var doc=document.getElementById(compCfg.id+'-id')
+            if(doc){
+                doc.scrollIntoView(false)
+            }  
         },
         submitXmPrtConfig(callback){
             

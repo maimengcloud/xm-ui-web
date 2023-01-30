@@ -154,12 +154,12 @@ export default {
                 {
                     compId: 'xmQuestionRepRateDist',
                     icon: pieSimple,
-                    name: '缺陷重新频率分布',
-                    compDesc: '按缺陷出现频率进行分组统计',
+                    name: '缺陷重现频率分布',
+                    compDesc: '按缺陷重现频率进行分组统计',
                     isChecked: false,
                 },
                 {
-                    compId: 'xmQuestionBugSolutionDist',
+                    compId: 'xmQuestionSolutionDist',
                     icon: pieSimple,
                     name: '缺陷解决方案分布',
                     compDesc: '按缺陷解决方案进行分组统计',

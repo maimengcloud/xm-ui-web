@@ -248,6 +248,9 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 				this.editForm.projectName=row.name
 				this.editForm.name=this.editForm.projectName+'-测试计划-V1.0'
 			}, 
+			sizeAutoChange(){
+				
+			}
 		},//end method
 		mounted() {
 		    this.$nextTick(() => {

@@ -1,7 +1,7 @@
 <template> 
 <section> 
   <el-row>
-     <question-att-dist :ref="compCfg.id" :xm-test-plan="xmTestPlan" :comp-cfg="compCfg" :rpt-config-visible="rptConfigVisible" :group-by="'bug_solution'"  @delete="$emit('delete',$event)"/>  
+     <question-att-dist :ref="compCfg.id" :xm-test-plan="xmTestPlan" :comp-cfg="compCfg" :rpt-config-visible="rptConfigVisible" :group-by="'solution'"  @delete="$emit('delete',$event)"/>  
   </el-row>
 </section>     
 </template>

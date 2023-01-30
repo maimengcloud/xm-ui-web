@@ -101,7 +101,7 @@
 						itemId="bugSeverity"
 					}else if(this.filters.groupBy=='priority'){
 						itemId="priority"
-					} else if(this.filters.groupBy=='bug_solution'){
+					} else if(this.filters.groupBy=='solution'){
 						itemId="bugSolution"
 					} else if(this.filters.groupBy=='rep_rate'){
 						itemId="bugRepRate"
@@ -128,7 +128,7 @@
 					itemId="bugSeverity"
 				}else if(this.filters.groupBy=='priority'){
 					itemId="priority"
-				} else if(this.filters.groupBy=='bug_solution'){
+				} else if(this.filters.groupBy=='solution'){
 					itemId="bugSolution"
 				} else if(this.filters.groupBy=='rep_rate'){
 					itemId="bugRepRate"
@@ -167,7 +167,7 @@
 					{id:'bug_reason', name:'缺陷原因'},
 					{id:'bug_severity', name:'紧急程度'},
 					{id:'priority', name:'优先级'},
-					{id:'bug_solution', name:'解决方案'},
+					{id:'solution', name:'解决方案'},
 					{id:'rep_rate', name:'复现频率'},
 					
 				],
