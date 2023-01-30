@@ -134,14 +134,18 @@ export default {
             initCompCfg: [
                 
                  { i:0, x: 0,  y: 12,  w: 12, h: 6,  id:'xmTestRptOverview',name:'测试计划总览',compId:'xmTestRptOverview', params:{} }, 
-                 { i:1, x: 0,  y: 12,  w: 12, h: 6,  id:'xmQuestionAgeDist',name:'缺陷年龄分布',compId:'xmQuestionAgeDist', params:{} }, 
-                 { i: 2, x: 0,  y: 12,  w: 12, h: 6, id:'xmQuestionAttDist',name:'缺陷属性分布',compId:'xmQuestionAttDist',  },
-                 { i: 3, x: 0,  y: 12,  w: 12, h: 6,   id:'xmQuestionHandlerUserSort',name:'缺陷负责人排行榜',compId:'xmQuestionHandlerUserSort',  }, 
-                 { i: 4, x: 0,  y: 12,  w: 12, h: 6,   id:'xmQuestionAskUserSort',name:'缺陷提出人排行榜', compId:'xmQuestionAskUserSort',  }, 
+                 { i: 1, x: 0,  y: 12,  w: 12, h: 6,   id:'xmTestCaseToPlanCalc',name:'用例规划分析', compId:'xmTestCaseToPlanCalc',  }, 
+                 { i: 2, x: 0,  y: 12,  w: 12, h: 6,   id:'xmTestDayTimesCalc',name:'用例每日执行统计', compId:'xmTestDayTimesCalc',  },  
+                 { i: 3, x: 0,  y: 12,  w: 12, h: 6,   id:'xmTestPlanCaseExecStatusDist',name:'用例执行结果分布', compId:'xmTestPlanCaseExecStatusDist',  }, 
+                 { i: 4, x: 0,  y: 12,  w: 12, h: 6,   id:'xmTestPlanCaseUserDist',name:'用例执行人情况分布', compId:'xmTestPlanCaseUserDist',  },  
                  { i:5, x: 0,  y: 12,  w: 12, h: 6,   id:'xmQuestionMenuSort',name:'缺陷需求分布', compId:'xmQuestionMenuSort',  }, 
                  { i: 6, x: 0,  y: 12,  w: 12, h: 6,   id:'xmQuestionFuncSort',name:'缺陷模块分布', compId:'xmQuestionFuncSort',  },  
-                 { i: 7, x: 0,  y: 12,  w: 12, h: 6,   id:'xmTestPlanCaseExecStatusDist',name:'用例执行结果分布', compId:'xmTestPlanCaseExecStatusDist',  }, 
-                 { i: 8, x: 0,  y: 12,  w: 12, h: 6,   id:'xmTestPlanCaseUserDist',name:'用例执行人情况分布', compId:'xmTestPlanCaseUserDist',  }, 
+                 { i: 7, x: 0,  y: 12,  w: 12, h: 6, id:'xmQuestionBugStatusDist',name:'缺陷状态分布',compId:'xmQuestionBugStatusDist',  },
+                 { i:8, x: 0,  y: 12,  w: 12, h: 6,  id:'xmQuestionAgeDist',name:'缺陷年龄分布',compId:'xmQuestionAgeDist', params:{} },  
+                 { i:9, x: 0,  y: 12,  w: 12, h: 6,  id:'xmQuestionBugReasonDist',name:'缺陷原因分布',compId:'xmQuestionBugReasonDist', params:{} },  
+                 { i:10, x: 0,  y: 12,  w: 12, h: 6,  id:'xmQuestionPriorityDist',name:'缺陷紧急程度分布',compId:'xmQuestionPriorityDist', params:{} }, 
+                 { i: 11, x: 0,  y: 12,  w: 12, h: 6,   id:'xmQuestionAskUserSort',name:'缺陷提出人排行榜', compId:'xmQuestionAskUserSort',  }, 
+                 { i: 12, x: 0,  y: 12,  w: 12, h: 6,   id:'xmQuestionHandlerUserSort',name:'缺陷负责人排行榜',compId:'xmQuestionHandlerUserSort',  }, 
                  
                  
             ],
