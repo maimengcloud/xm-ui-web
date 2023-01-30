@@ -57,7 +57,7 @@
                 <xm-question-func-sort v-if="showRptRef=='xmQuestionFuncSort'" :category="filters.category" ref="xmQuestionFuncSort" init-group-by="func_id"  :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-question-func-sort>
                 <xm-question-menu-sort v-if="showRptRef=='xmQuestionMenuSort'" :category="filters.category" ref="xmQuestionMenuSort" init-group-by="menu_id"  :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-question-menu-sort>
                 
-                <xm-question-retest-dist  v-if="showRptRef=='xmQuestionRetestDist'" :category="filters.category" ref="xmQuestionRetestDist" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-question-retest-dist>
+                <xm-question-retest-dist  v-if="showRptRef=='xmQuestionRetestDist'" :category="filters.category" ref="xmQuestionRetestDist" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan"></xm-question-retest-dist>
                 <xm-product-work-item-day-list  v-if="showRptRef=='xmProductWorkItemDayList'" :category="filters.category" ref="xmProductWorkItemDayList" :xm-product="xmProduct" :xm-project="xmProject"></xm-product-work-item-day-list>
                 <xm-iteration-work-item-day-list  v-if="showRptRef=='xmIterationWorkItemDayList'" :category="filters.category" ref="xmIterationWorkItemDayList" :xm-product="xmProduct" :xm-project="xmProject" :xm-iteration="xmIteration"></xm-iteration-work-item-day-list>
             

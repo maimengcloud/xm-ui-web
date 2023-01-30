@@ -12,8 +12,9 @@
                      <el-divider direction="vertical"></el-divider>
                      <el-link :type="subPage=='testPlanCase'?'primary':''" @click="subPage='testPlanCase'"><i class="el-icon-video-play"></i>&nbsp;执行测试</el-link>
                      <el-divider direction="vertical"></el-divider>
-                     <el-link :type="subPage=='testBug'?'primary':''"  @click="subPage='testBug'"><i class="el-icon-question"></i>&nbsp;缺陷</el-link>
-
+                     <el-link :type="subPage=='testBug'?'primary':''"  @click="subPage='testBug'"><i class="el-icon-question"></i>&nbsp;缺陷</el-link> 
+                     <el-divider direction="vertical"></el-divider>
+                     <el-link :type="subPage=='xmReport'?'primary':''"  @click="subPage='xmReport'"><i class="el-icon-s-data"></i>&nbsp;报表</el-link>
                     <el-divider direction="vertical"> 
                     </el-divider>
                         <el-link :type="subPage=='testRpt'?'primary':''"  @click="subPage='testRpt'"><span><i class="el-icon-pie-chart"></i>&nbsp;报告</span></el-link>
@@ -44,6 +45,10 @@
                 <el-row v-if="subPage=='testRpt'">
                      <xm-test-plan-rpt  ref="rpt" :xm-test-plan="xmTestPlan"></xm-test-plan-rpt >
                 </el-row>
+                
+                <el-row v-if="subPage=='xmReport'">
+                     <xm-report  ref="xmReport" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan" :xm-product="{id:xmTestCasedb.productId,productName:xmTestCasedb.productName}" :xm-project="{id:xmTestPlan.projectId,name:xmTestPlan.projectName}"></xm-report >
+                </el-row>
             </el-row> 
             <xm-test-plan-mng v-else @select="onTestPlanSelect" :xm-test-casedb="xmTestCasedb"> </xm-test-plan-mng>
         </el-row>     
@@ -65,6 +70,7 @@ export default {
     components: {
         XmProductSelect,XmQuestionMng,
         "xm-test-plan-rpt":()=>import("./rpt/index.vue"), 
+        "xm-report":()=>import("../../rpt/reportIndex"), 
         "xm-test-plan-mng":()=>import("../xmTestPlan/XmTestPlanMng.vue"),
         "xm-test-case-mng":()=>import("../xmTestCase/XmTestCaseMng.vue"),
         "xm-test-plan-case-mng":()=>import("../xmTestPlanCase/XmTestPlanCaseMng.vue")
