@@ -239,7 +239,7 @@
 
 							label: {
 								show: true, 
-								
+								formatter:'{b}: {c}  ({d}%)' 
 							},
 							}
 						]

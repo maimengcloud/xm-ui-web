@@ -273,8 +273,8 @@
 							},
 
 							label: {
-								show: true, 
-								
+								show: true,  
+								formatter:'{b}: {c}  ({d}%)'
 							},
 							}
 						]
