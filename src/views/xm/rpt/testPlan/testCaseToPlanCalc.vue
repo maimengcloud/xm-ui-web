@@ -43,7 +43,7 @@
 							<el-button v-if="!filters.testPlan" type="text" @click="$refs['xmTestPlanSelectRef'].open()" plain>选择计划</el-button>
 						</el-form-item> 
 					<el-form-item>
-						 <el-button type="primary" icon="el-icon-search" @click="searchXmTestPlanCaseExecStatusDist">查询</el-button>
+						 <el-button type="primary" icon="el-icon-search" @click="searchXmTestCaseToPlanCalcList">查询</el-button>
 					</el-form-item>  
 					</el-form>
 				</el-col> 
@@ -227,7 +227,7 @@
 			onXmQuestionSomeFieldsChange(fieldName,$event){
 				this.xmTestCaseToPlanCalcList=[]
 			},
-			searchXmTestPlanCaseExecStatusDist(){ 
+			searchXmTestCaseToPlanCalcList(){ 
 
 				var params={ } 
 				if(this.filters.product && this.filters.product.id){
@@ -300,7 +300,7 @@
 				this.filters.iteration=this.xmIteration
 				this.filters.testCasedb=this.xmTestCasedb
 				 
-				this.searchXmTestPlanCaseExecStatusDist();  
+				this.searchXmTestCaseToPlanCalcList();  
 				
 			}
 		},//end method

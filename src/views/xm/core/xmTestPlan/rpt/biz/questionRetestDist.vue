@@ -1,19 +1,16 @@
 <template>
-	<section>
-		<el-row class="padding"> 
-			<el-popover   trigger="manual" v-model="conditionBtnVisible" style="float:right;" width="300">  
+	<section> 
+		<el-row class="padding">
+ 			<el-popover   trigger="manual" v-model="conditionBtnVisible" style="float:right;" width="300">  
+
 				<el-button slot="reference" icon="el-icon-more" @click="conditionBtnVisible=!conditionBtnVisible"></el-button> 
 				<el-row>
 					<el-button type="danger" icon="el-icon-delete" @click="doDelete">删除</el-button>
 				  <el-button style="float:right;" type="text" icon="el-icon-close" @click="conditionBtnVisible=false">关闭</el-button> 
 				</el-row>
-				<el-form :model="filters">
-						<el-form-item label="分组属性">
-							<el-select   v-model="groupBy"  @change="onXmQuestionSomeFieldsChange('groupBy',$event)" clearable>
-								<el-option v-for="i in this.groupBys" :label="i.name" :key="i.id" :value="i.id"></el-option>
-							</el-select>
-						</el-form-item>       
-						<el-form-item label="缺陷状态" prop="bugStatus">
+					<el-form :model="filters">   
+						  
+						 <el-form-item label="缺陷状态" prop="bugStatus">
 							<el-select   v-model="filters.bugStatus"  @change="onXmQuestionSomeFieldsChange('bugStatus',$event)" clearable>
 								<el-option v-for="i in this.dicts.bugStatus" :label="i.name" :key="i.id" :value="i.id"></el-option>
 							</el-select>
@@ -49,18 +46,19 @@
 								<el-option v-for="i in dicts.bugRepRate" :label="i.name" :key="i.id" :value="i.id"></el-option>
 						</el-select>
 					</el-form-item>  
+					
 					<el-form-item>
-						 <el-button type="primary" icon="el-icon-search" @click="searchXmQuestionSort">查询</el-button>
+						 <el-button type="primary" icon="el-icon-search" @click="searchXmQuestionRetestDist">查询</el-button>
 					</el-form-item>  
-					</el-form>
-				</el-popover>
-			</el-row>
- 			<el-row > 
+					</el-form> 
+			</el-popover>
+		</el-row>
+		<el-row> 
 					<div>
 						<div class="main" :id="id"
 							style="width:100%;height:600px;margin:0 auto;"></div>
 						<div class="progress"></div>
-					</div> 
+					</div>  
 			</el-row>
  	</section>
 </template>
@@ -70,81 +68,92 @@
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询  
 	import { mapGetters } from 'vuex'	 
 	  
-	import { getXmQuestionSort } from '@/api/xm/core/xmQuestion';
-	
-	import  XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue';//修改界面 
-	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//新增界面
+	import { getXmQuestionRetestDist } from '@/api/xm/core/xmQuestion'; 
 
 	export default { 
         
-		components: {   
-			XmIterationSelect,XmProductSelect,
+		components: {    
 		},
-        props:['xmTestPlan','compCfg','groupBy'],
+        props:['xmTestPlan','xmRptConfig','compCfg'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
 		    ]), 
-			xmQuestionSortsCpd(){
-				if(!this.xmQuestionSorts || this.xmQuestionSorts.length==0){
-					return []
-				}else{ 
-					return this.xmQuestionSorts.map(i=>i.value)
+			
+			xmQuestionRetestsCpd(){
+				var def=[
+						{name:"1次",value:0} ,
+						{name:"2次",value:0} ,
+						{name:"3次",value:0} ,
+						{name:"4次",value:0} ,
+						{name:"5次",value:0} ,
+						{name:"5次以上",value:0}
+					]
+				if(this.xmQuestionRetests.length==0){
+					return def
+				}else{   
+					var datas=[]
+					this.xmQuestionRetests.forEach(i=>{
+						var data={} 
+						 if(i.retimes>5){
+							data.name="5次以上"
+						 }else{
+							data.name=this.legendCpd[i.retimes]
+						 }
+						 data.value=i.bugsNum
+						 datas.push(data)
+					})
+					def.forEach(k=>{
+						if(!datas.some(i=>k.name==i.name)){
+							datas.push(k)
+						}
+					})
+					return datas;
 				}
-			},
+			}, 
+			legendCpd(){ 
+				return ["1次","2次","3次","4次","5次","5次以上"] 
+			}, 
 			title(){
-				return this.compCfg.name
-			},
-			legendCpd(){
-				if(!this.xmQuestionSorts || this.xmQuestionSorts.length==0){
-					return []
-				}else{ 
-					return this.xmQuestionSorts.map(i=>i.name)
-				}
-			},
+				return '缺陷回归分布'
+			}, 
 			id(){
 				return this.compCfg.id
-			},
-			 
+			}
 			
         }, 
-		watch: {  
-			xmQuestionSortsCpd(){
+		watch: {   
+			xmQuestionRetestDistsCpd(){
 				this.drawCharts();
 			}
 	    },
 		data() {
 			return {
-                filters:{  
-					groupBy:'handler_userid',
-                },
-				groupBys:[
-					{id:'create_userid', name:'创建人'},
-					{id:'ask_userid', name:'提出人'},
-					{id:'handler_userid', name:'负责人'},
-					{id:'menu_id', name:'故事'}, 
-					
-				],
+                filters:{ 
+					planId:'',
+					productId:'',
+					projectId:'',
+					bugStatus:'',
+					bugType:'',
+					bugReason:'',
+					bugSeverity:'',
+					priority:'',
+					solution:'',
+					repRate:'',
+
+
+                }, 
 				dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, edit: false, del: false, add: false },//查询中... 
 				dateRanger:[], 
                 maxTableHeight:300, 
                 visible:false,
-				xmQuestionSorts:[], 
+				xmQuestionRetestDists:[],
 				conditionBtnVisible:false,
-				pageInfo: {
-					//分页数据
-					total: 0, //服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
-					pageSize: 20, //每页数据
-					count:true, //是否需要重新计算总记录数
-					pageNum: 1, //当前页码、从1开始计算
-					orderFields: ["value"], //排序列 如 ['sex','student_id']，必须为数据库字段
-					orderDirs: ["desc"], //升序 asc,降序desc 如 性别 升序、学生编号降序 ['asc','desc']
-				},
 
 			}//end return
 		},//end data
-		methods: {  
+		methods: {   
 			drawCharts() {
 				this.myChart = this.$echarts.init(document.getElementById(this.id)); 
 				this.myChart.setOption(   
@@ -153,73 +162,59 @@
 							text: this.title, 
 							left: 'center'
 						}, 
-						
 						tooltip: {
-							trigger: 'axis', 
+							trigger: 'item',
+							
 						},
-						barMaxWidth: 100,
+						
 						toolbox: {
 							show: true,
 							right:"20px",
 							feature: {
-							dataView: { show: true, readOnly: false },
-							magicType: { show: true, type: ['line', 'bar'] },
-							
-							saveAsImage: { show: true }
+								dataView: { show: true, readOnly: false },  
+								saveAsImage: { show: true }, 
 							}
-						},
-
+						}, 
 						calculable: true,
-						xAxis: {
-							type: 'category',
-							data: this.legendCpd
-						},
-						yAxis: {
-							type: 'value'
+						
+						legend: { 
+							top:'5%',
+							left: 'center',
+							data:this.legendCpd,
 						},
 						series: [
 							{
-							data: this.xmQuestionSortsCpd,
-							type: 'bar',								
-							label:{
-									show: true, 
-								},
+							type: 'pie',
+							radius: '50%',
+							data: this.xmQuestionRetestsCpd,
+							emphasis: {
+								itemStyle: {
+								shadowBlur: 10,
+								shadowOffsetX: 0,
+								shadowColor: 'rgba(0, 0, 0, 0.5)'
+								}
+							},
+
+							label: {
+								show: true, 
+								
+							},
 							}
 						]
 					}
 				)
 			},
 			onXmQuestionSomeFieldsChange(fieldName,$event){
-				this.xmQuestionSorts=[]
+				this.xmQuestionRetestDists=[]
 			},
-			searchXmQuestionSort(){
-				if(!this.filters.groupBy){
-					this.$notify({position:'bottom-left',showClose:true,message:'请选中分组属性',type:'warning'})
-					return 
-				}
-				 let params = {
-					pageSize: this.pageInfo.pageSize,
-					pageNum: this.pageInfo.pageNum,
-					total: this.pageInfo.total,
-					count: this.pageInfo.count,
-				};
-				Object.assign(params,this.filters)
-
-				
-				if (
-					this.pageInfo.orderFields != null &&
-					this.pageInfo.orderFields.length > 0
-				) {
-					let orderBys = [];
-					for (var i = 0; i < this.pageInfo.orderFields.length; i++) {
-					orderBys.push(
-						this.pageInfo.orderFields[i] + " " + this.pageInfo.orderDirs[i]
-					);
-					}
-					params.orderBy = orderBys.join(",");
-				}
-				getXmQuestionSort(params).then(res=>{
-					this.xmQuestionSorts=res.data.data
+			searchXmQuestionRetestDist(){ 
+				var params={...this.filters}
+				 if(this.xmTestPlan && this.xmTestPlan.id){
+					params.planId=this.xmTestPlan.id
+				 }
+				 
+				getXmQuestionRetestDist(params).then(res=>{
+					this.xmQuestionRetestDists=res.data.data
 				})
 				
 			},
@@ -235,37 +230,34 @@
 			onIterationSelected(iteration){
 				this.filters.iteration=iteration
 			},
+			doDelete(){
+				this.$emit("delete",this.compCfg)
+			},
 			
 			onIterationClear(){
 				this.filters.iteration=null
-			} ,
+			},
 			initData(){
-				if(this.groupBy){
-					this.filters.groupBy=this.groupBy
-				}
+				
 				if(this.xmTestPlan){
 					this.filters.productId=this.xmTestPlan.productId
 					this.filters.projectId=this.xmTestPlan.projectId
 					this.filters.planId=this.xmTestPlan.id
-				}
-
+				} 
 				if(this.compCfg && this.compCfg.params){
 					Object.assign(this.filters,this.compCfg.params) 
 				} 
-			},
-			doDelete(){
-				this.$emit("delete",this.compCfg)
 			},
 			sizeAutoChange(){
 				this.myChart.resize();
 			}
 		},//end method
-		mounted() { 
+		mounted() {  
  			initSimpleDicts('all',['bugSeverity','bugSolution','bugStatus','bugType','priority','bugRepRate','bugReason'] ).then(res=>{
 				this.dicts=res.data.data;
 			}) 
 			this.initData();
-			this.searchXmQuestionSort();
+			this.searchXmQuestionRetestDist();
 			//this.charts();
 			//this.drawCharts();
 			

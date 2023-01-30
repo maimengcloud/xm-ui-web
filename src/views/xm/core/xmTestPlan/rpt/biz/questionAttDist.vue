@@ -1,8 +1,7 @@
 <template>
 	<section>
 		<el-row class="padding">
-			<span>{{compCfg?compCfg.name:'缺陷属性数量分布'}}</span>
-			<el-popover   trigger="manual" v-model="conditionBtnVisible" style="float:right;" width="300">  
+ 			<el-popover   trigger="manual" v-model="conditionBtnVisible" style="float:right;" width="300">  
 				<el-button slot="reference" icon="el-icon-more" @click="conditionBtnVisible=!conditionBtnVisible"></el-button> 
 				<el-row>
 					<el-button type="danger" icon="el-icon-delete" @click="doDelete">删除</el-button>

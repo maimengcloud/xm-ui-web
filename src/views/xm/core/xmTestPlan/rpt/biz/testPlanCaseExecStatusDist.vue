@@ -1,8 +1,7 @@
 <template>
 	<section>
 		<el-row class="padding">
-			<span>{{compCfg?compCfg.name:'执行结果分布'}}</span>
-			<el-popover   trigger="manual" v-model="conditionBtnVisible" style="float:right;" width="300">  
+ 			<el-popover   trigger="manual" v-model="conditionBtnVisible" style="float:right;" width="300">  
 				<el-button slot="reference" icon="el-icon-more" @click="conditionBtnVisible=!conditionBtnVisible"></el-button> 
 				<el-row>
 					<el-button type="danger" icon="el-icon-delete" @click="doDelete">删除</el-button>
@@ -46,24 +45,29 @@
 		      'userInfo','roles'
 		    ]), 
 			xmTestPlanCaseExecStatusDistsCpd(){
-				if(this.xmTestPlanCaseExecStatusDists.length==0){
+				if(!this.xmTestPlanCaseExecStatusDists || this.xmTestPlanCaseExecStatusDists.length==0){
 					return []
-				}else{ 
-					var itemId="testPlanTcode"; 
-					return this.xmTestPlanCaseExecStatusDists.map(i=>{
-						var data={...i}
-						data.name=this.formatDict(itemId,data.name)
-						return data;
+				}else{   
+					var datas=[]
+					this.xmTestPlanCaseExecStatusDists.forEach(i=>{
+						var data={}
+						var itemId="testStepTcode"; 
+						data.name=this.formatDict(itemId,i.execStatus)
+						data.value=i.totalCnt
+						datas.push(data)
 					})
-				}
+					return datas;
+				} 
 			},
 			title(){
-				return  '执行结果数量分布'
+				var preName="" 
+				return  preName+ '测试用例执行结果数量分布'
 			},
+			/**0-未测，1-通过，2-受阻，3-忽略，4-失败 */
 			legendCpd(){
-				var itemId="testPlanTcode"; 
-				return this.dicts[itemId].map(i=>i.name)
-			},
+				var itemId="testStepTcode"; 
+				return this.dicts[itemId].map(i=>this.formatDict(itemId,i.id))
+			}, 
 			id(){
 				return this.compCfg.id
 			},
@@ -80,7 +84,7 @@
                     planId:'', 
                 }, 
 				 
-				dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
+				dicts:{testStepTcode:[]},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, edit: false, del: false, add: false },//查询中... 
 				dateRanger:[], 
                 maxTableHeight:300, 
@@ -196,7 +200,7 @@
 			}
 		},//end method
 		mounted() { 
- 			initSimpleDicts('all',['testPlanTcode'] ).then(res=>{
+ 			initSimpleDicts('all',['testStepTcode'] ).then(res=>{
 				this.dicts=res.data.data;
 			}) 
 			this.initData();

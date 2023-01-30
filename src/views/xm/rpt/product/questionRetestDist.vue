@@ -139,10 +139,7 @@
 					})
 					return datas;
 				}
-			},
-			title(){
-				return '缺陷回归测试数量分布'
-			},
+			}, 
 			legendCpd(){ 
 				return ["1次","2次","3次","4次","5次","5次以上"] 
 			},

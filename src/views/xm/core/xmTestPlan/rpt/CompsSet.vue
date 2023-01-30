@@ -63,7 +63,7 @@ export default {
                 {
                     compId: 'xmTestPlanCaseExecStatusDist',
                     icon: pieSimple,
-                    name: '执行结果分布',
+                    name: '用例执行结果分布',
                     compDesc: '按测试用例执行结果统计，通过、失败、忽略、阻塞',
                     isChecked: false,
                 },
@@ -117,7 +117,7 @@ export default {
                     isChecked: false,
                 },
                 {
-                    compId: 'xmQuestionReTestingDist',
+                    compId: 'xmQuestionRetestDist',
                     icon: pieSimple,
                     name: '缺陷回归分布',
                     compDesc: '统计回归测试的缺陷数',

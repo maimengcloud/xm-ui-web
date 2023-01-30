@@ -59,12 +59,15 @@ import XmTestPlanMng from '@/views/xm/core/xmTestPlan/XmTestPlanMng'
 import CompsSet from '@/views/xm/core/xmTestPlan/rpt/CompsSet'
 import XmQuestionAgeDist from '@/views/xm/core/xmTestPlan/rpt/biz/questionAgeDist'
 import xmQuestionAttDist from '@/views/xm/core/xmTestPlan/rpt/biz/questionAttDist' 
+import xmQuestionRetestDist from '@/views/xm/core/xmTestPlan/rpt/biz/questionRetestDist' 
 import xmQuestionHandlerUserSort from '@/views/xm/core/xmTestPlan/rpt/biz/questionHandlerUserSort'
 import xmQuestionAskUserSort from '@/views/xm/core/xmTestPlan/rpt/biz/questionAskUserSort'
 import xmQuestionMenuSort from '@/views/xm/core/xmTestPlan/rpt/biz/questionMenuSort'
 import xmQuestionFuncSort from '@/views/xm/core/xmTestPlan/rpt/biz/questionFuncSort'
 import xmTestPlanCaseExecStatusDist from '@/views/xm/core/xmTestPlan/rpt/biz/testPlanCaseExecStatusDist'
 import xmTestPlanCaseUserDist from '@/views/xm/core/xmTestPlan/rpt/biz/testPlanCaseUserDist'
+import xmTestCaseToPlanCalc from '@/views/xm/core/xmTestPlan/rpt/biz/testCaseToPlanCalc'
+import xmTestDayTimesCalc from '@/views/xm/core/xmTestPlan/rpt/biz/testDayTimesCalc'
 
 import xmTestRptOverview from '@/views/xm/core/xmTestPlan/xmTestRptOverview'
 
@@ -82,6 +85,9 @@ export default {
         xmTestPlanCaseUserDist,
         CompsSet,
         xmTestRptOverview,
+        xmQuestionRetestDist,
+        xmTestCaseToPlanCalc,
+        xmTestDayTimesCalc
 
     },
     props:['xmTestPlan','rptConfigVisible'],

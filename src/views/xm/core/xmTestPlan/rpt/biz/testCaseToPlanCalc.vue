@@ -9,7 +9,7 @@
 				</el-row>
 					<el-form :model="filters">    
 					<el-form-item>
-						  <el-button type="primary" icon="el-icon-search" @click="searchXmTestPlanCaseUserDist">查询</el-button>
+						  <el-button type="primary" icon="el-icon-search" @click="searchXmTestCaseToPlanCalcList">查询</el-button>
 					</el-form-item>  
 					</el-form> 
 			</el-popover>
@@ -29,71 +29,53 @@
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询  
 	import { mapGetters } from 'vuex'	 
 	  
-	import { getXmTestPlanCaseUserDist } from '@/api/xm/core/xmTestPlanCase';
-	
-	import  XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue';//修改界面 
-	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//新增界面
+	import { getXmTestCaseToPlanCalcList } from '@/api/xm/core/xmTestPlanCase';
 
 	export default { 
         
 		components: {   
-			XmIterationSelect,XmProductSelect,
 		},
         props:['xmTestPlan','xmRptConfig','compCfg'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
 		    ]), 
-			 
-			 hadExecCpd(){
-				 if(!this.xmTestPlanCaseUserDists ||this.xmTestPlanCaseUserDists.length==0){
-					 return []
-				 }else{ 
-					 return this.xmTestPlanCaseUserDists.map(i=>i.hadExec)
-				 }
-			 }, 
-			 
-			 notExecCpd(){
-				 if(!this.xmTestPlanCaseUserDists ||this.xmTestPlanCaseUserDists.length==0){
-					 return []
-				 }else{ 
-					 return this.xmTestPlanCaseUserDists.map(i=>i.notExec)
-				 }
-			 }, 
-			 legendCpd(){
-				 if(!this.xmTestPlanCaseUserDists ||this.xmTestPlanCaseUserDists.length==0){
-					 return []
-				 }else{ 
-					 return this.xmTestPlanCaseUserDists.map(i=>i.execUsername)
-				 }
-				 
-			 },
-			 xmTestPlanCaseUserDistsCpd(){
-				 if(!this.xmTestPlanCaseUserDists || this.xmTestPlanCaseUserDists.length==0){
-					 return []
-				 }else{   
-					 var datas=[]
-					 this.xmTestPlanCaseUserDists.forEach(i=>{
-						 var data={}
-						 var itemId="testPlanTcode"; 
-						 data.name=this.formatDict(itemId,i.execStatus)
-						 data.value=i.totalCnt
-						 datas.push(data)
-					 })
-					 return datas;
-				 } 
-			 },
-			 title(){
-				 var preName="" 
-				 return  preName+ '测试用例按执行人分组统计'
-			 }, 
+			xmTestCaseToPlanCalcListCpd(){
+				if(!this.xmTestCaseToPlanCalcList || this.xmTestCaseToPlanCalcList.length==0){
+					return []
+				}else{   
+					var names=this.legendCpd;
+					var datas=[]
+					this.xmTestCaseToPlanCalcList.forEach(i=>{
+						var nameIndex=0;
+						if(i.useTimes<=2){
+							nameIndex=i.useTimes
+						}else if(i.useTimes>=3 && i.useTimes<=5){
+							nameIndex=3
+						}else if(i.useTimes>5 && i.useTimes<=10){
+							nameIndex=4
+						}else if(i.useTimes>10){
+							nameIndex=5
+						}
+						var data={name:names[nameIndex],value:i.caseNum}
+						datas.push(data)
+					})
+					return datas;
+				} 
+			},
+			title(){
+				return  '执行结果数量分布'
+			},
+			legendCpd(){ 
+				 return ['0次','1次','2次','3-5次','5-10次','10次以上']
+			}, 
 			id(){
 				return this.compCfg.id
 			},
 			
         }, 
 		watch: {  
-			xmTestPlanCaseUserDistsCpd(){
+			xmTestCaseToPlanCalcListCpd(){
 				this.drawCharts();
 			}
 	    },
@@ -108,7 +90,7 @@
 				dateRanger:[], 
                 maxTableHeight:300, 
                 visible:false,
-				xmTestPlanCaseUserDists:[],
+				xmTestCaseToPlanCalcList:[],
 				conditionBtnVisible:false,
 
 			}//end return
@@ -132,83 +114,58 @@
 							text: this.title, 
 							left: 'center'
 						}, 
-						
 						tooltip: {
-							trigger: 'item', 
+							trigger: 'item',
+							
 						},
-						barMaxWidth: 100,
+						
 						toolbox: {
 							show: true,
 							right:"20px",
 							feature: {
-							dataView: { show: true, readOnly: false },
-							magicType: { show: true, type: ['line', 'bar'] },
-							
-							saveAsImage: { show: true }
+								dataView: { show: true, readOnly: false },  
+								saveAsImage: { show: true }, 
 							}
-						},
-
+						}, 
 						calculable: true,
 						
-						legend: {
+						legend: { 
 							top:'5%',
 							left: 'center',
-							data: ['已执行', '未执行']
+							data:this.legendCpd,
 						},
-						xAxis: {
-							type: 'category',
-							data: this.legendCpd
-						},
-						yAxis: {
-							type: 'value'
-						},
-						series: [ 
+						series: [
 							{
-								name: '已执行',
-								type: 'bar', 
-								data: this.hadExecCpd, 
-								label:{
-									show: true, 
-								},
+							type: 'pie',
+							radius: '50%',
+							data: this.xmTestCaseToPlanCalcListCpd,
+							emphasis: {
+								itemStyle: {
+								shadowBlur: 10,
+								shadowOffsetX: 0,
+								shadowColor: 'rgba(0, 0, 0, 0.5)'
+								}
 							},
-							{
-								name: '未执行',
-								type: 'bar',  
-								data: this.notExecCpd,
-								label:{
-									show: true, 
-								},
+
+							label: {
+								show: true, 
+								
 							},
+							}
 						]
 					}
 				)
 			},
 			onXmQuestionSomeFieldsChange(fieldName,$event){
-				this.xmTestPlanCaseUserDists=[]
+				this.xmTestCaseToPlanCalcList=[]
 			},
-			searchXmTestPlanCaseUserDist(){ 
+			searchXmTestCaseToPlanCalcList(){ 
 				var params={...this.filters} 
-				getXmTestPlanCaseUserDist(params).then(res=>{
-					this.xmTestPlanCaseUserDists=res.data.data
+				getXmTestCaseToPlanCalcList(params).then(res=>{
+					this.xmTestCaseToPlanCalcList=res.data.data
 				})
 				
-			},
-			onProductSelected(product){
-				this.filters.product=product
-			},
-			
-			onProductClear(){
-				this.filters.product=null
-				
-			},
-			
-			onIterationSelected(iteration){
-				this.filters.iteration=iteration
-			},
-			
-			onIterationClear(){
-				this.filters.iteration=null
-			},
+			}, 
 			initData(){
 				if(this.xmTestPlan){
 					this.filters.productId=this.xmTestPlan.productId
@@ -227,12 +184,9 @@
 				this.myChart.resize();
 			}
 		},//end method
-		mounted() { 
- 			initSimpleDicts('all',['testPlanTcode'] ).then(res=>{
-				this.dicts=res.data.data;
-			}) 
+		mounted() {  
 			this.initData();
-			this.searchXmTestPlanCaseUserDist();
+			this.searchXmTestCaseToPlanCalcList();
 			//this.charts();
 			//this.drawCharts();
 			
