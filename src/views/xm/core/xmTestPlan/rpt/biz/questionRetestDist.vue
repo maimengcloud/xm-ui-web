@@ -80,7 +80,7 @@
 		      'userInfo','roles'
 		    ]), 
 			
-			xmQuestionRetestsCpd(){
+			xmQuestionRetestDistsCpd(){
 				var def=[
 						{name:"1次",value:0} ,
 						{name:"2次",value:0} ,
@@ -89,11 +89,11 @@
 						{name:"5次",value:0} ,
 						{name:"5次以上",value:0}
 					]
-				if(this.xmQuestionRetests.length==0){
+				if(this.xmQuestionRetestDists.length==0){
 					return def
 				}else{   
 					var datas=[]
-					this.xmQuestionRetests.forEach(i=>{
+					this.xmQuestionRetestDists.forEach(i=>{
 						var data={} 
 						 if(i.retimes>5){
 							data.name="5次以上"
@@ -186,7 +186,7 @@
 							{
 							type: 'pie',
 							radius: '50%',
-							data: this.xmQuestionRetestsCpd,
+							data: this.xmQuestionRetestDistsCpd,
 							emphasis: {
 								itemStyle: {
 								shadowBlur: 10,
@@ -247,6 +247,7 @@
 				if(this.compCfg && this.compCfg.params){
 					Object.assign(this.filters,this.compCfg.params) 
 				} 
+				this.drawCharts();
 			},
 			sizeAutoChange(){
 				this.myChart.resize();

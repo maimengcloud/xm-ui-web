@@ -63,7 +63,7 @@
 			
         }, 
 		watch: {  
-			xmTestDayTimesListCpd(){
+			testDayTimesCpd(){
 				this.drawCharts();
 			}
 	    },

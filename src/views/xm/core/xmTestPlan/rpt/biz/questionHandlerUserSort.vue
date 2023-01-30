@@ -32,6 +32,9 @@ export default {
 
   methods: {  
 
+    sizeAutoChange(){
+				this.refs[this.compCfg.id].sizeAutoChange()
+			}
   },
 
 

@@ -57,7 +57,7 @@ import VueGridLayout from 'vue-grid-layout';
 import { mapGetters } from 'vuex'
 import XmTestPlanMng from '@/views/xm/core/xmTestPlan/XmTestPlanMng'
 import CompsSet from '@/views/xm/core/xmTestPlan/rpt/CompsSet'
-import XmQuestionAgeDist from '@/views/xm/core/xmTestPlan/rpt/biz/questionAgeDist'
+import XmQuestionAgeDist from '@/views/xm/core/xmTestPlan/rpt/biz/questionAgeDist' 
 import xmQuestionAttDist from '@/views/xm/core/xmTestPlan/rpt/biz/questionAttDist' 
 import xmQuestionRetestDist from '@/views/xm/core/xmTestPlan/rpt/biz/questionRetestDist' 
 import xmQuestionHandlerUserSort from '@/views/xm/core/xmTestPlan/rpt/biz/questionHandlerUserSort'
@@ -87,7 +87,14 @@ export default {
         xmTestRptOverview,
         xmQuestionRetestDist,
         xmTestCaseToPlanCalc,
-        xmTestDayTimesCalc
+        xmTestDayTimesCalc,
+        
+        "xmQuestionBugReasonDist":()=>import("./biz/questionBugReasonDist.vue"), 
+        "xmQuestionBugStatusDist":()=>import("./biz/questionBugStatusDist.vue"), 
+        "xmQuestionBugTypeDist":()=>import("./biz/questionBugTypeDist.vue"), 
+        "xmQuestionRepRateDist":()=>import("./biz/questionRepRateDist.vue"), 
+        "xmQuestionBugSeverityDist":()=>import("./biz/questionBugSeverityDist.vue"), 
+        "xmQuestionPriorityDist":()=>import("./biz/questionPriorityDist.vue"), 
 
     },
     props:['xmTestPlan','rptConfigVisible'],

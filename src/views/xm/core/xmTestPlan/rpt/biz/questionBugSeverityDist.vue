@@ -1,20 +1,20 @@
 <template> 
 <section> 
   <el-row>
-     <question-sort :ref="compCfg.id" :xm-test-plan="xmTestPlan" :comp-cfg="compCfg"  :rpt-config-visible="rptConfigVisible" :group-by="'menu_id'" @delete="$emit('delete',$event)" />  
+     <question-att-dist :ref="compCfg.id" :xm-test-plan="xmTestPlan" :comp-cfg="compCfg" :rpt-config-visible="rptConfigVisible" :group-by="'bug_severity'"  @delete="$emit('delete',$event)"/>  
   </el-row>
 </section>     
 </template>
 
 <script> 
   
-import questionSort from './questionSort'
+import questionAttDist from './questionAttDist'
 import { mapGetters } from 'vuex'
 import dayjs from 'dayjs'
 
 export default {
   props:['xmTestPlan','compCfg'],
-  components: {questionSort}, 
+  components: {questionAttDist}, 
   computed: {
     ...mapGetters([
       'userInfo'

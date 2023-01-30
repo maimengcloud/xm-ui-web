@@ -103,7 +103,7 @@ export default {
     components: {
         XmTestPlanCaseEdit,XmTestCaseSelect,XmFuncSelect,MdpSelectUserXm,
     },
-    props:['visible','xmTestPlan','xmTestCasedb','xmTestCase','xmProduct','select'],
+    props:['visible','xmTestPlan','xmTestCasedb','xmTestCase','xmProduct','xmProject','select'],
     computed: {
         ...mapGetters(['userInfo']),
         xmProductCpd(){ 

@@ -54,10 +54,7 @@
 
 import util from '@/common/js/util';//全局公共库
 import config from '@/common/config';//全局公共库
-  import  XmTestCaseMng from '../xmTestCase/XmTestCaseMng';//新增修改界面
-import  XmTestPlanMng from '../xmTestPlan/XmTestPlanMng';//新增修改界面
-import  XmTestPlanCaseMng from '../xmTestPlanCase/XmTestPlanCaseMng';//新增修改界面
-import { mapGetters } from 'vuex'
+ import { mapGetters } from 'vuex'
 import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//修改界面
 import  XmQuestionMng from '@/views/xm/core/xmQuestion/XmQuestionMng';//修改界面
 import { initDicts } from '@/api/xm/core/xmTestPlan';
@@ -66,8 +63,11 @@ import {  listXmTestPlan,calcXmTestPlan } from '@/api/xm/core/xmTestPlan';
 export default {
     name:'xmTestCasedbMng',
     components: {
-        XmProductSelect, XmTestPlanMng,XmTestPlanCaseMng,XmQuestionMng,
-        "xm-test-plan-rpt":()=>import("./rpt/index.vue")
+        XmProductSelect,XmQuestionMng,
+        "xm-test-plan-rpt":()=>import("./rpt/index.vue"), 
+        "xm-test-plan-mng":()=>import("../xmTestPlan/XmTestPlanMng.vue"),
+        "xm-test-case-mng":()=>import("../xmTestCase/XmTestCaseMng.vue"),
+        "xm-test-plan-case-mng":()=>import("../xmTestPlanCase/XmTestPlanCaseMng.vue")
     },
     props:['visible','xmTestCasedb'],
     computed: {
