@@ -115,7 +115,7 @@
 		      'userInfo','roles'
 		    ]), 
 			xmQuestionAttDistsCpd(){
-				if(this.xmQuestionAttDists.length==0){
+				if(!this.xmQuestionAttDists || this.xmQuestionAttDists.length==0){
 					return []
 				}else{ 
 					var itemId="";
@@ -129,7 +129,7 @@
 						itemId="bugSeverity"
 					}else if(this.groupBy=='priority'){
 						itemId="priority"
-					} else if(this.groupBy=='bug_solution'){
+					} else if(this.groupBy=='solution'){
 						itemId="bugSolution"
 					} else if(this.groupBy=='rep_rate'){
 						itemId="bugRepRate"
@@ -156,7 +156,7 @@
 					itemId="bugSeverity"
 				}else if(this.groupBy=='priority'){
 					itemId="priority"
-				} else if(this.groupBy=='bug_solution'){
+				} else if(this.groupBy=='solution'){
 					itemId="bugSolution"
 				} else if(this.groupBy=='rep_rate'){
 					itemId="bugRepRate"
@@ -223,11 +223,13 @@
 					{id:'bug_reason', name:'缺陷原因'},
 					{id:'bug_severity', name:'紧急程度'},
 					{id:'priority', name:'优先级'},
-					{id:'bug_solution', name:'解决方案'},
+					{id:'solution', name:'解决方案'},
 					{id:'rep_rate', name:'复现频率'},
 					
 				],
-				dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
+				dicts:{
+					'bugSeverity':[],'bugSolution':[],'bugStatus':[],'bugType':[],'priority':[],'bugRepRate':[],'bugReason':[]
+				},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, edit: false, del: false, add: false },//查询中... 
 				dateRanger:[], 
                 maxTableHeight:300, 
