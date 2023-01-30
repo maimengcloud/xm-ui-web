@@ -211,7 +211,9 @@ export default {
 }
 </style>
 
-<style lang="scss" scoped>
+<style lang="scss" scoped> 
+
+
 .moduleset {
     .dialog-title {
         font-size: 22px;
@@ -248,15 +250,16 @@ export default {
     }
 
     .nav { 
-        overflow: auto;
-        padding:0px 10px 0 20px;
+        overflow: auto; 
         display:flex;
         align-items:center;
         justify-content: space-between;
         flex-wrap:wrap;
+        padding-right: 5px;
         .nav_item {
-            display: flex;
-            height: 138px;
+            height: 100px;
+            padding:2px;
+            display: flex; 
             flex-direction: row; 
             border: 2px solid #EDF0F9;
             box-shadow: 0px 3px 4px 0px rgba(186, 184, 184, 0.1);
@@ -267,12 +270,13 @@ export default {
             margin-top: 10px;
             width:100%;
             img {
-                width: 94px;
-                height: 94px;
-                margin: 0 18px;
+                object-fit:cover;
+                max-width: 25%;
+                max-height: 80%; 
+                padding: 2px;
             }
             p {
-                font-size: 20px;
+                font-size: 18px;
                 font-weight: bold;
                 color: #7D7D7D;
                 margin-bottom: 10px;
@@ -280,13 +284,13 @@ export default {
             span {
                 font-size: 14px;
                 color: #7D7D7D;
-                line-height: 26px;
+                line-height: 16px;  
             }
             i {
                 position: absolute;
                 top: 10px;
-                right: 20px;
-                font-size: 36px;
+                right: 10px;
+                font-size: 30px;
                 color: #90B1F4;
             }
         }
@@ -296,7 +300,5 @@ export default {
         }
     }
 }
-
-
 
 </style>
