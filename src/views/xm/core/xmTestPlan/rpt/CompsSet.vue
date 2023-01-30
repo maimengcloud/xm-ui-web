@@ -61,6 +61,13 @@ export default {
                     isChecked: false,
                 }, 
                 {
+                    compId: 'xmTestCaseToPlanCalc',
+                    icon: pieSimple,
+                    name: '用例规划分析',
+                    compDesc: '统计用例库中规划到测试计划的用例数量情况',
+                    isChecked: false,
+                },
+                {
                     compId: 'xmTestPlanCaseExecStatusDist',
                     icon: pieSimple,
                     name: '用例执行结果分布',
@@ -70,7 +77,7 @@ export default {
                 {
                     compId: 'xmTestPlanCaseUserDist',
                     icon: bar,
-                    name: '成员执行结果分布',
+                    name: '测试用例成员执行结果分布',
                     compDesc: '统计测试用例负责人用例执行情况',
                     isChecked: false,
                 },

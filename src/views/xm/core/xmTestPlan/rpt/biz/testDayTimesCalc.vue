@@ -63,7 +63,7 @@
 			
         }, 
 		watch: {  
-			xmTestDayTimesListsCpd(){
+			xmTestDayTimesListCpd(){
 				this.drawCharts();
 			}
 	    },
@@ -78,7 +78,7 @@
 				dateRanger:[], 
                 maxTableHeight:300, 
                 visible:false,
-				xmTestDayTimesLists:[],
+				xmTestDayTimesList:[],
 				conditionBtnVisible:false,
 
 			}//end return
@@ -141,12 +141,12 @@
 				)
 			},
 			onXmQuestionSomeFieldsChange(fieldName,$event){
-				this.xmTestDayTimesLists=[]
+				this.xmTestDayTimesList=[]
 			},
 			searchXmTestDayTimesList(){ 
 				var params={...this.filters} 
 				getXmTestDayTimesList(params).then(res=>{
-					this.xmTestDayTimesLists=res.data.data
+					this.xmTestDayTimesList=res.data.data
 				})
 				
 			}, 
@@ -160,6 +160,7 @@
 				if(this.compCfg && this.compCfg.params){
 					Object.assign(this.filters,this.compCfg.params) 
 				} 
+				this.drawCharts();
 			},
 			doDelete(){
 				this.$emit("delete",this.compCfg)
