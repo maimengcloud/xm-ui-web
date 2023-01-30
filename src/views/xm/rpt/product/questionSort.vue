@@ -4,7 +4,7 @@
 				<el-col :span="18"> 
 					<div>
 						<div class="main" id="xmQuestionSort"
-						:style="{width:'100%',height:maxTableHeight+'px',overflow: 'hidden'}"></div>
+						:style="{width:'100%',height:(maxTableHeight>600?600:maxTableHeight)+'px',overflow: 'hidden'}"></div>
 						<div class="progress"></div>
 					</div>
 				</el-col>
