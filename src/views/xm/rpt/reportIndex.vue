@@ -1,28 +1,30 @@
 <template>
 	<section class="padding">
 		<el-row gutter="5">
-            <el-col :span="4"> 
+            <el-col :span="6"> 
                 <el-row> 
                     <el-select v-model="filters.category" clearable @change="onCategroySelect" style="width:100%;" :disabled="category">
                         <el-option v-for="(item,index) in categorys" :label="item" :value="item" :key="index"></el-option>
                     </el-select>
                 </el-row> 
-                <el-row :style="{overflowX:'hidden',height:maxTableHeight+'px'}" ref="table">
-                         <el-card v-for="(p,i) in rptListCpd" :key="i" @click.native="intoInfo(p,i)" :class="{itemActive:p.isChecked,card:true,}" shadow="always">
-                            <div slot="header" class="clearfix">
-                                {{ i+1 }}.<span>{{p.rptName}}</span>  <span><i v-if="p.isChecked" class="el-icon-success"></i></span>
+                <el-row :style="{overflowX:'hidden',height:maxTableHeight+'px'}" ref="table"> 
+                        <div class="moduleset"> 
+                            <div class="nav">
+                            <div class="nav_item" :class="{itemActive: item.isChecked}" v-for="(item, index) in rptListCpd" :key="index" @click="intoInfo(item, index)">
+                                <img :src="item.img" alt="">
+                                <div class="desc">
+                                    <p>{{index+1}} {{item.rptName}}</p>
+                                    <span>
+                                        {{item.desc}}
+                                    </span>
+                                </div>
+                                <i v-if="item.isChecked" class="el-icon-success"></i>
                             </div>
-                            <img :src="p.img" class="image" style="width:100%;float:center;">
-                            <div> 
-                                <div class="bottom clearfix">
-                                    <div class="desc">{{ p.desc }}</div>
-                                    <el-button type="text" class="button"></el-button>
-                                </div> 
                             </div>  
-                        </el-card> 
+                        </div>
                 </el-row>
             </el-col>
-            <el-col :span="20">
+            <el-col :span="18">
                 <xm-iteration-burnout  v-if="showRptRef=='xmIterationBurnout'" :category="filters.category" ref="xmIterationBurnout" :xm-iteration="xmIteration" :xm-product="xmProduct" :xm-project="xmProject"></xm-iteration-burnout>
                 <xm-menu-day-trend  v-if="showRptRef=='xmMenuDayTrend'" :category="filters.category" ref="xmMenuDayTrend" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-menu-day-trend>
                 <xm-menu-day-accumulate  v-if="showRptRef=='xmMenuDayAccumulate'" :category="filters.category" ref="xmMenuDayAccumulate" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-menu-day-accumulate>
@@ -305,54 +307,88 @@
  
 
 <style lang="scss" scoped>
-  .desc {
-    font-size: 13px;
-    color: #999;
-    line-height:16px;
-  }
-  
-  .bottom {
-    margin-top: 5px;
-    line-height: 12px;
-    height: 30px;
-  }
+  .moduleset {
+    .dialog-title {
+        font-size: 22px;
+        font-weight: bold;
+        color: #7D7D7D;
+        height: 68px;
+        p {
+           line-height: 68px;
+           margin-left: 28px;
+        }
+    }
+    .toolBox {
+        display: flex;
+        flex-direction: column;
+        .selectItem {
+            display: flex;
+            flex-direction: row;
+            height: 70px;
+            .item {
+                display: flex;
+                flex-direction: row;
+                margin-right: 120px;
+                cursor: pointer;
+                margin: 25px 50px 0 20px;
+                img {
+                    width: 45px;
+                    height: 45px;
+                }
+                span {
+                    margin-left: 8px;
+                }
+            }
+        }
+    }
 
-  .button {
-    padding: 0;
-    float: right;
-  }
-
-  .image {  
-    object-fit:cover;
-    width: 100%;    
-    display: block;
-  }
-
-  .clearfix:before,
-  .clearfix:after {
-      display: table;
-      content: "";
-  }
-  
-  .clearfix:after {
-      clear: both
-  }
-
-   
-.card {
-    margin-bottom:5px;
-    cursor: pointer;
-}
-
-i {  
-    position:absolute;   
-    right:20px;
-    font-size: 32px;
-    line-height: 32px;
-    color: #90B1F4;
-}
-
-.itemActive {
-    border: 1px solid #90B1F4; 
+    .nav { 
+        overflow: auto;
+        padding:0px 10px 0 20px;
+        display:flex;
+        align-items:center;
+        justify-content: space-between;
+        flex-wrap:wrap;
+        .nav_item {
+            display: flex;
+            height: 138px;
+            flex-direction: row; 
+            border: 2px solid #EDF0F9;
+            box-shadow: 0px 3px 4px 0px rgba(186, 184, 184, 0.1);
+            border-radius: 8px;
+            align-items: center;
+            position: relative;
+            cursor: pointer;
+            margin-top: 10px;
+            width:100%;
+            img {
+                width: 94px;
+                height: 94px;
+                margin: 0 18px;
+            }
+            p {
+                font-size: 20px;
+                font-weight: bold;
+                color: #7D7D7D;
+                margin-bottom: 10px;
+            }
+            span {
+                font-size: 14px;
+                color: #7D7D7D;
+                line-height: 26px;
+            }
+            i {
+                position: absolute;
+                top: 10px;
+                right: 20px;
+                font-size: 36px;
+                color: #90B1F4;
+            }
+        }
+        .itemActive {
+            border: 2px solid #90B1F4;
+            box-shadow: 0px 3px 4px 0px rgba(186, 184, 184, 0.1);
+        }
+    }
 }
 </style>
