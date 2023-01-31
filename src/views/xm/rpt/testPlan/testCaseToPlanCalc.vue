@@ -309,7 +309,9 @@
 				this.dicts=res.data.data;
 			})  
 			this.initData();
-			this.open(); 
+            this.maxTableHeight = util.calcTableMaxHeight(this.$refs.filtersRef.$el)
+			//this.charts();
+			this.open();
 			
 		}//end mounted
 	}

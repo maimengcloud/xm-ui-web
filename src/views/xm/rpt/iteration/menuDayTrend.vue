@@ -327,6 +327,7 @@
 				this.dicts=res.data.data;
 			}) 
              */
+			            this.maxTableHeight = util.calcTableMaxHeight(this.$refs.filtersRef.$el)
 			//this.charts();
 			this.open();
 			
