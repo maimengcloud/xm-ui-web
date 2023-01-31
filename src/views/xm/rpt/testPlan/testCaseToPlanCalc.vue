@@ -189,7 +189,8 @@
 						
 						toolbox: {
 							show: true,
-							right:"20px",
+							top:"5%",
+							right:"10px",
 							feature: {
 								dataView: { show: true, readOnly: false },  
 								saveAsImage: { show: true }, 

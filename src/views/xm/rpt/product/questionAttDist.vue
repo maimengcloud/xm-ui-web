@@ -3,8 +3,7 @@
 			<el-row :gutter="5" >
 				<el-col :span="18"> 
 					<div>
-						<div class="main" id="xmQuestionAttDist"
-							:style="{width:'100%',height:(maxTableHeight>600?600:maxTableHeight)+'px',overflow: 'hidden'}"></div>
+						<div class="echart-box" id="xmQuestionAttDist"></div>
 						<div class="progress"></div>
 					</div>
 				</el-col>
@@ -286,7 +285,8 @@
 						
 						toolbox: {
 							show: true,
-							right:"20px",
+							top:"5%", 
+							right:"10px",
 							feature: {
 								dataView: { show: true, readOnly: false },  
 								saveAsImage: { show: true }, 
@@ -294,9 +294,8 @@
 						}, 
 						calculable: true,
 						
-						legend: { 
-							top:'5%',
-							left: 'center',
+						legend: {  
+							bottom: 'bottom', 
 							data:this.legendCpd,
 						},
 						series: [

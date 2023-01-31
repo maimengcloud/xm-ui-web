@@ -3,8 +3,7 @@
  			<el-row :gutter="5" >
 				<el-col :span="18"> 
 					<div>
-						<div class="main" id="xmQuestionSort"
-						:style="{width:'100%',height:(maxTableHeight>600?600:maxTableHeight)+'px',overflow: 'hidden'}"></div>
+						<div class="echart-box" id="xmQuestionSort"></div>
 						<div class="progress"></div>
 					</div>
 				</el-col>
@@ -233,7 +232,7 @@
 					{	
 						title: {
 							text: this.title, 
-							left: 'center'
+							left: 'center', 
 						}, 
 						
 						tooltip: {
@@ -242,7 +241,9 @@
 						barMaxWidth: 100,
 						toolbox: {
 							show: true,
-							right:"20px",
+							top:"5%", 
+							top:"5%",
+							right:"10px",
 							feature: {
 							dataView: { show: true, readOnly: false },
 							magicType: { show: true, type: ['line', 'bar'] },
@@ -256,13 +257,13 @@
 							type: 'category',
 							data: this.legendCpd
 						},
-						yAxis: {
+						yAxis: { 
 							type: 'value'
 						},
 						series: [
 							{
 							data: this.xmQuestionSortsCpd,
-							type: 'bar',								
+							type: 'bar',							
 							label:{
 									show: true, 
 								},

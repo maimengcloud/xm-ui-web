@@ -351,7 +351,7 @@
                 margin-right: 5px;
             }
             p {
-                font-size: 18px;
+                font-size: 16px;
                 font-weight: bold;
                 color: #7D7D7D;
                 margin-bottom: 10px;
@@ -398,7 +398,7 @@
             .title{
                 width:100%;
                 p {
-                    font-size: 14px;
+                    font-size: 12px;
                     font-weight: bold;
                     color: #7D7D7D;
                     margin-bottom: 5px;
@@ -418,9 +418,9 @@
                 .desc{
                     width:75%;
                     span {
-                        font-size: 8px;
+                        font-size: 10px;
                         color: #7D7D7D;
-                        line-height: 10px;    
+                        line-height: 12px;    
                     }
                 }
                 
