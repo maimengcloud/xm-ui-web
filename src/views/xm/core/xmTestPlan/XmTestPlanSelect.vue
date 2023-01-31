@@ -1,6 +1,6 @@
 <template>
     
-	<section class="page-container border padding" ref="xmTestPlanTable">
+	<section class="page-container padding" ref="xmTestPlanTable">
         <el-dialog append-to-body modal-append-to-body width="60%" top="20px" :visible.sync="visible"> 
 		<el-row>
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"  clearable></el-input>

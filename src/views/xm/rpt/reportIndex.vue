@@ -347,8 +347,8 @@
             img {
                 object-fit:cover;
                 max-width: 25%;
-                max-height: 80%; 
-                padding: 2px;
+                max-height: 70%; 
+                margin-right: 5px;
             }
             p {
                 font-size: 20px;
@@ -365,7 +365,7 @@
                 position: absolute;
                 top: 5px;
                 right: 5px;
-                font-size: 32px;
+                font-size: 30px;
                 color: #90B1F4;
             }
         }
