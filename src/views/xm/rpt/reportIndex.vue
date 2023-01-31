@@ -347,11 +347,11 @@
             img {
                 object-fit:cover;
                 max-width: 25%;
-                max-height: 70%; 
+                max-height: 100%; 
                 margin-right: 5px;
             }
             p {
-                font-size: 20px;
+                font-size: 18px;
                 font-weight: bold;
                 color: #7D7D7D;
                 margin-bottom: 10px;
@@ -412,7 +412,7 @@
                 img {
                     object-fit:cover;
                     max-width: 25%;
-                    max-height: 80%; 
+                    max-height: 100%; 
                     padding: 2px;
                 }
                 .desc{
