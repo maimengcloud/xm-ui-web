@@ -4,8 +4,7 @@
 			
 			<el-row :gutter="5" >
 				<el-col :span="18"> <div>
-					<div class="main" id="taskDayAccumulate"
-							:style="{width:'100%',height:(maxTableHeight>600?600:maxTableHeight)+'px',overflow: 'hidden'}"></div> 
+					<div class="echart-box" id="taskDayAccumulate"></div> 
 					</div>
 				</el-col>
 				<el-col :span="6" class="border">
@@ -178,18 +177,14 @@
 								backgroundColor: '#6a7985'
 							}
 							}
-						},
-						
+						}, 
+						calculable: true,
 						barMaxWidth: 100,
-						legend: {
-							top:'5%',
-							left: 'center',
+						legend: { 
+							bottom: 'bottom',
 							data: ['未开始', '执行中', '已完成', '已关闭']
 						},
-						grid: {
-							left: '3%',
-							right: '4%',
-							bottom: '3%',
+						grid: { 
 							containLabel: true
 						},
 						toolbox: {
@@ -248,11 +243,6 @@
 							areaStyle: {},
 							emphasis: {
 								focus: 'series'
-							},
-
-							label: {
-								show: true,
-								position: 'top'
 							},
 							data: this.taskCloseCntCpd,
 							} 

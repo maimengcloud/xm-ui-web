@@ -206,8 +206,7 @@
 
 					calculable: true,
 					legend: { 
-							top:'5%',
-							left: 'center',
+							bottom: 'bottom',
 					},
 
 					dataset: {

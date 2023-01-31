@@ -4,8 +4,7 @@
 			<el-row :gutter="5" >
 				<el-col :span="18"> 
 					<div>
-						<div class="main" id="questionDayTrend"
-							:style="{width:'100%',height:(maxTableHeight>600?600:maxTableHeight)+'px',overflow: 'hidden'}"></div>
+						<div class="echart-box" id="questionDayTrend"></div>
 						<div class="progress"></div>
 					</div>
 				</el-col>
@@ -199,8 +198,7 @@
 
 						calculable: true,
 						legend: {
-							top:'5%',
-							left: 'center',
+							bottom: 'bottom',
 							data: ['新提出','执行中','已解决','已关闭']
 						},
 						xAxis: {

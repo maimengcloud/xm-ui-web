@@ -5,8 +5,7 @@
 			<el-row :gutter="5" >
 				<el-col :span="18"> 
 					<div>
-						<div class="main" id="testPlanCaseUserDist"
-							:style="{width:'100%',height:(maxTableHeight>600?600:maxTableHeight)+'px',overflow: 'hidden'}"></div>
+						<div class="echart-box" id="testPlanCaseUserDist"></div>
 						<div class="progress"></div>
 					</div>
 				</el-col>
@@ -213,8 +212,7 @@
 						calculable: true,
 						
 						legend: {
-							top:'5%',
-							left: 'center',
+							bottom: 'bottom',
 							data: ['已执行', '未执行']
 						},
 						xAxis: {

@@ -3,8 +3,7 @@
 			
 			<el-row :gutter="5" >
 				<el-col :span="18"> <div>
-					<div class="main" id="menuDayAccumulate"
-							:style="{width:'100%',height:(maxTableHeight>600?600:maxTableHeight)+'px',overflow: 'hidden'}"></div> 
+					<div class="echart-box" id="menuDayAccumulate"></div> 
 					</div>
 				</el-col>
 				<el-col :span="6" class="border">
@@ -201,8 +200,7 @@
 							}
 						},
 						legend: {
-							top:'5%',
-							left: 'center',
+							bottom: 'bottom',
 							data: ['未开始', '执行中', '已完成', '已关闭']
 						},
 						grid: {

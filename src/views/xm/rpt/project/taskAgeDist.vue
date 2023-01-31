@@ -4,8 +4,7 @@
 			<el-row :gutter="5" >
 				<el-col :span="18"> 
 					<div>
-						<div class="main" id="xmTaskAgeDist"
-							:style="{width:'100%',height:(maxTableHeight>600?600:maxTableHeight)+'px',overflow: 'hidden'}"></div>
+						<div class="echart-box" id="xmTaskAgeDist"></div>
 						<div class="progress"></div>
 					</div>
 				</el-col>
@@ -166,8 +165,7 @@
 						calculable: true,
 						
 						legend: { 
-							top:'5%',
-							left: 'center',
+							bottom: 'bottom',
 							data:this.legendCpd,
 						},
 						series: [

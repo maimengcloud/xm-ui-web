@@ -3,8 +3,7 @@
  			
 			<el-row :gutter="5" >
 				<el-col :span="18"> <div>
-					<div class="main" id="iterationMenuDayAccumulate"
-							:style="{width:'100%',height:(maxTableHeight>600?600:maxTableHeight)+'px',overflow: 'hidden'}"></div> 
+					<div class="echart-box" id="iterationMenuDayAccumulate" ></div> 
 					</div>
 				</el-col>
 				<el-col :span="6" class="border">
@@ -177,14 +176,10 @@
 							}
 						},
 						legend: {
-							top:'5%',
-							left: 'center',
+							bottom: 'bottom',
 							data: ['未开始', '执行中', '已完成', '已关闭']
 						},
-						grid: {
-							left: '3%',
-							right: '4%',
-							bottom: '3%',
+						grid: { 
 							containLabel: true
 						},
 						toolbox: {

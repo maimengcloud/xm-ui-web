@@ -4,8 +4,7 @@
 			<el-row :gutter="5" >
 				<el-col :span="18"> 
 					<div>
-						<div class="main" id="menuDayTrend"
-							:style="{width:'100%',height:(maxTableHeight>600?600:maxTableHeight)+'px',overflow: 'hidden'}"></div>
+						<div class="echart-box" id="menuDayTrend"></div>
 						<div class="progress"></div>
 					</div>
 				</el-col>
@@ -199,8 +198,7 @@
 
 						calculable: true,
 						legend: {
-							top:'5%',
-							left: 'center',
+							bottom: 'bottom',
 							data: ['未开始故事数','执行中故事数','已完成故事数','已关闭故事数']
 						},
 						xAxis: {

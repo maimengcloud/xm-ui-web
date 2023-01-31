@@ -3,7 +3,7 @@
 			<el-row :gutter="5" >
 				<el-col :span="18"> 
 					<div> 
-						<div class="main" id="iterationWorkItemDayList" :style="{width:'100%',height:(maxTableHeight>600?600:maxTableHeight)+'px',overflow: 'hidden'}"></div> 
+						<div class="echart-box" id="iterationWorkItemDayList" :style="{width:'100%',height:(maxTableHeight>600?600:maxTableHeight)+'px',overflow: 'hidden'}"></div> 
 					</div>
 				</el-col>
 				<el-col :span="6" class="border">
@@ -209,8 +209,7 @@
 
 					calculable: true,
 					legend: { 
-							top:'5%',
-							left: 'center',
+							bottom: 'bottom',
 					},
 
 					dataset: {

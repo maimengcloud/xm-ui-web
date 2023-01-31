@@ -3,8 +3,7 @@
 			<el-row :gutter="5" >
 				<el-col :span="18"> 
 					<div>
-						<div class="main" id="xmMenuSort"
-							:style="{width:'100%',height:(maxTableHeight>600?600:maxTableHeight)+'px',overflow: 'hidden'}"></div>
+						<div class="echart-box" id="xmMenuSort"></div>
 						<div class="progress"></div>
 					</div>
 				</el-col>
