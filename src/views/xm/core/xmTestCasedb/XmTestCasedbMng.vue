@@ -26,8 +26,7 @@
                         <span v-else> {{scope.row.name}}  </span>
                         <span class="tool-bar"> 
                             <el-button type="warning" @click="goCasedbInfo(scope.row)" icon="el-icon-s-data"  circle title="视图"></el-button>  
-                            <el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit"  circle></el-button>  
-                        </span>
+                         </span>
                     </template>
 				</el-table-column>
                 <template v-if="select!==true">
