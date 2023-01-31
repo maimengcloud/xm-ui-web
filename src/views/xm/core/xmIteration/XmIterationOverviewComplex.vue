@@ -24,7 +24,7 @@
                   <el-button
                     class="step-btn"
                     type="warning"
-                    size="mini"
+                    
                     plain
                     @click="jumpTo('iterationMenu')"
                     >需求管理</el-button
@@ -32,7 +32,7 @@
                   <el-button
                     class="step-btn"
                     type="warning"
-                    size="mini"
+                    
                     plain
                     @click="showPanelName='iterationMenuMng'"
                     >配置需求范围</el-button
@@ -40,7 +40,7 @@
                   <el-button
                     class="step-btn"
                     type="danger"
-                    size="mini"
+                    
                     plain
 										icon="el-icon-d-caret"
                     @click="editSomeFields(xmIteration, 'istatus', '1')"
@@ -51,7 +51,7 @@
                   <el-button
                     class="step-btn"
                     type="warning"
-                    size="mini"
+                    
                     plain
                     @click="jumpTo('iterationMenu')"
                     >需求管理</el-button
@@ -59,7 +59,7 @@
                   <el-button
                     class="step-btn"
                     type="warning"
-                    size="mini"
+                    
                     plain
                     @click="showPanelName='iterationMenuMng'"
                     >需求范围</el-button
@@ -72,7 +72,7 @@
                   <el-button
                     class="step-btn"
                     type="warning"
-                    size="mini"
+                    
                     plain
                     @click="showPanelName='iterationMenuMng'"
                     >确认需求范围</el-button
@@ -80,7 +80,7 @@
                   <el-button
                     class="step-btn"
                     type="warning"
-                    size="mini"
+                    
                     plain
                     @click="jumpTo('iterationQuestion')"
                     >缺陷登记</el-button
@@ -88,7 +88,7 @@
                   <el-button
                     class="step-btn"
                     type="danger"
-                    size="mini"
+                    
                     plain
 										icon="el-icon-d-caret"
                     @click="editSomeFields(xmIteration, 'istatus', '2')"
@@ -105,7 +105,7 @@
                   <el-button
                     class="step-btn"
                     type="warning"
-                    size="mini"
+                    
                     plain
                     @click="showPanelName='detail'"
                     >迭代计划</el-button
@@ -113,7 +113,7 @@
                   <el-button
                     class="step-btn"
                     type="warning"
-                    size="mini"
+                    
                     plain
                     @click="jumpTo('iterationTask')"
                     >任务管理</el-button
@@ -121,7 +121,7 @@
                   <el-button
                     class="step-btn"
                     type="danger"
-                    size="mini"
+                    
                     plain
 										icon="el-icon-d-caret"
                     @click="editSomeFields(xmIteration, 'istatus', '3')"
@@ -132,7 +132,7 @@
                   <el-button
                     class="step-btn"
                     type="warning"
-                    size="mini"
+                    
                     plain
                     @click="showPanelName='detail'"
                     >迭代计划</el-button
@@ -140,7 +140,7 @@
                   <el-button
                     class="step-btn"
                     type="warning"
-                    size="mini"
+                    
                     plain
                     @click="jumpTo('iterationTask')"
                     >任务管理</el-button
@@ -153,7 +153,7 @@
                   <el-button
                     class="step-btn"
                     type="warning"
-                    size="mini"
+                    
                     plain
                     @click="jumpTo('iterationTask')"
                     >任务管理</el-button
@@ -161,7 +161,7 @@
                   <el-button
                     class="step-btn"
                     type="warning"
-                    size="mini"
+                    
                     plain
                     @click="jumpTo('iterationReport')"
                     >效能分析</el-button
@@ -169,7 +169,7 @@
                   <el-button
                     class="step-btn"
                     type="danger"
-                    size="mini"
+                    
                     plain
 										icon="el-icon-d-caret"
                     @click="editSomeFields(xmIteration, 'istatus', '4')"
@@ -180,7 +180,7 @@
                   <el-button
                     class="step-btn"
                     type="warning"
-                    size="mini"
+                    
                     plain
                     @click="jumpTo('iterationReport')"
                     >效能分析</el-button
@@ -193,7 +193,7 @@
                   <el-button
                     class="step-btn"
                     type="warning"
-                    size="mini"
+                    
                     plain
                     @click="jumpTo('iterationQuestion')"
                     >缺陷管理</el-button
@@ -201,7 +201,7 @@
                   <el-button
                     class="step-btn"
                     type="danger"
-                    size="mini"
+                    
                     plain
 										icon="el-icon-d-caret"
                     @click="editSomeFields(xmIteration, 'istatus', '5')"
@@ -216,7 +216,7 @@
                   <el-button
                     class="step-btn"
                     type="danger"
-                    size="mini"
+                    
                     plain
 										icon="el-icon-d-caret"
                     @click="editSomeFields(xmIteration, 'istatus', '6')"
@@ -233,7 +233,7 @@
                   <el-button
                     class="step-btn"
                     type="danger"
-                    size="mini"
+                    
                     plain
 										icon="el-icon-d-caret"
                     @click="editSomeFields(xmIteration, 'istatus', '7')"
@@ -250,7 +250,7 @@
                   <el-button
                     class="step-btn"
                     type="danger"
-                    size="mini"
+                    
                     plain
 										icon="el-icon-d-caret"
                     @click="editSomeFields(xmIteration, 'istatus', '0')"

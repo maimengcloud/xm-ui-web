@@ -236,7 +236,7 @@
 									<div class="tool-bar">
                     <span class="u-btn">  
                       <el-tooltip  v-if="scope.row.ntype==='0'" :content=" '编辑任务'">    
-                          <el-button    @click="showDrawer( scope.row,scope.$index)" icon="el-icon-edit" title="编辑任务" circle plain size="mini"> </el-button>     
+                          <el-button    @click="showDrawer( scope.row,scope.$index)" icon="el-icon-edit" title="编辑任务" circle plain > </el-button>     
                       </el-tooltip> 
                     </span>
 									</div>

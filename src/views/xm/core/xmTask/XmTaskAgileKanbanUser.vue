@@ -89,7 +89,7 @@
                       >
                         {{ (task.rate != null ? task.rate : 0) + "%" }}
                       </el-tag>  
-				  	        <span class="my-cell-btn"><el-button   size="mini" type="danger" icon="el-icon-delete" plain @click.stop="handleDel(task,tt)"></el-button></span>
+				  	        <span class="my-cell-btn"><el-button    type="danger" icon="el-icon-delete" plain @click.stop="handleDel(task,tt)"></el-button></span>
                   </el-row>
                     <el-row>
                       <span title="执行人" class="label-font-color">

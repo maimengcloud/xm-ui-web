@@ -23,7 +23,7 @@
 				        <span> <el-link @click="goToTestPlanCase(scope.row)"> {{scope.row.name}}</el-link> </span>
                         <span  class="tool-bar">
                             
-                         <el-button type="primary" @click="goToTestPlanCase(scope.row)" icon="el-icon-finished"  circle title="规划用例"></el-button> 
+                         <el-button type="primary" size="medium " @click="goToTestPlanCase(scope.row)" icon="el-icon-finished"  circle title="规划用例"></el-button> 
                          <el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit"  circle title="编辑用例"></el-button> 
                         </span>
                     </template>

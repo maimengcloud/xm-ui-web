@@ -107,9 +107,9 @@
 									 <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'menuStatus',scope.row.status)" :key="index" :type="item.className">{{item.name}}</el-tag>
 									 <div class="tool-bar" v-if="!disabledMng">
 									<span class="u-btn">
- 												<el-button  v-if=" scope.row.dclass==='1' "  @click.stop="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" title="新建特性" circle plain size="mini"> </el-button>
+ 												<el-button  v-if=" scope.row.dclass==='1' "  @click.stop="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" title="新建特性" circle plain > </el-button>
 											     
-										<el-button      @click.stop="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑" circle plain size="mini"> </el-button>     
+										<el-button      @click.stop="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑" circle plain > </el-button>     
 									</span>
 									</div>
   								</template> 

@@ -418,7 +418,7 @@
 
 									<div class="tool-bar">
                     <span class="u-btn">
-                         <el-button    @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑任务" circle plain size="mini"> </el-button>
+                         <el-button    @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑任务" circle > </el-button>
                      </span>
 									</div>
                 </template>
@@ -453,9 +453,9 @@
                   </el-link>
 									<div class="cell-bar">
                     <span class="u-btn">
-                          <el-button v-if="scope.row.ntype==='0'"   @click="showWorkload(scope.row)" icon="el-icon-timer" title="登记工时进度" circle plain size="mini"> </el-button>
+                          <el-button v-if="scope.row.ntype==='0'"   @click="showWorkload(scope.row)" icon="el-icon-timer" title="登记工时进度" circle plain > </el-button>
 
-                           <el-button  v-else :disabled="load.calcProgress" v-loading="load.calcProgress"  @click="calcProgress(scope.row)" icon="el-icon-s-data" title="统计进度，逐级往上汇总" circle plain size="mini"> </el-button>
+                           <el-button  v-else :disabled="load.calcProgress" v-loading="load.calcProgress"  @click="calcProgress(scope.row)" icon="el-icon-s-data" title="统计进度，逐级往上汇总" circle plain > </el-button>
                      </span>
                   </div>
                 </template>

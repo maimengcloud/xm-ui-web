@@ -20,8 +20,8 @@
 							placement="left"
 							trigger="hover"> -->
 							<el-button-group>
-								<el-button size="mini" type="primary" @click.stop="showEdit(scope.row,scope.$index)">编辑</el-button>
-								<el-button size="mini" type="danger" @click.stop="handleDel(scope.row,scope.$index)">删除</el-button>
+								<el-button  type="primary" @click.stop="showEdit(scope.row,scope.$index)">编辑</el-button>
+								<el-button  type="danger" @click.stop="handleDel(scope.row,scope.$index)">删除</el-button>
 							</el-button-group>
 							<!-- <el-button slot="reference" class="see-more" type="text" icon="el-icon-more"></el-button>
 						</el-popover>	 -->

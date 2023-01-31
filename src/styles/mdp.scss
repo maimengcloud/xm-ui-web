@@ -232,28 +232,43 @@
   /* overflow-x: auto; */
 }
 
-.tool-bar{
+.el-drawer__header{ 
+  margin-bottom: 10px !important;
+  padding: 10px 10px 0 !important;
+}
+
+.tool-bar{ 
+  z-index: 10000;  
+  top: 50%; 
+  right:0%; 
+  transform: translate(-50%, -50%);
+  position:absolute; 
 	visibility: hidden;
-	float: right;
 }
 
 table tr:hover{
-	.tool-bar{
-		visibility: visible;
+	.tool-bar{  
+		visibility: visible; 
 		.u-btn{   
 			float: right;
 		} 
 	}
 }
 table tr.hover-row{
-	.tool-bar{
-		visibility: visible;
+	.tool-bar{  
+		visibility: visible; 
 		.u-btn{   
 			float: right;
 		} 
 	}
 }
 .cell-bar{
+  
+  z-index: 10000;  
+  top: 50%; 
+  right:0%; 
+  transform: translate(-50%, -50%); 
+  position:absolute; 
 	display: none;
 	float: right;
 } 

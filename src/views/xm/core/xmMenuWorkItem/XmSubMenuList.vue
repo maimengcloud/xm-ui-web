@@ -22,7 +22,7 @@
 					</span>
 					<span class="my-cell-bar">
 							<el-input title="序号" style="width:15%;"  v-model="scope.row.seqNo" placeholder="序号"  @change="editXmMenuSomeFields(scope.row,'seqNo',$event)"></el-input><el-input title="名称" placeholder="名称" v-model="scope.row.menuName"  style="width:75%;"  @change="editXmMenuSomeFields(scope.row,'menuName',$event)"></el-input> 
-							 <el-button    @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑需求" circle plain size="mini"> </el-button>     
+							 <el-button    @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑需求" circle plain > </el-button>     
 
 					</span> 
 			  </template>

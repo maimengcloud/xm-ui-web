@@ -76,11 +76,12 @@
  					<el-input type="textarea" :autosize="{ minRows: 6, maxRows: 20}" v-model="editForm.remark" placeholder="工作说明，如果报工大于8小时，请填写说明" ></el-input>
 				</el-form-item>
 			</el-form>
+			
+			<el-row style="float:right">
+				<el-button @click.native="handleCancel">取消</el-button>
+				<el-button v-loading="load.edit" type="primary" @click.native="saveSubmit" :disabled="load.edit==true">提交</el-button>
+			</el-row> 
 		</el-row>
-		<el-row style="float:right">
-		    <el-button @click.native="handleCancel">取消</el-button>
-            <el-button v-loading="load.edit" type="primary" @click.native="saveSubmit" :disabled="load.edit==true">提交</el-button>
-		</el-row> 
 	</section>
 </template>
 

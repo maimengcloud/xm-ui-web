@@ -28,7 +28,7 @@
                             <template slot-scope="scope">
                                 <span> <el-link @click="showEdit( scope.row,scope.$index)">{{scope.row.caseName}} </el-link></span>
                                 <span class="tool-bar">
-                                    <el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" circle size="mini"></el-button> 
+                                    <el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" circle ></el-button> 
                                 </span>
                             </template>
                         </el-table-column>	

@@ -17,10 +17,10 @@
 									<span> {{scope.row.name}} </span> 
  									 <div class="tool-bar">
                                         <span class="u-btn">
-                                                    <el-button    @click.stop="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" title="新建子功能模块" circle size="mini"> </el-button>
+                                                    <el-button    @click.stop="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" title="新建子功能模块" circle > </el-button>
                                                     
-                                            <el-button      @click.stop="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑" circle size="mini"> </el-button>    
-                                            <el-button type="danger" v-loading="load.del" @click="handleDel(scope.row)" :disabled=" !editForm || !editForm.id || load.del==true" icon="el-icon-delete" circle size="mini"></el-button>
+                                            <el-button      @click.stop="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑" circle > </el-button>    
+                                            <el-button type="danger" v-loading="load.del" @click="handleDel(scope.row)" :disabled=" !editForm || !editForm.id || load.del==true" icon="el-icon-delete" circle ></el-button>
  
                                         </span>
 									</div>

@@ -26,7 +26,7 @@
 										
 									</el-col>
 									<el-col  :span="24"  style="padding-top:5px;"> 
-										<el-input  v-if="filters.queryScope=='iterationId'" size="mini" v-model="filters.id" style="width:100%;"  placeholder="输入产品编号" @keyup.enter.native="searchXmProducts">  
+										<el-input  v-if="filters.queryScope=='iterationId'"  v-model="filters.id" style="width:100%;"  placeholder="输入产品编号" @keyup.enter.native="searchXmProducts">  
 										</el-input> 
 									</el-col>
 									<el-checkbox v-model="filters.isMy" true-label="1" false-label="">我创建的</el-checkbox>
@@ -46,13 +46,13 @@
 										</mdp-date-range>  
 									</el-col> 
 									<el-col :span="24" style="padding-top:5px;">
-										<el-button size="mini" type="primary" icon="el-icon-search" @click="searchArchives">查询</el-button>
-										<el-button size="mini"      @click="moreVisible=false"  icon="el-icon-close">关闭窗口</el-button>
+										<el-button  type="primary" icon="el-icon-search" @click="searchArchives">查询</el-button>
+										<el-button       @click="moreVisible=false"  icon="el-icon-close">关闭窗口</el-button>
  									</el-col>
 									<el-col :span="24" style="padding-top:5px;"> 
-										<el-button size="mini"   v-loading="load.close"  @click="closeArchiveComment" :disabled="this.sels.length===0" icon="el-icon-close">关闭评论</el-button>
-										<el-button  size="mini"  v-loading="load.open"  @click="openArchiveComment" :disabled="this.sels.length===0" icon="el-icon-open">打开评论</el-button>
-										<el-button size="mini" type="danger"  v-loading="load.del"  @click="batchDel" :disabled="this.sels.length===0" icon="el-icon-delete"></el-button>
+										<el-button    v-loading="load.close"  @click="closeArchiveComment" :disabled="this.sels.length===0" icon="el-icon-close">关闭评论</el-button>
+										<el-button    v-loading="load.open"  @click="openArchiveComment" :disabled="this.sels.length===0" icon="el-icon-open">打开评论</el-button>
+										<el-button  type="danger"  v-loading="load.del"  @click="batchDel" :disabled="this.sels.length===0" icon="el-icon-delete"></el-button>
 									</el-col>
 								</el-row>
 								<el-button  slot="reference" icon="el-icon-more" circle @click="moreVisible=!moreVisible"></el-button>

@@ -14,7 +14,7 @@
 					</span>
 					<span class="my-cell-bar" >
 							  <el-input title="名称" placeholder="名称" v-model="scope.row.name"  style="width:98%;"  @change="editXmQuestionSomeFields(scope.row,'name',$event)"></el-input> 
-							   <el-button    @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑缺陷" circle plain size="mini"> </el-button>     
+							   <el-button    @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑缺陷" circle plain > </el-button>     
 
 					</span> 
 			  </template>

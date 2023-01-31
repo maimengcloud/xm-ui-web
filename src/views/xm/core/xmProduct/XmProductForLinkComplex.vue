@@ -36,14 +36,14 @@
                     <el-button
                       class="step-btn"
                       type="warning"
-                      size="mini"
+                      
                       plain
                       @click="showPanel = 'menus'"
                       >需求管理</el-button
                     > 
                     <el-button
                       class="step-btn" type="danger" icon="el-icon-d-caret"
-                      size="mini"
+                      
                       plain
                       @click="
                         editXmProductSomeFields(xmProduct, 'pstatus', '1')
@@ -55,7 +55,7 @@
                     <el-button
                       class="step-btn"
                       type="warning"
-                      size="mini"
+                      
                       plain
                       @click="showPanel = 'menus'"
                       >需求管理</el-button
@@ -68,7 +68,7 @@
                     <el-button
                       class="step-btn"
                       type="warning"
-                      size="mini"
+                      
                       plain
                       @click="showPanel = 'iterationProductLink'"
                       >迭代管理</el-button
@@ -76,14 +76,14 @@
                     <el-button
                       class="step-btn"
                       type="warning"
-                      size="mini"
+                      
                       plain
                       @click="showPanel = 'bugs'"
                       >缺陷管理</el-button
                     >  
                     <el-button
                       class="step-btn" type="danger" icon="el-icon-d-caret"
-                      size="mini"
+                      
                       plain
                       @click="
                         editXmProductSomeFields(xmProduct, 'pstatus', '2')
@@ -95,7 +95,7 @@
                     <el-button
                       class="step-btn"
                       type="warning"
-                      size="mini"
+                      
                       plain
                       @click="showPanel = 'iterationProductLink'"
                       >迭代管理</el-button
@@ -103,7 +103,7 @@
                     <el-button
                       class="step-btn"
                       type="warning"
-                      size="mini"
+                      
                       plain
                       @click="showPanel = 'bugs'"
                       >缺陷管理</el-button
@@ -115,7 +115,7 @@
                   <span v-if="xmProduct.pstatus == i.id">
                     <el-button
                       class="step-btn" type="danger" icon="el-icon-d-caret"
-                      size="mini"
+                      
                       plain
                       @click="
                         editXmProductSomeFields(xmProduct, 'pstatus', '3')
@@ -130,7 +130,7 @@
                   <span v-if="xmProduct.pstatus == i.id">
                     <el-button
                       class="step-btn" type="danger" icon="el-icon-d-caret"
-                      size="mini"
+                      
                       plain
                       @click="
                         editXmProductSomeFields(xmProduct, 'pstatus', '0')

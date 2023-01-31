@@ -191,9 +191,9 @@
                               <el-button   @click.stop="showSubAdd( scope.row,scope.$index,'1')" icon="el-icon-plus" title="新建子计划">直接创建子计划 </el-button>   
                            </el-row>
                           </el-row> 
-                           <el-button   slot="reference"  :style="{backgroundColor:  '#E6A23C'}"   icon="el-icon-plus" title="新建子计划" circle plain size="mini"> </el-button>   
+                           <el-button   slot="reference"  :style="{backgroundColor:  '#E6A23C'}"   icon="el-icon-plus" title="新建子计划" circle plain > </el-button>   
                         </el-popover> 
-                        <el-button      @click.stop="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑" circle plain size="mini"> </el-button>     
+                        <el-button      @click.stop="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑" circle plain > </el-button>     
                      </span>
 									</div>
                 </template>

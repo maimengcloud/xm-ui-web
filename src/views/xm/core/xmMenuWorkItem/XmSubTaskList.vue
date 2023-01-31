@@ -13,7 +13,7 @@
 									</span>
 									<span class="my-cell-bar">
 									  	<el-input title="序号" style="width:15%;"  v-model="scope.row.sortLevel" placeholder="序号"  @change="editXmTaskSomeFields(scope.row,'sortLevel',$event)"></el-input><el-input title="名称" placeholder="名称" style="width:75%;" v-model="scope.row.name" @change="editXmTaskSomeFields(scope.row,'name',$event)"></el-input> 
-                      <el-button    @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑任务" circle plain size="mini"> </el-button>     
+                      <el-button    @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑任务" circle plain > </el-button>     
 
                 </span>
                 </template>

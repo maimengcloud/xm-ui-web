@@ -40,7 +40,7 @@
 										</span>
 										<div class="tool-bar">
 											<span class="u-btn"> 
-												<el-button      @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑" circle plain size="mini"> </el-button>     
+												<el-button      @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑" circle plain > </el-button>     
 											</span>
 										</div>
 									</template>
