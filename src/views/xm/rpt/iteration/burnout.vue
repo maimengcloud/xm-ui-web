@@ -6,7 +6,7 @@
 				<el-col :span="18"> 
 					<div>
 						<div class="main" id="burnout"
-							style="width:100%;height:600px;margin:0 auto;"></div>
+							:style="{width:'100%',height:(maxTableHeight>600?600:maxTableHeight)+'px',overflow: 'hidden'}"></div>
 						<div class="progress"></div>
 					</div>
 				</el-col>

@@ -3,11 +3,11 @@
 			<el-row :gutter="5" >
 				<el-col :span="18"> 
 					<div> 
-						<div class="main" id="iterationWorkItemDayList" style="width:100%;height:600px;margin:0 auto;"></div> 
+						<div class="main" id="iterationWorkItemDayList" :style="{width:'100%',height:(maxTableHeight>600?600:maxTableHeight)+'px',overflow: 'hidden'}"></div> 
 					</div>
 				</el-col>
 				<el-col :span="6" class="border">
-					<el-form  :model="filters" class="padding">  
+					<el-form :model="filters" class="padding" :style="{width:'100%',maxHeight:maxTableHeight+'px',overflow: 'auto'}" ref="filtersRef">  
 					 
 					<el-form-item label="日期区间">
 						<br>

@@ -5,11 +5,11 @@
 			<el-row :gutter="5" >
 				<el-col :span="18"> <div>
 					<div class="main" id="taskDayAccumulate"
-							style="width:100%;height:600px;margin:0 auto;"></div> 
+							:style="{width:'100%',height:(maxTableHeight>600?600:maxTableHeight)+'px',overflow: 'hidden'}"></div> 
 					</div>
 				</el-col>
 				<el-col :span="6" class="border">
-					<el-form   :model="filters" class="padding"> 
+					<el-form :model="filters" class="padding" :style="{width:'100%',maxHeight:maxTableHeight+'px',overflow: 'auto'}" ref="filtersRef"> 
 					<el-form-item label="归属项目" >
 						<xm-project-select v-if="!xmProject || !xmProject.id" ref="xmProjectSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProjectSelected"   @clear="onProjectClear"></xm-project-select>
 						<span v-else>{{xmProject.id}} <span v-if="xmProject.name"><br/>{{  xmProject.name  }} </span> </span> 
