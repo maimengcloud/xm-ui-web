@@ -1,6 +1,6 @@
 <template>
 	<section>
-		<el-row class="padding-left padding-right">
+		<el-row>
 			<el-col :span="24">
 					<el-row>
 						<xm-product-select ref="xmProductSelect1" style="display:inline;" v-if="(!xmProduct||!xmProduct.id)&&(!xmIteration||!xmIteration.id)"   :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClearSelect"></xm-product-select>
@@ -223,7 +223,7 @@
 
 						</span>
 					 </el-row> 
-					<el-row v-if="displayType=='table'">
+					 <el-row v-if="displayType=='table'">  
 						<el-table  element-loading-text="努力加载中" element-loading-spinner="el-icon-loading" :cell-style="cellStyleCalc" :expand-row-keys="expandRowKeysCpd" :header-cell-style="cellStyleCalc" :row-style="{height:'60px'}"   stripe fit border ref="table" :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId"  @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
 							<el-table-column sortable type="selection" width="40"></el-table-column>
 
@@ -343,16 +343,15 @@
 								</template>
 							</el-table-column>
 							</template>
-						</el-table>
-						<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
-
-
-					</el-row>
+						</el-table>  
+					</el-row> 
 					<el-row v-else-if="displayType=='agileUser'">
 						<xm-menu-agile-kanban-user :xm-menus="xmMenus" :xm-product="xmProduct" ref="table" :table-height="maxTableHeight"></xm-menu-agile-kanban-user>
-						<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
-
+ 
 					</el-row> 
+					<el-row>
+						<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
+					</el-row>  
 				<!--编辑 XmMenu xm_project_menu界面-->
 				<el-dialog title="编辑故事" :visible.sync="editFormVisible" :with-header="false" fullscreen width="90%" top="20px"    append-to-body   :close-on-click-modal="false" >
 					<xm-menu-edit :xm-menu="editForm" :sel-project="selProject" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit" @add-sub-menu="onAddSubMenu" @edit-fields="onEditSomeFields"></xm-menu-edit>
@@ -391,16 +390,16 @@
  			<xm-group-dialog ref="xmGroupDialog" :isSelectSingleUser="true" :sel-project="selProject" :xm-product="filters.xmProduct" @user-confirm="onGroupUserSelect">
 			</xm-group-dialog>
 		<el-drawer
-		append-to-body
-		title="选择上级需求"
-		:visible.sync="parentMenuVisible"
-		size="60%"
-		:close-on-click-modal="false"
-		>
-		<xm-epic-features-select 
-			@select="onParentMenuSelected"
-			:xm-product="filters.product"
-		></xm-epic-features-select>
+			append-to-body
+			title="选择上级需求"
+			:visible.sync="parentMenuVisible"
+			size="60%"
+			:close-on-click-modal="false"
+			>
+			<xm-epic-features-select 
+				@select="onParentMenuSelected"
+				:xm-product="filters.product"
+			></xm-epic-features-select>
 		</el-drawer>
 	</section>
 </template>

@@ -1,24 +1,30 @@
 <template>
   <section>
     <el-row>
-      <el-col :span="4" class="padding-left">
-	  <el-row> 
-              <xm-product-select
-                ref="xmProductSelect"
-                :auto-select="true"
-                :link-project-id="projectInfo ? projectInfo.id : null"
-                :iterationId="xmIteration ? xmIteration.id : null"
-                @row-click="onProductRowClick"
-                @clear="onProductClearSelect"
-              ></xm-product-select> 
-        </el-row>
+      <el-col :span="4" class="padding-left"> 
+        <div  class="border">
+        <el-row>
+            <xm-product-select
+              ref="xmProductSelect"
+              :auto-select="true"
+              :link-project-id="projectInfo ? projectInfo.id : null"
+              :iterationId="xmIteration ? xmIteration.id : null"
+              @row-click="onProductRowClick"
+              @clear="onProductClearSelect"
+            >
+            <template v-slot:title="{product}">
+               <h4 href="#" class="product-title"><div class="lg-text hidden-md-and-down"><i style="font-size:16px;" class="el-icon-sort"></i> {{product?product.productName:'请选择一个产品'}}</div></h4>
+               <h4 href="#" class="product-title"><div class="sm-text hidden-lg-and-up"><i style="font-size:16px;" class="el-icon-sort"></i> {{product?product.productName:'请选择一个产品'}}</div></h4>
+            </template>
+           
+          </xm-product-select> 
+          </el-row>
         <el-row
           ref="pageBody"
-          class="padding"
-		  :class="{border:xmProduct && xmProduct.id}"
+          class="padding" 
           :style="{ maxHeight: maxTableHeight + 'px', overflowY: 'auto' }"
         >
-          <h4 class="padding-bottom" v-if="xmProduct && xmProduct.id">常用功能导航</h4>
+
           <el-steps v-if="xmProduct && xmProduct.id"
             :active="calcProductPstatusStep"
             finish-status="success"
@@ -144,6 +150,7 @@
             </el-step>
           </el-steps>
         </el-row>
+        </div>
       </el-col>
       <el-col :span="20" class="padding-left padding-right">
         <el-tabs :value="showPanel" @tab-click="tabClick"> 
@@ -567,7 +574,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="less" scoped> 
 .more-label-font {
   text-align: center;
   float: left;
@@ -576,5 +583,17 @@ export default {
 .step-btn {
   margin-left: 0px;
   margin-bottom: 5px;
+}
+.product-title{
+  cursor: pointer;
+  width:250px;
+  display: block;
+  .text{ 
+      font-size: 16px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;  
+      width:100%;
+  }
 }
 </style>

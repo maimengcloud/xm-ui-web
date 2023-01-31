@@ -186,16 +186,29 @@
       </el-row>
       <span slot="reference" @click="referenceClick">
         <slot name="reference"
-          ><el-link
-            title="项目，点击选择、清除选择"
-            type="warning"
-            icon="el-icon-odometer"
-            > 
+          >
              <span class="title">
-            <slot name="title">{{
+              <slot name="title"> 
+              <el-link
+              title="项目，点击选择、清除选择"
+              type="warning"
+              icon="el-icon-odometer"
+              >  
+              <div class="lg-text hidden-md-and-down">
+              {{
                 editForm && editForm.id ? editForm.name: "选择项目"
-              }}&nbsp;<el-button v-if="editForm&&editForm.id" type="text" plain icon="el-icon-circle-close" @click.stop="clearSelect">清除</el-button>&nbsp;&nbsp;</slot></span>
+              }} 
+              </div>
+              
+              <div class="sm-text hidden-lg-and-up">
+              {{
+               editForm && editForm.id ? editForm.name: "选择项目"
+              }} 
+              </div>
               </el-link>
+              <el-button v-if="editForm&&editForm.id" type="text" icon="el-icon-circle-close" @click.stop="clearSelect"></el-button>&nbsp;
+            </slot>
+              </span>
         </slot>
       </span>
     </el-popover> 
@@ -523,16 +536,12 @@ export default {
 .align-right {
   float: right;
 }
-.title {
-
+.title { 
+	display: flex;
   height: 32px;
   line-height: 32px;
   text-align: left;
   float: left; 
-  min-width: 100px; 
-  max-width: 300px; 
-  overflow:hidden;  
-  text-overflow:ellipsis;  
-  white-space:nowrap; 
+  min-width: 100px;  
 }
 </style>

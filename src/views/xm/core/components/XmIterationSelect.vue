@@ -1,6 +1,6 @@
 <template>
 	<section>  
-		<el-popover style="display:inline;"
+		<el-popover
 			placement="bottom"
 			width="400"
 			v-model="iterationVisible"
@@ -118,7 +118,28 @@
 				<el-pagination  layout="total, prev,  next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 
 			</el-row>
-			<el-link title="点击选中迭代" @click="referenceClick"  type="primary" slot="reference" icon="el-icon-connection"><font style="font-size:14px;"><slot name="title">{{editForm&&editForm.id?editForm.iterationName:'选择迭代'}} &nbsp;<el-button v-if="editForm&&editForm.id" type="text" plain icon="el-icon-circle-close" @click.stop="clearSelectIteration">清除</el-button>&nbsp;&nbsp;</slot></font></el-link> 
+			<div slot="reference" @click="referenceClick">
+				<slot name="reference">
+					<span class="title">
+						<slot name="title">
+							<el-link title="点击选中迭代"   type="primary"  icon="el-icon-connection"> 
+								<div class="lg-text hidden-md-and-down">
+									{{
+										editForm&&editForm.id?editForm.iterationName:'选择迭代'
+									}} 
+									</div>
+									
+									<div class="sm-text hidden-lg-and-up">
+									{{
+										editForm&&editForm.id?editForm.iterationName:'选择迭代'
+									}} 
+									</div>
+							</el-link>
+							 <el-button v-if="editForm&&editForm.id" type="text"  icon="el-icon-circle-close" @click.stop="clearSelectIteration"></el-button>&nbsp;
+							</slot>
+					</span>
+				</slot>
+			</div>
 		</el-popover> 
 		
 	
@@ -444,11 +465,11 @@
 	float: right; 
 }
 .title {
-
-  height: 32px;
-  line-height: 32px;
-  text-align: left;
-  float: left; 
-  min-width: 100px;
+	display: flex;
+	height: 32px;
+	line-height: 32px;
+	text-align: left;
+	float: left; 
+	min-width: 100px;
 }
 </style>

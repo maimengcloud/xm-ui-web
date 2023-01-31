@@ -181,24 +181,36 @@
           style="float: right"
         ></el-pagination>
       </el-row>
-      <slot name="reference"> 
-        <el-link
-          title="产品，点击选择、清除选择"
-          @click="referenceClick"
-          type="primary"
-          slot="reference"
-          v-loading="load.list"
-          icon="el-icon-s-opportunity" 
-            >
-            <span class="title">
-            <slot name="title">
-               {{
-              editForm && editForm.id ? editForm.productName : "选择产品"
-            }} &nbsp;<el-button v-if="editForm&&editForm.id" type="text" plain icon="el-icon-circle-close" @click.stop="clearSelect">清除</el-button>&nbsp;&nbsp;</slot>
-            </span>
-            </el-link
-        >
-      </slot>
+      <div slot="reference" @click="referenceClick"> 
+        <slot name="reference" v-bind:product="editForm"> 
+        
+              <div class="title">
+              <slot name="title" v-bind:product="editForm">
+                <el-link
+                  title="产品，点击选择、清除选择" 
+                  type="primary" 
+                  v-loading="load.list"
+                  icon="el-icon-s-opportunity" 
+              >
+              <div class="lg-text hidden-md-and-down">
+              {{
+                editForm && editForm.id ? editForm.productName : "选择产品"
+              }} 
+              </div>
+              
+              <div class="sm-text hidden-lg-and-up">
+              {{
+                editForm && editForm.id ? editForm.productName : "选择产品"
+              }} 
+              </div>
+              </el-link> 
+              <el-button v-if="editForm&&editForm.id" type="text" icon="el-icon-circle-close" @click.stop="clearSelect"></el-button>&nbsp;
+            </slot>
+              </div>
+            
+      
+        </slot>
+        </div>
     </el-popover>
 	
         <el-dialog append-to-body :visible.sync="addProductVisible" width="70%">
@@ -522,8 +534,8 @@ export default {
 .align-right {
   float: right;
 }
-.title {
-
+.title { 
+	display: flex;
   height: 32px;
   line-height: 32px;
   text-align: left;

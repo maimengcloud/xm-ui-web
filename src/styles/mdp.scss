@@ -285,6 +285,18 @@ table tr.hover-row{
     display:none;
   }
 }
+.lg-text{  
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;  
+  max-width:250px;
+}
+.sm-text{  
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;  
+  max-width:200px;
+}
  /**
  *解决表格固定列无法滚动问题
  */
