@@ -3,7 +3,17 @@
 		<el-row>
 			<el-input v-model="filters.key" style="width: 60%;" placeholder="模块名称 按回车" @keyup.enter.native="searchXmFuncs" clearable></el-input> 
 			<span style="float:right;">
-			    <el-button type="primary" @click="showAdd" icon="el-icon-plus" title="添加模块"> </el-button>
+                <el-popover
+                    placement="top-start"
+                    title="增删改模块"
+                    width="400"
+                    trigger="click" >
+                    <el-button type="primary" @click="showAdd" icon="el-icon-plus" title="添加顶级模块"> 添加顶级模块 </el-button>
+                    <el-button      @click.stop="showEdit( editForm )" icon="el-icon-edit" title="编辑"  > 编辑</el-button>    
+                    <el-button type="danger" v-loading="load.del" @click="handleDel(editForm)" :disabled=" !editForm || !editForm.id || load.del==true" icon="el-icon-delete"  >删除</el-button>
+                    <el-button slot="reference" icon="el-icon-more"></el-button> 
+                </el-popover>
+			    
 		    </span>
 		</el-row>
 		<el-row>
@@ -14,15 +24,12 @@
 								<template slot="header"> 模块 &nbsp;<slot name="title-bar"></slot><el-button type="text" @click="unselectRow()">清除选中的行</el-button></template>
 								<template slot-scope="scope">
 									 
-									<span> {{scope.row.name}} </span> 
- 									 <div class="tool-bar">
-                                        <span class="u-btn">
+									<span> {{scope.row.name}}</span> 
+ 									 <div class="tool-bar"> 
                                                     <el-button    @click.stop="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" title="新建子功能模块" circle > </el-button>
                                                     
-                                            <el-button      @click.stop="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑" circle > </el-button>    
-                                            <el-button type="danger" v-loading="load.del" @click="handleDel(scope.row)" :disabled=" !editForm || !editForm.id || load.del==true" icon="el-icon-delete" circle ></el-button>
- 
-                                        </span>
+                                            
+                                         
 									</div>
   								</template> 
 							</el-table-column> 
@@ -36,7 +43,7 @@
 			</el-dialog>
 
 			<!--新增 XmFunc 功能模块表界面-->
-			<el-dialog title="新增模块" :visible.sync="addFormVisible"  width="500px"  append-to-body  :close-on-click-modal="false">
+			<el-dialog :title="'新增'+(parentFunc&&parentFunc.id?'【'+parentFunc.name+'】的子':'顶级')+'模块'" :visible.sync="addFormVisible"  width="500px"  append-to-body  :close-on-click-modal="false">
 			    <xm-func-edit op-type="add" :xm-func="addForm" :parent-func="parentFunc" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-func-edit>
 			</el-dialog>
 	    </el-row>
@@ -180,6 +187,10 @@ export default {
 
         //显示编辑界面 XmFunc 功能模块表
         showEdit: function ( row,index ) {
+            if(!row||!row.id){
+                this.$notify({ position:'bottom-left',showClose:true, message:"请选择一条数据再点击修改按钮", type: 'error' });
+                return;
+            }
             this.editFormVisible = true;
             this.editForm = Object.assign({}, row);
         },
@@ -223,6 +234,10 @@ export default {
         },
         //删除xmFunc
         handleDel: function (row,index) {
+            if(!row||!row.id){
+                this.$notify({ position:'bottom-left',showClose:true, message:"请选择一条数据再点击删除按钮", type: 'error' });
+                return;
+            }
             this.$confirm('确认删除该记录吗?', '提示', {
                 type: 'warning'
             }).then(() => {
