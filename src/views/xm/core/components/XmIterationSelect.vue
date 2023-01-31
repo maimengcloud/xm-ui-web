@@ -119,9 +119,9 @@
 
 			</el-row>
 			<div slot="reference" @click="referenceClick">
-				<slot name="reference">
+				<slot name="reference" v-bind:iteration="editForm">
 					<span class="title">
-						<slot name="title">
+						<slot name="title"  v-bind:iteration="editForm">
 							<el-link title="点击选中迭代"   type="primary"  icon="el-icon-connection"> 
 								<div class="lg-text hidden-md-and-down">
 									{{

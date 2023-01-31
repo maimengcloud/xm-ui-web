@@ -1,8 +1,14 @@
 <template>
-  <section class="page-container  padding-left padding-right">
-    <el-row ref="pageBody">
-      <el-col :span="4" class="padding border" :style="{height:maxTableHeight+'px',overflowY:'auto'}">
-      <h4 class="padding-bottom">常用功能快捷导航</h4>
+  <section>
+    <el-row>
+      <el-col :span="4" class="padding" >
+        <div class="border">
+          <el-row class="padding">
+          <h4 >常用功能快捷导航</h4>
+        </el-row> 
+          <el-row 
+            ref="pageBody"
+            class="padding" :style="{height:maxTableHeight+'px',overflowY:'auto'}">
         <el-steps :active="calcProjectStatusStep" finish-status="success" direction="vertical">
           <el-step
             v-for="(i, index) in dicts['projectStatus']"
@@ -113,36 +119,41 @@
             </el-row>
           </el-step>
         </el-steps>
+      </el-row>
+      </div>
       </el-col>
-      <el-col :span="20">
-      <el-menu mode="horizontal" :default-active="showPanelName"  @select="onMenuToolBarSelect">
-        <el-menu-item index="overview">
-          <span slot="title">项目概览</span>
-        </el-menu-item>
-        <el-menu-item index="detail">
-          <span slot="title">项目详情</span>
-        </el-menu-item> 
-        <el-menu-item index="productProjectLink"> 
-          <span slot="title">关联产品</span>
-        </el-menu-item>      
-        <el-menu-item index="projectCalc"> 
-          <span slot="title">执行项目数据统计计划</span>
-        </el-menu-item> 
+      <el-col :span="20"  class="padding-left padding-right">
+        <el-tabs :value="showPanelName" @tab-click="tabClick">
+          <el-tab-pane
+            label="项目概览"
+            name="overview"
+            v-if="projectInfo && projectInfo.id"
+          > 
+          <xm-project-overview  v-if="showPanelName=='overview'" :sel-project="projectInfo"></xm-project-overview>
 
-        <el-menu-item index="currFlow"> 
-          <span slot="title">当前审批流</span>
-        </el-menu-item> 
+          </el-tab-pane>
+          <el-tab-pane
+            label="项目详情"
+            name="detail"
+            v-if="projectInfo && projectInfo.id"
+          > 
+          <xm-project-detail  v-if="showPanelName=='detail'" :sel-project="projectInfo" @submit="afterEditSubmit" @edit-fields="onEditFields" ref="detail"></xm-project-detail> 
 
-        <el-menu-item index="hisFlow"> 
-          <span slot="title">历史审批流</span>
-        </el-menu-item>    
-      </el-menu>
-       <xm-project-overview  v-if="showPanelName=='overview'" :sel-project="projectInfo"></xm-project-overview>
-        <xm-project-detail  v-if="showPanelName=='detail'" :sel-project="projectInfo" @submit="afterEditSubmit" @edit-fields="onEditFields" ref="detail"></xm-project-detail> 
-        <xm-product-project-link-mng v-if="showPanelName=='productProjectLink'" :sel-project="projectInfo"></xm-product-project-link-mng>
-        <xm-iteration-link-for-project v-if="showPanelName=='iterationProjectLink'" :sel-project="projectInfo"></xm-iteration-link-for-project>
-        
-        <div v-if="showPanelName=='projectCalc'" class="padding">
+          </el-tab-pane>
+          <el-tab-pane
+            label="关联产品"
+            name="productProjectLink"
+            v-if="projectInfo && projectInfo.id"
+          > 
+          <xm-product-project-link-mng v-if="showPanelName=='productProjectLink'" :sel-project="projectInfo"></xm-product-project-link-mng>
+
+          </el-tab-pane>
+          <el-tab-pane
+            label="执行项目数据统计计划"
+            name="projectCalc"
+            v-if="projectInfo && projectInfo.id"
+          > 
+          <div v-if="showPanelName=='projectCalc'" class="padding">
           <el-row>
             <el-button type="primary" @click="loadTasksToXmProjectState" v-loading="load.calcProject">计算项目预算数据</el-button>
             <br>
@@ -154,9 +165,28 @@
               <font color="blue"  style="font-size:10px;">将从项目任务汇总结算数据项目统计表</font>
           </el-row>
         </div>
+          </el-tab-pane>
+          <el-tab-pane
+            label="当前审批流"
+            name="currFlow"
+            v-if="projectInfo && projectInfo.id"
+          > 
+          <task-mng v-if="showPanelName === 'currFlow' " ref="currFlow" :biz-parent-pkid="projectInfo.id" @submit="afterFlowSubmit"> </task-mng>  
+
+          </el-tab-pane>
+          <el-tab-pane
+            label="历史审批流"
+            name="hisFlow"
+            v-if="projectInfo && projectInfo.id"
+          > 
+          <procinst-mng v-if="showPanelName === 'hisFlow' " ref="hisFlow" isAll="true" :biz-parent-pkid="projectInfo.id"></procinst-mng> 
+
+          </el-tab-pane>
+        </el-tabs> 
+        <xm-iteration-link-for-project v-if="showPanelName=='iterationProjectLink'" :sel-project="projectInfo"></xm-iteration-link-for-project>
         
-        <task-mng v-if="showPanelName === 'currFlow' " ref="currFlow" :biz-parent-pkid="projectInfo.id" @submit="afterFlowSubmit"> </task-mng>  
-        <procinst-mng v-if="showPanelName === 'hisFlow' " ref="hisFlow" isAll="true" :biz-parent-pkid="projectInfo.id"></procinst-mng> 
+        
+        
       </el-col>
     </el-row>
   </section>
@@ -325,6 +355,9 @@ export default {
         params[fieldName]=$event  
         func(params) 
       },
+    tabClick(tab) {
+      this.showPanelName = tab.name;
+    },
   },
 
   mounted() {

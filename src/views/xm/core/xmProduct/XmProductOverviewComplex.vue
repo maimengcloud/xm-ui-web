@@ -1,10 +1,14 @@
 <template>
-  <section class="page-container padding-left padding-right">
+  <section>
     <el-row ref="pageBody">
         <el-col
           :span="4"
-          class="padding border" :style="{ maxHeight: maxTableHeight + 'px', overflowY: 'auto' }"
+          class="padding" 
         >
+        <div class="border">
+          <el-row 
+          ref="pageBody"
+          class="padding" :style="{ maxHeight: maxTableHeight + 'px', overflowY: 'auto' }">
           <h4 class="padding-bottom">常用功能导航</h4>
           <el-steps
             :active="calcProductPstatusStep"
@@ -182,56 +186,67 @@
               </el-row>
             </el-step>
           </el-steps>
+        </el-row>
+        </div>
         </el-col>
-        <el-col :span="20">
-         <el-menu mode="horizontal" :default-active="showPanelName"  @select="onMenuToolBarSelect">
-        <el-menu-item index="overview">
-          <span slot="title">产品概览</span>
-        </el-menu-item>
-        <el-menu-item index="detail">
-          <span slot="title">产品详情</span>
-        </el-menu-item>  
-        <!--
-        <el-menu-item index="iterationProductLink"> 
-          <span slot="title">配置关联迭代</span>
-        </el-menu-item>
-        -->
-        <el-menu-item index="productProjectLink"> 
-          <span slot="title">配置关联项目</span>
-        </el-menu-item> 
-        <el-menu-item index="productCalc"> 
-          <span slot="title">执行数据汇总计划</span>
-        </el-menu-item> 
+        <el-col :span="20" class="padding-left padding-right">
+          <el-tabs :value="showPanelName" @tab-click="tabClick"> 
+            <el-tab-pane
+              label="产品概览"
+              name="overview"
+              v-if="xmProduct && xmProduct.id"
+            > 
+            <xm-product-overview  v-if="showPanelName=='overview' && xmProduct && xmProduct.id" :xm-product="xmProduct"></xm-product-overview>
 
-        <el-menu-item index="currFlow"> 
-          <span slot="title">当前审批流</span>
-        </el-menu-item> 
-
-        <el-menu-item index="hisFlow"> 
-          <span slot="title">历史审批流</span>
-        </el-menu-item> 
-
-        </el-menu>
-
-        <xm-product-overview  v-if="showPanelName=='overview' && xmProduct && xmProduct.id" :xm-product="xmProduct"></xm-product-overview>
-        <xm-product-edit  v-if="showPanelName=='detail'" :xm-product="xmProduct"></xm-product-edit>
-        <xm-iteration-link-for-product v-if="showPanelName=='iterationProductLink'" :xm-product="xmProduct"></xm-iteration-link-for-product>
-        <xm-product-project-link-mng  v-if="showPanelName=='productProjectLink'" :xm-product="xmProduct"></xm-product-project-link-mng>
-        <div v-if="showPanelName=='productCalc'" class="padding">
-          <el-row>
-            <el-button type="primary" @click="loadTasksToXmProductState" v-loading="load.calcProduct">计算产品汇总数据</el-button>
-            <br>
-              <font color="blue" style="font-size:10px;">将从项目任务及产品任务中汇总进度、预算工作量、实际工作量、预算金额、实际金额、缺陷数、需求数等数据到产品统计表</font>
-          </el-row>
-          <el-row>
-            <el-button  type="primary" @click="loadTasksToXmMenuState"  v-loading="load.calcMenu">计算所有需求数据</el-button>
-            <br>
-              <font color="blue"  style="font-size:10px;">将从项目任务汇总进度、预算工作量、实际工作量、预算金额、实际金额等数据到需求统计表</font>
-          </el-row>
-        </div> 
-        <task-mng v-if="showPanelName === 'currFlow' " ref="currFlow" :biz-parent-pkid="xmProduct.id" > </task-mng>  
-        <procinst-mng v-if="showPanelName === 'hisFlow' " ref="hisFlow" isAll="true" :biz-parent-pkid="xmProduct.id"></procinst-mng>   
-        </el-col>
+            </el-tab-pane>
+            <el-tab-pane
+              label="产品详情"
+              name="detail"
+              v-if="xmProduct && xmProduct.id"
+            > 
+            <xm-product-edit  v-if="showPanelName=='detail'" :xm-product="xmProduct"></xm-product-edit> 
+            </el-tab-pane>
+            <el-tab-pane
+              label="配置关联项目"
+              name="productProjectLink"
+              v-if="xmProduct && xmProduct.id"
+            > 
+            <xm-product-project-link-mng  v-if="showPanelName=='productProjectLink'" :xm-product="xmProduct"></xm-product-project-link-mng>
+            </el-tab-pane>
+            <el-tab-pane
+              label="执行数据汇总计划"
+              name="productCalc"
+              v-if="xmProduct && xmProduct.id"
+            > 
+            <div v-if="showPanelName=='productCalc'" class="padding">
+              <el-row>
+                <el-button type="primary" @click="loadTasksToXmProductState" v-loading="load.calcProduct">计算产品汇总数据</el-button>
+                <br>
+                  <font color="blue" style="font-size:10px;">将从项目任务及产品任务中汇总进度、预算工作量、实际工作量、预算金额、实际金额、缺陷数、需求数等数据到产品统计表</font>
+              </el-row>
+              <el-row>
+                <el-button  type="primary" @click="loadTasksToXmMenuState"  v-loading="load.calcMenu">计算所有需求数据</el-button>
+                <br>
+                  <font color="blue"  style="font-size:10px;">将从项目任务汇总进度、预算工作量、实际工作量、预算金额、实际金额等数据到需求统计表</font>
+              </el-row>
+            </div> 
+            </el-tab-pane>
+            <el-tab-pane
+              label="当前审批流"
+              name="currFlow"
+              v-if="xmProduct && xmProduct.id"
+            > 
+            <task-mng v-if="showPanelName === 'currFlow' " ref="currFlow" :biz-parent-pkid="xmProduct.id" > </task-mng>  
+            </el-tab-pane>
+            <el-tab-pane
+              label="历史审批流"
+              name="hisFlow"
+              v-if="xmProduct && xmProduct.id"
+            > 
+            <procinst-mng v-if="showPanelName === 'hisFlow' " ref="hisFlow" isAll="true" :biz-parent-pkid="xmProduct.id"></procinst-mng>   
+            </el-tab-pane>
+          </el-tabs> 
+         </el-col>
       </el-row>
    </section>
 </template>
@@ -367,7 +382,18 @@ export default {
         this.addProductVisible = true;
       });
     },
-    
+    tabClick(tab) {
+      if (this.xmProduct == null || !this.xmProduct.id) {
+        this.productVisible = true;
+        this.$notify({
+          position: "bottom-left",
+          showClose: true,
+          message: "请先选中左边产品",
+          type: "warning",
+        });
+      }
+      this.showPanelName = tab.name;
+    },
 
     editXmProductSomeFields(row,fieldName,$event){  
       var func=(params)=>{

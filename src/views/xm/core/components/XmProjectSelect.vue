@@ -185,10 +185,10 @@
         ></el-pagination>
       </el-row>
       <span slot="reference" @click="referenceClick">
-        <slot name="reference"
+        <slot name="reference" v-bind:project="editForm"
           >
              <span class="title">
-              <slot name="title"> 
+              <slot name="title" v-bind:project="editForm"> 
               <el-link
               title="项目，点击选择、清除选择"
               type="warning"

@@ -1,15 +1,18 @@
 <template>
 	<section>
 		<el-row> 
-			<el-col :span="4" class="padding">
+			<el-col :xl="4" :lg="4" :md="5" :sm="5" :xs="5" class="padding">
+				<div class="border">
 				 <el-row>
-					<el-col :span="24">
-						<xm-iteration-select ref="xmIterationSelect" :auto-select="true" :link-project-id="projectInfo?projectInfo.id:null" :product-id="xmProduct?xmProduct.id:null"  @row-click="onIterationRowClick" @clear="onIterationClearSelect"></xm-iteration-select>
- 					</el-col> 
- 				 </el-row> 
-				<el-row ref="pageMainRef" class="padding" :class="{border:xmIteration&&xmIteration.id}" :style="{ maxHeight: maxTableHeight + 'px', overflowY: 'auto' }"> 
-								<h4 class="padding-bottom" v-if="xmIteration&&xmIteration.id">常用功能导航</h4>
-								<el-steps v-if="xmIteration&&xmIteration.id"
+ 						<xm-iteration-select ref="xmIterationSelect" :auto-select="true" :link-project-id="projectInfo?projectInfo.id:null" :product-id="xmProduct?xmProduct.id:null"  @row-click="onIterationRowClick" @clear="onIterationClearSelect">
+							<template v-slot:title="{iteration}">
+								<h4 href="#"><div class="lg-text hidden-md-and-down"><i style="font-size:16px;" class="el-icon-sort"></i> {{iteration?iteration.iterationName:'请选择一个迭代'}}</div></h4>
+								<h4 href="#"><div class="sm-text hidden-lg-and-up"><i style="font-size:16px;" class="el-icon-sort"></i> {{iteration?iteration.iterationName:'请选择一个迭代'}}</div></h4>
+							</template>
+						</xm-iteration-select>
+  				 </el-row> 
+				<el-row ref="pageBody" class="padding" :style="{ maxHeight: maxTableHeight + 'px', overflowY: 'auto' }"> 
+ 								<el-steps v-if="xmIteration&&xmIteration.id"
 								:active="calcIterationStatusStep"
 								finish-status="success"
 								direction="vertical"
@@ -274,9 +277,10 @@
 									</el-row>
 								</el-step>
 								</el-steps> 
-						</el-row>			 
+						</el-row>	
+					</div>		 
 			</el-col>
-			<el-col :span="20" class="padding-left padding-right">
+			<el-col :xl="20" :lg="20" :md="19" :sm="19" :xs="19" class="padding-left padding-right">
 				<el-tabs :value="showPanel" @tab-click="tabClick">  
 					<el-tab-pane label="迭代概览" lazy  name="iterationOverview" v-if="xmIteration && xmIteration.id"> 
 						 
@@ -479,7 +483,7 @@
 			this.$nextTick(() => {
 				initDicts(this)
 				
-      this.maxTableHeight = util.calcTableMaxHeight(this.$refs.pageMainRef.$el);
+      this.maxTableHeight = util.calcTableMaxHeight(this.$refs.pageBody.$el);
 				});
 
 			}
