@@ -398,7 +398,7 @@
             .title{
                 width:100%;
                 p {
-                    font-size: 12px;
+                    font-size: 14px;
                     font-weight: bold;
                     color: #7D7D7D;
                     margin-bottom: 5px;
