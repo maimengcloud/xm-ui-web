@@ -8,7 +8,7 @@
                     </el-select>
                 </el-row> 
                 <el-row :style="{overflowX:'hidden',height:maxTableHeight+'px'}" ref="table"> 
-                        <div class="moduleset"> 
+                        <div class="moduleset-lg hidden-md-and-down"> 
                             <div class="nav">
                             <div class="nav_item" :class="{itemActive: item.isChecked}" v-for="(item, index) in rptListCpd" :key="index" @click="intoInfo(item, index)">
                                 <img :src="item.img" alt="">
@@ -20,6 +20,20 @@
                                 </div>
                                 <i v-if="item.isChecked" class="el-icon-success"></i>
                             </div>
+                            </div>  
+                        </div> 
+                        <div class="moduleset-sm hidden-lg-and-up"> 
+                            <div class="nav">
+                                <div class="nav_item" :class="{itemActive: item.isChecked}" v-for="(item, index) in rptListCpd" :key="index" @click="intoInfo(item, index)">
+                                    <div class="title"><p>{{index+1}} {{item.rptName}}</p></div> 
+                                    <div class="context">
+                                        <img :src="item.img" alt=""></img>
+                                        <div class="desc">
+                                            <span>{{item.desc}}</span>
+                                        </div>
+                                    </div>
+                                    <i v-if="item.isChecked" class="el-icon-success"></i>
+                                </div>
                             </div>  
                         </div>
                 </el-row>
@@ -309,51 +323,17 @@
  
 
 <style lang="scss" scoped>
-  .moduleset {
-    .dialog-title {
-        font-size: 22px;
-        font-weight: bold;
-        color: #7D7D7D;
-        height: 68px;
-        p {
-           line-height: 68px;
-           margin-left: 28px;
-        }
-    }
-    .toolBox {
-        display: flex;
-        flex-direction: column;
-        .selectItem {
-            display: flex;
-            flex-direction: row;
-            height: 70px;
-            .item {
-                display: flex;
-                flex-direction: row;
-                margin-right: 120px;
-                cursor: pointer;
-                margin: 25px 50px 0 20px;
-                img {
-                    width: 45px;
-                    height: 45px;
-                }
-                span {
-                    margin-left: 8px;
-                }
-            }
-        }
-    }
+  .moduleset-lg { 
 
     .nav { 
-        overflow: auto; 
+        overflow: hidden; 
         display:flex;
         align-items:center;
         justify-content: space-between;
         flex-wrap:wrap;
         padding-right: 5px;
-        .nav_item {
-            height: 100px;
-            padding:2px;
+        .nav_item { 
+            padding:5px;
             display: flex; 
             flex-direction: row; 
             border: 2px solid #EDF0F9;
@@ -371,7 +351,7 @@
                 padding: 2px;
             }
             p {
-                font-size: 18px;
+                font-size: 20px;
                 font-weight: bold;
                 color: #7D7D7D;
                 margin-bottom: 10px;
@@ -383,9 +363,75 @@
             }
             i {
                 position: absolute;
-                top: 10px;
-                right: 10px;
-                font-size: 30px;
+                top: 5px;
+                right: 5px;
+                font-size: 32px;
+                color: #90B1F4;
+            }
+        }
+        .itemActive {
+            border: 2px solid #90B1F4;
+            box-shadow: 0px 3px 4px 0px rgba(186, 184, 184, 0.1);
+        }
+    }
+}
+  .moduleset-sm { 
+
+    .nav { 
+        overflow: hidden; 
+        display:flex;
+        align-items:center;
+        justify-content: space-between;
+        flex-wrap:wrap;
+        padding-right: 5px;
+        .nav_item { 
+            padding:2px; 
+            flex-direction: row; 
+            border: 2px solid #EDF0F9;
+            box-shadow: 0px 3px 4px 0px rgba(186, 184, 184, 0.1);
+            border-radius: 8px;
+            align-items: center;
+            position: relative;
+            cursor: pointer;
+            margin-top: 5px;
+            width:100%;
+            .title{
+                width:100%;
+                p {
+                    font-size: 14px;
+                    font-weight: bold;
+                    color: #7D7D7D;
+                    margin-bottom: 5px;
+                    margin-top: 5px;
+                }
+            }
+            .context{
+                display: flex;
+                width: 100%;
+                padding: 2px;
+                img {
+                    object-fit:cover;
+                    max-width: 25%;
+                    max-height: 80%; 
+                    padding: 2px;
+                }
+                .desc{
+                    width:75%;
+                    span {
+                        font-size: 8px;
+                        color: #7D7D7D;
+                        line-height: 10px;    
+                    }
+                }
+                
+            }
+            
+            
+            i {
+                position: absolute;
+                top: 5px;
+                right: 5px;
+                font-size: 20px;
                 color: #90B1F4;
             }
         }
