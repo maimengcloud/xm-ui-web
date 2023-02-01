@@ -145,10 +145,7 @@
 					<xm-menu-template-mng  :is-select-menu="true"  :visible="menuTemplateVisible" @cancel="menuTemplateVisible=false" @selected-menus="onSelectedMenuTemplates"></xm-menu-template-mng>
 				</el-drawer>    
 			</el-col>
-		</el-row>
-		
- 			<tag-dialog ref="tagDialog" :tagIds="filters.tags?filters.tags.map(i=>i.tagId):[]" :jump="true" @select-confirm="onTagSelected">
-			</tag-dialog> 
+		</el-row> 
 			<el-dialog append-to-body width="60%" top="20px" :visible.sync="parentMenuVisible">
 				<xm-epic-features-select v-if="parentMenuVisible" :xm-product="xmProduct?xmProduct:filters.product" @select="onParentMenuSelected"></xm-epic-features-select>
 			</el-dialog>
@@ -199,28 +196,16 @@
 		watch:{
 			xmProduct:function(){
 					this.filters.product=this.xmProduct
-					this.getXmMenus()
-			},
+					this.loadDatasFirstCache();
+			}, 
     	},
-		data() {
-			const beginDate = new Date();
-			const endDate = new Date();
-			beginDate.setTime(beginDate.getTime() - 3600 * 1000 * 24 * 7 * 4 * 12 );
+		data() { 
 			return {
 				columnsConfig:[/**{label:'',property:'',isShow:true} */],
 				filters: {
 					key: '',
-					product:null,
-					mmUser:null,
-					tags:[],
-					status:'',
-					iteration:null,
-					dlvl:'',
-					dtype:'',
-					priority:'',
-					source:'',
-					dclasss:['1','2'],
-					menuId:'',//需求编号
+					product:null, 
+					dclasss:['1','2'], 
 					productId:'',//产品编号
 				},
 				xmMenus: [],//查询结果
@@ -254,23 +239,9 @@
 						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',ntype:'0',childrenCnt:0,sinceVersion:'',proposerId:'',proposerName:'',dlvl:'0',dtype:'0',priority:'0',source:'1'
 				},
 				parentMenu:null,
-				menuTemplateVisible:false, 
-				valueChangeRows:[],
-				 menuDetailVisible:false,
-				selectTaskVisible:false,
-				taskMngVisible:false,
-				taskListForMenuVisible:false,
-				iterationVisible:false,
-				userSelectVisible:false,
-				selectFiltersMmUserVisible:false,
-				maxTableHeight:300,
-				dateRanger: [ ],
-				pickerOptions:  util.getPickerOptions('datarange'), 
-				tagSelectVisible:false,
-				fieldTagVisible:false,
-				parentMenuVisible:false,
-				maps:new Map(),
-				linkIterationPopoverVisible:false,
+				menuTemplateVisible:false,       
+				maxTableHeight:300,    
+				parentMenuVisible:false,  
  				/**begin 自定义属性请在下面加 请加备注**/
 				expandRowKeysCpd:[],
 				moreVisible:false,
@@ -279,14 +250,7 @@
 		},//end data
 		methods: {
 			...util,
-			selectVisible(row,visible){
-				if(visible==true){ 
-					this.$refs.table.setCurrentRow(row);  
-					this.editForm = row; 
-					this.editFormBak=Object.assign({},row) 
-					this.$emit('row-click',row,);//  @row-click="rowClick"
-				}
-			},
+			 
 			handleSizeChange(pageSize) {
 				this.pageInfo.pageSize=pageSize;
 				this.getXmMenus();
@@ -314,38 +278,11 @@
 				 this.getXmMenus();
 			},
 			getParams(params){ 
-				if(this.filters.mmUser){
-					params.mmUserid=this.filters.mmUser.userid;
-				} 
+				 
 				if(this.filters.product){
 					params.productId=this.filters.product.id
 				}
-				if(this.filters.status){
-					params.status=this.filters.status
-				}
-
-				if(this.filters.dlvl){
-					params.dlvl=this.filters.dlvl
-				}
-
-				if(this.filters.dtype){
-					params.dtype=this.filters.dtype
-				}
-
-				if(this.filters.priority){
-					params.priority=this.filters.priority
-				}
-
-				if(this.filters.source){
-					params.source=this.filters.source
-				}
-				if( this.dateRanger && this.dateRanger.length==2){
-					params.ctimeStart=this.dateRanger[0]
-					params.ctimeEnd=this.dateRanger[1]
-				}
-				if(this.filters.tags && this.filters.tags.length>0){
-					params.tagIdList=this.filters.tags.map(i=>i.tagId)
-				}
+				  
 				if(this.filters.dclasss){
 					params.dclasss=this.filters.dclasss
 				}
@@ -377,6 +314,7 @@
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false;
 						this.xmMenus = res.data.data;
+						this.setDatasToCache(this.xmMenus)
 					}else{
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					}
@@ -446,25 +384,19 @@
 				}
 				this.addForm.dclass=(parseInt(row.dclass)+1)+"";
 				this.addFormVisible=true
-			},
-			showProdcutAdd:function(){
-				this.$refs.xmProductMng.showAdd();
+			},  
+			afterEditSubmit(row){ 
+				this.editFormVisible=false;
+				var data=this.xmMenus.find(k=>k.menuId==row.menuId)
+				if(data){
+					Object.assign(data,row)
+					this.setDatasToCache(this.xmMenus)
+				}
+				//this.getXmMenus(); 
 			},
 			afterAddSubmit(row){
-				this.addFormVisible=false;
-				this.pageInfo.count=true;
-				//this.getXmMenus(); 
-				this.xmMenus.push(row); 
-				if(this.parentMenu){
-					this.parentMenu.childrenCnt=this.parentMenu.childrenCnt?this.parentMenu.childrenCnt+1:1;
-				} 
-
-				this.parentMenu=null;
-
-			},
-			afterEditSubmit(row){
-				this.editFormVisible=false;
-				//this.getXmMenus(); 
+				this.xmMenus.push(row)
+				this.setDatasToCache(this.xmMenus)
 			},
 			//选择行xmMenu
 			selsChange: function (sels) {
@@ -482,36 +414,7 @@
 				this.pageInfo.total=0;
 				//this.getXmMenus() 
 				this.$emit('product-clear')
-			},
-			onIterationSelected:function(iteration){
-				this.filters.iteration=iteration
-				this.xmMenus=[]
-				this.getXmMenus()
-			},
-			onIterationClearSelect:function(){
-				this.filters.iteration=null
-				this.xmMenus=[]
-				this.getXmMenus()
-			},
-			//删除xmMenu
-			handleDel: function (row,index) {
-				this.$confirm('确认删除该记录吗?', '提示', {
-					type: 'warning'
-				}).then(() => {
-					this.load.del=true;
-					let params = { menuId: row.menuId };
-					delXmMenu(params).then((res) => {
-						this.load.del=false;
-						var tips=res.data.tips;
-						if(tips.isOk){
-							this.pageInfo.count=true;  
-							this.getXmMenus();
-
-						}
-						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
-					}).catch( err  => this.load.del=false );
-				});
-			},
+			},  
 			//批量删除xmMenu
 			batchDel: function () {
 				if(this.sels.length==0){
@@ -657,42 +560,8 @@
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					}
 				}).catch( err  => this.load.add=false );
-			},
-
-
-
-			showTaskList(row){
-				this.editForm=row
-				this.selectTaskVisible=true;
-			},
-
-			onSelectedTasks:function(xmTasks){
-
-
-				if(xmTasks==null || xmTasks.length==0){
-					this.$notify.error("请最少选择一个任务进行关联");
-					return;
-				}
-
-				this.selectTaskVisible=false;
-				var params={
-					menuId:this.editForm.menuId,
-					taskIds:xmTasks.map(i=>i.id)
-				}
-				batchRelTasksWithMenu(params).then(res=>{
-					var tips = res.data.tips
-					if(tips.isOk){
-						//this.getXmMenus()
-					}
-					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
-				});
-			},
-
-			showTaskListForMenu(row){
-				this.editForm=row
-				this.taskListForMenuVisible=true
-			},
-
+			}, 
+ 
 			loadTasksToXmMenuState: function () {
 				
 				if(!this.filters.product ){
@@ -719,29 +588,7 @@
 					}
 					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 				}).catch( err  => this.load.edit=false );
-			},    
-			searchSubMenus(row,index){
-				this.pageInfo.count=true;
-				this.searchXmMenus();
-			},
-			clearFiltersTag(tag){
-				var index=this.filters.tags.findIndex(i=>i.tagId==tag.tagId)
-				this.filters.tags.splice(index,1);
-				this.searchXmMenus();
-			},
-			onTagSelected(tags,option){
-				if(option && option.action=='editTagIds'){
-					this.editXmMenuSomeFields(option.data,"tagIds",tags)
-				}else{
-					if (!tags || tags.length == 0) {
-						this.filters.tags=[]
-					}else{
-						this.filters.tags=tags
-					}
-					this.searchXmMenus();
-				}
-
-			},
+			},       
 			showParentMenu(){
 				if(this.filters.product && this.filters.product.id){
 					if(this.sels.length==0){
@@ -784,51 +631,7 @@
 					}
 					this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 				})
-			}, 
-			doBatchDelXmIterationMenu(){
-
-				if(!this.filters.iteration||!this.filters.iteration.id){
-					this.$notify({position:'bottom-left',showClose:true,message:"请选择一个迭代进行操作",type:'warning'})
-					return;
-				}
-				if(this.sels.length==0){
-					this.$notify({position:'bottom-left',showClose:true,message:"请选择一个或者多个需求进行操作",type:'warning'})
-					return;
-				}
-				var params={
-					menuIds:this.sels.map(i=>i.menuId),
-					iterationId:this.filters.iteration.id
-				}
-				batchDelXmIterationMenu(params).then(res=>{
-					var tips =res.data.tips;
-					if(tips.isOk){
-						this.searchXmMenus();
-					}
-					this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
-				})
-			},
-			doBatchAddXmIterationMenu(){
-				if(!this.filters.iteration||!this.filters.iteration.id){
-					this.$notify({position:'bottom-left',showClose:true,message:"请选择一个迭代进行操作",type:'warning'})
-					return;
-				}
-				if(this.sels.length==0){
-					this.$notify({position:'bottom-left',showClose:true,message:"请选择一个或者多个需求进行操作",type:'warning'})
-					return;
-				}
-				var params={
-					menuIds:this.sels.map(i=>i.menuId),
-					iterationId:this.filters.iteration.id
-				}
-				batchAddXmIterationMenu(params).then(res=>{
-					var tips =res.data.tips;
-					if(tips.isOk){
-						this.searchXmMenus();
-					}
-					this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
-
-				})
-			},
+			},   
 			calcMenuLabel(dclass){
 				var params={label:'工作项',icon:'',color:''};
 				if(dclass==='1'){
@@ -839,61 +642,8 @@
 					params={label:'用户故事',icon:'el-icon-document',color:' rgb(79, 140, 255)'};
 				}
 				return params;
-			},
-			showFieldTag(row){
-				this.editForm=row;
-				this.fieldTagVisible=true;
-			},
-			editXmMenuSomeFields(row,fieldName,$event){
-				var params={menuIds:[row.menuId]};
-				if(this.sels.length>0){
-					if(!this.sels.some(k=>k.menuId==row.menuId)){
-						this.$notify({position:'bottom-left',showClose:true,message:'请操作选中的行或者取消选中的行再操作其它行',type:'warning'})
-						return;
-					}
-					params.menuIds=this.sels.map(i=>i.menuId)
-				}
-				if(fieldName==='iterationId'){
-					if($event){
-						params[fieldName]=$event.id;
-						params.iterationName=$event.iterationName
-					}else{
-						return;
-					}
-				}else if(fieldName==='tagIds'){
-					if($event){
-						params[fieldName]=$event.map(i=>i.tagId).join(",");
-						params.tagNames=$event.map(i=>i.tagName).join(",");
-					}else{
-						return;
-					}
-				}else if(fieldName==='workload'){
-					params={...params,...$event}
-				}else if(fieldName==='mmUserid'){
-					params.mmUserid=$event[0].userid
-					params.mmUsername=$event[0].username
-				}else{
-					params[fieldName]=$event
-				}
-
-				editXmMenuSomeFields(params).then(res=>{
-					var tips = res.data.tips;
-					if(tips.isOk){
-						if(this.sels.length>0){
-							 this.sels.forEach(i=>{
-								 this.fieldTagVisible=false;
-								Object.assign(i,params)
-							 })
-						}else{
-							  Object.assign(row,params)
-						}
-						Object.assign(this.editFormBak,row)
-					}else{
-						Object.assign(this.editForm,this.editFormBak)
-						this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
-					}
-				})
-			},
+			}, 
+			 
 			cellStyleCalc({row, column, rowIndex, columnIndex}){
 				if(this.$refs.tableConfig && this.$refs.tableConfig.columnsConfig.length>0){
 					if(this.$refs.tableConfig.columnsConfig.some(i=>i.property==column.property&&i.isShow==false)){
@@ -907,9 +657,42 @@
 			}, 
 			onEditSomeFields(params){
 				Object.assign(this.editForm,params)
+				var data=this.xmMenus.find(k=>k.menuId==this.editForm.menuId)
+				if(data){
+					Object.assign(data,this.editForm)
+					this.setDatasToCache(this.xmMenus)
+				}
 			},
 			onAddSubMenu(row){
- 			}
+ 			},
+			loadDatasFirstCache(){
+				 
+				if(!this.filters.product || !this.filters.product.id){
+					return;
+				}
+				var key="xm_epic_features_cache_"+this.filters.product.id
+				var dataStr=sessionStorage.getItem(key)
+				if(dataStr && dataStr!='null' && dataStr!='undefined'){
+					this.xmMenus=JSON.parse(dataStr)
+					this.pageInfo.total=this.xmMenus.length;
+				}else{
+					this.getXmMenus();
+				}
+				
+			},
+			setDatasToCache(datas){
+				debugger;
+				if(!this.filters.product || !this.filters.product.id){
+					return;
+				}
+				var key="xm_epic_features_cache_"+this.filters.product.id
+				if(!datas || datas.length==0){
+					sessionStorage.removeItem(key)
+				}else{
+					sessionStorage.setItem(key,JSON.stringify(datas))
+				}
+				
+			}
 
 		},//end methods
 		components: {
@@ -926,17 +709,12 @@
   			initSimpleDicts("all",['menuStatus','demandSource','demandLvl','demandType','priority','dclass']).then(res=>{
 				  Object.assign(this.dicts,res.data.data) 
 			})
-			this.filters.product=this.xmProduct 
-
-			if(this.xmIteration && this.xmIteration.id){
-				this.filters.iterationFilterType='join-curr-iteration'
-				this.filters.iteration=this.xmIteration
-			}
+			this.filters.product=this.xmProduct  
 			this.$nextTick(() => {
 				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);
-				this.getXmMenus();
+				this.loadDatasFirstCache();
           });
-		}
+		}, 
 	}
 
 </script>
