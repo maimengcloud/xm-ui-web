@@ -2,18 +2,9 @@
 	<section>
 		<el-row>
 			<el-input v-model="filters.key" style="width: 60%;" placeholder="模块名称"   clearable></el-input> 
-			<span style="float:right;">
-                <el-popover
-                    placement="top-start"
-                    title="增删改模块"
-                    width="400"
-                    trigger="click" >
-                    <el-button type="primary" @click="showAdd" icon="el-icon-plus" title="添加顶级模块"> 添加顶级模块 </el-button>
-                    <el-button      @click.stop="showEdit( editForm )" icon="el-icon-edit" title="编辑"  > 编辑</el-button>    
-                    <el-button type="danger" v-loading="load.del" @click="handleDel(editForm)" :disabled=" !editForm || !editForm.id || load.del==true" icon="el-icon-delete"  >删除</el-button>
-                    <el-button slot="reference" icon="el-icon-more"></el-button> 
-                </el-popover>
-			    
+			<span style="float:right;"> 
+                    <el-button type="primary" @click="searchXmFuncs" icon="el-icon-search" title="查询"> </el-button>
+                    <el-button type="primary" @click="showAdd" icon="el-icon-plus" title="添加顶级模块">  </el-button> 
 		    </span>
 		</el-row>
 		<el-row>
@@ -26,8 +17,20 @@
 									 
 									<span> {{scope.row.name}}</span> 
  									 <div class="tool-bar"> 
-                                                    <el-button    @click.stop="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" title="新建子功能模块" circle > </el-button>
+                                        <el-popover :open-delay="500"
+                                            placement="top-start"
+                                            title="增删改"
+                                            width="400"
+                                            trigger="hover">
+                                            
+                                            <el-button  type="primary"  @click.stop="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" title="新建子功能模块" >新建子功能模块 </el-button>
+                                            <el-button      @click.stop="showEdit( scope.row,scope.$index )" icon="el-icon-edit" title="编辑">编辑</el-button> 
+                                            <el-button type="danger" v-loading="load.del" @click="handleDel(scope.row,scope.$index)"   icon="el-icon-delete"  >删除</el-button>
+  
+                                            <el-button slot="reference" icon="el-icon-setting" @click.stop></el-button>
+                                        </el-popover>
                                                     
+
                                             
                                          
 									</div>
@@ -193,6 +196,10 @@ export default {
             if(!row||!row.id){
                 this.$notify({ position:'bottom-left',showClose:true, message:"请选择一条数据再点击修改按钮", type: 'error' });
                 return;
+            }
+            if(this.editForm && row.id!=this.editForm.id){ 
+                this.$refs.xmFuncTable.setCurrentRow(row); 
+                this.$emit("row-click",row) 
             }
             this.editFormVisible = true;
             this.editForm = Object.assign({}, row);
