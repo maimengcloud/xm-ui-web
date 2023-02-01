@@ -8,15 +8,12 @@
       >
         <el-row>
           <xm-project-select style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="isTaskCenter?false:true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
-
-					<el-select style="width: 100px" v-model="filters.taskState" placeholder="状态" clearable class="hidden-md-and-down">
-									<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.taskState" :key="index"></el-option>
-          </el-select>
+          
+ 
           <el-select
             v-model="selkey"
             placeholder="场景"
-            clearable
-            @change="changeSelKey"
+            clearable 
             style="width: 100px"
           >
             <el-option class="showall" value="" label="全部场景"
@@ -38,29 +35,14 @@
               >我放弃的</el-option
             >
           </el-select>
-          <el-select
-            class="hidden-md-and-down"
-            v-model="filters.taskType"
-            placeholder="类型"
-            style="width: 100px"
-            clearable
-            @change="changeTaskType"
-          >
-            <el-option class="showall" value="" label="全部类型"
-              >全部类型</el-option
-            >
-            <el-option
-              v-for="(i, index) in dicts.taskType"
-              :value="i.id"
-              :label="i.name"
-              :key="index"
-              >{{ i.name }}</el-option
-            >
-          </el-select>
+          <mdp-select-dict class="hidden-md-and-down" placeholder="任务状态" style="width: 100px"  clearable :dict="dicts['taskState']" v-model="filters.taskState"/>
+
+          <mdp-select-dict class="hidden-md-and-down" placeholder="类型" style="width: 100px"  clearable :dict="dicts['taskType']" v-model="filters.taskType"/>
+ 
           <el-input
             style="max-width: 200px"
             v-model="filters.key" clearable
-            placeholder="计划/任务名称"
+            placeholder="任务名称"
           >
           </el-input>
           <el-button
