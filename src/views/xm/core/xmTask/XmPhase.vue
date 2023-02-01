@@ -8,7 +8,7 @@
           
           <span> 
            <xm-project-select style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="isTaskCenter?false:true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
-           <el-input style="width:150px;" v-model="filters.key" placeholder="名称 按回车"  class="hidden-md-and-down" clearable @keyup.enter.native="searchXmTasks()"></el-input>
+           <el-input style="width:50%;" v-else v-model="filters.key" placeholder="名称模糊查询"  class="hidden-md-and-down" clearable @keyup.enter.native="searchXmTasks()"></el-input>
            <span style="float:right;">
             <el-popover
               placement="top-start"
@@ -134,7 +134,14 @@
                 label="计划名称"
                 min-width="300"
               > 
-              <template slot="header">计划名称 &nbsp;<el-button type="text" @click="unselectRow()">清除选中的行</el-button></template>
+              <template slot="header"> 
+									<div style="display:flex;">
+										<div style="text-align: center;line-height: 32px;">计划名称</div>
+										&nbsp;&nbsp;
+										<el-button type="text" icon="el-icon-circle-close" @click="unselectRow()">清除选中</el-button>
+										<el-input v-if=" !selProject || !selProject.id" v-model="filters.key" style="width:50%;margin-left: auto;"  placeholder="名称模糊查询"  clearable></el-input>  
+									</div>
+              </template>
                 <template slot-scope="scope">
                   <!--
                   <div    class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#409EFF'}">
