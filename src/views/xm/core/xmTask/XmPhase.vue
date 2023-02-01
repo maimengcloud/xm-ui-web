@@ -771,7 +771,14 @@ export default {
       this.getXmTasks()
      },
     onEditSomeFields(params){
-      Object.assign(this.editForm,params )
+      Object.assign(this.editForm,params ) 
+      var data=this.xmTasks.find(k=>k.id==this.editForm.id)
+      if(data){ 
+        var dataRaw=JSON.parse(JSON.stringify(params))
+        dataRaw.children=null; 
+        Object.assign(data,dataRaw) 
+        this.setDatasToCache(this.xmTasks)
+      } 
     },
     //选择行xmTask
     selsChange: function (sels) {

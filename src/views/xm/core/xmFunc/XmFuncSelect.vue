@@ -39,7 +39,7 @@
 		<el-row>
 			<!--编辑 XmFunc 功能模块表界面-->
 			<el-dialog title="编辑模块" :visible.sync="editFormVisible"  width="500px"  append-to-body   :close-on-click-modal="false">
-			    <xm-func-edit op-type="edit" :xm-func="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-func-edit>
+			    <xm-func-edit op-type="edit" :xm-func="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit" @edit-fields="afterEditSubmit"></xm-func-edit>
 			</el-dialog>
 
 			<!--新增 XmFunc 功能模块表界面-->
@@ -81,8 +81,8 @@ export default {
     watch:{
         visible(val){
             if(val==true){
-                this.initData();
-                this.searchXmFuncs()
+                this.initData(); 
+                this.loadDatasFirstCache();
             }
         }
     },
@@ -169,6 +169,8 @@ export default {
             } 
             if(this.xmProduct && this.xmProduct.id){
                 params.productId=this.xmProduct.id
+            }else{
+                return ;
             }
 
             this.load.list = true;
@@ -178,6 +180,7 @@ export default {
                     this.pageInfo.total = res.data.total;
                     this.pageInfo.count=false;
                     this.xmFuncs = res.data.data;
+                    this.setDatasToCache(this.xmFuncs)
                 }else{
                     this.$notify({ position:'bottom-left',showClose:true, message: tips.msg, type: 'error' });
                 }
@@ -225,8 +228,16 @@ export default {
             this.pageInfo.count=true;
             this.getXmFuncs();
         },
-        afterEditSubmit(){
+        afterEditSubmit(row){
             this.editFormVisible=false;
+            Object.assign(this.editForm,row)
+            var data=this.xmFuncs.find(k=>k.id==this.editForm.id)
+            if(data){ 
+                var dataRaw=JSON.parse(JSON.stringify(row))
+                dataRaw.children=null; 
+                Object.assign(data,dataRaw)
+                this.setDatasToCache(this.xmFuncs)
+            } 
         },
         //选择行xmFunc
         selsChange: function (sels) {
@@ -253,55 +264,7 @@ export default {
                 }).catch( err  => this.load.del=false );
             });
         },
-        //批量删除xmFunc
-        batchDel: function () {
-            if(this.sels.length<=0){
-                return;
-            }
-            var params=this.sels.map(i=>{
-                return { id:i.id}
-            })
-            this.$confirm('确认删除选中记录吗？', '提示', {
-                type: 'warning'
-            }).then(() => {
-                this.load.del=true;
-                batchDelXmFunc(params).then((res) => {
-                    this.load.del=false;
-                    var tips=res.data.tips;
-                    if( tips.isOk ){
-                        this.searchXmFuncs();
-                    }
-                    this.$notify({ position:'bottom-left',showClose:true, message: tips.msg, type: tips.isOk?'success':'error'});
-                }).catch( err  => this.load.del=false );
-            });
-        },
-      editSomeFields(row,fieldName,$event){
-        let params={};
-        if(this.sels.length>0){
-          if(!this.sels.some(k=> k.id==row.id)){
-            this.$notify({position:'bottom-left',showClose:true,message:'请编辑选中的行',type:'warning'})
-            Object.assign(this.editForm,this.editFormBak)
-            return;
-          }
-            params['ids']=this.sels.map(i=>i.id)
-        }else{
-            params['ids']=[row].map(i=>i.id)
-        }
-        params[fieldName]=$event
-        var func = editSomeFieldsXmFunc
-        func(params).then(res=>{
-          let tips = res.data.tips;
-          if(tips.isOk){
-            if(this.sels.length>0){
-                this.searchXmFuncs();
-            }
-            this.editFormBak=[...this.editForm]
-          }else{
-            Object.assign(this.editForm,this.editFormBak)
-            this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
-          }
-        }).catch((e)=>Object.assign(this.editForm,this.editFormBak))
-      },
+          
         rowClick: function(row, event, column){
             this.editForm=row
             this.editFormBak={...row};
@@ -316,12 +279,41 @@ export default {
             this.$emit('row-click',null)
             this.$refs.xmFuncTable.setCurrentRow(); 
         },
+        
+        loadDatasFirstCache(){
+                
+                if(!this.xmProduct || !this.xmProduct.id){
+                    return;
+                }
+                var key="xm_func_cache_"+this.xmProduct.id
+                var dataStr=sessionStorage.getItem(key)
+                if(dataStr && dataStr!='null' && dataStr!='undefined'){
+                    this.xmFuncs=JSON.parse(dataStr)
+                    this.pageInfo.total=this.xmFuncs.length;
+                }else{
+                    this.getXmFuncs();
+                }
+                
+            },
+            setDatasToCache(datas){
+                debugger;
+                if(!this.xmProduct || !this.xmProduct.id){
+                    return;
+                }
+                var key="xm_func_cache_"+this.xmProduct.id
+                if(!datas || datas.length==0){
+                    sessionStorage.removeItem(key)
+                }else{
+                    sessionStorage.setItem(key,JSON.stringify(datas))
+                }
+                
+            }
     },//end methods
     mounted() {
         this.$nextTick(() => {
             initDicts(this);
             this.initData()
-            this.searchXmFuncs();
+            this.loadDatasFirstCache();
             this.maxTableHeight = util.calcTableMaxHeight(this.$refs.xmFuncTable.$el)
 
         });

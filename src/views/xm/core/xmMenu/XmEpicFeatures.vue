@@ -658,8 +658,10 @@
 			onEditSomeFields(params){
 				Object.assign(this.editForm,params)
 				var data=this.xmMenus.find(k=>k.menuId==this.editForm.menuId)
-				if(data){
-					Object.assign(data,this.editForm)
+				if(data){ 
+					var dataRaw=JSON.parse(JSON.stringify(params))
+					dataRaw.children=null; 
+					Object.assign(data,dataRaw) 
 					this.setDatasToCache(this.xmMenus)
 				}
 			},

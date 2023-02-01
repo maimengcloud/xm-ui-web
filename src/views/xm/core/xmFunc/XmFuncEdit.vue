@@ -137,6 +137,7 @@
                   let tips = res.data.tips;
                   if(tips.isOk){
                     this.editFormBak=[...this.editForm]
+					this.$emit("edit-fields",this.editForm)
                   }else{
                     Object.assign(this.editForm,this.editFormBak)
                     this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
