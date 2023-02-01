@@ -74,7 +74,10 @@
 			]),
 
       		xmMenusTreeData() {
-				let xmMenus = JSON.parse(JSON.stringify(this.xmMenus || []));
+				let xmMenus = JSON.parse(JSON.stringify(this.xmMenus || [])); 
+				if(this.filters.key){
+					xmMenus=xmMenus.filter(k=>k.menuName.indexOf(this.filters.key)>=0)
+				}
 				let xmMenusTreeData = treeTool.translateDataToTree(xmMenus,"pmenuId","menuId");
 				 return xmMenusTreeData;
 			}, 
