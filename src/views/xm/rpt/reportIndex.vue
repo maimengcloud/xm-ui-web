@@ -82,7 +82,11 @@
                 <xm-test-plan-case-user-dist  v-if="showRptRef=='xmTestPlanCaseUserDist'" :category="filters.category" ref="xmTestPlanCaseUserDist" :xm-product="xmProduct" :xm-project="xmProject" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan" :xm-iteration="xmIteration"></xm-test-plan-case-user-dist>
                 <xm-test-day-times-calc  v-if="showRptRef=='xmTestDayTimesCalc'" :category="filters.category" ref="xmTestDayTimesCalc" :xm-product="xmProduct" :xm-project="xmProject" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan" :xm-iteration="xmIteration"></xm-test-day-times-calc>
                 <xm-test-case-to-plan-calc  v-if="showRptRef=='xmTestCaseToPlanCalc'" :category="filters.category" ref="xmTestCaseToPlanCalc" :xm-product="xmProduct" :xm-project="xmProject" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan" :xm-iteration="xmIteration"></xm-test-case-to-plan-calc>
-                
+                <xm-test-case-sort key="xmTestCaseSort"  v-if="showRptRef=='xmTestCaseSort'" :category="filters.category" ref="xmTestCaseSort" :xm-product="xmProduct" :xm-project="xmProject" :xm-test-casedb="xmTestCasedb" :xm-iteration="xmIteration"/>
+                <xm-test-case-sort key="xmTestCaseCuserSort" v-if="showRptRef=='xmTestCaseCuserSort'" init-group-by="cuserid" :category="filters.category" ref="xmTestCaseSort" :xm-product="xmProduct" :xm-project="xmProject" :xm-test-casedb="xmTestCasedb" :xm-iteration="xmIteration"/>
+                <xm-test-case-sort key="xmTestCaseFuncSort" v-if="showRptRef=='xmTestCaseFuncSort'" init-group-by="func_id" :category="filters.category" ref="xmTestCaseSort" :xm-product="xmProduct" :xm-project="xmProject" :xm-test-casedb="xmTestCasedb" :xm-iteration="xmIteration"/>
+                <xm-test-case-sort key="xmTestCaseMenuSort" v-if="showRptRef=='xmTestCaseMenuSort'" init-group-by="menu_id" :category="filters.category" ref="xmTestCaseSort" :xm-product="xmProduct" :xm-project="xmProject" :xm-test-casedb="xmTestCasedb" :xm-iteration="xmIteration"/>
+
                 <!--企业级报表-->
                 <xm-branch-question-day-trend  v-if="showRptRef=='xmBranchQuestionDayTrend'" :category="filters.category" ref="xmBranchQuestionDayTrend" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-branch-question-day-trend>
                 <xm-branch-question-day-accumulate  v-if="showRptRef=='xmBranchQuestionDayAccumulate'" :category="filters.category" ref="xmBranchQuestionDayAccumulate" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-branch-question-day-accumulate>
@@ -135,6 +139,7 @@
 	import xmTestPlanCaseUserDist from './testPlan/testPlanCaseUserDist'
 	import xmTestDayTimesCalc from './testPlan/testDayTimesCalc'
 	import xmTestCaseToPlanCalc from './testPlan/testCaseToPlanCalc'
+	import xmTestCaseSort from './testCase/testCaseSort'
 
     
     import xmIterationMenuDayTrend from './iteration/menuDayTrend'
@@ -168,7 +173,8 @@
             xmTestPlanCaseExecStatusDist,xmTestPlanCaseUserDist,xmQuestionRetestDist,xmQuestionStateDist,
             xmQuestionAskUserSort,xmQuestionHandlerUserSort,xmQuestionFuncSort,xmQuestionMenuSort,xmTestDayTimesCalc,xmTestCaseToPlanCalc,
 
-            xmBranchWorkItemDayList,xmBranchQuestionDayTrend,xmBranchQuestionDayAccumulate,xmBranchMenuDayTrend,xmBranchMenuDayAccumulate
+            xmBranchWorkItemDayList,xmBranchQuestionDayTrend,xmBranchQuestionDayAccumulate,xmBranchMenuDayTrend,xmBranchMenuDayAccumulate,
+            xmTestCaseSort,
         
         },
         props:['xmProduct','xmIteration','xmProject','xmTestCasedb','xmTestPlan','category'],
@@ -251,9 +257,12 @@
                     {isChecked:false,rptName:'项目结算工时每月趋势',category:'项目级',ref:'xmProjectWorkloadSetMonthList',desc:'统计项目每月登记工时、结算工时数量分布情况',img:datasetLink  },
 
 
-                    //测试级报表 
+                    //测试级报表  
                     {isChecked:false,rptName:'测试用例规划分析',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmTestCaseToPlanCalc',desc:'显示用例被规划到测试计划中的次数统计',img:pieSimple  },
- 
+                    {isChecked:false,rptName:'测试用例需求覆盖分析',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmTestCaseMenuSort',desc:'统计测试用例需求覆盖情况',img:bar  },
+                    {isChecked:false,rptName:'测试用例模块覆盖分析',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmTestCaseFuncSort',desc:'统计测试用例覆盖各个模块的情况',img:bar  },
+                    {isChecked:false,rptName:'测试用例负责人排行榜',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmTestCaseCuserSort',desc:'统计测试团队每个人负责的测试用例数并进行排序',img:bar  },
+
                     {isChecked:false,rptName:'测试用例执行状态分布',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmTestPlanCaseExecStatusDist',desc:'按测试用例执行结果统计，通过、失败、忽略、阻塞',img:pieSimple  },
                     {isChecked:false,rptName:'测试用例执行用户分布',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmTestPlanCaseUserDist',desc:'统计测试用例负责人用例执行情况',img:bar  },
                     {isChecked:false,rptName:'缺陷回归分布',category:'测试级,项目级,产品级,迭代级,企业级',ref:'xmQuestionRetestDist',desc:'统计项目中缺陷在回归测试中分布情况，跟踪缺陷的重新打开率；',img:pieSimple  },

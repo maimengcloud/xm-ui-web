@@ -10,7 +10,7 @@
 				<el-col :span="6" class="border">
 					<el-form :model="filters" class="padding" :style="{width:'100%',maxHeight:maxTableHeight+'px',overflow: 'auto'}" ref="filtersRef">
 						<el-form-item label="分组属性">
-							<el-select   v-model="groupBy"  @change="onXmQuestionSomeFieldsChange('groupBy',$event)" clearable>
+							<el-select   v-model="groupBy"  @change="onXmQuestionSomeFieldsChange('groupBy',$event)">
 									<el-option v-for="i in this.groupBys" :label="i.name" :key="i.id" :value="i.id"></el-option>
 								</el-select>
 							</el-form-item>       
@@ -97,6 +97,7 @@
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询  
 	import { mapGetters } from 'vuex'	 
 	  
+	import {formatterLabel} from '@/api/xm/rpt.js';//全局公共库
 	import { getXmQuestionSort } from '@/api/xm/core/xmQuestion';
 	
 	import  XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';//项目选择
@@ -255,7 +256,10 @@
 						calculable: true,
 						xAxis: {
 							type: 'category',
-							data: this.legendCpd
+							data: this.legendCpd,
+							axisLabel: {
+								formatter:  formatterLabel
+							}
 						},
 						yAxis: { 
 							type: 'value'
@@ -340,7 +344,19 @@
 					params.orderBy = orderBys.join(",");
 				}
 				getXmQuestionSort(params).then(res=>{
-					this.xmQuestionSorts=res.data.data
+					var data=res.data.data
+					if(data){
+						data.sort((a,b)=>{
+							if(a.value<b.value){
+								return 1
+							}else if(a.value>b.value){
+								return -1
+							}else{
+								return 0
+							}
+						})
+					}
+					this.xmQuestionSorts=data
 				})
 				
 			},

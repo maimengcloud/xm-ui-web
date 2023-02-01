@@ -30,6 +30,8 @@ export const addXmTestCase = params => { return axios.post(`${base}/xm/core/xmTe
 //批量修改某些字段
 export const editSomeFieldsXmTestCase = params => { return axios.post(`${base}/xm/core/xmTestCase/editSomeFields`, params); };
 
+//测试用例排行榜
+export const getXmTestCaseSort = params => { return axios.get(`${base}/xm/core/xmTestCase/getXmTestCaseSort`, { params: params }); };
 
 
 /**-------------------------前端mng|add|edit界面公共函数---------------请写在下面----------------------------------------------- */
