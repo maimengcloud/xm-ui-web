@@ -204,9 +204,6 @@
 							data: ['未开始', '执行中', '已完成', '已关闭']
 						},
 						grid: {
-							left: '3%',
-							right: '4%',
-							bottom: '3%',
 							containLabel: true
 						}, 
 						xAxis: {
