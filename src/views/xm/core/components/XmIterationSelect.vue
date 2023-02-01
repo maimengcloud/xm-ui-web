@@ -471,5 +471,6 @@
 	text-align: left;
 	float: left; 
 	min-width: 100px;
+  	cursor: pointer;
 }
 </style>

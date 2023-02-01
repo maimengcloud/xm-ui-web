@@ -542,6 +542,7 @@ export default {
   line-height: 32px;
   text-align: left;
   float: left; 
-  min-width: 100px;  
+  min-width: 100px;   
+  cursor: pointer;
 }
 </style>
