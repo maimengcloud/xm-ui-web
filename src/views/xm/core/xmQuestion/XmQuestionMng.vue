@@ -4,18 +4,12 @@
 				<xm-product-select v-if="!xmProduct&&!xmIteration" style="display:inline;" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" @clear="clearProduct"></xm-product-select>
 			  	<xm-project-select v-if="!selProject" style="display:inline;" ref="xmProjectSelect" :auto-select="false" :link-product-id="xmProduct?xmProduct.id:null" @row-click="onProjectConfirm" @clear="clearProject"></xm-project-select>
 
-				  <el-select v-model="filters.bugStatus" placeholder="状态" style="width:100px;"  clearable @change="changeBugStatus">
-					<el-option v-for="(b,index) in dicts['bugStatus']" :value="b.id"  :key="index" :label="b.name">{{b.name}}
-					</el-option>
-				</el-select>
-				<el-select class="hidden-md-and-down" v-model="filters.priority" placeholder="优先级"  style="width:120px;"  clearable @change="changePriority">
-					<el-option v-for="(b,index) in dicts['priority']" :value="b.id" :key="index" :label="b.name">{{b.name}}
-					</el-option>
-				</el-select>
-				<el-select class="hidden-md-and-down" v-model="filters.bugSeverity" placeholder="严重程度"  style="width:120px;" clearable @change="changeBugSeverity">
-					<el-option v-for="(b,index) in dicts['bugSeverity']" :value="b.id" :key="index" :label="b.name">{{b.name}}
-					</el-option>
-				</el-select>
+				<mdp-select-dict v-model="filters.bugStatus" placeholder="状态" style="width:120px;"  clearable :dict="dicts['bugStatus']"/> 
+ 
+				<mdp-select-dict class="hidden-md-and-down" v-model="filters.priority" placeholder="优先级"  style="width:120px;"  clearable  :dict="dicts['priority']"/>
+ 
+				<mdp-select-dict class="hidden-md-and-down" v-model="filters.bugSeverity" placeholder="严重程度"  style="width:120px;" clearable  :dict="dicts['bugSeverity']"/>
+ 
 				
 				<el-button v-if="!filters.tags||filters.tags.length==0" @click.native="$refs.tagDialog.open()">标签</el-button>
 				<el-tag v-else @click="$refs.tagDialog.open()"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
@@ -64,17 +58,11 @@
 						<el-row>
 							<el-col :span="12">
 							<font class="more-label-font">优先级:</font>  
-							<el-select   v-model="filters.priority" placeholder="请选择优先级" clearable style="width:200px;">
-								<el-option v-for="(b,index) in dicts['priority']" :value="b.id" :key="index" :label="b.name">{{b.name}}
-								</el-option>
-							</el-select>
+								<mdp-select-dict   v-model="filters.priority" placeholder="请选择优先级" clearable style="width:200px;" :dict="dicts['priority']"/> 
 							</el-col>  
 							<el-col :span="12">
 							<font class="more-label-font">解决方案:</font>  
-							<el-select  v-model="filters.solution" placeholder="请选择解决方案" clearable style="width:200px;">
-								<el-option v-for="(b,index) in dicts['bugSolution']" :value="b.id" :key="index" :label="b.name">{{b.name}}
-								</el-option>
-							</el-select>
+								<mdp-select-dict  v-model="filters.solution" placeholder="请选择解决方案" clearable style="width:200px;" :dict="dicts['bugSolution']"/> 
 							</el-col>  
 						</el-row>
 						<el-row>

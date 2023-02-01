@@ -5,12 +5,10 @@
 					<el-row>
 						<xm-product-select ref="xmProductSelect1" style="display:inline;" v-if="(!xmProduct||!xmProduct.id)&&(!xmIteration||!xmIteration.id)"   :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClearSelect"></xm-product-select>
 
-						<el-select   v-model="filters.priority" placeholder="优先级"  clearable style="width: 100px;">
-								<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option>
-						</el-select>
-						<el-select v-model="filters.status" placeholder="需求状态" clearable style="width: 100px;">
-							<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.menuStatus" :key="index"></el-option>
-						</el-select>
+						<mdp-select-dict v-model="filters.priority" placeholder="优先级"  clearable style="width: 100px;" :dict="dicts['priority']">
+ 						</mdp-select-dict>
+						<mdp-select-dict v-model="filters.status" placeholder="需求状态" clearable style="width: 100px;" :dict="dicts['menuStatus']">
+ 						</mdp-select-dict>
 						<el-input v-model="filters.key" style="max-width: 200px;" placeholder="需求名称查询" clearable>
 						</el-input>
 						<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search"></el-button>

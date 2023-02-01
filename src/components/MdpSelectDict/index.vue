@@ -40,7 +40,10 @@
         }
     },
     props: {
-      placeholder:'请选择',
+      placeholder:{
+        type:String,
+            default:"请选择",
+      },
         clearable:{
             type:Boolean,
             default:false,

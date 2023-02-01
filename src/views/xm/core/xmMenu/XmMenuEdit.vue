@@ -192,13 +192,13 @@
 								<el-input type="textarea" :autosize="{ minRows: 6, maxRows: 20}" v-model="editForm.remark"  @change="editXmMenuSomeFields(editForm,'remark',editForm.remark)" placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划" ></el-input>
 							</el-form-item> 
 						</el-tab-pane>
-						<el-tab-pane :label="'子工作项( '+subWorkitemCpd+' )'" name="6">
+						<el-tab-pane :label="'子工作项( '+(subWorkitemCpd?subWorkitemCpd:0)+' )'" name="6">
 							 <xm-sub-work-item v-if="this.activateTabPaneName=='6'" :parent-xm-menu="editForm" :link-project-id="selProject?selProject.id:null" @sub-work-item-num="setSubWorkItemNum" @add-sub-menu="onAddSubMenu"></xm-sub-work-item>
 						</el-tab-pane> 
-						<el-tab-pane :label="'测试用例('+editForm.testCases+')'" name="62">
+						<el-tab-pane :label="'测试用例('+(editForm.testCases?editForm.testCases:0)+')'" name="62">
 							 <xm-test-case-mng  v-if="activateTabPaneName=='62'" :xm-product="{id:editForm.productId,productName:editForm.productName}" :xm-menu="editForm"></xm-test-case-mng>
 						</el-tab-pane>
-						<el-tab-pane :label="'缺陷('+editForm.bugCnt+')'" name="63"> 
+						<el-tab-pane :label="'缺陷('+(editForm.bugCnt?editForm.bugCnt:0)+')'" name="63"> 
 							<xm-question-mng v-if="activateTabPaneName=='63'" :xm-product="editForm.productId?{id:editForm.productId,productName:editForm.productName}:null" :xm-menu="editForm"></xm-question-mng>
 						</el-tab-pane>
 						<el-tab-pane label="成本" name="3">
