@@ -9,9 +9,9 @@
                 <el-row>
                     <el-input v-model="filters.key" style="width: 20%;" placeholder="名称 按回车" @keyup.enter.native="searchXmTestCases" clearable></el-input>
                     
-                    <el-select v-model="filters.caseStatus" style="width:120px;" placeholder="审核状态"  clearable>
-                        <el-option v-for="(item,index) in dicts['testCaseStatus']" :key="index" :value="item.id" :label="item.name"></el-option>
-                    </el-select>
+                    <mdp-select-dict placeholder="用例状态" style="width:15%;" clearable :dict="dicts['testCaseStatus']" v-model="filters.caseStatus" effect="dark"></mdp-select-dict> 
+                    <mdp-select-dict placeholder="测试方式" style="width:15%;" clearable :dict="dicts['testType']" v-model="filters.testType" effect="dark"></mdp-select-dict> 
+
                     <el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestCases" icon="el-icon-search">查询</el-button>
                     <span style="float:right;">
                         <el-button type="primary" @click="showAdd" icon="el-icon-plus">用例</el-button>
@@ -40,7 +40,13 @@
                             <template slot-scope="scope"> 
                                 <mdp-select-dict-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts['testCaseStatus']" v-model="scope.row.caseStatus" effect="dark" @change="editSomeFields(scope.row,'caseStatus',$event)"></mdp-select-dict-tag> 
                             </template>
-                        </el-table-column>      
+                        </el-table-column>   
+                        
+                        <el-table-column prop="testType" label="测试方式" min-width="120" show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <mdp-select-dict-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts['testType']" v-model="scope.row.testType" effect="dark" @change="editSomeFields(scope.row,'testType',$event)"></mdp-select-dict-tag> 
+                            </template>
+                        </el-table-column>    
                         <el-table-column prop="funcName" label="模块" min-width="150" show-overflow-tooltip>
                             <template slot-scope="scope">
                                 <span> {{scope.row.funcName}} </span>
@@ -124,6 +130,7 @@ export default {
                 key: '',
                 xmFunc:null,
                 caseStatus:'',
+                testType:'',
             },
             xmTestCases: [],//查询结果
             pageInfo:{//分页数据

@@ -671,8 +671,13 @@
 				params.funcName=xmTestPlanCase.funcName 
 				params.menuId=xmTestPlanCase.menuId
 				params.menuName=xmTestPlanCase.menuName  
-				params.opStep=xmTestPlanCase.testStep
-				params.name=xmTestPlanCase.caseName
+				if(!this.editForm.opStep){
+					params.opStep=xmTestPlanCase.testStep
+				}
+				if(!this.editForm.name){
+					params.name=xmTestPlanCase.caseName
+				}
+				
 				params.projectId=xmTestPlanCase.projectId 
 				Object.assign(this.editForm,params)
 				this.editXmQuestionSomeFields(this.editForm,"caseId",params)

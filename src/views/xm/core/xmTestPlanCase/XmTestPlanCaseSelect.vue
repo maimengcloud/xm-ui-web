@@ -7,8 +7,10 @@
             </el-col>
             <el-col :span="(xmTestCase&&xmTestCase.id)?24:18">
                 <el-row>
-                    <el-input v-model="filters.key" style="width:30%;" placeholder="模糊查询"  clearable></el-input>
-                    <el-input v-model="filters.caseId" style="width:20%;" placeholder="用例编号"  clearable></el-input>
+                    <el-input v-model="filters.key" style="width:20%;" placeholder="模糊查询"  clearable></el-input>
+                     <mdp-select-dict style="width:20%;" placeholder="用例状态" clearable :dict="dicts['testCaseStatus']" v-model="filters.caseStatus" effect="dark"></mdp-select-dict> 
+                    <mdp-select-dict style="width:20%;" placeholder="执行结果" clearable :dict="dicts['testStepTcode']" v-model="filters.execStatus" effect="dark"></mdp-select-dict> 
+
                     <el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestPlanCases" icon="el-icon-search">查询</el-button> 
                 </el-row>
                 <el-row>
@@ -21,10 +23,14 @@
                         </el-table-column>
                         -->       
                         
-                        <el-table-column prop="planId" label="测试计划" width="150" sortable> 
-                        </el-table-column>	                  
+              
                         <el-table-column prop="caseName" label="用例名称" min-width="250"> 
-                        </el-table-column>	    
+                            <template slot-scope="scope"> 
+                                <span :title="'归属测试计划'+scope.row.planId">{{ scope.row.caseName }}</span>
+                             </template>
+                        </el-table-column>	
+                        <el-table-column prop="planId" label="测试计划" width="150" sortable> 
+                        </el-table-column>	        
                         <el-table-column prop="caseStatus" label="用例状态" width="100" show-overflow-tooltip>
                             <template slot-scope="scope"> 
                                 <mdp-select-dict-tag :dict="dicts['testCaseStatus']" v-model="scope.row.caseStatus" effect="dark" :disabled="true"></mdp-select-dict-tag> 
@@ -107,6 +113,10 @@ export default {
             filters: {
                 key: '',
                 xmFunc:null,
+                caseStatus:'',
+                execStatus:''
+
+
             },
             xmTestPlanCases: [],//查询结果
             pageInfo:{//分页数据
@@ -186,6 +196,12 @@ export default {
             }
             if(this.filters.key){
                 params.key=this.filters.key
+            }
+            if(this.filters.caseStatus){
+                params.caseStatus=this.filters.caseStatus
+            }
+            if(this.filters.execStatus){
+                params.execStatus=this.filters.execStatus
             }
             if(this.xmTestCasedb && this.xmTestCasedb.id){
                 params.casedbId=this.xmTestCasedb.id

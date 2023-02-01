@@ -2,6 +2,10 @@
 	<section class="page-container border padding">
 		<el-row>
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"  clearable></el-input>
+            <mdp-select-dict style="width:15%;" clearable placeholder="状态" :dict="dicts['testPlanStatus']" v-model="filters.status" effect="dark"></mdp-select-dict> 
+
+            <mdp-select-dict style="width:15%;" clearable placeholder="结果" :dict="dicts['testPlanTcode']" v-model="filters.tcode" effect="dark" ></mdp-select-dict> 
+
 			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestPlans" icon="el-icon-search">查询</el-button>
 			<span style="float:right;">
 			    <el-button type="primary" @click="showAdd" icon="el-icon-plus">测试计划</el-button>
@@ -122,7 +126,9 @@ export default {
     data() {
         return {
             filters: {
-                key: ''
+                key: '',
+                status:'',
+                tcode:'',
             },
             xmTestPlans: [],//查询结果
             pageInfo:{//分页数据
@@ -203,7 +209,12 @@ export default {
             if(this.filters.key){
                 params.key=this.filters.key
             }
-
+            if(this.filters.tcode){
+                params.tcode=this.filters.tcode
+            }
+            if(this.filters.status){
+                params.status=this.filters.status
+            }
             if(this.xmTestCasedb && this.xmTestCasedb.id){
                 params.casedbId=this.xmTestCasedb.id
             }

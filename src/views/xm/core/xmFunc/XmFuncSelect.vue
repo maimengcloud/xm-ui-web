@@ -1,7 +1,7 @@
 <template>
 	<section>
 		<el-row>
-			<el-input v-model="filters.key" style="width: 60%;" placeholder="模块名称 按回车" @keyup.enter.native="searchXmFuncs" clearable></el-input> 
+			<el-input v-model="filters.key" style="width: 60%;" placeholder="模块名称"   clearable></el-input> 
 			<span style="float:right;">
                 <el-popover
                     placement="top-start"
@@ -34,7 +34,7 @@
   								</template> 
 							</el-table-column> 
 			</el-table>
-			<el-pagination  layout="total,sizes,prev,next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
+			<el-pagination  layout="total,prev,next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 		</el-row>
 		<el-row>
 			<!--编辑 XmFunc 功能模块表界面-->
@@ -71,6 +71,9 @@ export default {
 
         xmFuncsTreeData() {
             let xmFuncs = JSON.parse(JSON.stringify(this.xmFuncs || []));
+            if(this.filters.key){
+                xmFuncs=xmFuncs.filter(k=>k.name.indexOf(this.filters.key)>=0)
+            } 
             let xmFuncsTreeData = treeTool.translateDataToTree(xmFuncs,"pid","id");
                 return xmFuncsTreeData;
         },
@@ -163,10 +166,7 @@ export default {
                     orderBys.push(this.pageInfo.orderFields[i]+" "+this.pageInfo.orderDirs[i])
                 }
                 params.orderBy= orderBys.join(",")
-            }
-            if(this.filters.key){
-                params.key=this.filters.key
-            }
+            } 
             if(this.xmProduct && this.xmProduct.id){
                 params.productId=this.xmProduct.id
             }

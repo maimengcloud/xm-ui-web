@@ -51,7 +51,7 @@ export const importFromTestCase = params => { return axios.post(`${base}/xm/core
 /**-------------------------前端mng|add|edit界面公共函数---------------请写在下面----------------------------------------------- */
 //初始化页面上的字典
 export const initDicts = (that) => {
- var itemCodes=['testPlanStatus','testPlanTcode','testStepTcode','priority','testCaseStatus','caseType'];//在此添加要加载的字典 如['sex','grade','lvl']
+ var itemCodes=['testPlanStatus','testPlanTcode','testStepTcode','priority','testCaseStatus','caseType','testType'];//在此添加要加载的字典 如['sex','grade','lvl']
  if(itemCodes.length>0){
     initSimpleDicts('all',itemCodes).then(res=>{
         Object.assign(that.dicts,res.data.data)

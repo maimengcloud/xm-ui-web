@@ -1,5 +1,5 @@
 <template>   
-    <el-select class="my-select" ref="selectRef" v-model="myVal" @change="onChange" :clearable="clearable" @visible-change="$emit('visible-change',$event)" @focus="$emit('focus',$event)" @blur="$emit('blur',$event)" @clear="$emit('blur',$event)" @click="$emit('click',$event)">
+    <el-select :placeholder="placeholder" class="my-select" ref="selectRef" v-model="myVal" @change="onChange" :clearable="clearable" @visible-change="$emit('visible-change',$event)" @focus="$emit('focus',$event)" @blur="$emit('blur',$event)" @clear="$emit('blur',$event)" @click="$emit('click',$event)">
         <slot>
             <el-option :style="styleObj" v-for="(item,index) in dict" :key="index" :value="item.id" :label="item.name"> 
              <slot :item="item" :dict="dict"> 
@@ -40,6 +40,7 @@
         }
     },
     props: {
+      placeholder:'请选择',
         clearable:{
             type:Boolean,
             default:false,
