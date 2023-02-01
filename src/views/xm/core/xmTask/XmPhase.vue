@@ -262,10 +262,7 @@
         @cancel="addFormVisible = false"
         @submit="afterAddSubmit"
       ></xm-task-add>
-    </el-dialog>
- 
- 			<tag-dialog ref="tagDialog"   @select-confirm="onTagSelected">
-			</tag-dialog>
+    </el-dialog> 
     <!-- <el-drawer :title="'技能要求——'+currTaskName" :visible.sync="skillVisible"  size="80%" append-to-body  :close-on-click-modal="false">
 			<xm-skill-mng :visible="skillVisible" :task-id="currTaskId" :task-name="currTaskName"></xm-skill-mng>
 		</el-drawer> -->
@@ -283,11 +280,7 @@
         :is-select="true"
         @select-confirm="onTaskTemplatesSelected"
       ></xm-task-template-mng>
-    </el-drawer>
-  
-
- 			<xm-group-dialog ref="xmGroupDialog" :isSelectSingleUser="true" :sel-project="filters.selProject" :xm-product="filters.xmProduct" @user-confirm="selectCreateUserConfirm">
-			</xm-group-dialog>  
+    </el-drawer> 
      
     <el-dialog title="选择新的上级计划" append-to-body :visible.sync="selectParentTaskVisible" width="60%" top="20px">
       <xm-phase-select :sel-project="filters.selProject" @select="onSelectedParentTask"></xm-phase-select>
@@ -405,7 +398,7 @@ export default {
     xmIteration: function () { 
     }, 
     toSearchCpd:function(){ 
-      this.searchXmTasks();
+      this.loadDatasFirstCache();
     }
   },
   data() { 
@@ -549,11 +542,7 @@ export default {
       })
     }, 
 
-    ...util,
-    changeTaskType(index) {
-      this.filters.taskType = index;
-      this.getXmTasks();
-    },
+    ...util, 
     handleSizeChange(pageSize) {
       this.pageInfo.pageSize = pageSize;
       this.getXmTasks();
@@ -561,19 +550,7 @@ export default {
     handleCurrentChange(pageNum) {
       this.pageInfo.pageNum = pageNum;
       this.getXmTasks();
-    },
-    showProjectInfo(row) {
-      this.editForm = row;
-      this.projectInfoVisible = true;
-    }, 
-    clearFiltersCreateUser() {
-      this.filters.createUser = null;
-      this.searchXmTasks();
-    },
-    clearFiltersExecutor() {
-      this.filters.executor = null;
-      this.searchXmTasks();
-    }, 
+    },   
     // 表格排序 obj.order=ascending/descending,需转化为 asc/desc ; obj.prop=表格中的排序字段,字段驼峰命名
     sortChange(obj) {
       if (obj.order == null) {
@@ -641,6 +618,7 @@ export default {
             this.pageInfo.count = false;
             var xmTasks = res.data.data;
             this.xmTasks = xmTasks;
+            this.setDatasToCache(this.xmTasks)
             if (this.editForm != null) {
               var index = this.xmTasks.findIndex(
                 (i) => i.id == this.editForm.id
@@ -779,8 +757,7 @@ export default {
       this.addFormVisible = true;
     },
     afterAddSubmit(row) {
-      this.addFormVisible = false;
-      this.pageInfo.count = true;
+      this.addFormVisible = false; 
         this.getXmTasks()
      },
     afterEditSubmit() {
@@ -799,31 +776,7 @@ export default {
     //选择行xmTask
     selsChange: function (sels) {
       this.sels = sels;
-    },
-    //删除xmTask
-    handleDel: function (row, index) {
-      this.$confirm("确认删除该记录吗?", "提示", {
-        type: "warning",
-      }).then(() => {
-        this.load.del = true;
-        let params = Object.assign({}, row);
-        delXmTask(params)
-          .then((res) => {
-            this.load.del = false;
-            var tips = res.data.tips;
-            if (tips.isOk) {
-              this.pageInfo.count = true;
-              this.getXmTasks()
-             }
-            this.$notify({
-              showClose: true,
-              message: tips.msg,
-              type: tips.isOk ? "success" : "error",
-            });
-          })
-          .catch((err) => (this.load.del = false));
-      });
-    },
+    }, 
     //批量删除xmTask
     batchDel: function () {
       if(this.sels.length==0){
@@ -858,29 +811,7 @@ export default {
       this.editForm = row; 
       this.editFormBak=Object.assign({},row) 
       this.$emit('row-click',row,);//  @row-click="rowClick"
-    }, 
-    selectVisible(row,visible){
-      if(visible==true){ 
-        this.$refs.table.setCurrentRow(row);  
-        this.editForm = row; 
-        this.editFormBak=Object.assign({},row) 
-        this.$emit('row-click',row,);//  @row-click="rowClick"
-      }
-    }, 
-    showSkill(row) {
-      this.editForm = row;
-      this.skillVisible = true;
-    },
-    showSkillSelect() {
-      this.showSkillSearchVisible = true;
-    },
-     
-    skillTagClear(skill) {
-      this.filters.skillTags = this.filters.skillTags.filter(
-        (i) => i.skillId != skill.skillId
-      );
-      this.searchXmTasks();
-    },
+    },  
       
     onTaskTemplatesSelected(taskTemplates) {
 
@@ -978,66 +909,19 @@ export default {
     },      
     onProductSelected(product) {
       this.filters.product = product;
-      this.productSelectVisible = false;
-      this.searchXmTasks();
+      this.productSelectVisible = false; 
     },
     onProjectRowClick: function (project) {
       this.filters.selProject = project;
       this.projectVisible=false;
       this.$emit("project-row-click",project)
-      this.searchXmTasks();
+      this.loadDatasFirstCache();
     },
     onProjectClear(){
       this.filters.selProject=null;
       this.projectVisible=false;
-      this.xmTasks=[]
-      this.searchXmTasks();
-    },   
-    //查询时选择责任人
-    selectCreateUserConfirm(groupUsers,option) { 
-      if(option && option.action==='createUserid'){
-        if (groupUsers && groupUsers.length > 0) {
-          var user= groupUsers[0];
-          this.editXmTaskSomeFields(option.data,option.action,user)
-        }  
-      }else if(option.action=='filtersCreateUserid'){
-        if (groupUsers && groupUsers.length > 0) {
-          this.filters.createUser = groupUsers[0];
-        } else {
-          this.filters.createUser = null;
-        }
-        this.searchXmTasks(); 
-      }else{
-        if (groupUsers && groupUsers.length > 0) {
-          this.filters.executor = groupUsers[0];
-        } else {
-          this.filters.executor = null;
-        }
-        this.searchXmTasks(); 
-      }
-      
-    }, 
-    setFiltersCreateUserAsMySelf() {
-      this.filters.createUser = this.userInfo;
-      this.searchXmTasks();
-    },
-    setFiltersExecutorAsMySelf() {
-      this.filters.executor = this.userInfo;
-      this.searchXmTasks();
-    },    
-    onTagSelected(tags,option){
-				if(option && option.action=='editTagIds'){
-					this.editXmTaskSomeFields(option.data,"tagIds",tags)
-				}else{
-					if (!tags || tags.length == 0) {
-						this.filters.tags=[]
-					}else{
-						this.filters.tags=tags
-					}
-					this.searchXmTasks();
-				}
-
-			},
+      this.xmTasks=[] 
+    },       
     getParams(params) {
 
       if (this.dateRanger && this.dateRanger.length == 2) {
@@ -1117,60 +1001,7 @@ export default {
 
     },
     
-			editXmTaskSomeFields(row,fieldName,$event){
-				var params={ids:[row.id]};
-				if(this.sels.length>0){
-					if(!this.sels.some(k=>k.id==row.id)){
-						this.$notify({position:'bottom-left',showClose:true,message:'请操作选中的行或者取消选中的行再操作其它行',type:'warning'})
-						return;
-					}
-					params.ids=this.sels.map(i=>i.id)
-				}
-				if(fieldName==='menuId'){
-					if($event){
-						params[fieldName]=$event.menuId;
-						params.menuName=$event.menuName
-            params.productId=$event.productId
-					}else{
-						return;
-					}
-				}else if(fieldName==='tagIds'){
-					if($event){
-						params[fieldName]=$event.map(i=>i.tagId).join(",");
-						params.tagNames=$event.map(i=>i.tagName).join(",");
-					}else{
-						return;
-					}
-				}else if(fieldName==='workload'){
-					params={...params,...$event}
-				}else if(fieldName==='executorUserid'){
-					params.executorUserid=$event[0].userid
-					params.executorUsername=$event[0].username
-				}else if(fieldName==='createUserid'){
-					params.createUserid=$event.userid
-					params.createUsername=$event.username
-				}else{
-					params[fieldName]=$event
-				}
-
-				editXmTaskSomeFields(params).then(res=>{
-					var tips = res.data.tips;
-					if(tips.isOk){
-						if(this.sels.length>0){
-							 this.sels.forEach(i=>{
-								 this.fieldTagVisible=false;
-								Object.assign(i,params)
-							 })
-						}else{
-							  Object.assign(row,params)
-						}
-            Object.assign(this.editFormBak,this.editForm)
-					}else{
-            Object.assign(this.editForm,this.editFormBak)
-						this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
-					}
-				})
-			},
+			 
     onSelectedParentTask(task){
       if(this.sels.length==0){
          this.$notify({position:'bottom-left',showClose:true,message:"请先选择一个或者多个需要更换上级的计划/任务",type:'warning'})
@@ -1209,15 +1040,40 @@ export default {
         this.filters.product = this.xmProduct;
       }
     },
-     
-    showMenuGroupUser() { 
-      this.$refs.xmGroupDialog.open({data:null,action:'filtersCreateUserid'})
-    },
+      
       onProductClearSelect(){
         this.filters.xmProduct=null;
         this.searchXmTasks();
       },
       
+			loadDatasFirstCache(){
+				 debugger;
+         if(!this.filters.selProject || !this.filters.selProject.id){
+           return;
+         }
+         var key="xm_phase_cache_"+this.filters.selProject.id
+         var dataStr=sessionStorage.getItem(key)
+         if(dataStr && dataStr!='null' && dataStr!='undefined'){
+           this.xmTasks=JSON.parse(dataStr)
+           this.pageInfo.total=this.xmTasks.length;
+         }else{
+           this.getXmTasks()
+         }
+         
+       },
+       setDatasToCache(datas){
+         debugger;
+         if(!this.filters.selProject || !this.filters.selProject.id){
+           return;
+         }
+         var key="xm_phase_cache_"+this.filters.selProject.id
+         if(!datas || datas.length==0){
+           sessionStorage.removeItem(key)
+         }else{
+           sessionStorage.setItem(key,JSON.stringify(datas))
+         }
+         
+       }
     /**end 自定义函数请在上面加**/
   }, //end methods
   components: {
@@ -1238,9 +1094,7 @@ export default {
     this.initData();
     this.$nextTick(() => {
       initDicts(this)
-      if( this.selProject && this.selProject.id){
-        this.getXmTasks();
-      } 
+      this.loadDatasFirstCache();
       this.tableHeight = this.source == 'GZT' ? this.tableHeight : util.calcTableMaxHeight(this.$refs.table.$el);
  
     });
