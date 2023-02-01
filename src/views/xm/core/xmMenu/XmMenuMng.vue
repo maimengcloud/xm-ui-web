@@ -315,12 +315,12 @@
 								</template>
 							</el-table-column>
 							
-							<el-table-column prop="mactWorkload" label="工时"  min-width="100" show-overflow-tooltip sortable>
+							<el-table-column prop="budgetWorkload" label="工时"  min-width="100" show-overflow-tooltip sortable>
 								<template slot-scope="scope"> 
-									<span title="实际工时 / 预算工时 或者 (剩余工时+实际工时)">{{scope.row.mactWorkload}} &nbsp;/ &nbsp;{{scope.row.rworkload?parseInt(scope.row.mactWorkload)+parseInt(scope.row.rworkload):scope.row.budgetWorkload}}h </span>
+									<span title="实际工时 / 预算工时 或者 (剩余工时+实际工时)">{{scope.row.actWorkload}} &nbsp;/ &nbsp;{{scope.row.budgetWorkload}}h </span>
 								</template> 
 							</el-table-column> 
-							<el-table-column prop="bugs" label="缺陷"  min-width="100" show-overflow-tooltip sortable>
+							<el-table-column prop="bugCnt" label="缺陷"  min-width="100" show-overflow-tooltip sortable>
 
 								<template slot="header">
 									<el-tooltip   content="已关闭缺陷数 / 总缺陷数 注意：统计包括下级数据"><span> 缺陷 </span></el-tooltip>
@@ -329,7 +329,7 @@
 										 {{scope.row.closedBugs}}/{{scope.row.bugCnt}}
 								</template>
 							</el-table-column>
-							<el-table-column prop="tagNames" label="标签"  min-width="100" show-overflow-tooltip sortable>
+							<el-table-column prop="tagNames" label="标签"  min-width="100" show-overflow-tooltip>
 								<template slot-scope="scope">
 									<div class="cell-text">
 
@@ -583,15 +583,20 @@
 			},
 			// 表格排序 obj.order=ascending/descending,需转化为 asc/desc ; obj.prop=表格中的排序字段,字段驼峰命名
 			sortChange( obj ){
-				var dir='asc';
-				if(obj.order=='ascending'){
-					dir='asc'
-				}else{
-					dir='desc';
-				}
-				if(obj.prop=='xxx'){
-					this.pageInfo.orderFields=['xxx'];
-					this.pageInfo.orderDirs=[dir];
+
+				if (obj.order == null) {
+					this.pageInfo.orderFields = [];
+					this.pageInfo.orderDirs = [];
+				} else {
+					var dir = "asc";
+					if (obj.order == "ascending") {
+					dir = "asc";
+					} else {
+					dir = "desc";
+					}
+
+					this.pageInfo.orderFields = [util.toLine(obj.prop)];
+					this.pageInfo.orderDirs = [dir];
 				}
 				this.getXmMenus();
 			},
