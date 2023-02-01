@@ -126,6 +126,9 @@ export default {
     ...mapGetters(["userInfo", "roles"]),  
     tasksTreeData() {
       let xmTasks = JSON.parse(JSON.stringify(this.xmTasks || []));
+      if(this.filters.key){
+        xmTasks=xmTasks.filter(k=>k.name.indexOf(this.filters.key)>=0)
+      }
       const tasksTreeData = treeTool.translateDataToTree(xmTasks,"parentTaskid","id");
       return tasksTreeData;
     },
@@ -313,7 +316,7 @@ export default {
       this.getXmTasks();
     },
     searchXmTasks() {
-      this.pageInfo.count = true;
+      //this.pageInfo.count = true;
       this.getXmTasks();
     },
     //获取列表 XmTask xm_task
@@ -400,9 +403,7 @@ export default {
       if (this.filters.selProject) {
         params.projectId = this.filters.selProject.id;
       } 
-      if (this.filters.key) {
-        params.key = "%" + this.filters.key + "%";
-      } 
+ 
       params.ntype='1'
       return params;
     }, 

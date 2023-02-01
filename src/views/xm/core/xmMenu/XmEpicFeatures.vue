@@ -313,12 +313,7 @@
 				 this.pageInfo.count=true;
 				 this.getXmMenus();
 			},
-			getParams(params){
-
-				if( this.filters.key){
-					params.key="%"+this.filters.key+"%"
-				}
-
+			getParams(params){ 
 				if(this.filters.mmUser){
 					params.mmUserid=this.filters.mmUser.userid;
 				} 
