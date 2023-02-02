@@ -36,6 +36,13 @@
 									</div>
   								</template> 
 							</el-table-column> 
+                            <template v-if="showSelect">
+                                <el-table-column prop="name" label="操作" width="100" fixed="right"> 
+                                     <template slot-scope="scope"> 
+                                        <el-button  type="primary"  @click.stop="select(scope.row)">选择 </el-button>
+                                    </template> 
+                                </el-table-column> 
+                        </template>
 			</el-table>
 			<el-pagination  layout="total,prev,next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 		</el-row>
@@ -67,7 +74,7 @@ export default {
     components: {
         XmFuncEdit,
     },
-    props:['visible','xmProduct'],
+    props:['visible','xmProduct','showSelect'],
     computed: {
         ...mapGetters(['userInfo']),
 
@@ -286,7 +293,9 @@ export default {
             this.$emit('row-click',null)
             this.$refs.xmFuncTable.setCurrentRow(); 
         },
-        
+        select(row){
+            this.$emit('select',row)
+        },
         loadDatasFirstCache(){
                 
                 if(!this.xmProduct || !this.xmProduct.id){

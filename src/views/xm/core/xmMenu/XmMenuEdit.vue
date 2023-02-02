@@ -139,6 +139,14 @@
  
 						<el-row>
 							
+							<el-col :span="12"> 
+								<el-form-item  label="归属模块" prop="funcName" > 
+									{{ editForm.funcName }}
+										<el-button
+											@click="funcVisible=true"  
+											title="设置模块" > 设置</el-button>  
+								</el-form-item>
+							</el-col> 
 							<el-col :span="12">
 								<el-form-item label="排序序号" prop="seqNo" > 
 										<el-input style="max-width:90%;" v-model="editForm.seqNo" title="序号 如 1.1，1.2.3，1.3.2等" placeholder="如1.0 ， 1.1 ， 1.1.1等"  @change="editXmMenuSomeFields(editForm,'seqNo',$event)"></el-input>
@@ -281,6 +289,9 @@
 			:xm-product="{id:editForm.productId,productName:editForm.productName}"
 		></xm-epic-features-select>
 		</el-drawer>
+		<el-dialog append-to-body title="模块选择"  :visible.sync="funcVisible" size="40%" top="20px"  :close-on-click-modal="false">
+			<xm-func-select :show-select="true" class="padding-left padding-right" v-if="funcVisible"  @select="onFuncSelected" :xm-product="{id:editForm.productId,productName:editForm.productName}"></xm-func-select>
+		</el-dialog>
 	</section>
 </template>
 
@@ -299,6 +310,7 @@
 	import XmTestCaseMng from '@/views/xm/core/xmTestCase/XmTestCaseMng';
 	
 	import xmQuestionMng from "@/views/xm/core/xmQuestion/XmQuestionMng";
+	import XmFuncSelect from '../xmFunc/XmFuncSelect'
 
 	import XmEpicFeaturesSelect from "../xmMenu/XmEpicFeaturesSelect";
 	import MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm'
@@ -420,6 +432,7 @@ import CommentArea from '../xmMenuComment/comment-area.vue';
 				activateTabPaneName:'4',
 				pmenuFormVisible:false,
 				parentMenuVisible:false,
+				funcVisible:false,
 
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 
@@ -540,6 +553,9 @@ import CommentArea from '../xmMenuComment/comment-area.vue';
 				}else if(fieldName==='startTime'){
 					params.startTime=$event.startTime
 					params.endTime=$event.endTime
+				}else if(fieldName==='funcId'){
+					params.funcId=$event.id
+					params.funcName=$event.name
 				}else{
 					if(typeof $event ==='string'){
 						params[fieldName]=$event
@@ -632,6 +648,15 @@ import CommentArea from '../xmMenuComment/comment-area.vue';
 					this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 				})
 			},
+			
+			onFuncSelected(row){
+				this.editForm.funcId=row.id
+				this.editForm.funcName=row.name
+				this.funcVisible=false;
+				if(this.opType!=='add'){
+					this.editXmMenuSomeFields(this.editForm,'funcId',row)
+				}
+			},
 		},//end method
 		components: {
 			//在下面添加其它组件 'xm-menu-edit':XmMenuEdit
@@ -648,6 +673,7 @@ import CommentArea from '../xmMenuComment/comment-area.vue';
 			XmEpicFeaturesSelect,
 			xmQuestionMng,
 			CommentArea,
+			XmFuncSelect,
 		},
 		mounted() {
 
