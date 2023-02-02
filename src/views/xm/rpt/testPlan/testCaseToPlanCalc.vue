@@ -207,11 +207,10 @@
 						}, 
 						calculable: true,
 						
-						legend: { 
+						legend:{
 							bottom: 'bottom',
 							data:this.legendCpd,
 						},
-						
 						graphic: {
 							type: 'text',
 							left: 'center',
@@ -219,7 +218,7 @@
 							style: {
 							// text: '总数',
 							text:
-								'总用例数'+this.total ,
+								'总数'+this.total ,
 
 							textAlign: 'center',
 							fill: '#333',
@@ -227,7 +226,7 @@
 							height: 30,
 							fontSize: 14
 							}
-						}, 
+						},  
 						series: [
 							{
 							type: 'pie',

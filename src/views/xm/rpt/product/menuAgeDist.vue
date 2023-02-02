@@ -92,9 +92,16 @@
 			
 			legendCpd(){
 				 return ['0-2天','3-5天','6-7天','8-15天','16-30天','30天以上']
-			},
-			title(){
-				return '需求年龄数量分布'
+			}, 
+			
+			total(){
+				if(!this.xmMenuAgeDists || this.xmMenuAgeDists.length==0){
+					return 0
+				}else{   
+					return this.xmMenuAgeDists.reduce((n, i) => {
+						return (n += i.value);
+					}, 0)
+				} 
 			},
 			title(){
 				
@@ -193,10 +200,27 @@
 						}, 
 						calculable: true,
 						
-						legend: { 
+						legend:{
 							bottom: 'bottom',
 							data:this.legendCpd,
 						},
+						graphic: {
+							type: 'text',
+							left: 'center',
+							top: 'center',
+							style: {
+							// text: '总数',
+							text:
+								'总数'+this.total ,
+
+							textAlign: 'center',
+							fill: '#333',
+							width: 30,
+							height: 30,
+							fontSize: 14
+							}
+						}, 
+
 						series: [
 							{
 							type: 'pie',

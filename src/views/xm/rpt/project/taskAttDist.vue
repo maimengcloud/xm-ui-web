@@ -97,12 +97,12 @@
 				}
 			},
 			
-			total(){
-				if(!this.xmTestCaseToPlanCalcList || this.xmTestCaseToPlanCalcList.length==0){
+			total(){ 
+				if(!this.xmTaskAttDists || this.xmTaskAttDists.length==0){
 					return 0
 				}else{   
-					return this.xmTestCaseToPlanCalcList.reduce((n, i) => {
-						return (n += i.useTimes);
+					return this.xmTaskAttDists.reduce((n, i) => {
+						return (n += i.value);
 					}, 0)
 				} 
 			},
@@ -234,10 +234,27 @@
 						}, 
 						calculable: true,
 						
-						legend: { 
+						legend:{
 							bottom: 'bottom',
 							data:this.legendCpd,
 						},
+						graphic: {
+							type: 'text',
+							left: 'center',
+							top: 'center',
+							style: {
+							// text: '总数',
+							text:
+								'总数'+this.total ,
+
+							textAlign: 'center',
+							fill: '#333',
+							width: 30,
+							height: 30,
+							fontSize: 14
+							}
+						}, 
+
 						series: [
 							{
 							type: 'pie',

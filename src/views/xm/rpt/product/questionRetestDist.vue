@@ -142,6 +142,16 @@
 			legendCpd(){ 
 				return ["1次","2次","3次","4次","5次","5次以上"] 
 			},
+			
+			total(){
+				if(!this.xmQuestionRetestDists || this.xmQuestionRetestDists.length==0){
+					return 0
+				}else{   
+					return this.xmQuestionRetestDists.reduce((n, i) => {
+						return (n += i.bugsNum);
+					}, 0)
+				} 
+			},
 			title(){
 				
 				var preName=""
@@ -254,10 +264,27 @@
 						}, 
 						calculable: true,
 						
-						legend: { 
+						legend:{
 							bottom: 'bottom',
 							data:this.legendCpd,
 						},
+						graphic: {
+							type: 'text',
+							left: 'center',
+							top: 'center',
+							style: {
+							// text: '总数',
+							text:
+								'总数'+this.total ,
+
+							textAlign: 'center',
+							fill: '#333',
+							width: 30,
+							height: 30,
+							fontSize: 14
+							}
+						}, 
+
 						series: [
 							{
 							type: 'pie',

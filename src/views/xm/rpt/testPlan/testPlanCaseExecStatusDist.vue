@@ -197,9 +197,8 @@
 								saveAsImage: { show: true }, 
 							}
 						}, 
-						calculable: true,
-						
-						legend: { 
+						calculable: true, 
+						legend:{
 							bottom: 'bottom',
 							data:this.legendCpd,
 						},
@@ -210,7 +209,7 @@
 							style: {
 							// text: '总数',
 							text:
-								'总用例数'+this.total ,
+								'总数'+this.total ,
 
 							textAlign: 'center',
 							fill: '#333',

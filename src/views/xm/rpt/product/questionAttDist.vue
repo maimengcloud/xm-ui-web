@@ -140,9 +140,16 @@
 					})
 				}
 			},
-			title(){
-				return this.groupBys.find(i=>i.id==this.groupBy).name+'数量分布'
-			},
+			
+			total(){
+				if(!this.xmQuestionAttDists || this.xmQuestionAttDists.length==0){
+					return 0
+				}else{   
+					return this.xmQuestionAttDists.reduce((n, i) => {
+						return (n += i.value);
+					}, 0)
+				} 
+			}, 
 			legendCpd(){
 				var itemId="";
 				if(this.groupBy=='bug_status'){
