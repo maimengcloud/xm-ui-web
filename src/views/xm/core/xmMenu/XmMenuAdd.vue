@@ -62,20 +62,27 @@
 						</el-row>
 						
 						<el-row> 
-							
-							<el-col :span="8">
+							<el-col :span="12"> 
+								<el-form-item  label="归属模块" prop="funcName" v-if="addForm.dclass>='3'"> 
+									{{ addForm.funcName }}
+										<el-button
+											@click="funcVisible=true"  
+											title="设置模块" > 设置</el-button>  
+								</el-form-item>
+							</el-col> 
+							<el-col :span="12">
 								<el-form-item label="排序序号" prop="seqNo">  
 									 <el-input style="max-width:90%;" v-model="addForm.seqNo" placeholder="请输入排序序号"> 
 									</el-input>  
 								</el-form-item>
 							</el-col> 
-							<el-col :span="8">
+							<el-col :span="12">
 								<el-form-item  label="版本号" prop="sinceVersion" >   
 									<el-input style="max-width:90%;" v-model="addForm.sinceVersion" placeholder="请输入需求归属的版本号"> 
 									</el-input>  
 								</el-form-item>   
 							</el-col>  
-							<el-col :span="8">
+							<el-col :span="12">
 								<el-form-item label="截止时间" prop="startTime">  
 									 <mdp-date-range type="daterange" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" v-model="addForm" start-key="startTime" end-key="endTime"></mdp-date-range>
 								  
@@ -101,6 +108,10 @@
 		<el-dialog append-to-body width="60%" top="20px" :visible.sync="parentMenuSelectVisible">
 				<xm-epic-features-select v-if="parentMenuSelectVisible" :xm-product="xmProductCpd" @select="onParentMenuSelected"></xm-epic-features-select>
 		</el-dialog>
+		
+		<el-dialog append-to-body title="模块选择"  :visible.sync="funcVisible" size="40%" top="20px"  :close-on-click-modal="false">
+			<xm-func-select :show-select="true" class="padding-left padding-right" v-if="funcVisible"  @select="onFuncSelected" :xm-product="{id:editForm.productId,productName:editForm.productName}"></xm-func-select>
+		</el-dialog>
 	</section>
 </template>
 
@@ -111,6 +122,7 @@
 	import { mapGetters } from 'vuex'	
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
 
+	import XmFuncSelect from '../xmFunc/XmFuncSelect'
 	import MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm'
 	
 	export default { 
@@ -178,6 +190,7 @@
 				}, 
 				mmUserSelectVisible:false,
 				parentMenuSelectVisible:false,
+				funcVisible:false,
 				dateRanger:[],
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				
@@ -284,13 +297,20 @@
 				this.addForm.pmenuId=pmenu.menuId
 				this.addForm.pmenuName=pmenu.menuName 
 				this.parentMenuSelectVisible=false;
-			}
+			},
+			
+			onFuncSelected(row){
+				this.addForm.funcId=row.id
+				this.addForm.funcName=row.name
+				this.funcVisible=false; 
+			},
 		},//end method
 		components: {  
 			//在下面添加其它组件 'xm-menu-edit':XmMenuEdit
 			MdpSelectUserXm,
 			'xm-menu-edit':()=>import("./XmMenuDetail"),
 			'xm-epic-features-select':()=>import("./XmEpicFeaturesSelect"),
+			XmFuncSelect,
 		},
 		mounted() {
 			

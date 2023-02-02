@@ -140,7 +140,7 @@
 						<el-row>
 							
 							<el-col :span="12"> 
-								<el-form-item  label="归属模块" prop="funcName" > 
+								<el-form-item  label="归属模块" prop="funcName" v-if="editForm.dclass>='3'"> 
 									{{ editForm.funcName }}
 										<el-button
 											@click="funcVisible=true"  
