@@ -169,7 +169,7 @@ export default {
     xmIteration: function () { 
     },
     toSearchCpd:function(){ 
-      this.searchXmTasks();
+      this.loadDatasFromCache();
     }
   },
   data() { 
@@ -417,6 +417,35 @@ export default {
       }
     },
      
+      
+    loadDatasFirstCache(){
+        
+        if(!this.filters.selProject || !this.filters.selProject.id){
+          return;
+        }
+        var key="xm_phase_cache_"+this.filters.selProject.id
+        var dataStr=sessionStorage.getItem(key)
+        if(dataStr && dataStr!='null' && dataStr!='undefined'){
+          this.xmTasks=JSON.parse(dataStr)
+          this.pageInfo.total=this.xmTasks.length;
+        }else{
+          this.getXmTasks()
+        }
+        
+      },
+      setDatasToCache(datas){
+        
+        if(!this.filters.selProject || !this.filters.selProject.id){
+          return;
+        }
+        var key="xm_phase_cache_"+this.filters.selProject.id
+        if(!datas || datas.length==0){
+          sessionStorage.removeItem(key)
+        }else{
+          sessionStorage.setItem(key,JSON.stringify(datas))
+        }
+        
+      }
   }, //end methods
   components: { 
     XmProjectSelect,      

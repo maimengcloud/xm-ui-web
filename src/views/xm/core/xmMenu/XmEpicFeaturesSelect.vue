@@ -4,7 +4,7 @@
 			<el-col :span="24" class="padding-left">
 					<el-row >
 
-						<xm-product-select ref="xmProductSelect1" style="display:inline;" v-if="!xmProduct && !xmIteration"   :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClearSelect"></xm-product-select> 
+						<xm-product-select ref="xmProductSelect1" style="display:inline;" v-if="!xmProduct"   :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClearSelect"></xm-product-select> 
 						 
 						<el-input style="width:120px;" v-model="filters.key" placeholder="名称模糊查询"  clearable></el-input>
 						<el-button icon="el-icon-search" @click="searchXmMenus()"></el-button> 
@@ -103,17 +103,14 @@
 			}
 		},
 		watch:{
-			xmIteration:function(){
-				this.filters.iterationFilterType="join-curr-iteration"
-				this.filters.iteration=this.xmIteration 
-			},
+			 
 			xmProduct:function(){
 				this.filters.product=this.xmProduct 
 			},
 			selProject:function(){ 
 			},
 			toSearchCpd:function(){
-				this.searchXmMenus();
+				this.loadDatasFirstCache();
 			}
     	},
 		data() { 
@@ -208,102 +205,25 @@
 				 this.getXmMenus();
 			},
 			getParams(params){ 
-				if(this.filters.mmUser){
-					params.mmUserid=this.filters.mmUser.userid;
-				}
-				if(this.filters.iterationFilterType){
-					params.iterationFilterType=this.filters.iterationFilterType
-					if(params.iterationFilterType==='not-join-any-iteration'){
-
-					}else if(params.iterationFilterType==='join-any-iteration'){
-
-					}else if(params.iterationFilterType==='not-join-curr-iteration'){
-						params.filterIterationId=this.filters.iteration.id
-					}else if(params.iterationFilterType==='join-curr-iteration'){
-						params.filterIterationId=this.filters.iteration.id
-					}
-					params.ntype="0"
-				}else{
-					if(this.filters.iteration){
-						params.iterationId=this.filters.iteration.id
-					}
-				}
-				if(this.xmIteration && this.xmIteration.id){
-					params.linkIterationId=this.xmIteration.id
-				}
-				if(this.filters.taskFilterType){
-					params.taskFilterType=this.filters.taskFilterType
-
-					if(params.taskFilterType==='not-join-curr-project'){
-						params.projectId=this.selProject.id
-					}
-					if(params.taskFilterType==='join-curr-project'){
-						params.projectId=this.selProject.id
-					}
-					params.ntype="0"
-				}
-				if(this.selProject && this.selProject.id){
-					params.linkProjectId=this.selProject.id
-				}
+				 
 				if(this.filters.product){
 					params.productId=this.filters.product.id
 				}
-				if(this.filters.status){
-					params.status=this.filters.status
-				}
-
-				if(this.filters.dlvl){
-					params.dlvl=this.filters.dlvl
-				}
-
-				if(this.filters.dtype){
-					params.dtype=this.filters.dtype
-				}
-
-				if(this.filters.priority){
-					params.priority=this.filters.priority
-				}
-
-				if(this.filters.source){
-					params.source=this.filters.source
-				}
-				if( this.dateRanger && this.dateRanger.length==2){
-					params.ctimeStart=this.dateRanger[0]
-					params.ctimeEnd=this.dateRanger[1]
-				}
-				if(this.filters.tags && this.filters.tags.length>0){
-					params.tagIdList=this.filters.tags.map(i=>i.tagId)
-				}
+				 
 				if(this.filters.dclasss){
 					params.dclasss=this.filters.dclasss
-				}
-				if(this.filters.menuId){
-					params.menuId=this.filters.menuId
-				}
-				if(this.filters.productId){
-					params.productId=this.filters.productId
-				}
+				} 
 				return params;
 			}, 
 			//获取列表 XmMenu xm_project_menu
 			getXmMenus() {
 				let params = {
-					//pageSize: this.pageInfo.pageSize,
-					//pageNum: this.pageInfo.pageNum,
-					//total: this.pageInfo.total,
-					//count:this.pageInfo.count
+					pageSize: this.pageInfo.pageSize,
+					pageNum: this.pageInfo.pageNum,
+					total: this.pageInfo.total,
+					count:this.pageInfo.count
 				};
-				//this.xmMenus=[]
-				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
-					let orderBys=[];
-					for(var i=0;i<this.pageInfo.orderFields.length;i++){
-						orderBys.push(this.pageInfo.orderFields[i]+" "+this.pageInfo.orderDirs[i])
-					}
-					params.orderBy= orderBys.join(",")
-				}
-				if( this.filters.product  && this.filters.product.id){
-					params.productId=this.filters.product.id
-				}
+ 
 				params=this.getParams(params); 
 				if(!params.productId){
 					return;
@@ -314,6 +234,7 @@
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false;
 						this.xmMenus = res.data.data;
+						this.setDatasToCache(this.xmMenus)
 					}else{
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					}
@@ -332,14 +253,13 @@
 			},
 			onProductSelected:function(product){
 				this.filters.product=product 
-				this.xmMenus=[]
-				this.getXmMenus()
+				this.xmMenus=[] 
+				this.loadDatasFirstCache();
 				this.$emit("product-select",product)
 			},
 			onProductClearSelect:function(){
 				this.filters.product=null 
-				this.xmMenus=[]
-				this.getXmMenus() 
+				this.xmMenus=[] 
 				this.$emit("product-select",null)
 			},  
 			select(row){
@@ -370,6 +290,34 @@
 				this.$emit('row-click',null)
 				this.$refs.table.setCurrentRow(); 
 			},
+			loadDatasFirstCache(){
+				 
+				 if(!this.filters.product || !this.filters.product.id){
+					 return;
+				 }
+				 var key="xm_epic_features_cache_"+this.filters.product.id
+				 var dataStr=sessionStorage.getItem(key)
+				 if(dataStr && dataStr!='null' && dataStr!='undefined'){
+					 this.xmMenus=JSON.parse(dataStr)
+					 this.pageInfo.total=this.xmMenus.length;
+				 }else{
+					 this.getXmMenus();
+				 }
+				 
+			 },
+			 setDatasToCache(datas){
+				 
+				 if(!this.filters.product || !this.filters.product.id){
+					 return;
+				 }
+				 var key="xm_epic_features_cache_"+this.filters.product.id
+				 if(!datas || datas.length==0){
+					 sessionStorage.removeItem(key)
+				 }else{
+					 sessionStorage.setItem(key,JSON.stringify(datas))
+				 }
+				 
+			 }
 		},//end methods
 		components: { 
 			XmProductSelect, 
@@ -379,18 +327,10 @@
   			initSimpleDicts("all",['menuStatus','demandSource','demandLvl','demandType','priority','dclass']).then(res=>{
 				  Object.assign(this.dicts,res.data.data) 
 			})
-			this.filters.product=this.xmProduct
-
-			if(this.xmIteration && this.xmIteration.id){
-				this.filters.iterationFilterType='join-curr-iteration'
-				this.filters.iteration=this.xmIteration
-			}
+			this.filters.product=this.xmProduct 
 			this.$nextTick(() => {
-				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);
-				
-				if(this.xmProduct && this.xmProduct.id){ 
-					this.getXmMenus();
-				}
+				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
+				this.loadDatasFirstCache(); 
 				
           });
 		}

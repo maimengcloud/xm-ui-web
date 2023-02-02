@@ -23,7 +23,7 @@
                                             width="400"
                                             trigger="hover">
                                             
-                                            <el-button  type="primary"  @click.stop="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" title="新建子功能模块" >新建子功能模块 </el-button>
+                                            <el-button  type="primary"  @click.stop="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" title="新建子模块" >新建子模块 </el-button>
                                             <el-button      @click.stop="showEdit( scope.row,scope.$index )" icon="el-icon-edit" title="编辑">编辑</el-button> 
                                             <el-button type="danger" v-loading="load.del" @click="handleDel(scope.row,scope.$index)"   icon="el-icon-delete"  >删除</el-button>
   
@@ -303,7 +303,7 @@ export default {
                 
             },
             setDatasToCache(datas){
-                debugger;
+                
                 if(!this.xmProduct || !this.xmProduct.id){
                     return;
                 }

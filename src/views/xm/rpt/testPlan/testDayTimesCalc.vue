@@ -265,7 +265,7 @@
 			},
 
 			onXmTestPlanSelected(xmTestPlan){
-				debugger;
+				
 				this.filters.testPlan=xmTestPlan
 			}, 
 			

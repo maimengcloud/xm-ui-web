@@ -1054,7 +1054,7 @@ export default {
       },
       
 			loadDatasFirstCache(){
-				 debugger;
+				 
          if(!this.filters.selProject || !this.filters.selProject.id){
            return;
          }
@@ -1069,7 +1069,7 @@ export default {
          
        },
        setDatasToCache(datas){
-         debugger;
+         
          if(!this.filters.selProject || !this.filters.selProject.id){
            return;
          }

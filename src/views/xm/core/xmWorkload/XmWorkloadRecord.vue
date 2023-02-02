@@ -67,7 +67,7 @@
 		computed: {
 		    ...mapGetters([ 'userInfo'  ]),
 			initVal(){
-				debugger;
+				
 				var params={}
 				if( this.xmTask && this.xmTask.id){
 					params.id=this.xmTask.id
@@ -157,7 +157,7 @@
 			saveSubmit: function () {
 			},
 			initData: function(){ 
-				debugger;
+				
 				this.editForm=Object.assign({},this.initVal)
 				this.editFormBak=Object.assign({},this.editForm)
             },
@@ -165,7 +165,7 @@
 			 
 			
 			editSomeFields(row,fieldName,$event){
-				debugger;
+				
 				var func=null;
 				var emit="edit-some-fields"
 				var params={ids:[row.id]}; 

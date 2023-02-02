@@ -677,7 +677,7 @@ XmTaskExecuserSelect,
 				if(groupUsers==null||groupUsers.length==0){
 					return;
 				}
-				debugger;
+				
 				var params=groupUsers.map(i=>{
 					var u={
 						userid:i.userid,

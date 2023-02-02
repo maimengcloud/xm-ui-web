@@ -178,12 +178,9 @@
 					<el-row style="float:right;" v-if="opType==='add'">
 						<el-button type="primary" @click="saveSubmit">保存</el-button>
 					</el-row>
-				</el-form>
-				<el-drawer title="选中任务" :visible.sync="selectTaskVisible"  size="70%"    append-to-body   :close-on-click-modal="false">
-					<xm-task-list  v-if="selectTaskVisible"   :sel-project="selProject"   @task-selected="onSelectedTask"></xm-task-list>
-				</el-drawer>
+				</el-form> 
 
-				<el-drawer append-to-body title="需求选择" :visible.sync="selectMenuVisible"   size="60%"   :close-on-click-modal="false">
+				<el-drawer append-to-body title="需求选择" :visible.sync="selectMenuVisible"   size="80%"   :close-on-click-modal="false">
 					<xm-menu-select v-if="selectMenuVisible" :xm-product="editForm.productId?{id:editForm.productId,productName:editForm.productName}:xmProductCpd" :xm-iteration="xmIteration" :visible="selectMenuVisible" :is-select-menu="true" checkScope="3"  @selected="onSelectedMenu" :sel-project="selProject"></xm-menu-select>
 				</el-drawer>
 			</el-row>  
@@ -192,13 +189,13 @@
 				</tag-mng>
 			</el-drawer>
 			
-			<el-dialog append-to-body title="模块选择"  :visible.sync="funcVisible" width="60%" top="20px"  :close-on-click-modal="false">
-				<xm-func-select v-if="funcVisible"  @row-click="onFuncSelected" :xm-product="editForm.productId?{id:editForm.productId,productName:editForm.productName}:xmProductCpd"></xm-func-select>
+			<el-dialog append-to-body title="模块选择"  :visible.sync="funcVisible" size="40%" top="20px"  :close-on-click-modal="false">
+				<xm-func-select class="padding-left padding-right" v-if="funcVisible"  @row-click="onFuncSelected" :xm-product="editForm.productId?{id:editForm.productId,productName:editForm.productName}:xmProductCpd"></xm-func-select>
 			</el-dialog>
 			
-			<el-dialog append-to-body title="执行用例选择"  :visible.sync="caseVisible" width="80%" top="20px"  :close-on-click-modal="false">
+			<el-drawer append-to-body title="执行用例选择"  :visible.sync="caseVisible" size="80%" top="20px"  :close-on-click-modal="false">
 				<xm-test-plan-case-mng  v-if="caseVisible" :select="true" :visible="caseVisible" :xm-project="selProject&&selProject.id?selProject:(editForm.projectId?{id:editForm.projectId}:null)" :xm-test-plan="xmTestPlan" :xm-product="editForm.productId?{id:editForm.productId,productName:editForm.productName}:xmProductCpd" @select="onTestPlanCaseSelected" ></xm-test-plan-case-mng>
-			</el-dialog>
+			</el-drawer>
 	</section>
 </template>
 
@@ -210,8 +207,7 @@
 	import AttachmentUpload from "@/views/mdp/arc/archiveAttachment/AttachmentUpload"; //上传组件
 	import {sn} from '@/common/js/sequence';
 	import VueEditor from '@/components/Tinymce/index';
-	import XmTaskList from '../xmTask/XmTaskList';
-	import xmMenuSelect from '../xmMenu/XmMenuSelect';
+ 	import xmMenuSelect from '../xmMenu/XmMenuSelect';
 	import  XmQuestionHandleMng from '../xmQuestionHandle/XmQuestionHandleMng';//修改界面
   	import TagMng from "@/views/mdp/arc/tag/TagMng";
 	  
@@ -422,30 +418,7 @@
 			},
 			handleQuestion:function(tardgetBugStatus){ 
 				this.editSubmit(tardgetBugStatus);
-			}, 
-			showSelectTask:function(){
-				if(this.selProject==null){
-					this.$notify({position:'bottom-left',showClose:true,message: "请先选项目", type: 'error' });
-					return ;
-				}
-				this.selectTaskVisible=true;
-			},
-			onSelectedTask(task){
-				if(task.ntype=='1'){
-					this.$notify({position:'bottom-left',showClose:true,message: "您选择的【"+task.name+"】属于任务集，请重新选择。建议选择树中叶子节点", type: 'error' });
-					return;
-				}
-				this.editForm.taskId=task.id
-				this.editForm.taskName=task.name
-				if(!this.editForm.menuId){
-					this.editForm.menuId=task.menuId
-					this.editForm.menuName=task.menuName
-					this.editForm.productId=task.productId
-				} 
-				this.editForm.handlerUserid=task.executorUserid
-				this.editForm.handlerUsername=task.executorUsername
-				this.selectTaskVisible=false;
-			},
+			},  
 			handleCloseTaskTag:function(){
 				this.editForm.taskId=''
 				this.editForm.taskName=""
@@ -697,7 +670,7 @@
 		},//end method
 		components: {
 				//在下面添加其它组件 'xm-question-edit':XmQuestionEdit
-				'upload': AttachmentUpload,VueEditor,XmTaskList,xmMenuSelect,XmQuestionHandleMng,TagMng,XmProjectSelect,XmProductSelect,
+				'upload': AttachmentUpload,VueEditor,xmMenuSelect,XmQuestionHandleMng,TagMng,XmProjectSelect,XmProductSelect,
 			XmMyDoFocus,XmFuncSelect,MdpSelectUserXm,TestStepConfig,TestStepResult,
 			xmTestPlanCaseMng:()=>import('../xmTestPlanCase/XmTestPlanCaseSelect'),
 			'xm-workload-record':()=>import("../xmWorkload/XmWorkloadRecord"),
