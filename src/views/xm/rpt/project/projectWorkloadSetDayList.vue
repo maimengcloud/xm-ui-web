@@ -282,7 +282,7 @@
 							},
 							encode: {
 								itemName: '日期',
-								value:this.dataSetCpd[0][1],
+								value:this.dataSetCpd[0][this.dataSetCpd[0].length-1],
 								tooltip: '日期'
 							}
 						}
