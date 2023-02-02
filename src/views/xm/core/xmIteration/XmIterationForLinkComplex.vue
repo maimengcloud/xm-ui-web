@@ -6,8 +6,8 @@
 				 <el-row>
  						<xm-iteration-select ref="xmIterationSelect" :auto-select="true" :link-project-id="projectInfo?projectInfo.id:null" :product-id="xmProduct?xmProduct.id:null"  @row-click="onIterationRowClick" @clear="onIterationClearSelect">
 							<template v-slot:title="{iteration}">
-								<h4 href="#"><div class="lg-text hidden-md-and-down"><i style="font-size:16px;" class="el-icon-sort"></i> {{iteration?iteration.iterationName:'请选择一个迭代'}}</div></h4>
-								<h4 href="#"><div class="sm-text hidden-lg-and-up"><i style="font-size:16px;" class="el-icon-sort"></i> {{iteration?iteration.iterationName:'请选择一个迭代'}}</div></h4>
+								<h4 href="#"><div class="lg-text hidden-md-and-down"><i style="font-size:16px;" class="el-icon-sort"></i> {{iteration&&iteration.id?iteration.iterationName:'请选择一个迭代'}}</div></h4>
+								<h4 href="#"><div class="sm-text hidden-lg-and-up"><i style="font-size:16px;" class="el-icon-sort"></i> {{iteration&&iteration.id?iteration.iterationName:'请选择一个迭代'}}</div></h4>
 							</template>
 						</xm-iteration-select>
   				 </el-row> 

@@ -75,7 +75,7 @@
 		components: {   
 			XmIterationSelect,XmProductSelect,
 		},
-        props:['xmProduct','xmIteration','xmProject'],
+        props:['xmProduct','xmIteration','xmProject','initGroupBy'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -110,7 +110,7 @@
 						preName=`项目【${this.filters.project.id}】`
 					}
 				}
-				return  preName+this.groupBys.find(i=>i.id==this.groupBy).name+'用户故事数量排行榜'
+				return  preName+this.groupBys.find(i=>i.id==this.groupBy).name+'需求数量排行榜'
 			},
 			legendCpd(){
 				if(this.xmMenuSorts.length==0){
@@ -174,6 +174,9 @@
 		methods: { 
 			open(){
 				this.visible=true;
+				if(this.initGroupBy){
+					this.groupBy=this.initGroupBy
+				}
 				this.filters.testPlan=this.xmTestPlan
 				this.filters.product=this.xmProduct
 				this.filters.project=this.xmProject

@@ -13,8 +13,8 @@
                 @clear="onProjectClearSelect"
               >
               <template v-slot:title="{project}">
-                <h4 href="#"><div class="lg-text hidden-md-and-down"><i style="font-size:16px;" class="el-icon-sort"></i> {{project?project.name:'请选择一个项目'}}</div></h4>
-                <h4 href="#"><div class="sm-text hidden-lg-and-up"><i style="font-size:16px;" class="el-icon-sort"></i> {{project?project.name:'请选择一个项目'}}</div></h4>
+                <h4 href="#"><div class="lg-text hidden-md-and-down"><i style="font-size:16px;" class="el-icon-sort"></i> {{project && project.id?project.name:'请选择一个项目'}}</div></h4>
+                <h4 href="#"><div class="sm-text hidden-lg-and-up"><i style="font-size:16px;" class="el-icon-sort"></i> {{project & project.id ?project.name:'请选择一个项目'}}</div></h4>
               </template>
             </xm-project-select> 
           </el-row> 

@@ -24,7 +24,7 @@
 							<span v-else>{{xmProject.id}} <span v-if="xmProject.name"><br/>{{  xmProject.name  }} </span> </span>
 						</el-form-item>
 						<el-form-item label="归属产品"  >
-							<xm-product-select v-if="!xmProductCpd || !xmProductCpd.id"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"  :iterationId="xmTestPlan?xmTestPlan.id:null"  @clear="onProductClear"></xm-product-select>
+							<xm-product-select v-if="!xmProductCpd || !xmProductCpd.id"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"    @clear="onProductClear"></xm-product-select>
 							<span v-else>{{xmProductCpd.id}} <span v-if="xmProductCpd.productName"><br/>{{  xmProductCpd.productName  }} </span> </span>
 						</el-form-item> 
 						<el-form-item label="归属迭代" v-if="xmIteration && xmIteration.id">
@@ -122,7 +122,7 @@
 						preName=`项目【${this.filters.project.id}】`
 					}
 				}
-				return preName+ this.groupBys.find(i=>i.id==this.groupBy).name+'排行榜'
+				return preName+ this.groupBys.find(i=>i.id==this.groupBy).name+'测试用例数量排行榜'
  			}, 
 			xmProductCpd(){
 				if(this.xmIteration && this.xmIteration.id && this.xmIteration.productId){

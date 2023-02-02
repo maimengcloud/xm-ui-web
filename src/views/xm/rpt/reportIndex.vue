@@ -1,9 +1,9 @@
 <template>
 	<section class="padding">
-		<el-row gutter="5">
+		<el-row :gutter="5">
             <el-col :span="6"> 
                 <el-row> 
-                    <el-select v-model="filters.category" clearable @change="onCategroySelect" style="width:100%;" :disabled="category">
+                    <el-select v-model="filters.category" clearable @change="onCategroySelect" style="width:100%;" :disabled="!!category">
                         <el-option v-for="(item,index) in categorys" :label="item" :value="item" :key="index"></el-option>
                     </el-select>
                 </el-row> 
@@ -46,7 +46,10 @@
                 <xm-iteration-menu-day-accumulate  v-if="showRptRef=='xmIterationMenuDayAccumulate'" :category="filters.category" ref="xmIterationMenuDayAccumulate" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-iteration-menu-day-accumulate>
                 <xm-menu-att-dist  v-if="showRptRef=='xmMenuAttDist'" :category="filters.category" ref="xmMenuAttDist" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-menu-att-dist>
                 <xm-menu-age-dist  v-if="showRptRef=='xmMenuAgeDist'" :category="filters.category" ref="xmMenuAgeDist" :xm-product="xmProduct" :xm-project="xmProject" :xm-iteration="xmIteration"></xm-menu-age-dist>
-                <xm-menu-sort  v-if="showRptRef=='xmMenuSort'" :category="filters.category" ref="xmMenuSort" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-menu-sort>
+                <xm-menu-sort key="xmMenuSort"  v-if="showRptRef=='xmMenuSort'" :category="filters.category" ref="xmMenuSort" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-menu-sort>
+                <xm-menu-sort key="xmMenuFuncSort" init-group-by="func_id" v-if="showRptRef=='xmMenuFuncSort'" :category="filters.category" ref="xmMenuFuncSort" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-menu-sort>
+                <xm-menu-sort key="xmMenuProductSort" init-group-by="product_id"  v-if="showRptRef=='xmMenuProductSort'" :category="filters.category" ref="xmMenuProductSort" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-menu-sort>
+                <xm-menu-sort key="xmMenuIterationSort" init-group-by="iteration_id"  v-if="showRptRef=='xmMenuIterationSort'" :category="filters.category" ref="xmMenuIterationSort" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-menu-sort>
 
                 
                 <xm-task-day-trend  v-if="showRptRef=='xmTaskDayTrend'" :category="filters.category" ref="xmTaskDayTrend" :xm-product="xmProduct" :xm-project="xmProject"  :xm-iteration="xmIteration"></xm-task-day-trend>
@@ -242,7 +245,10 @@
                     {isChecked:false,rptName:'需求每日累积',category:'产品级',ref:'xmMenuDayAccumulate',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期累积情况，识别需求工作的瓶颈',img:areaStack  },
                     {isChecked:false,rptName:'需求属性分布',category:'产品级,迭代级,企业级',ref:'xmMenuAttDist',desc:'统计所有需求任意属性数量分布情况（实时数据）',img:pieSimple  },
                     {isChecked:false,rptName:'需求年龄分布',category:'产品级,迭代级,企业级',ref:'xmMenuAgeDist',desc:'统计所有需求年龄分布情况（实时数据）',img:pieSimple  },
-                    {isChecked:false,rptName:'需求排行榜',category:'产品级,迭代级,企业级',ref:'xmMenuSort',desc:'需求提出人、负责人的用户故事数量排行（实时数据）',img:bar  },
+                    {isChecked:false,rptName:'需求排行榜',category:'产品级,迭代级,企业级',ref:'xmMenuSort',desc:'按提出人、负责人、迭代、产品等维度统计用户故事数量按高到低进行排行（实时数据）',img:bar  },
+                    {isChecked:false,rptName:'模块需求数量统计',category:'产品级,迭代级,企业级',ref:'xmMenuFuncSort',desc:'统计每个模块当前的需求数量（实时数据）',img:bar  },
+                    {isChecked:false,rptName:'迭代需求数量统计',category:'产品级,迭代级,企业级',ref:'xmMenuIterationSort',desc:'统计每个迭代当前的需求数量（实时数据）',img:bar  },
+                    {isChecked:false,rptName:'产品需求数量统计',category:'产品级,企业级',ref:'xmMenuProductSort',desc:'统计每个产品当前的需求数量（实时数据）',img:bar  },
                     {isChecked:false,rptName:'产品缺陷每日趋势',category:'产品级',ref:'xmQuestionDayTrend',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:lineStack  },
                     {isChecked:false,rptName:'产品缺陷每日累积',category:'产品级',ref:'xmQuestionDayAccumulate',desc:'跟踪一段时间内，各种程度和类别的缺陷累积情况，监控缺陷的变化趋势',img:areaStack  },
                     
