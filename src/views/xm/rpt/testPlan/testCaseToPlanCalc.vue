@@ -98,6 +98,16 @@
 					return datas;
 				} 
 			},
+			
+			total(){
+				if(!this.xmTestCaseToPlanCalcList || this.xmTestCaseToPlanCalcList.length==0){
+					return 0
+				}else{   
+					return this.xmTestCaseToPlanCalcList.reduce((n, i) => {
+						return (n += i.useTimes);
+					}, 0)
+				} 
+			},
 			title(){
 				var preName=""
 				if(this.filters.testPlan && this.filters.testPlan.id){
@@ -201,6 +211,23 @@
 							bottom: 'bottom',
 							data:this.legendCpd,
 						},
+						
+						graphic: {
+							type: 'text',
+							left: 'center',
+							top: 'center',
+							style: {
+							// text: '总数',
+							text:
+								'总用例数'+this.total ,
+
+							textAlign: 'center',
+							fill: '#333',
+							width: 30,
+							height: 30,
+							fontSize: 14
+							}
+						}, 
 						series: [
 							{
 							type: 'pie',

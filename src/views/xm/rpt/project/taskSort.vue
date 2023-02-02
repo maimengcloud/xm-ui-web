@@ -256,6 +256,7 @@
 					}
 					params.orderBy = orderBys.join(",");
 				}
+				params.ntype='0'
 				getXmTaskSort(params).then(res=>{
 					this.xmTaskSorts=res.data.data
 				})

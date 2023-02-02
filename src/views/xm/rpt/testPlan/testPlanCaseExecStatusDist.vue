@@ -90,6 +90,15 @@
 					return datas;
 				} 
 			},
+			total(){
+				if(!this.xmTestPlanCaseExecStatusDists || this.xmTestPlanCaseExecStatusDists.length==0){
+					return 0
+				}else{   
+					return this.xmTestPlanCaseExecStatusDists.reduce((n, i) => {
+						return (n += i.totalCnt);
+					}, 0)
+				} 
+			},
 			title(){
 				var preName=""
 				if(this.filters.testPlan && this.filters.testPlan.id){
@@ -194,10 +203,26 @@
 							bottom: 'bottom',
 							data:this.legendCpd,
 						},
+						graphic: {
+							type: 'text',
+							left: 'center',
+							top: 'center',
+							style: {
+							// text: '总数',
+							text:
+								'总用例数'+this.total ,
+
+							textAlign: 'center',
+							fill: '#333',
+							width: 30,
+							height: 30,
+							fontSize: 14
+							}
+						}, 
 						series: [
 							{
 							type: 'pie',
-							radius: '50%',
+							radius: ['50%','70%'],
 							data: this.xmTestPlanCaseExecStatusDistsCpd,
 							emphasis: {
 								itemStyle: {

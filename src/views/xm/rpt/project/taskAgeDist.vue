@@ -218,6 +218,7 @@
 				if(this.filters.iteration){
 					params.iterationId=this.filters.iteration.id
 				}
+				params.ntype='0'
 				getXmTaskAgeDist(params).then(res=>{
 					this.xmTaskAgeDists=res.data.data
 				})

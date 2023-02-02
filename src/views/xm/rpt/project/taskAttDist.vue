@@ -96,6 +96,16 @@
 					})
 				}
 			},
+			
+			total(){
+				if(!this.xmTestCaseToPlanCalcList || this.xmTestCaseToPlanCalcList.length==0){
+					return 0
+				}else{   
+					return this.xmTestCaseToPlanCalcList.reduce((n, i) => {
+						return (n += i.useTimes);
+					}, 0)
+				} 
+			},
 			title(){
 				
 				var preName=""
@@ -282,6 +292,7 @@
 				if(this.filters.iteration){
 					params.iterationId=this.filters.iteration.id
 				}
+				params.ntype='0'
 				getXmTaskAttDist(params).then(res=>{
 					this.xmTaskAttDists=res.data.data
 				})

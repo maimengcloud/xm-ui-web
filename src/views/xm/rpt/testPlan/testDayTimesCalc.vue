@@ -229,7 +229,7 @@
 							{
 								name:'次数',
 								data: this.testDayTimesCpd,
-								type: 'line',
+								type: 'bar',
 								label:{
 									show: true, 
 								},								
