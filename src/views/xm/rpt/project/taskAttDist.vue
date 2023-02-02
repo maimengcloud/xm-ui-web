@@ -245,7 +245,7 @@
 							style: {
 							// text: '总数',
 							text:
-								'总数'+this.total ,
+								'任务数'+this.total ,
 
 							textAlign: 'center',
 							fill: '#333',

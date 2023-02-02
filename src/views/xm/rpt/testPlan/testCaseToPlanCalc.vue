@@ -218,7 +218,7 @@
 							style: {
 							// text: '总数',
 							text:
-								'总数'+this.total ,
+								'用例数'+this.total ,
 
 							textAlign: 'center',
 							fill: '#333',
