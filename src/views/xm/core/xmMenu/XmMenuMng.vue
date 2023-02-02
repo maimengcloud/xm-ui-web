@@ -90,6 +90,12 @@
 								</el-row> 
 								<el-row>
 									<font class="more-label-font">
+										归属模块:
+									</font> 
+									<span v-if="filters.func">{{ filters.func.name }}&nbsp;</span><el-button v-if="filters.func" @click="filters.func=null">清除</el-button><el-button @click="funcVisible=true">选择模块</el-button>
+								</el-row>
+								<el-row>
+									<font class="more-label-font">
 										需求类型:
 									</font>
 									<el-select  v-model="filters.dtype" clearable placeholder="需求类型" style="width: 200px;">
@@ -385,7 +391,7 @@
 		
  			<tag-dialog ref="tagDialog" :tagIds="filters.tags?filters.tags.map(i=>i.tagId):[]" :jump="true" @select-confirm="onTagSelected">
 			</tag-dialog>
- 			<xm-group-dialog ref="xmGroupDialog" :isSelectSingleUser="true" :sel-project="selProject" :xm-product="filters.xmProduct" @user-confirm="onGroupUserSelect">
+ 			<xm-group-dialog ref="xmGroupDialog" :isSelectSingleUser="true" :sel-project="selProject" :xm-product="xmProductCpd" @user-confirm="onGroupUserSelect">
 			</xm-group-dialog>
 		<el-drawer
 			append-to-body
@@ -399,6 +405,10 @@
 				:xm-product="filters.product"
 			></xm-epic-features-select>
 		</el-drawer>
+		
+		<el-dialog append-to-body title="模块选择"  :visible.sync="funcVisible" size="40%" top="20px"  :close-on-click-modal="false">
+			<xm-func-select :show-select="true" class="padding-left padding-right" v-if="funcVisible"  @select="onFuncSelected" :xm-product="xmProductCpd"></xm-func-select>
+		</el-dialog>
 	</section>
 </template>
 
@@ -426,6 +436,7 @@
 	import  XmTableConfig from '@/views/xm/core/components/XmTableConfig';//修改界面
 	import  XmGroupDialog from '@/views/xm/core/xmGroup/XmGroupDialog';//修改界面
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
+	import XmFuncSelect from '../xmFunc/XmFuncSelect'
 
 	import XmEpicFeaturesSelect from "../xmMenu/XmEpicFeaturesSelect";
 	import XmMenuAgileKanbanUser from "../xmMenu/XmMenuAgileKanbanUser";
@@ -471,6 +482,17 @@
 					key.pmenuId=''
 				}
 				return key.iterationId+key.projectId+key.productId+key.pmenuId
+			},
+			xmProductCpd(){
+				if(this.filters.product && this.filters.product.id){
+					return this.filters.product
+				}
+				if(this.xmIteration && this.xmIteration.id){
+					return {id:this.xmIteration.productId,productName:this.xmIteration.productName}
+				}
+				if(this.parentMenu && this.parentMenu.menuId){
+					return {id:this.parentMenu.productId,productName:this.parentMenu.productName}
+				}
 			}
 		},
 		watch:{
@@ -494,6 +516,7 @@
 				filters: {
 					key: '',
 					product:null,
+					func:null,
 					mmUser:{},
 					iterationFilterType:'',//join、not-join、''
 					taskFilterType:'',//join、not-join、''
@@ -563,7 +586,8 @@
  				/**begin 自定义属性请在下面加 请加备注**/
 				expandRowKeysCpd:[],
 				moreVisible:false,
-				displayType:'table'
+				displayType:'table',
+				funcVisible:false,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -662,6 +686,9 @@
 				}
 				if(this.filters.product){
 					params.productId=this.filters.product.id
+				}
+				if(this.filters.func){
+					params.funcId=this.filters.func.id
 				}
 				if(this.filters.status){
 					params.status=this.filters.status
@@ -1327,7 +1354,12 @@
 				Object.assign(this.editForm,params)
 			},
 			onAddSubMenu(row){ 
-			}
+			},
+			
+			onFuncSelected(row){ 
+				this.filters.func=row
+				this.funcVisible=false; 
+			},
 
 		},//end methods
 		components: {
@@ -1348,6 +1380,7 @@
 			XmIterationSelect,
 			MdpSelectUserXm,
 			XmMenuAgileKanbanUser,
+			XmFuncSelect,
 		    //在下面添加其它组件
 		},
 		mounted() {
