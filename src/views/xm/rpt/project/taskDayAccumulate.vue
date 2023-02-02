@@ -79,6 +79,21 @@
 					return this.xmProjectStateHiss.map(i=>i.taskFinishCnt)
 				}
 			}, 
+			
+			taskFinishCntCpd(){
+				if(this.xmProjectStateHiss.length==0){
+					return []
+				}else{ 
+					return this.xmProjectStateHiss.map(i=>i.taskFinishCnt)
+				}
+			}, 
+			taskSetCntCpd(){
+				if(this.xmProjectStateHiss.length==0){
+					return []
+				}else{ 
+					return this.xmProjectStateHiss.map(i=>i.taskSetCnt)
+				}
+			}, 
 			title(){
 				
 				var preName=""
@@ -182,7 +197,7 @@
 						barMaxWidth: 100,
 						legend: { 
 							bottom: 'bottom',
-							data: ['未开始', '执行中', '已完成', '已关闭']
+							data: ['未开始', '执行中', '已验收','已结算', '已关闭']
 						},
 						grid: { 
 							containLabel: true
@@ -227,7 +242,7 @@
 							data: this.taskExecCntCpd,
 							},
 							{
-							name: '已完成',
+							name: '已验收',
 							type: 'line',
 							stack: 'Total',
 							areaStyle: {},
@@ -235,7 +250,17 @@
 								focus: 'series'
 							},
 							data: this.taskFinishCntCpd,
+							}, 
+							{
+							name: '已结算',
+							type: 'line',
+							stack: 'Total',
+							areaStyle: {},
+							emphasis: {
+								focus: 'series'
 							},
+							data: this.taskSetCntCpd,
+							}, 
 							{
 							name: '已关闭',
 							type: 'line',

@@ -81,6 +81,13 @@
 					return this.xmProjectStateHiss.map(i=>i.taskFinishCnt)
 				}
 			},
+			taskSetCntCpd(){
+				if(this.xmProjectStateHiss.length==0){
+					return []
+				}else{ 
+					return this.xmProjectStateHiss.map(i=>i.taskSetCnt)
+				}
+			},
 			title(){
 				
 				var preName=""
@@ -189,7 +196,7 @@
 						calculable: true,
 						legend: {
 							bottom: 'bottom',
-							data: ['待领取','执行中','已完成','已结算','已关闭']
+							data: ['待领取','执行中','已验收','已结算','已关闭']
 						},
 						xAxis: {
 							type: 'category',
@@ -212,7 +219,7 @@
 							},
 							
 							{
-								name:'已完成',
+								name:'已验收',
 								data: this.taskFinishCntCpd,
 								type: 'line',
 								smooth: true,  
@@ -220,7 +227,7 @@
 							
 							{
 								name:'已结算',
-								data: this.taskCloseCntCpd,
+								data: this.taskSetCntCpd,
 								type: 'line',
 								smooth: true,  
 							},
