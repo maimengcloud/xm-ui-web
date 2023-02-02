@@ -92,12 +92,6 @@
 					preName=`测试库【${this.filters.testCasedb.name}】`
 				}else if(this.filters.iteration && this.filters.iteration.id){
 					preName=`迭代【${this.filters.iteration.iterationName}】`
-				}else if(this.filters.project && this.filters.project.id){ 
-					if(this.filters.project.name){
-						preName=`项目【${this.filters.project.name}】`
-					}else{
-						preName=`项目【${this.filters.project.id}】`
-					}
 				}else if(this.filters.product && this.filters.product.id){
 					if(this.filters.product.productName){
 						preName=`产品【${this.filters.product.productName}】`
@@ -105,6 +99,12 @@
 						preName=`产品【${this.filters.product.id}】`
 					}
 					
+				}else if(this.filters.project && this.filters.project.id){ 
+					if(this.filters.project.name){
+						preName=`项目【${this.filters.project.name}】`
+					}else{
+						preName=`项目【${this.filters.project.id}】`
+					}
 				}
 				return  preName+"产品缺陷每日趋势图" 
 			},

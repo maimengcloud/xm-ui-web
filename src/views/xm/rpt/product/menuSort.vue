@@ -96,12 +96,6 @@
 					preName=`测试库【${this.filters.testCasedb.name}】`
 				}else if(this.filters.iteration && this.filters.iteration.id){
 					preName=`迭代【${this.filters.iteration.iterationName}】`
-				}else if(this.filters.project && this.filters.project.id){ 
-					if(this.filters.project.name){
-						preName=`项目【${this.filters.project.name}】`
-					}else{
-						preName=`项目【${this.filters.project.id}】`
-					}
 				}else if(this.filters.product && this.filters.product.id){
 					if(this.filters.product.productName){
 						preName=`产品【${this.filters.product.productName}】`
@@ -109,6 +103,12 @@
 						preName=`产品【${this.filters.product.id}】`
 					}
 					
+				}else if(this.filters.project && this.filters.project.id){ 
+					if(this.filters.project.name){
+						preName=`项目【${this.filters.project.name}】`
+					}else{
+						preName=`项目【${this.filters.project.id}】`
+					}
 				}
 				return  preName+this.groupBys.find(i=>i.id==this.groupBy).name+'用户故事数量排行榜'
 			},
@@ -117,14 +117,6 @@
 					return []
 				}else{ 
 					return this.xmMenuSorts.map(i=>i.name)
-				}
-				
-			},
-			title(){
-				if(this.xmIteration && this.xmIteration.id){
-					return (this.xmIteration?'迭代【'+this.xmIteration.iterationName+'】':'')+'用户故事数量排行榜'
-				}else {
-					return (this.filters.product?'产品【'+this.filters.product.productName+'】':'')+'用户故事数量排行榜'
 				}
 				
 			}, 
@@ -156,7 +148,10 @@
 				groupBy:'proposer_id',
 				groupBys:[
 					{id:'proposer_id', name:'提出人'},
+					{id:'product_id', name:'产品'},
+					{id:'iteration_id', name:'迭代'},
 					{id:'mm_userid', name:'负责人'}, 
+					{id:'func_id', name:'模块'}, 
 				],
 				dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, edit: false, del: false, add: false },//查询中... 

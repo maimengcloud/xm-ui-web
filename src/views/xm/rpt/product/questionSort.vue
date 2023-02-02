@@ -121,10 +121,7 @@
 				}else{ 
 					return this.xmQuestionSorts.map(i=>i.value)
 				}
-			},
-			title(){
-				return this.groupBys.find(i=>i.id==this.groupBy).name+'排行榜'
-			},
+			}, 
 			legendCpd(){
 				if(this.xmQuestionSorts.length==0){
 					return []
