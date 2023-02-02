@@ -9,7 +9,7 @@
 		</el-row>
 		<el-row>
 			<!--列表 XmFunc 功能模块表-->
-			<el-table ref="xmFuncTable"  element-loading-text="努力加载中" element-loading-spinner="el-icon-loading"  :data="xmFuncsTreeData" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;" current-row-key="id" row-key="id" :tree-props="{children: 'children'}" >
+			<el-table ref="xmFuncTable"  element-loading-text="努力加载中" element-loading-spinner="el-icon-loading"  :data="xmFuncsTreeData" :max-height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;" current-row-key="id" row-key="id" :tree-props="{children: 'children'}" >
 				 
                 <el-table-column prop="name" label="模块" min-width="150" > 
 								<template slot="header"> 模块 &nbsp;<slot name="title-bar"></slot><el-button type="text" @click="unselectRow()">清除选中的行</el-button></template>
