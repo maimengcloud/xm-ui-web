@@ -85,7 +85,7 @@
 					return this.xmProductStateHiss.map(i=>i.resolvedBugs)
 				}
 			},
-			title(){
+			titleCpd(){
 				
 				var preName=""
 				if(this.filters.testPlan && this.filters.testPlan.id){
@@ -191,7 +191,7 @@
 				this.myChart.setOption(  
 					{
 						title: {
-							text: this.title,
+							text: this.titleCpd,
 							left: 'center'
 						}, 
 

@@ -102,7 +102,7 @@
 					return this.xmTestCaseSort.map(i=>i.name)
 				}
 			},
-			title(){
+			titleCpd(){
 				var preName=""
 				if(this.filters.testCasedb && this.filters.testCasedb.id){
 					preName=`测试库【${this.filters.testCasedb.name}】`
@@ -187,7 +187,7 @@
 				this.myChart.setOption(      
 					{	
 						title: {
-							text: this.title, 
+							text: this.titleCpd, 
 							left: 'center', 
 						}, 
 						

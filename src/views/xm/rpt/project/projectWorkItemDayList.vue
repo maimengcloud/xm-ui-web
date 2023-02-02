@@ -55,7 +55,7 @@
 					['已关缺陷',...this.xmProjectStateHiss.map(i=>i.closedBugs)]
 				]
 			},
-			title(){
+			titleCpd(){
 				
 				var preName=""
 				if(this.filters.testPlan && this.filters.testPlan.id){
@@ -166,7 +166,7 @@
 				this.myChart.setOption({
 	
 				title: {
-						text: this.title, 
+						text: this.titleCpd, 
 						left: 'center'
 					}, 
 					

@@ -51,7 +51,7 @@
 					['已关缺陷',...this.xmProductStateHiss.map(i=>i.closedBugs)]
 				]
 			},
-			title(){
+			titleCpd(){
 				return "企业工作项每日趋势图"
 				
 			},
@@ -85,7 +85,13 @@
 					testCasedb:null,
 					startBizDate:'',
 					endBizDate:'',
-                },
+                }, 
+				params:{
+
+				},
+				title:'',
+				remark:'', 
+				
 				dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, edit: false, del: false, add: false },//查询中... 
 				dateRanger:[], 
@@ -145,7 +151,7 @@
 				this.myChart.setOption({
 						
 					title: {
-						text: this.title, 
+						text: this.titleCpd, 
 						left: 'center'
 					}, 
 					

@@ -88,7 +88,7 @@
 					return this.xmProductStateHiss.map(i=>i.menuFinishCnt)
 				}
 			},
-			title(){ 
+			titleCpd(){ 
 				return  '企业需求每日累积图'  
 			},
 			xmProductCpd(){
@@ -162,7 +162,7 @@
 				this.myChart.setOption(  
 					{
 						title: {
-							text: this.title,
+							text: this.titleCpd,
 							left: 'center'
 						}, 
 

@@ -75,7 +75,7 @@
 					return this.xmProductStateHiss.map(i=>i.resolvedBugs)
 				}
 			},
-			title(){
+			titleCpd(){
 				return '企业缺陷每日累积图'
 				
 			},
@@ -150,7 +150,7 @@
 				this.myChart.setOption(  
 					{
 						title: {
-							text: this.title,
+							text: this.titleCpd,
 							left: 'center'
 						}, 
 

@@ -103,7 +103,7 @@
 					}, 0)
 				} 
 			},
-			title(){
+			titleCpd(){
 				
 				
 				var preName=""
@@ -181,7 +181,7 @@
 				this.myChart.setOption(   
 					{
 						title: {
-							text: this.title, 
+							text: this.titleCpd, 
 							left: 'center'
 						}, 
 						tooltip: {

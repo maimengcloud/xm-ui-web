@@ -95,7 +95,7 @@
 					return this.xmIterationStateHiss.map(i=>i.budgetWorkload-i.estimateWorkload)
 				}
 			},
-			title(){
+			titleCpd(){
 				
 				var preName=""
 				if(this.filters.testPlan && this.filters.testPlan.id){
@@ -205,7 +205,7 @@
 				this.myChart = this.$echarts.init(document.getElementById("burnout")); 
 				this.myChart.setOption({
 					title: {
-						text: this.title,
+						text: this.titleCpd,
 						left:'center'
 					},
 					tooltip: {

@@ -170,7 +170,7 @@
 
 				return this.dicts[itemId].map(i=>i.name)
 			},
-			title(){
+			titleCpd(){
 				
 				var preName=""
 				if(this.filters.testPlan && this.filters.testPlan.id){
@@ -282,7 +282,7 @@
 					{
 						
 						title: {
-							text: this.title, 
+							text: this.titleCpd, 
 							left: 'center'
 						}, 
 						tooltip: {

@@ -114,7 +114,7 @@
 					return datas;
 				} 
 			},
-			title(){
+			titleCpd(){
 				var preName=""
 				if(this.filters.testPlan && this.filters.testPlan.id){
 					preName=`测试计划【${this.filters.testPlan.name}】`
@@ -189,7 +189,7 @@
 				this.myChart.setOption(      
 					{	
 						title: {
-							text: this.title, 
+							text: this.titleCpd, 
 							left: 'center'
 						}, 
 						
