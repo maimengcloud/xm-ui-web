@@ -305,10 +305,26 @@
 							bottom: 'bottom', 
 							data:this.legendCpd,
 						},
+						graphic: {
+							type: 'text',
+							left: 'center',
+							top: 'center',
+							style: {
+							// text: '总数',
+							text:
+								'总数'+this.total ,
+
+							textAlign: 'center',
+							fill: '#333',
+							width: 30,
+							height: 30,
+							fontSize: 14
+							}
+						},  
 						series: [
 							{
 							type: 'pie',
-							radius: '50%',
+							radius: ['50%','70%'],
 							data: this.xmQuestionAttDistsCpd,
 							emphasis: {
 								itemStyle: {

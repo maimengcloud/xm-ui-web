@@ -198,7 +198,7 @@
 						series: [
 							{
 							type: 'pie',
-							radius: '50%',
+							radius: ['50%','70%'],
 							data: this.xmTaskAgeDistsCpd,
 							emphasis: {
 								itemStyle: {
