@@ -315,6 +315,7 @@
 						}
 					]
 				}); 
+				this.myChart.resize();
 			},
 			
 			onProjectSelected(project){

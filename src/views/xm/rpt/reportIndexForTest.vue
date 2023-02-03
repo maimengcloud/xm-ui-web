@@ -7,7 +7,7 @@
 <script> 
 	  
 	import { mapGetters } from 'vuex'; 
-	import reportIndex from './reportIndex'
+	import reportIndex from './index'
 
 	export default {  
 		computed: {

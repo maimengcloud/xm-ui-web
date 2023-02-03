@@ -163,12 +163,11 @@
 					iteration:null,
 					testCasedb:null,
                 },
-				params:{
-
+				params:{ 
+					groupBy:'task_state',
 				},
 				title:'',//报表配置项
 				remark:'', //报表配置项
-				groupBy:'task_state',
 				groupBys:[
 					{id:'task_state', name:'任务状态'},
 					{id:'task_type', name:'任务类型'},
@@ -235,6 +234,9 @@
 				 
 				if( this.filters.testCasedb && this.filters.testCasedb.id){
 					this.params.casedbId= this.filters.testCasedb.id
+				}
+				if(this.initGroupBy){
+					this.params.groupBy=this.initGroupBy
 				}
 				if(this.cfg && this.cfg.id){
 					this.params=this.cfg.params

@@ -5,7 +5,7 @@
 			<el-row :gutter="5" >
 				<el-col :span="18"> 
 					<div> 
-						<div class="main" :id="this.id"></div> 
+						<div class="echart-box" :id="this.id"></div> 
 					</div>
 				</el-col>
 				<el-col :span="6" class="border">
@@ -127,8 +127,7 @@
 				 
                 maxTableHeight:300, 
                 visible:false,
-				xmProjectWorkloadSetDays:[],
-				id:seq.sn(),
+				xmProjectWorkloadSetDays:[], 
 
 			}//end return
 		},//end data
@@ -315,6 +314,7 @@
 						}
 					]
 				}); 
+				this.myChart.resize();
 			},
 			
 			onProjectSelected(project){
