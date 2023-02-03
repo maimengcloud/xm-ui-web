@@ -5,7 +5,7 @@
 			<el-row :gutter="5" >
 				<el-col :span="18"> 
 					<div>
-						<div class="echart-box" id="taskDayTrend"></div>
+						<div class="echart-box" :id="this.id"></div>
 						<div class="progress"></div>
 					</div>
 				</el-col>
@@ -169,7 +169,7 @@
 				
 			},
 			drawCharts() {
-				this.myChart = this.$echarts.init(document.getElementById("taskDayTrend")); 
+				this.myChart = this.$echarts.init(document.getElementById(this.id));
 				this.myChart.setOption(  
 					{		
 						title: {

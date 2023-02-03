@@ -158,7 +158,7 @@
 				
 			},
 			drawCharts() {
-				this.myChart = this.$echarts.init(document.getElementById("iterationMenuDayAccumulate")); 
+				this.myChart = this.$echarts.init(document.getElementById(this.id));
 				this.myChart.setOption(  
 					{
 						title: {

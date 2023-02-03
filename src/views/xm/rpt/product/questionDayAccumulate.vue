@@ -3,7 +3,7 @@
 			
 			<el-row :gutter="5" >
 				<el-col :span="18"> <div>
-					<div class="echart-box" id="questionDayAccumulate"></div> 
+					<div class="echart-box" :id="this.id"></div> 
 					</div>
 				</el-col>
 				<el-col :span="6" class="border">
@@ -172,7 +172,7 @@
 				
 			},
 			drawCharts() {
-				this.myChart = this.$echarts.init(document.getElementById("questionDayAccumulate")); 
+				this.myChart = this.$echarts.init(document.getElementById(this.id));
 				this.myChart.setOption(  
 					{
 						title: {

@@ -21,7 +21,7 @@
 							</el-row>
 						</el-row>
 						<el-row> 
-							<div class="echart-box" id="iterationWorkItemDayList"></div> 
+							<div class="echart-box" :id="this.id"></div> 
 						</el-row>
 					</div>
 				</el-col>
@@ -180,7 +180,7 @@
 				
 			},
 			drawCharts() {
-				this.myChart = this.$echarts.init(document.getElementById("iterationWorkItemDayList")); 
+				this.myChart = this.$echarts.init(document.getElementById(this.id));
 				var that=this;
 				this.myChart.on('updateAxisPointer', function (event) {
 					const xAxisInfo = event.axesInfo[0];

@@ -4,7 +4,7 @@
 			<el-row :gutter="5" >
 				<el-col :span="18"> 
 					<div> 
-						<div class="echart-box" id="productWorkItemDayList" :style="{width:'100%',height:(maxTableHeight>600?600:maxTableHeight)+'px',overflow: 'hidden'}"></div> 
+						<div class="echart-box" :id="this.id"></div> 
 					</div>
 				</el-col>
 				<el-col :span="6" class="border">
@@ -148,7 +148,7 @@
 				
 			},
 			drawCharts() {
-				this.myChart = this.$echarts.init(document.getElementById("productWorkItemDayList")); 
+				this.myChart = this.$echarts.init(document.getElementById(this.id));
 				var that=this;
 				this.myChart.on('updateAxisPointer', function (event) {
 					const xAxisInfo = event.axesInfo[0];

@@ -184,7 +184,7 @@
 				return val;
 			}, 
 			drawCharts() {
-				this.myChart = this.$echarts.init(document.getElementById("this.id")); 
+				this.myChart = this.$echarts.init(document.getElementById(this.id));
 				this.myChart.setOption(   
 					{
 						title: {

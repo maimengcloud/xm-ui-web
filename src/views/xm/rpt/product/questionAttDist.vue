@@ -3,7 +3,7 @@
 			<el-row :gutter="5" >
 				<el-col :span="18"> 
 					<div>
-						<div class="echart-box" id="xmQuestionAttDist"></div>
+						<div class="echart-box" :id="this.id"></div>
 						<div class="progress"></div>
 					</div>
 				</el-col>
@@ -213,8 +213,7 @@
 			}
 	    },
 		data() {
-			return {
-				id:Math.floor(Math.random() * 10000000),
+			return { 
                 filters:{
                     product:null, 
                     project:null,
@@ -277,7 +276,7 @@
 				this.searchXmQuestionAttDist()
 			},
 			drawCharts() {
-				this.myChart = this.$echarts.init(document.getElementById("xmQuestionAttDist")); 
+				this.myChart = this.$echarts.init(document.getElementById(this.id));
 				this.myChart.setOption(   
 					{
 						

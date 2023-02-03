@@ -3,7 +3,7 @@
 			
 			<el-row :gutter="5" >
 				<el-col :span="18"> <div>
-					<div class="echart-box" :id="id"></div> 
+					<div class="echart-box" :id="this.id"></div> 
 					</div>
 				</el-col>
 				<el-col :span="6" class="border">
