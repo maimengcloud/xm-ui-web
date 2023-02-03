@@ -10,7 +10,7 @@
 				<el-col :span="6" class="border">
 					<el-form :model="params" class="padding" :style="{width:'100%',maxHeight:maxTableHeight+'px',overflow: 'auto'}" ref="filtersRef">
 						<el-form-item label="分组属性">
-							<el-select   v-model="groupBy"  @change="onXmQuestionSomeFieldsChange('groupBy',$event)" clearable>
+							<el-select   v-model="params.groupBy"  @change="onXmQuestionSomeFieldsChange('groupBy',$event)" clearable>
 								<el-option v-for="i in this.groupBys" :label="i.name" :key="i.id" :value="i.id"></el-option>
 							</el-select>
 						</el-form-item>        
