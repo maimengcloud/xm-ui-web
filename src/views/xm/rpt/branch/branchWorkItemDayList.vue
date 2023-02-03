@@ -2,16 +2,32 @@
 	<section> 
 			<el-row :gutter="5" >
 				<el-col :span="18"> 
+					<div v-if="isRptCfg">
+						<div class="box">
+							<h4 class="title">{{title?title:'请输入标题'}}</h4><el-input class="input" v-model="title" placeholder="请输入标题"></el-input>
+						</div>
+						<el-row class="box">
+							<span class="remark">{{remark?remark:'请输入说明'}}</span><el-input  class="input" type="textarea" :rows="4" v-model="remark" placeholder="请输入说明"></el-input>
+						</el-row>
+					</div>
+					<div v-else-if="cfg && cfg.id">
+						<el-row v-if="title"  class="box">
+							<h4 class="title">{{title}}</h4>
+						</el-row>
+						<el-row v-if="remark"  class="box">
+							<span class="remark">{{remark}}</span>
+						</el-row>
+					</div>
 					<div> 
-						<div class="echart-box" id="iterationWorkItemDayList" :style="{width:'100%',height:(maxTableHeight>600?600:maxTableHeight)+'px',overflow: 'hidden'}"></div> 
+						<div class="echart-box" id="iterationWorkItemDayList"></div> 
 					</div>
 				</el-col>
 				<el-col :span="6" class="border">
-					<el-form :model="filters" class="padding" :style="{width:'100%',maxHeight:maxTableHeight+'px',overflow: 'auto'}" ref="filtersRef">  
+					<el-form :model="params" class="padding" :style="{width:'100%',maxHeight:maxTableHeight+'px',overflow: 'auto'}" ref="filtersRef">  
 					 
 					<el-form-item label="日期区间">
 						<br>
-							<mdp-date-range v-model="filters" value-format="yyyy-MM-dd" start-key="startBizDate" end-key="endBizDate"></mdp-date-range>
+							<mdp-date-range v-model="params" value-format="yyyy-MM-dd" start-key="startBizDate" end-key="endBizDate"></mdp-date-range>
   					</el-form-item>  
 					<el-form-item>
 						 <el-button type="primary" icon="el-icon-search" @click="listXmBranchStateHis">查询</el-button>
@@ -35,7 +51,7 @@
 		components: {  
 			XmIterationSelect,XmProductSelect,
 		},
-        props:['xmProduct','xmProject','xmIteration'],
+        props:['xmProduct','xmProject','xmIteration','cfg','category','isRptCfg'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -61,6 +77,9 @@
 				}
 				if(this.xmProduct && this.xmProduct.id){
 					return this.xmProduct
+				}
+				if(this.cfg && this.cfg.params && this.cfg.params.productId){
+					return {id:this.cfg.params.productId}
 				}
 				return null;
 			}
@@ -89,8 +108,8 @@
 				params:{
 
 				},
-				title:'',
-				remark:'', 
+				title:'',//报表配置项
+				remark:'', //报表配置项
 				
 				dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, edit: false, del: false, add: false },//查询中... 
@@ -103,11 +122,7 @@
 		},//end data
 		methods: {  
 			listXmBranchStateHis(){ 
-				var params={orderBy:'biz_date asc'}
-				if(this.filters.startBizDate && this.filters.endBizDate){
-					params.startBizDate=this.filters.startBizDate;
-					params.endBizDate=this.filters.endBizDate;
-				}
+				var params=this.params
 				listXmBranchStateHis(params).then(res=>{ 
 					this.xmProductStateHiss=res.data.tips.isOk?res.data.data:this.xmProductStateHiss;
 				})
@@ -118,7 +133,36 @@
 				this.filters.product=this.xmProduct
 				this.filters.project=this.xmProject
 				this.filters.iteration=this.xmIteration
-				this.filters.testCasedb=this.xmTestCasedb
+				this.filters.testCasedb=this.xmTestCasedb 
+
+				if( this.filters.testPlan && this.filters.testPlan.id){
+					this.params.planId= this.filters.testPlan.id
+				} 
+				 
+				if( this.filters.product && this.filters.product.id){
+					this.params.productId= this.filters.product.id
+				}
+				 
+				if( this.filters.project && this.filters.project.id){
+					this.params.projectId= this.filters.project.id
+				}
+				 
+				if( this.filters.iteration && this.filters.iteration.id){
+					this.params.iterationId= this.filters.iteration.id
+				}
+				 
+				 
+				if( this.filters.testCasedb && this.filters.testCasedb.id){
+					this.params.casedbId= this.filters.testCasedb.id
+				}
+				if(this.cfg && this.cfg.id){
+					this.params=this.cfg.params
+					this.title=this.cfg.title
+					this.remark=this.cfg.remark
+				}
+				if(this.isRptCfg && !this.title){
+					this.title="企业工作项每日趋势图"
+				}
 				this.xmProductStateHiss=[]
 				if(this.$refs['xmProductSelect'])this.$refs['xmProductSelect'].clearSelect();
 				if(this.$refs['xmIterationSelect'])this.$refs['xmIterationSelect'].clearSelect();
@@ -279,9 +323,39 @@
 
 </script>
 
-<style scoped>
+<style lang="less" scoped> 
    .image {
     width: 100%;
     display: block;
   }
+  .box{  
+	display: flex;
+	height: 28px;
+	.title{
+		font-size: large;
+		visibility: visible;
+	} 
+	.remark{
+		font-size:medium;
+		visibility: visible;
+	} 
+	.input {
+		visibility: hidden;
+		z-index: 10000;  
+		top: 0%; 
+		left:0%;  
+		position:absolute;  
+	}
+  }
+  .box:hover{
+	.title{
+		visibility: hidden;
+	}
+	.remark{
+		visibility: visible;
+	} 
+	.input{
+		visibility: visible;
+	}
+  } 
 </style>
