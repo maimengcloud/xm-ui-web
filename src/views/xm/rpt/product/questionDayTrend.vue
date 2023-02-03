@@ -9,7 +9,7 @@
 					</div>
 				</el-col>
 				<el-col :span="6" class="border">
-					<el-form :model="params" class="padding" :style="{width:'100%',maxHeight:maxTableHeight+'px',overflow: 'auto'}" ref="filtersRef"> 
+					<el-form :model="params" class="padding" :style="{width:'100%',overflow: 'auto'}" ref="filtersRef"> 
 						
 						<el-form-item label="归属产品"  >
 							<xm-product-select v-if="!xmProductCpd || !xmProductCpd.id"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClear"></xm-product-select>

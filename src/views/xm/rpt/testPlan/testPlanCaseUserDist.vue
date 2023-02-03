@@ -10,7 +10,7 @@
 					</div>
 				</el-col>
 				<el-col :span="6" class="border">
-					<el-form :model="params" class="padding" :style="{width:'100%',maxHeight:maxTableHeight+'px',overflow: 'auto'}" ref="filtersRef">        
+					<el-form :model="params" class="padding" :style="{width:'100%',overflow: 'auto'}" ref="filtersRef">        
 						
 						<el-form-item label="测试库" v-if="xmTestCasedb && xmTestCasedb.id" >
  							<span >{{xmTestCasedb.id}} <span v-if="xmTestCasedb.name"><br/>{{  xmTestCasedb.name  }} </span> </span>

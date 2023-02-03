@@ -7,7 +7,7 @@
 					</div>
 				</el-col>
 				<el-col :span="6" class="border">
-					<el-form :model="params" class="padding" :style="{width:'100%',maxHeight:maxTableHeight+'px',overflow: 'auto'}" ref="filtersRef">  
+					<el-form :model="params" class="padding" :style="{width:'100%',overflow: 'auto'}" ref="filtersRef">  
 					<el-form-item label="日期区间">
 						<br>
 							<mdp-date-range v-model="filters" value-format="yyyy-MM-dd" start-key="startBizDate" end-key="endBizDate"></mdp-date-range>

@@ -29,7 +29,7 @@
 						<el-button type="danger" icon="el-icon-delete" @click="doDelete">从报告移除该报表</el-button>
  					</el-row>
 					<el-row v-if="showParams">
-						<el-form :model="params" class="padding" :style="{width:'100%',maxHeight:maxTableHeight+'px',overflow: 'auto'}" ref="filtersRef">  
+						<el-form :model="params" class="padding" :style="{width:'100%',overflow: 'auto'}" ref="filtersRef">  
 						
 						<el-form-item label="日期区间">
 							<br>
