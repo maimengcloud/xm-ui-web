@@ -298,14 +298,11 @@
 			},
 			
 			onProductSelected(product){
-				this.filters.product=product
-				this.xmProductStateHiss=[]; 
+				this.filters.product=product 
 			},
 			
 			onProductClear(){
-				this.filters.product=null
-				
-				this.xmProductStateHiss=[];
+				this.filters.product=null 
 				
 			},
 		},//end method

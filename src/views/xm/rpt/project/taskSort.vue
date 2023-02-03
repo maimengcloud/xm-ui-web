@@ -160,9 +160,38 @@
 		methods: { 
 			open(){
 				this.visible=true;
+				this.filters.testPlan=this.xmTestPlan
 				this.filters.product=this.xmProduct
 				this.filters.project=this.xmProject
-				this.filters.iteration=this.xmIteration 
+				this.filters.iteration=this.xmIteration
+				this.filters.testCasedb=this.xmTestCasedb 
+
+				if( this.filters.testPlan && this.filters.testPlan.id){
+					this.params.planId= this.filters.testPlan.id
+				} 
+				 
+				if( this.filters.product && this.filters.product.id){
+					this.params.productId= this.filters.product.id
+				}
+				 
+				if( this.filters.project && this.filters.project.id){
+					this.params.projectId= this.filters.project.id
+				}
+				 
+				if( this.filters.iteration && this.filters.iteration.id){
+					this.params.iterationId= this.filters.iteration.id
+				} 
+				if( this.filters.testCasedb && this.filters.testCasedb.id){
+					this.params.casedbId= this.filters.testCasedb.id
+				}
+				if(this.cfg && this.cfg.id){
+					this.params=this.cfg.params
+					this.title=this.cfg.title
+					this.remark=this.cfg.remark
+				}
+				if(this.showToolBar && !this.title){
+					this.title="企业工作项每日趋势图"
+				}
 				this.searchXmTaskSort()
 			},
 			drawCharts() {
@@ -213,54 +242,15 @@
 			onXmTaskSomeFieldsChange(fieldName,$event){
 				this.xmTaskSorts=[]
 			},
-			searchXmTaskSort(){
-				if(!this.groupBy){
-					this.$notify({position:'bottom-left',showClose:true,message:'请选中分组属性',type:'warning'})
-					return 
-				}
+			searchXmTaskSort(){ 
 				 let params = {
 					pageSize: this.pageInfo.pageSize,
 					pageNum: this.pageInfo.pageNum,
 					total: this.pageInfo.total,
 					count: this.pageInfo.count,
+					...this.params
 				};
-				if(this.filters.taskType){
-					params.taskType=this.filters.taskType
-				}
-				if(this.filters.taskState){
-					params.taskState=this.filters.taskState
-				}
-				if(this.filters.planType){
-					params.planType=this.filters.planType
-				}
-				if(this.filters.settleSchemel){
-					params.settleSchemel=this.filters.settleSchemel
-				}
-				if(this.filters.priority){
-					params.priority=this.filters.priority
-				} 
-				params.groupBy=this.groupBy
-				if(this.filters.project){
-					params.projectId=this.filters.project.id
-				}
-				
-				if(this.filters.iteration){
-					params.iterationId=this.filters.iteration.id
-				}
-
-				
-				if (
-					this.pageInfo.orderFields != null &&
-					this.pageInfo.orderFields.length > 0
-				) {
-					let orderBys = [];
-					for (var i = 0; i < this.pageInfo.orderFields.length; i++) {
-					orderBys.push(
-						this.pageInfo.orderFields[i] + " " + this.pageInfo.orderDirs[i]
-					);
-					}
-					params.orderBy = orderBys.join(",");
-				}
+				 
 				params.ntype='0'
 				getXmTaskSort(params).then(res=>{
 					this.xmTaskSorts=res.data.data

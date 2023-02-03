@@ -329,24 +329,20 @@
 			},
 			
 			onProductSelected(product){
-				this.filters.product=product
-				this.xmProductStateHiss=[]; 
+				this.filters.product=product 
 			},
 			
 			onProductClear(){
-				this.filters.product=null 
-				this.xmProductStateHiss=[];
+				this.filters.product=null  
 				
 			},
 			
 			onIterationSelected(iteration){
-				this.filters.iteration=iteration
-				this.xmProductStateHiss=[]; 
+				this.filters.iteration=iteration 
 			},
 			
 			onIterationClear(){
-				this.filters.iteration=null 
-				this.xmProductStateHiss=[];
+				this.filters.iteration=null  
 			}
 		},//end method
 		mounted() {

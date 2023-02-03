@@ -259,23 +259,7 @@
 			},
 			searchXmTestCaseToPlanCalcList(){ 
 
-				var params={ } 
-				if(this.filters.product && this.filters.product.id){
-					params.productId=this.filters.product.id
-				}
-				
-				if(this.filters.project && this.filters.project.id){
-					params.projectId=this.filters.project.id
-				} 
-				if(this.filters.iteration && this.filters.iteration.id){
-					params.linkIterationId=this.filters.iteration.id
-				} 
-				if(this.filters.testPlan && this.filters.testPlan.id){
-					params.planId=this.filters.testPlan.id
-				}
-				if(this.filters.testCasedb && this.filters.testCasedb.id){
-					params.casedbId=this.filters.testCasedb.id
-				}
+				var params={...this.params }  
  					getXmTestCaseToPlanCalcList(params).then(res=>{
 						this.xmTestCaseToPlanCalcList=res.data.data
 					})
