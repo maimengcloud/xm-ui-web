@@ -204,11 +204,10 @@
 					testCasedb:null,
                 },
 				params:{
-
+					groupBy:'handler_userid'
 				},
 				title:'',//报表配置项
-				remark:'', //报表配置项
-				groupBy:'handler_userid',
+				remark:'', //报表配置项 
 				groupBys:[
 					{id:'create_userid', name:'创建人'},
 					{id:'ask_userid', name:'提出人'},

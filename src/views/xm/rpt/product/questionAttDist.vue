@@ -221,12 +221,11 @@
 					iteration:null,
 					testCasedb:null,
                 },
-				params:{
-
+				params:{ 
+					groupBy:'bug_status',
 				},
 				title:'',//报表配置项
 				remark:'', //报表配置项
-				groupBy:'bug_status',
 				groupBys:[
 					{id:'bug_status', name:'缺陷状态'},
 					{id:'bug_type', name:'缺陷类型'},
@@ -298,6 +297,9 @@
 				 
 				if( this.filters.testCasedb && this.filters.testCasedb.id){
 					this.params.casedbId= this.filters.testCasedb.id
+				}
+				if(this.initGroupBy){
+					this.params.groupBy=this.initGroupBy
 				}
 				if(this.cfg && this.cfg.id){
 					this.params=this.cfg.params
