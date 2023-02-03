@@ -9,7 +9,7 @@
 					</div>
 				</el-col>
 				<el-col :span="6" class="border">
-					<el-form :model="filters" class="padding" :style="{width:'100%',maxHeight:maxTableHeight+'px',overflow: 'auto'}" ref="filtersRef">
+					<el-form :model="params" class="padding" :style="{width:'100%',maxHeight:maxTableHeight+'px',overflow: 'auto'}" ref="filtersRef">
 						<el-form-item label="分组属性">
 							<el-select   v-model="groupBy"  @change="onXmTaskSomeFieldsChange('groupBy',$event)" clearable>
 								<el-option v-for="i in this.groupBys" :label="i.name" :key="i.id" :value="i.id"></el-option>
@@ -20,27 +20,27 @@
 							<span v-else>{{xmProject.id}} <span v-if="xmProject.name"><br/>{{  xmProject.name  }} </span> </span> 
 						</el-form-item>  
 						 <el-form-item label="任务状态" prop="taskState">
-							<el-select   v-model="filters.taskState"  @change="onXmTaskSomeFieldsChange('taskState',$event)" clearable>
+							<el-select   v-model="params.taskState"  @change="onXmTaskSomeFieldsChange('taskState',$event)" clearable>
 								<el-option v-for="i in this.dicts.taskState" :label="i.name" :key="i.id" :value="i.id"></el-option>
 							</el-select>
 						</el-form-item>  
 						<el-form-item  label="任务类型" prop="taskType" >
-							<el-select v-model="filters.taskType"  @change="onXmTaskSomeFieldsChange('taskType',$event)" clearable>
+							<el-select v-model="params.taskType"  @change="onXmTaskSomeFieldsChange('taskType',$event)" clearable>
 								<el-option v-for="i in this.dicts.taskType" :label="i.name" :key="i.id" :value="i.id"></el-option>
 							</el-select>
 						</el-form-item> 
 						<el-form-item  label="任务来源" prop="planType">
-							<el-select v-model="filters.planType"  @change="onXmTaskSomeFieldsChange('planType',$event)" clearable>
+							<el-select v-model="params.planType"  @change="onXmTaskSomeFieldsChange('planType',$event)" clearable>
 								<el-option v-for="i in this.dicts.planType" :label="i.name" :key="i.id" :value="i.id"></el-option>
 							</el-select>
 						</el-form-item> 
 						<el-form-item  label="任务层次" prop="settleSchemel" >
-							<el-select v-model="filters.settleSchemel"  @change="onXmTaskSomeFieldsChange('settleSchemel',$event)" clearable>
+							<el-select v-model="params.settleSchemel"  @change="onXmTaskSomeFieldsChange('settleSchemel',$event)" clearable>
 								<el-option v-for="i in this.dicts.xmTaskSettleSchemel" :label="i.name" :key="i.id" :value="i.id"></el-option>
 							</el-select>
 						</el-form-item> 
 					<el-form-item  label="优先级" prop="priority" >
-						<el-select v-model="filters.priority" @change="onXmTaskSomeFieldsChange('priority',$event)" clearable>
+						<el-select v-model="params.priority" @change="onXmTaskSomeFieldsChange('priority',$event)" clearable>
 								<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option>
 						</el-select>
 					</el-form-item>  

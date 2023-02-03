@@ -1,7 +1,7 @@
 <template>  
     <section>
         <el-row> 
-            <el-select v-model="filters.category" clearable @change="onCategroySelect" style="width:100%;" :disabled="!!category">
+            <el-select v-model="params.category" clearable @change="onCategroySelect" style="width:100%;" :disabled="!!category">
                 <el-option v-for="(item,index) in categorys" :label="item" :value="item" :key="index"></el-option>
             </el-select>
         </el-row> 

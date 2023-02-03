@@ -8,7 +8,7 @@
 					</div>
 				</el-col>
 				<el-col :span="6" class="border">
-					<el-form :model="filters" class="padding" :style="{width:'100%',maxHeight:maxTableHeight+'px',overflow: 'auto'}" ref="filtersRef">
+					<el-form :model="params" class="padding" :style="{width:'100%',maxHeight:maxTableHeight+'px',overflow: 'auto'}" ref="filtersRef">
 						<el-form-item label="分组属性">
 							<el-select   v-model="groupBy"  @change="onXmMenuSomeFieldsChange('groupBy',$event)" clearable>
 								<el-option v-for="i in this.groupBys" :label="i.name" :key="i.id" :value="i.id"></el-option>
@@ -28,27 +28,27 @@
 						</el-form-item> 
 							
 						<el-form-item label="需求状态" prop="status">
-							<el-select   v-model="filters.status"  @change="onXmMenuSomeFieldsChange('status',$event)" clearable>
+							<el-select   v-model="params.status"  @change="onXmMenuSomeFieldsChange('status',$event)" clearable>
 								<el-option v-for="i in this.dicts.menuStatus" :label="i.name" :key="i.id" :value="i.id"></el-option>
 							</el-select>
 						</el-form-item>  
 						<el-form-item  label="需求类型" prop="dtype" >
-							<el-select v-model="filters.dtype"  @change="onXmMenuSomeFieldsChange('dtype',$event)" clearable>
+							<el-select v-model="params.dtype"  @change="onXmMenuSomeFieldsChange('dtype',$event)" clearable>
 								<el-option v-for="i in this.dicts.demandType" :label="i.name" :key="i.id" :value="i.id"></el-option>
 							</el-select>
 						</el-form-item> 
 						<el-form-item  label="需求来源" prop="source">
-							<el-select v-model="filters.source"  @change="onXmMenuSomeFieldsChange('source',$event)" clearable>
+							<el-select v-model="params.source"  @change="onXmMenuSomeFieldsChange('source',$event)" clearable>
 								<el-option v-for="i in this.dicts.demandSource" :label="i.name" :key="i.id" :value="i.id"></el-option>
 							</el-select>
 						</el-form-item> 
 						<el-form-item  label="需求层次" prop="dlvl" >
-							<el-select v-model="filters.dlvl"  @change="onXmMenuSomeFieldsChange('dlvl',$event)" clearable>
+							<el-select v-model="params.dlvl"  @change="onXmMenuSomeFieldsChange('dlvl',$event)" clearable>
 								<el-option v-for="i in this.dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
 							</el-select>
 						</el-form-item> 
 					<el-form-item  label="优先级" prop="priority" >
-						<el-select v-model="filters.priority" @change="onXmMenuSomeFieldsChange('priority',$event)" clearable>
+						<el-select v-model="params.priority" @change="onXmMenuSomeFieldsChange('priority',$event)" clearable>
 								<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option>
 						</el-select>
 					</el-form-item>  
@@ -81,7 +81,7 @@
 		      'userInfo','roles'
 		    ]), 
 			xmMenuAttDistsCpd(){
-				if(this.xmMenuAttDists.length==0){
+				if(!this.xmMenuAttDists || this.xmMenuAttDists.length==0){
 					return []
 				}else{ 
 					var itemId="";
@@ -181,11 +181,11 @@
 					testCasedb:null,
                 },
 				params:{
-
+					groupBy:'status',
 				},
 				title:'',//报表配置项
 				remark:'', //报表配置项
-				groupBy:'status',
+				
 				groupBys:[
 					{id:'status', name:'需求状态'},
 					{id:'dtype', name:'需求类型'},
@@ -249,12 +249,10 @@
 				 
 				if( this.filters.iteration && this.filters.iteration.id){
 					this.params.iterationId= this.filters.iteration.id
-				}
-				 
-				 
+				} 
 				if( this.filters.testCasedb && this.filters.testCasedb.id){
 					this.params.casedbId= this.filters.testCasedb.id
-				}
+				} 
 				if(this.cfg && this.cfg.id){
 					this.params=this.cfg.params
 					this.title=this.cfg.title
