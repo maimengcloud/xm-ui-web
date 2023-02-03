@@ -38,7 +38,7 @@
 		components: {   
 			XmProjectSelect,
 		},
-        props:['xmProduct','xmProject'],
+        props:['id','xmProduct','xmProject'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'

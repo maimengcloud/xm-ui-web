@@ -2,32 +2,45 @@
 	<section> 
 			<el-row :gutter="5" >
 				<el-col :span="18"> 
-					<div> 
-						<div class="echart-box" id="iterationWorkItemDayList" :style="{width:'100%',height:(maxTableHeight>600?600:maxTableHeight)+'px',overflow: 'hidden'}"></div> 
+					<div class="rpt-box">
+						<el-row v-if="isRptCfg">
+							<el-row class="row-box padding-top">
+								<span class="title">{{title?title:'请输入标题'}}</span><el-input class="input" v-model="title" placeholder="请输入标题"></el-input>
+							</el-row>
+							<el-row class="row-box">
+								<el-row class="remark"><div v-html="remark?remark:'请输入说明'"></div></el-row>
+								<el-row ><el-input class="input"  type="textarea" :rows="4" v-model="remark" placeholder="请输入说明"></el-input></el-row>
+							</el-row>
+						</el-row>
+						<el-row v-else-if="cfg && cfg.id">
+							<el-row v-if="title"  class="row-box">
+								<span class="title">{{title}}</span>
+							</el-row>
+							<el-row v-if="remark"  class="row-box">
+								<span class="remark">{{remark}}</span>
+							</el-row>
+						</el-row>
+						<el-row> 
+							<div class="echart-box" id="iterationWorkItemDayList"></div> 
+						</el-row>
 					</div>
 				</el-col>
-				<el-col :span="6" class="border">
-					<el-form :model="filters" class="padding" :style="{width:'100%',maxHeight:maxTableHeight+'px',overflow: 'auto'}" ref="filtersRef">  
-					<el-form-item label="归属产品"  >
-						<xm-product-select v-if="!xmProductCpd || !xmProductCpd.id"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClear"></xm-product-select>
-						<span v-else>{{xmProductCpd.id}} <span v-if="xmProductCpd.productName"><br/>{{  xmProductCpd.productName  }} </span> </span>
-					</el-form-item>
-					<el-form-item label="归属迭代" v-if="xmIteration && xmIteration.id">
-						<span>  {{xmIteration.id}}
-							<span v-if="xmIteration.iterationName"><br/>{{ xmIteration.iterationName  }} </span>
-						</span> 
-					</el-form-item>  
-					<el-form-item label="归属迭代" v-else-if="filters.product && filters.product.id">
-						<xm-iteration-select  ref="xmIterationSelect"  :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClear"></xm-iteration-select>
-					</el-form-item> 
-					<el-form-item label="日期区间">
-						<br>
-							<mdp-date-range v-model="filters" value-format="yyyy-MM-dd" start-key="startBizDate" end-key="endBizDate"></mdp-date-range>
-  					</el-form-item>  
-					<el-form-item>
-						 <el-button type="primary" icon="el-icon-search" @click="listXmIterationStateHis">查询</el-button>
-					</el-form-item>  
-					</el-form>
+				<el-col :span="6" class="border" v-if="isRptCfg">
+					<el-row v-if="showToolBar">
+						<el-button type="danger" icon="el-icon-delete" @click="doDelete">从报告移除该报表</el-button>
+ 					</el-row>
+					<el-row v-if="showParams">
+						<el-form :model="params" class="padding" :style="{width:'100%',maxHeight:maxTableHeight+'px',overflow: 'auto'}" ref="filtersRef">  
+						
+						<el-form-item label="日期区间">
+							<br>
+								<mdp-date-range v-model="params" value-format="yyyy-MM-dd" start-key="startBizDate" end-key="endBizDate"></mdp-date-range>
+						</el-form-item>  
+						<el-form-item>
+							<el-button type="primary" icon="el-icon-search" @click="listXmBranchStateHis">查询</el-button>
+						</el-form-item>  
+						</el-form>
+					</el-row>
 				</el-col>
 			</el-row> 
 	</section>
@@ -40,13 +53,13 @@
 	
 	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//产品选择界面
 	import  XmIterationSelect from '@/views/xm/core/components/XmIterationSelect';//迭代选择界面
-	import { listXmIterationStateHis } from '@/api/xm/core/xmIterationStateHis';
+	import { listXmBranchStateHis } from '@/api/xm/core/xmBranchStateHis';
 	export default { 
         
 		components: {  
 			XmIterationSelect,XmProductSelect,
 		},
-        props:['id','xmProduct','xmProject','xmIteration'],
+        props:['id','xmProduct','xmProject','xmIteration','cfg','category','showToolBar','showParams','isRptCfg'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -63,29 +76,7 @@
 				]
 			},
 			titleCpd(){
-				
-				var preName=""
-				if(this.filters.testPlan && this.filters.testPlan.id){
-					preName=`测试计划【${this.filters.testPlan.name}】`
-				}else if(this.filters.testCasedb && this.filters.testCasedb.id){
-					preName=`测试库【${this.filters.testCasedb.name}】`
-				}else if(this.filters.iteration && this.filters.iteration.id){
-					preName=`迭代【${this.filters.iteration.iterationName}】`
-				}else if(this.filters.product && this.filters.product.id){
-					if(this.filters.product.productName){
-						preName=`产品【${this.filters.product.productName}】`
-					}else{
-						preName=`产品【${this.filters.product.id}】`
-					}
-					
-				}else if(this.filters.project && this.filters.project.id){ 
-					if(this.filters.project.name){
-						preName=`项目【${this.filters.project.name}】`
-					}else{
-						preName=`项目【${this.filters.project.id}】`
-					}
-				}
-				return  preName+"迭代工作项每日趋势图" 
+				return "企业工作项每日趋势图"
 				
 			},
 			xmProductCpd(){
@@ -94,6 +85,9 @@
 				}
 				if(this.xmProduct && this.xmProduct.id){
 					return this.xmProduct
+				}
+				if(this.cfg && this.cfg.params && this.cfg.params.productId){
+					return {id:this.cfg.params.productId}
 				}
 				return null;
 			}
@@ -118,7 +112,13 @@
 					testCasedb:null,
 					startBizDate:'',
 					endBizDate:'',
-                },
+                }, 
+				params:{
+
+				},
+				title:'',//报表配置项
+				remark:'', //报表配置项
+				
 				dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, edit: false, del: false, add: false },//查询中... 
 				dateRanger:[], 
@@ -129,22 +129,9 @@
 			}//end return
 		},//end data
 		methods: {  
-			listXmIterationStateHis(){
-				if(!this.filters.product){
-					this.$notify({position:'bottom-left',showClose:true,message:'请先选中产品',type:'warning'})
-					return;
-				}
-				
-				if(!this.filters.iteration){
-					this.$notify({position:'bottom-left',showClose:true,message:'请先选中迭代',type:'warning'})
-					return;
-				}
-				var params={productId:this.filters.product.id,iterationId:this.filters.iteration.id,orderBy:'biz_date asc'}
-				if(this.filters.startBizDate && this.filters.endBizDate){
-					params.startBizDate=this.filters.startBizDate;
-					params.endBizDate=this.filters.endBizDate;
-				}
-				listXmIterationStateHis(params).then(res=>{ 
+			listXmBranchStateHis(){ 
+				var params=this.params
+				listXmBranchStateHis(params).then(res=>{ 
 					this.xmProductStateHiss=res.data.tips.isOk?res.data.data:this.xmProductStateHiss;
 				})
 			},
@@ -154,12 +141,41 @@
 				this.filters.product=this.xmProduct
 				this.filters.project=this.xmProject
 				this.filters.iteration=this.xmIteration
-				this.filters.testCasedb=this.xmTestCasedb
+				this.filters.testCasedb=this.xmTestCasedb 
+
+				if( this.filters.testPlan && this.filters.testPlan.id){
+					this.params.planId= this.filters.testPlan.id
+				} 
+				 
+				if( this.filters.product && this.filters.product.id){
+					this.params.productId= this.filters.product.id
+				}
+				 
+				if( this.filters.project && this.filters.project.id){
+					this.params.projectId= this.filters.project.id
+				}
+				 
+				if( this.filters.iteration && this.filters.iteration.id){
+					this.params.iterationId= this.filters.iteration.id
+				}
+				 
+				 
+				if( this.filters.testCasedb && this.filters.testCasedb.id){
+					this.params.casedbId= this.filters.testCasedb.id
+				}
+				if(this.cfg && this.cfg.id){
+					this.params=this.cfg.params
+					this.title=this.cfg.title
+					this.remark=this.cfg.remark
+				}
+				if(this.showToolBar && !this.title){
+					this.title="企业工作项每日趋势图"
+				}
 				this.xmProductStateHiss=[]
 				if(this.$refs['xmProductSelect'])this.$refs['xmProductSelect'].clearSelect();
 				if(this.$refs['xmIterationSelect'])this.$refs['xmIterationSelect'].clearSelect();
 				this.$nextTick(()=>{
-					this.listXmIterationStateHis();
+					this.listXmBranchStateHis();
 				})
 				
 			},
@@ -192,7 +208,7 @@
 					}, 
 					
 					tooltip: {
-						trigger: 'axis'
+						trigger: 'axis', 
 					},
 					barMaxWidth: 100,
 					toolbox: {
@@ -308,7 +324,7 @@
 				this.dicts=res.data.data;
 			}) 
              */
-			            this.maxTableHeight = util.calcTableMaxHeight(this.$refs.filtersRef.$el)
+            this.maxTableHeight = this.$refs.filtersRef?util.calcTableMaxHeight(this.$refs.filtersRef.$el):this.maxTableHeight;
 			//this.charts();
 			this.open();
 			
@@ -317,9 +333,43 @@
 
 </script>
 
-<style scoped>
+<style lang="less" scoped> 
    .image {
     width: 100%;
     display: block;
+  }
+  .row-box{     
+	.title{
+		font-weight: 600;
+		font-size: large;
+		visibility: visible;
+	} 
+	.remark{
+		font-size:medium;
+		visibility: visible;
+	} 
+	.input {
+		visibility: hidden;
+		z-index: 10000;  
+		top: 0%; 
+		left:0%;  
+		position:absolute;  
+	}
+  }
+  .row-box:hover{
+	.title{
+		display:none;
+	}
+	.remark{
+		display:none;
+	} 
+	.input{
+		visibility: visible;
+	}
+  } 
+  .rpt-box{
+	margin-left: 10px;
+	margin-right: 10px;
+  	border: 1px solid #e8e8e8;
   }
 </style>

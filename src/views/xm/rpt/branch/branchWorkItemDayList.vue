@@ -1,7 +1,6 @@
-<template>
-	<section> 
+<template> 
 			<el-row :gutter="5" >
-				<el-col :span="18"> 
+				<el-col :span="18">  
 					<div class="rpt-box">
 						<el-row v-if="isRptCfg">
 							<el-row class="row-box padding-top">
@@ -12,7 +11,7 @@
 								<el-row ><el-input class="input"  type="textarea" :rows="4" v-model="remark" placeholder="请输入说明"></el-input></el-row>
 							</el-row>
 						</el-row>
-						<el-row v-else-if="cfg && cfg.id">
+						<el-row v-else-if="cfg &&  cfg.id">
 							<el-row v-if="title"  class="row-box">
 								<span class="title">{{title}}</span>
 							</el-row>
@@ -21,27 +20,28 @@
 							</el-row>
 						</el-row>
 						<el-row> 
-							<div class="echart-box" id="iterationWorkItemDayList"></div> 
+							<div class="echart-box" id="branchWorkItemDayList"></div> 
 						</el-row>
 					</div>
 				</el-col>
-				<el-col :span="6" class="border" v-if="!isExport">
-					<el-row v-if="isRptCfg">
+				<el-col :span="6" class="border" v-if="isRptCfg">
+					<el-row v-if="showToolBar">
 						<el-button type="danger" icon="el-icon-delete" @click="doDelete">从报告移除该报表</el-button>
  					</el-row>
-					<el-form :model="params" class="padding" :style="{width:'100%',maxHeight:maxTableHeight+'px',overflow: 'auto'}" ref="filtersRef">  
-					 
-					<el-form-item label="日期区间">
-						<br>
-							<mdp-date-range v-model="params" value-format="yyyy-MM-dd" start-key="startBizDate" end-key="endBizDate"></mdp-date-range>
-  					</el-form-item>  
-					<el-form-item>
-						 <el-button type="primary" icon="el-icon-search" @click="listXmBranchStateHis">查询</el-button>
-					</el-form-item>  
-					</el-form>
+					<el-row v-if="showParams">
+						<el-form :model="params" class="padding" :style="{width:'100%',maxHeight:maxTableHeight+'px',overflow: 'auto'}" ref="filtersRef">  
+						
+						<el-form-item label="日期区间">
+							<br>
+								<mdp-date-range v-model="params" value-format="yyyy-MM-dd" start-key="startBizDate" end-key="endBizDate"></mdp-date-range>
+						</el-form-item>  
+						<el-form-item>
+							<el-button type="primary" icon="el-icon-search" @click="listXmBranchStateHis">查询</el-button>
+						</el-form-item>  
+						</el-form>
+					</el-row>
 				</el-col>
-			</el-row> 
-	</section>
+			</el-row>  
 </template>
 
 <script>
@@ -57,7 +57,7 @@
 		components: {  
 			XmIterationSelect,XmProductSelect,
 		},
-        props:['xmProduct','xmProject','xmIteration','cfg','category','isRptCfg','isExport'],
+        props:['id','xmProduct','xmProject','xmIteration','cfg','category','showToolBar','showParams','isRptCfg'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -73,6 +73,7 @@
 					['已关缺陷',...this.xmProductStateHiss.map(i=>i.closedBugs)]
 				]
 			},
+ 
 			titleCpd(){
 				return "企业工作项每日趋势图"
 				
@@ -166,7 +167,7 @@
 					this.title=this.cfg.title
 					this.remark=this.cfg.remark
 				}
-				if(this.isRptCfg && !this.title){
+				if(this.showToolBar && !this.title){
 					this.title="企业工作项每日趋势图"
 				}
 				this.xmProductStateHiss=[]
@@ -176,9 +177,9 @@
 					this.listXmBranchStateHis();
 				})
 				
-			},
-			drawCharts() {
-				this.myChart = this.$echarts.init(document.getElementById("iterationWorkItemDayList")); 
+			}, 
+			drawCharts() { 
+				this.myChart = this.$echarts.init(document.getElementById("branchWorkItemDayList")); 
 				var that=this;
 				this.myChart.on('updateAxisPointer', function (event) {
 					const xAxisInfo = event.axesInfo[0];
@@ -320,8 +321,8 @@
 				this.dicts=res.data.data;
 			}) 
              */
-            this.maxTableHeight = util.calcTableMaxHeight(this.$refs.filtersRef.$el)
-			//this.charts();
+            this.maxTableHeight = this.$refs.filtersRef?util.calcTableMaxHeight(this.$refs.filtersRef.$el):this.maxTableHeight;
+			//this.charts(); 
 			this.open();
 			
 		}//end mounted

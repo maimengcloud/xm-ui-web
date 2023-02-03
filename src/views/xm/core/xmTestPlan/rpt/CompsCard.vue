@@ -96,6 +96,7 @@ export default {
         "xmQuestionBugSeverityDist":()=>import("./biz/questionBugSeverityDist.vue"),
         "xmQuestionSolutionDist":()=>import("./biz/questionSolutionDist.vue"),
         "xmQuestionPriorityDist":()=>import("./biz/questionPriorityDist.vue"),
+        "productWorkItemDayList":()=>import("./biz/productWorkItemDayList.vue"),
         
     },
     props:['xmTestPlan','rptConfigVisible'],
@@ -134,6 +135,7 @@ export default {
             // 布局位置数据
             initCompCfg: [
                 
+            { i:0, x: 0,  y: 12,  w: 12, h: 6,  id:'productWorkItemDayList',name:'测试计划总览',compId:'productWorkItemDayList', params:{} }, 
                  { i:0, x: 0,  y: 12,  w: 12, h: 6,  id:'xmTestRptOverview',name:'测试计划总览',compId:'xmTestRptOverview', params:{} }, 
                  { i: 1, x: 0,  y: 12,  w: 12, h: 6,   id:'xmTestCaseToPlanCalc',name:'用例规划分析', compId:'xmTestCaseToPlanCalc',  }, 
                  { i: 2, x: 0,  y: 12,  w: 12, h: 6,   id:'xmTestDayTimesCalc',name:'用例每日执行统计', compId:'xmTestDayTimesCalc',  },  

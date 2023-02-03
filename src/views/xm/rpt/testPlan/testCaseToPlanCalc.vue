@@ -5,7 +5,7 @@
 			<el-row :gutter="5" >
 				<el-col :span="18"> 
 					<div>
-						<div class="echart-box" id="testPlanCaseExecStatusDist"></div>
+						<div class="echart-box" :id="this.id"></div>
 						<div class="progress"></div>
 					</div>
 				</el-col>
@@ -70,7 +70,7 @@
 		components: {   
 			XmProjectSelect,XmProductSelect,XmIterationSelect,xmTestPlanSelect,
 		},
-        props:['xmProject','xmProduct','xmIteration','xmTestCasedb','xmTestPlan'],
+        props:['id','xmProject','xmProduct','xmIteration','xmTestCasedb','xmTestPlan',],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -184,7 +184,7 @@
 				return val;
 			}, 
 			drawCharts() {
-				this.myChart = this.$echarts.init(document.getElementById("testPlanCaseExecStatusDist")); 
+				this.myChart = this.$echarts.init(document.getElementById("this.id")); 
 				this.myChart.setOption(   
 					{
 						title: {

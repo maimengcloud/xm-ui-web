@@ -49,7 +49,7 @@
 			XmProjectSelect,
     		"mdp-select-user-xm":()=>import("@/views/xm/core/components/MdpSelectUserXm/index")
 		},
-        props:['xmProduct','xmProject'],
+        props:['id','xmProduct','xmProject'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'

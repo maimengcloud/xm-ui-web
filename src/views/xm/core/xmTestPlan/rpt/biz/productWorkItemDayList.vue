@@ -1,18 +1,19 @@
 <template>
 	<section>
-			
+ 
 			<el-row :gutter="5" >
-				<el-col :span="18"> <div>
-					<div class="echart-box" :id="id"></div> 
+				<el-col :span="18"> 
+					<div> 
+						<div class="echart-box" id="productWorkItemDayList" :style="{width:'100%',height:(maxTableHeight>600?600:maxTableHeight)+'px',overflow: 'hidden'}"></div> 
 					</div>
 				</el-col>
 				<el-col :span="6" class="border">
 					<el-form :model="filters" class="padding" :style="{width:'100%',maxHeight:maxTableHeight+'px',overflow: 'auto'}" ref="filtersRef"> 
 						
-						<el-form-item label="归属产品"  >
-							<xm-product-select v-if="!xmProductCpd || !xmProductCpd.id"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClear"></xm-product-select>
-							<span v-else>{{xmProductCpd.id}} <span v-if="xmProductCpd.productName"><br/>{{  xmProductCpd.productName  }} </span> </span>
-						</el-form-item>  
+					<el-form-item label="归属产品"  >
+						<xm-product-select v-if="!xmProductCpd || !xmProductCpd.id"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClear"></xm-product-select>
+						<span v-else>{{xmProductCpd.id}} <span v-if="xmProductCpd.productName"><br/>{{  xmProductCpd.productName  }} </span> </span>
+					</el-form-item>
 					<el-form-item label="日期区间">
 						<br>
 							<mdp-date-range v-model="filters" value-format="yyyy-MM-dd" start-key="startBizDate" end-key="endBizDate"></mdp-date-range>
@@ -31,53 +32,28 @@
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询  
 	import { mapGetters } from 'vuex'	 
 	
-	import { listXmProductStateHis } from '@/api/xm/core/xmProductStateHis';
 	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//新增界面
+	import { listXmProductStateHis } from '@/api/xm/core/xmProductStateHis';
 	export default { 
         
-		components: {   
-			XmProductSelect,
+		components: {  
+			XmProductSelect, 
 		},
-        props:['id','xmProduct','xmProject',],
+        props:['xmProduct','xmProject'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
-		    ]), 
-            datesCpd(){
-				if(this.xmProductStateHiss.length==0){
-					return []
-				}else{ 
-					return this.xmProductStateHiss.map(i=>i.bizDate)
-				}
-			}, 
-			menuCloseCntCpd(){
-				if(this.xmProductStateHiss.length==0){
-					return []
-				}else{ 
-					return this.xmProductStateHiss.map(i=>i.menuCloseCnt)
-				}
-			},
-			menuUnstartCntCpd(){
-				if(this.xmProductStateHiss.length==0){
-					return []
-				}else{ 
-					return this.xmProductStateHiss.map(i=> i.menuUnstartCnt)
-				}
-			},
-			menuExecCntCpd(){
-				if(this.xmProductStateHiss.length==0){
-					return []
-				}else{ 
-					return this.xmProductStateHiss.map(i=> i.menuExecCnt)
-				}
-			},
-			
-			menuFinishCntCpd(){
-				if(this.xmProductStateHiss.length==0){
-					return []
-				}else{ 
-					return this.xmProductStateHiss.map(i=>i.menuFinishCnt)
-				}
+		    ]),  
+			dataSetCpd(){
+				return [
+					['日期',...this.xmProductStateHiss.map(i=>i.bizDate)],
+					['未关故事',...this.xmProductStateHiss.map(i=>i.menuCnt-i.menuCloseCnt)],
+					['已关故事',...this.xmProductStateHiss.map(i=>i.menuCloseCnt)],
+					['未关任务',...this.xmProductStateHiss.map(i=>i.taskCnt-i.taskCloseCnt)],
+					['已关任务',...this.xmProductStateHiss.map(i=>i.taskCloseCnt)],
+					['未关缺陷',...this.xmProductStateHiss.map(i=>i.bugCnt-i.closedBugs)],
+					['已关缺陷',...this.xmProductStateHiss.map(i=>i.closedBugs)]
+				]
 			}, 
 			titleCpd(){
 				
@@ -102,7 +78,7 @@
 						preName=`项目【${this.filters.project.id}】`
 					}
 				}
-				return  preName+"产品需求每日累积图" 
+				return  preName+"产品工作项每日分布图" 
 			},
 			xmProductCpd(){ 
 				if(this.xmProduct && this.xmProduct.id){
@@ -110,10 +86,10 @@
 				}
 				return null;
 			}
+			
         }, 
 		watch: {  
-			datesCpd(){
-				
+			dataSetCpd(){ 
 				this.$nextTick(()=>{
 					this.drawCharts();
 				})
@@ -123,12 +99,14 @@
 		data() {
 			return {
                 filters:{
-                    category:'', 
                     product:null, 
                     project:null,
 					testPlan:null,
 					iteration:null,
 					testCasedb:null,
+                    category:'',   
+					startBizDate:'',
+					endBizDate:'',
                 },
 				dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, edit: false, del: false, add: false },//查询中... 
@@ -145,8 +123,8 @@
 					this.$notify({position:'bottom-left',showClose:true,message:'请先选中产品',type:'warning'})
 					return;
 				}
-				var params={productId:this.filters.product.id,orderBy:'biz_date asc'}
 				
+				var params={productId:this.filters.product.id,orderBy:'biz_date asc'}
 				if(this.filters.startBizDate && this.filters.endBizDate){
 					params.startBizDate=this.filters.startBizDate;
 					params.endBizDate=this.filters.endBizDate;
@@ -170,101 +148,121 @@
 				
 			},
 			drawCharts() {
-				this.myChart = this.$echarts.init(document.getElementById(this.id)); 
-				this.myChart.setOption(  
-					{
-						title: {
-							text: this.titleCpd,
-							left:"center"
-						}, 
-
-						tooltip: {
-							trigger: 'axis',
-							axisPointer: {
-							type: 'cross',
-							label: {
-								backgroundColor: '#6a7985'
-							}
-							}
+				this.myChart = this.$echarts.init(document.getElementById("productWorkItemDayList")); 
+				var that=this;
+				this.myChart.on('updateAxisPointer', function (event) {
+					const xAxisInfo = event.axesInfo[0];
+					if (xAxisInfo) {
+					const dimension = xAxisInfo.value + 1;
+					that.myChart.setOption({
+						series: {
+						id: 'pie',
+						label: {
+							formatter: '{b}: {@[' + dimension + ']} ({d}%)'
 						},
-						
-						toolbox: {
-							show: true,
-							top:"5%",
-							right:"10px",
-							feature: {
-							dataView: { show: true, readOnly: false },
-							magicType: { show: true, type: ['line', 'bar'] },
-							
-							saveAsImage: { show: true }
-							}
-						},
-						legend: {
-							bottom: 'bottom',
-							data: ['未开始', '执行中', '已完成', '已关闭']
-						},
-						grid: {
-							containLabel: true
-						}, 
-						xAxis: {
-							type: 'category',
-							boundaryGap: false,
-							data: this.datesCpd,
-						},
-						yAxis: {
-							type: 'value'
-						},
-						series: [
-							{
-							name: '未开始',
-							type: 'line',
-							stack: 'Total',
-							areaStyle: {},
-							emphasis: {
-								focus: 'series'
-							},
-							data: this.menuUnstartCntCpd
-							},
-							{
-							name: '执行中',
-							type: 'line',
-							stack: 'Total',
-							areaStyle: {},
-							emphasis: {
-								focus: 'series'
-							},
-							data: this.menuExecCntCpd,
-							},
-							{
-							name: '已完成',
-							type: 'line',
-							stack: 'Total',
-							areaStyle: {},
-							emphasis: {
-								focus: 'series'
-							},
-							data: this.menuFinishCntCpd,
-							},
-							{
-							name: '已关闭',
-							type: 'line',
-							stack: 'Total',
-							areaStyle: {},
-							emphasis: {
-								focus: 'series'
-							},
-
-							label: {
-								show: true,
-								position: 'top'
-							},
-							data: this.menuCloseCntCpd,
-							} 
-						]
+						encode: {
+							value: dimension,
+							tooltip: dimension
+						}
+						}
+					});
 					}
-				)
+				});
+				this.myChart.setOption({
+	
+					title: {
+						text: this.titleCpd, 
+						left: 'center'
+					},  
+					trigger: 'axis',
+					tooltip: {
+						trigger: 'axis', 
+					},
+					barMaxWidth: 100,
+					toolbox: {
+						show: true,
+						top:"5%",
+						right:"10px",
+						feature: {
+						dataView: { show: true, readOnly: false },
+						magicType: { show: true, type: ['line', 'bar'] },
+						
+						saveAsImage: { show: true }
+						}
+					},
+
+					calculable: true,
+					legend: { 
+							bottom: 'bottom',
+					},
+
+					dataset: {
+						source:  this.dataSetCpd
+					},
+					xAxis: {
+						type: 'category', 
+					},
+					yAxis: { gridIndex: 0 },
+    				grid: { top: '55%' },
+					series: [
+						{ 	name:'未关故事',
+							type: 'line',
+        					seriesLayoutBy: 'row',
+							smooth:true, 
+        					emphasis: { focus: 'series' }, 
+						},
+						{ 	name:'已关故事',
+							type: 'line',
+        					seriesLayoutBy: 'row',
+							smooth:true, 
+        					emphasis: { focus: 'series' }, 
+						},
+						{ 
+							name:'未关任务',
+							type: 'line',
+        					seriesLayoutBy: 'row',
+							smooth:true,
+        					emphasis: { focus: 'series' }, 
+						},
+						{ 
+							name:'已关任务',
+							type: 'line',
+        					seriesLayoutBy: 'row',
+							smooth:true,
+        					emphasis: { focus: 'series' }, 
+						},
+						{ 	name:'未关缺陷',
+							type: 'line',
+        					seriesLayoutBy: 'row',
+							smooth:true,
+        					emphasis: { focus: 'series' },  
+						},
+						{ 	name:'已关缺陷',
+							type: 'line',
+        					seriesLayoutBy: 'row',
+							smooth:true,
+        					emphasis: { focus: 'series' },  
+						},
+						{
+							type: 'pie',
+							id: 'pie',
+							radius: '30%',
+							center: ['50%', '30%'],
+							emphasis: {
+								focus: 'self'
+							},
+							label: {
+								formatter: '{b}: {@日期} ({d}%)'
+							},
+							encode: {
+								itemName: '日期',
+								value:this.dataSetCpd[0][this.dataSetCpd[0].length-1],
+								tooltip: '日期'
+							}
+						}
+					]
+				}); 
 			},
-			
 			
 			onProductSelected(product){
 				this.filters.product=product
@@ -284,7 +282,7 @@
 				this.dicts=res.data.data;
 			}) 
              */
-            this.maxTableHeight = util.calcTableMaxHeight(this.$refs.filtersRef.$el)
+			            this.maxTableHeight = util.calcTableMaxHeight(this.$refs.filtersRef.$el)
 			//this.charts();
 			this.open();
 			

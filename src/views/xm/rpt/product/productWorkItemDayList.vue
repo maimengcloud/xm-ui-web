@@ -39,7 +39,7 @@
 		components: {  
 			XmProductSelect, 
 		},
-        props:['xmProduct','xmProject'],
+        props:['id','xmProduct','xmProject'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -262,6 +262,8 @@
 						}
 					]
 				}); 
+				
+				this.myChart.resize();
 			},
 			
 			onProductSelected(product){

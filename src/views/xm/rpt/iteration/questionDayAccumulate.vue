@@ -44,7 +44,7 @@
 		components: {   
 			XmIterationSelect,XmProductSelect,
 		},
-        props:['xmProduct','xmProject','xmIteration'],
+        props:['id','xmProduct','xmProject','xmIteration'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'

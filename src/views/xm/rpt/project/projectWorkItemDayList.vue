@@ -39,7 +39,7 @@
 		components: {  
 			XmProjectSelect, 
 		},
-        props:['xmProduct','xmProject'],
+        props:['id','xmProduct','xmProject'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -257,6 +257,7 @@
 						}
 					]
 				}); 
+				this.myChart.resize();
 			},
 			
 			onProjectSelected(project){
