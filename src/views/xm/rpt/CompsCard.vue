@@ -132,25 +132,39 @@ export default {
         },
         rptConfigParamsCpd(){
             //业务类型1-产品报告，2-迭代报告，3-测试计划报告，4-项目报告，5-企业报告
-            var params={bizType:'5',bizId:this.userInfo.branchId}
+            var params={bizType:'5',bizId:this.userInfo.branchId,name:''}
              if(this.category=='企业级'){
                 params.bizType='5';
                 params.bizId=this.userInfo.branchId
+                params.name=this.userInfo.branchName
              }else if(this.category=='产品级'){
                 params.bizType='1';
-                params.bizId=this.userInfo.branchId
+                params.bizId=this.xmProduct.id
+                params.name=this.xmProduct.productName
              }else  if(this.category=='迭代级'){
                 params.bizType='2';
-                params.bizId=this.userInfo.branchId
+                params.bizId=this.xmIteration.id
+                params.name=this.xmIteration.iterationName
              }else if(this.category=='项目级'){
                 params.bizType='4';
-                params.bizId=this.userInfo.branchId
+                params.bizId=this.xmProject.id
+                params.name=this.xmProject.name
              }else if(this.category=='测试级'){
-                params.bizType='3';
-                params.bizId=this.userInfo.branchId
+                if(this.xmTestPlan && this.xmTestPlan.id){
+                    params.bizType='3';
+                    params.bizId=this.xmTestPlan.id
+                    params.name=this.xmTestPlan.name
+                }else{
+                    params.bizType='6';
+                    params.bizId=this.xmTestCasedb.id
+                    params.name=this.xmTestCasedb.name
+                }
+               
+                
              }else {
                 return params;
              }
+             return params;
         }
         
     },
@@ -263,16 +277,21 @@ export default {
                 doc.scrollIntoView(true)
             }  
         },
-        submitXmPrtConfig(callback){
-            
+        submitXmPrtConfig(callback){ 
             if(this.xmRptConfig==null){
-                var xmRptConfig={name:this.xmTestPlan.name,bizId:this.xmTestPlan.id,cfg:[]}
+                var xmRptConfig={...this.rptConfigParamsCpd,cfg:[]}
                 var compCfgList=JSON.parse(JSON.stringify(this.compCfgList))
                 compCfgList.forEach(k=>{
                     if(this.$refs[k.id] && this.$refs[k.id][0].$refs && this.$refs[k.id][0].$refs[k.id]){ 
-                         k.params=this.$refs[k.id][0].$refs[k.id].filters
+                        var com=this.$refs[k.id][0].$refs[k.id]
+                         k.params=com.params
+                         k.title=com.title
+                         k.remark=com.remark
                     }else{ 
-                         k.params=this.$refs[k.id][0].filters
+                        var com=this.$refs[k.id][0]
+                         k.params=com.params
+                         k.title=com.title
+                         k.remark=com.remark
                     }
                    
                 })
@@ -282,13 +301,19 @@ export default {
                     callback()
                 })
             }else{
-                var xmRptConfig={id:this.xmRptConfig.id,name:this.xmTestPlan.name,bizId:this.xmTestPlan.id,cfg:[]}
+                var xmRptConfig={...this.xmRptConfig,cfg:[]}
                 var compCfgList=JSON.parse(JSON.stringify(this.compCfgList))
                 compCfgList.forEach(k=>{
                     if(this.$refs[k.id] && this.$refs[k.id][0].$refs && this.$refs[k.id][0].$refs[k.id]){ 
-                         k.params=this.$refs[k.id][0].$refs[k.id].filters
+                        var com=this.$refs[k.id][0].$refs[k.id]
+                         k.params=com.params
+                         k.title=com.title
+                         k.remark=com.remark
                     }else{ 
-                         k.params=this.$refs[k.id][0].filters
+                         var com=this.$refs[k.id][0]
+                         k.params=com.params
+                         k.title=com.title
+                         k.remark=com.remark
                     }
                 })
                 xmRptConfig.cfg=JSON.stringify(compCfgList)
