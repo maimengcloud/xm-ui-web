@@ -4,7 +4,7 @@
    <span style="float:right;"> <el-button @click="rptConfigVisible=false">取消配置</el-button><el-button @click="saveXmRptConfig" type="primary">保存配置</el-button></span>
   </el-row>
   <el-row>
-     <comps-card ref="compsCard" :category="category" :xm-test-plan="xmTestPlan" :xm-product="xmProduct" :xm-project="xmProject" :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb"  :rpt-config-visible="rptConfigVisible"/>  
+     <comps-card ref="compsCard" :category="category" :xm-test-plan="xmTestPlan" :xm-product="xmProduct" :xm-project="xmProject" :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :show-params="true" :show-tool-bar="true" :is-rpt-cfg="rptConfigVisible"/>  
   </el-row>
 </section>     
 </template>

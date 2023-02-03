@@ -43,11 +43,11 @@
                 </el-row>
                 
                 <el-row v-if="subPage=='testRpt'">
-                     <xm-test-plan-rpt  ref="rpt" :xm-test-plan="xmTestPlan"></xm-test-plan-rpt >
+                     <xm-test-plan-rpt  ref="rpt" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan" :xm-product="{id:xmTestCasedb.productId,productName:xmTestCasedb.productName}" :xm-project="{id:xmTestPlan.projectId,name:xmTestPlan.projectName}" category="测试级"></xm-test-plan-rpt >
                 </el-row>
                 
                 <el-row v-if="subPage=='xmReport'">
-                     <xm-report  ref="xmReport" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan" :xm-product="{id:xmTestCasedb.productId,productName:xmTestCasedb.productName}" :xm-project="{id:xmTestPlan.projectId,name:xmTestPlan.projectName}"></xm-report >
+                     <xm-report  ref="xmReport" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan" :xm-product="{id:xmTestCasedb.productId,productName:xmTestCasedb.productName}" :xm-project="{id:xmTestPlan.projectId,name:xmTestPlan.projectName}"  category="测试级"></xm-report >
                 </el-row>
             </el-row> 
             <xm-test-plan-mng v-else @select="onTestPlanSelect" :xm-test-casedb="xmTestCasedb"> </xm-test-plan-mng>
@@ -69,8 +69,8 @@ export default {
     name:'xmTestCasedbMng',
     components: {
         XmProductSelect,XmQuestionMng,
-        "xm-test-plan-rpt":()=>import("./rpt/index.vue"), 
-        "xm-report":()=>import("../../rpt/reportIndex"), 
+        "xm-test-plan-rpt":()=>import("../../rpt/index.vue"), 
+        "xm-report":()=>import("../../rpt/index"), 
         "xm-test-plan-mng":()=>import("../xmTestPlan/XmTestPlanMng.vue"),
         "xm-test-case-mng":()=>import("../xmTestCase/XmTestCaseMng.vue"),
         "xm-test-plan-case-mng":()=>import("../xmTestPlanCase/XmTestPlanCaseMng.vue")
