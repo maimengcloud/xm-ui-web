@@ -43,11 +43,11 @@
                 </el-row>
                 
                 <el-row v-if="subPage=='testRpt'">
-                     <xm-test-plan-rpt  ref="rpt" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan" :xm-product="{id:xmTestCasedb.productId,productName:xmTestCasedb.productName}" :xm-project="{id:xmTestPlan.projectId,name:xmTestPlan.projectName}" category="测试级"></xm-test-plan-rpt >
+                     <xm-test-plan-rpt key="rpt"  ref="rpt" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan" :xm-product="{id:xmTestCasedb.productId,productName:xmTestCasedb.productName}" :xm-project="{id:xmTestPlan.projectId,name:xmTestPlan.projectName}" category="测试级" :is-rpt-show="true"></xm-test-plan-rpt >
                 </el-row>
                 
                 <el-row v-if="subPage=='xmReport'">
-                     <xm-report  ref="xmReport" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan" :xm-product="{id:xmTestCasedb.productId,productName:xmTestCasedb.productName}" :xm-project="{id:xmTestPlan.projectId,name:xmTestPlan.projectName}"  category="测试级"></xm-report >
+                     <xm-report key="xmReport"  ref="xmReport" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan" :xm-product="{id:xmTestCasedb.productId,productName:xmTestCasedb.productName}" :xm-project="{id:xmTestPlan.projectId,name:xmTestPlan.projectName}"  category="测试级"></xm-report >
                 </el-row>
             </el-row> 
             <xm-test-plan-mng v-else @select="onTestPlanSelect" :xm-test-casedb="xmTestCasedb"> </xm-test-plan-mng>
@@ -147,10 +147,12 @@ export default {
             this.xmTestPlan=row
         },
         showRptConfig(){
-            this.$refs['rpt'].rptConfigVisible=true
+            this.$refs['rpt'].isRptCfg=true
         },
         print(){
+            this.$refs['rpt'].isRptShow=true
            this.$refs['rpt'].showPrint()
+
         },
         calcRptData(){ 
             var row=this.xmTestPlan
@@ -168,8 +170,7 @@ export default {
     },//end methods
     mounted() {
         this.$nextTick(() => {
-            initDicts(this)
-
+            initDicts(this) 
         });
     }
 }

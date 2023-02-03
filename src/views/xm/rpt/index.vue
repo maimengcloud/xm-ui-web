@@ -1,10 +1,10 @@
 <template> 
 <section>
-  <el-row v-if="rptConfigVisible">
-   <span style="float:right;"> <el-button @click="rptConfigVisible=false">取消配置</el-button><el-button @click="saveXmRptConfig" type="primary">保存配置</el-button></span>
+  <el-row v-if="isRptCfg">
+   <span style="float:right;"> <el-button @click="isRptCfg=false">取消配置</el-button><el-button @click="saveXmRptConfig" type="primary">保存配置</el-button></span>
   </el-row>
   <el-row>
-     <comps-card ref="compsCard" :category="category" :xm-test-plan="xmTestPlan" :xm-product="xmProduct" :xm-project="xmProject" :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :show-params="true" :show-tool-bar="true" :is-rpt-cfg="rptConfigVisible"/>  
+     <comps-card ref="compsCard" :category="category" :xm-test-plan="xmTestPlan" :xm-product="xmProduct" :xm-project="xmProject" :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :show-params="true" :show-tool-bar="true" :is-rpt-cfg="isRptCfg" :is-rpt-show="isRptShow"/>  
   </el-row>
 </section>     
 </template>
@@ -18,7 +18,7 @@ import { mapGetters } from 'vuex'
 import dayjs from 'dayjs'
 
 export default {
-  props:['xmProduct','xmIteration','xmProject','xmTestCasedb','xmTestPlan','category'],
+  props:['xmProduct','xmIteration','xmProject','xmTestCasedb','xmTestPlan','category','isRptShow'],
   components: {compsSet, compsCard}, 
   computed: {
     ...mapGetters([
@@ -31,14 +31,14 @@ export default {
 
   data() {
     return { 
-      rptConfigVisible:false,
+      isRptCfg:false, 
     }
   },
 
   methods: {  
     saveXmRptConfig(){
       var callback=()=>{
-        this.rptConfigVisible=false;
+        this.isRptCfg=false;
       }
       this.$refs['compsCard'].submitXmPrtConfig(callback)
     },

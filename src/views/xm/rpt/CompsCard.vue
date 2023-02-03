@@ -124,7 +124,7 @@ export default {
         xmBranchMenuDayAccumulate:()=>import('./branch/menuDayAccumulate.vue'),
         
     },
-    props:['xmTestCasedb','xmTestPlan','xmProduct','xmProject','xmIteration','showToolBar','category','showParams','isRptCfg','printVisible'],
+    props:['xmTestCasedb','xmTestPlan','xmProduct','xmProject','xmIteration','showToolBar','category','showParams','isRptCfg','printVisible','isRptShow'],
     computed: {
         ...mapGetters(['userInfo']), 
         compIds(){
@@ -165,6 +165,9 @@ export default {
                 return params;
              }
              return params;
+        },
+        toLoadXmRptConfigCpd(){
+            return this.isRptCfg || this.isRptShow
         }
         
     },
@@ -176,18 +179,16 @@ export default {
             },
             deep:true,
         },
-        isRptCfg(){
-            if(this.isRptCfg==true){
-                this.$nextTick(()=>{
-                    this.compCfgList.forEach(k=>{
-                        this.sizeAutoChange(k);
-                    })
+        toLoadXmRptConfigCpd(){ 
+            this.getXmRptConfig();
+            this.$nextTick(()=>{
+                this.compCfgList.forEach(k=>{
+                    this.sizeAutoChange(k);
                 })
-                
-            }
+            }) 
         }, 
         rptConfigParamsCpd(){
-            if(this.isRptCfg){
+            if(this.isRptCfg ||this.isRptShow){
                 this.getXmRptConfig()
             }
         }
@@ -226,11 +227,12 @@ export default {
         initData(){
            this.getXmRptConfig();
         },
-        getXmRptConfig(){ 
-            if(!this.isRptCfg){
+        getXmRptConfig(){  
+            if(!this.toLoadXmRptConfigCpd){
                 return;
             }
-            listXmRptConfig(this.rptConfigParamsCpd).then(res=>{
+            var params={bizType:this.rptConfigParamsCpd.bizType,bizId:this.rptConfigParamsCpd.bizId}
+            listXmRptConfig(params).then(res=>{
                 this.xmRptConfig=res.data.data[0] 
             })
         },
