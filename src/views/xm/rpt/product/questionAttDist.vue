@@ -379,13 +379,12 @@
 			onXmQuestionSomeFieldsChange(fieldName,$event){
 				this.xmQuestionAttDists=[]
 			},
-			searchXmQuestionAttDist(){
-				if(!this.params.groupBy){
+			searchXmQuestionAttDist(){ 
+				var params={...this.params} 
+				if(!params.groupBy){
 					this.$notify({position:'bottom-left',showClose:true,message:'请选中分组属性',type:'warning'})
 					return 
-				}
-				var params={...this.params} 
-				params.groupBy=this.params.groupBy 
+				} 
 				getXmQuestionAttDist(params).then(res=>{
 					this.xmQuestionAttDists=res.data.data
 				})

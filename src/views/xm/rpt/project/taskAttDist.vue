@@ -317,11 +317,12 @@
 				this.xmTaskAttDists=[]
 			},
 			searchXmTaskAttDist(){
-				if(!this.params.groupBy){
+
+				var params={...this.params} 
+				if(!params.groupBy){
 					this.$notify({position:'bottom-left',showClose:true,message:'请选中分组属性',type:'warning'})
 					return 
 				}
-				var params={...this.params} 
 				params.ntype='0'
 				getXmTaskAttDist(params).then(res=>{
 					this.xmTaskAttDists=res.data.data

@@ -345,19 +345,18 @@
 				this.xmQuestionRetestDists=[]
 			},
 			searchXmQuestionRetestDist(){
-				if(!this.params.groupBy){
-					this.$notify({position:'bottom-left',showClose:true,message:'请选中分组属性',type:'warning'})
-					return 
-				}
+				
 				 let params = {
 					pageSize: this.pageInfo.pageSize,
 					pageNum: this.pageInfo.pageNum,
 					total: this.pageInfo.total,
 					count: this.pageInfo.count,
 					...this.params
-				};
-				 
-				params.groupBy=this.params.groupBy  
+				}; 
+				if(!params.groupBy){
+					this.$notify({position:'bottom-left',showClose:true,message:'请选中分组属性',type:'warning'})
+					return 
+				}
 				if (
 					this.pageInfo.orderFields != null &&
 					this.pageInfo.orderFields.length > 0

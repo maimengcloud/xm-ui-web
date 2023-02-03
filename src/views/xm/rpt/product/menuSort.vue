@@ -146,7 +146,7 @@
 					testCasedb:null,
                 },
 				params:{
-
+					groupBy:'mm_userid'
 				},
 				title:'',//报表配置项
 				remark:'', //报表配置项
@@ -269,53 +269,16 @@
 				this.xmMenuSorts=[]
 			},
 			searchXmMenuSort(){
-				if(!this.params.groupBy){
-					this.$notify({position:'bottom-left',showClose:true,message:'请选中分组属性',type:'warning'})
-					return 
-				}
 				 let params = {
 					pageSize: this.pageInfo.pageSize,
 					pageNum: this.pageInfo.pageNum,
 					total: this.pageInfo.total,
 					count: this.pageInfo.count,
 					...this.params
-				};
-				if(this.filters.dtype){
-					params.dtype=this.filters.dtype
-				}
-				if(this.filters.status){
-					params.status=this.filters.status
-				}
-				if(this.filters.source){
-					params.source=this.filters.source
-				}
-				if(this.filters.dlvl){
-					params.dlvl=this.filters.dlvl
-				}
-				if(this.filters.priority){
-					params.priority=this.filters.priority
-				} 
-				params.groupBy=this.params.groupBy
-				if(this.filters.product){
-					params.productId=this.filters.product.id
-				}
-				
-				if(this.filters.iteration){
-					params.iterationId=this.filters.iteration.id
-				}
-
-				
-				if (
-					this.pageInfo.orderFields != null &&
-					this.pageInfo.orderFields.length > 0
-				) {
-					let orderBys = [];
-					for (var i = 0; i < this.pageInfo.orderFields.length; i++) {
-					orderBys.push(
-						this.pageInfo.orderFields[i] + " " + this.pageInfo.orderDirs[i]
-					);
-					}
-					params.orderBy = orderBys.join(",");
+				};  
+				if(!params.groupBy){
+					this.$notify({position:'bottom-left',showClose:true,message:'请选中分组属性',type:'warning'})
+					return 
 				}
 				getXmMenuSort(params).then(res=>{
 					this.xmMenuSorts=res.data.data
