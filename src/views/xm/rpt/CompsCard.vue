@@ -260,7 +260,7 @@ export default {
         scrollToComp(compCfg){    
             var doc=document.getElementById(compCfg.id)
             if(doc){
-                doc.scrollIntoView(false)
+                doc.scrollIntoView(true)
             }  
         },
         submitXmPrtConfig(callback){
