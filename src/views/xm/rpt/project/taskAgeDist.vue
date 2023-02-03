@@ -257,30 +257,7 @@
 				this.xmTaskAgeDists=[]
 			},
 			searchXmTaskAgeDist(){ 
-				var params={}
-				if(this.filters.taskType){
-					params.taskType=this.filters.taskType
-				}
-				if(this.filters.taskState){
-					params.taskState=this.filters.taskState
-				}
-				if(this.filters.planType){
-					params.planType=this.filters.planType
-				}
-				if(this.filters.settleSchemel){
-					params.settleSchemel=this.filters.settleSchemel
-				}
-				if(this.filters.priority){
-					params.priority=this.filters.priority
-				} 
-				params.groupBy=this.groupBy
-				if(this.filters.project){
-					params.projectId=this.filters.project.id
-				}
-				
-				if(this.filters.iteration){
-					params.iterationId=this.filters.iteration.id
-				}
+				var params={...this.params} 
 				params.ntype='0'
 				getXmTaskAgeDist(params).then(res=>{
 					this.xmTaskAgeDists=res.data.data

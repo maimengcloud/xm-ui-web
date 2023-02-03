@@ -281,30 +281,8 @@
 				this.xmMenuAgeDists=[]
 			},
 			searchXmMenuAgeDist(){ 
-				var params={}
-				if(this.filters.dtype){
-					params.dtype=this.filters.dtype
-				}
-				if(this.filters.status){
-					params.status=this.filters.status
-				}
-				if(this.filters.source){
-					params.source=this.filters.source
-				}
-				if(this.filters.dlvl){
-					params.dlvl=this.filters.dlvl
-				}
-				if(this.filters.priority){
-					params.priority=this.filters.priority
-				} 
-				params.groupBy=this.groupBy
-				if(this.filters.product){
-					params.productId=this.filters.product.id
-				}
-				
-				if(this.filters.iteration){
-					params.iterationId=this.filters.iteration.id
-				}
+				var params={...this.params}
+				 
 				getXmMenuAgeDist(params).then(res=>{
 					this.xmMenuAgeDists=res.data.data
 				})

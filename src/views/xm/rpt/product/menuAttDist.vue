@@ -342,30 +342,7 @@
 					this.$notify({position:'bottom-left',showClose:true,message:'请选中分组属性',type:'warning'})
 					return 
 				}
-				var params={}
-				if(this.filters.dtype){
-					params.dtype=this.filters.dtype
-				}
-				if(this.filters.status){
-					params.status=this.filters.status
-				}
-				if(this.filters.source){
-					params.source=this.filters.source
-				}
-				if(this.filters.dlvl){
-					params.dlvl=this.filters.dlvl
-				}
-				if(this.filters.priority){
-					params.priority=this.filters.priority
-				} 
-				params.groupBy=this.groupBy
-				if(this.filters.product){
-					params.productId=this.filters.product.id
-				}
-				
-				if(this.filters.iteration){
-					params.iterationId=this.filters.iteration.id
-				}
+				var params={...this.params} 
 				getXmMenuAttDist(params).then(res=>{
 					this.xmMenuAttDists=res.data.data
 				})

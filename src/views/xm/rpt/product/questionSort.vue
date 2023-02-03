@@ -320,46 +320,9 @@
 					pageNum: this.pageInfo.pageNum,
 					total: this.pageInfo.total,
 					count: this.pageInfo.count,
+					...this.params
 				};
-				if(this.filters.solution){
-					params.solution=this.filters.solution
-				}
-				if(this.filters.bugType){
-					params.bugType=this.filters.bugType
-				}
-				if(this.filters.bugStatus){
-					params.bugStatus=this.filters.bugStatus
-				}
-				if(this.filters.bugReason){
-					params.bugReason=this.filters.bugReason
-				}
-				if(this.filters.bugSeverity){
-					params.bugSeverity=this.filters.bugSeverity
-				}
-				if(this.filters.repRate){
-					params.repRate=this.filters.repRate
-				}
-				if(this.filters.priority){
-					params.priority=this.filters.priority
-				} 
-
-				if(this.filters.project){
-					params.projectId=this.filters.project.id
-				} 
-				if(this.filters.product){
-					params.productId=this.filters.product.id
-				} 
-				if(this.filters.iteration){
-					params.linkIterationId=this.filters.iteration.id
-				}
-
-				if(this.filters.testPlan && this.filters.testPlan.id){
-					params.planId=this.filters.testPlan.id
-				}
-				if(this.filters.testCasedb && this.filters.testCasedb.id){
-					params.casedbId=this.filters.testCasedb.id
-				}
-				
+				 
 				params.groupBy=this.groupBy
 				
 				if (

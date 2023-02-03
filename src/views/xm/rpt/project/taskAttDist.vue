@@ -321,30 +321,7 @@
 					this.$notify({position:'bottom-left',showClose:true,message:'请选中分组属性',type:'warning'})
 					return 
 				}
-				var params={}
-				if(this.filters.taskType){
-					params.taskType=this.filters.taskType
-				}
-				if(this.filters.taskState){
-					params.taskState=this.filters.taskState
-				}
-				if(this.filters.planType){
-					params.planType=this.filters.planType
-				}
-				if(this.filters.settleSchemel){
-					params.settleSchemel=this.filters.settleSchemel
-				}
-				if(this.filters.priority){
-					params.priority=this.filters.priority
-				} 
-				params.groupBy=this.groupBy
-				if(this.filters.project){
-					params.projectId=this.filters.project.id
-				}
-				
-				if(this.filters.iteration){
-					params.iterationId=this.filters.iteration.id
-				}
+				var params={...this.params} 
 				params.ntype='0'
 				getXmTaskAttDist(params).then(res=>{
 					this.xmTaskAttDists=res.data.data

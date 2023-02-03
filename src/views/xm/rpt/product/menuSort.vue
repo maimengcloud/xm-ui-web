@@ -278,6 +278,7 @@
 					pageNum: this.pageInfo.pageNum,
 					total: this.pageInfo.total,
 					count: this.pageInfo.count,
+					...this.params
 				};
 				if(this.filters.dtype){
 					params.dtype=this.filters.dtype
