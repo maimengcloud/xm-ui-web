@@ -122,7 +122,7 @@
 						preName=`项目【${this.filters.project.id}】`
 					}
 				}
-				return preName+ this.groupBys.find(i=>i.id==this.groupBy).name+'测试用例数量排行榜'
+				return preName+ this.groupBys.find(i=>i.id==this.params.groupBy).name+'测试用例数量排行榜'
  			}, 
 			xmProductCpd(){
 				if(this.xmIteration && this.xmIteration.id && this.xmIteration.productId){
@@ -289,7 +289,7 @@
 			open(){
 				this.visible=true; 
 				if(this.initGroupBy){
-					this.groupBy=this.initGroupBy
+					this.params.groupBy=this.initGroupBy
 				} 
 				this.filters.testPlan=this.xmTestPlan
 				this.filters.product=this.xmProduct

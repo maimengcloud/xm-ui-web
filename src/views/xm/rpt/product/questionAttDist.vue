@@ -118,19 +118,19 @@
 					return []
 				}else{ 
 					var itemId="";
-					if(this.groupBy=='bug_status'){
+					if(this.params.groupBy=='bug_status'){
 						itemId="bugStatus"
-					}else if(this.groupBy=='bug_type'){
+					}else if(this.params.groupBy=='bug_type'){
 						itemId="bugType"
-					}else if(this.groupBy=='bug_reason'){
+					}else if(this.params.groupBy=='bug_reason'){
 						itemId="bugReason"
-					}else if(this.groupBy=='bug_severity'){
+					}else if(this.params.groupBy=='bug_severity'){
 						itemId="bugSeverity"
-					}else if(this.groupBy=='priority'){
+					}else if(this.params.groupBy=='priority'){
 						itemId="priority"
-					} else if(this.groupBy=='solution'){
+					} else if(this.params.groupBy=='solution'){
 						itemId="bugSolution"
-					} else if(this.groupBy=='rep_rate'){
+					} else if(this.params.groupBy=='rep_rate'){
 						itemId="bugRepRate"
 					} 
 					return this.xmQuestionAttDists.map(i=>{
@@ -152,19 +152,19 @@
 			}, 
 			legendCpd(){
 				var itemId="";
-				if(this.groupBy=='bug_status'){
+				if(this.params.groupBy=='bug_status'){
 					itemId="bugStatus"
-				}else if(this.groupBy=='bug_type'){
+				}else if(this.params.groupBy=='bug_type'){
 					itemId="bugType"
-				}else if(this.groupBy=='bug_reason'){
+				}else if(this.params.groupBy=='bug_reason'){
 					itemId="bugReason"
-				}else if(this.groupBy=='bug_severity'){
+				}else if(this.params.groupBy=='bug_severity'){
 					itemId="bugSeverity"
-				}else if(this.groupBy=='priority'){
+				}else if(this.params.groupBy=='priority'){
 					itemId="priority"
-				} else if(this.groupBy=='solution'){
+				} else if(this.params.groupBy=='solution'){
 					itemId="bugSolution"
-				} else if(this.groupBy=='rep_rate'){
+				} else if(this.params.groupBy=='rep_rate'){
 					itemId="bugRepRate"
 				} 
 
@@ -380,12 +380,12 @@
 				this.xmQuestionAttDists=[]
 			},
 			searchXmQuestionAttDist(){
-				if(!this.groupBy){
+				if(!this.params.groupBy){
 					this.$notify({position:'bottom-left',showClose:true,message:'请选中分组属性',type:'warning'})
 					return 
 				}
 				var params={...this.params} 
-				params.groupBy=this.groupBy 
+				params.groupBy=this.params.groupBy 
 				getXmQuestionAttDist(params).then(res=>{
 					this.xmQuestionAttDists=res.data.data
 				})

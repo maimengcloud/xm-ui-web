@@ -78,15 +78,15 @@
 					return []
 				}else{ 
 					var itemId="";
-					if(this.groupBy=='task_state'){
+					if(this.params.groupBy=='task_state'){
 						itemId="taskState"
-					}else if(this.groupBy=='settle_schemel'){
+					}else if(this.params.groupBy=='settle_schemel'){
 						itemId="xmTaskSettleSchemel"
-					}else if(this.groupBy=='task_type'){
+					}else if(this.params.groupBy=='task_type'){
 						itemId="taskType"
-					}else if(this.groupBy=='priority'){
+					}else if(this.params.groupBy=='priority'){
 						itemId="priority"
-					}else if(this.groupBy=='plan_type'){
+					}else if(this.params.groupBy=='plan_type'){
 						itemId="planType"
 					} 
 					return this.xmTaskAttDists.map(i=>{
@@ -129,19 +129,19 @@
 					}
 					
 				}
-				return  preName+this.groupBys.find(i=>i.id==this.groupBy).name+'数量分布'
+				return  preName+this.groupBys.find(i=>i.id==this.params.groupBy).name+'数量分布'
 			},
 			legendCpd(){
 				var itemId="";
-				if(this.groupBy=='task_state'){
+				if(this.params.groupBy=='task_state'){
 					itemId="taskState"
-				}else if(this.groupBy=='settle_schemel'){
+				}else if(this.params.groupBy=='settle_schemel'){
 					itemId="xmTaskSettleSchemel"
-				}else if(this.groupBy=='task_type'){
+				}else if(this.params.groupBy=='task_type'){
 					itemId="taskType"
-				}else if(this.groupBy=='priority'){
+				}else if(this.params.groupBy=='priority'){
 					itemId="priority"
-				}else if(this.groupBy=='plan_type'){
+				}else if(this.params.groupBy=='plan_type'){
 					itemId="planType"
 				} 
 
@@ -317,7 +317,7 @@
 				this.xmTaskAttDists=[]
 			},
 			searchXmTaskAttDist(){
-				if(!this.groupBy){
+				if(!this.params.groupBy){
 					this.$notify({position:'bottom-left',showClose:true,message:'请选中分组属性',type:'warning'})
 					return 
 				}

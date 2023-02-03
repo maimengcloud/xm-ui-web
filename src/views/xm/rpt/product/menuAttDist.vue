@@ -85,15 +85,15 @@
 					return []
 				}else{ 
 					var itemId="";
-					if(this.groupBy=='status'){
+					if(this.params.groupBy=='status'){
 						itemId="menuStatus"
-					}else if(this.groupBy=='dlvl'){
+					}else if(this.params.groupBy=='dlvl'){
 						itemId="demandLvl"
-					}else if(this.groupBy=='dtype'){
+					}else if(this.params.groupBy=='dtype'){
 						itemId="demandType"
-					}else if(this.groupBy=='priority'){
+					}else if(this.params.groupBy=='priority'){
 						itemId="priority"
-					}else if(this.groupBy=='source'){
+					}else if(this.params.groupBy=='source'){
 						itemId="demandSource"
 					} 
 					return this.xmMenuAttDists.map(i=>{
@@ -105,15 +105,15 @@
 			}, 
 			legendCpd(){
 				var itemId="";
-				if(this.groupBy=='status'){
+				if(this.params.groupBy=='status'){
 					itemId="menuStatus"
-				}else if(this.groupBy=='dlvl'){
+				}else if(this.params.groupBy=='dlvl'){
 					itemId="demandLvl"
-				}else if(this.groupBy=='dtype'){
+				}else if(this.params.groupBy=='dtype'){
 					itemId="demandType"
-				}else if(this.groupBy=='priority'){
+				}else if(this.params.groupBy=='priority'){
 					itemId="priority"
-				}else if(this.groupBy=='source'){
+				}else if(this.params.groupBy=='source'){
 					itemId="demandSource"
 				} 
 
@@ -184,8 +184,7 @@
 					groupBy:'status',
 				},
 				title:'',//报表配置项
-				remark:'', //报表配置项
-				
+				remark:'', //报表配置项 
 				groupBys:[
 					{id:'status', name:'需求状态'},
 					{id:'dtype', name:'需求类型'},
@@ -336,11 +335,12 @@
 				this.xmMenuAttDists=[]
 			},
 			searchXmMenuAttDist(){
-				if(!this.groupBy){
+				
+				var params={...this.params}
+				if(!params.groupBy){
 					this.$notify({position:'bottom-left',showClose:true,message:'请选中分组属性',type:'warning'})
 					return 
 				}
-				var params={...this.params} 
 				getXmMenuAttDist(params).then(res=>{
 					this.xmMenuAttDists=res.data.data
 				})
@@ -367,7 +367,7 @@
  			initSimpleDicts('all',['demandSource','demandLvl','demandType','priority','menuStatus'] ).then(res=>{
 				this.dicts=res.data.data;
 			}) 
-			            this.maxTableHeight = util.calcTableMaxHeight(this.$refs.filtersRef.$el)
+			this.maxTableHeight = util.calcTableMaxHeight(this.$refs.filtersRef.$el)
 			//this.charts();
 			this.open();
 			

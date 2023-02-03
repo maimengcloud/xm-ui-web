@@ -110,7 +110,7 @@
 						preName=`项目【${this.filters.project.id}】`
 					}
 				}
-				return  preName+this.groupBys.find(i=>i.id==this.groupBy).name+'需求数量排行榜'
+				return  preName+this.groupBys.find(i=>i.id==this.params.groupBy).name+'需求数量排行榜'
 			},
 			legendCpd(){
 				if(this.xmMenuSorts.length==0){
@@ -180,7 +180,7 @@
 			open(){
 				this.visible=true;
 				if(this.initGroupBy){
-					this.groupBy=this.initGroupBy
+					this.params.groupBy=this.initGroupBy
 				}
 				this.filters.testPlan=this.xmTestPlan
 				this.filters.product=this.xmProduct
@@ -269,7 +269,7 @@
 				this.xmMenuSorts=[]
 			},
 			searchXmMenuSort(){
-				if(!this.groupBy){
+				if(!this.params.groupBy){
 					this.$notify({position:'bottom-left',showClose:true,message:'请选中分组属性',type:'warning'})
 					return 
 				}
@@ -295,7 +295,7 @@
 				if(this.filters.priority){
 					params.priority=this.filters.priority
 				} 
-				params.groupBy=this.groupBy
+				params.groupBy=this.params.groupBy
 				if(this.filters.product){
 					params.productId=this.filters.product.id
 				}

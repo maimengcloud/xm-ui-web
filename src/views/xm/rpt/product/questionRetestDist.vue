@@ -345,7 +345,7 @@
 				this.xmQuestionRetestDists=[]
 			},
 			searchXmQuestionRetestDist(){
-				if(!this.groupBy){
+				if(!this.params.groupBy){
 					this.$notify({position:'bottom-left',showClose:true,message:'请选中分组属性',type:'warning'})
 					return 
 				}
@@ -357,7 +357,7 @@
 					...this.params
 				};
 				 
-				params.groupBy=this.groupBy  
+				params.groupBy=this.params.groupBy  
 				if (
 					this.pageInfo.orderFields != null &&
 					this.pageInfo.orderFields.length > 0

@@ -102,7 +102,7 @@
 					}
 					
 				}
-				return  preName+this.groupBys.find(i=>i.id==this.groupBy).name+'任务数量排行榜'
+				return  preName+this.groupBys.find(i=>i.id==this.params.groupBy).name+'任务数量排行榜'
 			},
 			legendCpd(){
 				if(this.xmTaskSorts.length==0){
