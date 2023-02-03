@@ -208,6 +208,9 @@
 				if( this.filters.testCasedb && this.filters.testCasedb.id){
 					this.params.casedbId= this.filters.testCasedb.id
 				}
+				if(this.initGroupBy){
+					this.params.groupBy=this.initGroupBy
+				}
 				if(this.cfg && this.cfg.id){
 					this.params=this.cfg.params
 					this.title=this.cfg.title

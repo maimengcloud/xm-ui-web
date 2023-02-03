@@ -155,11 +155,10 @@
 					caseType:'',
                 },  
 				params:{
-
+					groupBy:'menu_id',
 				},
 				title:'',//报表配置项
-				remark:'', //报表配置项
-				groupBy:'menu_id',
+				remark:'', //报表配置项 
 				groupBys:[ 
 					{id:'menu_id', name:'故事'}, 
  					{id:'cuserid', name:'负责人'},

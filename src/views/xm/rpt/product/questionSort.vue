@@ -186,11 +186,10 @@
 					testCasedb:null,
                 },
 				params:{
-
+					groupBy:'handler_userid', 
 				},
 				title:'',//报表配置项
 				remark:'', //报表配置项
-				groupBy:'handler_userid',
 				groupBys:[
 					{id:'create_userid', name:'创建人'},
 					{id:'ask_userid', name:'提出人'},
@@ -245,6 +244,9 @@
 				if( this.filters.testCasedb && this.filters.testCasedb.id){
 					this.params.casedbId= this.filters.testCasedb.id
 				}
+				if(this.initGroupBy){
+					this.params.groupBy=this.initGroupBy
+				}
 				if(this.cfg && this.cfg.id){
 					this.params=this.cfg.params
 					this.title=this.cfg.title
@@ -253,9 +255,7 @@
 				if(this.showToolBar && !this.title){
 					this.title="企业工作项每日趋势图"
 				}
-				if(this.initGroupBy){
-					this.params.groupBy=this.initGroupBy
-				}
+
 				this.searchXmQuestionSort()
 			},
 			drawCharts() {

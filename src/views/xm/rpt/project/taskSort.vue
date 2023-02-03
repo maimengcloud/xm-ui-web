@@ -129,11 +129,10 @@
 					testCasedb:null,
                 },
 				params:{
-
+					groupBy:'create_userid', 
 				},
 				title:'',//报表配置项
 				remark:'', //报表配置项
-				groupBy:'create_userid',
 				groupBys:[
 					{id:'create_userid', name:'创建人'},
 					{id:'executor_userid', name:'执行人'}, 
