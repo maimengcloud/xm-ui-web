@@ -168,12 +168,8 @@
 					this.$notify({position:'bottom-left',showClose:true,message:'请先选中迭代',type:'warning'})
 					return;
 				}
-				var params={productId:this.filters.product.id,iterationId:this.filters.iteration.id,orderBy:'biz_date asc'}
-				
-				if(this.filters.startBizDate && this.filters.endBizDate){
-					params.startBizDate=this.filters.startBizDate;
-					params.endBizDate=this.filters.endBizDate;
-				}
+				var params={...this.params,orderBy:'biz_date asc'}
+				 
 				listXmIterationStateHis(params).then(res=>{ 
 					this.xmProductStateHiss=res.data.tips.isOk?res.data.data:this.xmProductStateHiss;
 				})

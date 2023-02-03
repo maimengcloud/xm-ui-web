@@ -150,12 +150,8 @@
 					this.$notify({position:'bottom-left',showClose:true,message:'请先选中产品',type:'warning'})
 					return;
 				}
-				var params={productId:this.filters.product.id,orderBy:'biz_date asc'}
-				
-				if(this.filters.startBizDate && this.filters.endBizDate){
-					params.startBizDate=this.filters.startBizDate;
-					params.endBizDate=this.filters.endBizDate;
-				}
+				var params={...this.params,orderBy:'biz_date asc'}
+				 
 				listXmProductStateHis(params).then(res=>{ 
 					this.xmProductStateHiss=res.data.tips.isOk?res.data.data:this.xmProductStateHiss;
 				})

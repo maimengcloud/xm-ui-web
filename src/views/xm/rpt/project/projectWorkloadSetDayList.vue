@@ -139,17 +139,8 @@
 					return;
 				}
 				
-				var params={projectId: this.filters.project.id,orderBy:'biz_date asc'}
-				if(this.filters.startBizDate && this.filters.endBizDate){
-					params.startBizDate=this.filters.startBizDate;
-					params.endBizDate=this.filters.endBizDate;
-				}
-				if(this.filters.userid){
-					params.userid=this.filters.userid
-				}
-				if(this.filters.taskId){
-					params.taskId=this.filters.taskId
-				}
+				var params={...this.params,orderBy:'biz_date asc'}
+				 
 				listProjectWorkloadSetDay(params).then(res=>{ 
 					this.xmProjectWorkloadSetDays=res.data.tips.isOk?res.data.data:this.xmProjectWorkloadSetDays;
 				})
@@ -158,7 +149,7 @@
 				this.visible=true;
 				this.filters.product=this.xmProduct
 				this.filters.project=this.xmProject
-				this.filters.iteration=this.xmIteration 
+				this.filters.iteration=this.xmIteration   
 				this.xmProjectWorkloadSetDays=[] 
 				this.$nextTick(()=>{
 					if(this.$refs['xmProjectSelect'])this.$refs['xmProjectSelect'].clearSelect();

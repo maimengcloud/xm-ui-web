@@ -189,7 +189,7 @@
 					this.$notify({position:'bottom-left',showClose:true,message:'请先选中迭代',type:'warning'})
 					return;
 				}
-				var params={iterationId:this.filters.iteration.id,orderBy:'biz_date asc'}
+				var params={...this.params,orderBy:'biz_date asc'}
 				listXmIterationStateHis(params).then(res=>{ 
 					this.xmIterationStateHiss=res.data.tips.isOk?res.data.data:this.xmIterationStateHiss;
 				})

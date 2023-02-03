@@ -152,12 +152,8 @@
 					this.$notify({position:'bottom-left',showClose:true,message:'请先选中项目',type:'warning'})
 					return;
 				}
-				var params={projectId: this.filters.project.id,orderBy:'biz_date asc'}
-				
-				if(this.filters.startBizDate && this.filters.endBizDate){
-					params.startBizDate=this.filters.startBizDate;
-					params.endBizDate=this.filters.endBizDate;
-				}
+				var params={...this.params,orderBy:'biz_date asc'}
+				 
 				listXmProjectStateHis(params).then(res=>{ 
 					this.xmProjectStateHiss=res.data.tips.isOk?res.data.data:this.xmProjectStateHiss;
 				})
