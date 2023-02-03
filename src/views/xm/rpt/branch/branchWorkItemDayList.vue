@@ -2,27 +2,33 @@
 	<section> 
 			<el-row :gutter="5" >
 				<el-col :span="18"> 
-					<div v-if="isRptCfg">
-						<div class="box">
-							<h4 class="title">{{title?title:'请输入标题'}}</h4><el-input class="input" v-model="title" placeholder="请输入标题"></el-input>
-						</div>
-						<el-row class="box">
-							<span class="remark">{{remark?remark:'请输入说明'}}</span><el-input  class="input" type="textarea" :rows="4" v-model="remark" placeholder="请输入说明"></el-input>
+					<div class="rpt-box">
+						<el-row v-if="isRptCfg">
+							<el-row class="row-box padding-top">
+								<span class="title">{{title?title:'请输入标题'}}</span><el-input class="input" v-model="title" placeholder="请输入标题"></el-input>
+							</el-row>
+							<el-row class="row-box">
+								<el-row class="remark"><div v-html="remark?remark:'请输入说明'"></div></el-row>
+								<el-row ><el-input class="input"  type="textarea" :rows="4" v-model="remark" placeholder="请输入说明"></el-input></el-row>
+							</el-row>
 						</el-row>
-					</div>
-					<div v-else-if="cfg && cfg.id">
-						<el-row v-if="title"  class="box">
-							<h4 class="title">{{title}}</h4>
+						<el-row v-else-if="cfg && cfg.id">
+							<el-row v-if="title"  class="row-box">
+								<span class="title">{{title}}</span>
+							</el-row>
+							<el-row v-if="remark"  class="row-box">
+								<span class="remark">{{remark}}</span>
+							</el-row>
 						</el-row>
-						<el-row v-if="remark"  class="box">
-							<span class="remark">{{remark}}</span>
+						<el-row> 
+							<div class="echart-box" id="iterationWorkItemDayList"></div> 
 						</el-row>
-					</div>
-					<div> 
-						<div class="echart-box" id="iterationWorkItemDayList"></div> 
 					</div>
 				</el-col>
-				<el-col :span="6" class="border">
+				<el-col :span="6" class="border" v-if="!isExport">
+					<el-row v-if="isRptCfg">
+						<el-button type="danger" icon="el-icon-delete" @click="doDelete">从报告移除该报表</el-button>
+ 					</el-row>
 					<el-form :model="params" class="padding" :style="{width:'100%',maxHeight:maxTableHeight+'px',overflow: 'auto'}" ref="filtersRef">  
 					 
 					<el-form-item label="日期区间">
@@ -51,7 +57,7 @@
 		components: {  
 			XmIterationSelect,XmProductSelect,
 		},
-        props:['xmProduct','xmProject','xmIteration','cfg','category','isRptCfg'],
+        props:['xmProduct','xmProject','xmIteration','cfg','category','isRptCfg','isExport'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -328,10 +334,9 @@
     width: 100%;
     display: block;
   }
-  .box{  
-	display: flex;
-	height: 28px;
+  .row-box{     
 	.title{
+		font-weight: 600;
 		font-size: large;
 		visibility: visible;
 	} 
@@ -347,15 +352,20 @@
 		position:absolute;  
 	}
   }
-  .box:hover{
+  .row-box:hover{
 	.title{
-		visibility: hidden;
+		display:none;
 	}
 	.remark{
-		visibility: visible;
+		display:none;
 	} 
 	.input{
 		visibility: visible;
 	}
   } 
+  .rpt-box{
+	margin-left: 10px;
+	margin-right: 10px;
+  	border: 1px solid #e8e8e8;
+  }
 </style>
