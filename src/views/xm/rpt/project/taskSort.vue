@@ -67,7 +67,7 @@
 		components: {   
 			XmProjectSelect,
 		},
-        props:['id','xmProduct','xmIteration','xmProject'],
+        props:['id','cfg','category','showToolBar','showParams','isRptCfg','xmProduct','xmIteration','xmProject'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -128,6 +128,11 @@
 					iteration:null,
 					testCasedb:null,
                 },
+				params:{
+
+				},
+				title:'',//报表配置项
+				remark:'', //报表配置项
 				groupBy:'create_userid',
 				groupBys:[
 					{id:'create_userid', name:'创建人'},

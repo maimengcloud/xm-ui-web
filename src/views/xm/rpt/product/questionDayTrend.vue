@@ -40,7 +40,7 @@
 		components: {   
 			XmProductSelect,
 		},
-        props:['id','xmProduct','xmProject'],
+        props:['id','cfg','category','showToolBar','showParams','isRptCfg','xmProduct','xmProject'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -133,6 +133,11 @@
 					iteration:null,
 					testCasedb:null,
                 },
+				params:{
+
+				},
+				title:'',//报表配置项
+				remark:'', //报表配置项
 				dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, edit: false, del: false, add: false },//查询中... 
 				dateRanger:[], 
@@ -164,7 +169,36 @@
 				this.filters.product=this.xmProduct
 				this.filters.project=this.xmProject
 				this.filters.iteration=this.xmIteration
-				this.filters.testCasedb=this.xmTestCasedb
+				this.filters.testCasedb=this.xmTestCasedb 
+
+				if( this.filters.testPlan && this.filters.testPlan.id){
+					this.params.planId= this.filters.testPlan.id
+				} 
+				 
+				if( this.filters.product && this.filters.product.id){
+					this.params.productId= this.filters.product.id
+				}
+				 
+				if( this.filters.project && this.filters.project.id){
+					this.params.projectId= this.filters.project.id
+				}
+				 
+				if( this.filters.iteration && this.filters.iteration.id){
+					this.params.iterationId= this.filters.iteration.id
+				}
+				 
+				 
+				if( this.filters.testCasedb && this.filters.testCasedb.id){
+					this.params.casedbId= this.filters.testCasedb.id
+				}
+				if(this.cfg && this.cfg.id){
+					this.params=this.cfg.params
+					this.title=this.cfg.title
+					this.remark=this.cfg.remark
+				}
+				if(this.showToolBar && !this.title){
+					this.title="企业工作项每日趋势图"
+				}
 				if(this.$refs['xmProductSelect'])this.$refs['xmProductSelect'].clearSelect();
 				this.$nextTick(()=>{
 					this.listXmProductStateHis();

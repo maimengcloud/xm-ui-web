@@ -39,7 +39,7 @@
 		components: {  
 			XmProjectSelect, 
 		},
-        props:['id','xmProduct','xmProject'],
+        props:['id','cfg','category','showToolBar','showParams','isRptCfg','xmProduct','xmProject'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -104,6 +104,11 @@
 					startBizDate:'',
 					endBizDate:'',
                 },
+				params:{
+
+				},
+				title:'',//报表配置项
+				remark:'', //报表配置项
 				dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
 				load:{ list: false, edit: false, del: false, add: false },//查询中... 
 				dateRanger:[], 

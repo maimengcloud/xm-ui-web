@@ -82,7 +82,7 @@
 		components: {   
 			XmProjectSelect,XmProductSelect,XmIterationSelect
 		},
-        props:['id','xmProject','xmProduct','xmIteration','xmTestCasedb','initGroupBy',],
+        props:['id','cfg','category','showToolBar','showParams','isRptCfg','xmProject','xmProduct','xmIteration','xmTestCasedb','initGroupBy',],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -154,6 +154,11 @@
 					cpriority:'',
 					caseType:'',
                 },  
+				params:{
+
+				},
+				title:'',//报表配置项
+				remark:'', //报表配置项
 				groupBy:'menu_id',
 				groupBys:[ 
 					{id:'menu_id', name:'故事'}, 

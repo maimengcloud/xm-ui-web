@@ -108,7 +108,7 @@
 		components: {   
 			XmProjectSelect,XmIterationSelect,XmProductSelect,xmTestPlanSelect,
 		},
-        props:['id','xmProject','xmProduct','xmIteration','xmTestCasedb','xmTestPlan',],
+        props:['id','cfg','category','showToolBar','showParams','isRptCfg','xmProject','xmProduct','xmIteration','xmTestCasedb','xmTestPlan',],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -221,6 +221,11 @@
 					iteration:null,
 					testCasedb:null,
                 },
+				params:{
+
+				},
+				title:'',//报表配置项
+				remark:'', //报表配置项
 				groupBy:'bug_status',
 				groupBys:[
 					{id:'bug_status', name:'缺陷状态'},
@@ -272,7 +277,36 @@
 				this.filters.product=this.xmProduct
 				this.filters.project=this.xmProject
 				this.filters.iteration=this.xmIteration
-				this.filters.testCasedb=this.xmTestCasedb
+				this.filters.testCasedb=this.xmTestCasedb 
+
+				if( this.filters.testPlan && this.filters.testPlan.id){
+					this.params.planId= this.filters.testPlan.id
+				} 
+				 
+				if( this.filters.product && this.filters.product.id){
+					this.params.productId= this.filters.product.id
+				}
+				 
+				if( this.filters.project && this.filters.project.id){
+					this.params.projectId= this.filters.project.id
+				}
+				 
+				if( this.filters.iteration && this.filters.iteration.id){
+					this.params.iterationId= this.filters.iteration.id
+				}
+				 
+				 
+				if( this.filters.testCasedb && this.filters.testCasedb.id){
+					this.params.casedbId= this.filters.testCasedb.id
+				}
+				if(this.cfg && this.cfg.id){
+					this.params=this.cfg.params
+					this.title=this.cfg.title
+					this.remark=this.cfg.remark
+				}
+				if(this.showToolBar && !this.title){
+					this.title="企业工作项每日趋势图"
+				}
 				this.searchXmQuestionAttDist()
 			},
 			drawCharts() {

@@ -68,7 +68,7 @@
 		components: {   
 			XmProjectSelect,
 		},
-        props:['id','xmProduct','xmIteration','xmProject'],
+        props:['id','cfg','category','showToolBar','showParams','isRptCfg','xmProduct','xmIteration','xmProject'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -163,6 +163,11 @@
 					iteration:null,
 					testCasedb:null,
                 },
+				params:{
+
+				},
+				title:'',//报表配置项
+				remark:'', //报表配置项
 				groupBy:'task_state',
 				groupBys:[
 					{id:'task_state', name:'任务状态'},
