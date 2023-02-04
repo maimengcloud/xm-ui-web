@@ -7,7 +7,7 @@
         <el-col :span="18"> 
             <el-row  class="padding">
                 <span style="float:right;">
-                    <el-button type="text" v-if="isRptShow==true && isRptCfg==false" @click="isRptShow=true" icon="el-icon-time">查看历史报告</el-button>  
+                    <el-button type="text" v-if="isRptShow==true && isRptCfg==false" @click="toQueryRptData" icon="el-icon-time">查看历史报告</el-button>  
                     <el-button type="primary" v-if="isRptShow==true && isRptCfg==false" @click="createRptData" icon="el-icon-time">保存报告(可供历史查询)</el-button>  
                     <el-button type="text" v-if="isRptShow==false && isRptCfg==false" @click="isRptShow=true" icon="el-icon-time">查看报告</el-button>  
                     <el-button type="warning" v-if="isRptShow==true" @click="undoRptShow" icon="el-icon-error">退出报告</el-button>  
@@ -25,12 +25,15 @@
                     <el-empty description="暂未选择报表，请至少选择一个报表"></el-empty>
                 </div>
                 <div v-else id="printBody" ref="rptBox"> 
-                    <component style="margin-bottom:80px;" v-for="(item,index) in compCfgList" :key="index" :is="item.compId" :xm-test-plan="xmTestPlan" :xm-product="xmProduct" :xm-project="xmProject" :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :category="category" :cfg="item.cfg" :ref="item.id" @delete="doDelete(item)" :init-group-by="item.initGroupBy" :show-tool-bar="false" :id="item.id" :show-params="paramsVisible"></component>
+                    <component style="margin-bottom:80px;" v-for="(item,index) in compCfgList" :key="index" :is="item.compId" :xm-test-plan="xmTestPlan" :xm-product="xmProduct" :xm-project="xmProject" :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :category="category" :cfg="item.cfg" :ref="item.id" @delete="doDelete(item)" :init-group-by="item.initGroupBy" :show-tool-bar="false" :id="item.id" :rpt-data="item.rawDatas" :show-params="paramsVisible"></component>
                          
                 </div>
             </el-row>
         </el-col> 
-    </el-row>  
+    </el-row>   
+    <el-dialog append-to-body modal-append-to-body :visible.sync="rptDataListVisible" top="20px" width="60%">
+        <rpt-data-list :xm-rpt-config="xmRptConfig" v-if="rptDataListVisible" @select="onRptDataSelect"/>
+    </el-dialog> 
     </section>
 </template>
 
@@ -41,15 +44,17 @@ import seq from '@/common/js/sequence';//全局公共库
 import VueGridLayout from 'vue-grid-layout';
 import { mapGetters } from 'vuex' 
 import CompsSet from '@/views/xm/rpt/CompsSet'  
+import rptDataList from '@/views/xm/rpt/rptDataList'  
+import { addXmRptData  } from '@/api/xm/core/xmRptData';
 
 
-import { initDicts,listXmRptConfig, delXmRptConfig,editXmRptConfig,addXmRptConfig,batchDelXmRptConfig,editSomeFieldsXmRptConfig } from '@/api/xm/core/xmRptConfig';
+import {  listXmRptConfig,editXmRptConfig,addXmRptConfig } from '@/api/xm/core/xmRptConfig';
  
 export default {
     components: { 
         GridLayout: VueGridLayout.GridLayout,
         GridItem: VueGridLayout.GridItem, 
-        CompsSet,  
+        CompsSet,  rptDataList,
         xmTestRptOverview:()=>import("../core/xmTestPlan/xmTestRptOverview.vue"),   
         xmMenuDayTrend:()=>import("./product/menuDayTrend.vue"),   
         xmMenuDayAccumulate:()=>import("./product/menuDayTrend.vue"),  
@@ -119,13 +124,8 @@ export default {
            return this.compCfgList.map(k=>k.compId)
         },
         rptConfigParamsCpd(){
-            //业务类型1-产品报告，2-迭代报告，3-测试计划报告，4-项目报告，5-企业报告
-            if(this.rptDatas){
-					this.rawDatas=this.rptDatas
-					return;
-				}
-				
-				var params={bizType:'5',bizId:this.userInfo.branchId,name:''}
+            //业务类型1-产品报告，2-迭代报告，3-测试计划报告，4-项目报告，5-企业报告 
+			var params={bizType:'5',bizId:this.userInfo.branchId,name:''}
              if(this.category=='企业级'){
                 params.bizType='5';
                 params.bizId=this.userInfo.branchId
@@ -192,12 +192,13 @@ export default {
             isRptCfg:false,
             isRptShow:false,
             xmRptConfig:null,
+            xmRptData:null,
             compCfgList:[],
             maxTableHeight:300, 
             // 布局列数
             layoutColNum: 12,  
             paramsVisible:true,
-            exportToolBarVisible:true,
+            rptDataListVisible:false,
         }
     },
 
@@ -213,33 +214,34 @@ export default {
             }
            
         },
+        toQueryRptData(){
+            this.rptDataListVisible=true;
+        },
         createRptData(){
             if(this.xmRptConfig==null){
                 this.$message.error("还没制作报告，请先制作报告")
                 return;
             } 
-            var rptData={cfgId:this.xmRptConfig.id,rptName:this.xmRptConfig.name,rptData:{}}  
-            var compCfgList=JSON.parse(JSON.stringify(this.compCfgList))
-            compCfgList=compCfgList.map(k=>{
-                return {compId:k.compId,id:k.id}
-            })
-            compCfgList.forEach(k=>{
+            var xmRptData={cfgId:this.xmRptConfig.id,rptName:this.xmRptConfig.name,rptData:[]}   
+            this.compCfgList.forEach(k=>{
                 if(this.$refs[k.id] && this.$refs[k.id][0].$refs && this.$refs[k.id][0].$refs[k.id]){ 
                     var com=this.$refs[k.id][0].$refs[k.id]
-                        k.params=com.params
-                        k.title=com.title
-                        k.remark=com.remark
+                    var comData={compId:k.compId,params:com.params,title:com.title,remark:com.remark} 
+                    xmRptData.rptData.push(comData)
                 }else{ 
-                        var com=this.$refs[k.id][0]
-                        k.params=com.params
-                        k.title=com.title
-                        k.remark=com.remark
+                    var com=this.$refs[k.id][0]
+                    var comData={compId:k.compId,params:com.params,title:com.title,remark:com.remark} 
+                    xmRptData.rptData.push(comData)
                 }
             })
-            xmRptConfig.cfg=JSON.stringify(compCfgList)
-            editXmRptConfig(xmRptConfig).then(res=>{
-                this.xmRptConfig=xmRptConfig; 
-                callback(res)
+            xmRptData.rptData=JSON.stringify(xmRptData.rptData)
+            addXmRptData(xmRptData).then(res=>{  
+                var tips = res.data.tips
+                if(tips.isOk){
+                    this.$message.success("报告保存成功")
+                }else{
+                    this.$message.error(tips.msg)
+                }
             }) 
         },
         undoRptCfg(){
@@ -285,18 +287,20 @@ export default {
         initCompCfgList(){
             if(this.xmRptConfig && this.xmRptConfig.cfg){
                 var cfgJson=JSON.parse(this.xmRptConfig.cfg) 
+                cfgJson.forEach(k=>k.id=k.compId+seq.sn())
                 this.compCfgList=cfgJson;
             }else{ 
                 var defList=this.$refs['compsSet'].rptListCpd
                 if(defList && defList.length>3){
                     defList=defList.slice(0,3);
-                }
+                } 
+                defList.forEach(k=>k.id=k.compId+seq.sn())
                 this.compCfgList=JSON.parse(JSON.stringify(defList))
             }
         },
         onCompSelect(comp){  
-            if(this.compCfgList.some(k=>k.id==comp.id)){ 
-                var compCfg=this.compCfgList.find(k=>k.id==comp.id)
+            if(this.compCfgList.some(k=>k.compId==comp.compId)){ 
+                var compCfg=this.compCfgList.find(k=>k.compId==comp.compId)
                 this.$nextTick(()=>{
                     this.scrollToComp(compCfg)   
                 }) 
@@ -328,51 +332,39 @@ export default {
         },
         submitXmPrtConfig(callback){ 
             if(this.xmRptConfig==null){
-                var xmRptConfig={...this.rptConfigParamsCpd,cfg:[]}
-                var compCfgList=JSON.parse(JSON.stringify(this.compCfgList))
-                compCfgList=compCfgList.map(k=>{
-                    return {compId:k.compId,id:k.id}
-                })
-                compCfgList.forEach(k=>{
+                var xmRptConfig={...this.rptConfigParamsCpd,cfg:[]}  
+                this.compCfgList.forEach(k=>{
                     if(this.$refs[k.id] && this.$refs[k.id][0].$refs && this.$refs[k.id][0].$refs[k.id]){ 
                         var com=this.$refs[k.id][0].$refs[k.id]
-                         k.params=com.params
-                         k.title=com.title
-                         k.remark=com.remark
+                        var comData={compId:k.compId,params:com.params,title:com.title,remark:com.remark} 
+                        xmRptConfig.cfg.push(comData)
                     }else{ 
                         var com=this.$refs[k.id][0]
-                         k.params=com.params
-                         k.title=com.title
-                         k.remark=com.remark
+                        var comData={compId:k.compId,params:com.params,title:com.title,remark:com.remark} 
+                        xmRptConfig.cfg.push(comData)
                     }
                    
                 })
-                xmRptConfig.cfg=JSON.stringify(compCfgList)
+                xmRptConfig.cfg=JSON.stringify(xmRptConfig.cfg)
                 
                 addXmRptConfig(xmRptConfig).then(res=>{
                     this.xmRptConfig=xmRptConfig;
                     callback(res)
                 })
             }else{
-                var xmRptConfig={...this.xmRptConfig,cfg:[]}
-                var compCfgList=JSON.parse(JSON.stringify(this.compCfgList))
-                compCfgList=compCfgList.map(k=>{
-                    return {compId:k.compId,id:k.id}
-                })
-                compCfgList.forEach(k=>{
+                var xmRptConfig={...this.xmRptConfig,cfg:[]} 
+                this.compCfgList.forEach(k=>{
                     if(this.$refs[k.id] && this.$refs[k.id][0].$refs && this.$refs[k.id][0].$refs[k.id]){ 
                         var com=this.$refs[k.id][0].$refs[k.id]
-                         k.params=com.params
-                         k.title=com.title
-                         k.remark=com.remark
+                        var comData={compId:k.compId,params:com.params,title:com.title,remark:com.remark} 
+                        xmRptConfig.cfg.push(comData)
                     }else{ 
                          var com=this.$refs[k.id][0]
-                         k.params=com.params
-                         k.title=com.title
-                         k.remark=com.remark
+                        var comData={compId:k.compId,params:com.params,title:com.title,remark:com.remark} 
+                        xmRptConfig.cfg.push(comData)
                     }
                 })
-                xmRptConfig.cfg=JSON.stringify(compCfgList)
+                xmRptConfig.cfg=JSON.stringify(xmRptConfig.cfg)
                 editXmRptConfig(xmRptConfig).then(res=>{
                     this.xmRptConfig=xmRptConfig; 
                     callback(res)
@@ -388,6 +380,18 @@ export default {
         sizeAutoChange(k){ 
              
             
+        },
+        onRptDataSelect(rptData){
+            this.xmRptData=rptData
+            this.rptDataListVisible=false;
+            if(this.xmRptData && this.xmRptData.id ){
+                if( this.xmRptData.cfgId==this.xmRptConfig.id){
+                    this.xmRptConfig.name=this.xmRptData.rptName
+                    var cfgList=JSON.parse(this.xmRptData.rptData)
+                    cfgList.forEach(k=>k.id=k.compId+seq.sn())
+                    this.compCfgList=cfgList
+                }
+            }
         },
         exportToPdf(){
             this.paramsVisible=false

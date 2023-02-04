@@ -183,7 +183,7 @@ export default {
 
     },
     mounted(){
-        this.comps.forEach(k=>k.id=k.id?k.id:k.compId) 
+        //this.comps.forEach(k=>k.id=k.id?k.id:k.compId) 
         this.maxTableHeight = util.calcTableMaxHeight(this.$refs.table.$el)
         if(this.category){
             this.filters.category=this.category
