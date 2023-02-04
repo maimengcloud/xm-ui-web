@@ -110,7 +110,7 @@ export default {
         xmBranchMenuDayAccumulate:()=>import('./branch/menuDayAccumulate.vue'),
         
     },
-    props:['xmTestCasedb','xmTestPlan','xmProduct','xmProject','xmIteration','showToolBar','category','showParams'],
+    props:['xmTestCasedb','xmTestPlan','xmProduct','xmProject','xmIteration','category','showParams'],
     computed: {
         ...mapGetters(['userInfo']), 
         compIds(){
@@ -189,14 +189,16 @@ export default {
             maxTableHeight:300, 
             // 布局列数
             layoutColNum: 12,  
-            paramsVisible:false,
+            paramsVisible:true,
             exportToolBarVisible:true,
         }
     },
 
     methods: {  
         initData(){
-            this.paramsVisible=this.showParams
+            if(this.showParams!=undefined){
+                this.paramsVisible=this.showParams
+            } 
             if(!this.toLoadXmRptConfigCpd){
                 this.initCompCfgList();
              }else{

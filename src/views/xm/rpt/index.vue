@@ -1,7 +1,7 @@
 <template> 
 <section> 
   <el-row>
-     <comps-card ref="compsCard" :category="category" :xm-test-plan="xmTestPlan" :xm-product="xmProduct" :xm-project="xmProject" :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :show-params=" isRptCfg || !isRptShow" :is-rpt-cfg="isRptCfg" :is-rpt-show="isRptShow"/>  
+     <comps-card ref="compsCard" :category="category" :xm-test-plan="xmTestPlan" :xm-product="xmProduct" :xm-project="xmProject" :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb"/>  
   </el-row>
 </section>     
 </template>
@@ -15,7 +15,7 @@ import { mapGetters } from 'vuex'
 import dayjs from 'dayjs'
 
 export default {
-  props:['xmProduct','xmIteration','xmProject','xmTestCasedb','xmTestPlan','category','isRptShow'],
+  props:['xmProduct','xmIteration','xmProject','xmTestCasedb','xmTestPlan','category'],
   components: {compsSet, compsCard}, 
   computed: {
     ...mapGetters([
@@ -27,8 +27,7 @@ export default {
   },
 
   data() {
-    return { 
-      isRptCfg:false, 
+    return {  
     }
   },
 
