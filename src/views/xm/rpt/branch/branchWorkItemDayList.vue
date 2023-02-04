@@ -1,6 +1,6 @@
 <template> 
 			<el-row :gutter="5" >
-				<el-col :span="18">  
+				<el-col :span="showParams?23:24">  
 					<div class="rpt-box">
 						<el-row v-if="isRptCfg">
 							<el-row class="row-box padding-top">
@@ -25,9 +25,9 @@
 					</div>
 				</el-col>
 				
-				<el-col :span="6" v-if="showParams"> 
+				<el-col :span="showParams?1:0" v-if="showParams"> 
 					 <el-popover   trigger="manual" v-model="filterVisible" style="float:right;" width="500">
-						<el-button slot="reference" style="margin-top:10px;" icon="el-icon-more" @click="filterVisible=!filterVisible"></el-button> 
+						<el-button slot="reference" style="margin-top:10px;margin-right:10px;" icon="el-icon-more" @click="filterVisible=!filterVisible"></el-button> 
 						<el-row>
 							<el-button type="danger" icon="el-icon-delete" @click="$emit('delete',cfg)">从报告移出该报表</el-button>
 							<el-button icon="el-icon-close" style="float:right;" @click="filterVisible=false">关闭</el-button>
@@ -249,7 +249,7 @@
 					},
 					barMaxWidth: 100,
 					toolbox: {
-						show: true,
+						show: this.showToolBar,
 						top:"5%",
 						right:"10px",
 						feature: {

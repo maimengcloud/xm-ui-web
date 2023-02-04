@@ -5,9 +5,9 @@
             <comps-set :comp-ids="compIds" :category="category" @row-click="onCompSelect"></comps-set>
         </el-col>
         <el-col :span="18" ref="table" class="border">
-            <el-row  v-if="exportToolBarVisible">
+            <el-row  v-if="exportToolBarVisible" class="padding">
                 <span style="float:right;">
-                    <el-button @click="exportToolBarVisible=false">取消</el-button> 
+                    <el-button @click="cancelExport">取消</el-button> 
                     <el-button v-print="{id:'printBody',popTitle:rptConfigParamsCpd.name+'-报告'}">打印</el-button>
                     <el-button @click="exportToPdf">pdf</el-button> 
                 </span> 
@@ -17,7 +17,7 @@
                     <el-empty description="暂未选择模块"></el-empty>
                 </div>
                 <div v-else id="printBody" ref="rptBox"> 
-                    <component v-for="(item,index) in compCfgList" :key="index" :is="item.compId" :xm-test-plan="xmTestPlan" :xm-product="xmProduct" :xm-project="xmProject" :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :category="category" :cfg="item.cfg" :ref="item.id" @delete="doDelete(item)" :init-group-by="item.initGroupBy" :id="item.id" :show-tool-bar="showToolBar" :show-params="paramsVisible"></component>
+                    <component v-for="(item,index) in compCfgList" :key="index" :is="item.compId" :xm-test-plan="xmTestPlan" :xm-product="xmProduct" :xm-project="xmProject" :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :category="category" :cfg="item.cfg" :ref="item.id" @delete="doDelete(item)" :init-group-by="item.initGroupBy" :show-tool-bar="false" :id="item.id" :show-params="paramsVisible"></component>
                          
                 </div>
             </div>
@@ -318,7 +318,14 @@ export default {
         },
         exportToPdf(){
             this.paramsVisible=false
-            this.$PDFSave(this.$refs.rptBox, this.rptConfigParamsCpd.name+"-报告");  
+            this.$nextTick(()=>{
+                this.$PDFSave(this.$refs.rptBox, this.rptConfigParamsCpd.name+"-报告");  
+            })
+            
+        },
+        cancelExport(){
+            this.exportToolBarVisible=false
+            this.paramsVisible=this.showParams
         }
          
     },

@@ -1,15 +1,15 @@
 <template>
 	<section >
  			<el-row :gutter="5">
-				<el-col :span="18"> 
+				<el-col :span="showParams?23:24"> 
 					<div>
 						<div class="echart-box" :id="this.id"></div>
 						<div class="progress"></div>
 					</div>
 				</el-col>
-				<el-col :span="6" v-if="showParams"> 
+				<el-col :span="showParams?1:0" v-if="showParams"> 
 					 <el-popover   trigger="manual" v-model="filterVisible" style="float:right;" width="500">
-						<el-button slot="reference" style="margin-top:10px;" icon="el-icon-more" @click="filterVisible=!filterVisible"></el-button> 
+						<el-button slot="reference" style="margin-top:10px;margin-right:10px;" icon="el-icon-more" @click="filterVisible=!filterVisible"></el-button> 
 						<el-row>
 							<el-button type="danger" icon="el-icon-delete" @click="$emit('delete',cfg)">从报告移出该报表</el-button>
 							<el-button icon="el-icon-close" style="float:right;" @click="filterVisible=false">关闭</el-button>
