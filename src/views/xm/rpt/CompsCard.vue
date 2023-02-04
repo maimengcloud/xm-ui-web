@@ -5,36 +5,20 @@
             <comps-set :comp-ids="compIds" :category="category" @row-click="onCompSelect"></comps-set>
         </el-col>
         <el-col :span="18" ref="table" class="border">
-            <el-row  v-if="printVisible">
-                <span style="float:right;"><el-button @click="printVisible=false">取消打印</el-button> <el-button v-print="'#printBody'">打印</el-button></span> 
+            <el-row  v-if="exportToolBarVisible">
+                <span style="float:right;">
+                    <el-button @click="exportToolBarVisible=false">取消</el-button> 
+                    <el-button v-print="'#printBody'">打印</el-button>
+                    <el-button v-print="'#printBody'">pdf</el-button>
+                </span> 
             </el-row>
             <div :style="{height:maxTableHeight+'px',overflow:'auto'}">
                 <div class="empty" v-if="compCfgList.length == 0" >
                     <el-empty description="暂未选择模块"></el-empty>
                 </div>
-                <div v-else id="printBody">
-                    <grid-layout
-                        :layout.sync="compCfgList"
-                        :col-num="layoutColNum"
-                        :row-height="120"
-                        :is-draggable="true"
-                        :is-resizable="true"
-                        :is-mirrored="false"
-                        :vertical-compact="true"
-                        :margin="[10, 10]"
-                        :use-css-transforms="true"
-                    > 
-                        <grid-item
-                            v-for="(item,index) in compCfgList"
-                            :x="item.x"
-                            :y="item.y"
-                            :w="item.w"
-                            :h="item.h"
-                            :i="item.i"
-                            :key="index" @resize="sizeAutoChange(item)">
-                            <component :is="item.compId" :xm-test-plan="xmTestPlan" :xm-product="xmProduct" :xm-project="xmProject" :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :category="category" :cfg="item.cfg" :ref="item.id" @delete="doDelete(item)" :init-group-by="item.initGroupBy" :id="item.id" :show-tool-bar="showToolBar" :show-params="showParams"></component>
-                        </grid-item>
-                    </grid-layout>
+                <div v-else id="printBody"> 
+                            <component v-for="(item,index) in compCfgList" :key="index" :is="item.compId" :xm-test-plan="xmTestPlan" :xm-product="xmProduct" :xm-project="xmProject" :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :category="category" :cfg="item.cfg" :ref="item.id" @delete="doDelete(item)" :init-group-by="item.initGroupBy" :id="item.id" :show-tool-bar="showToolBar" :show-params="showParams"></component>
+                         
                 </div>
             </div>
         </el-col> 
@@ -117,7 +101,7 @@ export default {
         xmBranchMenuDayAccumulate:()=>import('./branch/menuDayAccumulate.vue'),
         
     },
-    props:['xmTestCasedb','xmTestPlan','xmProduct','xmProject','xmIteration','showToolBar','category','showParams','isRptCfg','printVisible','isRptShow'],
+    props:['xmTestCasedb','xmTestPlan','xmProduct','xmProject','xmIteration','showToolBar','category','showParams','isRptCfg','exportToolBarVisible','isRptShow'],
     computed: {
         ...mapGetters(['userInfo']), 
         compIds(){

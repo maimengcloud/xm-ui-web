@@ -369,8 +369,7 @@ table tr.hover-row{
   max-height: calc(80vh);   
   overflow-y: 'hidden';
   width:100%; 
-}
-
+} 
 /*此处根据不同屏幕分配率显示不同的样式*/
 /*手机端*/
 @media only screen and (min-width: 0px) and (max-width: 768px) {  

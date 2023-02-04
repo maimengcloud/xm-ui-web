@@ -1,6 +1,6 @@
 <template>
 	<section >
- 			<el-row :gutter="5" >
+ 			<el-row :gutter="5">
 				<el-col :span="18"> 
 					<div>
 						<div class="echart-box" :id="this.id"></div>
