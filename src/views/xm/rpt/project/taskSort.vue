@@ -90,11 +90,11 @@
 		    ...mapGetters([
 		      'userInfo','roles'
 		    ]), 
-			xmTaskSortsCpd(){
-				if(this.xmTaskSorts.length==0){
+			rawDatasCpd(){
+				if(this.rawDatas.length==0){
 					return []
 				}else{ 
-					return this.xmTaskSorts.map(i=>i.value)
+					return this.rawDatas.map(i=>i.value)
 				}
 			},
 			titleCpd(){
@@ -123,17 +123,17 @@
 				return  preName+this.groupBys.find(i=>i.id==this.params.groupBy).name+'任务数量排行榜'
 			},
 			legendCpd(){
-				if(this.xmTaskSorts.length==0){
+				if(this.rawDatas.length==0){
 					return []
 				}else{ 
-					return this.xmTaskSorts.map(i=>i.name)
+					return this.rawDatas.map(i=>i.name)
 				}
 				
 			}
 			
         }, 
 		watch: {  
-			xmTaskSortsCpd(){
+			rawDatasCpd(){
 				this.drawCharts();
 			}
 	    },
@@ -163,7 +163,7 @@
 				dateRanger:[], 
                 maxTableHeight:300, 
                 visible:false,
-				xmTaskSorts:[],
+				rawDatas:[],
 				pageInfo: {
 					//分页数据
 					total: 0, //服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
@@ -248,7 +248,7 @@
 						},
 						series: [
 							{
-							data: this.xmTaskSortsCpd,
+							data: this.rawDatasCpd,
 							type: 'bar',
 							label:{
 								show: true, 
@@ -259,7 +259,7 @@
 				)
 			},
 			onXmTaskSomeFieldsChange(fieldName,$event){
-				this.xmTaskSorts=[]
+				this.rawDatas=[]
 			},
 			searchXmTaskSort(){ 
 				 let params = {
@@ -272,7 +272,7 @@
 				 
 				params.ntype='0'
 				getXmTaskSort(params).then(res=>{
-					this.xmTaskSorts=res.data.data
+					this.rawDatas=res.data.data
 				})
 				
 			},

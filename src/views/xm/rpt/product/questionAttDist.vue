@@ -132,8 +132,8 @@
 		    ...mapGetters([
 		      'userInfo','roles'
 		    ]), 
-			xmQuestionAttDistsCpd(){
-				if(!this.xmQuestionAttDists || this.xmQuestionAttDists.length==0){
+			rawDatasCpd(){
+				if(!this.rawDatas || this.rawDatas.length==0){
 					return []
 				}else{ 
 					var itemId="";
@@ -152,7 +152,7 @@
 					} else if(this.params.groupBy=='rep_rate'){
 						itemId="bugRepRate"
 					} 
-					return this.xmQuestionAttDists.map(i=>{
+					return this.rawDatas.map(i=>{
 						var data={...i}
 						data.name=this.formatDict(itemId,data.name)
 						return data;
@@ -161,10 +161,10 @@
 			},
 			
 			total(){
-				if(!this.xmQuestionAttDists || this.xmQuestionAttDists.length==0){
+				if(!this.rawDatas || this.rawDatas.length==0){
 					return 0
 				}else{   
-					return this.xmQuestionAttDists.reduce((n, i) => {
+					return this.rawDatas.reduce((n, i) => {
 						return (n += i.value);
 					}, 0)
 				} 
@@ -227,7 +227,7 @@
 			
         }, 
 		watch: {  
-			xmQuestionAttDistsCpd(){
+			rawDatasCpd(){
 				this.drawCharts();
 			}
 	    },
@@ -264,7 +264,7 @@
 				dateRanger:[], 
                 maxTableHeight:300, 
                 visible:false,
-				xmQuestionAttDists:[],
+				rawDatas:[],
 
 			}//end return
 		},//end data
@@ -381,7 +381,7 @@
 							{
 							type: 'pie',
 							radius: ['50%','70%'],
-							data: this.xmQuestionAttDistsCpd,
+							data: this.rawDatasCpd,
 							emphasis: {
 								itemStyle: {
 								shadowBlur: 10,
@@ -400,7 +400,7 @@
 				)
 			},
 			onXmQuestionSomeFieldsChange(fieldName,$event){
-				this.xmQuestionAttDists=[]
+				this.rawDatas=[]
 			},
 			searchXmQuestionAttDist(){ 
 				var params={...this.params} 
@@ -409,7 +409,7 @@
 					return 
 				} 
 				getXmQuestionAttDist(params).then(res=>{
-					this.xmQuestionAttDists=res.data.data
+					this.rawDatas=res.data.data
 				})
 				
 			},

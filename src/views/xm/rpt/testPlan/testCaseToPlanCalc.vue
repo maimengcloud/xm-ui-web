@@ -84,13 +84,13 @@
 		    ...mapGetters([
 		      'userInfo','roles'
 		    ]), 
-			xmTestCaseToPlanCalcListCpd(){
-				if(!this.xmTestCaseToPlanCalcList || this.xmTestCaseToPlanCalcList.length==0){
+			rawDatasCpd(){
+				if(!this.rawDatas || this.rawDatas.length==0){
 					return []
 				}else{   
 					var names=this.legendCpd;
 					var datas=[]
-					this.xmTestCaseToPlanCalcList.forEach(i=>{
+					this.rawDatas.forEach(i=>{
 						var nameIndex=0;
 						if(i.useTimes<=2){
 							nameIndex=i.useTimes
@@ -109,10 +109,10 @@
 			},
 			
 			total(){
-				if(!this.xmTestCaseToPlanCalcList || this.xmTestCaseToPlanCalcList.length==0){
+				if(!this.rawDatas || this.rawDatas.length==0){
 					return 0
 				}else{   
-					return this.xmTestCaseToPlanCalcList.reduce((n, i) => {
+					return this.rawDatas.reduce((n, i) => {
 						return (n += i.useTimes);
 					}, 0)
 				} 
@@ -157,7 +157,7 @@
 			}
         }, 
 		watch: {  
-			xmTestCaseToPlanCalcListCpd(){
+			rawDatasCpd(){
 				this.drawCharts();
 			}
 	    },
@@ -183,7 +183,7 @@
 				dateRanger:[], 
                 maxTableHeight:300, 
                 visible:false,
-				xmTestCaseToPlanCalcList:[],
+				rawDatas:[],
 				conditionBtnVisible:false,
 
 			}//end return
@@ -247,7 +247,7 @@
 							{
 							type: 'pie',
 							radius: ['50%','70%'],
-							data: this.xmTestCaseToPlanCalcListCpd,
+							data: this.rawDatasCpd,
 							emphasis: {
 								itemStyle: {
 								shadowBlur: 10,
@@ -266,13 +266,13 @@
 				)
 			},
 			onXmQuestionSomeFieldsChange(fieldName,$event){
-				this.xmTestCaseToPlanCalcList=[]
+				this.rawDatas=[]
 			},
 			searchXmTestCaseToPlanCalcList(){ 
 
 				var params={...this.params }  
  					getXmTestCaseToPlanCalcList(params).then(res=>{
-						this.xmTestCaseToPlanCalcList=res.data.data
+						this.rawDatas=res.data.data
 					})
 				 
 			}, 

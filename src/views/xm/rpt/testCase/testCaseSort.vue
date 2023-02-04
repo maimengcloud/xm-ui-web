@@ -105,18 +105,18 @@
 		      'userInfo','roles'
 		    ]),  
 
-			xmTestCaseSortCpd(){
-				if(this.xmTestCaseSort.length==0){
+			rawDatasCpd(){
+				if(this.rawDatas.length==0){
 					return []
 				}else{ 
-					return this.xmTestCaseSort.map(i=>i.value)
+					return this.rawDatas.map(i=>i.value)
 				}
 			},
 			legendCpd(){
-				if(this.xmTestCaseSort.length==0){
+				if(this.rawDatas.length==0){
 					return []
 				}else{ 
-					return this.xmTestCaseSort.map(i=>i.name)
+					return this.rawDatas.map(i=>i.name)
 				}
 			},
 			titleCpd(){
@@ -155,7 +155,7 @@
 			}
         }, 
 		watch: {  
-			xmTestCaseSortCpd(){
+			rawDatasCpd(){
 				this.drawCharts();
 			}
 	    },
@@ -189,7 +189,7 @@
 				dateRanger:[], 
                 maxTableHeight:300, 
                 visible:false,
-				xmTestCaseSort:[],
+				rawDatas:[],
 				conditionBtnVisible:false,
 
 			}//end return
@@ -244,7 +244,7 @@
 						},
 						series: [
 							{
-							data: this.xmTestCaseSortCpd,
+							data: this.rawDatasCpd,
 							type: 'bar',							
 							label:{ 
 									show: true,  
@@ -269,7 +269,7 @@
 							}
 						})
 					}
-					this.xmTestCaseSort=data
+					this.rawDatas=data
 				})
 				 
 				 

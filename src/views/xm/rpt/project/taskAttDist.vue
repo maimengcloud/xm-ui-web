@@ -90,8 +90,8 @@
 		    ...mapGetters([
 		      'userInfo','roles'
 		    ]), 
-			xmTaskAttDistsCpd(){
-				if(this.xmTaskAttDists.length==0){
+			rawDatasCpd(){
+				if(this.rawDatas.length==0){
 					return []
 				}else{ 
 					var itemId="";
@@ -106,7 +106,7 @@
 					}else if(this.params.groupBy=='plan_type'){
 						itemId="planType"
 					} 
-					return this.xmTaskAttDists.map(i=>{
+					return this.rawDatas.map(i=>{
 						var data={...i}
 						data.name=this.formatDict(itemId,data.name)
 						return data;
@@ -115,10 +115,10 @@
 			},
 			
 			total(){ 
-				if(!this.xmTaskAttDists || this.xmTaskAttDists.length==0){
+				if(!this.rawDatas || this.rawDatas.length==0){
 					return 0
 				}else{   
-					return this.xmTaskAttDists.reduce((n, i) => {
+					return this.rawDatas.reduce((n, i) => {
 						return (n += i.value);
 					}, 0)
 				} 
@@ -167,7 +167,7 @@
 			
         }, 
 		watch: {  
-			xmTaskAttDistsCpd(){
+			rawDatasCpd(){
 				this.drawCharts();
 			}
 	    },
@@ -199,7 +199,7 @@
 				dateRanger:[], 
                 maxTableHeight:300, 
                 visible:false,
-				xmTaskAttDists:[],
+				rawDatas:[],
 
 			}//end return
 		},//end data
@@ -316,7 +316,7 @@
 							{
 							type: 'pie',
 							radius: ['50%','70%'],
-							data: this.xmTaskAttDistsCpd,
+							data: this.rawDatasCpd,
 							emphasis: {
 								itemStyle: {
 								shadowBlur: 10,
@@ -335,7 +335,7 @@
 				)
 			},
 			onXmTaskSomeFieldsChange(fieldName,$event){
-				this.xmTaskAttDists=[]
+				this.rawDatas=[]
 			},
 			searchXmTaskAttDist(){
 
@@ -346,7 +346,7 @@
 				}
 				params.ntype='0'
 				getXmTaskAttDist(params).then(res=>{
-					this.xmTaskAttDists=res.data.data
+					this.rawDatas=res.data.data
 				})
 				
 			},

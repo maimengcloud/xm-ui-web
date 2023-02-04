@@ -66,39 +66,39 @@
 		      'userInfo','roles'
 		    ]), 
             datesCpd(){
-				if(this.xmProductStateHiss.length==0){
+				if(this.rawDatas.length==0){
 					return []
 				}else{ 
-					return this.xmProductStateHiss.map(i=>i.bizDate)
+					return this.rawDatas.map(i=>i.bizDate)
 				}
 			}, 
 			closedBugsCpd(){
-				if(this.xmProductStateHiss.length==0){
+				if(this.rawDatas.length==0){
 					return []
 				}else{ 
-					return this.xmProductStateHiss.map(i=>i.closedBugs)
+					return this.rawDatas.map(i=>i.closedBugs)
 				}
 			},
 			activeBugsCpd(){
-				if(this.xmProductStateHiss.length==0){
+				if(this.rawDatas.length==0){
 					return []
 				}else{ 
-					return this.xmProductStateHiss.map(i=> i.activeBugs)
+					return this.rawDatas.map(i=> i.activeBugs)
 				}
 			},
 			confirmedBugsCpd(){
-				if(this.xmProductStateHiss.length==0){
+				if(this.rawDatas.length==0){
 					return []
 				}else{ 
-					return this.xmProductStateHiss.map(i=> i.confirmedBugs)
+					return this.rawDatas.map(i=> i.confirmedBugs)
 				}
 			},
 			
 			resolvedBugsCpd(){
-				if(this.xmProductStateHiss.length==0){
+				if(this.rawDatas.length==0){
 					return []
 				}else{ 
-					return this.xmProductStateHiss.map(i=>i.resolvedBugs)
+					return this.rawDatas.map(i=>i.resolvedBugs)
 				}
 			},
 			titleCpd(){
@@ -169,7 +169,7 @@
 				dateRanger:[], 
                 maxTableHeight:300, 
                 visible:false,
-				xmProductStateHiss:[],
+				rawDatas:[],
 
 			}//end return
 		},//end data
@@ -186,7 +186,7 @@
 				var params={...this.params,orderBy:'biz_date asc'}
 				 
 				listXmIterationStateHis(params).then(res=>{ 
-					this.xmProductStateHiss=res.data.tips.isOk?res.data.data:this.xmProductStateHiss;
+					this.rawDatas=res.data.tips.isOk?res.data.data:this.rawDatas;
 				})
 			},
 			open(){

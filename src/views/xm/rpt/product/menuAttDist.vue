@@ -97,8 +97,8 @@
 		    ...mapGetters([
 		      'userInfo','roles'
 		    ]), 
-			xmMenuAttDistsCpd(){
-				if(!this.xmMenuAttDists || this.xmMenuAttDists.length==0){
+			rawDatasCpd(){
+				if(!this.rawDatas || this.rawDatas.length==0){
 					return []
 				}else{ 
 					var itemId="";
@@ -113,7 +113,7 @@
 					}else if(this.params.groupBy=='source'){
 						itemId="demandSource"
 					} 
-					return this.xmMenuAttDists.map(i=>{
+					return this.rawDatas.map(i=>{
 						var data={...i}
 						data.name=this.formatDict(itemId,data.name)
 						return data;
@@ -138,10 +138,10 @@
 			},
 			
 			total(){
-				if(!this.xmMenuAttDists || this.xmMenuAttDists.length==0){
+				if(!this.rawDatas || this.rawDatas.length==0){
 					return 0
 				}else{   
-					return this.xmMenuAttDists.reduce((n, i) => {
+					return this.rawDatas.reduce((n, i) => {
 						return (n += i.value);
 					}, 0)
 				} 
@@ -184,7 +184,7 @@
 			
         }, 
 		watch: {  
-			xmMenuAttDistsCpd(){
+			rawDatasCpd(){
 				this.drawCharts();
 			}
 	    },
@@ -218,7 +218,7 @@
 				dateRanger:[], 
                 maxTableHeight:300, 
                 visible:false,
-				xmMenuAttDists:[],
+				rawDatas:[],
 
 			}//end return
 		},//end data
@@ -332,7 +332,7 @@
 							{
 							type: 'pie',
 							radius: ['50%','70%'],
-							data: this.xmMenuAttDistsCpd,
+							data: this.rawDatasCpd,
 							emphasis: {
 								itemStyle: {
 								shadowBlur: 10,
@@ -351,7 +351,7 @@
 				)
 			},
 			onXmMenuSomeFieldsChange(fieldName,$event){
-				this.xmMenuAttDists=[]
+				this.rawDatas=[]
 			},
 			searchXmMenuAttDist(){
 				
@@ -361,7 +361,7 @@
 					return 
 				}
 				getXmMenuAttDist(params).then(res=>{
-					this.xmMenuAttDists=res.data.data
+					this.rawDatas=res.data.data
 				})
 				
 			},

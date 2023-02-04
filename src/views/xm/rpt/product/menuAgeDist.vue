@@ -93,12 +93,12 @@
 		    ...mapGetters([
 		      'userInfo','roles'
 		    ]), 
-			xmMenuAgeDistsCpd(){
-				if(!this.xmMenuAgeDists || this.xmMenuAgeDists.length==0){
+			rawDatasCpd(){
+				if(!this.rawDatas || this.rawDatas.length==0){
 					return []
 				}else{   
 					var datas=[]
-					this.xmMenuAgeDists.forEach(i=>{
+					this.rawDatas.forEach(i=>{
 						var data={...i}
 						 data.name=this.legendCpd[i.name]
 						 datas.push(data)
@@ -112,10 +112,10 @@
 			}, 
 			
 			total(){
-				if(!this.xmMenuAgeDists || this.xmMenuAgeDists.length==0){
+				if(!this.rawDatas || this.rawDatas.length==0){
 					return 0
 				}else{   
-					return this.xmMenuAgeDists.reduce((n, i) => {
+					return this.rawDatas.reduce((n, i) => {
 						return (n += i.value);
 					}, 0)
 				} 
@@ -159,7 +159,7 @@
 			
         }, 
 		watch: {  
-			xmMenuAgeDistsCpd(){
+			rawDatasCpd(){
 				this.drawCharts();
 			}
 	    },
@@ -184,7 +184,7 @@
 				dateRanger:[], 
                 maxTableHeight:300, 
                 visible:false,
-				xmMenuAgeDists:[],
+				rawDatas:[],
 
 			}//end return
 		},//end data
@@ -278,7 +278,7 @@
 							{
 							type: 'pie',
 							radius: ['50%','70%'],
-							data: this.xmMenuAgeDistsCpd,
+							data: this.rawDatasCpd,
 							emphasis: {
 								itemStyle: {
 								shadowBlur: 10,
@@ -297,13 +297,13 @@
 				)
 			},
 			onXmMenuSomeFieldsChange(fieldName,$event){
-				this.xmMenuAgeDists=[]
+				this.rawDatas=[]
 			},
 			searchXmMenuAgeDist(){ 
 				var params={...this.params}
 				 
 				getXmMenuAgeDist(params).then(res=>{
-					this.xmMenuAgeDists=res.data.data
+					this.rawDatas=res.data.data
 				})
 				
 			},

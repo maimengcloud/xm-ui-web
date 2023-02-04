@@ -84,12 +84,12 @@
 		    ...mapGetters([
 		      'userInfo','roles'
 		    ]), 
-			xmTestPlanCaseExecStatusDistsCpd(){
-				if(!this.xmTestPlanCaseExecStatusDists || this.xmTestPlanCaseExecStatusDists.length==0){
+			rawDatasCpd(){
+				if(!this.rawDatas || this.rawDatas.length==0){
 					return []
 				}else{   
 					var datas=[]
-					this.xmTestPlanCaseExecStatusDists.forEach(i=>{
+					this.rawDatas.forEach(i=>{
 						var data={}
 						var itemId="testStepTcode"; 
 						data.name=this.formatDict(itemId,i.execStatus)
@@ -100,10 +100,10 @@
 				} 
 			},
 			total(){
-				if(!this.xmTestPlanCaseExecStatusDists || this.xmTestPlanCaseExecStatusDists.length==0){
+				if(!this.rawDatas || this.rawDatas.length==0){
 					return 0
 				}else{   
-					return this.xmTestPlanCaseExecStatusDists.reduce((n, i) => {
+					return this.rawDatas.reduce((n, i) => {
 						return (n += i.totalCnt);
 					}, 0)
 				} 
@@ -149,7 +149,7 @@
 			}
         }, 
 		watch: {  
-			xmTestPlanCaseExecStatusDistsCpd(){
+			rawDatasCpd(){
 				this.drawCharts();
 			}
 	    },
@@ -175,7 +175,7 @@
 				dateRanger:[], 
                 maxTableHeight:300, 
                 visible:false,
-				xmTestPlanCaseExecStatusDists:[],
+				rawDatas:[],
 				conditionBtnVisible:false,
 
 			}//end return
@@ -238,7 +238,7 @@
 							{
 							type: 'pie',
 							radius: ['50%','70%'],
-							data: this.xmTestPlanCaseExecStatusDistsCpd,
+							data: this.rawDatasCpd,
 							emphasis: {
 								itemStyle: {
 								shadowBlur: 10,
@@ -257,12 +257,12 @@
 				)
 			},
 			onXmQuestionSomeFieldsChange(fieldName,$event){
-				this.xmTestPlanCaseExecStatusDists=[]
+				this.rawDatas=[]
 			},
 			searchXmTestPlanCaseExecStatusDist(){  
 				var params={...this.params }  
  					getXmTestPlanCaseExecStatusDist(params).then(res=>{
-						this.xmTestPlanCaseExecStatusDists=res.data.data
+						this.rawDatas=res.data.data
 					}) 
 			},
 			onProjectSelected(project){

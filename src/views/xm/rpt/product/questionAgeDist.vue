@@ -132,12 +132,12 @@
 		    ...mapGetters([
 		      'userInfo','roles'
 		    ]), 
-			xmQuestionAgeDistsCpd(){
-				if(this.xmQuestionAgeDists.length==0){
+			rawDatasCpd(){
+				if(this.rawDatas.length==0){
 					return []
 				}else{   
 					var datas=[]
-					this.xmQuestionAgeDists.forEach(i=>{
+					this.rawDatas.forEach(i=>{
 						var data={...i}
 						 data.name=this.legendCpd[i.name]
 						 datas.push(data)
@@ -147,10 +147,10 @@
 			},
 			
 			total(){
-				if(!this.xmQuestionAgeDists || this.xmQuestionAgeDists.length==0){
+				if(!this.rawDatas || this.rawDatas.length==0){
 					return 0
 				}else{   
-					return this.xmQuestionAgeDists.reduce((n, i) => {
+					return this.rawDatas.reduce((n, i) => {
 						return (n += i.value);
 					}, 0)
 				} 
@@ -195,7 +195,7 @@
 			
         }, 
 		watch: {  
-			xmQuestionAgeDistsCpd(){
+			rawDatasCpd(){
 				this.drawCharts();
 			}
 	    },
@@ -220,7 +220,7 @@
 				dateRanger:[], 
                 maxTableHeight:300, 
                 visible:false,
-				xmQuestionAgeDists:[],
+				rawDatas:[],
 
 			}//end return
 		},//end data
@@ -313,7 +313,7 @@
 							{
 							type: 'pie',
 							radius: ['50%','70%'],
-							data: this.xmQuestionAgeDistsCpd,
+							data: this.rawDatasCpd,
 							emphasis: {
 								itemStyle: {
 								shadowBlur: 10,
@@ -332,13 +332,13 @@
 				)
 			},
 			onXmQuestionSomeFieldsChange(fieldName,$event){
-				this.xmQuestionAgeDists=[]
+				this.rawDatas=[]
 			},
 			searchXmQuestionAgeDist(){ 
 				var params={...this.params}
 				 
 				getXmQuestionAgeDist(params).then(res=>{
-					this.xmQuestionAgeDists=res.data.data
+					this.rawDatas=res.data.data
 				})
 				
 			},

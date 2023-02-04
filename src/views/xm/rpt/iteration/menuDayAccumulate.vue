@@ -65,39 +65,39 @@
 		      'userInfo','roles'
 		    ]), 
             datesCpd(){
-				if(this.xmProductStateHiss.length==0){
+				if(this.rawDatas.length==0){
 					return []
 				}else{ 
-					return this.xmProductStateHiss.map(i=>i.bizDate)
+					return this.rawDatas.map(i=>i.bizDate)
 				}
 			}, 
 			menuCloseCntCpd(){
-				if(this.xmProductStateHiss.length==0){
+				if(this.rawDatas.length==0){
 					return []
 				}else{ 
-					return this.xmProductStateHiss.map(i=>i.menuCloseCnt)
+					return this.rawDatas.map(i=>i.menuCloseCnt)
 				}
 			},
 			menuUnstartCntCpd(){
-				if(this.xmProductStateHiss.length==0){
+				if(this.rawDatas.length==0){
 					return []
 				}else{ 
-					return this.xmProductStateHiss.map(i=> i.menuUnstartCnt)
+					return this.rawDatas.map(i=> i.menuUnstartCnt)
 				}
 			},
 			menuExecCntCpd(){
-				if(this.xmProductStateHiss.length==0){
+				if(this.rawDatas.length==0){
 					return []
 				}else{ 
-					return this.xmProductStateHiss.map(i=> i.menuExecCnt)
+					return this.rawDatas.map(i=> i.menuExecCnt)
 				}
 			},
 			
 			menuFinishCntCpd(){
-				if(this.xmProductStateHiss.length==0){
+				if(this.rawDatas.length==0){
 					return []
 				}else{ 
-					return this.xmProductStateHiss.map(i=>i.menuFinishCnt)
+					return this.rawDatas.map(i=>i.menuFinishCnt)
 				}
 			},
 			titleCpd(){
@@ -168,7 +168,7 @@
 				dateRanger:[], 
                 maxTableHeight:300, 
                 visible:false,
-				xmProductStateHiss:[],
+				rawDatas:[],
 
 			}//end return
 		},//end data
@@ -185,7 +185,7 @@
 				var params={...this.params,orderBy:'biz_date asc'}
 				 
 				listXmIterationStateHis(params).then(res=>{ 
-					this.xmProductStateHiss=res.data.tips.isOk?res.data.data:this.xmProductStateHiss;
+					this.rawDatas=res.data.tips.isOk?res.data.data:this.rawDatas;
 				})
 			},
 			open(){
@@ -224,7 +224,7 @@
 				if(this.showToolBar && !this.title){
 					this.title="企业工作项每日趋势图"
 				}
-				this.xmProductStateHiss=[]
+				this.rawDatas=[]
 				if(this.$refs['xmProductSelect'])this.$refs['xmProductSelect'].clearSelect();
 				if(this.$refs['xmIterationSelect'])this.$refs['xmIterationSelect'].clearSelect();
 				this.$nextTick(()=>{

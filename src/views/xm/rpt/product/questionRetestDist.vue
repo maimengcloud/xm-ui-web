@@ -132,7 +132,7 @@
 		    ...mapGetters([
 		      'userInfo','roles'
 		    ]), 
-			xmQuestionRetestDistsCpd(){
+			rawDatasCpd(){
 				var def=[
 						{name:"1次",value:0} ,
 						{name:"2次",value:0} ,
@@ -141,11 +141,11 @@
 						{name:"5次",value:0} ,
 						{name:"5次以上",value:0}
 					]
-				if(this.xmQuestionRetestDists.length==0){
+				if(this.rawDatas.length==0){
 					return def
 				}else{   
 					var datas=[]
-					this.xmQuestionRetestDists.forEach(i=>{
+					this.rawDatas.forEach(i=>{
 						var data={} 
 						 if(i.retimes>5){
 							data.name="5次以上"
@@ -168,10 +168,10 @@
 			},
 			
 			total(){
-				if(!this.xmQuestionRetestDists || this.xmQuestionRetestDists.length==0){
+				if(!this.rawDatas || this.rawDatas.length==0){
 					return 0
 				}else{   
-					return this.xmQuestionRetestDists.reduce((n, i) => {
+					return this.rawDatas.reduce((n, i) => {
 						return (n += i.bugsNum);
 					}, 0)
 				} 
@@ -214,7 +214,7 @@
 			
         }, 
 		watch: {  
-			xmQuestionRetestDistsCpd(){
+			rawDatasCpd(){
 				this.drawCharts();
 			}
 	    },
@@ -246,7 +246,7 @@
 				dateRanger:[], 
                 maxTableHeight:300, 
                 visible:false,
-				xmQuestionRetestDists:[], 
+				rawDatas:[], 
 				pageInfo: {
 					//分页数据
 					total: 0, //服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
@@ -348,7 +348,7 @@
 							{
 							type: 'pie',
 							radius: ['50%','70%'],
-							data: this.xmQuestionRetestDistsCpd,
+							data: this.rawDatasCpd,
 							emphasis: {
 								itemStyle: {
 								shadowBlur: 10,
@@ -367,7 +367,7 @@
 				)
 			},
 			onXmQuestionSomeFieldsChange(fieldName,$event){
-				this.xmQuestionRetestDists=[]
+				this.rawDatas=[]
 			},
 			searchXmQuestionRetestDist(){
 				
@@ -395,7 +395,7 @@
 					params.orderBy = orderBys.join(",");
 				}
 				getXmQuestionRetestDist(params).then(res=>{
-					this.xmQuestionRetestDists=res.data.data
+					this.rawDatas=res.data.data
 				})
 				
 			},

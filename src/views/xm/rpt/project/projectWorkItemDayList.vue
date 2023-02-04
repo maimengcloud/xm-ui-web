@@ -58,13 +58,13 @@
 		    ]),  
 			dataSetCpd(){
 				return [
-					['日期',...this.xmProjectStateHiss.map(i=>i.bizDate)],
-					['未关故事',...this.xmProjectStateHiss.map(i=>i.menuCnt-i.menuCloseCnt)],
-					['已关故事',...this.xmProjectStateHiss.map(i=>i.menuCloseCnt)],
-					['未关任务',...this.xmProjectStateHiss.map(i=>i.taskCnt-i.taskCloseCnt)],
-					['已关任务',...this.xmProjectStateHiss.map(i=>i.taskCloseCnt)],
-					['未关缺陷',...this.xmProjectStateHiss.map(i=>i.bugCnt-i.closedBugs)],
-					['已关缺陷',...this.xmProjectStateHiss.map(i=>i.closedBugs)]
+					['日期',...this.rawDatas.map(i=>i.bizDate)],
+					['未关故事',...this.rawDatas.map(i=>i.menuCnt-i.menuCloseCnt)],
+					['已关故事',...this.rawDatas.map(i=>i.menuCloseCnt)],
+					['未关任务',...this.rawDatas.map(i=>i.taskCnt-i.taskCloseCnt)],
+					['已关任务',...this.rawDatas.map(i=>i.taskCloseCnt)],
+					['未关缺陷',...this.rawDatas.map(i=>i.bugCnt-i.closedBugs)],
+					['已关缺陷',...this.rawDatas.map(i=>i.closedBugs)]
 				]
 			},
 			titleCpd(){
@@ -128,7 +128,7 @@
 				dateRanger:[], 
                 maxTableHeight:300, 
                 visible:false,
-				xmProjectStateHiss:[],
+				rawDatas:[],
 
 			}//end return
 		},//end data
@@ -142,7 +142,7 @@
 				var params={...this.params,orderBy:'biz_date asc'}
 				 
 				listXmProjectStateHis(params).then(res=>{ 
-					this.xmProjectStateHiss=res.data.tips.isOk?res.data.data:this.xmProjectStateHiss;
+					this.rawDatas=res.data.tips.isOk?res.data.data:this.rawDatas;
 				})
 			},
 			open(){
@@ -181,7 +181,7 @@
 				if(this.showToolBar && !this.title){
 					this.title="企业工作项每日趋势图"
 				}
-				this.xmProjectStateHiss=[]
+				this.rawDatas=[]
 				
 				this.$nextTick(()=>{
 					if(this.$refs['xmProjectSelect'])this.$refs['xmProjectSelect'].clearSelect();

@@ -86,34 +86,34 @@
 		    ]), 
 			 
 			hadExecCpd(){
-				if(!this.xmTestPlanCaseUserDists ||this.xmTestPlanCaseUserDists.length==0){
+				if(!this.rawDatas ||this.rawDatas.length==0){
 					return []
 				}else{ 
-					return this.xmTestPlanCaseUserDists.map(i=>i.hadExec)
+					return this.rawDatas.map(i=>i.hadExec)
 				}
 			}, 
 			
 			notExecCpd(){
-				if(!this.xmTestPlanCaseUserDists ||this.xmTestPlanCaseUserDists.length==0){
+				if(!this.rawDatas ||this.rawDatas.length==0){
 					return []
 				}else{ 
-					return this.xmTestPlanCaseUserDists.map(i=>i.notExec)
+					return this.rawDatas.map(i=>i.notExec)
 				}
 			}, 
 			legendCpd(){
-				if(!this.xmTestPlanCaseUserDists ||this.xmTestPlanCaseUserDists.length==0){
+				if(!this.rawDatas ||this.rawDatas.length==0){
 					return []
 				}else{ 
-					return this.xmTestPlanCaseUserDists.map(i=>i.execUsername)
+					return this.rawDatas.map(i=>i.execUsername)
 				}
 				
 			},
-			xmTestPlanCaseUserDistsCpd(){
-				if(!this.xmTestPlanCaseUserDists || this.xmTestPlanCaseUserDists.length==0){
+			rawDatasCpd(){
+				if(!this.rawDatas || this.rawDatas.length==0){
 					return []
 				}else{   
 					var datas=[]
-					this.xmTestPlanCaseUserDists.forEach(i=>{
+					this.rawDatas.forEach(i=>{
 						var data={}
 						var itemId="testPlanTcode"; 
 						data.name=this.formatDict(itemId,i.execStatus)
@@ -158,7 +158,7 @@
 			}
         }, 
 		watch: {  
-			xmTestPlanCaseUserDistsCpd(){
+			rawDatasCpd(){
 				this.drawCharts();
 			}
 	    },
@@ -184,7 +184,7 @@
 				dateRanger:[], 
                 maxTableHeight:300, 
                 visible:false,
-				xmTestPlanCaseUserDists:[],
+				rawDatas:[],
 				conditionBtnVisible:false,
 
 			}//end return
@@ -262,7 +262,7 @@
 			searchXmTestPlanCaseUserDist(){ 
 				var params={...this.params }  
 				getXmTestPlanCaseUserDist(params).then(res=>{
-					this.xmTestPlanCaseUserDists=res.data.data
+					this.rawDatas=res.data.data
 				})
 				 
 				 

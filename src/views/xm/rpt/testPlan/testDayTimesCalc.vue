@@ -87,17 +87,17 @@
 		      'userInfo','roles'
 		    ]), 
             datesCpd(){
-				if(!this.xmTestDayTimesList || this.xmTestDayTimesList.length==0){
+				if(!this.rawDatas || this.rawDatas.length==0){
 					return []
 				}else{ 
-					return this.xmTestDayTimesList.map(i=>i.execDate)
+					return this.rawDatas.map(i=>i.execDate)
 				}
 			}, 
 			testDayTimesCpd(){
-				if(!this.xmTestDayTimesList || this.xmTestDayTimesList.length==0){
+				if(!this.rawDatas || this.rawDatas.length==0){
 					return []
 				}else{ 
-					return this.xmTestDayTimesList.map(i=>i.hadExec)
+					return this.rawDatas.map(i=>i.hadExec)
 				}
 			}, 
 			
@@ -164,7 +164,7 @@
 				dateRanger:[], 
                 maxTableHeight:300, 
                 visible:false,
-				xmTestDayTimesList:[],
+				rawDatas:[],
 
 			}//end return
 		},//end data
@@ -172,7 +172,7 @@
 			getXmTestDayTimesList(){ 
 				var params={ ...this.params,}  
  				getXmTestDayTimesList(params).then(res=>{ 
-					this.xmTestDayTimesList=res.data.tips.isOk?res.data.data:this.xmTestDayTimesList;
+					this.rawDatas=res.data.tips.isOk?res.data.data:this.rawDatas;
 				}) 
 			},
 			open(){

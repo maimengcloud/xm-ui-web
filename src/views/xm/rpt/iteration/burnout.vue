@@ -69,18 +69,18 @@
 		      'userInfo','roles', 
 		    ]), 
             datesCpd(){
-				if(this.xmIterationStateHiss.length==0){
+				if(this.rawDatas.length==0){
 					return []
 				}else{ 
-					return this.xmIterationStateHiss.map(i=>i.bizDate)
+					return this.rawDatas.map(i=>i.bizDate)
 				}
 			},
 			
 			remainStandWorkloadsCpd(){
-				if(this.xmIterationStateHiss.length==0){
+				if(this.rawDatas.length==0){
 					return []
 				}else{ 
-					var max=this.findMax(this.xmIterationStateHiss);
+					var max=this.findMax(this.rawDatas);
 					var length=this.findLength();
 					if(length==0){
 						return [];
@@ -88,7 +88,7 @@
 					var startDate=this.filters.iteration.startTime.substring(0,10)
 					var endDate=this.filters.iteration.endTime.substring(0,10)
 					var uniDayWorkload=max.budgetWorkload/(length+1)
-					return this.xmIterationStateHiss.map((i,index)=>{
+					return this.rawDatas.map((i,index)=>{
 						if(i.bizDate<startDate || i.bizDate>endDate){
 							return 0;
 						}
@@ -98,18 +98,18 @@
 				}
 			},
 			remainWorkloadsCpd(){
-				if(this.xmIterationStateHiss.length==0){
+				if(this.rawDatas.length==0){
 					return []
 				}else{ 
-					return this.xmIterationStateHiss.map(i=>i.budgetWorkload-i.actWorkload)
+					return this.rawDatas.map(i=>i.budgetWorkload-i.actWorkload)
 				}
 			},
 			
 			remainEstimateWorkloadsCpd(){
-				if(this.xmIterationStateHiss.length==0){
+				if(this.rawDatas.length==0){
 					return []
 				}else{ 
-					return this.xmIterationStateHiss.map(i=>i.budgetWorkload-i.estimateWorkload)
+					return this.rawDatas.map(i=>i.budgetWorkload-i.estimateWorkload)
 				}
 			},
 			titleCpd(){
@@ -178,7 +178,7 @@
 				dateRanger:[], 
                 maxTableHeight:300, 
                 visible:false,
-				xmIterationStateHiss:[],
+				rawDatas:[],
 
 			}//end return
 		},//end data
@@ -197,8 +197,8 @@
 			findLength(){
 				if(this.filters.iteration && this.filters.iteration.id){
 					return parseInt(util.timeDifference(this.filters.iteration.startTime.substring(0,10)+" 00:00:00",this.filters.iteration.endTime.substring(0,10)+" 00:00:00")/60/24)
-				}else if(this.xmIterationStateHiss){
-					return this.xmIterationStateHiss.length;
+				}else if(this.rawDatas){
+					return this.rawDatas.length;
 				}else{
 					return 0;
 				}
@@ -210,7 +210,7 @@
 				}
 				var params={...this.params,orderBy:'biz_date asc'}
 				listXmIterationStateHis(params).then(res=>{ 
-					this.xmIterationStateHiss=res.data.tips.isOk?res.data.data:this.xmIterationStateHiss;
+					this.rawDatas=res.data.tips.isOk?res.data.data:this.rawDatas;
 				})
 			},
 			open(){

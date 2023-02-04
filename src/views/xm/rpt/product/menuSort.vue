@@ -98,11 +98,11 @@
 		    ...mapGetters([
 		      'userInfo','roles'
 		    ]), 
-			xmMenuSortsCpd(){
-				if(this.xmMenuSorts.length==0){
+			rawDatasCpd(){
+				if(this.rawDatas.length==0){
 					return []
 				}else{ 
-					return this.xmMenuSorts.map(i=>i.value)
+					return this.rawDatas.map(i=>i.value)
 				}
 			},
 			titleCpd(){
@@ -131,10 +131,10 @@
 				return  preName+this.groupBys.find(i=>i.id==this.params.groupBy).name+'需求数量排行榜'
 			},
 			legendCpd(){
-				if(this.xmMenuSorts.length==0){
+				if(this.rawDatas.length==0){
 					return []
 				}else{ 
-					return this.xmMenuSorts.map(i=>i.name)
+					return this.rawDatas.map(i=>i.name)
 				}
 				
 			}, 
@@ -150,7 +150,7 @@
 			
         }, 
 		watch: {  
-			xmMenuSortsCpd(){
+			rawDatasCpd(){
 				this.drawCharts();
 			}
 	    },
@@ -183,7 +183,7 @@
 				dateRanger:[], 
                 maxTableHeight:300, 
                 visible:false,
-				xmMenuSorts:[],
+				rawDatas:[],
 				pageInfo: {
 					//分页数据
 					total: 0, //服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
@@ -278,7 +278,7 @@
 						},
 						series: [
 							{
-							data: this.xmMenuSortsCpd,
+							data: this.rawDatasCpd,
 							type: 'bar', 						
 							label:{
 									show: true, 
@@ -289,7 +289,7 @@
 				)
 			},
 			onXmMenuSomeFieldsChange(fieldName,$event){
-				this.xmMenuSorts=[]
+				this.rawDatas=[]
 			},
 			searchXmMenuSort(){
 				 let params = {
@@ -304,7 +304,7 @@
 					return 
 				}
 				getXmMenuSort(params).then(res=>{
-					this.xmMenuSorts=res.data.data
+					this.rawDatas=res.data.data
 				})
 				
 			},

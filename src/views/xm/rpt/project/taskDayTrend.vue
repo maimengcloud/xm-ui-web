@@ -59,46 +59,46 @@
 		      'userInfo','roles'
 		    ]), 
             datesCpd(){
-				if(this.xmProjectStateHiss.length==0){
+				if(this.rawDatas.length==0){
 					return []
 				}else{ 
-					return this.xmProjectStateHiss.map(i=>i.bizDate)
+					return this.rawDatas.map(i=>i.bizDate)
 				}
 			}, 
 			taskCloseCntCpd(){
-				if(this.xmProjectStateHiss.length==0){
+				if(this.rawDatas.length==0){
 					return []
 				}else{ 
-					return this.xmProjectStateHiss.map(i=>i.taskCloseCnt)
+					return this.rawDatas.map(i=>i.taskCloseCnt)
 				}
 			},
 			taskUnstartCntCpd(){
-				if(this.xmProjectStateHiss.length==0){
+				if(this.rawDatas.length==0){
 					return []
 				}else{ 
-					return this.xmProjectStateHiss.map(i=> i.taskUnstartCnt)
+					return this.rawDatas.map(i=> i.taskUnstartCnt)
 				}
 			},
 			taskExecCntCpd(){
-				if(this.xmProjectStateHiss.length==0){
+				if(this.rawDatas.length==0){
 					return []
 				}else{ 
-					return this.xmProjectStateHiss.map(i=> i.taskExecCnt)
+					return this.rawDatas.map(i=> i.taskExecCnt)
 				}
 			},
 			
 			taskFinishCntCpd(){
-				if(this.xmProjectStateHiss.length==0){
+				if(this.rawDatas.length==0){
 					return []
 				}else{ 
-					return this.xmProjectStateHiss.map(i=>i.taskFinishCnt)
+					return this.rawDatas.map(i=>i.taskFinishCnt)
 				}
 			},
 			taskSetCntCpd(){
-				if(this.xmProjectStateHiss.length==0){
+				if(this.rawDatas.length==0){
 					return []
 				}else{ 
-					return this.xmProjectStateHiss.map(i=>i.taskSetCnt)
+					return this.rawDatas.map(i=>i.taskSetCnt)
 				}
 			},
 			titleCpd(){
@@ -157,7 +157,7 @@
 				dateRanger:[], 
                 maxTableHeight:300, 
                 visible:false,
-				xmProjectStateHiss:[],
+				rawDatas:[],
 
 			}//end return
 		},//end data
@@ -170,7 +170,7 @@
 				var params={...this.params,orderBy:'biz_date asc'}
 				 
 				listXmProjectStateHis(params).then(res=>{ 
-					this.xmProjectStateHiss=res.data.tips.isOk?res.data.data:this.xmProjectStateHiss;
+					this.rawDatas=res.data.tips.isOk?res.data.data:this.rawDatas;
 				})
 			},
 			open(){

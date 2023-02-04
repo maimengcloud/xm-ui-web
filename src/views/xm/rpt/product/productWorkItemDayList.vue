@@ -58,13 +58,13 @@
 		    ]),  
 			dataSetCpd(){
 				return [
-					['日期',...this.xmProductStateHiss.map(i=>i.bizDate)],
-					['未关故事',...this.xmProductStateHiss.map(i=>i.menuCnt-i.menuCloseCnt)],
-					['已关故事',...this.xmProductStateHiss.map(i=>i.menuCloseCnt)],
-					['未关任务',...this.xmProductStateHiss.map(i=>i.taskCnt-i.taskCloseCnt)],
-					['已关任务',...this.xmProductStateHiss.map(i=>i.taskCloseCnt)],
-					['未关缺陷',...this.xmProductStateHiss.map(i=>i.bugCnt-i.closedBugs)],
-					['已关缺陷',...this.xmProductStateHiss.map(i=>i.closedBugs)]
+					['日期',...this.rawDatas.map(i=>i.bizDate)],
+					['未关故事',...this.rawDatas.map(i=>i.menuCnt-i.menuCloseCnt)],
+					['已关故事',...this.rawDatas.map(i=>i.menuCloseCnt)],
+					['未关任务',...this.rawDatas.map(i=>i.taskCnt-i.taskCloseCnt)],
+					['已关任务',...this.rawDatas.map(i=>i.taskCloseCnt)],
+					['未关缺陷',...this.rawDatas.map(i=>i.bugCnt-i.closedBugs)],
+					['已关缺陷',...this.rawDatas.map(i=>i.closedBugs)]
 				]
 			}, 
 			titleCpd(){
@@ -132,7 +132,7 @@
 				dateRanger:[], 
                 maxTableHeight:300, 
                 visible:false,
-				xmProductStateHiss:[],
+				rawDatas:[],
 
 			}//end return
 		},//end data
@@ -146,7 +146,7 @@
 				var params={...this.params,orderBy:'biz_date asc'}
 				 
 				listXmProductStateHis(params).then(res=>{ 
-					this.xmProductStateHiss=res.data.tips.isOk?res.data.data:this.xmProductStateHiss;
+					this.rawDatas=res.data.tips.isOk?res.data.data:this.rawDatas;
 				})
 			},
 			open(){
@@ -185,7 +185,7 @@
 				if(this.showToolBar && !this.title){
 					this.title="企业工作项每日趋势图"
 				}
-				this.xmProductStateHiss=[]
+				this.rawDatas=[]
 				if(this.$refs['xmProductSelect'])this.$refs['xmProductSelect'].clearSelect();
 				this.$nextTick(()=>{
 					this.listXmProductStateHis();

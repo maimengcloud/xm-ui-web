@@ -133,18 +133,18 @@
 		    ...mapGetters([
 		      'userInfo','roles'
 		    ]), 
-			xmQuestionSortsCpd(){
-				if(this.xmQuestionSorts.length==0){
+			rawDatasCpd(){
+				if(this.rawDatas.length==0){
 					return []
 				}else{ 
-					return this.xmQuestionSorts.map(i=>i.value)
+					return this.rawDatas.map(i=>i.value)
 				}
 			}, 
 			legendCpd(){
-				if(this.xmQuestionSorts.length==0){
+				if(this.rawDatas.length==0){
 					return []
 				}else{ 
-					return this.xmQuestionSorts.map(i=>i.name)
+					return this.rawDatas.map(i=>i.name)
 				}
 			},
 			titleCpd(){
@@ -185,7 +185,7 @@
 			
         }, 
 		watch: {  
-			xmQuestionSortsCpd(){
+			rawDatasCpd(){
 				this.drawCharts();
 			},
 			visible(val){
@@ -223,7 +223,7 @@
 				dateRanger:[], 
                 maxTableHeight:300, 
                 visible:false,
-				xmQuestionSorts:[], 
+				rawDatas:[], 
 				pageInfo: {
 					//分页数据
 					total: 0, //服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
@@ -317,7 +317,7 @@
 						},
 						series: [
 							{
-							data: this.xmQuestionSortsCpd,
+							data: this.rawDatasCpd,
 							type: 'bar',							
 							label:{
 									show: true, 
@@ -328,7 +328,7 @@
 				)
 			},
 			onXmQuestionSomeFieldsChange(fieldName,$event){
-				this.xmQuestionSorts=[]
+				this.rawDatas=[]
 			},
 			searchXmQuestionSort(){
 				 let params = {
@@ -368,7 +368,7 @@
 							}
 						})
 					}
-					this.xmQuestionSorts=data
+					this.rawDatas=data
 				})
 				
 			},

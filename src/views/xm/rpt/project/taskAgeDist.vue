@@ -89,12 +89,12 @@
 		    ...mapGetters([
 		      'userInfo','roles'
 		    ]), 
-			xmTaskAgeDistsCpd(){
-				if(this.xmTaskAgeDists.length==0){
+			rawDatasCpd(){
+				if(this.rawDatas.length==0){
 					return []
 				}else{   
 					var datas=[]
-					this.xmTaskAgeDists.forEach(i=>{
+					this.rawDatas.forEach(i=>{
 						var data={...i}
 						 data.name=this.legendCpd[i.name]
 						 datas.push(data)
@@ -104,10 +104,10 @@
 			},
 			
 			total(){
-				if(!this.xmTaskAgeDists || this.xmTaskAgeDists.length==0){
+				if(!this.rawDatas || this.rawDatas.length==0){
 					return 0
 				}else{   
-					return this.xmTaskAgeDists.reduce((n, i) => {
+					return this.rawDatas.reduce((n, i) => {
 						return (n += i.value);
 					}, 0)
 				} 
@@ -143,7 +143,7 @@
 			
         }, 
 		watch: {  
-			xmTaskAgeDistsCpd(){
+			rawDatasCpd(){
 				this.drawCharts();
 			}
 	    },
@@ -168,7 +168,7 @@
 				dateRanger:[], 
                 maxTableHeight:300, 
                 visible:false,
-				xmTaskAgeDists:[],
+				rawDatas:[],
 
 			}//end return
 		},//end data
@@ -260,7 +260,7 @@
 							{
 							type: 'pie',
 							radius: ['50%','70%'],
-							data: this.xmTaskAgeDistsCpd,
+							data: this.rawDatasCpd,
 							emphasis: {
 								itemStyle: {
 								shadowBlur: 10,
@@ -279,13 +279,13 @@
 				)
 			},
 			onXmTaskSomeFieldsChange(fieldName,$event){
-				this.xmTaskAgeDists=[]
+				this.rawDatas=[]
 			},
 			searchXmTaskAgeDist(){ 
 				var params={...this.params} 
 				params.ntype='0'
 				getXmTaskAgeDist(params).then(res=>{
-					this.xmTaskAgeDists=res.data.data
+					this.rawDatas=res.data.data
 				})
 				
 			},

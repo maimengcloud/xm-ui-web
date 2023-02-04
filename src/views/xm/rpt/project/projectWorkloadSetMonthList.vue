@@ -67,14 +67,14 @@
 		    ]),  
 			dataSetCpd(){
 				return [
-					['日期',...this.xmProjectWorkloadSetMonths.map(i=>i.bizMonth)],
-					['登记工时',...this.xmProjectWorkloadSetMonths.map(i=>i.workload)],
-					['待确认',...this.xmProjectWorkloadSetMonths.map(i=>i.toConfirmWorkload)],
-					['已确认',...this.xmProjectWorkloadSetMonths.map(i=>i.hadConfirmWorkload)],
-					['待结算',...this.xmProjectWorkloadSetMonths.map(i=>i.toSetWorkload)],
-					['已提交审核',...this.xmProjectWorkloadSetMonths.map(i=>i.hadCommitSworkload)],
-					['已审核',...this.xmProjectWorkloadSetMonths.map(i=>i.hadAgreeSworkload)],
-					['已结算',...this.xmProjectWorkloadSetMonths.map(i=>i.hadSetSworkload)]
+					['日期',...this.rawDatas.map(i=>i.bizMonth)],
+					['登记工时',...this.rawDatas.map(i=>i.workload)],
+					['待确认',...this.rawDatas.map(i=>i.toConfirmWorkload)],
+					['已确认',...this.rawDatas.map(i=>i.hadConfirmWorkload)],
+					['待结算',...this.rawDatas.map(i=>i.toSetWorkload)],
+					['已提交审核',...this.rawDatas.map(i=>i.hadCommitSworkload)],
+					['已审核',...this.rawDatas.map(i=>i.hadAgreeSworkload)],
+					['已结算',...this.rawDatas.map(i=>i.hadSetSworkload)]
 				]
 			},
 			
@@ -141,7 +141,7 @@
 				dateRanger:[], 
                 maxTableHeight:300, 
                 visible:false,
-				xmProjectWorkloadSetMonths:[],
+				rawDatas:[],
 
 			}//end return
 		},//end data
@@ -155,7 +155,7 @@
 				var params={...this.params}
 				 
 				listProjectWorkloadSetMonth(params).then(res=>{ 
-					this.xmProjectWorkloadSetMonths=res.data.tips.isOk?res.data.data:this.xmProjectWorkloadSetMonths;
+					this.rawDatas=res.data.tips.isOk?res.data.data:this.rawDatas;
 				})
 			},
 			open(){
@@ -194,7 +194,7 @@
 				if(this.showToolBar && !this.title){
 					this.title="企业工作项每日趋势图"
 				}
-				this.xmProjectWorkloadSetMonths=[]
+				this.rawDatas=[]
 				
 				this.$nextTick(()=>{
 					if(this.$refs['xmProjectSelect'])this.$refs['xmProjectSelect'].clearSelect();
