@@ -255,6 +255,11 @@
 				)
 			},
 			searchXmTestCaseSort(){ 
+				if(this.rptDatas){
+					this.rawDatas=this.rptDatas
+					return;
+				}
+				
 				var params={ ...this.params}   
 				getXmTestCaseSort(params).then(res=>{
 					var data=res.data.data

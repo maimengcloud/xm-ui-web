@@ -270,6 +270,11 @@
 			},
 			searchXmTestCaseToPlanCalcList(){ 
 
+				if(this.rptDatas){
+					this.rawDatas=this.rptDatas
+					return;
+				}
+				
 				var params={...this.params }  
  					getXmTestCaseToPlanCalcList(params).then(res=>{
 						this.rawDatas=res.data.data

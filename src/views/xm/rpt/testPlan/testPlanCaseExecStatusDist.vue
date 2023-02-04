@@ -260,6 +260,11 @@
 				
 			},
 			searchXmTestPlanCaseExecStatusDist(){  
+				if(this.rptDatas){
+					this.rawDatas=this.rptDatas
+					return;
+				}
+				
 				var params={...this.params }  
  					getXmTestPlanCaseExecStatusDist(params).then(res=>{
 						this.rawDatas=res.data.data

@@ -170,6 +170,11 @@
 		},//end data
 		methods: {  
 			getXmTestDayTimesList(){ 
+				if(this.rptDatas){
+					this.rawDatas=this.rptDatas
+					return;
+				}
+				
 				var params={ ...this.params,}  
  				getXmTestDayTimesList(params).then(res=>{ 
 					this.rawDatas=res.data.tips.isOk?res.data.data:this.rawDatas;

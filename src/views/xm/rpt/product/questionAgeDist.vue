@@ -335,6 +335,11 @@
 				
 			},
 			searchXmQuestionAgeDist(){ 
+				if(this.rptDatas){
+					this.rawDatas=this.rptDatas
+					return;
+				}
+				
 				var params={...this.params}
 				 
 				getXmQuestionAgeDist(params).then(res=>{

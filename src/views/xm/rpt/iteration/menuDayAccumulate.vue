@@ -173,7 +173,12 @@
 			}//end return
 		},//end data
 		methods: {  
-			listXmIterationStateHis(){
+			listXmIterationStateHis(){				
+				
+				if(this.rptDatas){
+					this.rawDatas=this.rptDatas
+					return;
+				}
 				if(!this.filters.product){
 					this.$notify({position:'bottom-left',showClose:true,message:'请先选中产品',type:'warning'})
 					return;
@@ -182,6 +187,8 @@
 					this.$notify({position:'bottom-left',showClose:true,message:'请先选中迭代',type:'warning'})
 					return;
 				}
+
+				
 				var params={...this.params,orderBy:'biz_date asc'}
 				 
 				listXmIterationStateHis(params).then(res=>{ 

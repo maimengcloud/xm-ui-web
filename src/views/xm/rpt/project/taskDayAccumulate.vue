@@ -167,10 +167,15 @@
 		},//end data
 		methods: {  
 			listXmProjectStateHis(){
+				if(this.rptDatas){
+					this.rawDatas=this.rptDatas
+					return;
+				}
 				if(!this.filters.project){
 					this.$notify({position:'bottom-left',showClose:true,message:'请先选中项目',type:'warning'})
 					return;
 				}
+				
 				var params={...this.params,orderBy:'biz_date asc'}
 				 
 				listXmProjectStateHis(params).then(res=>{ 

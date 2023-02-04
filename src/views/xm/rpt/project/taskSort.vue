@@ -262,6 +262,10 @@
 				
 			},
 			searchXmTaskSort(){ 
+				if(this.rptDatas){
+					this.rawDatas=this.rptDatas
+					return;
+				}
 				 let params = {
 					pageSize: this.pageInfo.pageSize,
 					pageNum: this.pageInfo.pageNum,

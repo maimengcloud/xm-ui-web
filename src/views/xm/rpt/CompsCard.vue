@@ -120,7 +120,12 @@ export default {
         },
         rptConfigParamsCpd(){
             //业务类型1-产品报告，2-迭代报告，3-测试计划报告，4-项目报告，5-企业报告
-            var params={bizType:'5',bizId:this.userInfo.branchId,name:''}
+            if(this.rptDatas){
+					this.rawDatas=this.rptDatas
+					return;
+				}
+				
+				var params={bizType:'5',bizId:this.userInfo.branchId,name:''}
              if(this.category=='企业级'){
                 params.bizType='5';
                 params.bizId=this.userInfo.branchId
@@ -244,7 +249,12 @@ export default {
             if(!this.toLoadXmRptConfigCpd){
                 return;
             }
-            var params={bizType:this.rptConfigParamsCpd.bizType,bizId:this.rptConfigParamsCpd.bizId}
+            if(this.rptDatas){
+					this.rawDatas=this.rptDatas
+					return;
+				}
+				
+				var params={bizType:this.rptConfigParamsCpd.bizType,bizId:this.rptConfigParamsCpd.bizId}
             listXmRptConfig(params).then(res=>{
                 this.xmRptConfig=res.data.data[0] 
             })

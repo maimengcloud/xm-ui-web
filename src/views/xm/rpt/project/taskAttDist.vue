@@ -339,6 +339,11 @@
 			},
 			searchXmTaskAttDist(){
 
+				if(this.rptDatas){
+					this.rawDatas=this.rptDatas
+					return;
+				}
+				
 				var params={...this.params} 
 				if(!params.groupBy){
 					this.$notify({position:'bottom-left',showClose:true,message:'请选中分组属性',type:'warning'})

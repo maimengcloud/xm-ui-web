@@ -203,7 +203,7 @@
 					return 0;
 				}
 			},
-			listXmIterationStateHis(){
+			listXmIterationStateHis(){ 
 				if(this.rptDatas){
 					this.rawDatas=this.rptDatas
 					return;

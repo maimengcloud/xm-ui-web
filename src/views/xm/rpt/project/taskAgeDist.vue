@@ -282,6 +282,11 @@
 				
 			},
 			searchXmTaskAgeDist(){ 
+				if(this.rptDatas){
+					this.rawDatas=this.rptDatas
+					return;
+				}
+				
 				var params={...this.params} 
 				params.ntype='0'
 				getXmTaskAgeDist(params).then(res=>{

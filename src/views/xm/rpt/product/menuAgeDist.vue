@@ -300,6 +300,11 @@
 				
 			},
 			searchXmMenuAgeDist(){ 
+				if(this.rptDatas){
+					this.rawDatas=this.rptDatas
+					return;
+				}
+				
 				var params={...this.params}
 				 
 				getXmMenuAgeDist(params).then(res=>{

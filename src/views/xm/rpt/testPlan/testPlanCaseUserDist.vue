@@ -260,6 +260,11 @@
 				)
 			},
 			searchXmTestPlanCaseUserDist(){ 
+				if(this.rptDatas){
+					this.rawDatas=this.rptDatas
+					return;
+				}
+				
 				var params={...this.params }  
 				getXmTestPlanCaseUserDist(params).then(res=>{
 					this.rawDatas=res.data.data
