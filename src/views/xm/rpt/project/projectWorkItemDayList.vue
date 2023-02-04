@@ -8,21 +8,33 @@
 						<div class="echart-box" :id="this.id"></div> 
 					</div>
 				</el-col>
-				<el-col :span="6" class="border">
-					<el-form :model="params" class="padding" :style="{width:'100%',overflow: 'auto'}" ref="filtersRef"> 
-					<el-form-item label="归属项目" >
-						<xm-project-select v-if="!xmProject || !xmProject.id" ref="xmProjectSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProjectSelected"   @clear="onProjectClear"></xm-project-select>
-						<span v-else>{{xmProject.id}} <span v-if="xmProject.name"><br/>{{  xmProject.name  }} </span> </span> 
-					</el-form-item>   
-					<el-form-item label="日期区间">
-						<br>
-							<mdp-date-range v-model="filters"   value-format="yyyy-MM-dd" start-key="startBizDate" end-key="endBizDate"></mdp-date-range>
-  					</el-form-item>  
-					<el-form-item>
-						 <el-button type="primary" icon="el-icon-search" @click="listXmProjectStateHis">查询</el-button>
-					</el-form-item>  
-					</el-form>
-				</el-col>
+				<el-col :span="6" v-if="showParams"> 
+					 <el-popover   trigger="manual" v-model="filterVisible" style="float:right;" width="500">
+						<el-button slot="reference" style="margin-top:10px;" icon="el-icon-more" @click="filterVisible=!filterVisible"></el-button> 
+						<el-row>
+							<el-button type="danger" icon="el-icon-delete" @click="doDelete">从报告移出该报表</el-button>
+							<el-button icon="el-icon-close" style="float:right;" @click="filterVisible=false">关闭</el-button>
+						</el-row>
+						<el-row>
+							<el-form :model="params" class="padding"   :style="{width:'100%',overflow: 'auto'}" ref="filtersRef">
+								
+								<el-form-item label="归属项目" >
+									<xm-project-select v-if="!xmProject || !xmProject.id" ref="xmProjectSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProjectSelected"   @clear="onProjectClear"></xm-project-select>
+									<span v-else>{{xmProject.id}} <span v-if="xmProject.name"><br/>{{  xmProject.name  }} </span> </span> 
+								</el-form-item>   
+								<el-form-item label="日期区间">
+									<br>
+										<mdp-date-range v-model="filters"   value-format="yyyy-MM-dd" start-key="startBizDate" end-key="endBizDate"></mdp-date-range>
+								</el-form-item> 
+									
+								<el-form-item>
+									<el-button type="primary"  style="float:right;" icon="el-icon-search" @click="listXmProjectStateHis">查询</el-button>
+								</el-form-item>  
+							</el-form>
+						</el-row>
+					 </el-popover>
+					
+				</el-col>   
 			</el-row>
 	</section>
 </template>

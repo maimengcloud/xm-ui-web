@@ -8,42 +8,65 @@
 						<div class="progress"></div>
 					</div>
 				</el-col>
-				<el-col :span="6" class="border">
-					<el-form :model="params" class="padding" :style="{width:'100%',overflow: 'auto'}" ref="filtersRef">   
-						<el-form-item label="归属项目" >
-							<xm-project-select v-if="!xmProject || !xmProject.id" ref="xmProjectSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProjectSelected"   @clear="onProjectClear"></xm-project-select>
-							<span v-else>{{xmProject.id}} <span v-if="xmProject.name"><br/>{{  xmProject.name  }} </span> </span> 
-						</el-form-item>  
-						 <el-form-item label="任务状态" prop="taskState">
-							<el-select style="width:100px;" size="small"   v-model="params.taskState"  @change="onXmTaskSomeFieldsChange('taskState',$event)" clearable>
-								<el-option v-for="i in this.dicts.taskState" :label="i.name" :key="i.id" :value="i.id"></el-option>
-							</el-select>
-						</el-form-item>  
-						<el-form-item  label="任务类型" prop="taskType" >
-							<el-select style="width:100px;" size="small" v-model="params.taskType"  @change="onXmTaskSomeFieldsChange('taskType',$event)" clearable>
-								<el-option v-for="i in this.dicts.taskType" :label="i.name" :key="i.id" :value="i.id"></el-option>
-							</el-select>
-						</el-form-item> 
-						<el-form-item  label="任务来源" prop="planType">
-							<el-select style="width:100px;" size="small" v-model="params.planType"  @change="onXmTaskSomeFieldsChange('planType',$event)" clearable>
-								<el-option v-for="i in this.dicts.planType" :label="i.name" :key="i.id" :value="i.id"></el-option>
-							</el-select>
-						</el-form-item> 
-						<el-form-item  label="任务层次" prop="settleSchemel" >
-							<el-select style="width:100px;" size="small" v-model="params.settleSchemel"  @change="onXmTaskSomeFieldsChange('settleSchemel',$event)" clearable>
-								<el-option v-for="i in this.dicts.xmTaskSettleSchemel" :label="i.name" :key="i.id" :value="i.id"></el-option>
-							</el-select>
-						</el-form-item> 
-					<el-form-item  label="优先级别" prop="priority" >
-						<el-select style="width:100px;" size="small" v-model="params.priority" @change="onXmTaskSomeFieldsChange('priority',$event)" clearable>
-								<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option>
-						</el-select>
-					</el-form-item>  
-					<el-form-item>
-						 <el-button type="primary" icon="el-icon-search" @click="searchXmTaskAgeDist">查询</el-button>
-					</el-form-item>  
-					</el-form>
-				</el-col>
+				<el-col :span="6" v-if="showParams"> 
+					 <el-popover   trigger="manual" v-model="filterVisible" style="float:right;" width="500">
+						<el-button slot="reference" style="margin-top:10px;" icon="el-icon-more" @click="filterVisible=!filterVisible"></el-button> 
+						<el-row>
+							<el-button type="danger" icon="el-icon-delete" @click="doDelete">从报告移出该报表</el-button>
+							<el-button icon="el-icon-close" style="float:right;" @click="filterVisible=false">关闭</el-button>
+						</el-row>
+						<el-row>
+							<el-form :model="params" class="padding"   :style="{width:'100%',overflow: 'auto'}" ref="filtersRef">
+								<el-row>
+									<el-col :span="15">
+										<el-form-item label="分组属性">
+											<el-select style="width:100px;" size="small"   v-model="params.groupBy"  @change="onXmTaskSomeFieldsChange('groupBy',$event)" clearable>
+												<el-option v-for="i in this.groupBys" :label="i.name" :key="i.id" :value="i.id"></el-option>
+											</el-select>
+										</el-form-item>     
+										<el-form-item label="归属项目" >
+											<xm-project-select v-if="!xmProject || !xmProject.id" ref="xmProjectSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProjectSelected"   @clear="onProjectClear"></xm-project-select>
+											<span v-else>{{xmProject.id}} <span v-if="xmProject.name"><br/>{{  xmProject.name  }} </span> </span> 
+										</el-form-item>  
+									</el-col>
+									<el-col :span="9">
+										<el-form-item label="任务状态" prop="taskState">
+											<el-select style="width:100px;" size="small"   v-model="params.taskState"  @change="onXmTaskSomeFieldsChange('taskState',$event)" clearable>
+												<el-option v-for="i in this.dicts.taskState" :label="i.name" :key="i.id" :value="i.id"></el-option>
+											</el-select>
+										</el-form-item>  
+										<el-form-item  label="任务类型" prop="taskType" >
+											<el-select style="width:100px;" size="small" v-model="params.taskType"  @change="onXmTaskSomeFieldsChange('taskType',$event)" clearable>
+												<el-option v-for="i in this.dicts.taskType" :label="i.name" :key="i.id" :value="i.id"></el-option>
+											</el-select>
+										</el-form-item> 
+										<el-form-item  label="任务来源" prop="planType">
+											<el-select style="width:100px;" size="small" v-model="params.planType"  @change="onXmTaskSomeFieldsChange('planType',$event)" clearable>
+												<el-option v-for="i in this.dicts.planType" :label="i.name" :key="i.id" :value="i.id"></el-option>
+											</el-select>
+										</el-form-item> 
+										<el-form-item  label="任务层次" prop="settleSchemel" >
+											<el-select style="width:100px;" size="small" v-model="params.settleSchemel"  @change="onXmTaskSomeFieldsChange('settleSchemel',$event)" clearable>
+												<el-option v-for="i in this.dicts.xmTaskSettleSchemel" :label="i.name" :key="i.id" :value="i.id"></el-option>
+											</el-select>
+										</el-form-item> 
+										<el-form-item  label="优先级别" prop="priority" >
+											<el-select style="width:100px;" size="small" v-model="params.priority" @change="onXmTaskSomeFieldsChange('priority',$event)" clearable>
+													<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option>
+											</el-select>
+										</el-form-item>  
+									</el-col>
+								</el-row>
+								
+									
+								<el-form-item>
+									<el-button type="primary"  style="float:right;" icon="el-icon-search" @click="searchXmTaskAgeDist">查询</el-button>
+								</el-form-item>  
+							</el-form>
+						</el-row>
+					 </el-popover>
+					
+				</el-col>  
 			</el-row>
 	</section>
 </template>
