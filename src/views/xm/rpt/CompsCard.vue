@@ -7,10 +7,10 @@
         <el-col :span="18"> 
             <el-row  class="padding">
                 <span style="float:right;">
-                    <el-button type="primary" v-if="isRptShow==false && isRptCfg==false" @click="isRptShow=true">查看报告</el-button>  
-                    <el-button type="warning" v-if="isRptShow==true" @click="undoRptShow">退出报告</el-button>  
-                    <el-button type="primary" v-if="isRptCfg==false&&isRptShow==false" @click="toRptCfg">制作报告</el-button>  
-                    <el-button type="primary" v-if="isRptCfg==true" @click="undoRptCfg">取消制作</el-button> 
+                    <el-button type="text" v-if="isRptShow==false && isRptCfg==false" @click="isRptShow=true" icon="el-icon-time">查看报告</el-button>  
+                    <el-button type="warning" v-if="isRptShow==true" @click="undoRptShow" icon="el-icon-error">退出报告</el-button>  
+                    <el-button type="text" v-if="isRptCfg==false&&isRptShow==false" @click="toRptCfg" icon="el-icon-setting">制作报告</el-button>  
+                    <el-button type="primary" v-if="isRptCfg==true" @click="undoRptCfg" icon="el-icon-error">取消制作</el-button> 
                     <el-button type="warning" v-if="isRptCfg==true" @click="finishRptCfg">保存报告</el-button>  
                     <el-button type="text" v-if="paramsVisible==true" @click="paramsVisible=false">隐藏过滤条件</el-button>  
                     <el-button type="text" v-if="paramsVisible==false" @click="paramsVisible=true">显示过滤条件</el-button> 
