@@ -7,6 +7,8 @@
         <el-col :span="18"> 
             <el-row  class="padding">
                 <span style="float:right;">
+                    <el-button type="text" v-if="isRptShow==true && isRptCfg==false" @click="isRptShow=true" icon="el-icon-time">查看历史报告</el-button>  
+                    <el-button type="primary" v-if="isRptShow==true && isRptCfg==false" @click="createRptData" icon="el-icon-time">保存报告(可供历史查询)</el-button>  
                     <el-button type="text" v-if="isRptShow==false && isRptCfg==false" @click="isRptShow=true" icon="el-icon-time">查看报告</el-button>  
                     <el-button type="warning" v-if="isRptShow==true" @click="undoRptShow" icon="el-icon-error">退出报告</el-button>  
                     <el-button type="text" v-if="isRptCfg==false&&isRptShow==false" @click="toRptCfg" icon="el-icon-setting">制作报告</el-button>  
@@ -205,6 +207,12 @@ export default {
                 this.getXmRptConfig();
             }
            
+        },
+        createRptData(){
+            if(this.xmRptConfig==null){
+                this.$message.error("还没制作报告，请先制作报告")
+                return;
+            }
         },
         undoRptCfg(){
             this.xmRptConfig=null;
