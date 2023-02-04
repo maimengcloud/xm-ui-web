@@ -7,56 +7,73 @@
 						<div class="progress"></div>
 					</div>
 				</el-col>
-				<el-col :span="6" class="border">
-					<el-form :model="params" class="padding" :style="{width:'100%',overflow: 'auto'}" ref="filtersRef">
-						<el-form-item label="分组属性">
-							<el-select style="width:100px;" size="small"   v-model="params.groupBy"  @change="onXmMenuSomeFieldsChange('groupBy',$event)" clearable>
-								<el-option v-for="i in this.groupBys" :label="i.name" :key="i.id" :value="i.id"></el-option>
-							</el-select>
-						</el-form-item>      
-						<el-form-item label="归属产品"  >
-							<xm-product-select v-if="!xmProductCpd || !xmProductCpd.id"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClear"></xm-product-select>
-							<span v-else>{{xmProductCpd.id}} <span v-if="xmProductCpd.productName"><br/>{{  xmProductCpd.productName  }} </span> </span>
-						</el-form-item>
-						<el-form-item label="归属迭代" v-if="xmIteration && xmIteration.id">
- 							<span>  {{xmIteration.id}}
-								<span v-if="xmIteration.iterationName"><br/>{{ xmIteration.iterationName  }} </span>
-							</span> 
-						</el-form-item>  
-						<el-form-item label="归属迭代" v-else-if="filters.product && filters.product.id">
-							<xm-iteration-select  ref="xmIterationSelect"  :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClear"></xm-iteration-select>
-						</el-form-item> 
-							
-						<el-form-item label="需求状态" prop="status">
-							<el-select style="width:100px;" size="small"   v-model="params.status"  @change="onXmMenuSomeFieldsChange('status',$event)" clearable>
-								<el-option v-for="i in this.dicts.menuStatus" :label="i.name" :key="i.id" :value="i.id"></el-option>
-							</el-select>
-						</el-form-item>  
-						<el-form-item  label="需求类型" prop="dtype" >
-							<el-select style="width:100px;" size="small" v-model="params.dtype"  @change="onXmMenuSomeFieldsChange('dtype',$event)" clearable>
-								<el-option v-for="i in this.dicts.demandType" :label="i.name" :key="i.id" :value="i.id"></el-option>
-							</el-select>
-						</el-form-item> 
-						<el-form-item  label="需求来源" prop="source">
-							<el-select style="width:100px;" size="small" v-model="params.source"  @change="onXmMenuSomeFieldsChange('source',$event)" clearable>
-								<el-option v-for="i in this.dicts.demandSource" :label="i.name" :key="i.id" :value="i.id"></el-option>
-							</el-select>
-						</el-form-item> 
-						<el-form-item  label="需求层次" prop="dlvl" >
-							<el-select style="width:100px;" size="small" v-model="params.dlvl"  @change="onXmMenuSomeFieldsChange('dlvl',$event)" clearable>
-								<el-option v-for="i in this.dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
-							</el-select>
-						</el-form-item> 
-					<el-form-item  label="优先级别" prop="priority" >
-						<el-select style="width:100px;" size="small" v-model="params.priority" @change="onXmMenuSomeFieldsChange('priority',$event)" clearable>
-								<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option>
-						</el-select>
-					</el-form-item>  
-					<el-form-item>
-						 <el-button type="primary" icon="el-icon-search" @click="searchXmMenuAttDist">查询</el-button>
-					</el-form-item>  
-					</el-form>
-				</el-col>
+				<el-col :span="6" v-if="showParams"> 
+					 <el-popover   trigger="manual" v-model="filterVisible" style="float:right;" width="500">
+						<el-button slot="reference" style="margin-top:10px;" icon="el-icon-more" @click="filterVisible=!filterVisible"></el-button> 
+						<el-row>
+							<el-button type="danger" icon="el-icon-delete" @click="doDelete">从报告移出该报表</el-button>
+							<el-button icon="el-icon-close" style="float:right;" @click="filterVisible=false">关闭</el-button>
+						</el-row>
+						<el-row>
+							<el-form :model="params" class="padding"   :style="{width:'100%',overflow: 'auto'}" ref="filtersRef">
+								<el-row>
+									<el-col :span="15">
+										<el-form-item label="分组属性">
+											<el-select style="width:100px;" size="small"   v-model="params.groupBy"  @change="onXmMenuSomeFieldsChange('groupBy',$event)">
+												<el-option v-for="i in this.groupBys" :label="i.name" :key="i.id" :value="i.id"></el-option>
+											</el-select>
+										</el-form-item>     
+										<el-form-item label="归属产品"  >
+											<xm-product-select v-if="!xmProductCpd || !xmProductCpd.id"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClear"></xm-product-select>
+											<span v-else>{{xmProductCpd.id}} <span v-if="xmProductCpd.productName"><br/>{{  xmProductCpd.productName  }} </span> </span>
+										</el-form-item>
+										<el-form-item label="归属迭代" v-if="xmIteration && xmIteration.id">
+											<span>  {{xmIteration.id}}
+												<span v-if="xmIteration.iterationName"><br/>{{ xmIteration.iterationName  }} </span>
+											</span> 
+										</el-form-item>  
+										<el-form-item label="归属迭代" v-else-if="filters.product && filters.product.id">
+											<xm-iteration-select  ref="xmIterationSelect"  :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClear"></xm-iteration-select>
+										</el-form-item> 
+									</el-col>
+									<el-col :span="9">
+										<el-form-item label="需求状态" prop="status">
+											<el-select style="width:100px;" size="small"   v-model="params.status"  @change="onXmMenuSomeFieldsChange('status',$event)" clearable>
+												<el-option v-for="i in this.dicts.menuStatus" :label="i.name" :key="i.id" :value="i.id"></el-option>
+											</el-select>
+										</el-form-item>  
+										<el-form-item  label="需求类型" prop="dtype" >
+											<el-select style="width:100px;" size="small" v-model="params.dtype"  @change="onXmMenuSomeFieldsChange('dtype',$event)" clearable>
+												<el-option v-for="i in this.dicts.demandType" :label="i.name" :key="i.id" :value="i.id"></el-option>
+											</el-select>
+										</el-form-item> 
+										<el-form-item  label="需求来源" prop="source">
+											<el-select style="width:100px;" size="small" v-model="params.source"  @change="onXmMenuSomeFieldsChange('source',$event)" clearable>
+												<el-option v-for="i in this.dicts.demandSource" :label="i.name" :key="i.id" :value="i.id"></el-option>
+											</el-select>
+										</el-form-item> 
+										<el-form-item  label="需求层次" prop="dlvl" >
+											<el-select style="width:100px;" size="small" v-model="params.dlvl"  @change="onXmMenuSomeFieldsChange('dlvl',$event)" clearable>
+												<el-option v-for="i in this.dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
+											</el-select>
+										</el-form-item> 
+										<el-form-item  label="优先级别" prop="priority" >
+											<el-select style="width:100px;" size="small" v-model="params.priority" @change="onXmMenuSomeFieldsChange('priority',$event)" clearable>
+													<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option>
+											</el-select>
+										</el-form-item>  
+									</el-col>
+								</el-row>
+								
+									
+								<el-form-item>
+									<el-button type="primary"  style="float:right;" icon="el-icon-search" @click="searchXmMenuAttDist">查询</el-button>
+								</el-form-item>  
+							</el-form>
+						</el-row>
+					 </el-popover>
+					
+				</el-col> 
 			</el-row>
 	</section>
 </template>
