@@ -2,13 +2,14 @@
 <section>
     <el-row  class="padding-left padding-right">
         <el-col :span="6">
-            <comps-set :comp-ids="compIds" :category="category" @row-click="onCompSelect" ref="compsSet"></comps-set>
+            <comps-set :comp-ids="compIds" :category="category" @row-click="onCompSelect" ref="compsSet" :show-checked-only="isRptShow"></comps-set>
         </el-col>
         <el-col :span="18"> 
             <el-row  class="padding">
+                <span class="rpt-name">{{ xmRptData && xmRptData.id?xmRptData.rptName:(xmRptConfig&&xmRptConfig.id?xmRptConfig.name: rptConfigParamsCpd.name+'-报告')}}</span>
                 <span style="float:right;">
                     <el-button type="text" v-if="isRptShow==true && isRptCfg==false" @click="toQueryRptData" icon="el-icon-time">查看历史报告</el-button>  
-                    <el-button type="primary" v-if="isRptShow==true && isRptCfg==false" @click="createRptData" icon="el-icon-time">保存报告(可供历史查询)</el-button>  
+                    <el-button type="primary" v-if="isRptShow==true && isRptCfg==false && (!xmRptData||!xmRptData.id)" @click="showCreateRptData()" icon="el-icon-time">保存报告(可供历史查询)</el-button>  
                     <el-button type="text" v-if="isRptShow==false && isRptCfg==false" @click="isRptShow=true" icon="el-icon-time">查看报告</el-button>  
                     <el-button type="warning" v-if="isRptShow==true" @click="undoRptShow" icon="el-icon-error">退出报告</el-button>  
                     <el-button type="text" v-if="isRptCfg==false&&isRptShow==false" @click="toRptCfg" icon="el-icon-setting">制作报告</el-button>  
@@ -33,6 +34,18 @@
     </el-row>   
     <el-dialog append-to-body modal-append-to-body :visible.sync="rptDataListVisible" top="20px" width="60%">
         <rpt-data-list :xm-rpt-config="xmRptConfig" v-if="rptDataListVisible" @select="onRptDataSelect"/>
+    </el-dialog> 
+    
+    <el-dialog title="请确认" append-to-body modal-append-to-body :visible.sync="createRptDataVisible">
+        <el-form :model="xmRptData">
+            <el-form-item label="报告名称">
+                <el-input v-model="xmRptData.rptName"></el-input>
+            </el-form-item>
+        </el-form> 
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="createRptDataVisible = false">取 消</el-button>
+            <el-button type="primary" @click="createRptData">确 定</el-button>
+        </div>
     </el-dialog> 
     </section>
 </template>
@@ -125,7 +138,7 @@ export default {
         },
         rptConfigParamsCpd(){
             //业务类型1-产品报告，2-迭代报告，3-测试计划报告，4-项目报告，5-企业报告 
-			var params={bizType:'5',bizId:this.userInfo.branchId,name:''}
+			var params={bizType:'5',bizId:this.userInfo.branchId,name:this.userInfo.branchName}
              if(this.category=='企业级'){
                 params.bizType='5';
                 params.bizId=this.userInfo.branchId
@@ -192,13 +205,15 @@ export default {
             isRptCfg:false,
             isRptShow:false,
             xmRptConfig:null,
-            xmRptData:null,
+            xmRptData:{id:'',rptName:'',bizId:'',bizType:'',bizDate:''},
+            xmRptDataInit:{id:'',rptName:'',bizId:'',bizType:'',bizDate:''},
             compCfgList:[],
             maxTableHeight:300, 
             // 布局列数
             layoutColNum: 12,  
             paramsVisible:true,
             rptDataListVisible:false,
+            createRptDataVisible:false,
         }
     },
 
@@ -214,6 +229,15 @@ export default {
             }
            
         },
+        showCreateRptData(){
+            if(this.xmRptConfig==null){
+                this.$message.error("还没制作报告，请先制作报告")
+                return;
+            }  
+            this.xmRptData.rptName=this.xmRptConfig.name
+            this.createRptDataVisible=true
+           
+        },
         toQueryRptData(){
             this.rptDataListVisible=true;
         },
@@ -221,8 +245,12 @@ export default {
             if(this.xmRptConfig==null){
                 this.$message.error("还没制作报告，请先制作报告")
                 return;
-            } 
-            var xmRptData={cfgId:this.xmRptConfig.id,rptName:this.xmRptConfig.name,rptData:[]}   
+            }  
+            if(!this.xmRptData.rptName){
+                this.$message.error("请输入报告名称")
+                return;
+            }
+            var xmRptData={...this.xmRptData,cfgId:this.xmRptConfig.id,rptData:[]}   
             this.compCfgList.forEach(k=>{
                 if(this.$refs[k.id] && this.$refs[k.id][0].$refs && this.$refs[k.id][0].$refs[k.id]){ 
                     var com=this.$refs[k.id][0].$refs[k.id]
@@ -238,7 +266,8 @@ export default {
             addXmRptData(xmRptData).then(res=>{  
                 var tips = res.data.tips
                 if(tips.isOk){
-                    this.$message.success("报告保存成功")
+                    this.$message.success("报告保存成功") 
+                    this.createRptDataVisible=false
                 }else{
                     this.$message.error(tips.msg)
                 }
@@ -251,6 +280,7 @@ export default {
         undoRptShow(){
             this.isRptShow=false;
             this.xmRptConfig=null;
+            this.xmRptData={...this.xmRptDataInit};
         },
         toRptCfg(){
             this.isRptCfg=true;
@@ -419,5 +449,10 @@ export default {
     position:absolute;
     top:0px;
     right:20px;
+}
+.rpt-name{
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
 }
 </style> 

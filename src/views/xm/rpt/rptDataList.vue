@@ -1,7 +1,7 @@
 <template>
 	<section class="page-container border padding">
 		<el-row>
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>
+			<el-input v-model="filters.key" style="width: 40%;" placeholder="模糊查询"></el-input>
 			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmRptDatas" icon="el-icon-search">查询</el-button>
 			<span style="float:right;">
  			    <el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete" plain></el-button>
@@ -15,20 +15,15 @@
 				    <template slot-scope="scope">
 				        <span> {{scope.row.rptName}} </span>
                     </template>
-				</el-table-column> 
-				<el-table-column prop="cuserid" label="创建人编号" min-width="120" show-overflow-tooltip>
+				</el-table-column>  
+				<el-table-column prop="bizDate" label="业务日期" min-width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
-				        <span> {{scope.row.cuserid}} </span>
+				        <span> {{scope.row.bizDate}} </span>
                     </template>
 				</el-table-column> 
 				<el-table-column prop="cusername" label="创建人名称" min-width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
 				        <span> {{scope.row.cusername}} </span>
-                    </template>
-				</el-table-column> 
-				<el-table-column prop="bizDate" label="业务日期" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope">
-				        <span> {{scope.row.bizDate}} </span>
                     </template>
 				</el-table-column> 
 				<el-table-column label="操作" width="100" fixed="right">

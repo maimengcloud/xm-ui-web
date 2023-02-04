@@ -52,7 +52,7 @@ import { mapGetters } from 'vuex'
 import store from '@/store'
 
 export default {
-    props: ['compIds','category' ],
+    props: ['compIds','category','showCheckedOnly'],
     computed: {
         ...mapGetters(['userInfo']), 
         compsCpd(){
@@ -61,6 +61,9 @@ export default {
                  comps.forEach(i=>{
                     i.isChecked=this.compIds.some(k=>k==i.compId)
                  })
+            }
+            if(this.showCheckedOnly){
+                comps=comps.filter(k=>k.isChecked)
             }
             return comps;
         },
