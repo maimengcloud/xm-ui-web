@@ -8,47 +8,56 @@
 						<div class="progress"></div>
 					</div>
 				</el-col>
-				<el-col :span="6" class="border">
-					<el-form :model="params" class="padding" :style="{width:'100%',overflow: 'auto'}" ref="filtersRef">     
-						
-						<el-form-item label="测试库" v-if="xmTestCasedb && xmTestCasedb.id" >
- 							<span >{{xmTestCasedb.id}} <span v-if="xmTestCasedb.name"><br/>{{  xmTestCasedb.name  }} </span> </span>
-						</el-form-item>
-						<el-form-item label="归属项目"  >
-							<xm-project-select  v-if="!xmProject"  ref="xmProjectSelect" style="display:inline;"  :auto-select="false" :link-product-id="xmProductCpd?xmProductCpd.id:null" @row-click="onProjectSelected" @clear="onProjectClear"></xm-project-select>
-							<span v-else>{{xmProject.id}} <span v-if="xmProject.name"><br/>{{  xmProject.name  }} </span> </span>
-						</el-form-item>
-						<el-form-item label="归属产品"  >
-							<xm-product-select v-if="!xmProductCpd || !xmProductCpd.id"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"    @clear="onProductClear"></xm-product-select>
-							<span v-else>{{xmProductCpd.id}} <span v-if="xmProductCpd.productName"><br/>{{  xmProductCpd.productName  }} </span> </span>
-						</el-form-item> 
-						<el-form-item label="归属迭代" v-if="xmIteration && xmIteration.id">
-							<span>  {{xmIteration.id}}
-								<span v-if="xmIteration.iterationName"><br/>{{ xmIteration.iterationName  }} </span>
-							</span> 
-						</el-form-item>  
-						<el-form-item label="归属迭代" v-else-if="filters.product && filters.product.id">
-							<xm-iteration-select  ref="xmIterationSelect"  :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClear"></xm-iteration-select>
-						</el-form-item> 
-						<el-form-item label="测试计划" v-if="xmTestPlan && xmTestPlan.id">
- 							<span>  {{xmTestPlan.id}}
-								<span v-if="xmTestPlan.name"><br/>{{ xmTestPlan.name  }} </span>
-							</span> 
-						</el-form-item>  
-						<el-form-item label="测试计划" v-else-if="filters.product && filters.product.id">
-							<span v-if="filters.testPlan">{{ filters.testPlan.name }}</span>
-							<el-button v-if="filters.testPlan" type="text" @click="filters.testPlan=null" plain icon="el-icon-circle-close">清除</el-button>
-							<el-button v-if="!filters.testPlan" type="text" @click="$refs['xmTestPlanSelectRef'].open()" plain>选择计划</el-button>
-						</el-form-item> 
-						<el-form-item label="日期区间">
-							<br>
-								<mdp-date-range v-model="filters" value-format="yyyy-MM-dd" start-key="startExecDate" end-key="endExecDate"></mdp-date-range>
-						</el-form-item>    
-						<el-form-item>
-							<el-button type="primary" icon="el-icon-search" @click="getXmTestDayTimesList">查询</el-button>
-						</el-form-item>  
-					</el-form>
-				</el-col>
+				<el-col :span="6" v-if="showParams"> 
+					 <el-popover   trigger="manual" v-model="filterVisible" style="float:right;" width="500">
+						<el-button slot="reference" style="margin-top:10px;" icon="el-icon-more" @click="filterVisible=!filterVisible"></el-button> 
+						<el-row>
+							<el-button type="danger" icon="el-icon-delete" @click="doDelete">从报告移出该报表</el-button>
+							<el-button icon="el-icon-close" style="float:right;" @click="filterVisible=false">关闭</el-button>
+						</el-row>
+						<el-row>
+							<el-form :model="params" class="padding"   :style="{width:'100%',overflow: 'auto'}" ref="filtersRef">
+								<el-form-item label="测试库" v-if="xmTestCasedb && xmTestCasedb.id" >
+									<span >{{xmTestCasedb.id}} <span v-if="xmTestCasedb.name"><br/>{{  xmTestCasedb.name  }} </span> </span>
+								</el-form-item>
+								<el-form-item label="归属项目"  >
+									<xm-project-select  v-if="!xmProject"  ref="xmProjectSelect" style="display:inline;"  :auto-select="false" :link-product-id="xmProductCpd?xmProductCpd.id:null" @row-click="onProjectSelected" @clear="onProjectClear"></xm-project-select>
+									<span v-else>{{xmProject.id}} <span v-if="xmProject.name"><br/>{{  xmProject.name  }} </span> </span>
+								</el-form-item>
+								<el-form-item label="归属产品"  >
+									<xm-product-select v-if="!xmProductCpd || !xmProductCpd.id"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"    @clear="onProductClear"></xm-product-select>
+									<span v-else>{{xmProductCpd.id}} <span v-if="xmProductCpd.productName"><br/>{{  xmProductCpd.productName  }} </span> </span>
+								</el-form-item> 
+								<el-form-item label="归属迭代" v-if="xmIteration && xmIteration.id">
+									<span>  {{xmIteration.id}}
+										<span v-if="xmIteration.iterationName"><br/>{{ xmIteration.iterationName  }} </span>
+									</span> 
+								</el-form-item>  
+								<el-form-item label="归属迭代" v-else-if="filters.product && filters.product.id">
+									<xm-iteration-select  ref="xmIterationSelect"  :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClear"></xm-iteration-select>
+								</el-form-item> 
+								<el-form-item label="测试计划" v-if="xmTestPlan && xmTestPlan.id">
+									<span>  {{xmTestPlan.id}}
+										<span v-if="xmTestPlan.name"><br/>{{ xmTestPlan.name  }} </span>
+									</span> 
+								</el-form-item>  
+								<el-form-item label="测试计划" v-else-if="filters.product && filters.product.id">
+									<span v-if="filters.testPlan">{{ filters.testPlan.name }}</span>
+									<el-button v-if="filters.testPlan" type="text" @click="filters.testPlan=null" plain icon="el-icon-circle-close">清除</el-button>
+									<el-button v-if="!filters.testPlan" type="text" @click="$refs['xmTestPlanSelectRef'].open()" plain>选择计划</el-button>
+								</el-form-item>   
+								<el-form-item label="日期区间">
+									<br>
+										<mdp-date-range v-model="filters" value-format="yyyy-MM-dd" start-key="startExecDate" end-key="endExecDate"></mdp-date-range>
+								</el-form-item>    
+								<el-form-item>
+									<el-button type="primary"  style="float:right;" icon="el-icon-search" @click="getXmTestDayTimesList">查询</el-button>
+								</el-form-item>  
+							</el-form>
+						</el-row>
+					 </el-popover>
+					
+				</el-col>  
 			</el-row>
 			<xm-test-plan-select  ref="xmTestPlanSelectRef" :casedb-id="xmTestCasedb?xmTestCasedb.id:null" :product-id="xmProduct?xmProduct.id:null" :project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @select="onXmTestPlanSelected" @clear="onXmTestPlanClear"></xm-test-plan-select >
 
