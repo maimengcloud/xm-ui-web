@@ -38,7 +38,7 @@
 						
 						<el-form-item label="用例状态" prop="caseStatus">
 								<el-select style="width:100px;" size="small"   v-model="params.caseStatus" clearable>
-									<el-option v-for="i in this.dicts.caseStatus" :label="i.name" :key="i.id" :value="i.id"></el-option>
+									<el-option v-for="i in this.dicts.testCaseStatus" :label="i.name" :key="i.id" :value="i.id"></el-option>
 								</el-select>
 							</el-form-item>  
 							<el-form-item  label="用例类型" prop="caseType" >
@@ -327,7 +327,7 @@
 			}
 		},//end method
 		mounted() { 
- 			initSimpleDicts('all',['caseStatus','testType','priority','bugType'] ).then(res=>{
+ 			initSimpleDicts('all',['testCaseStatus','testType','priority','bugType'] ).then(res=>{
 				this.dicts=res.data.data;
 			}) 
 			this.initData();   

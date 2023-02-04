@@ -7,7 +7,7 @@
 						<div class="progress"></div>
 					</div>
 				</el-col>
-				<el-col :span="6" class="border">
+				<el-col :span="6" class="border" v-show="isRptCfg">
 					<el-form :model="params" class="padding" :style="{width:'100%',overflow: 'auto'}" ref="filtersRef">
 						<el-form-item label="分组属性">
 							<el-select style="width:100px;" size="small"   v-model="params.groupBy"  @change="onXmQuestionSomeFieldsChange('groupBy',$event)">

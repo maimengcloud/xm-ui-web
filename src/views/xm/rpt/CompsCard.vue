@@ -244,12 +244,9 @@ export default {
                 this.compCfgList=JSON.parse(JSON.stringify(this.initCompCfg))
             }
         },
-        onCompSelect(comp){ 
-            if(!comp.id){
-                comp.id=comp.compId
-            }
-            if(this.compCfgList.some(k=>k.compId==comp.compId)){ 
-                var compCfg=this.compCfgList.find(k=>k.compId==comp.compId)
+        onCompSelect(comp){  
+            if(this.compCfgList.some(k=>k.id==comp.id)){ 
+                var compCfg=this.compCfgList.find(k=>k.id==comp.id)
                 this.$nextTick(()=>{
                     this.scrollToComp(compCfg)   
                 }) 
@@ -269,7 +266,7 @@ export default {
             this.$nextTick(()=>{ 
                 setTimeout(()=>{
                     this.scrollToComp(compCfg) 
-                },100)
+                },200)
             })
            
         },
