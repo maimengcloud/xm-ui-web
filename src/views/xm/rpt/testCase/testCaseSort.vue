@@ -144,7 +144,9 @@
 	    },
 		data() {
 			return {
-                filters:{ 
+                
+                filterVisible:false,
+				filters:{ 
                     product:null, 
                     project:null, 
 					iteration:null,

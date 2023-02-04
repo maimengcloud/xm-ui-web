@@ -136,7 +136,9 @@
 	    },
 		data() {
 			return {
-                filters:{
+                
+                filterVisible:false,
+				filters:{
                     category:'', 
                     product:null, 
                     project:null,

@@ -154,7 +154,9 @@
 	    },
 		data() {
 			return {
-                filters:{ 
+                
+                filterVisible:false,
+				filters:{ 
                     product:null, 
                     project:null,
 					testPlan:null,

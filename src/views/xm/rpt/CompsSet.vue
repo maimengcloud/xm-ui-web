@@ -94,7 +94,9 @@ export default {
 
     data() {
         return { 
-            filters:{
+            
+                filterVisible:false,
+				filters:{
                 category:'企业级'
             },
             comps: [

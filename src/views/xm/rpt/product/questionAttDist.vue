@@ -7,83 +7,102 @@
 						<div class="progress"></div>
 					</div>
 				</el-col>
-				<el-col :span="6" class="border">
-					<el-form :model="params" class="padding" :style="{width:'100%',overflow: 'auto'}" ref="filtersRef">
-						<el-form-item label="分组属性">
-							<el-select style="width:100px;" size="small"   v-model="params.groupBy"  @change="onXmQuestionSomeFieldsChange('groupBy',$event)" clearable>
-								<el-option v-for="i in this.groupBys" :label="i.name" :key="i.id" :value="i.id"></el-option>
-							</el-select>
-						</el-form-item>        
-						
-						<el-form-item label="测试库" v-if="xmTestCasedb && xmTestCasedb.id" >
- 							<span >{{xmTestCasedb.id}} <span v-if="xmTestCasedb.name"><br/>{{  xmTestCasedb.name  }} </span> </span>
-						</el-form-item>
-						<el-form-item label="归属项目">
-							<xm-project-select  v-if="!xmProject"  ref="xmProjectSelect" style="display:inline;"  :auto-select="false" :link-product-id="xmProductCpd?xmProductCpd.id:null" @row-click="onProjectSelected"  @clear="onProjectClear"></xm-project-select>
-							<span v-else>{{xmProject.id}} <span v-if="xmProject.name"><br/>{{  xmProject.name  }} </span> </span>
-						</el-form-item> 
-						<el-form-item label="归属产品"  >
-							<xm-product-select v-if="!xmProductCpd || !xmProductCpd.id"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClear"></xm-product-select>
-							<span v-else>{{xmProductCpd.id}} <span v-if="xmProductCpd.productName"><br/>{{  xmProductCpd.productName  }} </span> </span>
-						</el-form-item>
-						<el-form-item label="归属迭代" v-if="xmIteration && xmIteration.id">
-							<span>  {{xmIteration.id}}
-								<span v-if="xmIteration.iterationName"><br/>{{ xmIteration.iterationName  }} </span>
-							</span> 
-						</el-form-item>  
-						<el-form-item label="归属迭代" v-else-if="filters.product && filters.product.id">
-							<xm-iteration-select  ref="xmIterationSelect"  :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClear"></xm-iteration-select>
-						</el-form-item> 
-						<el-form-item label="测试计划" v-if="xmTestPlan && xmTestPlan.id">
-							<span>  {{xmTestPlan.id}}
-								<span v-if="xmTestPlan.name"><br/>{{ xmTestPlan.name  }} </span>
-							</span> 
-						</el-form-item>  
-						<el-form-item label="测试计划" v-else-if="filters.product && filters.product.id">
-							<span v-if="filters.testPlan">{{ filters.testPlan.name }}</span>
-							<el-button v-if="filters.testPlan" type="text" @click="filters.testPlan=null" plain icon="el-icon-circle-close">清除</el-button>
-							<el-button v-if="!filters.testPlan" type="text" @click="$refs['xmTestPlanSelectRef'].open()" plain>选择计划</el-button>
-						</el-form-item> 
-						<el-form-item label="缺陷状态" prop="bugStatus">
-							<el-select style="width:100px;" size="small"   v-model="params.bugStatus"  @change="onXmQuestionSomeFieldsChange('bugStatus',$event)" clearable>
-								<el-option v-for="i in this.dicts.bugStatus" :label="i.name" :key="i.id" :value="i.id"></el-option>
-							</el-select>
-						</el-form-item>  
-						<el-form-item  label="缺陷类型" prop="bugType" >
-							<el-select style="width:100px;" size="small" v-model="params.bugType"  @change="onXmQuestionSomeFieldsChange('bugType',$event)" clearable>
-								<el-option v-for="i in this.dicts.bugType" :label="i.name" :key="i.id" :value="i.id"></el-option>
-							</el-select>
-						</el-form-item> 
-						<el-form-item  label="缺陷原因" prop="bugReason">
-							<el-select style="width:100px;" size="small" v-model="params.bugReason"  @change="onXmQuestionSomeFieldsChange('bugReason',$event)" clearable>
-								<el-option v-for="i in this.dicts.bugReason" :label="i.name" :key="i.id" :value="i.id"></el-option>
-							</el-select>
-						</el-form-item> 
-						<el-form-item  label="严重程度" prop="bugSeverity" >
-							<el-select style="width:100px;" size="small" v-model="params.bugSeverity"  @change="onXmQuestionSomeFieldsChange('bugSeverity',$event)" clearable>
-								<el-option v-for="i in this.dicts.bugSeverity" :label="i.name" :key="i.id" :value="i.id"></el-option>
-							</el-select>
-						</el-form-item> 
-					<el-form-item  label="优先级别" prop="priority" >
-						<el-select style="width:100px;" size="small" v-model="params.priority" @change="onXmQuestionSomeFieldsChange('priority',$event)" clearable>
-								<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option>
-						</el-select>
-					</el-form-item>  
-					<el-form-item  label="解决方案" prop="solution" >
-						<el-select style="width:100px;" size="small" v-model="params.solution" @change="onXmQuestionSomeFieldsChange('solution',$event)" clearable>
-								<el-option v-for="i in dicts.bugSolution" :label="i.name" :key="i.id" :value="i.id"></el-option>
-						</el-select>
-					</el-form-item>  
+				<el-col :span="6" v-if="showParams"> 
+					 <el-popover   trigger="manual" v-model="filterVisible" style="float:right;" width="500">
+						<el-button slot="reference" style="margin-top:10px;" icon="el-icon-more" @click="filterVisible=!filterVisible"></el-button> 
+						<el-row>
+							<el-button type="danger" icon="el-icon-delete" @click="doDelete">从报告移出该报表</el-button>
+							<el-button icon="el-icon-close" style="float:right;" @click="filterVisible=false">关闭</el-button>
+						</el-row>
+						<el-row>
+							<el-form :model="params" class="padding"   :style="{width:'100%',overflow: 'auto'}" ref="filtersRef">
+								<el-row>
+									<el-col :span="15">
+										<el-form-item label="分组属性">
+											<el-select style="width:100px;" size="small"   v-model="params.groupBy"  @change="onXmQuestionSomeFieldsChange('groupBy',$event)">
+													<el-option v-for="i in this.groupBys" :label="i.name" :key="i.id" :value="i.id"></el-option>
+												</el-select>
+											</el-form-item>       
+										
+											<el-form-item label="测试库" v-if="xmTestCasedb && xmTestCasedb.id" >
+												<span >{{xmTestCasedb.id}} <span v-if="xmTestCasedb.name"><br/>{{  xmTestCasedb.name  }} </span> </span>
+											</el-form-item>   
+											
+											<el-form-item label="归属项目">
+												<xm-project-select  v-if="!xmProject"  ref="xmProjectSelect" style="display:inline;"  :auto-select="false" :link-product-id="xmProductCpd?xmProductCpd.id:null" @row-click="onProjectSelected"  @clear="onProjectClear"></xm-project-select>
+												<span v-else>{{xmProject.id}} <span v-if="xmProject.name"><br/>{{  xmProject.name  }} </span> </span>
+											</el-form-item> 
+											<el-form-item label="归属产品"  >
+												<xm-product-select v-if="!xmProductCpd || !xmProductCpd.id"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClear"></xm-product-select>
+												<span v-else>{{xmProductCpd.id}} <span v-if="xmProductCpd.productName"><br/>{{  xmProductCpd.productName  }} </span> </span>
+											</el-form-item>
+											<el-form-item label="归属迭代" v-if="xmIteration && xmIteration.id">
+												<span>  {{xmIteration.id}}
+													<span v-if="xmIteration.iterationName"><br/>{{ xmIteration.iterationName  }} </span>
+												</span> 
+											</el-form-item>  
+											<el-form-item label="归属迭代" v-else-if="filters.product && filters.product.id">
+												<xm-iteration-select  ref="xmIterationSelect"  :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClear"></xm-iteration-select>
+											</el-form-item> 
+											<el-form-item label="测试计划" v-if="xmTestPlan && xmTestPlan.id">
+												<span>  {{xmTestPlan.id}}
+													<span v-if="xmTestPlan.name"><br/>{{ xmTestPlan.name  }} </span>
+												</span> 
+											</el-form-item>  
+											<el-form-item label="测试计划" v-else-if="filters.product && filters.product.id">
+												<span v-if="filters.testPlan">{{ filters.testPlan.name }}</span>
+												<el-button v-if="filters.testPlan" type="text" @click="filters.testPlan=null" plain icon="el-icon-circle-close">清除</el-button>
+												<el-button v-if="!filters.testPlan" type="text" @click="$refs['xmTestPlanSelectRef'].open()" plain>选择计划</el-button>
+											</el-form-item> 
+									</el-col>
+									<el-col :span="9">
+										<el-form-item label="缺陷状态" prop="bugStatus">
+											<el-select style="width:100px;" size="small"   v-model="params.bugStatus"  @change="onXmQuestionSomeFieldsChange('bugStatus',$event)" clearable>
+												<el-option v-for="i in this.dicts.bugStatus" :label="i.name" :key="i.id" :value="i.id"></el-option>
+											</el-select>
+										</el-form-item>  
+										<el-form-item  label="缺陷类型" prop="bugType" >
+											<el-select style="width:100px;" size="small" v-model="params.bugType"  @change="onXmQuestionSomeFieldsChange('bugType',$event)" clearable>
+												<el-option v-for="i in this.dicts.bugType" :label="i.name" :key="i.id" :value="i.id"></el-option>
+											</el-select>
+										</el-form-item> 
+										<el-form-item  label="缺陷原因" prop="bugReason">
+											<el-select style="width:100px;" size="small" v-model="params.bugReason"  @change="onXmQuestionSomeFieldsChange('bugReason',$event)" clearable>
+												<el-option v-for="i in this.dicts.bugReason" :label="i.name" :key="i.id" :value="i.id"></el-option>
+											</el-select>
+										</el-form-item> 
+										<el-form-item  label="严重程度" prop="bugSeverity" >
+											<el-select style="width:100px;" size="small" v-model="params.bugSeverity"  @change="onXmQuestionSomeFieldsChange('bugSeverity',$event)" clearable>
+												<el-option v-for="i in this.dicts.bugSeverity" :label="i.name" :key="i.id" :value="i.id"></el-option>
+											</el-select>
+										</el-form-item> 
+										<el-form-item  label="优先级别" prop="priority" >
+											<el-select style="width:100px;" size="small" v-model="params.priority" @change="onXmQuestionSomeFieldsChange('priority',$event)" clearable>
+													<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option>
+											</el-select>
+										</el-form-item>  
+										<el-form-item  label="解决方案" prop="solution" >
+											<el-select style="width:100px;" size="small" v-model="params.solution" @change="onXmQuestionSomeFieldsChange('solution',$event)" clearable>
+													<el-option v-for="i in dicts.bugSolution" :label="i.name" :key="i.id" :value="i.id"></el-option>
+											</el-select>
+										</el-form-item>  
 
-					<el-form-item  label="重现频率" prop="repRate" >
-						<el-select style="width:100px;" size="small" v-model="params.repRate" @change="onXmQuestionSomeFieldsChange('repRate',$event)" clearable>
-								<el-option v-for="i in dicts.bugRepRate" :label="i.name" :key="i.id" :value="i.id"></el-option>
-						</el-select>
-					</el-form-item>
-					<el-form-item>
-						 <el-button type="primary" icon="el-icon-search" @click="searchXmQuestionAttDist">查询</el-button>
-					</el-form-item>  
-					</el-form>
+										<el-form-item  label="重现频率" prop="repRate" >
+											<el-select style="width:100px;" size="small" v-model="params.repRate" @change="onXmQuestionSomeFieldsChange('repRate',$event)" clearable>
+													<el-option v-for="i in dicts.bugRepRate" :label="i.name" :key="i.id" :value="i.id"></el-option>
+											</el-select>
+										</el-form-item>  
+									</el-col>
+								</el-row>
+								
+									
+								<el-form-item>
+									<el-button type="primary"  style="float:right;" icon="el-icon-search" @click="searchXmQuestionAttDist">查询</el-button>
+								</el-form-item>  
+							</el-form>
+						</el-row>
+					 </el-popover>
+					
 				</el-col>
 			</el-row>			
 			<xm-test-plan-select  ref="xmTestPlanSelectRef" :casedb-id="xmTestCasedb?xmTestCasedb.id:null" :product-id="xmProduct?xmProduct.id:null" :project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @select="onXmTestPlanSelected" @clear="onXmTestPlanClear"></xm-test-plan-select >
@@ -214,7 +233,9 @@
 	    },
 		data() {
 			return { 
-                filters:{
+                
+                filterVisible:false,
+				filters:{
                     product:null, 
                     project:null,
 					testPlan:null,

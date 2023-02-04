@@ -215,7 +215,9 @@
 	    },
 		data() {
 			return {
-                filters:{
+                
+                filterVisible:false,
+				filters:{
                     category:'项目级', 
                 },
                 showRptRef:'',
