@@ -5,7 +5,7 @@
                 <el-option v-for="(item,index) in categorys" :label="item" :value="item" :key="index"></el-option>
             </el-select>
         </el-row> 
-        <el-row ref="table"> 
+        <el-row ref="table" :style="{height:maxTableHeight+'px',overflow:'auto'}"> 
                 <div class="moduleset-lg hidden-md-and-down"> 
                     <div class="nav">
                     <div class="nav_item" :class="{itemActive: item.isChecked,curr:item.isCurr}" v-for="(item, index) in compsCpd" :key="index" @click="selectItem(item, index)">
@@ -39,6 +39,8 @@
 </template>
 
 <script>
+
+import util from '@/common/js/util';//全局公共库
 import pieSimple from './images/pie-simple.png'
 import lineStack from './images/line-stack.png'
 import areaStack from './images/area-stack.png'
@@ -181,7 +183,8 @@ export default {
 
     },
     mounted(){
-        this.comps.forEach(k=>k.id=k.id?k.id:k.compId)
+        this.comps.forEach(k=>k.id=k.id?k.id:k.compId) 
+        this.maxTableHeight = util.calcTableMaxHeight(this.$refs.table.$el)
         if(this.category){
             this.filters.category=this.category
         }else{

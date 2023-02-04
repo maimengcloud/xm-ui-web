@@ -1,26 +1,26 @@
 <template>
 <section>
     <el-row  class="padding-left padding-right">
-        <el-col :span="6" :style="{height:maxTableHeight+'px',overflow:'auto'}">
-            <comps-set :comp-ids="compIds" :category="category" @row-click="onCompSelect"></comps-set>
+        <el-col :span="6">
+            <comps-set :comp-ids="compIds" :category="category" @row-click="onCompSelect" ref="compsSet"></comps-set>
         </el-col>
-        <el-col :span="18" ref="table" class="border">
-            <el-row  v-if="exportToolBarVisible" class="padding">
+        <el-col :span="18"> 
+            <el-row  class="padding">
                 <span style="float:right;">
-                    <el-button @click="cancelExport">取消</el-button> 
-                    <el-button v-print="{id:'printBody',popTitle:rptConfigParamsCpd.name+'-报告'}">打印</el-button>
-                    <el-button @click="exportToPdf">pdf</el-button> 
+                    <el-button type="text" @click="cancelExport" icon="el-icon-close"></el-button> 
+                    <el-button type="text" v-print="{id:'printBody',popTitle:rptConfigParamsCpd.name+'-报告'}" icon="el-icon-printer"></el-button>
+                    <el-button type="text" @click="exportToPdf">pdf</el-button> 
                 </span> 
             </el-row>
-            <div :style="{height:maxTableHeight+'px',overflow:'auto'}">
+            <el-row :style="{height:maxTableHeight+'px',overflowY:'auto',overflowX:'hidden',}" ref="table">
                 <div class="empty" v-if="compCfgList.length == 0" >
-                    <el-empty description="暂未选择模块"></el-empty>
+                    <el-empty description="暂未选择报表，请至少选择一个报表"></el-empty>
                 </div>
                 <div v-else id="printBody" ref="rptBox"> 
-                    <component v-for="(item,index) in compCfgList" :key="index" :is="item.compId" :xm-test-plan="xmTestPlan" :xm-product="xmProduct" :xm-project="xmProject" :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :category="category" :cfg="item.cfg" :ref="item.id" @delete="doDelete(item)" :init-group-by="item.initGroupBy" :show-tool-bar="false" :id="item.id" :show-params="paramsVisible"></component>
+                    <component style="margin-bottom:80px;" v-for="(item,index) in compCfgList" :key="index" :is="item.compId" :xm-test-plan="xmTestPlan" :xm-product="xmProduct" :xm-project="xmProject" :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :category="category" :cfg="item.cfg" :ref="item.id" @delete="doDelete(item)" :init-group-by="item.initGroupBy" :show-tool-bar="false" :id="item.id" :show-params="paramsVisible"></component>
                          
                 </div>
-            </div>
+            </el-row>
         </el-col> 
     </el-row>  
     </section>
@@ -68,6 +68,9 @@ export default {
         xmQuestionAttDist:()=>import('./product/questionAttDist.vue'),
         xmQuestionStateDist:()=>import('./product/questionAttDist.vue'),
         xmQuestionAgeDist:()=>import('./product/questionAgeDist.vue'),
+        xmQuestionBugReasonDist:()=>import('./product/questionAttDist.vue'),
+        xmQuestionBugTypeDist:()=>import('./product/questionAttDist.vue'),
+        xmQuestionPriorityDist:()=>import('./product/questionAttDist.vue'),
         xmQuestionSort:()=>import('./product/questionSort.vue'),
         xmQuestionAskUserSort:()=>import('./product/questionSort.vue'),
         xmQuestionHandlerUserSort:()=>import('./product/questionSort.vue'),
@@ -175,26 +178,7 @@ export default {
         return {
             xmRptConfig:null,
             compCfgList:[],
-            maxTableHeight:300,
-            // 布局位置数据
-            initCompCfg: [
-                
-                 { i:0, x: 0,  y: 12,  w: 12, h: 6,  name:'测试计划总览',compId:'xmTestRptOverview', params:{} }, 
-                 { i: 1, x: 0,  y: 12,  w: 12, h: 6,   name:'用例规划分析', compId:'xmTestCaseToPlanCalc',  }, 
-                 { i: 2, x: 0,  y: 12,  w: 12, h: 6,  name:'用例每日执行统计', compId:'xmTestDayTimesCalc',  },  
-                 { i: 3, x: 0,  y: 12,  w: 12, h: 6,   name:'用例执行结果分布', compId:'xmTestPlanCaseExecStatusDist',  }, 
-                 { i: 4, x: 0,  y: 12,  w: 12, h: 6,   name:'用例执行人情况分布', compId:'xmTestPlanCaseUserDist',  },  
-                 { i:5, x: 0,  y: 12,  w: 12, h: 6,   name:'缺陷需求分布', compId:'xmQuestionMenuSort',  }, 
-                 { i: 6, x: 0,  y: 12,  w: 12, h: 6,   name:'缺陷模块分布', compId:'xmQuestionFuncSort',  },  
-                 { i: 7, x: 0,  y: 12,  w: 12, h: 6, name:'缺陷状态分布',compId:'xmQuestionBugStatusDist',  },
-                 { i:8, x: 0,  y: 12,  w: 12, h: 6,  name:'缺陷年龄分布',compId:'xmQuestionAgeDist', params:{} },  
-                 { i:9, x: 0,  y: 12,  w: 12, h: 6,  name:'缺陷原因分布',compId:'xmQuestionBugReasonDist', params:{} },  
-                 { i:10, x: 0,  y: 12,  w: 12, h: 6,  name:'缺陷紧急程度分布',compId:'xmQuestionPriorityDist', params:{} }, 
-                 { i: 11, x: 0,  y: 12,  w: 12, h: 6,  name:'缺陷提出人排行榜', compId:'xmQuestionAskUserSort',  }, 
-                 { i: 12, x: 0,  y: 12,  w: 12, h: 6,  name:'缺陷负责人排行榜',compId:'xmQuestionHandlerUserSort',  }, 
-                 
-                 
-            ],
+            maxTableHeight:300, 
             // 布局列数
             layoutColNum: 12,  
             paramsVisible:false,
@@ -205,9 +189,14 @@ export default {
     methods: {  
         initData(){
             this.paramsVisible=this.showParams
-           this.getXmRptConfig();
+            if(!this.toLoadXmRptConfigCpd){
+                this.initCompCfgList();
+             }else{
+                this.getXmRptConfig();
+            }
+           
         },
-        getXmRptConfig(){  
+        getXmRptConfig(){   
             if(!this.toLoadXmRptConfigCpd){
                 return;
             }
@@ -220,8 +209,12 @@ export default {
             if(this.xmRptConfig && this.xmRptConfig.cfg){
                 var cfgJson=JSON.parse(this.xmRptConfig.cfg) 
                 this.compCfgList=cfgJson;
-            }else{
-                this.compCfgList=JSON.parse(JSON.stringify(this.initCompCfg))
+            }else{ 
+                var defList=this.$refs['compsSet'].rptListCpd
+                if(defList && defList.length>3){
+                    defList=defList.slice(0,3);
+                }
+                this.compCfgList=JSON.parse(JSON.stringify(defList))
             }
         },
         onCompSelect(comp){  
@@ -340,6 +333,11 @@ export default {
 }
 </script>
 
-<style> 
-
-</style>
+<style lang="less" scoped>
+.toolbar{
+    z-index: 999;
+    position:absolute;
+    top:0px;
+    right:20px;
+}
+</style> 
