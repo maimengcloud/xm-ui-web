@@ -289,6 +289,9 @@ export default {
             if(this.xmRptConfig==null){
                 var xmRptConfig={...this.rptConfigParamsCpd,cfg:[]}
                 var compCfgList=JSON.parse(JSON.stringify(this.compCfgList))
+                compCfgList=compCfgList.map(k=>{
+                    return {compId:k.compId,id:k.id}
+                })
                 compCfgList.forEach(k=>{
                     if(this.$refs[k.id] && this.$refs[k.id][0].$refs && this.$refs[k.id][0].$refs[k.id]){ 
                         var com=this.$refs[k.id][0].$refs[k.id]
@@ -304,6 +307,7 @@ export default {
                    
                 })
                 xmRptConfig.cfg=JSON.stringify(compCfgList)
+                
                 addXmRptConfig(xmRptConfig).then(res=>{
                     this.xmRptConfig=xmRptConfig;
                     callback(res)
@@ -311,6 +315,9 @@ export default {
             }else{
                 var xmRptConfig={...this.xmRptConfig,cfg:[]}
                 var compCfgList=JSON.parse(JSON.stringify(this.compCfgList))
+                compCfgList=compCfgList.map(k=>{
+                    return {compId:k.compId,id:k.id}
+                })
                 compCfgList.forEach(k=>{
                     if(this.$refs[k.id] && this.$refs[k.id][0].$refs && this.$refs[k.id][0].$refs[k.id]){ 
                         var com=this.$refs[k.id][0].$refs[k.id]
