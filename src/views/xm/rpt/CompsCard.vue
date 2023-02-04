@@ -4,12 +4,15 @@
         <el-col :span="6" :style="{height:maxTableHeight+'px',overflow:'auto'}">
             <comps-set :comp-ids="compIds" :category="category" @row-click="onCompSelect"></comps-set>
         </el-col>
-        <el-col :span="18" :style="{height:maxTableHeight+'px',overflow:'auto'}" ref="table" class="border">
-            <div>
+        <el-col :span="18" ref="table" class="border">
+            <el-row  v-if="printVisible">
+                <span style="float:right;"><el-button @click="printVisible=false">取消打印</el-button> <el-button v-print="'#printBody'">打印</el-button></span> 
+            </el-row>
+            <div :style="{height:maxTableHeight+'px',overflow:'auto'}">
                 <div class="empty" v-if="compCfgList.length == 0" >
                     <el-empty description="暂未选择模块"></el-empty>
                 </div>
-                <div v-else>
+                <div v-else id="printBody">
                     <grid-layout
                         :layout.sync="compCfgList"
                         :col-num="layoutColNum"
@@ -35,17 +38,7 @@
                 </div>
             </div>
         </el-col> 
-    </el-row> 
-    <el-row v-if="printVisible" class="page-center border" style="width:1000px;">
-        <el-row>
-           <span style="float:right;"><el-button @click="printVisible=false">取消打印</el-button> <el-button v-print="'#printBody'">打印</el-button></span> 
-        </el-row>
-        <el-row id="printBody">
-            <el-row v-for="(item,index) in compCfgList" :key="index">
-                <component  :is="item.compId" :xm-test-plan="xmTestPlan" :comp-cfg="item" :ref="item.id" @delete="doDelete"></component>
-            </el-row> 
-        </el-row>
-    </el-row>
+    </el-row>  
     </section>
 </template>
 
