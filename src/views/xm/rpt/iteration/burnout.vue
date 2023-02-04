@@ -204,6 +204,10 @@
 				}
 			},
 			listXmIterationStateHis(){
+				if(this.rptDatas){
+					this.rawDatas=this.rptDatas
+					return;
+				}
 				if(!this.filters.iteration|| !this.filters.iteration.id){
 					this.$notify({position:'bottom-left',showClose:true,message:'请先选中迭代',type:'warning'})
 					return;

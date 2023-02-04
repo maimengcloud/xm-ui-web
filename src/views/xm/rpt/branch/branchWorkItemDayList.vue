@@ -138,6 +138,11 @@
 		},//end data
 		methods: {  
 			listXmBranchStateHis(){ 
+				
+				if(this.rptDatas){
+					this.rawDatas=this.rptDatas
+					return;
+				}
 				var params=this.params
 				listXmBranchStateHis(params).then(res=>{ 
 					this.rawDatas=res.data.tips.isOk?res.data.data:this.rawDatas;

@@ -289,24 +289,24 @@
 			
 			onProductSelected(product){
 				this.filters.product=product
-				; 
+			 
 			},
 			
 			onProductClear(){
 				this.filters.product=null
 				
-				;
+			
 				
 			},
 			
 			onIterationSelected(iteration){
 				this.filters.iteration=iteration
-				; 
+			 
 			},
 			
 			onIterationClear(){
 				this.filters.iteration=null 
-				;
+			
 			}
 		},//end method
 		mounted() {
