@@ -45,6 +45,9 @@ Vue.component('mdp-date-x',MdpDateX)
 Vue.component('mdp-date-range-x',MdpDateRangeX)
 Vue.component('mdp-select-user-x',MdpSelectUserX)
  
+import vueToPdf from 'vue-to-pdf';
+Vue.use(vueToPdf);
+
 
 Vue.use(Element, {
   size: 'small', // set element-ui default size

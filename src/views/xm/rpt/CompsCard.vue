@@ -8,16 +8,16 @@
             <el-row  v-if="exportToolBarVisible">
                 <span style="float:right;">
                     <el-button @click="exportToolBarVisible=false">取消</el-button> 
-                    <el-button v-print="'#printBody'">打印</el-button>
-                    <el-button v-print="'#printBody'">pdf</el-button>
+                    <el-button v-print="{id:'printBody',popTitle:rptConfigParamsCpd.name+'-报告'}">打印</el-button>
+                    <el-button @click="exportToPdf">pdf</el-button> 
                 </span> 
             </el-row>
             <div :style="{height:maxTableHeight+'px',overflow:'auto'}">
                 <div class="empty" v-if="compCfgList.length == 0" >
                     <el-empty description="暂未选择模块"></el-empty>
                 </div>
-                <div v-else id="printBody"> 
-                            <component v-for="(item,index) in compCfgList" :key="index" :is="item.compId" :xm-test-plan="xmTestPlan" :xm-product="xmProduct" :xm-project="xmProject" :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :category="category" :cfg="item.cfg" :ref="item.id" @delete="doDelete(item)" :init-group-by="item.initGroupBy" :id="item.id" :show-tool-bar="showToolBar" :show-params="showParams"></component>
+                <div v-else id="printBody" ref="rptBox"> 
+                    <component v-for="(item,index) in compCfgList" :key="index" :is="item.compId" :xm-test-plan="xmTestPlan" :xm-product="xmProduct" :xm-project="xmProject" :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :category="category" :cfg="item.cfg" :ref="item.id" @delete="doDelete(item)" :init-group-by="item.initGroupBy" :id="item.id" :show-tool-bar="showToolBar" :show-params="paramsVisible"></component>
                          
                 </div>
             </div>
@@ -101,7 +101,7 @@ export default {
         xmBranchMenuDayAccumulate:()=>import('./branch/menuDayAccumulate.vue'),
         
     },
-    props:['xmTestCasedb','xmTestPlan','xmProduct','xmProject','xmIteration','showToolBar','category','showParams','isRptCfg','exportToolBarVisible','isRptShow'],
+    props:['xmTestCasedb','xmTestPlan','xmProduct','xmProject','xmIteration','showToolBar','category','showParams','isRptCfg','isRptShow'],
     computed: {
         ...mapGetters(['userInfo']), 
         compIds(){
@@ -197,11 +197,14 @@ export default {
             ],
             // 布局列数
             layoutColNum: 12,  
+            paramsVisible:false,
+            exportToolBarVisible:true,
         }
     },
 
     methods: {  
         initData(){
+            this.paramsVisible=this.showParams
            this.getXmRptConfig();
         },
         getXmRptConfig(){  
@@ -312,6 +315,10 @@ export default {
                    this.$refs[k.id][0].sizeAutoChange();
             }
             
+        },
+        exportToPdf(){
+            this.paramsVisible=false
+            this.$PDFSave(this.$refs.rptBox, this.rptConfigParamsCpd.name+"-报告");  
         }
          
     },

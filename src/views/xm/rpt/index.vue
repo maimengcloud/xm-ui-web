@@ -42,8 +42,8 @@ export default {
       }
       this.$refs['compsCard'].submitXmPrtConfig(callback)
     },
-    showPrint(){
-      this.$refs.compsCard.printVisible=true;
+    showExportToolBar(){
+      this.$refs.compsCard.exportToolBarVisible=true;
     }
   },
 

@@ -29,7 +29,7 @@
                         <el-divider direction="vertical"></el-divider>
 
                         <el-button @click="calcRptData" icon="el-icon-video-play">统计</el-button> 
-                        <el-button @click="print">打印</el-button> 
+                        <el-button @click="showExportToolBar">导出</el-button> 
                         <el-button @click="showRptConfig" icon="el-icon-s-tools">配置报告</el-button>
                         </span>
                      </span>
@@ -149,9 +149,8 @@ export default {
         showRptConfig(){
             this.$refs['rpt'].isRptCfg=true
         },
-        print(){
-            this.$refs['rpt'].isRptShow=true
-           this.$refs['rpt'].showPrint()
+        showExportToolBar(){ 
+           this.$refs['rpt'].showExportToolBar()
 
         },
         calcRptData(){ 
