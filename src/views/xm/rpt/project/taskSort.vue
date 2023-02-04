@@ -277,7 +277,7 @@
  			initSimpleDicts('all',['planType','xmTaskSettleSchemel','taskType','priority','taskState'] ).then(res=>{
 				this.dicts=res.data.data;
 			}) 
-			            this.maxTableHeight = util.calcTableMaxHeight(this.$refs.filtersRef.$el)
+			            //this.maxTableHeight = util.calcTableMaxHeight(this.$refs.filtersRef.$el)
 			//this.charts();
 			this.open();
 			
