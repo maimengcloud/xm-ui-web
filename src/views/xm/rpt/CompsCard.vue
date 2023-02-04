@@ -14,10 +14,10 @@
                     <el-button type="warning" v-if="isRptShow==true" @click="undoRptShow" icon="el-icon-error">退出报告</el-button>  
                     <el-button type="text" v-if="isRptCfg==false&&isRptShow==false" @click="toRptCfg" icon="el-icon-setting">制作报告</el-button>  
                     <el-button type="primary" v-if="isRptCfg==true" @click="undoRptCfg" icon="el-icon-error">取消制作</el-button> 
-                    <el-button type="warning" v-if="isRptCfg==true" @click="finishRptCfg">保存报告</el-button>  
+                    <el-button type="warning" v-if="isRptCfg==true" @click="toSaveRptCfg">保存报告</el-button>  
                     <el-button type="text" v-if="paramsVisible==true" @click="paramsVisible=false">隐藏过滤条件</el-button>  
                     <el-button type="text" v-if="paramsVisible==false" @click="paramsVisible=true">显示过滤条件</el-button> 
-                    <el-button type="text" v-print="{id:'printBody',popTitle:rptConfigParamsCpd.name+'-报告'}" icon="el-icon-printer"></el-button>
+                    <el-button type="text" v-print="{id:'printBody',popTitle:xmRptData && xmRptData.id?xmRptData.rptName:(xmRptConfig&&xmRptConfig.id?xmRptConfig.name: rptConfigParamsCpd.name+'-报告')}" icon="el-icon-printer"></el-button>
                     <el-button type="text" @click="exportToPdf">pdf</el-button> 
                 </span> 
             </el-row>
@@ -34,6 +34,18 @@
     </el-row>   
     <el-dialog append-to-body modal-append-to-body :visible.sync="rptDataListVisible" top="20px" width="60%">
         <rpt-data-list :xm-rpt-config="xmRptConfig" v-if="rptDataListVisible" @select="onRptDataSelect"/>
+    </el-dialog> 
+    
+    <el-dialog title="请确认" append-to-body modal-append-to-body :visible.sync="createRptConfigVisible">
+        <el-form :model="xmRptConfig">
+            <el-form-item label="报告名称">
+                <el-input v-model="xmRptConfig.name"></el-input>
+            </el-form-item>
+        </el-form> 
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="createRptConfigVisible = false">取 消</el-button>
+            <el-button type="primary" @click="finishRptCfg">确 定</el-button>
+        </div>
     </el-dialog> 
     
     <el-dialog title="请确认" append-to-body modal-append-to-body :visible.sync="createRptDataVisible">
@@ -204,7 +216,7 @@ export default {
         return {
             isRptCfg:false,
             isRptShow:false,
-            xmRptConfig:null,
+            xmRptConfig:{},
             xmRptData:{id:'',rptName:'',bizId:'',bizType:'',bizDate:''},
             xmRptDataInit:{id:'',rptName:'',bizId:'',bizType:'',bizDate:''},
             compCfgList:[],
@@ -214,6 +226,7 @@ export default {
             paramsVisible:true,
             rptDataListVisible:false,
             createRptDataVisible:false,
+            createRptConfigVisible:false,
         }
     },
 
@@ -237,6 +250,13 @@ export default {
             this.xmRptData.rptName=this.xmRptConfig.name
             this.createRptDataVisible=true
            
+        },
+        toSaveRptCfg(){
+            this.createRptConfigVisible=true
+            if(!this.xmRptConfig.name){
+                this.xmRptConfig.name=this.rptConfigParamsCpd.name+"-报告"
+            }
+
         },
         toQueryRptData(){
             this.rptDataListVisible=true;
@@ -274,12 +294,12 @@ export default {
             }) 
         },
         undoRptCfg(){
-            this.xmRptConfig=null;
+            this.xmRptConfig={};
             this.isRptCfg=false;
         },
         undoRptShow(){
             this.isRptShow=false;
-            this.xmRptConfig=null;
+            this.xmRptConfig={};
             this.xmRptData={...this.xmRptDataInit};
         },
         toRptCfg(){
@@ -292,7 +312,8 @@ export default {
                 var tips = res.data.tips;
                 if(tips.isOk){
                     this.isRptCfg=false
-                    this.xmRptConfig=null;
+                    this.xmRptConfig={};
+                    this.createRptConfigVisible=false;
                     this.$message.success("报告保存成功。将退出报告制作模式")
                 }else{
                    
@@ -361,8 +382,12 @@ export default {
             }  
         },
         submitXmPrtConfig(callback){ 
-            if(this.xmRptConfig==null){
-                var xmRptConfig={...this.rptConfigParamsCpd,cfg:[]}  
+            if(!this.xmRptConfig||!this.xmRptConfig.name){
+                this.$message.error("请输入报告名称")
+                return 
+            }
+            if(!this.xmRptConfig.id){
+                var xmRptConfig={...this.rptConfigParamsCpd,name:this.xmRptConfig.name,cfg:[]}  
                 this.compCfgList.forEach(k=>{
                     if(this.$refs[k.id] && this.$refs[k.id][0].$refs && this.$refs[k.id][0].$refs[k.id]){ 
                         var com=this.$refs[k.id][0].$refs[k.id]
