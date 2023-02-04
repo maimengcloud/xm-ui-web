@@ -29,7 +29,7 @@
                             :h="item.h"
                             :i="item.i"
                             :key="index" @resize="sizeAutoChange(item)">
-                            <component :is="item.compId" :xm-test-plan="xmTestPlan" :xm-product="xmProduct" :xm-project="xmProject" :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :category="category" :cfg="item.cfg" :ref="item.id" @delete="doDelete" :init-group-by="item.initGroupBy" :id="item.id" :show-tool-bar="showToolBar" :show-params="showParams"></component>
+                            <component :is="item.compId" :xm-test-plan="xmTestPlan" :xm-product="xmProduct" :xm-project="xmProject" :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :category="category" :cfg="item.cfg" :ref="item.id" @delete="doDelete(item)" :init-group-by="item.initGroupBy" :id="item.id" :show-tool-bar="showToolBar" :show-params="showParams"></component>
                         </grid-item>
                     </grid-layout>
                 </div>
@@ -322,11 +322,7 @@ export default {
                 })
             }
         },
-        doDelete(compCfg){
-            if(this.isRptCfg==false){
-                 this.$notify({ position:'bottom-left', showClose:true, message: "当前报告为预览模式，不能删除，请切换为配置报告模式", type:  'error' });
-                 return;
-            }
+        doDelete(compCfg){ 
             var index=this.compCfgList.findIndex(k=>k.id==compCfg.id) 
             if(index>=0){ 
                 this.compCfgList.splice(index,1)

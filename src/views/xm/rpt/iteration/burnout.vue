@@ -14,7 +14,7 @@
 					 <el-popover   trigger="manual" v-model="filterVisible" style="float:right;" width="500">
 						<el-button slot="reference" style="margin-top:10px;" icon="el-icon-more" @click="filterVisible=!filterVisible"></el-button> 
 						<el-row>
-							<el-button type="danger" icon="el-icon-delete" @click="doDelete">从报告移出该报表</el-button>
+							<el-button type="danger" icon="el-icon-delete" @click="$emit('delete',cfg)">从报告移出该报表</el-button>
 							<el-button icon="el-icon-close" style="float:right;" @click="filterVisible=false">关闭</el-button>
 						</el-row>
 						<el-row>
