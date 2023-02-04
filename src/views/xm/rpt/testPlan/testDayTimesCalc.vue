@@ -48,7 +48,7 @@
 								</el-form-item>   
 								<el-form-item label="日期区间">
 									<br>
-										<mdp-date-range v-model="filters" value-format="yyyy-MM-dd" start-key="startExecDate" end-key="endExecDate"></mdp-date-range>
+										<mdp-date-range v-model="params" value-format="yyyy-MM-dd" start-key="startExecDate" end-key="endExecDate"></mdp-date-range>
 								</el-form-item>    
 								<el-form-item>
 									<el-button type="primary"  style="float:right;" icon="el-icon-search" @click="getXmTestDayTimesList">查询</el-button>

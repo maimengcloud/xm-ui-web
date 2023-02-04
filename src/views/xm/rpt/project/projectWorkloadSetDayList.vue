@@ -22,7 +22,7 @@
 									<span v-else>{{xmProject.id}} <span v-if="xmProject.name"><br/>{{  xmProject.name  }} </span> </span> 
 								</el-form-item>  
 								<el-form-item label="人员编号">
-									<mdp-select-user-xm label="选择人员" :clearable="true" v-model="filters" userid-key="userid" username-key="username" :project-id="filters.project?filters.project.id:null"></mdp-select-user-xm>
+									<mdp-select-user-xm label="选择人员" :clearable="true" v-model="params" userid-key="userid" username-key="username" :project-id="filters.project?filters.project.id:null"></mdp-select-user-xm>
 
 								</el-form-item>  
 								
@@ -31,7 +31,7 @@
 								</el-form-item>  
 								<el-form-item label="日期区间">
 									<br>
-										<mdp-date-range v-model="filters"   value-format="yyyy-MM-dd" start-key="startBizDate" end-key="endBizDate"></mdp-date-range>
+										<mdp-date-range v-model="params"   value-format="yyyy-MM-dd" start-key="startBizDate" end-key="endBizDate"></mdp-date-range>
 								</el-form-item>  
 								
 									
