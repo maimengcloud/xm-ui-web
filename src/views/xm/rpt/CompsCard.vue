@@ -217,7 +217,30 @@ export default {
             if(this.xmRptConfig==null){
                 this.$message.error("还没制作报告，请先制作报告")
                 return;
-            }
+            } 
+            var rptData={cfgId:this.xmRptConfig.id,rptName:this.xmRptConfig.name,rptData:{}}  
+            var compCfgList=JSON.parse(JSON.stringify(this.compCfgList))
+            compCfgList=compCfgList.map(k=>{
+                return {compId:k.compId,id:k.id}
+            })
+            compCfgList.forEach(k=>{
+                if(this.$refs[k.id] && this.$refs[k.id][0].$refs && this.$refs[k.id][0].$refs[k.id]){ 
+                    var com=this.$refs[k.id][0].$refs[k.id]
+                        k.params=com.params
+                        k.title=com.title
+                        k.remark=com.remark
+                }else{ 
+                        var com=this.$refs[k.id][0]
+                        k.params=com.params
+                        k.title=com.title
+                        k.remark=com.remark
+                }
+            })
+            xmRptConfig.cfg=JSON.stringify(compCfgList)
+            editXmRptConfig(xmRptConfig).then(res=>{
+                this.xmRptConfig=xmRptConfig; 
+                callback(res)
+            }) 
         },
         undoRptCfg(){
             this.xmRptConfig=null;
