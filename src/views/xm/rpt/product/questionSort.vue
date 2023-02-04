@@ -328,7 +328,7 @@
 				)
 			},
 			onXmQuestionSomeFieldsChange(fieldName,$event){
-				this.rawDatas=[]
+				
 			},
 			searchXmQuestionSort(){
 				 let params = {

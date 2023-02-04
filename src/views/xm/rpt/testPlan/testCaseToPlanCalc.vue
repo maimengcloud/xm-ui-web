@@ -266,7 +266,7 @@
 				)
 			},
 			onXmQuestionSomeFieldsChange(fieldName,$event){
-				this.rawDatas=[]
+				
 			},
 			searchXmTestCaseToPlanCalcList(){ 
 

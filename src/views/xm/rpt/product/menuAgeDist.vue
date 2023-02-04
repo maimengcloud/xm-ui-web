@@ -297,7 +297,7 @@
 				)
 			},
 			onXmMenuSomeFieldsChange(fieldName,$event){
-				this.rawDatas=[]
+				
 			},
 			searchXmMenuAgeDist(){ 
 				var params={...this.params}

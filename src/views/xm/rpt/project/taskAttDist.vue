@@ -335,7 +335,7 @@
 				)
 			},
 			onXmTaskSomeFieldsChange(fieldName,$event){
-				this.rawDatas=[]
+				
 			},
 			searchXmTaskAttDist(){
 

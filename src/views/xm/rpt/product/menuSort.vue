@@ -289,7 +289,7 @@
 				)
 			},
 			onXmMenuSomeFieldsChange(fieldName,$event){
-				this.rawDatas=[]
+				
 			},
 			searchXmMenuSort(){
 				 let params = {

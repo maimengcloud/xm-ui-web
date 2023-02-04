@@ -351,7 +351,7 @@
 				)
 			},
 			onXmMenuSomeFieldsChange(fieldName,$event){
-				this.rawDatas=[]
+				
 			},
 			searchXmMenuAttDist(){
 				

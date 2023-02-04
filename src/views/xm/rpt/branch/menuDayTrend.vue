@@ -302,23 +302,23 @@
 			
 			onProductSelected(product){
 				this.filters.product=product
-				this.rawDatas=[]; 
+				; 
 			},
 			
 			onProductClear(){
 				this.filters.product=null 
-				this.rawDatas=[];
+				;
 				
 			},
 			
 			onIterationSelected(iteration){
 				this.filters.iteration=iteration
-				this.rawDatas=[]; 
+				; 
 			},
 			
 			onIterationClear(){
 				this.filters.iteration=null  
-				this.rawDatas=[];
+				;
 			}
 		},//end method
 		mounted() {

@@ -332,7 +332,7 @@
 				)
 			},
 			onXmQuestionSomeFieldsChange(fieldName,$event){
-				this.rawDatas=[]
+				
 			},
 			searchXmQuestionAgeDist(){ 
 				var params={...this.params}

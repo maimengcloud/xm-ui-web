@@ -257,7 +257,7 @@
 				)
 			},
 			onXmQuestionSomeFieldsChange(fieldName,$event){
-				this.rawDatas=[]
+				
 			},
 			searchXmTestPlanCaseExecStatusDist(){  
 				var params={...this.params }  

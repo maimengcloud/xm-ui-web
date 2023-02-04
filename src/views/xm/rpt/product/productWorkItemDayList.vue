@@ -185,7 +185,7 @@
 				if(this.showToolBar && !this.title){
 					this.title="企业工作项每日趋势图"
 				}
-				this.rawDatas=[]
+				
 				if(this.$refs['xmProductSelect'])this.$refs['xmProductSelect'].clearSelect();
 				this.$nextTick(()=>{
 					this.listXmProductStateHis();

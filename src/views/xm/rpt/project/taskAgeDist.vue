@@ -279,7 +279,7 @@
 				)
 			},
 			onXmTaskSomeFieldsChange(fieldName,$event){
-				this.rawDatas=[]
+				
 			},
 			searchXmTaskAgeDist(){ 
 				var params={...this.params} 

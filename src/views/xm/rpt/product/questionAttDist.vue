@@ -400,7 +400,7 @@
 				)
 			},
 			onXmQuestionSomeFieldsChange(fieldName,$event){
-				this.rawDatas=[]
+				
 			},
 			searchXmQuestionAttDist(){ 
 				var params={...this.params} 

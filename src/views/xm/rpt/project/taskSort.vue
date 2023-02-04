@@ -259,7 +259,7 @@
 				)
 			},
 			onXmTaskSomeFieldsChange(fieldName,$event){
-				this.rawDatas=[]
+				
 			},
 			searchXmTaskSort(){ 
 				 let params = {

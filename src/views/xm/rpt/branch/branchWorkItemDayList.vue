@@ -208,7 +208,7 @@
 				if(this.showToolBar && !this.title){
 					this.title="企业工作项每日趋势图"
 				}
-				this.rawDatas=[]
+				
 				if(this.$refs['xmProductSelect'])this.$refs['xmProductSelect'].clearSelect();
 				if(this.$refs['xmIterationSelect'])this.$refs['xmIterationSelect'].clearSelect();
 				this.$nextTick(()=>{
@@ -334,15 +334,11 @@
 			},
 			
 			onProductSelected(product){
-				this.filters.product=product
-				this.rawDatas=[]; 
+				this.filters.product=product 
 			},
 			
 			onProductClear(){
-				this.filters.product=null
-				
-				this.rawDatas=[];
-				
+				this.filters.product=null  
 			},
 			
 			onIterationSelected(iteration){
