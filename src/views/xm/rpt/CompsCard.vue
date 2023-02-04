@@ -7,7 +7,13 @@
         <el-col :span="18"> 
             <el-row  class="padding">
                 <span style="float:right;">
-                    <el-button type="text" @click="cancelExport" icon="el-icon-close"></el-button> 
+                    <el-button type="primary" v-if="isRptShow==false && isRptCfg==false" @click="isRptShow=true">查看报告</el-button>  
+                    <el-button type="warning" v-if="isRptShow==true" @click="undoRptShow">退出报告</el-button>  
+                    <el-button type="primary" v-if="isRptCfg==false&&isRptShow==false" @click="toRptCfg">制作报告</el-button>  
+                    <el-button type="primary" v-if="isRptCfg==true" @click="undoRptCfg">取消制作</el-button> 
+                    <el-button type="warning" v-if="isRptCfg==true" @click="finishRptCfg">保存报告</el-button>  
+                    <el-button type="text" v-if="paramsVisible==true" @click="paramsVisible=false">隐藏过滤条件</el-button>  
+                    <el-button type="text" v-if="paramsVisible==false" @click="paramsVisible=true">显示过滤条件</el-button> 
                     <el-button type="text" v-print="{id:'printBody',popTitle:rptConfigParamsCpd.name+'-报告'}" icon="el-icon-printer"></el-button>
                     <el-button type="text" @click="exportToPdf">pdf</el-button> 
                 </span> 
@@ -104,7 +110,7 @@ export default {
         xmBranchMenuDayAccumulate:()=>import('./branch/menuDayAccumulate.vue'),
         
     },
-    props:['xmTestCasedb','xmTestPlan','xmProduct','xmProject','xmIteration','showToolBar','category','showParams','isRptCfg','isRptShow'],
+    props:['xmTestCasedb','xmTestPlan','xmProduct','xmProject','xmIteration','showToolBar','category','showParams'],
     computed: {
         ...mapGetters(['userInfo']), 
         compIds(){
@@ -176,6 +182,8 @@ export default {
 
     data() {
         return {
+            isRptCfg:false,
+            isRptShow:false,
             xmRptConfig:null,
             compCfgList:[],
             maxTableHeight:300, 
@@ -195,6 +203,32 @@ export default {
                 this.getXmRptConfig();
             }
            
+        },
+        undoRptCfg(){
+            this.xmRptConfig=null;
+            this.isRptCfg=false;
+        },
+        undoRptShow(){
+            this.isRptShow=false;
+            this.xmRptConfig=null;
+        },
+        toRptCfg(){
+            this.isRptCfg=true;
+            this.$message.success("切换到报告制作模式成功。请选择报表加入报告中。")
+        },
+        finishRptCfg(){
+            
+            this.submitXmPrtConfig((res)=>{
+                var tips = res.data.tips;
+                if(tips.isOk){
+                    this.isRptCfg=false
+                    this.xmRptConfig=null;
+                    this.$message.success("报告保存成功。将退出报告制作模式")
+                }else{
+                   
+                    this.$message.error(tips.msg)
+                } 
+            });
         },
         getXmRptConfig(){   
             if(!this.toLoadXmRptConfigCpd){
@@ -270,7 +304,7 @@ export default {
                 xmRptConfig.cfg=JSON.stringify(compCfgList)
                 addXmRptConfig(xmRptConfig).then(res=>{
                     this.xmRptConfig=xmRptConfig;
-                    callback()
+                    callback(res)
                 })
             }else{
                 var xmRptConfig={...this.xmRptConfig,cfg:[]}
@@ -291,7 +325,7 @@ export default {
                 xmRptConfig.cfg=JSON.stringify(compCfgList)
                 editXmRptConfig(xmRptConfig).then(res=>{
                     this.xmRptConfig=xmRptConfig; 
-                    callback()
+                    callback(res)
                 })
             }
         },
@@ -302,11 +336,7 @@ export default {
             }
         },
         sizeAutoChange(k){ 
-             if(this.$refs[k.id] && this.$refs[k.id][0].$refs && this.$refs[k.id][0].$refs[k.id]){ 
-                   this.$refs[k.id][0].$refs[k.id].sizeAutoChange();
-            }else{ 
-                   this.$refs[k.id][0].sizeAutoChange();
-            }
+             
             
         },
         exportToPdf(){
@@ -315,11 +345,7 @@ export default {
                 this.$PDFSave(this.$refs.rptBox, this.rptConfigParamsCpd.name+"-报告");  
             })
             
-        },
-        cancelExport(){
-            this.exportToolBarVisible=false
-            this.paramsVisible=this.showParams
-        }
+        }, 
          
     },
 

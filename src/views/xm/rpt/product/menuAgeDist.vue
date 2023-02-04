@@ -17,12 +17,7 @@
 						<el-row>
 							<el-form :model="params" class="padding"   :style="{width:'100%',overflow: 'auto'}" ref="filtersRef">
 								<el-row>
-									<el-col :span="15">
-										<el-form-item label="分组属性">
-											<el-select style="width:100px;" size="small"   v-model="params.groupBy"  @change="onXmMenuSomeFieldsChange('groupBy',$event)">
-												<el-option v-for="i in this.groupBys" :label="i.name" :key="i.id" :value="i.id"></el-option>
-											</el-select>
-										</el-form-item>     
+									<el-col :span="15">   
 										<el-form-item label="归属产品"  >
 											<xm-product-select v-if="!xmProductCpd || !xmProductCpd.id"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClear"></xm-product-select>
 											<span v-else>{{xmProductCpd.id}} <span v-if="xmProductCpd.productName"><br/>{{  xmProductCpd.productName  }} </span> </span>

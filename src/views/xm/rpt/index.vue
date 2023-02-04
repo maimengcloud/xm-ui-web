@@ -1,8 +1,5 @@
 <template> 
-<section>
-  <el-row v-if="isRptCfg">
-   <span style="float:right;"> <el-button @click="isRptCfg=false">取消配置</el-button><el-button @click="saveXmRptConfig" type="primary">保存配置</el-button></span>
-  </el-row>
+<section> 
   <el-row>
      <comps-card ref="compsCard" :category="category" :xm-test-plan="xmTestPlan" :xm-product="xmProduct" :xm-project="xmProject" :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :show-params=" isRptCfg || !isRptShow" :is-rpt-cfg="isRptCfg" :is-rpt-show="isRptShow"/>  
   </el-row>
