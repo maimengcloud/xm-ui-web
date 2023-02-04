@@ -643,7 +643,7 @@ export default {
       },
       
       children: [
-        { path: 'reportIndex', component: _import('xm/rpt/reportIndex'), name: 'reportIndex', meta: { title: '指标分析',roles:["user"] }}, 
+        { path: 'reportIndex', component: _import('xm/rpt/index'), name: 'reportIndex', meta: { title: '指标分析',roles:["user"] }}, 
         { path: 'branch/branchDatavFullScreen',   name: 'branchDatavFullScreen', meta: {   title: '机构效能',openTab:true,outUrl:"${curlDomain}/"+process.env.CONTEXT+"/"+process.env.VERSION+"/#/datav/xm/branch/branchDatavFullScreen" }}, 
       ]
     },

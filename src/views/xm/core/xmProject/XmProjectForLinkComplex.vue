@@ -309,7 +309,7 @@ import XmProductProjectLinkMng from "../xmProductProjectLink/XmProductProjectLin
 import XmPlan from "../xmTask/XmPlan.vue";
 import xmGroupMng from "../xmGroup/XmGroupMng";
  
-import XmReport from "@/views/xm/rpt/reportIndex";
+import XmReport from "@/views/xm/rpt/index";
 import {
 	initDicts,
   getDefOptions,

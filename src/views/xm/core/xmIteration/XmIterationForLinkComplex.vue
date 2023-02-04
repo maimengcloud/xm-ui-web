@@ -352,7 +352,7 @@
 
 	import XmIterationEdit from './XmIterationEdit.vue'; 
 	import  XmIterationAdd from './XmIterationEdit';//新增界面
-	import XmReport from "@/views/xm/rpt/reportIndex";
+	import XmReport from "@/views/xm/rpt/index";
 
 	import XmIterationMenuMng from '../xmIterationMenu/XmIterationMenuMng.vue';
 	import { initDicts,editSomeFieldsXmIteration } from '@/api/xm/core/xmIteration';

@@ -329,7 +329,7 @@ import XmProductEdit from "./XmProductEdit.vue";
 import XmProductAdd from "./XmProductEdit"; //新增界面
 import XmGroupMng from '../xmGroup/XmGroupMng.vue'
 
-import XmReport from "@/views/xm/rpt/reportIndex";
+import XmReport from "@/views/xm/rpt/index";
 export default {
   computed: {
     ...mapGetters(["userInfo", "roles","projectInfo","xmIteration"]),
