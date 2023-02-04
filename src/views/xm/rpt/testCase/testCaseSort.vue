@@ -99,7 +99,7 @@
 		components: {   
 			XmProjectSelect,XmProductSelect,XmIterationSelect
 		},
-        props:['id','cfg','category','showToolBar','showParams','isRptCfg','xmProject','xmProduct','xmIteration','xmTestCasedb','initGroupBy',],
+        props:['id','cfg','category','showToolBar','showParams','isRptCfg','rptDatas','xmProject','xmProduct','xmIteration','xmTestCasedb','initGroupBy',],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'

@@ -49,7 +49,7 @@
 		components: {   
 			XmProjectSelect,
 		},
-        props:['id','cfg','category','showToolBar','showParams','isRptCfg','xmProduct','xmProject'],
+        props:['id','cfg','category','showToolBar','showParams','isRptCfg','rptDatas','xmProduct','xmProject'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'

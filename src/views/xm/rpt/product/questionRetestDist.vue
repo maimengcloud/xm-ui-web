@@ -127,7 +127,7 @@
 		components: {   
 			XmProjectSelect,XmIterationSelect,XmProductSelect,xmTestPlanSelect,
 		},
-        props:['id','cfg','category','showToolBar','showParams','isRptCfg','xmProject','xmProduct','xmIteration','xmTestCasedb','xmTestPlan'],
+        props:['id','cfg','category','showToolBar','showParams','isRptCfg','rptDatas','xmProject','xmProduct','xmIteration','xmTestCasedb','xmTestPlan'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
