@@ -2,7 +2,7 @@
 <section>
     <el-row  class="padding-left padding-right">
         <el-col :span="6">
-            <comps-set :comp-ids="compIds" :category="category" @row-click="onCompSelect" ref="compsSet" :show-checked-only="isRptShow||showCheckedOnly"></comps-set>
+            <comps-set  :category="category" @row-click="onCompSelect" ref="compsSet" :show-checked-only="isRptShow||showCheckedOnly" @sort="onSort"></comps-set>
         </el-col>
         <el-col :span="18"> 
             <el-row  class="padding">
@@ -29,7 +29,7 @@
                     <el-empty description="暂未选择报表，请至少选择一个报表"></el-empty>
                 </div>
                 <div v-else id="printBody" ref="rptBox"> 
-                    <component style="margin-bottom:80px;" v-for="(item,index) in compCfgList" :key="index" :is="item.compId" :xm-test-plan="xmTestPlan" :xm-product="xmProduct" :xm-project="xmProject" :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :category="category" :cfg="item.cfg" :ref="item.id" @delete="doDelete(item)" :init-group-by="item.initGroupBy" :show-tool-bar="false" :id="item.id" :rpt-datas="item.rawDatas" :is-rpt-cfg="isRptCfg" :show-params="paramsVisible"></component>
+                    <component style="margin-bottom:80px;" v-for="(item,index) in compCfgList" :key="item.compId" :is="item.compId" :xm-test-plan="xmTestPlan" :xm-product="xmProduct" :xm-project="xmProject" :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :category="category" :cfg="item.cfg" :ref="item.id" @delete="doDelete(item)" :init-group-by="item.initGroupBy" :show-tool-bar="false" :id="item.id" :rpt-datas="item.rawDatas" :is-rpt-cfg="isRptCfg" :show-params="paramsVisible"></component>
                          
                 </div>
             </el-row>
@@ -77,7 +77,7 @@ import { addXmRptData  } from '@/api/xm/core/xmRptData';
 
 import {  listXmRptConfig,editXmRptConfig,addXmRptConfig } from '@/api/xm/core/xmRptConfig';
  
-import rptComps from './comps.js';//组件库
+import rptComps from './comps.js';//组件库 
 
 export default {
     components: { 
@@ -90,9 +90,6 @@ export default {
     props:['xmTestCasedb','xmTestPlan','xmProduct','xmProject','xmIteration','category','showParams','showCheckedOnly'],
     computed: {
         ...mapGetters(['userInfo']), 
-        compIds(){
-           return this.compCfgList.map(k=>k.compId)
-        },
         rptConfigParamsCpd(){
             //业务类型1-产品报告，2-迭代报告，3-测试计划报告，4-项目报告，5-企业报告 
 			var params={bizType:'5',bizId:this.userInfo.branchId,name:this.userInfo.branchName}
@@ -112,16 +109,15 @@ export default {
                 params.bizType='4';
                 params.bizId=this.xmProject.id
                 params.name=this.xmProject.name
-             }else if(this.category=='测试级'){
-                if(this.xmTestPlan && this.xmTestPlan.id){
-                    params.bizType='3';
-                    params.bizId=this.xmTestPlan.id
-                    params.name=this.xmTestPlan.name
-                }else{
+             }else if(this.category=='测试库级'){
                     params.bizType='6';
                     params.bizId=this.xmTestCasedb.id
                     params.name=this.xmTestCasedb.name
-                }
+             }else if(this.category=='测试计划级'){ 
+                    params.bizType='3';
+                    params.bizId=this.xmTestPlan.id
+                    params.name=this.xmTestPlan.name
+                 
              }
              return params;
         },
@@ -160,7 +156,7 @@ export default {
             xmRptConfig:{id:'',name:'',bizType:'',bizId:'',cfg:[]},
             xmRptData:{id:'',rptName:'',bizId:'',bizType:'',bizDate:'',rptData:[]},
             xmRptDataInit:{id:'',rptName:'',bizId:'',bizType:'',bizDate:'',rptData:[]},
-            compCfgList:[],
+            compCfgList:[], 
             maxTableHeight:300, 
             // 布局列数
             layoutColNum: 12,  
@@ -301,17 +297,19 @@ export default {
             if(this.xmRptConfig && this.xmRptConfig.id && this.xmRptConfig.cfg){
                 var cfgJson=JSON.parse(this.xmRptConfig.cfg) 
                 cfgJson.forEach(k=>k.id=k.compId+seq.sn())
-                this.compCfgList=cfgJson;
+                this.compCfgList=cfgJson; 
+                this.$refs.compsSet.setCheckeds(this.compCfgList.map(k=>k.compId),true)
             }else{ 
                 var defList=this.$refs['compsSet'].rptListCpd
                 if(defList && defList.length>3){
                     defList=defList.slice(0,3);
                 } 
                 defList.forEach(k=>k.id=k.compId+seq.sn())
-                this.compCfgList=JSON.parse(JSON.stringify(defList))
+                this.compCfgList=JSON.parse(JSON.stringify(defList))   
+                this.$refs.compsSet.setCheckeds(this.compCfgList.map(k=>k.compId),true)
             }
         },
-        onCompSelect(comp){  
+        onCompSelect(comp){   
             if(this.compCfgList.some(k=>k.compId==comp.compId)){ 
                 var compCfg=this.compCfgList.find(k=>k.compId==comp.compId)
                 this.$nextTick(()=>{
@@ -391,8 +389,9 @@ export default {
         doDelete(compCfg){ 
             var index=this.compCfgList.findIndex(k=>k.id==compCfg.id) 
             if(index>=0){ 
-                this.compCfgList.splice(index,1)
-            }
+                this.compCfgList.splice(index,1)   
+            } 
+            this.$refs.compsSet.setChecked(compCfg.compId,false)
         },
         sizeAutoChange(k){ 
              
@@ -406,7 +405,8 @@ export default {
                     this.xmRptConfig.name=this.xmRptData.rptName
                     var cfgList=JSON.parse(this.xmRptData.rptData)
                     cfgList.forEach(k=>k.id=k.compId+seq.sn())
-                    this.compCfgList=cfgList
+                    this.compCfgList=cfgList  
+                    this.$refs.compsSet.setCheckeds(this.compCfgList.map(k=>k.compId),true)
                 }
             }
         },
@@ -417,6 +417,23 @@ export default {
             })
             
         }, 
+        onSort(evt,datas){ 
+            datas.forEach((d,index)=>{
+                var comp=this.compCfgList.find(k=>k.compId==d.compId)
+                if(comp){
+                    comp.index=index
+                }
+            })
+            this.compCfgList.sort((i1,i2)=>{
+                return i1.index-i2.index
+            })
+            var compCfg=this.compCfgList.find(k=>k.compId==datas[evt.newIndex].compId)
+            this.$nextTick(()=>{ 
+                setTimeout(()=>{
+                    this.scrollToComp(compCfg) 
+                },200)
+            })
+        }
          
     },
 

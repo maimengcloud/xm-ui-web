@@ -8,21 +8,27 @@
         <el-row ref="table" :style="{height:maxTableHeight+'px',overflow:'auto'}"> 
                 <div class="moduleset-lg hidden-md-and-down"> 
                     <div class="nav">
-                    <div class="nav_item" :class="{itemActive: item.isChecked,curr:item.isCurr}" v-for="(item, index) in compsCpd" :key="index" @click="selectItem(item, index)">
-                        <img :src="item.img" alt="">
-                        <div class="desc">
-                            <p>{{index+1}} {{item.rptName}}</p>
-                            <span>
-                                {{item.desc}}
-                            </span>
-                        </div>
-                        <i v-if="item.isChecked" class="el-icon-success"></i>
-                    </div>
+                        <draggable @update="datadragEnd" v-model="datas" style='sort: false' >
+　　                        <transition-group >
+                                <div class="nav_item"  :class="{itemActive: item.isChecked,curr:item.isCurr}" v-for="(item, index) in datas" :key="index" @click="selectItem(item, index)">
+                                    <img :src="item.img" alt="">
+                                    <div class="desc">
+                                        <p>{{index+1}} {{item.rptName}}</p>
+                                        <span>
+                                            {{item.desc}}
+                                        </span>
+                                    </div>
+                                    <i v-if="item.isChecked" class="el-icon-success"></i>
+                                </div>
+　　                        </transition-group>
+                        </draggable>
                     </div>  
                 </div> 
                 <div class="moduleset-sm hidden-lg-and-up"> 
                     <div class="nav">
-                        <div class="nav_item" :class="{itemActive: item.isChecked,curr:item.isCurr}" v-for="(item, index) in compsCpd" :key="index" @click="selectItem(item, index)">
+                        <draggable @update="datadragEnd" v-model="datas" style='sort: false' >
+　　                        <transition-group >
+                        <div class="nav_item" :class="{itemActive: item.isChecked,curr:item.isCurr}" v-for="(item, index) in datas" :key="index" @click="selectItem(item, index)">
                             <div class="title"><p>{{index+1}} {{item.rptName}}</p></div> 
                             <div class="context">
                                 <img :src="item.img" alt=""></img>
@@ -32,6 +38,8 @@
                             </div>
                             <i v-if="item.isChecked" class="el-icon-success"></i>
                         </div>
+　　                        </transition-group>
+                        </draggable>
                     </div>  
                 </div>
         </el-row>
@@ -47,24 +55,26 @@ import areaStack from '../images/area-stack.png'
 import ranjintu from '../images/ranjintu.png'
 import datasetLink from '../images/dataset-link.png'
 import bar from '../images/bar.png'
+import draggable from 'vuedraggable'
 
 import { mapGetters } from 'vuex'
 import store from '@/store'
 
 export default {
-    props: ['compIds','category','showCheckedOnly'],
+    props: ['category','showCheckedOnly'],
+    components:{
+        draggable
+    },
     computed: {
         ...mapGetters(['userInfo']), 
         compsCpd(){
-            var comps=this.rptListCpd;
-            if(this.compIds && this.compIds.length>0){
-                 comps.forEach(i=>{
-                    i.isChecked=this.compIds.some(k=>k==i.compId)
-                 })
-            }
+            var comps=this.rptListCpd; 
             if(this.showCheckedOnly){
                 comps=comps.filter(k=>k.isChecked)
-            }
+            } 
+            comps.sort((i1,i2)=>{
+                return i1.index-i2.index
+            })
             return comps;
         },
         rptListCpd(){
@@ -94,7 +104,9 @@ export default {
     },
 
     watch: {
-         
+        compsCpd(){ 
+            this.datas= this.compsCpd; 
+        }
     },
 
     data() {
@@ -104,6 +116,7 @@ export default {
 				filters:{
                 category:'企业级'
             },
+            datas:[],
             comps: [
                 {isChecked:false,isCurr:false,rptName:'迭代总结',category:'迭代级',compId:'xmIterationRptOverview',desc:'显示迭代总体情况',img:pieSimple  },
                 {isChecked:false,isCurr:false,rptName:'迭代燃尽图',category:'迭代级',compId:'xmIterationBurnout',desc:'跟踪迭代的剩余工作量按日期变化趋势，识别迭代当前进度情况',img:ranjintu },
@@ -148,28 +161,28 @@ export default {
                 {isChecked:false,isCurr:false,rptName:'项目结算工时每月趋势',category:'项目级',compId:'xmProjectWorkloadSetMonthList',desc:'统计项目每月登记工时、结算工时数量分布情况',img:datasetLink  },
 
 
-                //测试级报表  
+                //测试库级报表  
                 {isChecked:false,isCurr:false,rptName:'测试计划总结',category:'测试计划级',compId:'xmTestPlanRptOverview',desc:'显示测试计划总体情况',img:pieSimple  },
-                {isChecked:false,isCurr:false,rptName:'测试库总体测试总结',category:'测试级',compId:'xmTestCasedbRptOverview',desc:'显示测试库总体情况',img:pieSimple  },
+                {isChecked:false,isCurr:false,rptName:'测试库总体测试总结',category:'测试库级',compId:'xmTestCasedbRptOverview',desc:'显示测试库总体情况',img:pieSimple  },
 
-                {isChecked:false,isCurr:false,rptName:'测试用例规划分析',category:'测试计划级,测试级,项目级,产品级,迭代级,企业级',compId:'xmTestCaseToPlanCalc',desc:'显示用例被规划到测试计划中的次数统计',img:pieSimple  },
-                {isChecked:false,isCurr:false,rptName:'测试用例需求覆盖分析',category:'测试计划级,测试级,项目级,产品级,迭代级,企业级',compId:'xmTestCaseMenuSort',initGroupBy:'menu_id',desc:'统计测试用例需求覆盖情况',img:bar  },
-                {isChecked:false,isCurr:false,rptName:'测试用例模块覆盖分析',category:'测试计划级,测试级,项目级,产品级,迭代级,企业级',compId:'xmTestCaseFuncSort',initGroupBy:'func_id',desc:'统计测试用例覆盖各个模块的情况',img:bar  },
-                {isChecked:false,isCurr:false,rptName:'测试用例负责人排行榜',category:'测试计划级,测试级,项目级,产品级,迭代级,企业级',compId:'xmTestCaseCuserSort',initGroupBy:'cuserid',desc:'统计测试团队每个人负责的测试用例数并进行排序',img:bar  },
+                {isChecked:false,isCurr:false,rptName:'测试用例规划分析',category:'测试计划级,测试库级,项目级,产品级,迭代级,企业级',compId:'xmTestCaseToPlanCalc',desc:'显示用例被规划到测试计划中的次数统计',img:pieSimple  },
+                {isChecked:false,isCurr:false,rptName:'测试用例需求覆盖分析',category:'测试计划级,测试库级,项目级,产品级,迭代级,企业级',compId:'xmTestCaseMenuSort',initGroupBy:'menu_id',desc:'统计测试用例需求覆盖情况',img:bar  },
+                {isChecked:false,isCurr:false,rptName:'测试用例模块覆盖分析',category:'测试计划级,测试库级,项目级,产品级,迭代级,企业级',compId:'xmTestCaseFuncSort',initGroupBy:'func_id',desc:'统计测试用例覆盖各个模块的情况',img:bar  },
+                {isChecked:false,isCurr:false,rptName:'测试用例负责人排行榜',category:'测试计划级,测试库级,项目级,产品级,迭代级,企业级',compId:'xmTestCaseCuserSort',initGroupBy:'cuserid',desc:'统计测试团队每个人负责的测试用例数并进行排序',img:bar  },
 
-                {isChecked:false,isCurr:false,rptName:'测试用例执行状态分布',category:'测试计划级,测试级,项目级,产品级,迭代级,企业级',compId:'xmTestPlanCaseExecStatusDist',desc:'按测试用例执行结果统计，通过、失败、忽略、阻塞',img:pieSimple  },
-                {isChecked:false,isCurr:false,rptName:'测试用例执行用户分布',category:'测试计划级,测试级,项目级,产品级,迭代级,企业级',compId:'xmTestPlanCaseUserDist',desc:'统计测试用例负责人用例执行情况',img:bar  },
-                {isChecked:false,isCurr:false,rptName:'缺陷回归分布',category:'测试计划级,测试级,项目级,产品级,迭代级,企业级',compId:'xmQuestionRetestDist',desc:'统计项目中缺陷在回归测试中分布情况，跟踪缺陷的重新打开率；',img:pieSimple  },
-                {isChecked:false,isCurr:false,rptName:'测试次数每日统计',category:'测试计划级,测试级,项目级,产品级,迭代级,企业级',compId:'xmTestDayTimesCalc',desc:'统计每日测试用例执行数量',img:bar  },
-                {isChecked:false,isCurr:false,rptName:'缺陷状态分布',category:'测试计划级,测试级,项目级,产品级,迭代级,企业级',compId:'xmQuestionStateDist',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:pieSimple  },
+                {isChecked:false,isCurr:false,rptName:'测试用例执行状态分布',category:'测试计划级,测试库级,项目级,产品级,迭代级,企业级',compId:'xmTestPlanCaseExecStatusDist',desc:'按测试用例执行结果统计，通过、失败、忽略、阻塞',img:pieSimple  },
+                {isChecked:false,isCurr:false,rptName:'测试用例执行用户分布',category:'测试计划级,测试库级,项目级,产品级,迭代级,企业级',compId:'xmTestPlanCaseUserDist',desc:'统计测试用例负责人用例执行情况',img:bar  },
+                {isChecked:false,isCurr:false,rptName:'缺陷回归分布',category:'测试计划级,测试库级,项目级,产品级,迭代级,企业级',compId:'xmQuestionRetestDist',desc:'统计项目中缺陷在回归测试中分布情况，跟踪缺陷的重新打开率；',img:pieSimple  },
+                {isChecked:false,isCurr:false,rptName:'测试次数每日统计',category:'测试计划级,测试库级,项目级,产品级,迭代级,企业级',compId:'xmTestDayTimesCalc',desc:'统计每日测试用例执行数量',img:bar  },
+                {isChecked:false,isCurr:false,rptName:'缺陷状态分布',category:'测试计划级,测试库级,项目级,产品级,迭代级,企业级',compId:'xmQuestionStateDist',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:pieSimple  },
 
-                {isChecked:false,isCurr:false,rptName:'缺陷排行榜',category:'测试计划级,测试级,项目级,产品级,迭代级,企业级',compId:'xmQuestionSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
-                {isChecked:false,isCurr:false,rptName:'缺陷提出人排行榜',category:'测试计划级,测试级,项目级,产品级,迭代级,企业级',compId:'xmQuestionAskUserSort',initGroupBy:'ask_userid',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
-                {isChecked:false,isCurr:false,rptName:'缺陷负责人排行榜',category:'测试计划级,测试级,项目级,产品级,迭代级,企业级',compId:'xmQuestionHandlerUserSort',initGroupBy:'handler_userid',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
-                {isChecked:false,isCurr:false,rptName:'缺陷模块排行榜',category:'测试计划级,测试级,项目级,产品级,迭代级,企业级',compId:'xmQuestionFuncSort',initGroupBy:'func_id',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
-                {isChecked:false,isCurr:false,rptName:'缺陷需求排行榜',category:'测试计划级,测试级,项目级,产品级,迭代级,企业级',compId:'xmQuestionMenuSort',initGroupBy:'menu_id',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
-                {isChecked:false,isCurr:false,rptName:'缺陷属性分布',category:'测试计划级,测试级,项目级,产品级,迭代级,企业级',compId:'xmQuestionAttDist',desc:'统计所有缺陷任意属性数量分布情况（实时数据）',img:pieSimple  },
-                {isChecked:false,isCurr:false,rptName:'缺陷年龄分布',category:'测试计划级,测试级,项目级,产品级,迭代级,企业级',compId:'xmQuestionAgeDist',desc:'统计所有缺陷按照年龄的分布情况，跟踪缺陷的生命周期和响应情况',img:pieSimple  },
+                {isChecked:false,isCurr:false,rptName:'缺陷排行榜',category:'测试计划级,测试库级,项目级,产品级,迭代级,企业级',compId:'xmQuestionSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
+                {isChecked:false,isCurr:false,rptName:'缺陷提出人排行榜',category:'测试计划级,测试库级,项目级,产品级,迭代级,企业级',compId:'xmQuestionAskUserSort',initGroupBy:'ask_userid',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
+                {isChecked:false,isCurr:false,rptName:'缺陷负责人排行榜',category:'测试计划级,测试库级,项目级,产品级,迭代级,企业级',compId:'xmQuestionHandlerUserSort',initGroupBy:'handler_userid',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
+                {isChecked:false,isCurr:false,rptName:'缺陷模块排行榜',category:'测试计划级,测试库级,项目级,产品级,迭代级,企业级',compId:'xmQuestionFuncSort',initGroupBy:'func_id',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
+                {isChecked:false,isCurr:false,rptName:'缺陷需求排行榜',category:'测试计划级,测试库级,项目级,产品级,迭代级,企业级',compId:'xmQuestionMenuSort',initGroupBy:'menu_id',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
+                {isChecked:false,isCurr:false,rptName:'缺陷属性分布',category:'测试计划级,测试库级,项目级,产品级,迭代级,企业级',compId:'xmQuestionAttDist',desc:'统计所有缺陷任意属性数量分布情况（实时数据）',img:pieSimple  },
+                {isChecked:false,isCurr:false,rptName:'缺陷年龄分布',category:'测试计划级,测试库级,项目级,产品级,迭代级,企业级',compId:'xmQuestionAgeDist',desc:'统计所有缺陷按照年龄的分布情况，跟踪缺陷的生命周期和响应情况',img:pieSimple  },
                 
             ],
             maxTableHeight:300,
@@ -178,21 +191,45 @@ export default {
     },
 
     methods: { 
-				
+        setChecked(compId,checked){
+            var com=this.comps.find(c=>c.compId==compId)
+            if(com){
+                com.isChecked=checked
+            }
+        },
+        setCheckeds(compIds,checked){
+            debugger;       
+            this.comps.forEach(k=>{
+                if(compIds.some(c=>c==k.compId)){
+                    k.isChecked=checked
+                }else{
+                    k.isChecked=!checked
+                }
+            }) 
+        },
         onCategroySelect(){
             this.selectItem(this.rptListCpd[0])
         },
-         selectItem(item){ 
+         selectItem(item){  
             debugger;
             this.comps.forEach(k=>k.isCurr=false)
             item.isCurr=true 
+            item.isChecked=true;
             this.$emit("row-click",item)
+         },
+         datadragEnd(evt){ 
+            debugger;
+            evt.preventDefault();
+            console.log('拖动前的索引 :' + evt.oldIndex)
+            console.log('拖动后的索引 :' + evt.newIndex)  
+             this.$emit('sort',evt,this.datas)
          }
 
 
     },
     mounted(){
         store.dispatch("toggleSideBar",false)
+        this.comps.forEach((k,index)=>k.index=index)
         //this.comps.forEach(k=>k.id=k.id?k.id:k.compId) 
         this.maxTableHeight = util.calcTableMaxHeight(this.$refs.table.$el)
         if(this.category){
@@ -203,7 +240,7 @@ export default {
             }else if(this.xmIteration && this.xmIteration.id){
                 this.filters.category="迭代级"
             }else if(this.xmTestCasedb && this.xmTestCasedb.id){
-                this.filters.category="测试级"
+                this.filters.category="测试库级"
             }else if(this.xmProject && this.xmProject.id){
                 this.filters.category="项目级"
             }else if(this.xmProduct && this.xmProduct.id){

@@ -2,7 +2,7 @@
 <section>
     <el-row  class="padding-left padding-right">
         <el-col :span="6">
-            <comps-set v-if="compIds && compIds.length>0" :comp-ids="compIds" :category="category" @row-click="onCompSelect" ref="compsSet" :show-checked-only="true"></comps-set>
+            <comps-set :category="category" @row-click="onCompSelect" ref="compsSet" :show-checked-only="true"></comps-set>
         </el-col>
         <el-col :span="18"> 
             <el-row  class="padding">
@@ -20,7 +20,7 @@
                     <el-empty description="暂未选择报表，请至少选择一个报表"></el-empty>
                 </div>
                 <div v-else id="printBody" ref="rptBox"> 
-                    <component style="margin-bottom:80px;" v-for="(item,index) in compCfgList" :key="index" :is="item.compId" :cfg="item" :init-group-by="item.initGroupBy" :show-tool-bar="false" :id="item.id" :rpt-datas="item.rawDatas" :is-rpt-cfg="false" :show-params="paramsVisible"></component>  
+                    <component style="margin-bottom:80px;" v-for="(item,index) in compCfgList" :key="item.compId" :is="item.compId" :cfg="item" :init-group-by="item.initGroupBy" :show-tool-bar="false" :id="item.id" :rpt-datas="item.rawDatas" :is-rpt-cfg="false" :show-params="paramsVisible"></component>  
                 </div>
             </el-row>
         </el-col> 
@@ -45,10 +45,7 @@ export default {
     },
     props:['showParams','xmRptData'],
     computed: {
-        ...mapGetters(['userInfo']), 
-        compIds(){
-           return this.compCfgList.map(k=>k.compId)
-        },
+        ...mapGetters(['userInfo']),  
         //业务类型1-产品报告，2-迭代报告，3-测试计划报告，4-项目报告，5-企业报告，6-测试库报告
         category(){
             if( !this.xmRptData || !this.xmRptData.id){
@@ -62,7 +59,7 @@ export default {
                 return "迭代级"
             }
             if(this.xmRptData.bizType=='3'){
-                return "测试级"
+                return "测试计划级"
             }
             if(this.xmRptData.bizType=='4'){
                 return "项目级"
@@ -71,7 +68,7 @@ export default {
                 return "企业级"
             }
             if(this.xmRptData.bizType=='6'){
-                return "测试计划级"
+                return "测试库级"
             }
         }
         
@@ -118,9 +115,11 @@ export default {
             if(this.xmRptData && this.xmRptData.rptData){
                 var cfgJson=JSON.parse(this.xmRptData.rptData) 
                 cfgJson.forEach(k=>k.id=k.compId+seq.sn())
-                this.compCfgList=cfgJson;
+                this.compCfgList=cfgJson; 
+                this.$refs.compsSet.setCheckeds(this.compCfgList.map(k=>k.compId),true)
             }else{
                 this.compCfgList=[]
+                this.$refs.compsSet.setCheckeds([],true)
             }
         },
         onCompSelect(comp){  
