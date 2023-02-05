@@ -37,6 +37,7 @@ export default {
     xmQuestionRetestDist:()=>import('./product/questionRetestDist.vue'),
 
     
+    xmTestPlanRptOverview:()=>import('./testPlan/testPlanRptOverview.vue'),
     xmTestPlanCaseExecStatusDist:()=>import('./testPlan/testPlanCaseExecStatusDist.vue'),
     xmTestPlanCaseUserDist:()=>import('./testPlan/testPlanCaseUserDist.vue'),
     xmTestDayTimesCalc:()=>import('./testPlan/testDayTimesCalc.vue'),

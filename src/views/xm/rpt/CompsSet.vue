@@ -146,6 +146,7 @@ export default {
 
 
                 //测试级报表  
+                {isChecked:false,isCurr:false,rptName:'测试计划总结',category:'测试计划级,测试级',compId:'xmTestPlanRptOverview',desc:'显示测试计划总体情况',img:pieSimple  },
                 {isChecked:false,isCurr:false,rptName:'测试用例规划分析',category:'测试级,项目级,产品级,迭代级,企业级',compId:'xmTestCaseToPlanCalc',desc:'显示用例被规划到测试计划中的次数统计',img:pieSimple  },
                 {isChecked:false,isCurr:false,rptName:'测试用例需求覆盖分析',category:'测试级,项目级,产品级,迭代级,企业级',compId:'xmTestCaseMenuSort',initGroupBy:'menu_id',desc:'统计测试用例需求覆盖情况',img:bar  },
                 {isChecked:false,isCurr:false,rptName:'测试用例模块覆盖分析',category:'测试级,项目级,产品级,迭代级,企业级',compId:'xmTestCaseFuncSort',initGroupBy:'func_id',desc:'统计测试用例覆盖各个模块的情况',img:bar  },
