@@ -78,7 +78,7 @@ export default {
             return comps;
         },
         rptListCpd(){
-            if(!this.filters.category){
+            if(  !this.filters.category){
                 return this.comps;
             }else{
                 return this.comps.filter(i=>i.category.indexOf(this.filters.category)>=0)
@@ -104,6 +104,9 @@ export default {
     },
 
     watch: {
+        category(){
+            this.filters.category=this.category
+        },
         compsCpd(){ 
             this.datas= this.compsCpd; 
         }
@@ -127,7 +130,7 @@ export default {
                 {isChecked:false,isCurr:false,rptName:'迭代缺陷每日累积',category:'迭代级',compId:'xmIterationQuestionDayAccumulate',desc:'跟踪一段时间内，各种程度和类别的缺陷累积情况，监控缺陷的变化趋势',img:areaStack  },
                 
                 //企业级报表
-                {isChecked:false,isCurr:false,rptName:'企业总结',category:'企业级',compId:'xmBranchRptOverview',desc:'显示企业总体情况',img:pieSimple  },
+                //{isChecked:false,isCurr:false,rptName:'企业总结',category:'企业级',compId:'xmBranchRptOverview',desc:'显示企业总体情况',img:pieSimple  },
                 {isChecked:false,isCurr:false,rptName:'企业缺陷每日趋势',category:'企业级',compId:'xmBranchQuestionDayTrend',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:lineStack  },
                 {isChecked:false,isCurr:false,rptName:'企业工作项每日趋势',category:'企业级',compId:'xmBranchWorkItemDayList',desc:'统计迭代每日工作项数量分布情况',img:datasetLink  },  
                 //{isChecked:false,isCurr:false,rptName:'企业缺陷每日趋势',category:'企业级',compId:'xmBranchQuestionDayTrend',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:lineStack  },
