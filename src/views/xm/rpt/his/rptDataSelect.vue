@@ -12,12 +12,12 @@
 			<!--列表 XmRptData xm_rpt_data-->
 			<el-table ref="xmRptDataTable" :data="xmRptDatas" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
                 <el-table-column  type="selection" width="55" show-overflow-tooltip fixed="left"></el-table-column> 
-                <el-table-column prop="rptName" label="报告名称" min-width="120" show-overflow-tooltip>
+                <el-table-column prop="rptName" label="报告名称" min-width="250" show-overflow-tooltip>
 				    <template slot-scope="scope">
 				        <span> {{scope.row.rptName}} </span>
                     </template>
 				</el-table-column>  
-				<el-table-column prop="bizDate" label="业务日期" min-width="120" show-overflow-tooltip>
+				<el-table-column prop="bizDate" label="业务日期" min-width="100" show-overflow-tooltip>
 				    <template slot-scope="scope">
 				        <span> {{scope.row.bizDate}} </span>
                     </template>
