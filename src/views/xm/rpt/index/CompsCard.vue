@@ -2,7 +2,7 @@
 <section>
     <el-row  class="padding-left padding-right">
         <el-col :span="6">
-            <comps-set  :category="category" @row-click="onCompSelect" ref="compsSet" :show-checked-only="isRptShow||showCheckedOnly" @sort="onSort"></comps-set>
+            <comps-set  :category="category" @row-click="onCompSelect" ref="compsSet" :show-checked-only="isRptShow||showCheckedOnly" @sort="onSort" @change="onCompChange"></comps-set>
         </el-col>
         <el-col :span="18"> 
             <el-row  class="padding">
@@ -433,6 +433,14 @@ export default {
                     this.scrollToComp(compCfg) 
                 },200)
             })
+        },
+        onCompChange(compCfg,checked){  
+            if(checked=='false'||!checked){
+                var index=this.compCfgList.findIndex(k=>k.id==compCfg.id) 
+                if(index>=0){ 
+                    this.compCfgList.splice(index,1)   
+                } 
+            }
         }
          
     },

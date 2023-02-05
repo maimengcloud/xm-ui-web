@@ -18,7 +18,7 @@
                                             {{item.desc}}
                                         </span>
                                     </div> 
-                                    <span class="check"><el-checkbox  v-model="item.isChecked" :true-label="'true'" :false-label="'false'"></el-checkbox></span>
+                                    <span class="check"><el-checkbox  v-model="item.isChecked" :true-label="'true'" :false-label="'false'" @change="onChange(item,$event)"></el-checkbox></span>
                                 </div>
 　　                        </transition-group>
                         </draggable>
@@ -36,7 +36,7 @@
                                     <span>{{item.desc}}</span>
                                 </div>
                             </div>
-                            <span class="check"><el-checkbox  v-model="item.isChecked" :true-label="'true'" :false-label="'false'"></el-checkbox></span>
+                            <span class="check"><el-checkbox  v-model="item.isChecked" :true-label="'true'" :false-label="'false'" @change="onChange(item,$event)"></el-checkbox></span>
                         </div>
 　　                        </transition-group>
                         </draggable>
@@ -206,6 +206,9 @@ export default {
                     k.isChecked=!checked
                 }
             }) 
+        },
+        onChange(comp,checked){ 
+            this.$emit('change',comp,checked) 
         },
         onCategroySelect(){
             this.selectItem(this.rptListCpd[0])
