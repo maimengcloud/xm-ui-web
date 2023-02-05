@@ -2,6 +2,7 @@
 	<section class="page-container border padding">
 		<el-row>
 			<el-input v-model="filters.key" style="width: 40%;" placeholder="模糊查询"></el-input>
+            <mdp-date-range v-model="filters" start-key="startBizDate" end-key="endBizDate"></mdp-date-range>
 			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmRptDatas" icon="el-icon-search">查询</el-button>
 			<span style="float:right;">
  			    <el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete" plain></el-button>
@@ -48,7 +49,7 @@ export default {
     name:'xmRptDataList',
     components: { 
     },
-    props:['visible','xmRptConfig'],
+    props:['visible','xmRptConfig',],
     computed: {
         ...mapGetters(['userInfo']),
 
@@ -64,7 +65,9 @@ export default {
     data() {
         return {
             filters: {
-                key: ''
+                key: '',
+                startBizDate:'',
+                endBizDate:'',
             },
             xmRptDatas: [],//查询结果
             pageInfo:{//分页数据
@@ -144,9 +147,14 @@ export default {
             if(this.filters.key){
                 params.key=this.filters.key
             }
+            if(this.filters.startBizDate){
+                params.startBizDate=this.filters.startBizDate
+                params.endBizDate=this.filters.endBizDate
+            }
             if(!this.xmRptConfig || !this.xmRptConfig.id){
                 return;
             }
+            
             params.cfgId=this.xmRptConfig.id
             this.load.list = true;
             listXmRptData(params).then((res) => {
