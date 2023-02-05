@@ -642,7 +642,10 @@ export default {
         icon: 'chart'
       },
       
-      children: [
+      children: [        
+        
+        { path: 'his', component: _import('xm/rpt/indexForHis'), name: 'rptIndex', meta: { title: '历史报告',roles:["user"] }},  
+        { path: 'his/detail', component: _import('xm/rpt/indexForHisDetail'), name: 'rptHisDetail', meta: { title: '报告明细',roles:["user"] },hidden:true}, 
         { path: 'index', component: _import('xm/rpt/index'), name: 'rptIndex', meta: { title: '指标分析',roles:["user"] }}, 
         { path: 'branch/branchDatavFullScreen',   name: 'branchDatavFullScreen', meta: {   title: '机构效能',openTab:true,outUrl:"${curlDomain}/"+process.env.CONTEXT+"/"+process.env.VERSION+"/#/datav/xm/branch/branchDatavFullScreen" }}, 
       ]

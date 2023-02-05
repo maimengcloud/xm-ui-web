@@ -2,11 +2,13 @@
 <section>
     <el-row  class="padding-left padding-right">
         <el-col :span="6">
-            <comps-set :comp-ids="compIds" :category="category" @row-click="onCompSelect" ref="compsSet" :show-checked-only="isRptShow"></comps-set>
+            <comps-set :comp-ids="compIds" :category="category" @row-click="onCompSelect" ref="compsSet" :show-checked-only="isRptShow||showCheckedOnly"></comps-set>
         </el-col>
         <el-col :span="18"> 
             <el-row  class="padding">
-                <span class="rpt-name">{{ xmRptData && xmRptData.id?xmRptData.rptName:(xmRptConfig&&xmRptConfig.id?xmRptConfig.name: rptConfigParamsCpd.name+'-报告')}}</span>
+                <span class="rpt-name" v-if="xmRptData && xmRptData.id">{{  xmRptData.rptName}}</span>
+                <span class="rpt-name" v-else-if="xmRptConfig && xmRptConfig.id">{{  xmRptConfig.name}}</span>
+                <span class="rpt-name" v-else>{{  rptConfigParamsCpd.name+'-报告'}}</span> 
                 <span style="float:right;">
                     <el-button type="text" v-if="isRptShow==true && isRptCfg==false" @click="toQueryRptData" icon="el-icon-time">查看历史报告</el-button>  
                     <el-button type="primary" v-if="isRptShow==true && isRptCfg==false && (!xmRptData||!xmRptData.id)" @click="showCreateRptData()" icon="el-icon-time">保存报告(可供历史查询)</el-button>  
@@ -33,8 +35,8 @@
             </el-row>
         </el-col> 
     </el-row>   
-    <el-dialog append-to-body modal-append-to-body :visible.sync="rptDataListVisible" top="20px" width="60%">
-        <rpt-data-list :xm-rpt-config="xmRptConfig" v-if="rptDataListVisible" @select="onRptDataSelect"/>
+    <el-dialog append-to-body modal-append-to-body :visible.sync="rptDataSelectVisible" top="20px" width="60%">
+        <rpt-data-select :xm-rpt-config="xmRptConfig" v-if="rptDataSelectVisible" @select="onRptDataSelect"/>
     </el-dialog> 
     
     <el-dialog title="请确认" append-to-body modal-append-to-body :visible.sync="createRptConfigVisible">
@@ -65,85 +67,27 @@
 
 <script>  
  
-import util from '@/common/js/util';//全局公共库
+import util from '@/common/js/util';//全局公共库 
 import seq from '@/common/js/sequence';//全局公共库
 import VueGridLayout from 'vue-grid-layout';
 import { mapGetters } from 'vuex' 
 import CompsSet from '@/views/xm/rpt/CompsSet'  
-import rptDataList from '@/views/xm/rpt/his/rptDataList'  
-import { addXmRptData  } from '@/api/xm/core/xmRptData';
-
+import rptDataSelect from '@/views/xm/rpt/his/rptDataSelect'  
+import { addXmRptData  } from '@/api/xm/core/xmRptData'; 
 
 import {  listXmRptConfig,editXmRptConfig,addXmRptConfig } from '@/api/xm/core/xmRptConfig';
  
+import rptComps from './comps.js';//组件库
+
 export default {
     components: { 
         GridLayout: VueGridLayout.GridLayout,
         GridItem: VueGridLayout.GridItem, 
-        CompsSet,  rptDataList,
-        xmTestRptOverview:()=>import("../core/xmTestPlan/xmTestRptOverview.vue"),   
-        xmMenuDayTrend:()=>import("./product/menuDayTrend.vue"),   
-        xmMenuDayAccumulate:()=>import("./product/menuDayTrend.vue"),  
-        xmMenuAttDist:()=>import('./product/menuAttDist'),
-        xmMenuAgeDist:()=>import('./product/menuAgeDist.vue'),
-        xmMenuSort:()=>import('./product/menuSort.vue'), 
-        xmMenuFuncSort:()=>import('./product/menuSort.vue'),
-        xmMenuProductSort:()=>import('./product/menuSort.vue'),
-        xmMenuIterationSort:()=>import('./product/menuSort.vue'), 
-        xmProductWorkItemDayList:()=>import('./product/productWorkItemDayList.vue'),
-
-
-        xmTaskDayTrend:()=>import('./project/taskDayTrend.vue'),
-        xmTaskDayAccumulate:()=>import('./project/taskDayAccumulate.vue'),
-        xmTaskAttDist:()=>import('./project/taskAttDist.vue'),
-        xmTaskAgeDist:()=>import('./project/taskAgeDist.vue'),
-        xmTaskSort:()=>import('./project/taskSort.vue'),
-        xmProjectWorkItemDayList:()=>import('./project/projectWorkItemDayList.vue'),
-        xmProjectWorkloadSetDayList:()=>import('./project/projectWorkloadSetDayList.vue'),
-        xmProjectWorkloadSetMonthList:()=>import('./project/projectWorkloadSetMonthList.vue'),
-
-        xmQuestionDayTrend:()=>import('./product/questionDayTrend.vue'),
-        xmQuestionDayAccumulate:()=>import('./product/questionDayAccumulate.vue'),
-        xmQuestionAttDist:()=>import('./product/questionAttDist.vue'),
-        xmQuestionStateDist:()=>import('./product/questionAttDist.vue'),
-        xmQuestionAgeDist:()=>import('./product/questionAgeDist.vue'),
-        xmQuestionBugReasonDist:()=>import('./product/questionAttDist.vue'),
-        xmQuestionBugTypeDist:()=>import('./product/questionAttDist.vue'),
-        xmQuestionPriorityDist:()=>import('./product/questionAttDist.vue'),
-        xmQuestionSort:()=>import('./product/questionSort.vue'),
-        xmQuestionAskUserSort:()=>import('./product/questionSort.vue'),
-        xmQuestionHandlerUserSort:()=>import('./product/questionSort.vue'),
-        xmQuestionFuncSort:()=>import('./product/questionSort.vue'),
-        xmQuestionMenuSort:()=>import('./product/questionSort.vue'),
-        xmQuestionRetestDist:()=>import('./product/questionRetestDist.vue'),
-
-        
-        xmTestPlanCaseExecStatusDist:()=>import('./testPlan/testPlanCaseExecStatusDist.vue'),
-        xmTestPlanCaseUserDist:()=>import('./testPlan/testPlanCaseUserDist.vue'),
-        xmTestDayTimesCalc:()=>import('./testPlan/testDayTimesCalc.vue'),
-        xmTestCaseToPlanCalc:()=>import('./testPlan/testCaseToPlanCalc.vue'),
-        xmTestCaseSort:()=>import('./testCase/testCaseSort.vue'),
-        xmTestCaseCuserSort:()=>import('./testCase/testCaseSort.vue'),
-        xmTestCaseFuncSort:()=>import('./testCase/testCaseSort.vue'),
-        xmTestCaseMenuSort:()=>import('./testCase/testCaseSort.vue'),
-
-        
-        xmIterationMenuDayTrend:()=>import('./iteration/menuDayTrend.vue'),
-        xmIterationMenuDayAccumulate:()=>import('./iteration/menuDayAccumulate.vue'),
-        xmIterationBurnout:()=>import('./iteration/burnout.vue'),
-        xmIterationWorkItemDayList:()=>import('./iteration/iterationWorkItemDayList.vue'),
-        xmIterationQuestionDayTrend:()=>import('./iteration/questionDayTrend.vue'),
-        xmIterationQuestionDayAccumulate:()=>import('./iteration/questionDayAccumulate.vue'),
-
-        
-        xmBranchWorkItemDayList:()=>import('./branch/branchWorkItemDayList.vue'),
-        xmBranchQuestionDayTrend:()=>import('./branch/questionDayTrend.vue'),
-        xmBranchQuestionDayAccumulate:()=>import('./branch/questionDayAccumulate.vue'),
-        xmBranchMenuDayTrend:()=>import('./branch/menuDayTrend.vue'),
-        xmBranchMenuDayAccumulate:()=>import('./branch/menuDayAccumulate.vue'),
+        CompsSet,  rptDataSelect,
+        ...rptComps
         
     },
-    props:['xmTestCasedb','xmTestPlan','xmProduct','xmProject','xmIteration','category','showParams'],
+    props:['xmTestCasedb','xmTestPlan','xmProduct','xmProject','xmIteration','category','showParams','showCheckedOnly'],
     computed: {
         ...mapGetters(['userInfo']), 
         compIds(){
@@ -178,10 +122,6 @@ export default {
                     params.bizId=this.xmTestCasedb.id
                     params.name=this.xmTestCasedb.name
                 }
-               
-                
-             }else {
-                return params;
              }
              return params;
         },
@@ -217,15 +157,15 @@ export default {
         return {
             isRptCfg:false,
             isRptShow:false,
-            xmRptConfig:{},
-            xmRptData:{id:'',rptName:'',bizId:'',bizType:'',bizDate:''},
-            xmRptDataInit:{id:'',rptName:'',bizId:'',bizType:'',bizDate:''},
+            xmRptConfig:{id:'',name:'',bizType:'',bizId:'',cfg:[]},
+            xmRptData:{id:'',rptName:'',bizId:'',bizType:'',bizDate:'',rptData:[]},
+            xmRptDataInit:{id:'',rptName:'',bizId:'',bizType:'',bizDate:'',rptData:[]},
             compCfgList:[],
             maxTableHeight:300, 
             // 布局列数
             layoutColNum: 12,  
             paramsVisible:true,
-            rptDataListVisible:false,
+            rptDataSelectVisible:false,
             createRptDataVisible:false,
             createRptConfigVisible:false,
         }
@@ -250,13 +190,13 @@ export default {
             }
              
             var curlDomain=window.location.protocol+"//"+window.location.host; //   返回https://mp.csdn.net
-            var link=curlDomain+"/"+process.env.CONTEXT+"/"+process.env.VERSION+"/#/xm/rpt/hisRpt?id="+this.xmRptData.id
+            var link=curlDomain+"/"+process.env.CONTEXT+"/"+process.env.VERSION+"/#/xm/rpt/his/detail?id="+this.xmRptData.id
             this.$copyText(link).then(e => {
                 this.$notify({position:'bottom-left',showClose:true,message:"拷贝链接成功，您可以黏贴到任何地方",type:'success'})
             }); 
         },
         showCreateRptData(){
-            if(this.xmRptConfig==null){
+            if(!this.xmRptConfig|| !this.xmRptConfig.id){
                 this.$message.error("还没制作报告，请先制作报告")
                 return;
             }  
@@ -272,10 +212,10 @@ export default {
 
         },
         toQueryRptData(){
-            this.rptDataListVisible=true;
+            this.rptDataSelectVisible=true;
         },
         createRptData(){
-            if(this.xmRptConfig==null){
+            if(!this.xmRptConfig|| !this.xmRptConfig.id){
                 this.$message.error("还没制作报告，请先制作报告")
                 return;
             }  
@@ -283,15 +223,15 @@ export default {
                 this.$message.error("请输入报告名称")
                 return;
             }
-            var xmRptData={...this.xmRptData,cfgId:this.xmRptConfig.id,rptData:[]}   
+            var xmRptData={rptName:this.xmRptData.rptName,bizType:this.xmRptConfig.bizType,bizId:this.xmRptConfig.bizId,cfgId:this.xmRptConfig.id,rptData:[]}   
             this.compCfgList.forEach(k=>{
                 if(this.$refs[k.id] && this.$refs[k.id][0].$refs && this.$refs[k.id][0].$refs[k.id]){ 
                     var com=this.$refs[k.id][0].$refs[k.id]
-                    var comData={compId:k.compId,params:com.params,title:com.title,remark:com.remark} 
+                    var comData={compId:k.compId,params:com.params,title:com.title,remark:com.remark,rawDatas:com.rawDatas} 
                     xmRptData.rptData.push(comData)
                 }else{ 
                     var com=this.$refs[k.id][0]
-                    var comData={compId:k.compId,params:com.params,title:com.title,remark:com.remark} 
+                    var comData={compId:k.compId,params:com.params,title:com.title,remark:com.remark,rawDatas:com.rawDatas} 
                     xmRptData.rptData.push(comData)
                 }
             })
@@ -345,11 +285,20 @@ export default {
 				
 				var params={bizType:this.rptConfigParamsCpd.bizType,bizId:this.rptConfigParamsCpd.bizId}
             listXmRptConfig(params).then(res=>{
-                this.xmRptConfig=res.data.data[0] 
+                if(!res.data.tips.isOk){
+                    this.$message.error(res.data.tips.msg)
+                    return ;
+                }
+                if(!res.data.data || res.data.data.length==0 ){
+                    this.xmRptConfig={}
+                }else{
+                    this.xmRptConfig=res.data.data[0] 
+                }
+                
             })
         },
         initCompCfgList(){
-            if(this.xmRptConfig && this.xmRptConfig.cfg){
+            if(this.xmRptConfig && this.xmRptConfig.id && this.xmRptConfig.cfg){
                 var cfgJson=JSON.parse(this.xmRptConfig.cfg) 
                 cfgJson.forEach(k=>k.id=k.compId+seq.sn())
                 this.compCfgList=cfgJson;
@@ -451,7 +400,7 @@ export default {
         },
         onRptDataSelect(rptData){
             this.xmRptData=rptData
-            this.rptDataListVisible=false;
+            this.rptDataSelectVisible=false;
             if(this.xmRptData && this.xmRptData.id ){
                 if( this.xmRptData.cfgId==this.xmRptConfig.id){
                     this.xmRptConfig.name=this.xmRptData.rptName
