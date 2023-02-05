@@ -78,13 +78,8 @@
 				<span>报告总结</span>
 			</el-row>
 			<el-row> 
-				<el-input  type="textarea" :rows="8" v-model="rawDatas.summaryRemark"></el-input>
-			</el-row>
-			<el-row v-if="rawDatas.summaryRemark!==rawDatasBak.summaryRemark" >
-				<span style="float:right;"> 
-				<el-button type="primary" @click.native="editSomeFields(rawDatas,'summaryRemark',rawDatas.summaryRemark)">提交</el-button>
-				</span>
-			</el-row>
+				<el-input  type="textarea" :rows="8" v-model="remark"></el-input>
+			</el-row> 
 		</el-row>
 	</section>
 </template>
