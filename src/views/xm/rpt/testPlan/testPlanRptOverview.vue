@@ -1,15 +1,18 @@
 <template>
-	<section  class="padding"> 
+	<section> 
 		<el-row :class="{'row-box':true,'cfg':isRptCfg}">
 			<div class="rpt-title">{{ rawDatas.name }}</div>
-			<el-input class="input" v-model="rawDatas.name" placeholder="计划名称"/>
+			<el-input class="input" v-model="rawDatas.name" placeholder="报告名称"/>
 		</el-row>
 		<el-row :class="{'row-box':true,'cfg':isRptCfg}">
 			<div class="title">{{ title?title:'报告概览' }}</div>
 			<el-input class="input" v-model="title" placeholder="报告概览"/>
 		</el-row>  
-		<el-row ref="table">
-			<el-row class="box">
+		<el-row ref="table" class="padding">
+		<el-row class="padding">
+			<span>数据汇总</span>
+		</el-row>
+			<el-row class="box padding">
 				<el-col :span="6" class="box-red">
 					<div class="box-info">  
 							<div class="num">{{rawDatas.totalCases?rawDatas.totalCases:'0'}}个</div>
@@ -70,17 +73,18 @@
 					<mdp-date-range :auto-default="false" placeholder="选择日期" v-model="rawDatas" start-key="stime" end-key="etime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" ></mdp-date-range>
 				</el-form-item>   
 			</el-form>
-		</el-row>
-		<el-row class="padding-bottom">
-			<span>报告总结</span>
-		</el-row>
-		<el-row> 
-			<el-input  type="textarea" :rows="8" v-model="rawDatas.summaryRemark"></el-input>
-		</el-row>
-		<el-row v-if="rawDatas.summaryRemark!==rawDatasBak.summaryRemark" >
-			<span style="float:right;"> 
-            <el-button type="primary" @click.native="editSomeFields(rawDatas,'summaryRemark',rawDatas.summaryRemark)">提交</el-button>
-			</span>
+			
+			<el-row>
+				<span>报告总结</span>
+			</el-row>
+			<el-row> 
+				<el-input  type="textarea" :rows="8" v-model="rawDatas.summaryRemark"></el-input>
+			</el-row>
+			<el-row v-if="rawDatas.summaryRemark!==rawDatasBak.summaryRemark" >
+				<span style="float:right;"> 
+				<el-button type="primary" @click.native="editSomeFields(rawDatas,'summaryRemark',rawDatas.summaryRemark)">提交</el-button>
+				</span>
+			</el-row>
 		</el-row>
 	</section>
 </template>
@@ -262,5 +266,5 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 </script>
 
 <style lang="scss" scoped>  
-@import url('../index/overview.scss');
+@import '../index/overview.scss';
 </style>
