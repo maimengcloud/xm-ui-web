@@ -17,6 +17,7 @@
                     <el-button type="warning" v-if="isRptCfg==true" @click="toSaveRptCfg">保存报告</el-button>  
                     <el-button type="text" v-if="paramsVisible==true" @click="paramsVisible=false">隐藏过滤条件</el-button>  
                     <el-button type="text" v-if="paramsVisible==false" @click="paramsVisible=true">显示过滤条件</el-button> 
+                    <el-button type="text" v-if="isRptShow==true && isRptCfg==false && xmRptData && xmRptData.id" @click="toShareRpt" icon="el-icon-share">分享</el-button>  
                     <el-button type="text" v-print="{id:'printBody',popTitle:xmRptData && xmRptData.id?xmRptData.rptName:(xmRptConfig&&xmRptConfig.id?xmRptConfig.name: rptConfigParamsCpd.name+'-报告')}" icon="el-icon-printer"></el-button>
                     <el-button type="text" @click="exportToPdf">pdf</el-button> 
                 </span> 
@@ -69,7 +70,7 @@ import seq from '@/common/js/sequence';//全局公共库
 import VueGridLayout from 'vue-grid-layout';
 import { mapGetters } from 'vuex' 
 import CompsSet from '@/views/xm/rpt/CompsSet'  
-import rptDataList from '@/views/xm/rpt/rptDataList'  
+import rptDataList from '@/views/xm/rpt/his/rptDataList'  
 import { addXmRptData  } from '@/api/xm/core/xmRptData';
 
 
@@ -241,6 +242,18 @@ export default {
                 this.getXmRptConfig();
             }
            
+        },
+        toShareRpt(){
+            if(!this.xmRptData||!this.xmRptData.id){
+                this.$message.error("只能分享历史报告")
+                return;
+            }
+             
+            var curlDomain=window.location.protocol+"//"+window.location.host; //   返回https://mp.csdn.net
+            var link=curlDomain+"/"+process.env.CONTEXT+"/"+process.env.VERSION+"/#/xm/rpt/hisRpt?id="+this.xmRptData.id
+            this.$copyText(link).then(e => {
+                this.$notify({position:'bottom-left',showClose:true,message:"拷贝链接成功，您可以黏贴到任何地方",type:'success'})
+            }); 
         },
         showCreateRptData(){
             if(this.xmRptConfig==null){

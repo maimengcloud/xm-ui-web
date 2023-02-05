@@ -544,7 +544,7 @@
 				var curlDomain=window.location.protocol+"//"+window.location.host; //   返回https://mp.csdn.net
 				var link=curlDomain+"/"+process.env.CONTEXT+"/"+process.env.VERSION+"/#/xm/core/xmQuestion/XmQuestionDetailRoute?id="+this.editForm.id
 				this.$copyText(link).then(e => {
-					this.$notify({position:'bottom-left',showClose:true,message:"拷贝成果",type:'success'})
+					this.$notify({position:'bottom-left',showClose:true,message:"拷贝链接成功，您可以黏贴到任何地方",type:'success'})
 				});
 			}, 
 			onFuncSelected(row){

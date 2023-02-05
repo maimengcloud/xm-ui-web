@@ -220,8 +220,8 @@ export default {
           hidden:true
         },
         {
-          path: 'report',
-          component: _import('xm/rpt/reportIndexForProject'),
+          path: 'rpt',
+          component: _import('xm/rpt/indexForProject'),
           name: 'projectReport',
           iconCls: 'fa el-icon-menu',
           meta: {
@@ -422,8 +422,8 @@ export default {
           hidden:true
         },
         {
-          path: 'report',
-          component: _import('xm/rpt/reportIndexForProduct'),
+          path: 'rpt',
+          component: _import('xm/rpt/indexForProduct'),
           name: 'productReport',
           iconCls: 'fa el-icon-menu',
           meta: {
@@ -561,8 +561,8 @@ export default {
           hidden:true
         },
         {
-          path: 'report',
-          component: _import('xm/rpt/reportIndexForIteration'),
+          path: 'rpt',
+          component: _import('xm/rpt/indexForIteration'),
           name: 'iterationReport',
           iconCls: 'fa el-icon-menu',
           meta: {
@@ -610,7 +610,7 @@ export default {
         { path: 'flow', component: _import('xm/core/xmTestCase/XmTestCaseFlow'), name: 'testFlow', meta: { title: '用例评审',roles:["user"] },hidden:true},
         { path: 'plan', component: _import('xm/core/xmTestPlan/Overview'), name: 'testPlan', meta: { title: '测试计划',roles:["user"] },hidden:true},
         { path: 'group', component: _import('xm/core/xmGroup/XmGroupForTest'), name: 'testGroup', meta: { title: '团队',roles:["user"] },hidden:true},
-        { path: 'report', component: _import('xm/rpt/reportIndexForTest'), name: 'testReport', meta: { title: '统计分析',roles:["user"] },hidden:true},
+        { path: 'rpt', component: _import('xm/rpt/indexForTest'), name: 'testReport', meta: { title: '统计分析',roles:["user"] },hidden:true},
 
       ]
     }, 
@@ -634,7 +634,7 @@ export default {
     
     {
       path: '/xm/rpt', 
-      name: 'reportIndex', 
+      name: 'xmRpt', 
       component: Layout,
       iconCls: 'fa el-icon-menu',
       meta: {
@@ -643,7 +643,7 @@ export default {
       },
       
       children: [
-        { path: 'reportIndex', component: _import('xm/rpt/index'), name: 'reportIndex', meta: { title: '指标分析',roles:["user"] }}, 
+        { path: 'index', component: _import('xm/rpt/index'), name: 'rptIndex', meta: { title: '指标分析',roles:["user"] }}, 
         { path: 'branch/branchDatavFullScreen',   name: 'branchDatavFullScreen', meta: {   title: '机构效能',openTab:true,outUrl:"${curlDomain}/"+process.env.CONTEXT+"/"+process.env.VERSION+"/#/datav/xm/branch/branchDatavFullScreen" }}, 
       ]
     },
