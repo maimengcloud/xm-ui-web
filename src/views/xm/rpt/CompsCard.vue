@@ -29,7 +29,7 @@
                     <el-empty description="暂未选择报表，请至少选择一个报表"></el-empty>
                 </div>
                 <div v-else id="printBody" ref="rptBox"> 
-                    <component style="margin-bottom:80px;" v-for="(item,index) in compCfgList" :key="index" :is="item.compId" :xm-test-plan="xmTestPlan" :xm-product="xmProduct" :xm-project="xmProject" :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :category="category" :cfg="item.cfg" :ref="item.id" @delete="doDelete(item)" :init-group-by="item.initGroupBy" :show-tool-bar="false" :id="item.id" :rpt-data="item.rawDatas" :show-params="paramsVisible"></component>
+                    <component style="margin-bottom:80px;" v-for="(item,index) in compCfgList" :key="index" :is="item.compId" :xm-test-plan="xmTestPlan" :xm-product="xmProduct" :xm-project="xmProject" :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb" :category="category" :cfg="item.cfg" :ref="item.id" @delete="doDelete(item)" :init-group-by="item.initGroupBy" :show-tool-bar="false" :id="item.id" :rpt-datas="item.rawDatas" :is-rpt-cfg="isRptCfg" :show-params="paramsVisible"></component>
                          
                 </div>
             </el-row>

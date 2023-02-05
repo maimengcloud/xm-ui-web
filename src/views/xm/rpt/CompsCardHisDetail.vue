@@ -20,7 +20,7 @@
                     <el-empty description="暂未选择报表，请至少选择一个报表"></el-empty>
                 </div>
                 <div v-else id="printBody" ref="rptBox"> 
-                    <component style="margin-bottom:80px;" v-for="(item,index) in compCfgList" :key="index" :is="item.compId" :cfg="item" :init-group-by="item.initGroupBy" :show-tool-bar="false" :id="item.id" :rpt-datas="item.rawDatas" :show-params="paramsVisible"></component>  
+                    <component style="margin-bottom:80px;" v-for="(item,index) in compCfgList" :key="index" :is="item.compId" :cfg="item" :init-group-by="item.initGroupBy" :show-tool-bar="false" :id="item.id" :rpt-datas="item.rawDatas" :is-rpt-cfg="false" :show-params="paramsVisible"></component>  
                 </div>
             </el-row>
         </el-col> 
@@ -156,7 +156,7 @@ export default {
         exportToPdf(){
             this.paramsVisible=false
             this.$nextTick(()=>{
-                this.$PDFSave(this.$refs.rptBox, this.rptConfigParamsCpd.name+"-报告");  
+                this.$PDFSave(this.$refs.rptBox, this.xmRptData.rptName);  
             })
             
         }, 

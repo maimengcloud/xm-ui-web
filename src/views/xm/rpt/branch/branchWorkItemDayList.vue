@@ -1,7 +1,7 @@
 <template> 
 			<el-row :gutter="5" >
 				<el-col :span="showParams?23:24">  
-					<div class="rpt-box">
+					<el-row class="rpt-box">
 						<el-row v-if="isRptCfg">
 							<el-row class="row-box padding-top">
 								<span class="title">{{title?title:'请输入标题'}}</span><el-input class="input" v-model="title" placeholder="请输入标题"></el-input>
@@ -19,10 +19,10 @@
 								<span class="remark">{{remark}}</span>
 							</el-row>
 						</el-row>
-						<el-row> 
+					</el-row> 
+					<el-row> 
 							<div class="echart-box" :id="this.id"></div> 
 						</el-row>
-					</div>
 				</el-col>
 				
 				<el-col :span="showParams?1:0" v-if="showParams"> 

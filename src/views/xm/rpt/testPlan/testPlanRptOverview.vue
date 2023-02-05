@@ -1,13 +1,16 @@
 <template>
 	<section  class="padding"> 
 		<el-row class="padding-bottom">
+			<my-input v-model="rawDatas.name" placeholder="计划名称" :maxlength="255" @change="editSomeFields(rawDatas,'name',$event)"></my-input>
+		</el-row>
+		<el-row class="padding-bottom">
 			<span>报告概览</span>
 		</el-row>
 		<el-row ref="table">
 			<el-row class="box">
 				<el-col :span="6" class="box-red">
 					<div class="box-info">  
-							<div class="num">{{xmTestPlan.totalCases?xmTestPlan.totalCases:'0'}}个</div>
+							<div class="num">{{rawDatas.totalCases?rawDatas.totalCases:'0'}}个</div>
 							<div class="label">用例数</div>   
 					</div>
 				</el-col>
@@ -25,18 +28,13 @@
 				</el-col>
 				<el-col :span="6" class="box-orange">
 					<div class="box-info">  
-							<div class="num">{{xmTestPlan.bugCnt?xmTestPlan.bugCnt:0}}个</div>
+							<div class="num">{{rawDatas.bugCnt?rawDatas.bugCnt:0}}个</div>
 							<div class="label">缺陷数</div>   
 					</div>
 				</el-col>
 			</el-row>
 		<!--编辑界面 XmTestPlan 测试计划--> 
-			<el-form :model="rawDatas"  label-width="120px" :rules="rawDatasRules" ref="rawDatasRef" label-position="left"> 
-				 <el-form-item prop="name" label-width="0px">
-				  <el-row class="padding-bottom">
-					<my-input v-model="rawDatas.name" placeholder="计划名称" :maxlength="255" @change="editSomeFields(rawDatas,'name',$event)"></my-input>
- 				  </el-row>
-				  </el-form-item>
+			<el-form :model="rawDatas"  label-width="120px" :rules="rawDatasRules" ref="rawDatasRef" label-position="left">  
 				<el-row class="padding">
 					<el-col :span="8">
 						<mdp-select-user-xm label="负责人" userid-key="cuserid" username-key="cusername" v-model="rawDatas" @change="editSomeFields(rawDatas,'cuserid',$event)"></mdp-select-user-xm>
@@ -101,27 +99,27 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 		computed: {
 		    ...mapGetters([ 'userInfo'  ]),
 			caseFuGaiLv(){
-				if(!this.xmTestPlan.totalCases){
+				if(!this.rawDatas.totalCases){
 					return 0
 				}
-				var okCases=parseInt(this.xmTestPlan.okCases>0?this.xmTestPlan.okCases:0)
-				var errCases=parseInt(this.xmTestPlan.errCases>0?this.xmTestPlan.errCases:0)
-				var igCases=parseInt(this.xmTestPlan.igCases>0?this.xmTestPlan.igCases:0)
-				var blCases=parseInt(this.xmTestPlan.blCases>0?this.xmTestPlan.blCases:0)
+				var okCases=parseInt(this.rawDatas.okCases>0?this.rawDatas.okCases:0)
+				var errCases=parseInt(this.rawDatas.errCases>0?this.rawDatas.errCases:0)
+				var igCases=parseInt(this.rawDatas.igCases>0?this.rawDatas.igCases:0)
+				var blCases=parseInt(this.rawDatas.blCases>0?this.rawDatas.blCases:0)
 				var totalExecs=okCases+errCases+igCases+blCases
-				var rate=parseInt(totalExecs/this.xmTestPlan.totalCases*100)
+				var rate=parseInt(totalExecs/this.rawDatas.totalCases*100)
 				return rate;
 			},
 			caseTongGuoLv(){
-				if(!this.xmTestPlan.totalCases){
+				if(!this.rawDatas.totalCases){
 					return 0
 				}
-				var okCases=parseInt(this.xmTestPlan.okCases>0?this.xmTestPlan.okCases:0)
-				var errCases=parseInt(this.xmTestPlan.errCases>0?this.xmTestPlan.errCases:0)
-				var igCases=parseInt(this.xmTestPlan.igCases>0?this.xmTestPlan.igCases:0)
-				var blCases=parseInt(this.xmTestPlan.blCases>0?this.xmTestPlan.blCases:0)
+				var okCases=parseInt(this.rawDatas.okCases>0?this.rawDatas.okCases:0)
+				var errCases=parseInt(this.rawDatas.errCases>0?this.rawDatas.errCases:0)
+				var igCases=parseInt(this.rawDatas.igCases>0?this.rawDatas.igCases:0)
+				var blCases=parseInt(this.rawDatas.blCases>0?this.rawDatas.blCases:0)
 				var totalExecs=okCases+igCases
-				var rate=parseInt(totalExecs/this.xmTestPlan.totalCases*100)
+				var rate=parseInt(totalExecs/this.rawDatas.totalCases*100)
 				return rate;
 			}
 
