@@ -284,7 +284,7 @@
 				
 			},
 			searchXmTaskAgeDist(){ 
-				debugger;
+				
 				if(this.rptDatas){
 					this.rawDatas=this.rptDatas
 					return;

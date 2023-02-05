@@ -17,8 +17,8 @@
                                         <span>
                                             {{item.desc}}
                                         </span>
-                                    </div>
-                                    <i v-if="item.isChecked" class="el-icon-success"></i>
+                                    </div> 
+                                    <span class="check"><el-checkbox  v-model="item.isChecked" :true-label="'true'" :false-label="'false'"></el-checkbox></span>
                                 </div>
 　　                        </transition-group>
                         </draggable>
@@ -36,7 +36,7 @@
                                     <span>{{item.desc}}</span>
                                 </div>
                             </div>
-                            <i v-if="item.isChecked" class="el-icon-success"></i>
+                            <span class="check"><el-checkbox  v-model="item.isChecked" :true-label="'true'" :false-label="'false'"></el-checkbox></span>
                         </div>
 　　                        </transition-group>
                         </draggable>
@@ -198,7 +198,7 @@ export default {
             }
         },
         setCheckeds(compIds,checked){
-            debugger;       
+                   
             this.comps.forEach(k=>{
                 if(compIds.some(c=>c==k.compId)){
                     k.isChecked=checked
@@ -211,14 +211,14 @@ export default {
             this.selectItem(this.rptListCpd[0])
         },
          selectItem(item){  
-            debugger;
+            
             this.comps.forEach(k=>k.isCurr=false)
             item.isCurr=true 
             item.isChecked=true;
             this.$emit("row-click",item)
          },
          datadragEnd(evt){ 
-            debugger;
+            
             evt.preventDefault();
             console.log('拖动前的索引 :' + evt.oldIndex)
             console.log('拖动后的索引 :' + evt.newIndex)  
@@ -297,7 +297,7 @@ export default {
             color: #7D7D7D;
             line-height: 16px;  
         }
-        i {
+        .check {
             position: absolute;
             top: 5px;
             right: 5px;
@@ -367,7 +367,7 @@ export default {
         }
         
         
-        i {
+        .check {
             position: absolute;
             top: 5px;
             right: 5px;
