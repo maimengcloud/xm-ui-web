@@ -71,7 +71,7 @@ import util from '@/common/js/util';//全局公共库
 import seq from '@/common/js/sequence';//全局公共库
 import VueGridLayout from 'vue-grid-layout';
 import { mapGetters } from 'vuex' 
-import CompsSet from '@/views/xm/rpt/CompsSet'  
+import CompsSet from '@/views/xm/rpt/index/CompsSet'  
 import rptDataSelect from '@/views/xm/rpt/his/rptDataSelect'  
 import { addXmRptData  } from '@/api/xm/core/xmRptData'; 
 

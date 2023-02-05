@@ -1,13 +1,18 @@
 <template>
 	<section  class="padding"> 
-		<el-row class="padding-bottom">
-			<span>报告概览</span>
+		<el-row :class="{'row-box':true,'cfg':isRptCfg}">
+			<div class="rpt-title">{{ rawDatas.name }}</div>
+			<el-input class="input" v-model="rawDatas.name" placeholder="计划名称"/>
 		</el-row>
+		<el-row :class="{'row-box':true,'cfg':isRptCfg}">
+			<div class="title">{{ title?title:'报告概览' }}</div>
+			<el-input class="input" v-model="title" placeholder="报告概览"/>
+		</el-row>  
 		<el-row ref="table">
 			<el-row class="box">
 				<el-col :span="6" class="box-red">
 					<div class="box-info">  
-							<div class="num">{{xmTestPlan.totalCases?xmTestPlan.totalCases:'0'}}个</div>
+							<div class="num">{{rawDatas.totalCases?rawDatas.totalCases:'0'}}个</div>
 							<div class="label">用例数</div>   
 					</div>
 				</el-col>
@@ -25,32 +30,27 @@
 				</el-col>
 				<el-col :span="6" class="box-orange">
 					<div class="box-info">  
-							<div class="num">{{xmTestPlan.bugCnt?xmTestPlan.bugCnt:0}}个</div>
+							<div class="num">{{rawDatas.bugCnt?rawDatas.bugCnt:0}}个</div>
 							<div class="label">缺陷数</div>   
 					</div>
 				</el-col>
 			</el-row>
 		<!--编辑界面 XmTestPlan 测试计划--> 
-			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef" label-position="left"> 
-				 <el-form-item prop="name" label-width="0px">
-				  <el-row class="padding-bottom">
-					<my-input v-model="editForm.name" placeholder="计划名称" :maxlength="255" @change="editSomeFields(editForm,'name',$event)"></my-input>
- 				  </el-row>
-				  </el-form-item>
+			<el-form :model="rawDatas"  label-width="120px" :rules="rawDatasRules" ref="rawDatasRef" label-position="left">  
 				<el-row class="padding">
 					<el-col :span="8">
-						<mdp-select-user-xm label="负责人" userid-key="cuserid" username-key="cusername" v-model="editForm" @change="editSomeFields(editForm,'cuserid',$event)"></mdp-select-user-xm>
+						<mdp-select-user-xm label="负责人" userid-key="cuserid" username-key="cusername" v-model="rawDatas"></mdp-select-user-xm>
 					</el-col>
 					<el-col :span="8">
-						<mdp-select-dict-x label="状态" :dict="dicts['testPlanStatus']" v-model="editForm.status"  @change="editSomeFields(editForm,'status',$event)"></mdp-select-dict-x>
+						<mdp-select-dict-x label="状态" :dict="dicts['testPlanStatus']" v-model="rawDatas.status"></mdp-select-dict-x>
 					</el-col>
 					
 					<el-col :span="8">
-						<mdp-select-dict-x label="测试结果" :dict="dicts['testPlanTcode']" v-model="editForm.tcode"  @change="editSomeFields(editForm,'tcode',$event)"></mdp-select-dict-x>
+						<mdp-select-dict-x label="测试结果" :dict="dicts['testPlanTcode']" v-model="rawDatas.tcode"></mdp-select-dict-x>
 					</el-col>
 				</el-row>   
  				<el-form-item label="归属测试库" prop="casedbName">
-					{{editForm.casedbName}}
+					{{rawDatas.casedbName}}
 				</el-form-item>  
 				<el-form-item label="归属项目" prop="projectId">
 					 
@@ -58,16 +58,16 @@
 					 	<xm-project-select v-if="!selProject || !selProject.id" ref="xmProjectSelect" :link-product-id="xmTestCasedb? xmTestCasedb.productId:null"  @row-click="onPorjectConfirm" :auto-select="false">
 							<span slot="title">选择项目</span>
 						</xm-project-select>
-						<div v-else>{{editForm.projectName}}</div>
+						<div v-else>{{rawDatas.projectName}}</div>
 					</span> 
- 					<div v-else>{{editForm.projectName}}</div>
+ 					<div v-else>{{rawDatas.projectName}}</div>
 				</el-form-item>  
 				<el-form-item label="归属产品" prop="productName">
-					{{editForm.productName}}
+					{{rawDatas.productName}}
 				</el-form-item>  
 				 
 				<el-form-item label="起止时间" prop="stime">
-					<mdp-date-range :auto-default="false" placeholder="选择日期" v-model="editForm" start-key="stime" end-key="etime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" @change="editSomeFields(editForm,'stime',editForm)"></mdp-date-range>
+					<mdp-date-range :auto-default="false" placeholder="选择日期" v-model="rawDatas" start-key="stime" end-key="etime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" ></mdp-date-range>
 				</el-form-item>   
 			</el-form>
 		</el-row>
@@ -75,11 +75,11 @@
 			<span>报告总结</span>
 		</el-row>
 		<el-row> 
-			<el-input  type="textarea" :rows="8" v-model="editForm.summaryRemark"></el-input>
+			<el-input  type="textarea" :rows="8" v-model="rawDatas.summaryRemark"></el-input>
 		</el-row>
-		<el-row v-if="editForm.summaryRemark!==editFormBak.summaryRemark" >
+		<el-row v-if="rawDatas.summaryRemark!==rawDatasBak.summaryRemark" >
 			<span style="float:right;"> 
-            <el-button type="primary" @click.native="editSomeFields(editForm,'summaryRemark',editForm.summaryRemark)">提交</el-button>
+            <el-button type="primary" @click.native="editSomeFields(rawDatas,'summaryRemark',rawDatas.summaryRemark)">提交</el-button>
 			</span>
 		</el-row>
 	</section>
@@ -101,37 +101,37 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 		computed: {
 		    ...mapGetters([ 'userInfo'  ]),
 			caseFuGaiLv(){
-				if(!this.xmTestPlan.totalCases){
+				if(!this.rawDatas.totalCases){
 					return 0
 				}
-				var okCases=parseInt(this.xmTestPlan.okCases>0?this.xmTestPlan.okCases:0)
-				var errCases=parseInt(this.xmTestPlan.errCases>0?this.xmTestPlan.errCases:0)
-				var igCases=parseInt(this.xmTestPlan.igCases>0?this.xmTestPlan.igCases:0)
-				var blCases=parseInt(this.xmTestPlan.blCases>0?this.xmTestPlan.blCases:0)
+				var okCases=parseInt(this.rawDatas.okCases>0?this.rawDatas.okCases:0)
+				var errCases=parseInt(this.rawDatas.errCases>0?this.rawDatas.errCases:0)
+				var igCases=parseInt(this.rawDatas.igCases>0?this.rawDatas.igCases:0)
+				var blCases=parseInt(this.rawDatas.blCases>0?this.rawDatas.blCases:0)
 				var totalExecs=okCases+errCases+igCases+blCases
-				var rate=parseInt(totalExecs/this.xmTestPlan.totalCases*100)
+				var rate=parseInt(totalExecs/this.rawDatas.totalCases*100)
 				return rate;
 			},
 			caseTongGuoLv(){
-				if(!this.xmTestPlan.totalCases){
+				if(!this.rawDatas.totalCases){
 					return 0
 				}
-				var okCases=parseInt(this.xmTestPlan.okCases>0?this.xmTestPlan.okCases:0)
-				var errCases=parseInt(this.xmTestPlan.errCases>0?this.xmTestPlan.errCases:0)
-				var igCases=parseInt(this.xmTestPlan.igCases>0?this.xmTestPlan.igCases:0)
-				var blCases=parseInt(this.xmTestPlan.blCases>0?this.xmTestPlan.blCases:0)
+				var okCases=parseInt(this.rawDatas.okCases>0?this.rawDatas.okCases:0)
+				var errCases=parseInt(this.rawDatas.errCases>0?this.rawDatas.errCases:0)
+				var igCases=parseInt(this.rawDatas.igCases>0?this.rawDatas.igCases:0)
+				var blCases=parseInt(this.rawDatas.blCases>0?this.rawDatas.blCases:0)
 				var totalExecs=okCases+igCases
-				var rate=parseInt(totalExecs/this.xmTestPlan.totalCases*100)
+				var rate=parseInt(totalExecs/this.rawDatas.totalCases*100)
 				return rate;
 			}
 
 		},
-		props:['xmTestPlan','visible','opType','selProject','xmTestCasedb'],
+		props:['xmTestPlan','visible','opType','selProject','xmTestCasedb','rptDatas','isRptCfg'],
 
 		watch: {
 	      'xmTestPlan':function( xmTestPlan ) {
 	        if(xmTestPlan){
-	            this.editForm = {...xmTestPlan};
+	            this.rawDatas = {...xmTestPlan};
 	        }
 
 	      },
@@ -143,6 +143,8 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 	    },
 		data() {
 			return {
+				title:'',
+				remark:'',
 			    currOpType:'add',//add/edit
  				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				dicts:{
@@ -150,14 +152,14 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 					testPlanTcode:[],
 
 				},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
-				editFormRules: {
+				rawDatasRules: {
 					 
 				},
-				editForm: {
+				rawDatas: {
 					id:'',name:'',casedbId:'',casedbName:'',projectId:'',projectName:'',cuserid:'',cusername:'',ctime:'',stime:'',etime:'',status:'',tcode:'',totalCases:'',okCases:'',errCases:'',igCases:'',blCases:'',productId:'',productName:'',flowState:'',summaryRemark:''
 				},
 				
-				editFormBak: {
+				rawDatasBak: {
 					id:'',name:'',casedbId:'',casedbName:'',projectId:'',projectName:'',cuserid:'',cusername:'',ctime:'',stime:'',etime:'',status:'',tcode:'',totalCases:'',okCases:'',errCases:'',igCases:'',blCases:'',productId:'',productName:'',flowState:'',summaryRemark:''
 				},
                 maxTableHeight:300,
@@ -168,18 +170,18 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 
 		    ...util,
 
-			// 取消按钮点击 父组件监听@cancel="editFormVisible=false" 监听
+			// 取消按钮点击 父组件监听@cancel="rawDatasVisible=false" 监听
 			handleCancel:function(){
-				this.$refs['editFormRef'].resetFields();
+				this.$refs['rawDatasRef'].resetFields();
 				this.$emit('cancel');
 			},
 			//新增、编辑提交XmTestPlan 测试计划父组件监听@submit="afterEditSubmit"
 			saveSubmit: function () {
-				this.$refs.editFormRef.validate((valid) => {
+				this.$refs.rawDatasRef.validate((valid) => {
 					if (valid) {
 						this.$confirm('确认提交吗？', '提示', {}).then(() => { 
 							this.load.edit=true
-							let params = Object.assign({}, this.editForm);
+							let params = Object.assign({}, this.rawDatas);
 							var func=addXmTestPlan
 							if(this.currOpType=='edit'){
 							    func=editXmTestPlan
@@ -188,7 +190,7 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
                                 this.load.edit=false
                                 var tips=res.data.tips;
                                 if(tips.isOk){
-                                    this.editForm=res.data.data
+                                    this.rawDatas=res.data.data
                                     this.initData()
                                     this.currOpType="edit";
                                     this.$emit('submit');//  @submit="afterAddSubmit"
@@ -201,18 +203,14 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 					}
 				});
 			},
-			initData: function(){
-			    this.currOpType=this.opType
+			initData: function(){ 
 			    if(this.xmTestPlan){
-                    this.editForm = Object.assign({},this.xmTestPlan);
-                }
-
-                if(this.opType=='edit'){
-
-                }else{
-
-                }
-                this.editFormBak={...this.editForm}
+                    this.rawDatas = Object.assign({},this.xmTestPlan);
+                } 
+				if(this.rptDatas){
+					this.rawDatas=Object.assign({},this.rptDatas)
+				}
+                this.rawDatasBak={...this.rawDatas}
             },
 
             editSomeFields(row,fieldName,$event){
@@ -235,18 +233,18 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
                 func(params).then(res=>{
                   let tips = res.data.tips;
                   if(tips.isOk){
-                    this.editFormBak=[...this.editForm]
+                    this.rawDatasBak=[...this.rawDatas]
 					this.$emit('edit-fields',params) 
                   }else{
-                    Object.assign(this.editForm,this.editFormBak)
+                    Object.assign(this.rawDatas,this.rawDatasBak)
                     this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
                   }
-                }).catch((e)=>Object.assign(this.editForm,this.editFormBak))
+                }).catch((e)=>Object.assign(this.rawDatas,this.rawDatasBak))
             },
 			onPorjectConfirm(row){
-				this.editForm.projectId=row.id
-				this.editForm.projectName=row.name
-				this.editForm.name=this.editForm.projectName+'-测试计划-V1.0'
+				this.rawDatas.projectId=row.id
+				this.rawDatas.projectName=row.name
+				this.rawDatas.name=this.rawDatas.projectName+'-测试计划-V1.0'
 			}, 
 			sizeAutoChange(){
 				
@@ -263,149 +261,6 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 
 </script>
 
-<style lang="scss" scoped>
- .box{
-
-
-	.box-red{ 
-
-		background-color: #ff75750d;
-		height: 100px;
-		border-left-width: 2px;
-		border-left-color: red;
-		border-left-style: solid;  
-		align-items: center; 
-		line-height: 100px; 
-		text-align: center;
-		display:flex; 
-    	flex-direction: column;
-		.box-info{ 
-			display:flex; 
-			flex-direction: column;
-			margin-top: 20px;
-			height: 100px; 
-			line-height: 100px; 
-			.label{
-				color: #999;
-				height: 30px;
-				line-height: 30px;
-				font-size: 0.875rem;
-			}
-			.num{
-				
-				height: 30px;
-				line-height: 30px;
-				color:red ;
-				font-size: 30px;
-			}
-		}
-		
-	}
-	.box-green{ 
-		
-		background-color: #73d8970d;;
-		height: 100px;
-		border-left-width: 2px;
-		border-left-color: green;
-		border-left-style: solid; 
-		
-		align-items: center; 
-		line-height: 100px; 
-		text-align: center;
-		display:flex; 
-    	flex-direction: column;
-		.box-info{ 
-			display:flex; 
-			flex-direction: column;
-			margin-top: 20px;
-			height: 100px; 
-			line-height: 100px; 
-			.label{
-				color: #999;
-				height: 30px;
-				line-height: 30px;
-				font-size: 0.875rem;
-			}
-			.num{
-				
-				height: 30px;
-				line-height: 30px;
-				color:green ;
-				font-size: 30px;
-			}
-		}
-	}
-	.box-blue{ 
-
-		background-color: #5dcfff0d;
-		height: 100px;
-		border-left-width: 2px;
-		border-left-color: blue;
-		border-left-style: solid; 
-
-		align-items: center; 
-		line-height: 100px; 
-		text-align: center;
-		display:flex; 
-    	flex-direction: column;
-		.box-info{ 
-			display:flex; 
-			flex-direction: column;
-			margin-top: 20px;
-			height: 100px; 
-			line-height: 100px; 
-			.label{
-				color: #999;
-				height: 30px;
-				line-height: 30px;
-				font-size: 0.875rem;
-			}
-			.num{
-				
-				height: 30px;
-				line-height: 30px;
-				color:blue ;
-				font-size: 30px;
-			}
-		}
-	}
-
-	.box-orange{ 
-
-		background-color: #ffcd5d0d;
-		height: 100px;
-		border-left-width: 2px;
-		border-left-color: orange;
-		border-left-style: solid; 
-
-		align-items: center; 
-		line-height: 100px; 
-		text-align: center;
-		display:flex; 
-    	flex-direction: column;
-		.box-info{ 
-			display:flex; 
-			flex-direction: column;
-			margin-top: 20px;
-			height: 100px; 
-			line-height: 100px; 
-			.label{
-				color: #999;
-				height: 30px;
-				line-height: 30px;
-				font-size: 0.875rem;
-			}
-			.num{
-				
-				height: 30px;
-				line-height: 30px;
-				color:orange ;
-				font-size: 30px;
-			}
-		}
-	}
-	box-font{
-		font-size: 0.875rem;
-	}
- }
+<style lang="scss" scoped>  
+@import url('../index/overview.scss');
 </style>

@@ -221,7 +221,7 @@ export default {
         },
         {
           path: 'rpt',
-          component: _import('xm/rpt/indexForProject'),
+          component: _import('xm/rpt/index/indexForProject'),
           name: 'projectRpt',
           iconCls: 'fa el-icon-menu',
           meta: {
@@ -423,7 +423,7 @@ export default {
         },
         {
           path: 'rpt',
-          component: _import('xm/rpt/indexForProduct'),
+          component: _import('xm/rpt/index/indexForProduct'),
           name: 'productRpt',
           iconCls: 'fa el-icon-menu',
           meta: {
@@ -562,7 +562,7 @@ export default {
         },
         {
           path: 'rpt',
-          component: _import('xm/rpt/indexForIteration'),
+          component: _import('xm/rpt/index/indexForIteration'),
           name: 'iterationRpt',
           iconCls: 'fa el-icon-menu',
           meta: {
@@ -610,7 +610,7 @@ export default {
         { path: 'flow', component: _import('xm/core/xmTestCase/XmTestCaseFlow'), name: 'testFlow', meta: { title: '用例评审',roles:["user"] },hidden:true},
         { path: 'plan', component: _import('xm/core/xmTestPlan/Overview'), name: 'testPlan', meta: { title: '测试计划',roles:["user"] },hidden:true},
         { path: 'group', component: _import('xm/core/xmGroup/XmGroupForTest'), name: 'testGroup', meta: { title: '团队',roles:["user"] },hidden:true},
-        { path: 'rpt', component: _import('xm/rpt/indexForTest'), name: 'testRpt', meta: { title: '统计分析',roles:["user"] },hidden:true},
+        { path: 'rpt', component: _import('xm/rpt/index/indexForTest'), name: 'testRpt', meta: { title: '统计分析',roles:["user"] },hidden:true},
 
       ]
     }, 
@@ -644,9 +644,9 @@ export default {
       
       children: [        
         
-        { path: 'his', component: _import('xm/rpt/indexForHis'), name: 'rptHis', meta: { title: '历史报告',roles:["user"] }},  
-        { path: 'his/detail', component: _import('xm/rpt/indexForHisDetail'), name: 'rptHisDetail', meta: { title: '报告明细',roles:["user"] },hidden:true}, 
-        { path: 'index', component: _import('xm/rpt/index'), name: 'rptIndex', meta: { title: '指标分析',roles:["user"] }}, 
+        { path: 'his', component: _import('xm/rpt/index/indexForHis'), name: 'rptHis', meta: { title: '历史报告',roles:["user"] }},  
+        { path: 'his/detail', component: _import('xm/rpt/index/indexForHisDetail'), name: 'rptHisDetail', meta: { title: '报告明细',roles:["user"] },hidden:true}, 
+        { path: 'index', component: _import('xm/rpt/index/index'), name: 'rptIndex', meta: { title: '指标分析',roles:["user"] }}, 
         { path: 'branch/branchDatavFullScreen',   name: 'branchDatavFullScreen', meta: {   title: '机构效能',openTab:true,outUrl:"${curlDomain}/"+process.env.CONTEXT+"/"+process.env.VERSION+"/#/datav/xm/branch/branchDatavFullScreen" }}, 
       ]
     },

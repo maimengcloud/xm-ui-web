@@ -33,7 +33,7 @@
 import util from '@/common/js/util';//全局公共库
 import seq from '@/common/js/sequence';//全局公共库 
 import { mapGetters } from 'vuex' 
-import CompsSet from '@/views/xm/rpt/CompsSet'  
+import CompsSet from '@/views/xm/rpt/index/CompsSet'  
 import rptComps from './comps.js';//组件库
 
  
@@ -71,7 +71,7 @@ export default {
                 return "企业级"
             }
             if(this.xmRptData.bizType=='6'){
-                return "测试级"
+                return "测试计划级"
             }
         }
         

@@ -41,12 +41,12 @@
 <script>
 
 import util from '@/common/js/util';//全局公共库
-import pieSimple from './images/pie-simple.png'
-import lineStack from './images/line-stack.png'
-import areaStack from './images/area-stack.png'
-import ranjintu from './images/ranjintu.png'
-import datasetLink from './images/dataset-link.png'
-import bar from './images/bar.png'
+import pieSimple from '../images/pie-simple.png'
+import lineStack from '../images/line-stack.png'
+import areaStack from '../images/area-stack.png'
+import ranjintu from '../images/ranjintu.png'
+import datasetLink from '../images/dataset-link.png'
+import bar from '../images/bar.png'
 
 import { mapGetters } from 'vuex'
 import store from '@/store'
@@ -105,6 +105,7 @@ export default {
                 category:'企业级'
             },
             comps: [
+                {isChecked:false,isCurr:false,rptName:'迭代总结',category:'迭代级',compId:'xmIterationRptOverview',desc:'显示迭代总体情况',img:pieSimple  },
                 {isChecked:false,isCurr:false,rptName:'迭代燃尽图',category:'迭代级',compId:'xmIterationBurnout',desc:'跟踪迭代的剩余工作量按日期变化趋势，识别迭代当前进度情况',img:ranjintu },
                 {isChecked:false,isCurr:false,rptName:'需求每日趋势',category:'迭代级',compId:'xmIterationMenuDayTrend',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期变化趋势，识别需求工作情况',img:lineStack  },
                 {isChecked:false,isCurr:false,rptName:'需求每日累积',category:'迭代级',compId:'xmIterationMenuDayAccumulate',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期累积情况，识别需求工作的瓶颈',img:areaStack  },
@@ -113,8 +114,8 @@ export default {
                 {isChecked:false,isCurr:false,rptName:'迭代缺陷每日累积',category:'迭代级',compId:'xmIterationQuestionDayAccumulate',desc:'跟踪一段时间内，各种程度和类别的缺陷累积情况，监控缺陷的变化趋势',img:areaStack  },
                 
                 //企业级报表
+                {isChecked:false,isCurr:false,rptName:'企业总结',category:'企业级',compId:'xmBranchRptOverview',desc:'显示企业总体情况',img:pieSimple  },
                 {isChecked:false,isCurr:false,rptName:'企业缺陷每日趋势',category:'企业级',compId:'xmBranchQuestionDayTrend',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:lineStack  },
-
                 {isChecked:false,isCurr:false,rptName:'企业工作项每日趋势',category:'企业级',compId:'xmBranchWorkItemDayList',desc:'统计迭代每日工作项数量分布情况',img:datasetLink  },  
                 //{isChecked:false,isCurr:false,rptName:'企业缺陷每日趋势',category:'企业级',compId:'xmBranchQuestionDayTrend',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:lineStack  },
                 {isChecked:false,isCurr:false,rptName:'企业缺陷每日累积',category:'企业级',compId:'xmBranchQuestionDayAccumulate',desc:'跟踪一段时间内，各种程度和类别的缺陷累积情况，监控缺陷的变化趋势',img:areaStack  },
@@ -122,6 +123,7 @@ export default {
                 {isChecked:false,isCurr:false,rptName:'需求每日累积',category:'企业级',compId:'xmBranchMenuDayAccumulate',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期累积情况，识别需求工作的瓶颈',img:areaStack  },
                 
                 //产品报表
+                {isChecked:false,isCurr:false,rptName:'产品总结',category:'产品级',compId:'xmProductRptOverview',desc:'显示产品总体情况',img:pieSimple  },
                 {isChecked:false,isCurr:false,rptName:'产品工作项每日趋势',category:'产品级',compId:'xmProductWorkItemDayList',desc:'统计产品每日工作项数量分布情况',img:datasetLink  },  
                 {isChecked:false,isCurr:false,rptName:'需求每日趋势',category:'产品级',compId:'xmMenuDayTrend',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期变化趋势，识别需求工作情况',img:lineStack  },
                 {isChecked:false,isCurr:false,rptName:'需求每日累积',category:'产品级',compId:'xmMenuDayAccumulate',desc:'跟踪未开始、执行中、已完成、已关闭状态的需求数量按日期累积情况，识别需求工作的瓶颈',img:areaStack  },
@@ -135,6 +137,7 @@ export default {
                 {isChecked:false,isCurr:false,rptName:'产品缺陷每日累积',category:'产品级',compId:'xmQuestionDayAccumulate',desc:'跟踪一段时间内，各种程度和类别的缺陷累积情况，监控缺陷的变化趋势',img:areaStack  },
                 
                 //项目报表
+                {isChecked:false,isCurr:false,rptName:'项目总结',category:'项目级',compId:'xmProjectRptOverview',desc:'显示项目总体情况',img:pieSimple  },
                 {isChecked:false,isCurr:false,rptName:'项目工作项每日趋势',category:'项目级',compId:'xmProjectWorkItemDayList',desc:'统计项目每日工作项数量分布情况',img:datasetLink  },
                 {isChecked:false,isCurr:false,rptName:'任务每日趋势',category:'项目级',compId:'xmTaskDayTrend',desc:'跟踪未开始、执行中、已完成、已关闭状态的任务数量按日期变化趋势，识别任务工作情况',img:lineStack  },
                 {isChecked:false,isCurr:false,rptName:'任务每日累积',category:'项目级',compId:'xmTaskDayAccumulate',desc:'跟踪未开始、执行中、已完成、已关闭状态的任务数量按日期累积情况，识别任务工作的瓶颈',img:areaStack  },
@@ -146,25 +149,27 @@ export default {
 
 
                 //测试级报表  
-                {isChecked:false,isCurr:false,rptName:'测试计划总结',category:'测试计划级,测试级',compId:'xmTestPlanRptOverview',desc:'显示测试计划总体情况',img:pieSimple  },
-                {isChecked:false,isCurr:false,rptName:'测试用例规划分析',category:'测试级,项目级,产品级,迭代级,企业级',compId:'xmTestCaseToPlanCalc',desc:'显示用例被规划到测试计划中的次数统计',img:pieSimple  },
-                {isChecked:false,isCurr:false,rptName:'测试用例需求覆盖分析',category:'测试级,项目级,产品级,迭代级,企业级',compId:'xmTestCaseMenuSort',initGroupBy:'menu_id',desc:'统计测试用例需求覆盖情况',img:bar  },
-                {isChecked:false,isCurr:false,rptName:'测试用例模块覆盖分析',category:'测试级,项目级,产品级,迭代级,企业级',compId:'xmTestCaseFuncSort',initGroupBy:'func_id',desc:'统计测试用例覆盖各个模块的情况',img:bar  },
-                {isChecked:false,isCurr:false,rptName:'测试用例负责人排行榜',category:'测试级,项目级,产品级,迭代级,企业级',compId:'xmTestCaseCuserSort',initGroupBy:'cuserid',desc:'统计测试团队每个人负责的测试用例数并进行排序',img:bar  },
+                {isChecked:false,isCurr:false,rptName:'测试计划总结',category:'测试计划级',compId:'xmTestPlanRptOverview',desc:'显示测试计划总体情况',img:pieSimple  },
+                {isChecked:false,isCurr:false,rptName:'测试库总体测试总结',category:'测试级',compId:'xmTestCasedbRptOverview',desc:'显示测试库总体情况',img:pieSimple  },
 
-                {isChecked:false,isCurr:false,rptName:'测试用例执行状态分布',category:'测试级,项目级,产品级,迭代级,企业级',compId:'xmTestPlanCaseExecStatusDist',desc:'按测试用例执行结果统计，通过、失败、忽略、阻塞',img:pieSimple  },
-                {isChecked:false,isCurr:false,rptName:'测试用例执行用户分布',category:'测试级,项目级,产品级,迭代级,企业级',compId:'xmTestPlanCaseUserDist',desc:'统计测试用例负责人用例执行情况',img:bar  },
-                {isChecked:false,isCurr:false,rptName:'缺陷回归分布',category:'测试级,项目级,产品级,迭代级,企业级',compId:'xmQuestionRetestDist',desc:'统计项目中缺陷在回归测试中分布情况，跟踪缺陷的重新打开率；',img:pieSimple  },
-                {isChecked:false,isCurr:false,rptName:'测试次数每日统计',category:'测试级,项目级,产品级,迭代级,企业级',compId:'xmTestDayTimesCalc',desc:'统计每日测试用例执行数量',img:bar  },
-                {isChecked:false,isCurr:false,rptName:'缺陷状态分布',category:'测试级,项目级,产品级,迭代级,企业级',compId:'xmQuestionStateDist',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:pieSimple  },
+                {isChecked:false,isCurr:false,rptName:'测试用例规划分析',category:'测试计划级,测试级,项目级,产品级,迭代级,企业级',compId:'xmTestCaseToPlanCalc',desc:'显示用例被规划到测试计划中的次数统计',img:pieSimple  },
+                {isChecked:false,isCurr:false,rptName:'测试用例需求覆盖分析',category:'测试计划级,测试级,项目级,产品级,迭代级,企业级',compId:'xmTestCaseMenuSort',initGroupBy:'menu_id',desc:'统计测试用例需求覆盖情况',img:bar  },
+                {isChecked:false,isCurr:false,rptName:'测试用例模块覆盖分析',category:'测试计划级,测试级,项目级,产品级,迭代级,企业级',compId:'xmTestCaseFuncSort',initGroupBy:'func_id',desc:'统计测试用例覆盖各个模块的情况',img:bar  },
+                {isChecked:false,isCurr:false,rptName:'测试用例负责人排行榜',category:'测试计划级,测试级,项目级,产品级,迭代级,企业级',compId:'xmTestCaseCuserSort',initGroupBy:'cuserid',desc:'统计测试团队每个人负责的测试用例数并进行排序',img:bar  },
 
-                {isChecked:false,isCurr:false,rptName:'缺陷排行榜',category:'测试级,项目级,产品级,迭代级,企业级',compId:'xmQuestionSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
-                {isChecked:false,isCurr:false,rptName:'缺陷提出人排行榜',category:'测试级,项目级,产品级,迭代级,企业级',compId:'xmQuestionAskUserSort',initGroupBy:'ask_userid',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
-                {isChecked:false,isCurr:false,rptName:'缺陷负责人排行榜',category:'测试级,项目级,产品级,迭代级,企业级',compId:'xmQuestionHandlerUserSort',initGroupBy:'handler_userid',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
-                {isChecked:false,isCurr:false,rptName:'缺陷模块排行榜',category:'测试级,项目级,产品级,迭代级,企业级',compId:'xmQuestionFuncSort',initGroupBy:'func_id',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
-                {isChecked:false,isCurr:false,rptName:'缺陷需求排行榜',category:'测试级,项目级,产品级,迭代级,企业级',compId:'xmQuestionMenuSort',initGroupBy:'menu_id',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
-                {isChecked:false,isCurr:false,rptName:'缺陷属性分布',category:'测试级,项目级,产品级,迭代级,企业级',compId:'xmQuestionAttDist',desc:'统计所有缺陷任意属性数量分布情况（实时数据）',img:pieSimple  },
-                {isChecked:false,isCurr:false,rptName:'缺陷年龄分布',category:'测试级,项目级,产品级,迭代级,企业级',compId:'xmQuestionAgeDist',desc:'统计所有缺陷按照年龄的分布情况，跟踪缺陷的生命周期和响应情况',img:pieSimple  },
+                {isChecked:false,isCurr:false,rptName:'测试用例执行状态分布',category:'测试计划级,测试级,项目级,产品级,迭代级,企业级',compId:'xmTestPlanCaseExecStatusDist',desc:'按测试用例执行结果统计，通过、失败、忽略、阻塞',img:pieSimple  },
+                {isChecked:false,isCurr:false,rptName:'测试用例执行用户分布',category:'测试计划级,测试级,项目级,产品级,迭代级,企业级',compId:'xmTestPlanCaseUserDist',desc:'统计测试用例负责人用例执行情况',img:bar  },
+                {isChecked:false,isCurr:false,rptName:'缺陷回归分布',category:'测试计划级,测试级,项目级,产品级,迭代级,企业级',compId:'xmQuestionRetestDist',desc:'统计项目中缺陷在回归测试中分布情况，跟踪缺陷的重新打开率；',img:pieSimple  },
+                {isChecked:false,isCurr:false,rptName:'测试次数每日统计',category:'测试计划级,测试级,项目级,产品级,迭代级,企业级',compId:'xmTestDayTimesCalc',desc:'统计每日测试用例执行数量',img:bar  },
+                {isChecked:false,isCurr:false,rptName:'缺陷状态分布',category:'测试计划级,测试级,项目级,产品级,迭代级,企业级',compId:'xmQuestionStateDist',desc:'跟踪新提出、执行中、已解决、已关闭状态的缺陷数量按日期变化趋势，识别缺陷处理工作情况',img:pieSimple  },
+
+                {isChecked:false,isCurr:false,rptName:'缺陷排行榜',category:'测试计划级,测试级,项目级,产品级,迭代级,企业级',compId:'xmQuestionSort',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
+                {isChecked:false,isCurr:false,rptName:'缺陷提出人排行榜',category:'测试计划级,测试级,项目级,产品级,迭代级,企业级',compId:'xmQuestionAskUserSort',initGroupBy:'ask_userid',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
+                {isChecked:false,isCurr:false,rptName:'缺陷负责人排行榜',category:'测试计划级,测试级,项目级,产品级,迭代级,企业级',compId:'xmQuestionHandlerUserSort',initGroupBy:'handler_userid',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
+                {isChecked:false,isCurr:false,rptName:'缺陷模块排行榜',category:'测试计划级,测试级,项目级,产品级,迭代级,企业级',compId:'xmQuestionFuncSort',initGroupBy:'func_id',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
+                {isChecked:false,isCurr:false,rptName:'缺陷需求排行榜',category:'测试计划级,测试级,项目级,产品级,迭代级,企业级',compId:'xmQuestionMenuSort',initGroupBy:'menu_id',desc:'从缺陷提出人、创建人、负责人、故事等维度统计缺陷数量排行榜（实时数据）',img:bar  },
+                {isChecked:false,isCurr:false,rptName:'缺陷属性分布',category:'测试计划级,测试级,项目级,产品级,迭代级,企业级',compId:'xmQuestionAttDist',desc:'统计所有缺陷任意属性数量分布情况（实时数据）',img:pieSimple  },
+                {isChecked:false,isCurr:false,rptName:'缺陷年龄分布',category:'测试计划级,测试级,项目级,产品级,迭代级,企业级',compId:'xmQuestionAgeDist',desc:'统计所有缺陷按照年龄的分布情况，跟踪缺陷的生命周期和响应情况',img:pieSimple  },
                 
             ],
             maxTableHeight:300,
