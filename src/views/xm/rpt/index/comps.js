@@ -7,7 +7,8 @@ export default {
     xmMenuSort:()=>import("../product/menuSort.vue"), 
     xmMenuFuncSort:()=>import("../product/menuSort.vue"),
     xmMenuProductSort:()=>import("../product/menuSort.vue"),
-    xmMenuIterationSort:()=>import("../product/menuSort.vue"), 
+    xmMenuIterationSort:()=>import("../product/menuSort.vue"),  
+    xmProductRptOverview:()=>import("../product/productRptOverview.vue"),
     xmProductWorkItemDayList:()=>import("../product/productWorkItemDayList.vue"),
 
 
@@ -15,7 +16,8 @@ export default {
     xmTaskDayAccumulate:()=>import("../project/taskDayAccumulate.vue"),
     xmTaskAttDist:()=>import("../project/taskAttDist.vue"),
     xmTaskAgeDist:()=>import("../project/taskAgeDist.vue"),
-    xmTaskSort:()=>import("../project/taskSort.vue"),
+    xmTaskSort:()=>import("../project/taskSort.vue"),    
+    xmProjectRptOverview:()=>import("../project/projectRptOverview.vue"), 
     xmProjectWorkItemDayList:()=>import("../project/projectWorkItemDayList.vue"),
     xmProjectWorkloadSetDayList:()=>import("../project/projectWorkloadSetDayList.vue"),
     xmProjectWorkloadSetMonthList:()=>import("../project/projectWorkloadSetMonthList.vue"),
@@ -35,11 +37,14 @@ export default {
     xmQuestionMenuSort:()=>import("../product/questionSort.vue"),
     xmQuestionRetestDist:()=>import("../product/questionRetestDist.vue"),
 
-    
+     
+    xmTestPlanRptOverview:()=>import("../testPlan/testPlanRptOverview.vue"),
     xmTestPlanRptOverview:()=>import("../testPlan/testPlanRptOverview.vue"),
     xmTestPlanCaseExecStatusDist:()=>import("../testPlan/testPlanCaseExecStatusDist.vue"),
     xmTestPlanCaseUserDist:()=>import("../testPlan/testPlanCaseUserDist.vue"),
     xmTestDayTimesCalc:()=>import("../testPlan/testDayTimesCalc.vue"),
+    
+    xmTestCasedbRptOverview:()=>import("../testCase/testCasedbRptOverview.vue"),
     xmTestCaseToPlanCalc:()=>import("../testPlan/testCaseToPlanCalc.vue"),
     xmTestCaseSort:()=>import("../testCase/testCaseSort.vue"),
     xmTestCaseCuserSort:()=>import("../testCase/testCaseSort.vue"),
@@ -47,6 +52,7 @@ export default {
     xmTestCaseMenuSort:()=>import("../testCase/testCaseSort.vue"),
 
     
+    xmIterationRptOverview:()=>import("../iteration/iterationRptOverview.vue"),
     xmIterationMenuDayTrend:()=>import("../iteration/menuDayTrend.vue"),
     xmIterationMenuDayAccumulate:()=>import("../iteration/menuDayAccumulate.vue"),
     xmIterationBurnout:()=>import("../iteration/burnout.vue"),
@@ -55,6 +61,7 @@ export default {
     xmIterationQuestionDayAccumulate:()=>import("../iteration/questionDayAccumulate.vue"),
 
     
+    xmBranchRptOverview:()=>import("../branch/branchRptOverview.vue"),
     xmBranchWorkItemDayList:()=>import("../branch/branchWorkItemDayList.vue"),
     xmBranchQuestionDayTrend:()=>import("../branch/questionDayTrend.vue"),
     xmBranchQuestionDayAccumulate:()=>import("../branch/questionDayAccumulate.vue"),

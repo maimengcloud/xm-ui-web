@@ -1,7 +1,7 @@
 <template>  
     <section>
         <el-row> 
-            <el-select v-model="filters.category" clearable @change="onCategroySelect" style="width:100%;" :disabled="!!category">
+            <el-select v-model="filters.category" clearable @change="onCategroySelect" style="width:100%;" :disabled="true">
                 <el-option v-for="(item,index) in categorys" :label="item" :value="item" :key="index"></el-option>
             </el-select>
         </el-row> 
@@ -198,7 +198,9 @@ export default {
         if(this.category){
             this.filters.category=this.category
         }else{
-            if(this.xmIteration && this.xmIteration.id){
+            if(this.xmTestPlan && this.xmTestPlan.id){
+                this.filters.category="测试计划级"
+            }else if(this.xmIteration && this.xmIteration.id){
                 this.filters.category="迭代级"
             }else if(this.xmTestCasedb && this.xmTestCasedb.id){
                 this.filters.category="测试级"
