@@ -317,17 +317,10 @@ export default {
                 }) 
                  return;
             }
-            var compCfgListTemp=JSON.parse(JSON.stringify(this.compCfgList))
-            compCfgListTemp.sort((i1,i2)=>{
-                return i2.i-i1.i
-            })
-            var maxI=(compCfgListTemp.length>0?(compCfgListTemp[0].i+1):1);
-            compCfgListTemp.sort((i1,i2)=>{
-                return i2.y-i1.y
-            })
-            var maxY=(compCfgListTemp.length>0?(compCfgListTemp[0].y+6):0);
-            var compCfg={...comp,i:maxI, x: 0,  y: maxY,  w: 12, h: 6,id:comp.compId+seq.sn()} 
-            this.compCfgList.push(compCfg) 
+            var allCheckedList=this.$refs.compsSet.datas.filter(k=>k.isChecked)
+            var index=allCheckedList.findIndex(k=>k.compId==comp.compId)
+            var compCfg={...comp,id:comp.compId+seq.sn()} 
+            this.compCfgList.splice(index,0,compCfg)
             this.$nextTick(()=>{ 
                 setTimeout(()=>{
                     this.scrollToComp(compCfg) 
@@ -436,7 +429,7 @@ export default {
         },
         onCompChange(compCfg,checked){  
             if(checked=='false'||!checked){
-                var index=this.compCfgList.findIndex(k=>k.id==compCfg.id) 
+                var index=this.compCfgList.findIndex(k=>k.compId==compCfg.compId) 
                 if(index>=0){ 
                     this.compCfgList.splice(index,1)   
                 } 

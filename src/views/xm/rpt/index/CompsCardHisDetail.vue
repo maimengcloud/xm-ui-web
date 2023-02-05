@@ -130,9 +130,10 @@ export default {
                 }) 
                  return;
             }
-             
+            var allCheckedList=this.$refs.compsSet.datas.filter(k=>k.isChecked)
+            var index=allCheckedList.findIndex(k=>k.compId==comp.compId)
             var compCfg={...comp,id:comp.compId+seq.sn()} 
-            this.compCfgList.push(compCfg) 
+            this.compCfgList.splice(index,0,compCfg)
             this.$nextTick(()=>{ 
                 setTimeout(()=>{
                     this.scrollToComp(compCfg) 
