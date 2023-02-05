@@ -222,7 +222,7 @@ export default {
         {
           path: 'rpt',
           component: _import('xm/rpt/indexForProject'),
-          name: 'projectReport',
+          name: 'projectRpt',
           iconCls: 'fa el-icon-menu',
           meta: {
             title: '项目-效能',
@@ -424,7 +424,7 @@ export default {
         {
           path: 'rpt',
           component: _import('xm/rpt/indexForProduct'),
-          name: 'productReport',
+          name: 'productRpt',
           iconCls: 'fa el-icon-menu',
           meta: {
             title: '产品-效能',
@@ -563,7 +563,7 @@ export default {
         {
           path: 'rpt',
           component: _import('xm/rpt/indexForIteration'),
-          name: 'iterationReport',
+          name: 'iterationRpt',
           iconCls: 'fa el-icon-menu',
           meta: {
             title: '迭代-效能',
@@ -610,7 +610,7 @@ export default {
         { path: 'flow', component: _import('xm/core/xmTestCase/XmTestCaseFlow'), name: 'testFlow', meta: { title: '用例评审',roles:["user"] },hidden:true},
         { path: 'plan', component: _import('xm/core/xmTestPlan/Overview'), name: 'testPlan', meta: { title: '测试计划',roles:["user"] },hidden:true},
         { path: 'group', component: _import('xm/core/xmGroup/XmGroupForTest'), name: 'testGroup', meta: { title: '团队',roles:["user"] },hidden:true},
-        { path: 'rpt', component: _import('xm/rpt/indexForTest'), name: 'testReport', meta: { title: '统计分析',roles:["user"] },hidden:true},
+        { path: 'rpt', component: _import('xm/rpt/indexForTest'), name: 'testRpt', meta: { title: '统计分析',roles:["user"] },hidden:true},
 
       ]
     }, 
