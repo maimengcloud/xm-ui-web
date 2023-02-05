@@ -3,10 +3,17 @@
         
 			<el-row :gutter="5" >
 				<el-col :span="showParams?23:24">  
-					<div>
-						<div class="echart-box" :id="this.id"></div>
-						<div class="progress"></div>
-					</div>
+					<el-row :class="{'row-box':true,'cfg':isRptCfg}">
+						<div class="title">{{ title?title:(isRptCfg?'标题':'') }}</div>
+						<el-input class="input" v-model="title" placeholder="标题"/>
+					</el-row> 
+					<el-row :class="{'row-box':true,'cfg':isRptCfg}">
+						<div class="remark">{{ remark?remark:(isRptCfg?'详细说明':'') }}</div>
+						<el-input class="input" v-model="remark" placeholder="说明"/>
+					</el-row> 
+					<el-row> 
+						<div class="echart-box" :id="this.id"></div> 
+					</el-row>
 				</el-col>
 				<el-col :span="showParams?1:0" v-if="showParams"> 
 					 <el-popover   trigger="manual" v-model="filterVisible" style="float:right;" width="500">

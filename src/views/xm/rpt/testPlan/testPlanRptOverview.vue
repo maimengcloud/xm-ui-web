@@ -1,11 +1,13 @@
 <template>
 	<section  class="padding"> 
-		<el-row class="padding-bottom">
-			<my-input v-model="rawDatas.name" placeholder="计划名称" :maxlength="255" @change="editSomeFields(rawDatas,'name',$event)"></my-input>
+		<el-row :class="{'row-box':true,'cfg':isRptCfg}">
+			<div class="rpt-title">{{ rawDatas.name }}</div>
+			<el-input class="input" v-model="rawDatas.name" placeholder="计划名称"/>
 		</el-row>
-		<el-row class="padding-bottom">
-			<span>报告概览</span>
-		</el-row>
+		<el-row :class="{'row-box':true,'cfg':isRptCfg}">
+			<div class="title">{{ title?title:'报告概览' }}</div>
+			<el-input class="input" v-model="title" placeholder="报告概览"/>
+		</el-row>  
 		<el-row ref="table">
 			<el-row class="box">
 				<el-col :span="6" class="box-red">
@@ -37,14 +39,14 @@
 			<el-form :model="rawDatas"  label-width="120px" :rules="rawDatasRules" ref="rawDatasRef" label-position="left">  
 				<el-row class="padding">
 					<el-col :span="8">
-						<mdp-select-user-xm label="负责人" userid-key="cuserid" username-key="cusername" v-model="rawDatas" @change="editSomeFields(rawDatas,'cuserid',$event)"></mdp-select-user-xm>
+						<mdp-select-user-xm label="负责人" userid-key="cuserid" username-key="cusername" v-model="rawDatas"></mdp-select-user-xm>
 					</el-col>
 					<el-col :span="8">
-						<mdp-select-dict-x label="状态" :dict="dicts['testPlanStatus']" v-model="rawDatas.status"  @change="editSomeFields(rawDatas,'status',$event)"></mdp-select-dict-x>
+						<mdp-select-dict-x label="状态" :dict="dicts['testPlanStatus']" v-model="rawDatas.status"></mdp-select-dict-x>
 					</el-col>
 					
 					<el-col :span="8">
-						<mdp-select-dict-x label="测试结果" :dict="dicts['testPlanTcode']" v-model="rawDatas.tcode"  @change="editSomeFields(rawDatas,'tcode',$event)"></mdp-select-dict-x>
+						<mdp-select-dict-x label="测试结果" :dict="dicts['testPlanTcode']" v-model="rawDatas.tcode"></mdp-select-dict-x>
 					</el-col>
 				</el-row>   
  				<el-form-item label="归属测试库" prop="casedbName">
@@ -65,7 +67,7 @@
 				</el-form-item>  
 				 
 				<el-form-item label="起止时间" prop="stime">
-					<mdp-date-range :auto-default="false" placeholder="选择日期" v-model="rawDatas" start-key="stime" end-key="etime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" @change="editSomeFields(rawDatas,'stime',rawDatas)"></mdp-date-range>
+					<mdp-date-range :auto-default="false" placeholder="选择日期" v-model="rawDatas" start-key="stime" end-key="etime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" ></mdp-date-range>
 				</el-form-item>   
 			</el-form>
 		</el-row>
@@ -124,7 +126,7 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 			}
 
 		},
-		props:['xmTestPlan','visible','opType','selProject','xmTestCasedb','rptDatas'],
+		props:['xmTestPlan','visible','opType','selProject','xmTestCasedb','rptDatas','isRptCfg'],
 
 		watch: {
 	      'xmTestPlan':function( xmTestPlan ) {
@@ -141,6 +143,8 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 	    },
 		data() {
 			return {
+				title:'',
+				remark:'',
 			    currOpType:'add',//add/edit
  				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				dicts:{
