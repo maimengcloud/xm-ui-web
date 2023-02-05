@@ -237,24 +237,29 @@ export default {
         store.dispatch("toggleSideBar",false)
         this.comps.forEach((k,index)=>k.index=index)
         //this.comps.forEach(k=>k.id=k.id?k.id:k.compId) 
-        this.maxTableHeight = util.calcTableMaxHeight(this.$refs.table.$el)
-        if(this.category){
-            this.filters.category=this.category
-        }else{
-            if(this.xmTestPlan && this.xmTestPlan.id){
-                this.filters.category="测试计划级"
-            }else if(this.xmIteration && this.xmIteration.id){
-                this.filters.category="迭代级"
-            }else if(this.xmTestCasedb && this.xmTestCasedb.id){
-                this.filters.category="测试库级"
-            }else if(this.xmProject && this.xmProject.id){
-                this.filters.category="项目级"
-            }else if(this.xmProduct && this.xmProduct.id){
-                this.filters.category="产品级"
+       
+        this.$nextTick(()=>{
+            this.maxTableHeight = util.calcTableMaxHeight(this.$refs.table.$el)
+            if(this.category){
+                this.filters.category=this.category
             }else{
-                this.filters.category="企业级" 
-            }
-        } 
+                if(this.xmTestPlan && this.xmTestPlan.id){
+                    this.filters.category="测试计划级"
+                }else if(this.xmIteration && this.xmIteration.id){
+                    this.filters.category="迭代级"
+                }else if(this.xmTestCasedb && this.xmTestCasedb.id){
+                    this.filters.category="测试库级"
+                }else if(this.xmProject && this.xmProject.id){
+                    this.filters.category="项目级"
+                }else if(this.xmProduct && this.xmProduct.id){
+                    this.filters.category="产品级"
+                }else{
+                    this.filters.category="企业级" 
+                }
+            } 
+            this.datas=this.compsCpd
+        })
+       
      }
      
 
