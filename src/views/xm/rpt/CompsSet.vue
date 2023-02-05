@@ -186,6 +186,7 @@ export default {
 
     },
     mounted(){
+        store.dispatch("toggleSideBar",false)
         //this.comps.forEach(k=>k.id=k.id?k.id:k.compId) 
         this.maxTableHeight = util.calcTableMaxHeight(this.$refs.table.$el)
         if(this.category){
@@ -200,11 +201,11 @@ export default {
             }else if(this.xmProduct && this.xmProduct.id){
                 this.filters.category="产品级"
             }else{
-                this.filters.category="企业级"
-                store.dispatch("toggleSideBar",false)
+                this.filters.category="企业级" 
             }
         } 
      }
+     
 
 }
 </script>

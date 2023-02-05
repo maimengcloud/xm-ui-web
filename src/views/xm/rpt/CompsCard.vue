@@ -200,7 +200,7 @@ export default {
                 this.$message.error("还没制作报告，请先制作报告")
                 return;
             }  
-            this.xmRptData.rptName=this.xmRptConfig.name
+            this.xmRptData.rptName=this.xmRptConfig.name+"-"+util.getDate()
             this.createRptDataVisible=true
            
         },

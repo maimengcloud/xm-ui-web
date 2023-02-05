@@ -6,13 +6,11 @@
 </section>     
 </template>
 
-<script>
-import NProgress from 'nprogress' // progress bar
+<script> 
  
 import compsCard from './CompsCard'
 import compsSet from './CompsSet'
-import { mapGetters } from 'vuex'
-import dayjs from 'dayjs'
+import { mapGetters } from 'vuex' 
 
 export default {
   props:['xmProduct','xmIteration','xmProject','xmTestCasedb','xmTestPlan','category'],

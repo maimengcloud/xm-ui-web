@@ -29,7 +29,7 @@
 				</el-table-column> 
 				<el-table-column label="操作" width="100" fixed="right">
 				    <template scope="scope">
-                        <el-button type="primary" @click="$emit('select',scope.row)" icon="el-icon-edit"  plain>选择</el-button>   
+                        <el-button type="primary" @click="toRptDetail(scope.row)" icon="el-icon-s-data"  plain>选择</el-button>   
 				    </template>
 				</el-table-column>
 			</el-table> 
@@ -42,7 +42,7 @@
 
 import util from '@/common/js/util';//全局公共库
 import config from '@/common/config';//全局公共库
-import { initDicts,listXmRptData, delXmRptData, batchDelXmRptData,editSomeFieldsXmRptData } from '@/api/xm/core/xmRptData';
+import { initDicts,listXmRptData } from '@/api/xm/core/xmRptData';
 import { mapGetters } from 'vuex'
 
 export default {
@@ -168,96 +168,11 @@ export default {
                 }
                 this.load.list = false;
             }).catch( err => this.load.list = false );
-        },
-
-        //显示编辑界面 XmRptData xm_rpt_data
-        showEdit: function ( row,index ) {
-            this.editFormVisible = true;
-            this.editForm = Object.assign({}, row);
-        },
-        //显示新增界面 XmRptData xm_rpt_data
-        showAdd: function () {
-            this.addFormVisible = true;
-            //this.addForm=Object.assign({}, this.editForm);
-        },
-        afterAddSubmit(){
-            this.addFormVisible=false;
-            this.pageInfo.count=true;
-            this.getXmRptDatas();
-        },
-        afterEditSubmit(){
-            this.editFormVisible=false;
-        },
+        }, 
         //选择行xmRptData
         selsChange: function (sels) {
             this.sels = sels;
-        },
-        //删除xmRptData
-        handleDel: function (row,index) {
-            this.$confirm('确认删除该记录吗?', '提示', {
-                type: 'warning'
-            }).then(() => {
-                this.load.del=true;
-                let params = {  id:row.id };
-                delXmRptData(params).then((res) => {
-                    this.load.del=false;
-                    var tips=res.data.tips;
-                    if(tips.isOk){
-                        this.searchXmRptDatas();
-                    }
-                    this.$notify({ position:'bottom-left', showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
-                }).catch( err  => this.load.del=false );
-            });
-        },
-        //批量删除xmRptData
-        batchDel: function () {
-            if(this.sels.length<=0){
-                return;
-            }
-            var params=this.sels.map(i=>{
-                return { id:i.id}
-            })
-            this.$confirm('确认删除选中记录吗？', '提示', {
-                type: 'warning'
-            }).then(() => {
-                this.load.del=true;
-                batchDelXmRptData(params).then((res) => {
-                    this.load.del=false;
-                    var tips=res.data.tips;
-                    if( tips.isOk ){
-                        this.searchXmRptDatas();
-                    }
-                    this.$notify({ position:'bottom-left',showClose:true, message: tips.msg, type: tips.isOk?'success':'error'});
-                }).catch( err  => this.load.del=false );
-            });
-        },
-      editSomeFields(row,fieldName,$event){
-        let params={};
-        if(this.sels.length>0){
-          if(!this.sels.some(k=> k.id==row.id)){
-            this.$notify({position:'bottom-left',showClose:true,message:'请编辑选中的行',type:'warning'})
-            Object.assign(this.editForm,this.editFormBak)
-            return;
-          }
-            params['ids']=this.sels.map(i=>i.id)
-        }else{
-            params['ids']=[row].map(i=>i.id)
-        }
-        params[fieldName]=$event
-        var func = editSomeFieldsXmRptData
-        func(params).then(res=>{
-          let tips = res.data.tips;
-          if(tips.isOk){
-            if(this.sels.length>0){
-                this.searchXmRptDatas();
-            }
-            this.editFormBak=[...this.editForm]
-          }else{
-            Object.assign(this.editForm,this.editFormBak)
-            this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
-          }
-        }).catch((e)=>Object.assign(this.editForm,this.editFormBak))
-      },
+        }, 
         rowClick: function(row, event, column){
             this.editForm=row
             this.editFormBak={...row};
@@ -267,6 +182,14 @@ export default {
 
         },
 
+        toRptDetail(row){
+          this.$router.push({
+            name:'rptHisDetail',
+            query:{
+              id:row.id
+            }
+          })
+        },
     },//end methods
     mounted() {
         this.$nextTick(() => {
