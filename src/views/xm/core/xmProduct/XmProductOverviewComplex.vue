@@ -101,7 +101,7 @@
                       type="warning"
                       
                       plain
-                      @click="jumpTo('productReport')"
+                      @click="jumpTo('productRpt')"
                       >效能分析</el-button
                     >
                     <el-button
@@ -144,7 +144,7 @@
                       type="warning"
                       
                       plain
-                      @click="jumpTo('productReport')"
+                      @click="jumpTo('productRpt')"
                       >效能分析</el-button
                     >
                   </span>

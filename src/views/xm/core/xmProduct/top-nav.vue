@@ -87,7 +87,7 @@
             <span slot="title"><i class="el-icon-coin"></i>费用</span>
           </el-menu-item>
         </el-submenu>
-        <el-menu-item :index="'/xm/core/product/report?productId='+xmProduct.id">
+        <el-menu-item :index="'/xm/core/product/rpt?productId='+xmProduct.id">
           <span slot="title"><i class="el-icon-s-data"></i>效能</span>
         </el-menu-item>
         <el-submenu index="zhishi" class="hidden-md-and-down">

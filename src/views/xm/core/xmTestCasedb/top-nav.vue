@@ -56,7 +56,7 @@
           <span slot="title"><i class="el-icon-connection"></i>测试计划</span>
         </el-menu-item>
 
-        <el-menu-item :index="'/xm/core/test/report?casedbId='+testCasedb.id">
+        <el-menu-item :index="'/xm/core/test/rpt?casedbId='+testCasedb.id">
           <span slot="title"><i class="el-icon-time"></i>统计分析</span>
         </el-menu-item>
  

@@ -169,7 +169,7 @@
                     type="warning"
                     
                     plain
-                    @click="jumpTo('iterationReport')"
+                    @click="jumpTo('iterationRpt')"
                     >效能分析</el-button
                   > 
                   <el-button
@@ -188,7 +188,7 @@
                     type="warning"
                     
                     plain
-                    @click="jumpTo('iterationReport')"
+                    @click="jumpTo('iterationRpt')"
                     >效能分析</el-button
                   > 
                 </span>

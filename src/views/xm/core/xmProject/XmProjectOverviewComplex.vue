@@ -64,7 +64,7 @@
 						<el-button class="step-btn" type="warning"    plain @click="jumpTo('projectWorkloadDay')">每日工时</el-button>
 						<el-button class="step-btn" type="warning"    plain @click="jumpTo('projectWorkloadMonth')">每月工时</el-button> 
 						<el-button class="step-btn" type="warning"    plain @click="jumpTo('projectCost')">费用管理</el-button> 
-						<el-button class="step-btn" type="warning"    plain @click="jumpTo('projectReport')">效能分析</el-button> 
+						<el-button class="step-btn" type="warning"    plain @click="jumpTo('projectRpt')">效能分析</el-button> 
 						<el-button class="step-btn" type="danger" icon="el-icon-d-caret"    plain @click="editXmProjectSomeFields(projectInfo,'status','4')">暂停项目</el-button>
 						<el-button class="step-btn" type="warning"    plain @click="projectChangeRequire()">变更申请</el-button>
 						<el-button class="step-btn" type="danger" icon="el-icon-d-caret"    plain @click="editXmProjectSomeFields(projectInfo,'status','5')">设为结项中</el-button>
@@ -76,7 +76,7 @@
 						<el-button class="step-btn" type="warning"    plain @click="jumpTo('projectWorkloadDay')">每日工时</el-button>
 						<el-button class="step-btn" type="warning"    plain @click="jumpTo('projectWorkloadMonth')">每月工时</el-button> 
 						<el-button class="step-btn" type="warning"    plain @click="jumpTo('projectCost')">费用管理</el-button> 
-						<el-button class="step-btn" type="warning"    plain @click="jumpTo('projectReport')">效能分析</el-button> 
+						<el-button class="step-btn" type="warning"    plain @click="jumpTo('projectRpt')">效能分析</el-button> 
 						<el-button v-if="projectInfo.status<i.id" class="step-btn"  type="danger" icon="el-icon-d-caret"    plain @click="editXmProjectSomeFields(projectInfo,'status','5')">结项申请</el-button>
 						<el-button class="step-btn" type="warning"    plain @click="showDetail()">变更申请</el-button>
 					</span> 

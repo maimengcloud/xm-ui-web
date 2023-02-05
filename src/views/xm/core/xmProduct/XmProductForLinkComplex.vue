@@ -283,7 +283,7 @@
           </el-tab-pane>
           
 					<el-tab-pane label="效能分析" name="效能"  v-if="xmProduct && xmProduct.id"> 
-						<xm-report v-if="xmProduct && showPanel=='效能'" :xm-project="projectInfo" :xm-iteration="xmIteration" :xm-product="xmProduct" category="产品级"></xm-report>
+						<xm-rpt v-if="xmProduct && showPanel=='效能'" :xm-project="projectInfo" :xm-iteration="xmIteration" :xm-product="xmProduct" category="产品级"></xm-rpt>
  					</el-tab-pane> 
         </el-tabs>
         <el-row> </el-row>
@@ -329,7 +329,7 @@ import XmProductEdit from "./XmProductEdit.vue";
 import XmProductAdd from "./XmProductEdit"; //新增界面
 import XmGroupMng from '../xmGroup/XmGroupMng.vue'
 
-import XmReport from "@/views/xm/rpt/index";
+import XmRpt from "@/views/xm/rpt/index";
 export default {
   computed: {
     ...mapGetters(["userInfo", "roles","projectInfo","xmIteration"]),
@@ -562,7 +562,7 @@ export default {
     XmProductProjectLinkMng,
     XmProductEdit,
     XmGroupMng,
-    XmReport
+    XmRpt
   },
   mounted() {
     this.$nextTick(() => {

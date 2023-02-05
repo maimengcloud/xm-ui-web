@@ -317,7 +317,7 @@
 						<xm-question-mng v-if="xmIteration && showPanel=='bugs'" :xm-product="xmProductCpd" :xm-iteration="xmIteration" :sel-project="projectInfo"></xm-question-mng>
 					</el-tab-pane> 
 					<el-tab-pane label="效能分析" lazy name="效能" v-if="xmIteration&&xmIteration.id"> 
-						<xm-report v-if="xmIteration && showPanel=='效能'" :xm-project="projectInfo" :xm-iteration="xmIteration" :xm-product="xmProductCpd" category="迭代级"></xm-report>
+						<xm-rpt v-if="xmIteration && showPanel=='效能'" :xm-project="projectInfo" :xm-iteration="xmIteration" :xm-product="xmProductCpd" category="迭代级"></xm-rpt>
  					</el-tab-pane> 
 				</el-tabs>
 				<el-row>
@@ -352,7 +352,7 @@
 
 	import XmIterationEdit from './XmIterationEdit.vue'; 
 	import  XmIterationAdd from './XmIterationEdit';//新增界面
-	import XmReport from "@/views/xm/rpt/index";
+	import XmRpt from "@/views/xm/rpt/index";
 
 	import XmIterationMenuMng from '../xmIterationMenu/XmIterationMenuMng.vue';
 	import { initDicts,editSomeFieldsXmIteration } from '@/api/xm/core/xmIteration';
@@ -476,7 +476,7 @@
 			XmIterationAdd,
 			XmIterationEdit, 
 			XmIterationMenuMng,
-			XmReport,
+			XmRpt,
 
 		},
 		mounted() { 

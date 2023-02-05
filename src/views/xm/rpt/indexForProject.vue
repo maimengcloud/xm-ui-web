@@ -1,13 +1,13 @@
 <template>
 	<section>
-		 <report-index :xm-project="projectInfo"  category="项目级"></report-index>
+		 <rpt-index :xm-project="projectInfo"  category="项目级"></rpt-index>
 	</section>
 </template>
 
 <script> 
 	  
 	import { mapGetters } from 'vuex'; 
-	import reportIndex from './index'
+	import rptIndex from './index'
 
 	export default {  
 		computed: {
@@ -26,7 +26,7 @@
 			
 		},//end methods
 		components: {  
-			reportIndex,
+			rptIndex,
 			//在下面添加其它组件
 		}, 
 		activated(){ 
