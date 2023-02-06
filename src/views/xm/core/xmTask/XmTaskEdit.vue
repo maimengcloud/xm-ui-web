@@ -117,7 +117,9 @@
 							<el-row class="label-font-color"> 
 									<span>任务编号：{{editForm.id}}</span><el-divider direction="vertical"></el-divider>
  									<span>归属项目：{{editForm.projectName?editForm.projectName:''}}{{editForm.projectId?'('+editForm.projectId+')':''}}  </span><el-divider direction="vertical"></el-divider>
- 									<span v-if="editForm.productId">归属产品：{{editForm.productId?editForm.productId:''}}  </span>
+ 									<span v-if="editForm.productId">归属产品：{{editForm.productId?editForm.productId:''}}  </span> 
+									 <el-divider direction="vertical"></el-divider> 
+										<el-button type="text" icon="el-icon-share" @click="copyLink">分享</el-button>
 							</el-row>
 						</el-form-item>  
 						
@@ -1053,6 +1055,14 @@
 			},
 			getRateColor(rate){
 				return "#F56C6C"
+			}, 
+			
+			copyLink(){
+				var curlDomain=window.location.protocol+"//"+window.location.host; //   返回https://mp.csdn.net
+				var link=curlDomain+"/"+process.env.CONTEXT+"/"+process.env.VERSION+"/#/xm/core/task/detail?id="+this.editForm.id
+				this.$copyText(link).then(e => {
+					this.$notify({position:'bottom-left',showClose:true,message:"拷贝链接成功，您可以黏贴到任何地方",type:'success'})
+				});
 			}, 
 		},//end method
 		components: { 

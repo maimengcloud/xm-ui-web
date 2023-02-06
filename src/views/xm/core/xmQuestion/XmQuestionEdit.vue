@@ -54,7 +54,7 @@
 								<el-tag v-if="editForm.tagNames">{{editForm.tagNames?editForm.tagNames:''}} </el-tag>
 								<el-button type="text" icon="el-icon-plus" @click="tagSelectVisible=true">标签</el-button>
 								<el-divider direction="vertical"></el-divider> 
-								<el-button type="text" icon="el-icon-copy" @click="copyLink">拷贝链接(快速分享)</el-button>
+								<el-button type="text" icon="el-icon-share" @click="copyLink">分享</el-button>
 								</span>
 						</el-form-item>  
 								<el-row class="padding"> 
@@ -542,7 +542,7 @@
 			},
 			copyLink(){
 				var curlDomain=window.location.protocol+"//"+window.location.host; //   返回https://mp.csdn.net
-				var link=curlDomain+"/"+process.env.CONTEXT+"/"+process.env.VERSION+"/#/xm/core/xmQuestion/XmQuestionDetailRoute?id="+this.editForm.id
+				var link=curlDomain+"/"+process.env.CONTEXT+"/"+process.env.VERSION+"/#/xm/core/question/detail?id="+this.editForm.id
 				this.$copyText(link).then(e => {
 					this.$notify({position:'bottom-left',showClose:true,message:"拷贝链接成功，您可以黏贴到任何地方",type:'success'})
 				});

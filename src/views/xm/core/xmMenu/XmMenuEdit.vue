@@ -85,7 +85,17 @@
 									</template> 
 									<el-input v-model="editForm.menuName" placeholder="名称" title="名称" @change="editXmMenuSomeFields(editForm,'menuName',$event)"> 
 									</el-input>
-									<el-row class="label-font-color">编号：{{editForm.menuId}} <el-divider direction="vertical"></el-divider><span v-if="editForm.productName">归属产品：{{ editForm.productName}} <el-divider direction="vertical"></el-divider></span>归属产品编号：{{ editForm.productId }}</el-row>
+									<el-row class="label-font-color">
+										编号：{{editForm.menuId}} 
+										<el-divider direction="vertical"></el-divider>
+										<span v-if="editForm.productName">归属产品：{{ editForm.productName}} 
+											<el-divider direction="vertical"></el-divider>
+										</span>
+											归属产品编号：{{ editForm.productId }}
+										
+										<el-divider direction="vertical"></el-divider> 
+										<el-button type="text" icon="el-icon-share" @click="copyLink">分享</el-button>
+										</el-row>
 								</el-form-item>    
 						<el-row class="padding"> 
 								<el-col :span="8">
@@ -657,6 +667,14 @@ import CommentArea from '../xmMenuComment/comment-area.vue';
 					this.editXmMenuSomeFields(this.editForm,'funcId',row)
 				}
 			},
+			
+			copyLink(){
+				var curlDomain=window.location.protocol+"//"+window.location.host; //   返回https://mp.csdn.net
+				var link=curlDomain+"/"+process.env.CONTEXT+"/"+process.env.VERSION+"/#/xm/core/menu/detail?menuId="+this.editForm.menuId
+				this.$copyText(link).then(e => {
+					this.$notify({position:'bottom-left',showClose:true,message:"拷贝链接成功，您可以黏贴到任何地方",type:'success'})
+				});
+			}, 
 		},//end method
 		components: {
 			//在下面添加其它组件 'xm-menu-edit':XmMenuEdit
