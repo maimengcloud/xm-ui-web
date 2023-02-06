@@ -18,17 +18,17 @@ export default {
         icon: 'project'
       },
       // leaf: true,//只有一个节点
-      children: [ 
-        { path: 'xmProject/XmProjectAllMng', component: _import('xm/core/xmProject/XmProjectAllMng'), name: 'xmProjectAllMng', meta: { title: '项目总览',roles:["user"] }},
-        { path: 'xmProject/XmProjectMng', component: _import('xm/core/xmProject/XmProjectMng'), name: 'xmProjectMng', meta: { title: '项目(我的)',roles:["user"] }},
-        { path: 'xmProject/XmProjectRecycle', component: _import('xm/core/xmProject/XmProjectRecycle'), name: 'XmProjectRecycle', meta: { title: '项目回收站',roles:["user"] }},
-        { path: 'xmRecord/XmRecord', component: _import('xm/core/xmRecord/XmRecord'), name: 'XmRecord', meta: { title: '项目动态',roles:["user"] }},
-        { path: 'xmProject/XmProjectTplMng', component: _import('xm/core/xmProject/XmProjectTplMng'), name: 'XmProjectTplMng', meta: { title: '项目模板',roles:["user"] }},
-        { path: 'xmEnvList/XmEnvListMng', component: _import('xm/core/xmEnvList/XmEnvListMng'), name: 'XmEnvListMng', meta: { title: '环境清单',roles:["user"] }},
-        { path: 'xmTask/XmTaskCenter', component: _import('xm/core/xmTask/XmTaskCenter'), name: 'xmTaskCenter', meta: { title: '任务大厅',roles:["user"] }},
-        { path: 'xmTask/XmMyTaskCenter', component: _import('xm/core/xmTask/XmMyTaskCenter'), name: 'xmMyTaskCenter', meta: { title: '任务(我的)',roles:["user"] }},
-        { path: 'xmTask/XmTaskDetailRoute', component: _import('xm/core/xmTask/XmTaskDetailRoute'), name: 'XmTaskDetailRoute', meta: { title: '任务详情',roles:["user"] },hidden:true},
-       
+      children: [
+        { path: 'project/mng', component: _import('xm/core/xmProject/XmProjectAllMng'), name: 'xmProjectAllMng', meta: { title: '项目总览',roles:["user"] }},
+        { path: 'project/mng/me', component: _import('xm/core/xmProject/XmProjectMng'), name: 'xmProjectMng', meta: { title: '项目(我的)',roles:["user"] }},
+        { path: 'project/recycle', component: _import('xm/core/xmProject/XmProjectRecycle'), name: 'XmProjectRecycle', meta: { title: '项目回收站',roles:["user"] }},
+        { path: 'record/mng', component: _import('xm/core/xmRecord/XmRecord'), name: 'XmRecord', meta: { title: '项目动态',roles:["user"] }},
+        { path: 'project/tpl', component: _import('xm/core/xmProject/XmProjectTplMng'), name: 'XmProjectTplMng', meta: { title: '项目模板',roles:["user"] }},
+        { path: 'evn/mng', component: _import('xm/core/xmEnvList/XmEnvListMng'), name: 'XmEnvListMng', meta: { title: '环境清单',roles:["user"] }},
+        { path: 'task/center', component: _import('xm/core/xmTask/XmTaskCenter'), name: 'xmTaskCenter', meta: { title: '任务大厅',roles:["user"] }},
+        { path: 'task/center/me', component: _import('xm/core/xmTask/XmMyTaskCenter'), name: 'xmMyTaskCenter', meta: { title: '任务(我的)',roles:["user"] }},
+        { path: 'task/detail', component: _import('xm/core/xmTask/XmTaskDetailRoute'), name: 'XmTaskDetailRoute', meta: { title: '任务详情',roles:["user"] },hidden:true},
+
 
       ]
     },{
@@ -39,7 +39,7 @@ export default {
       meta: {
         title: '项目管理',
         icon: 'project'
-      }, 
+      },
       hidden:true,
       // leaf: true,//只有一个节点
       children: [
@@ -51,7 +51,7 @@ export default {
           meta: {
             title: '项目-首页',
             icon: 'project',roles:["user"]
-          }, 
+          },
           hidden:true
         },
         {
@@ -62,7 +62,7 @@ export default {
           meta: {
             title: '项目-产品',
             icon: 'project',roles:["user"]
-          }, 
+          },
           hidden:true
         },
         {
@@ -73,7 +73,7 @@ export default {
           meta: {
             title: '项目-需求',
             icon: 'project',roles:["user"]
-          }, 
+          },
           hidden:true
         },
         {
@@ -84,7 +84,7 @@ export default {
           meta: {
             title: '项目-迭代',
             icon: 'project',roles:["user"]
-          }, 
+          },
           hidden:true
         },
         {
@@ -95,7 +95,7 @@ export default {
           meta: {
             title: '项目-计划',
             icon: 'project',roles:["user"]
-          }, 
+          },
           hidden:true
         },
         {
@@ -106,7 +106,7 @@ export default {
           meta: {
             title: '项目-任务',
             icon: 'project',roles:["user"]
-          }, 
+          },
           hidden:true
         },
         {
@@ -117,7 +117,7 @@ export default {
           meta: {
             title: '项目-环境清单',
             icon: 'project',roles:["user"]
-          }, 
+          },
           hidden:true
         },
         {
@@ -128,7 +128,7 @@ export default {
           meta: {
             title: '项目-缺陷',
             icon: 'project',roles:["user"]
-          }, 
+          },
           hidden:true
         },
         {
@@ -139,7 +139,7 @@ export default {
           meta: {
             title: '项目-团队',
             icon: 'project',roles:["user"]
-          }, 
+          },
           hidden:true
         },
         {
@@ -150,7 +150,7 @@ export default {
           meta: {
             title: '项目-合同',
             icon: 'project',roles:["user"]
-          }, 
+          },
           hidden:true
         },
         {
@@ -161,7 +161,7 @@ export default {
           meta: {
             title: '项目-日志',
             icon: 'project',roles:["user"]
-          }, 
+          },
           hidden:true
         },
         {
@@ -172,9 +172,9 @@ export default {
           meta: {
             title: '项目-预算',
             icon: 'project',roles:["user"]
-          }, 
+          },
           hidden:true
-        }, 
+        },
         {
           path: 'cost',
           component: _import('xm/core/xmProject/XmProjectCost'),
@@ -183,9 +183,9 @@ export default {
           meta: {
             title: '项目-费用',
             icon: 'project',roles:["user"]
-          }, 
+          },
           hidden:true
-        }, 
+        },
         {
           path: 'workloadDay',
           component: _import('xm/core/xmWorkload/WorkloadSetDayList'),
@@ -194,7 +194,7 @@ export default {
           meta: {
             title: '项目-工时日报',
             icon: 'project',roles:["user"]
-          }, 
+          },
           hidden:true
         },
         {
@@ -205,7 +205,7 @@ export default {
           meta: {
             title: '项目-工时月报',
             icon: 'project',roles:["user"]
-          }, 
+          },
           hidden:true
         },
         {
@@ -216,7 +216,7 @@ export default {
           meta: {
             title: '项目-文档',
             icon: 'project',roles:["user"]
-          }, 
+          },
           hidden:true
         },
         {
@@ -227,10 +227,10 @@ export default {
           meta: {
             title: '项目-效能',
             icon: 'project',roles:["user"]
-          }, 
+          },
           hidden:true
         },
-        
+
       ]
     },
     {
@@ -241,7 +241,7 @@ export default {
       meta: {
         title: '产品管理',
         icon: 'product'
-      }, 
+      },
       hidden:true,
       // leaf: true,//只有一个节点
       children: [
@@ -253,7 +253,7 @@ export default {
           meta: {
             title: '产品-首页',
             icon: 'product',roles:["user"]
-          }, 
+          },
           hidden:true
         },
         {
@@ -264,7 +264,7 @@ export default {
           meta: {
             title: '产品-项目',
             icon: 'product',roles:["user"]
-          }, 
+          },
           hidden:true
         },
         {
@@ -275,7 +275,7 @@ export default {
           meta: {
             title: '产品-需求',
             icon: 'product',roles:["user"]
-          }, 
+          },
           hidden:true
         },
         {
@@ -286,7 +286,7 @@ export default {
           meta: {
             title: '产品-模块',
             icon: 'product',roles:["user"]
-          }, 
+          },
           hidden:true
         },
         {
@@ -297,7 +297,7 @@ export default {
           meta: {
             title: '产品-迭代',
             icon: 'product',roles:["user"]
-          }, 
+          },
           hidden:true
         },
         {
@@ -308,7 +308,7 @@ export default {
           meta: {
             title: '产品-计划',
             icon: 'product',roles:["user"]
-          }, 
+          },
           hidden:true
         },
         {
@@ -319,7 +319,7 @@ export default {
           meta: {
             title: '产品-任务',
             icon: 'product',roles:["user"]
-          }, 
+          },
           hidden:true
         },
         {
@@ -330,7 +330,7 @@ export default {
           meta: {
             title: '产品-环境清单',
             icon: 'product',roles:["user"]
-          }, 
+          },
           hidden:true
         },
         {
@@ -341,9 +341,9 @@ export default {
           meta: {
             title: '产品-测试管理',
             icon: 'iteration',roles:["user"]
-          }, 
+          },
           hidden:true
-        },  
+        },
         {
           path: 'question',
           component: _import('xm/core/xmQuestion/XmQuestionForProduct'),
@@ -352,7 +352,7 @@ export default {
           meta: {
             title: '产品-缺陷',
             icon: 'product',roles:["user"]
-          }, 
+          },
           hidden:true
         },
         {
@@ -363,7 +363,7 @@ export default {
           meta: {
             title: '产品-团队',
             icon: 'product',roles:["user"]
-          }, 
+          },
           hidden:true
         },
         {
@@ -374,7 +374,7 @@ export default {
           meta: {
             title: '产品-合同',
             icon: 'product',roles:["user"]
-          }, 
+          },
           hidden:true
         },
         {
@@ -385,9 +385,9 @@ export default {
           meta: {
             title: '产品-日志',
             icon: 'product',roles:["user"]
-          }, 
+          },
           hidden:true
-        },  
+        },
         {
           path: 'workloadDay',
           component: _import('xm/core/xmWorkload/WorkloadSetDayList'),
@@ -396,7 +396,7 @@ export default {
           meta: {
             title: '产品-工时日报',
             icon: 'product',roles:["user"]
-          }, 
+          },
           hidden:true
         },
         {
@@ -407,7 +407,7 @@ export default {
           meta: {
             title: '产品-工时月报',
             icon: 'product',roles:["user"]
-          }, 
+          },
           hidden:true
         },
         {
@@ -418,7 +418,7 @@ export default {
           meta: {
             title: '产品-文档',
             icon: 'product',roles:["user"]
-          }, 
+          },
           hidden:true
         },
         {
@@ -429,10 +429,10 @@ export default {
           meta: {
             title: '产品-效能',
             icon: 'product',roles:["user"]
-          }, 
+          },
           hidden:true
         },
-        
+
       ]
     },
 
@@ -444,7 +444,7 @@ export default {
       meta: {
         title: '迭代管理',
         icon: 'iteration'
-      }, 
+      },
       hidden:true,
       // leaf: true,//只有一个节点
       children: [
@@ -456,7 +456,7 @@ export default {
           meta: {
             title: '迭代-首页',
             icon: 'iteration',roles:["user"]
-          }, 
+          },
           hidden:true
         },
         {
@@ -467,7 +467,7 @@ export default {
           meta: {
             title: '迭代-项目',
             icon: 'iteration',roles:["user"]
-          }, 
+          },
           hidden:true
         },
         {
@@ -478,9 +478,9 @@ export default {
           meta: {
             title: '迭代-需求',
             icon: 'iteration',roles:["user"]
-          }, 
+          },
           hidden:true
-        }, 
+        },
         {
           path: 'func',
           component: _import('xm/core/xmFunc/XmFuncForIteration'),
@@ -489,9 +489,9 @@ export default {
           meta: {
             title: '迭代-模块',
             icon: 'iteration',roles:["user"]
-          }, 
+          },
           hidden:true
-        }, 
+        },
         {
           path: 'task',
           component: _import('xm/core/xmTask/XmTaskListForIteration'),
@@ -500,7 +500,7 @@ export default {
           meta: {
             title: '迭代-任务',
             icon: 'iteration',roles:["user"]
-          }, 
+          },
           hidden:true
         },
         {
@@ -511,9 +511,9 @@ export default {
           meta: {
             title: '迭代-测试管理',
             icon: 'iteration',roles:["user"]
-          }, 
+          },
           hidden:true
-        },  
+        },
         {
           path: 'question',
           component: _import('xm/core/xmQuestion/XmQuestionForIteration'),
@@ -522,9 +522,9 @@ export default {
           meta: {
             title: '迭代-缺陷',
             icon: 'iteration',roles:["user"]
-          }, 
+          },
           hidden:true
-        },        
+        },
         { path: 'group', component: _import('xm/core/xmGroup/XmGroupForIteration'), name: 'iterationGroup', meta: { title: '团队',roles:["user"] },hidden:true},
 
         {
@@ -535,9 +535,9 @@ export default {
           meta: {
             title: '迭代-日志',
             icon: 'iteration',roles:["user"]
-          }, 
+          },
           hidden:true
-        },  
+        },
         {
           path: 'workloadDay',
           component: _import('xm/core/xmWorkload/WorkloadSetDayList'),
@@ -546,7 +546,7 @@ export default {
           meta: {
             title: '迭代-工时日报',
             icon: 'iteration',roles:["user"]
-          }, 
+          },
           hidden:true
         },
         {
@@ -557,7 +557,7 @@ export default {
           meta: {
             title: '迭代-工时月报',
             icon: 'iteration',roles:["user"]
-          }, 
+          },
           hidden:true
         },
         {
@@ -568,10 +568,10 @@ export default {
           meta: {
             title: '迭代-效能',
             icon: 'iteration',roles:["user"]
-          }, 
+          },
           hidden:true
         },
-        
+
       ]
     },
      {
@@ -585,13 +585,13 @@ export default {
       },
       // leaf: true,//只有一个节点
       children: [
+        { path: 'question/detail', component: _import('xm/core/xmQuestion/XmQuestionDetailRoute'), name: 'questionDetail', meta: { title: '缺陷明细',roles:["user"] },hidden:true},
+        { path: 'question/mng', component: _import('xm/core/xmQuestion/XmQuestionMngRoute'), name: 'XmQuestionMng', meta: { title: '缺陷管理',roles:["user"] }},
+        { path: 'question/mng/me', component: _import('xm/core/xmQuestion/XmQuestionMngMy'), name: 'XmQuestionMngMy', meta: { title: '我的缺陷' ,roles:["user"]}},
+        { path: 'casedb/mng', component: _import('xm/core/xmTestCasedb/XmTestCasedbMng'), name: 'XmTestCasedbMng', meta: { title: '测试管理',roles:["user"] }},
 
-         { path: 'xmQuestion/XmQuestionMng', component: _import('xm/core/xmQuestion/XmQuestionMngRoute'), name: 'XmQuestionMng', meta: { title: '缺陷管理',roles:["user"] }},
-        { path: 'xmQuestion/XmQuestionMngMy', component: _import('xm/core/xmQuestion/XmQuestionMngMy'), name: 'XmQuestionMngMy', meta: { title: '我的缺陷' ,roles:["user"]}},
-        { path: 'xmTestCasedb/XmTestCasedbMng', component: _import('xm/core/xmTestCasedb/XmTestCasedbMng'), name: 'XmTestCasedbMng', meta: { title: '测试管理',roles:["user"] }},
- 
       ]
-    }, 
+    },
     {
       path: '/xm/core/test',
       component: XmTestLayout,
@@ -604,7 +604,6 @@ export default {
       hidden:true,
       // leaf: true,//只有一个节点
       children: [
-
         { path: 'overview', component: _import('xm/core/xmTestCasedb/Overview'), name: 'testOverview', meta: { title: '测试管理',roles:["user"] },hidden:true},
         { path: 'case', component: _import('xm/core/xmTestCase/XmTestCaseList'), name: 'testCase', meta: { title: '用例管理',roles:["user"] },hidden:true},
         { path: 'flow', component: _import('xm/core/xmTestCase/XmTestCaseFlow'), name: 'testFlow', meta: { title: '用例评审',roles:["user"] },hidden:true},
@@ -613,7 +612,7 @@ export default {
         { path: 'rpt', component: _import('xm/rpt/index/indexForTest'), name: 'testRpt', meta: { title: '统计分析',roles:["user"] },hidden:true},
 
       ]
-    }, 
+    },
     {
       path: '/xm/core',
       component: Layout,
@@ -624,30 +623,30 @@ export default {
         icon: 'task'
       },
       // leaf: true,//只有一个节点
-      children: [ 
-        { path: 'crowd/XmTaskCrowdMng', component: _import('xm/core/crowd/XmTaskCrowdMng'), name: 'XmTaskCrowdMng', meta: { title: '众包大厅',roles:["user"] }}, 
-        { path: 'xmTaskExecuser/XmTaskExecuserMng', component: _import('xm/core/xmTaskExecuser/XmTaskExecuserMng'), name: 'XmTaskExecuserMng', meta: { title: '候选人管理',roles:["user"] }},
-        { path: 'xmTaskExecuser/XmTaskExecuserForMy', component: _import('xm/core/xmTaskExecuser/XmTaskExecuserForMy'), name: 'XmTaskExecuserForMy', meta: { title: '候选人(我的)',roles:["user"] }},
- 
+      children: [
+        { path: 'crowd/mng', component: _import('xm/core/crowd/XmTaskCrowdMng'), name: 'XmTaskCrowdMng', meta: { title: '众包大厅',roles:["user"] }},
+        { path: 'execuser/mng', component: _import('xm/core/xmTaskExecuser/XmTaskExecuserMng'), name: 'XmTaskExecuserMng', meta: { title: '候选人管理',roles:["user"] }},
+        { path: 'execuser/me', component: _import('xm/core/xmTaskExecuser/XmTaskExecuserForMy'), name: 'XmTaskExecuserForMy', meta: { title: '候选人(我的)',roles:["user"] }},
+
       ]
     },
-    
+
     {
-      path: '/xm/rpt', 
-      name: 'xmRpt', 
+      path: '/xm/rpt',
+      name: 'xmRpt',
       component: Layout,
       iconCls: 'fa el-icon-menu',
       meta: {
         title: '效能分析',
         icon: 'chart'
       },
-      
-      children: [        
-        
-        { path: 'his', component: _import('xm/rpt/index/indexForHis'), name: 'rptHis', meta: { title: '历史报告',roles:["user"] }},  
-        { path: 'his/detail', component: _import('xm/rpt/index/indexForHisDetail'), name: 'rptHisDetail', meta: { title: '报告明细',roles:["user"] },hidden:true}, 
-        { path: 'index', component: _import('xm/rpt/index/index'), name: 'rptIndex', meta: { title: '指标分析',roles:["user"] }}, 
-        { path: 'branch/branchDatavFullScreen',   name: 'branchDatavFullScreen', meta: {   title: '机构效能',openTab:true,outUrl:"${curlDomain}/"+process.env.CONTEXT+"/"+process.env.VERSION+"/#/datav/xm/branch/branchDatavFullScreen" }}, 
+
+      children: [
+
+        { path: 'his', component: _import('xm/rpt/index/indexForHis'), name: 'rptHis', meta: { title: '历史报告',roles:["user"] }},
+        { path: 'his/detail', component: _import('xm/rpt/index/indexForHisDetail'), name: 'rptHisDetail', meta: { title: '报告明细',roles:["user"] },hidden:true},
+        { path: 'index', component: _import('xm/rpt/index/index'), name: 'rptIndex', meta: { title: '指标分析',roles:["user"] }},
+        { path: 'branch/datav',   name: 'branchDatavFullScreen', meta: {   title: '机构效能',openTab:true,outUrl:"${curlDomain}/"+process.env.CONTEXT+"/"+process.env.VERSION+"/#/datav/xm/branch/branchDatavFullScreen" }},
       ]
     },
     {
@@ -661,19 +660,17 @@ export default {
       },
       // leaf: true,//只有一个节点
       children: [
-        { path: 'xmProduct/XmProductAllMng', component: _import('xm/core/xmProduct/XmProductAllMng'), name: 'XmProductAllMng', meta: { title: '产品总览',roles:["user"] }},
+         { path: 'product/mng', component: _import('xm/core/xmProduct/XmProductMng'), name: 'XmProductMng', meta: { title: '产品管理',roles:["user"] }},
+         { path: 'product/recycle', component: _import('xm/core/xmProduct/XmProductRecycle'), name: 'XmProductRecycle', meta: { title: '产品回收站',roles:["user"] }},
 
-         { path: 'xmProduct/XmProductMng', component: _import('xm/core/xmProduct/XmProductMng'), name: 'XmProductMng', meta: { title: '产品管理',roles:["user"] }},
-         { path: 'xmProduct/XmProductRecycle', component: _import('xm/core/xmProduct/XmProductRecycle'), name: 'XmProductRecycle', meta: { title: '产品回收站',roles:["user"] }},
+         { path: 'product/tpl', component: _import('xm/core/xmProduct/XmProductTplMng'), name: 'XmProductTplMng', meta: { title: '产品模板',roles:["user"] }},
+         { path: 'menu/detail', component: _import('xm/core/xmMenu/XmMenuDetailRoute'), name: 'XmMenuDetailRoute', meta: { title: '需求明细',roles:["user"] },hidden:true},
 
-         { path: 'xmProduct/XmProductTplMng', component: _import('xm/core/xmProduct/XmProductTplMng'), name: 'XmProductTplMng', meta: { title: '产品模板',roles:["user"] }},
-         { path: 'xmMenu/XmMenuDetailRoute', component: _import('xm/core/xmMenu/XmMenuDetailRoute'), name: 'XmMenuDetailRoute', meta: { title: '需求明细',roles:["user"] },hidden:true},
+        { path: 'menu/mng', component: _import('xm/core/xmMenu/XmMenuMngRoute'), name: 'XmMenuMng', meta: { title: '需求管理',roles:["user"] }},
+          { path: 'iteration/mng', component: _import('xm/core/xmIteration/XmIterationMng'), name: 'XmIterationMng', meta: { title: '迭代管理',roles:["user"] }},
 
-        { path: 'xmMenu/XmMenuMng', component: _import('xm/core/xmMenu/XmMenuMngRoute'), name: 'XmMenuMng', meta: { title: '需求管理',roles:["user"] }},
-          { path: 'xmIteration/XmIterationMng', component: _import('xm/core/xmIteration/XmIterationMng'), name: 'XmIterationMng', meta: { title: '迭代管理',roles:["user"] }},
-         
       ]
-    },  
+    },
     {
       path: '/xm/core',
       component: Layout,
@@ -685,9 +682,9 @@ export default {
       },
       // leaf: true,//只有一个节点
       children: [
-         { path: 'xmGroup/XmGroupAllMng', component: _import('xm/core/xmGroup/XmGroupAllMng'), name: 'XmGroupAllMng', meta: { title: '团队管理',roles:["user"] }},
-         { path: 'xmGroupUser/XmGroupUserMng', component: _import('xm/core/xmGroupUser/XmGroupUserMng'), name: 'XmGroupUserMng', meta: { title: '成员管理',roles:["user"] }},
-         { path: 'xmGroup/XmGroupRoute', component: _import('xm/core/xmGroup/XmGroupRoute'), name: 'XmGroupRoute', meta: { title: '项目团队',roles:["user"] } ,hidden:true},
+         { path: 'group/mng', component: _import('xm/core/xmGroup/XmGroupAllMng'), name: 'XmGroupAllMng', meta: { title: '团队管理',roles:["user"] }},
+         { path: 'group/user', component: _import('xm/core/xmGroupUser/XmGroupUserMng'), name: 'XmGroupUserMng', meta: { title: '成员管理',roles:["user"] }},
+         { path: 'group/detail', component: _import('xm/core/xmGroup/XmGroupRoute'), name: 'XmGroupRoute', meta: { title: '项目团队',roles:["user"] } ,hidden:true},
 
       ]
     },
@@ -703,13 +700,13 @@ export default {
       },
       //leaf: true,//只有一个节点
       children: [
-        { path: 'xmProduct/XmProjectCost', component: _import('xm/core/xmProject/XmProjectCost'), name: 'XmProjectCost', meta: { title: '应付款',roles:["user"]}},    
+        { path: 'project/cost', component: _import('xm/core/xmProject/XmProjectCost'), name: 'XmProjectCost', meta: { title: '应付款',roles:["user"]}},
 
-        { path: 'xmTaskSbill/XmTaskSbillMng', component: _import('xm/core/xmTaskSbill/XmTaskSbillMng'), name: 'XmTaskSbilllMng', meta: { title: '任务结算单',roles:["user"]}},    
-         { path: 'xmWorkload/WorkloadSetDayListMy', component: _import('xm/core/xmWorkload/WorkloadSetDayListMy'), name: 'WorkloadSetDayListMy', meta: { title: '工时日报(我)',roles:["user"]}},
-        { path: 'xmWorkload/WorkloadSetMonthListMy', component: _import('xm/core/xmWorkload/WorkloadSetMonthListMy'), name: 'WorkloadSetMonthListMy', meta: { title: '工时月报(我)',roles:["user"]}}, 
-         { path: 'xmWorkload/WorkloadSetDayList', component: _import('xm/core/xmWorkload/WorkloadSetDayList'), name: 'WorkloadSetDayList', meta: { title: '工时日报',roles:["user"]}},
-        { path: 'xmWorkload/WorkloadSetMonthList', component: _import('xm/core/xmWorkload/WorkloadSetMonthList'), name: 'WorkloadSetMonthList', meta: { title: '工时月报',roles:["user"]}},
+        { path: 'task/sbill', component: _import('xm/core/xmTaskSbill/XmTaskSbillMng'), name: 'XmTaskSbilllMng', meta: { title: '任务结算单',roles:["user"]}},
+         { path: 'workload/meday', component: _import('xm/core/xmWorkload/WorkloadSetDayListMy'), name: 'WorkloadSetDayListMy', meta: { title: '工时日报(我)',roles:["user"]}},
+        { path: 'workload/memonth', component: _import('xm/core/xmWorkload/WorkloadSetMonthListMy'), name: 'WorkloadSetMonthListMy', meta: { title: '工时月报(我)',roles:["user"]}},
+         { path: 'workload/day', component: _import('xm/core/xmWorkload/WorkloadSetDayList'), name: 'WorkloadSetDayList', meta: { title: '工时日报',roles:["user"]}},
+        { path: 'workload/month', component: _import('xm/core/xmWorkload/WorkloadSetMonthList'), name: 'WorkloadSetMonthList', meta: { title: '工时月报',roles:["user"]}},
       ]
     }
   ]
