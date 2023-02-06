@@ -13,8 +13,8 @@
               @clear="onProductClearSelect"
             >
             <template v-slot:title="{product}">
-               <h4 href="#"><div class="lg-text hidden-md-and-down"><i style="font-size:16px;" class="el-icon-sort"></i> {{product && product.id?product.productName:'请选择一个产品'}}</div></h4>
-               <h4 href="#"><div class="sm-text hidden-lg-and-up"><i style="font-size:16px;" class="el-icon-sort"></i> {{product && product.id?product.productName:'请选择一个产品'}}</div></h4>
+               <h4 href="#"><div style="max-width:15vw;" class="res-text hidden-md-and-down"><i style="font-size:16px;" class="el-icon-sort"></i> {{product && product.id?product.productName:'请选择一个产品'}}</div></h4>
+               <h4 href="#"><div style="max-width:19vw;" class="res-text hidden-lg-and-up"><i style="font-size:16px;" class="el-icon-sort"></i> {{product && product.id?product.productName:'请选择一个产品'}}</div></h4>
             </template>
            
           </xm-product-select> 

@@ -192,13 +192,13 @@
                   v-loading="load.list"
                   icon="el-icon-s-opportunity" 
               >
-              <div class="lg-text hidden-md-and-down">
+              <div class="res-text hidden-md-and-down">
               {{
                 editForm && editForm.id ? editForm.productName : "选择产品"
               }} 
               </div>
               
-              <div class="sm-text hidden-lg-and-up">
+              <div class="res-text hidden-lg-and-up">
               {{
                 editForm && editForm.id ? editForm.productName : "选择产品"
               }} 

@@ -120,16 +120,16 @@
 			</el-row>
 			<div slot="reference" @click="referenceClick">
 				<slot name="reference" v-bind:iteration="editForm">
-					<span class="title">
+					<div class="title">
 						<slot name="title"  v-bind:iteration="editForm">
 							<el-link title="点击选中迭代"   type="primary"  icon="el-icon-connection"> 
-								<div class="lg-text hidden-md-and-down">
+								<div class="res-text hidden-md-and-down">
 									{{
 										editForm&&editForm.id?editForm.iterationName:'选择迭代'
 									}} 
 									</div>
 									
-									<div class="sm-text hidden-lg-and-up">
+									<div class="res-text hidden-lg-and-up">
 									{{
 										editForm&&editForm.id?editForm.iterationName:'选择迭代'
 									}} 
@@ -137,7 +137,7 @@
 							</el-link>
 							 <el-button v-if="editForm&&editForm.id" type="text"  icon="el-icon-circle-close" @click.stop="clearSelectIteration"></el-button>&nbsp;
 							</slot>
-					</span>
+					</div>
 				</slot>
 			</div>
 		</el-popover> 

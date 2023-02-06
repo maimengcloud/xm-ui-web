@@ -16,8 +16,7 @@
       <el-menu-item :index="'/xm/core/product/overview?productId='+xmProduct.id">
           <div
             slot="title"
-            style="max-width: 350px; font-weight: 600; font-size: 18px; color: #409EFF"
-            class="xl-text"
+            style="max-width: 20vw; font-weight: 600; font-size: 18px; color: #409EFF"  
             :title="xmProduct.productName"
           >
             &nbsp; <el-avatar class="top-icon"  style="background-color:#409EFF">产品</el-avatar>{{ xmProduct.productName }} 

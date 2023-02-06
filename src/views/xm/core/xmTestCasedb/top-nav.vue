@@ -16,7 +16,7 @@
       <el-menu-item :index="'/xm/core/test/overview?casedbId='+testCasedb.id">
           <div
             slot="title"
-            style="max-width:350px;font-size: 18px;font-weight: 600; color: #409EFF" 
+            style="max-width:20vw;font-size: 18px;font-weight: 600; color: #409EFF" 
             class="xl-text"
             :title="testCasedb.name"
           > 

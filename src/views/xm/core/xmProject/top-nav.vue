@@ -16,7 +16,7 @@
         <el-menu-item :index="'/xm/core/project/overview?projectId='+projectInfo.id">
           <div
             slot="title" 
-            style="max-width: 350px;font-weight: 600; font-size: 18px; color: #E6A23C" 
+            style="max-width: 20vw;font-weight: 600; font-size: 18px; color: #E6A23C" 
             class="xl-text"
             :title="projectInfo.name"
           >  

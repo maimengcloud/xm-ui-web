@@ -285,24 +285,13 @@ table tr.hover-row{
     display:none;
   }
 }
+ 
 
-.xl-text{  
+.res-text{
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;  
-  max-width:300px;
-}
-.lg-text{  
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;  
-  max-width:250px;
-}
-.sm-text{   
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;  
-  max-width:200px;
+  max-width:20vw;
 }
  /**
  *解决表格固定列无法滚动问题
@@ -378,7 +367,7 @@ table tr.hover-row{
   .page-center{    
     margin:0 auto;
     max-width: 95vw;
-  }
+  } 
 }
 /*ipad*/
 @media only screen and (min-width: 768px) and (max-width: 992px) { 

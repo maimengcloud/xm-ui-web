@@ -194,13 +194,13 @@
               type="warning"
               icon="el-icon-odometer"
               >  
-              <div class="lg-text hidden-md-and-down">
+              <div class="res-text hidden-md-and-down">
               {{
                 editForm && editForm.id ? editForm.name: "选择项目"
               }} 
               </div>
               
-              <div class="sm-text hidden-lg-and-up">
+              <div class="res-text hidden-lg-and-up">
               {{
                editForm && editForm.id ? editForm.name: "选择项目"
               }} 
