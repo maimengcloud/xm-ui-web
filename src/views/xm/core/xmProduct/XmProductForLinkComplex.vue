@@ -497,7 +497,7 @@ export default {
       if (window.history.length > 0) {
         this.$router.back(-1);
       } else {
-        this.$router.push({ path: "/xm/core/xmProduct/XmProductMng" });
+        this.$router.push({ path: "/xm/core/product/mng" });
       }
     },
 

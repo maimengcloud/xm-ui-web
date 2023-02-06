@@ -1,56 +1,49 @@
 <template>
-	<section>
+	<section class="padding"> 
+		<el-row > 
+			<xm-product-select ref="xmProductSelect1" style="display:inline;" v-if="!xmProduct"   :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClearSelect"></xm-product-select> 
+				
+			<el-input style="width:120px;" v-model="filters.key" placeholder="名称模糊查询"  clearable></el-input>
+			<el-button icon="el-icon-search" @click="searchXmMenus()"></el-button> 
+			<el-button v-if="showSelect!==false && multi===true" type="primary" @click="selectConfirm()">确认选择</el-button> 
+			</el-row>
 		<el-row>
-			<el-col :span="24" class="padding-left">
-					<el-row >
+			<el-table element-loading-text="努力加载中" element-loading-spinner="el-icon-loading"    stripe fit border ref="table" :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
+				<template v-if="showSelect!==false && multi===true">
+					<el-table-column   label="" type="selection"  width="60"  >  
+					</el-table-column> 
+				</template>
+				<el-table-column prop="menuName" label="史诗、特性名称" min-width="150" >
+					<template slot="header">史诗、特性名称 &nbsp;<el-button type="text" @click="unselectRow()">清除选中的行</el-button></template>
+					<template slot-scope="scope">
+						<div  v-if="scope.row.dclass=='1'" class="icon" style="background-color:  rgb(255, 153, 51);">
+						<i class="el-icon-s-promotion"></i>
+						</div>
+						<div v-if="scope.row.dclass=='2'" class="icon" style="background-color:  rgb(0, 153, 51);">
+						<i class="el-icon-s-flag"></i>
+						</div>
+						<div v-if="scope.row.dclass=='3'" class="icon" style="background-color:  rgb(79, 140, 255);">
+						<i class="el-icon-document"></i>
+						</div>
+						<span>{{scope.row.seqNo}} &nbsp; {{scope.row.menuName}} </span> 
+						<span  
+							:style="{borderRadius: '30px',color:scope.row.finishRate >= 100 ? 'green' : 'blue'}" 
+						>
+							{{ (scope.row.finishRate != null ? scope.row.finishRate : 0) + "%" }}
+						</span> 
+					</template> 
+				</el-table-column>  
+				<template v-if="showSelect!==false && multi!==true">
+				<el-table-column   label="操作"  width="100"  > 
+					<template slot-scope="scope"> 
+						<el-button      @click="select( scope.row,scope.$index)"   title="选择" type="primary"> 选择</el-button>     
+					</template>
+				</el-table-column> 
+				</template>
+			</el-table>  
+		</el-row>   
+		<el-pagination  layout="total, sizes, prev,  next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 
-						<xm-product-select ref="xmProductSelect1" style="display:inline;" v-if="!xmProduct"   :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClearSelect"></xm-product-select> 
-						 
-						<el-input style="width:120px;" v-model="filters.key" placeholder="名称模糊查询"  clearable></el-input>
-						<el-button icon="el-icon-search" @click="searchXmMenus()"></el-button> 
-						<el-button v-if="showSelect!==false && multi===true" type="primary" @click="selectConfirm()">确认选择</el-button> 
-					 </el-row>
-					<el-row>
-						<el-table element-loading-text="努力加载中" element-loading-spinner="el-icon-loading"    stripe fit border ref="table" :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
-							<template v-if="showSelect!==false && multi===true">
-								<el-table-column   label="" type="selection"  width="60"  >  
-								</el-table-column> 
-							</template>
-							<el-table-column prop="menuName" label="史诗、特性名称" min-width="150" >
-								<template slot="header">史诗、特性名称 &nbsp;<el-button type="text" @click="unselectRow()">清除选中的行</el-button></template>
-								<template slot-scope="scope">
-									<div  v-if="scope.row.dclass=='1'" class="icon" style="background-color:  rgb(255, 153, 51);">
-									<i class="el-icon-s-promotion"></i>
-									</div>
-									<div v-if="scope.row.dclass=='2'" class="icon" style="background-color:  rgb(0, 153, 51);">
-									<i class="el-icon-s-flag"></i>
-									</div>
-									<div v-if="scope.row.dclass=='3'" class="icon" style="background-color:  rgb(79, 140, 255);">
-									<i class="el-icon-document"></i>
-									</div>
-									<span>{{scope.row.seqNo}} &nbsp; {{scope.row.menuName}} </span> 
-									<span  
-										:style="{borderRadius: '30px',color:scope.row.finishRate >= 100 ? 'green' : 'blue'}" 
-									>
-										{{ (scope.row.finishRate != null ? scope.row.finishRate : 0) + "%" }}
-									</span> 
-  								</template> 
-							</el-table-column>  
-							<template v-if="showSelect!==false && multi!==true">
-							<el-table-column   label="操作"  width="100"  > 
-								<template slot-scope="scope"> 
-									<el-button      @click="select( scope.row,scope.$index)"   title="选择" type="primary"> 选择</el-button>     
-								</template>
-							</el-table-column> 
-							</template>
-						</el-table> 
-						<el-pagination  layout="total, sizes, prev,  next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
-
-					</el-row> 
-			</el-col>
-		</el-row>
-		
- 		 
 	</section>
 </template>
 

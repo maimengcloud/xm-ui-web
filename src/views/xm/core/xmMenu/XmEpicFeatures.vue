@@ -1,154 +1,148 @@
 <template>
-	<section>
+	<section class="padding"> 
 		<el-row>
-			<el-col :span="24">
-					
+			<div style="display:flex;">
+				<xm-product-select v-if=" !xmProduct || !xmProduct.id" ref="xmProductSelect1" style="display:inline;"  :auto-select="true" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" @clear="onProductClearSelect" ></xm-product-select>
+				<el-input v-else v-model="filters.key" style="width:50%;"  placeholder="名称模糊查询"  clearable></el-input>  
 
-					<el-row>
-						<div style="display:flex;">
-							<xm-product-select v-if=" !xmProduct || !xmProduct.id" ref="xmProductSelect1" style="display:inline;"  :auto-select="true" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" @clear="onProductClearSelect" ></xm-product-select>
-							<el-input v-else v-model="filters.key" style="width:50%;"  placeholder="名称模糊查询"  clearable></el-input>  
-
-							&nbsp;&nbsp; 
-							<span style="margin-left: auto;">
-								<el-popover
-									placement="top-start"
-									width="250"
-									trigger="click" >
-									<el-row>
-										<el-row>
-											<div   class="icon" style="background-color:  rgb(255, 153, 51);">
-												<i class="el-icon-s-promotion"></i>
-											</div>
-											<el-button   @click="showAdd('1')">新建史诗</el-button>
-										</el-row>
-										<!--
-										<el-row>
-											<div  class="icon" style="background-color:  rgb(0, 153, 51);">
-											<i class="el-icon-s-flag"></i>
-											</div>
-											<el-button   @click="showAdd('2')">新建特性</el-button>
-										</el-row>
-										<el-row>
-
-											<div  class="icon" style="background-color:  rgb(79, 140, 255);">
-											<i class="el-icon-document"></i>
-											</div>
-											<el-button   @click="showAdd('3')"  >新建用户故事</el-button>
-										</el-row>
-										-->
-
-										<el-row>
-											<el-button  @click="showImportFromMenuTemplate()" icon="el-icon-upload2">由模板快速导入需求</el-button>
-										</el-row>
-									</el-row>
-									<el-button type="primary" v-if="!disabledMng" round  slot="reference" icon="el-icon-plus"></el-button>
-								</el-popover> 
- 								<el-popover 
-									placement="top-start"
-									title="更多操作"
-									width="400"
-									trigger="manual"
-									v-model="moreVisible"
-								>
-									<el-row>  
-											<el-button  style="float:right;margin-top:-40px;"
-											icon="el-icon-close"
-											@click="moreVisible=false"
-											type="text"
-											>关闭</el-button
-											> 
-									</el-row>  
-									<el-divider></el-divider>
-									<el-row> 
-									
-										<el-button type="primary"  @click="showParentMenu" icon="el-icon-top" title="更换上级">更换上级</el-button> 
-										<el-button type="danger" 
-											@click="batchDel"
-											v-loading="load.del"
-											icon="el-icon-delete"
-											title="批量删除" v-if="!disabledMng"
-											>批量删除</el-button
-										>
-										<el-button          @click="loadTasksToXmMenuState" icon="el-icon-s-marketing" title="汇总进度">汇总进度</el-button> 
-									</el-row>
-									<el-divider></el-divider>
-
-									<el-row> 
-										<el-button    type="primary"      @click="searchXmMenus" icon="el-icon-search" title="查询" style="float:right;">查询</el-button> 
-									</el-row>  
-									<el-button slot="reference" @click="moreVisible=!moreVisible" icon="el-icon-more"></el-button>
-								</el-popover>  
-						</span>
- 						</div>
-					 </el-row> 
-					<el-row >
-						<el-table ref="table" :cell-style="cellStyleCalc" :expand-row-keys="expandRowKeysCpd" :header-cell-style="cellStyleCalc" :row-style="{height:'60px'}"   stripe fit border  :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick"
-							element-loading-text="努力加载中"
-							element-loading-spinner="el-icon-loading" 
-						>
-							<template v-if="!disabledMng">
-								<el-table-column sortable type="selection" width="40"></el-table-column> 
-							</template>
-							
-							<el-table-column prop="menuName" label="史诗、特性名称" min-width="150" > 
-								<template slot="header">
-									<div style="display:flex;">
-										<div style="text-align: center;line-height: 32px;">史诗、特性</div>
-										&nbsp;&nbsp;
-										<el-button type="text" icon="el-icon-circle-close" @click="unselectRow()">清除选中</el-button>
-										<el-input v-if=" !xmProduct || !xmProduct.id" v-model="filters.key" style="width:50%;margin-left: auto;"  placeholder="名称模糊查询"  clearable></el-input>  
-									</div>
-								</template>
-								<template slot-scope="scope">
-									<div  v-if="scope.row.dclass=='1'" class="icon" style="background-color:  rgb(255, 153, 51);">
+				&nbsp;&nbsp; 
+				<span style="margin-left: auto;">
+					<el-popover
+						placement="top-start"
+						width="250"
+						trigger="click" >
+						<el-row>
+							<el-row>
+								<div   class="icon" style="background-color:  rgb(255, 153, 51);">
 									<i class="el-icon-s-promotion"></i>
-									</div>
-									<div v-if="scope.row.dclass=='2'" class="icon" style="background-color:  rgb(0, 153, 51);">
-									<i class="el-icon-s-flag"></i>
-									</div>
-									<div v-if="scope.row.dclass=='3'" class="icon" style="background-color:  rgb(79, 140, 255);">
-									<i class="el-icon-document"></i>
-									</div>
-									<span>{{scope.row.seqNo}} &nbsp; {{scope.row.menuName}} </span>
-									
-									<span  
-										:style="{borderRadius: '30px',color:scope.row.finishRate >= 100 ? 'green' : 'blue'}" 
-									>
-										{{ (scope.row.finishRate != null ? scope.row.finishRate : 0) + "%" }}
-									</span>  
-									 <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'menuStatus',scope.row.status)" :key="index" :type="item.className">{{item.name}}</el-tag>
-									 <div class="tool-bar" v-if="!disabledMng">
-									<span class="u-btn">
- 												<el-button  v-if=" scope.row.dclass==='1' "  @click.stop="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" title="新建特性" circle plain > </el-button>
-											     
-										<el-button      @click.stop="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑" circle plain > </el-button>     
-									</span>
-									</div>
-  								</template> 
-							</el-table-column> 
-						</el-table>  
-					</el-row>
-					<el-row>
-						<el-pagination  layout="total, sizes, prev,  next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
-					</el-row>
-				<!--编辑 XmMenu xm_project_menu界面-->
-				<el-dialog :title="'编辑'+(editForm&&editForm.dclass=='1'?'史诗':'特性')" :visible.sync="editFormVisible"  width="90%" top="20px"    append-to-body   :close-on-click-modal="false" >
-					<xm-menu-edit :xm-menu="editForm" :sel-project="selProject" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit" @add-sub-menu="onAddSubMenu" @edit-fields="onEditSomeFields"></xm-menu-edit>
-				</el-dialog>
+								</div>
+								<el-button   @click="showAdd('1')">新建史诗</el-button>
+							</el-row>
+							<!--
+							<el-row>
+								<div  class="icon" style="background-color:  rgb(0, 153, 51);">
+								<i class="el-icon-s-flag"></i>
+								</div>
+								<el-button   @click="showAdd('2')">新建特性</el-button>
+							</el-row>
+							<el-row>
 
-				<!--新增 XmMenu xm_project_menu界面-->
-				<el-dialog :title="'新增'+(addForm.dclass=='1'?'史诗':'特性')" :visible.sync="addFormVisible"    width="80%" top="20px"    append-to-body   :close-on-click-modal="false">
-					<xm-menu-add  :parent-menu="parentMenu"  :xm-menu="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-menu-add>
-				</el-dialog>
-				<el-drawer title="需求模板" :visible.sync="menuTemplateVisible"   size="80%"  append-to-body   :close-on-click-modal="false">
-					<xm-menu-template-mng  :is-select-menu="true"  :visible="menuTemplateVisible" @cancel="menuTemplateVisible=false" @selected-menus="onSelectedMenuTemplates"></xm-menu-template-mng>
-				</el-drawer>    
-			</el-col>
-		</el-row> 
-			<el-dialog append-to-body width="60%" top="20px" :visible.sync="parentMenuVisible">
-				<xm-epic-features-select v-if="parentMenuVisible" :xm-product="xmProduct?xmProduct:filters.product" @select="onParentMenuSelected"></xm-epic-features-select>
-			</el-dialog>
+								<div  class="icon" style="background-color:  rgb(79, 140, 255);">
+								<i class="el-icon-document"></i>
+								</div>
+								<el-button   @click="showAdd('3')"  >新建用户故事</el-button>
+							</el-row>
+							-->
+
+							<el-row>
+								<el-button  @click="showImportFromMenuTemplate()" icon="el-icon-upload2">由模板快速导入需求</el-button>
+							</el-row>
+						</el-row>
+						<el-button type="primary" v-if="!disabledMng" round  slot="reference" icon="el-icon-plus"></el-button>
+					</el-popover> 
+					<el-popover 
+						placement="top-start"
+						title="更多操作"
+						width="400"
+						trigger="manual"
+						v-model="moreVisible"
+					>
+						<el-row>  
+								<el-button  style="float:right;margin-top:-40px;"
+								icon="el-icon-close"
+								@click="moreVisible=false"
+								type="text"
+								>关闭</el-button
+								> 
+						</el-row>  
+						<el-divider></el-divider>
+						<el-row> 
+						
+							<el-button type="primary"  @click="showParentMenu" icon="el-icon-top" title="更换上级">更换上级</el-button> 
+							<el-button type="danger" 
+								@click="batchDel"
+								v-loading="load.del"
+								icon="el-icon-delete"
+								title="批量删除" v-if="!disabledMng"
+								>批量删除</el-button
+							>
+							<el-button          @click="loadTasksToXmMenuState" icon="el-icon-s-marketing" title="汇总进度">汇总进度</el-button> 
+						</el-row>
+						<el-divider></el-divider>
+
+						<el-row> 
+							<el-button    type="primary"      @click="searchXmMenus" icon="el-icon-search" title="查询" style="float:right;">查询</el-button> 
+						</el-row>  
+						<el-button slot="reference" @click="moreVisible=!moreVisible" icon="el-icon-more"></el-button>
+					</el-popover>  
+			</span>
+			</div>
+			</el-row> 
+		<el-row >
+			<el-table ref="table" :cell-style="cellStyleCalc" :expand-row-keys="expandRowKeysCpd" :header-cell-style="cellStyleCalc" :row-style="{height:'60px'}"   stripe fit border  :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick"
+				element-loading-text="努力加载中"
+				element-loading-spinner="el-icon-loading" 
+			>
+				<template v-if="!disabledMng">
+					<el-table-column sortable type="selection" width="40"></el-table-column> 
+				</template>
+				
+				<el-table-column prop="menuName" label="史诗、特性名称" min-width="150" > 
+					<template slot="header">
+						<div style="display:flex;">
+							<div style="text-align: center;line-height: 32px;">史诗、特性</div>
+							&nbsp;&nbsp;
+							<el-button type="text" icon="el-icon-circle-close" @click="unselectRow()">清除选中</el-button>
+							<el-input v-if=" !xmProduct || !xmProduct.id" v-model="filters.key" style="width:50%;margin-left: auto;"  placeholder="名称模糊查询"  clearable></el-input>  
+						</div>
+					</template>
+					<template slot-scope="scope">
+						<div  v-if="scope.row.dclass=='1'" class="icon" style="background-color:  rgb(255, 153, 51);">
+						<i class="el-icon-s-promotion"></i>
+						</div>
+						<div v-if="scope.row.dclass=='2'" class="icon" style="background-color:  rgb(0, 153, 51);">
+						<i class="el-icon-s-flag"></i>
+						</div>
+						<div v-if="scope.row.dclass=='3'" class="icon" style="background-color:  rgb(79, 140, 255);">
+						<i class="el-icon-document"></i>
+						</div>
+						<span>{{scope.row.seqNo}} &nbsp; {{scope.row.menuName}} </span>
+						
+						<span  
+							:style="{borderRadius: '30px',color:scope.row.finishRate >= 100 ? 'green' : 'blue'}" 
+						>
+							{{ (scope.row.finishRate != null ? scope.row.finishRate : 0) + "%" }}
+						</span>  
+							<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'menuStatus',scope.row.status)" :key="index" :type="item.className">{{item.name}}</el-tag>
+							<div class="tool-bar" v-if="!disabledMng">
+						<span class="u-btn">
+									<el-button  v-if=" scope.row.dclass==='1' "  @click.stop="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" title="新建特性" circle plain > </el-button>
+										
+							<el-button      @click.stop="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑" circle plain > </el-button>     
+						</span>
+						</div>
+					</template> 
+				</el-table-column> 
+			</el-table>  
+		</el-row>
+		<el-row>
+			<el-pagination  layout="total, sizes, prev,  next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
+		</el-row>
+		<!--编辑 XmMenu xm_project_menu界面-->
+		<el-dialog :title="'编辑'+(editForm&&editForm.dclass=='1'?'史诗':'特性')" :visible.sync="editFormVisible"  width="90%" top="20px"    append-to-body   :close-on-click-modal="false" >
+			<xm-menu-edit :xm-menu="editForm" :sel-project="selProject" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit" @add-sub-menu="onAddSubMenu" @edit-fields="onEditSomeFields"></xm-menu-edit>
+		</el-dialog>
+
+		<!--新增 XmMenu xm_project_menu界面-->
+		<el-dialog :title="'新增'+(addForm.dclass=='1'?'史诗':'特性')" :visible.sync="addFormVisible"    width="80%" top="20px"    append-to-body   :close-on-click-modal="false">
+			<xm-menu-add  :parent-menu="parentMenu"  :xm-menu="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-menu-add>
+		</el-dialog>
+		<el-drawer title="需求模板" :visible.sync="menuTemplateVisible"   size="80%"  append-to-body   :close-on-click-modal="false">
+			<xm-menu-template-mng  :is-select-menu="true"  :visible="menuTemplateVisible" @cancel="menuTemplateVisible=false" @selected-menus="onSelectedMenuTemplates"></xm-menu-template-mng>
+		</el-drawer>      
+	<el-dialog append-to-body width="60%" top="20px" :visible.sync="parentMenuVisible">
+		<xm-epic-features-select v-if="parentMenuVisible" :xm-product="xmProduct?xmProduct:filters.product" @select="onParentMenuSelected"></xm-epic-features-select>
+	</el-dialog>
 	</section>
 </template>
 

@@ -77,7 +77,7 @@
           <el-menu-item index="/helpCenter">
             <span slot="title"><i class="el-icon-date"></i>客服</span>
           </el-menu-item>
-          <el-menu-item index="/xm/core/xmTestCasedb/XmTestCasedbMng" >
+          <el-menu-item index="/xm/core/casedb/mng" >
               <span slot="title"
                 ><i class="el-icon-back"></i>回到测试库列表页</span
               >

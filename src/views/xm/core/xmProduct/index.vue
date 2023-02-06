@@ -45,14 +45,14 @@ export default {
           }else{
             this.$message.error("产品不存在，请确保产品编号正确")
             this.$router.push({
-              path:'/xm/core/xmProduct/XmProductMng'
+              path:'/xm/core/product/mng'
             })
           }
           
         }else{
           this.$message.error(tips.msg)
           this.$router.push({
-            path:'/xm/core/xmProduct/XmProductMng'
+            path:'/xm/core/product/mng'
           })
         }
       })

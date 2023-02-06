@@ -45,14 +45,14 @@ export default {
           }else{
             this.$message.error("测试用例库不存在，请确保测试用例库编号正确")
             this.$router.push({
-              path:'/xm/core/xmTestCasedb/XmTestCasedbMng'
+              path:'/xm/core/casedb/mng'
             })
           }
           
         }else{
           this.$message.error(tips.msg)
           this.$router.push({
-            path:'/xm/core/xmTestCasedb/XmTestCasedbMng'
+            path:'/xm/core/casedb/mng'
           })
         }
       })

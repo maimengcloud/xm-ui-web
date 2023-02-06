@@ -1,5 +1,5 @@
 <template>
-	<section class="page-container padding border">
+	<section class="padding border">
 		<el-row v-if="!simple">
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
 			<span v-if="!objType"><el-radio  v-model="filters.objType" v-for="i in objTypeOptions" :label="i.key" :key="i.key">{{i.name}}</el-radio></span>

@@ -1,5 +1,5 @@
 <template>
-	<section class="padding-left padding-right">
+	<section class="padding">
 			<el-row>
 				<xm-product-select v-if="!xmProduct&&!xmIteration" style="display:inline;" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" @clear="clearProduct"></xm-product-select>
 			  	<xm-project-select v-if="!selProject" style="display:inline;" ref="xmProjectSelect" :auto-select="false" :link-product-id="xmProduct?xmProduct.id:null" @row-click="onProjectConfirm" @clear="clearProject"></xm-project-select>
@@ -195,8 +195,9 @@
 					</el-table-column>
 					<el-table-column prop="menuName" label="需求" width="100" show-overflow-tooltip></el-table-column> 
 				</el-table>
-				<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 			 </el-row>
+			 <el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
+
 			<!--编辑 XmQuestion xm_question界面-->
 			<el-dialog  title="编辑缺陷"   :visible.sync="editFormVisible"   fullscreen  top="10px"  :close-on-click-modal="false" append-to-body>
 					<xm-question-edit :sel-project=" {id:editForm.projectId,name:editForm.projectName} " :xm-product="filters.product" :xm-iteration="xmIteration" :xm-question="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit" @edit-fields="onEditFields"></xm-question-edit>

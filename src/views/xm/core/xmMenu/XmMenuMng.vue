@@ -1,361 +1,359 @@
 <template>
-	<section>
-		<el-row>
-			<el-col :span="24">
-					<el-row>
-						<xm-product-select ref="xmProductSelect1" style="display:inline;" v-if="(!xmProduct||!xmProduct.id)&&(!xmIteration||!xmIteration.id)"   :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClearSelect"></xm-product-select>
+	<section class="padding"> 
+				<el-row>
+					<xm-product-select ref="xmProductSelect1" style="display:inline;" v-if="(!xmProduct||!xmProduct.id)&&(!xmIteration||!xmIteration.id)"   :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClearSelect"></xm-product-select>
 
-						<mdp-select-dict v-model="filters.priority" placeholder="优先级"  clearable style="width: 100px;" :dict="dicts['priority']">
- 						</mdp-select-dict>
-						<mdp-select-dict v-model="filters.status" placeholder="需求状态" clearable style="width: 100px;" :dict="dicts['menuStatus']">
- 						</mdp-select-dict>
-						<el-input v-model="filters.key" style="max-width: 200px;" placeholder="需求名称查询" clearable>
-						</el-input>
-						<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search"></el-button>
+					<mdp-select-dict v-model="filters.priority" placeholder="优先级"  clearable style="width: 100px;" :dict="dicts['priority']">
+					</mdp-select-dict>
+					<mdp-select-dict v-model="filters.status" placeholder="需求状态" clearable style="width: 100px;" :dict="dicts['menuStatus']">
+					</mdp-select-dict>
+					<el-input v-model="filters.key" style="max-width: 200px;" placeholder="需求名称查询" clearable>
+					</el-input>
+					<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search"></el-button>
 
-						<el-popover
-							placement="top-start"
-							title="更多查询条件或者操作"
-							width="500"
-							v-model="moreVisible"
-							trigger="manual" >
-							
-							<el-row  style="float:right;margin-top:-40px">  
-									<el-button 
-									icon="el-icon-close"
-									@click="moreVisible=false"
-									type="text"
-									>关闭</el-button
-									> 
-							</el-row> 
-								<el-divider></el-divider>
-								<el-row> 
-									<el-button @click="showParentMenu" icon="el-icon-top" title="更换上级">更换上级</el-button> 
-									<el-button    @click="handleExport" icon="el-icon-download">导出</el-button>
-									<el-button     @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">汇总进度</el-button>
-									<el-button  type="danger" @click="batchDel" icon="el-icon-delete" title="删除">删除</el-button>
- 
-								</el-row>
-								
-              					<el-row>
-									<font class="more-label-font">显示方式:</font
-									>   
-									<span class="more-label-font">  
-										<el-radio v-model="displayType" label="agileUser">故事看板</el-radio>
-										<el-radio v-model="displayType" label="table">列表</el-radio> 
-									</span>
-								</el-row>
-								<el-divider></el-divider> 
-								<el-row>
-									<font class="more-label-font">
-										责任人:
-									</font> 
-									<mdp-select-user-xm label="选择责任人" v-model="filters.mmUser" :clearable="true"></mdp-select-user-xm> 
+					<el-popover
+						placement="top-start"
+						title="更多查询条件或者操作"
+						width="500"
+						v-model="moreVisible"
+						trigger="manual" >
+						
+						<el-row  style="float:right;margin-top:-40px">  
+								<el-button 
+								icon="el-icon-close"
+								@click="moreVisible=false"
+								type="text"
+								>关闭</el-button
+								> 
+						</el-row> 
+							<el-divider></el-divider>
+							<el-row> 
+								<el-button @click="showParentMenu" icon="el-icon-top" title="更换上级">更换上级</el-button> 
+								<el-button    @click="handleExport" icon="el-icon-download">导出</el-button>
+								<el-button     @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">汇总进度</el-button>
+								<el-button  type="danger" @click="batchDel" icon="el-icon-delete" title="删除">删除</el-button>
 
-								</el-row>
-								<el-row v-if="!xmIteration || !xmIteration.id">
-									<font class="more-label-font">
-										迭代:
-									</font>
-									<xm-iteration-select v-if="!xmIteration || !xmIteration.id" style="display:inline;" :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="selProject?selProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClearSelect">
-					    			</xm-iteration-select> 
-								</el-row> 
-								<el-row>
-									<font class="more-label-font">标签条件:</font>
-									<el-button  v-if="!filters.tags||filters.tags.length==0" @click.native="$refs.tagDialog.open()" icon="el-icon-search">标签</el-button>
-									<el-tag v-else @click="$refs.tagDialog.open()"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
-
-								</el-row>
-								<el-row>
-									<font class="more-label-font">
-										是否加入迭代:
-									</font>
-									<el-select   v-model="filters.iterationFilterType" placeholder="加入过迭代？" clearable  style="width: 200px;" >
-										<el-option   value="not-join-any-iteration"  label="未加入过迭代"></el-option>
-										<el-option   value="join-any-iteration"  label="已加入过迭代"></el-option>
-										<el-option   value="not-join-curr-iteration"  :label="'未加入迭代【'+filters.iteration.iterationName+'】'"  v-if="filters.iteration && filters.iteration.id"></el-option>
-										<el-option   value="join-curr-iteration"  :label="'已加入本迭代【'+filters.iteration.iterationName+'】'" v-if="filters.iteration && filters.iteration.id"></el-option>
-									</el-select>
-								</el-row>
-								<el-row>
-									<font class="more-label-font">
-										是否分配任务:
-									</font>
-									<el-select  v-model="filters.taskFilterType" placeholder="已分配任务的需求？" clearable style="width: 200px;">
-										<el-option   value="not-join-any-project"  label="未分配过任务的需求"></el-option>
-										<el-option   value="join-any-project"  label="已分配过任务的需求"></el-option>
-										<el-option   value="not-join-curr-project"  :label="'未分配任务到项目【'+selProject.name+'】'" v-if="selProject && selProject.id"></el-option>
-										<el-option   value="join-curr-project"  :label="'已分配任务到项目【'+selProject.name+'】'"  v-if="selProject && selProject.id"></el-option>
-									</el-select>
-								</el-row> 
-								<el-row>
-									<font class="more-label-font">
-										归属模块:
-									</font> 
-									<span v-if="filters.func">{{ filters.func.name }}&nbsp;</span><el-button v-if="filters.func" @click="filters.func=null">清除</el-button><el-button @click="funcVisible=true">选择模块</el-button>
-								</el-row>
-								<el-row>
-									<font class="more-label-font">
-										需求类型:
-									</font>
-									<el-select  v-model="filters.dtype" clearable placeholder="需求类型" style="width: 200px;">
-										<el-option v-for="i in this.dicts.demandType" :label="i.name" :key="i.id" :value="i.id"></el-option>
-									</el-select>
-								</el-row>
-								<el-row>
-									<font class="more-label-font">
-										需求来源:
-									</font>
-									<el-select v-model="filters.source" placeholder="需求来源"  clearable style="width: 200px;">
-										<el-option v-for="i in this.dicts.demandSource" :label="i.name" :key="i.id" :value="i.id"></el-option>
-									</el-select>
-								</el-row>
-								<el-row>
-									<font class="more-label-font">
-										需求层次:
-									</font>
-									<el-select v-model="filters.dlvl" placeholder="需求层次"  clearable style="width: 200px;">
-										<el-option v-for="i in this.dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
-									</el-select>
-								</el-row>
-								<!--
-								<el-row>
-									<font class="more-label-font">
-										优先级:
-									</font>
-									<el-select v-model="filters.priority" placeholder="优先级"  clearable style="width: 200px;">
-											<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option>
-									</el-select>
-								</el-row>
-								-->
-								<!--
-								<el-row>
-									<font class="more-label-font">
-										需求状态:
-									</font>
-									<el-select v-model="filters.status" placeholder="需求状态" clearable style="width: 200px;">
-										<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.menuStatus" :key="index"></el-option>
-									</el-select>
-								</el-row>
-								-->
-								<el-row>
-									<font class="more-label-font">
-										需求编号:
-									</font>
-									<el-input v-model="filters.menuId" style="width: 200px;" placeholder="需求编号查询" clearable></el-input>
-								</el-row> 
-								<el-row>
-									<font class="more-label-font">开始时间:</font>
-									<mdp-date-range
-									v-model="filters"
-									type="daterange" 
-									start-key="planStartTimeStart"
-									end-key="planStartTimeEnd"
-									unlink-panels
-									range-separator="至"
-									start-placeholder="开始日期"
-									end-placeholder="完成日期"
-									value-format="yyyy-MM-dd HH:mm:ss" 
-									:default-time="['00:00:00', '23:59:59']" 
-									:auto-default="false"
-									key="planStartTime"
-									></mdp-date-range>
-								</el-row>
-								<el-row>
-									<font class="more-label-font">结束时间:</font>
-									<mdp-date-range
-									v-model="filters"
-									type="daterange" 
-									start-key="planEndTimeStart"
-									end-key="planEndTimeEnd"
-									unlink-panels
-									range-separator="至"
-									start-placeholder="开始日期"
-									end-placeholder="完成日期"
-									value-format="yyyy-MM-dd HH:mm:ss" 
-									:default-time="['00:00:00', '23:59:59']" 
-									:auto-default="false" 
-									key="planEndTime"
-									></mdp-date-range>
-								</el-row> 
-								<el-row>
-  									<el-button type="primary" style="float:right;" @click="searchXmMenus" icon="el-icon-search">查询</el-button> 
- 								</el-row> 
-								<el-button  slot="reference" icon="el-icon-more" @click="moreVisible=!moreVisible"></el-button>
-						</el-popover>
-						<span style="float:right;">
-						<el-popover style="padding-left:10px;"
-							placement="top-start"
-							width="250"
-							trigger="click" >
-							<el-row>
-								<!--
-								<el-row>
-									<div   class="icon" style="background-color:  rgb(255, 153, 51);">
- 										<i class="el-icon-s-promotion"></i>
-									</div>
-									<el-button   @click="showAdd('1')">新建史诗</el-button>
-								</el-row>
-								
-								<el-row>
-									<div  class="icon" style="background-color:  rgb(0, 153, 51);">
-									<i class="el-icon-s-flag"></i>
-									</div>
-									<el-button   @click="showAdd('2')">新建特性</el-button>
-								</el-row>
-								-->
-								<el-row>
-
-									<div  class="icon" style="background-color:  rgb(79, 140, 255);">
-									<i class="el-icon-document"></i>
-									</div>
-									<el-button   @click="showAdd('3')"  >新建用户故事</el-button>
-								</el-row>
-								
-
-								<el-row>
-									<el-button  @click="showImportFromMenuTemplate()" icon="el-icon-upload2">由模板快速导入需求</el-button>
-								</el-row>
 							</el-row>
-							<el-button type="primary" v-if="!disabledMng"  round  slot="reference" icon="el-icon-plus"></el-button>
-						</el-popover>
+							
+							<el-row>
+								<font class="more-label-font">显示方式:</font
+								>   
+								<span class="more-label-font">  
+									<el-radio v-model="displayType" label="agileUser">故事看板</el-radio>
+									<el-radio v-model="displayType" label="table">列表</el-radio> 
+								</span>
+							</el-row>
+							<el-divider></el-divider> 
+							<el-row>
+								<font class="more-label-font">
+									责任人:
+								</font> 
+								<mdp-select-user-xm label="选择责任人" v-model="filters.mmUser" :clearable="true"></mdp-select-user-xm> 
 
-						<el-button class="hidden-md-and-down" @click="showParentMenu" icon="el-icon-top" title="更换上级"></el-button>
- 						<el-button class="hidden-md-and-down"  v-if="!disabledMng "  type="danger" @click="batchDel" icon="el-icon-delete" title="删除"></el-button>
- 
-						<xm-table-config class="hidden-lg-and-down" ref="tableConfig" style="display:inline;" :table="$refs.table"></xm-table-config>
+							</el-row>
+							<el-row v-if="!xmIteration || !xmIteration.id">
+								<font class="more-label-font">
+									迭代:
+								</font>
+								<xm-iteration-select v-if="!xmIteration || !xmIteration.id" style="display:inline;" :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="selProject?selProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClearSelect">
+								</xm-iteration-select> 
+							</el-row> 
+							<el-row>
+								<font class="more-label-font">标签条件:</font>
+								<el-button  v-if="!filters.tags||filters.tags.length==0" @click.native="$refs.tagDialog.open()" icon="el-icon-search">标签</el-button>
+								<el-tag v-else @click="$refs.tagDialog.open()"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
 
-						</span>
-					 </el-row> 
-					 <el-row v-if="displayType=='table'">  
-						<el-table  element-loading-text="努力加载中" element-loading-spinner="el-icon-loading" :cell-style="cellStyleCalc" :expand-row-keys="expandRowKeysCpd" :header-cell-style="cellStyleCalc" :row-style="{height:'60px'}"   stripe fit border ref="table" :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId"  @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
-							<el-table-column sortable type="selection" width="40"></el-table-column>
-
-							<el-table-column prop="menuName" label="故事名称" min-width="300" fixed="left">
-								<template slot-scope="scope">
-									<div  v-if="scope.row.dclass=='1'" class="icon" style="background-color:  rgb(255, 153, 51);">
+							</el-row>
+							<el-row>
+								<font class="more-label-font">
+									是否加入迭代:
+								</font>
+								<el-select   v-model="filters.iterationFilterType" placeholder="加入过迭代？" clearable  style="width: 200px;" >
+									<el-option   value="not-join-any-iteration"  label="未加入过迭代"></el-option>
+									<el-option   value="join-any-iteration"  label="已加入过迭代"></el-option>
+									<el-option   value="not-join-curr-iteration"  :label="'未加入迭代【'+filters.iteration.iterationName+'】'"  v-if="filters.iteration && filters.iteration.id"></el-option>
+									<el-option   value="join-curr-iteration"  :label="'已加入本迭代【'+filters.iteration.iterationName+'】'" v-if="filters.iteration && filters.iteration.id"></el-option>
+								</el-select>
+							</el-row>
+							<el-row>
+								<font class="more-label-font">
+									是否分配任务:
+								</font>
+								<el-select  v-model="filters.taskFilterType" placeholder="已分配任务的需求？" clearable style="width: 200px;">
+									<el-option   value="not-join-any-project"  label="未分配过任务的需求"></el-option>
+									<el-option   value="join-any-project"  label="已分配过任务的需求"></el-option>
+									<el-option   value="not-join-curr-project"  :label="'未分配任务到项目【'+selProject.name+'】'" v-if="selProject && selProject.id"></el-option>
+									<el-option   value="join-curr-project"  :label="'已分配任务到项目【'+selProject.name+'】'"  v-if="selProject && selProject.id"></el-option>
+								</el-select>
+							</el-row> 
+							<el-row>
+								<font class="more-label-font">
+									归属模块:
+								</font> 
+								<span v-if="filters.func">{{ filters.func.name }}&nbsp;</span><el-button v-if="filters.func" @click="filters.func=null">清除</el-button><el-button @click="funcVisible=true">选择模块</el-button>
+							</el-row>
+							<el-row>
+								<font class="more-label-font">
+									需求类型:
+								</font>
+								<el-select  v-model="filters.dtype" clearable placeholder="需求类型" style="width: 200px;">
+									<el-option v-for="i in this.dicts.demandType" :label="i.name" :key="i.id" :value="i.id"></el-option>
+								</el-select>
+							</el-row>
+							<el-row>
+								<font class="more-label-font">
+									需求来源:
+								</font>
+								<el-select v-model="filters.source" placeholder="需求来源"  clearable style="width: 200px;">
+									<el-option v-for="i in this.dicts.demandSource" :label="i.name" :key="i.id" :value="i.id"></el-option>
+								</el-select>
+							</el-row>
+							<el-row>
+								<font class="more-label-font">
+									需求层次:
+								</font>
+								<el-select v-model="filters.dlvl" placeholder="需求层次"  clearable style="width: 200px;">
+									<el-option v-for="i in this.dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
+								</el-select>
+							</el-row>
+							<!--
+							<el-row>
+								<font class="more-label-font">
+									优先级:
+								</font>
+								<el-select v-model="filters.priority" placeholder="优先级"  clearable style="width: 200px;">
+										<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option>
+								</el-select>
+							</el-row>
+							-->
+							<!--
+							<el-row>
+								<font class="more-label-font">
+									需求状态:
+								</font>
+								<el-select v-model="filters.status" placeholder="需求状态" clearable style="width: 200px;">
+									<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.menuStatus" :key="index"></el-option>
+								</el-select>
+							</el-row>
+							-->
+							<el-row>
+								<font class="more-label-font">
+									需求编号:
+								</font>
+								<el-input v-model="filters.menuId" style="width: 200px;" placeholder="需求编号查询" clearable></el-input>
+							</el-row> 
+							<el-row>
+								<font class="more-label-font">开始时间:</font>
+								<mdp-date-range
+								v-model="filters"
+								type="daterange" 
+								start-key="planStartTimeStart"
+								end-key="planStartTimeEnd"
+								unlink-panels
+								range-separator="至"
+								start-placeholder="开始日期"
+								end-placeholder="完成日期"
+								value-format="yyyy-MM-dd HH:mm:ss" 
+								:default-time="['00:00:00', '23:59:59']" 
+								:auto-default="false"
+								key="planStartTime"
+								></mdp-date-range>
+							</el-row>
+							<el-row>
+								<font class="more-label-font">结束时间:</font>
+								<mdp-date-range
+								v-model="filters"
+								type="daterange" 
+								start-key="planEndTimeStart"
+								end-key="planEndTimeEnd"
+								unlink-panels
+								range-separator="至"
+								start-placeholder="开始日期"
+								end-placeholder="完成日期"
+								value-format="yyyy-MM-dd HH:mm:ss" 
+								:default-time="['00:00:00', '23:59:59']" 
+								:auto-default="false" 
+								key="planEndTime"
+								></mdp-date-range>
+							</el-row> 
+							<el-row>
+								<el-button type="primary" style="float:right;" @click="searchXmMenus" icon="el-icon-search">查询</el-button> 
+							</el-row> 
+							<el-button  slot="reference" icon="el-icon-more" @click="moreVisible=!moreVisible"></el-button>
+					</el-popover>
+					<span style="float:right;">
+					<el-popover style="padding-left:10px;"
+						placement="top-start"
+						width="250"
+						trigger="click" >
+						<el-row>
+							<!--
+							<el-row>
+								<div   class="icon" style="background-color:  rgb(255, 153, 51);">
 									<i class="el-icon-s-promotion"></i>
-									</div>
-									<div v-if="scope.row.dclass=='2'" class="icon" style="background-color:  rgb(0, 153, 51);">
-									<i class="el-icon-s-flag"></i>
-									</div>
-									<div v-if="scope.row.dclass=='3'" class="icon" style="background-color:  rgb(79, 140, 255);">
-									<i class="el-icon-document"></i>
-									</div>
-									<span     >{{scope.row.seqNo}} &nbsp; {{scope.row.menuName}} </span>
-									<div class="tool-bar">
-									<span class="u-btn"> 
-										<el-button      @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑" circle plain > </el-button>     
-									</span>
-									</div>
-  								</template>
-
-
-							</el-table-column>
-							<template>
-							<el-table-column prop="mmUsername" label="跟进人"  min-width="100" show-overflow-tooltip  sortable>
-								<template slot-scope="scope"> 
-									<mdp-select-user-xm @visible-change="selectVisible(scope.row,$event)" :value="scope.row" userid-key="mmUserid" username-key="mmUsername" :project-id="scope.row.projectId" @change="editXmMenuSomeFields(scope.row,'mmUserid',$event)"></mdp-select-user-xm>
-								</template>
-							</el-table-column>
-							<el-table-column prop="productId" label="产品" width="100" show-overflow-tooltip sortable>
-							</el-table-column>
+								</div>
+								<el-button   @click="showAdd('1')">新建史诗</el-button>
+							</el-row>
 							
-							<el-table-column prop="finishRate" label="进度" width="100" show-overflow-tooltip sortable>
-								<template slot-scope="scope">
-									<span  
-										:style="{borderRadius: '30px',color:scope.row.finishRate >= 100 ? 'green' : 'blue'}" 
-									>
-										{{ (scope.row.finishRate != null ? scope.row.finishRate : 0) + "%" }}
-									</span>  
-								</template>
-							</el-table-column>
-							<el-table-column prop="status" label="状态"  min-width="80"  sortable>
-								<template slot-scope="scope"> 
-										 <mdp-select-dict-tag  @visible-change="selectVisible(scope.row,$event)" :dict="dicts['menuStatus']" v-model="scope.row.status" label="需求状态"   @change="editXmMenuSomeFields(scope.row,'status',$event)">
- 										 </mdp-select-dict-tag> 
- 								</template>
-							</el-table-column>
-							<el-table-column prop="priority"  label="优先级" width="100" sortable>
-								<template slot-scope="scope"> 
-										 <mdp-select-dict-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts['priority']" v-model="scope.row.priority" placeholder="优先级"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'priority',$event)">
- 										 </mdp-select-dict-tag>
- 								</template>
-							</el-table-column>
-							<el-table-column prop="dtype" label="类型" width="100"  sortable v-if="false">
-								<template slot-scope="scope"> 
-										 <mdp-select-dict-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts['demandType']" v-model="scope.row.dtype" placeholder="类型"  style="display:block;"  @change="editXmMenuSomeFields(scope.row,'dtype',$event)">
- 										 </mdp-select-dict-tag>
- 								</template>
-							</el-table-column>
-							<el-table-column prop="source"  label="来源" width="100"  :formatter="formaterByDicts"  show-overflow-tooltip sortable  v-if="false">
-								<template slot-scope="scope">
-									 
-										 <mdp-select-dict-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts['demandSource']" v-model="scope.row.source" placeholder="来源"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'source',$event)">
- 										 </mdp-select-dict-tag>
- 								</template>
-							</el-table-column>
-							<el-table-column prop="dlvl"  label="层次" width="100" sortable>
-								<template slot-scope="scope"> 
-										 <mdp-select-dict-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts['demandLvl']"  v-model="scope.row.dlvl" placeholder="层次"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'dlvl',$event)">
- 										 </mdp-select-dict-tag>
- 								</template>
-							</el-table-column>
-							<el-table-column prop="iterationName" label="迭代" width="150" show-overflow-tooltip sortable>
-								<template slot-scope="scope">
-									<div class="cell-text">
-										{{scope.row.iterationName}}
-									</div>
-									<span class="cell-bar">
-										 <xm-iteration-select v-if="scope.row.dclass==='3'" style="display:inline;" :auto-select="false"  :product-id="scope.row.productId"    placeholder="迭代"  @row-click="editXmMenuSomeFields(scope.row,'iterationId',$event)"></xm-iteration-select>
-									</span>
-								</template>
-							</el-table-column>
+							<el-row>
+								<div  class="icon" style="background-color:  rgb(0, 153, 51);">
+								<i class="el-icon-s-flag"></i>
+								</div>
+								<el-button   @click="showAdd('2')">新建特性</el-button>
+							</el-row>
+							-->
+							<el-row>
 
-							<el-table-column prop="taskCnt" label="任务数"  min-width="100" show-overflow-tooltip sortable>
-								<template slot="header">
-									<el-tooltip   content="已完成 / 总数 注意：统计包括下级数据"><span>任务数</span></el-tooltip>
-								</template>
-								<template slot-scope="scope">
-										<div>{{scope.row.taskFinishCnt}}/{{scope.row.taskCnt}}</div>
-								</template>
-							</el-table-column>
+								<div  class="icon" style="background-color:  rgb(79, 140, 255);">
+								<i class="el-icon-document"></i>
+								</div>
+								<el-button   @click="showAdd('3')"  >新建用户故事</el-button>
+							</el-row>
 							
-							<el-table-column prop="budgetWorkload" label="工时"  min-width="100" show-overflow-tooltip sortable>
-								<template slot-scope="scope"> 
-									<span title="实际工时 / 预算工时 或者 (剩余工时+实际工时)">{{scope.row.actWorkload}} &nbsp;/ &nbsp;{{scope.row.budgetWorkload}}h </span>
-								</template> 
-							</el-table-column> 
-							<el-table-column prop="bugCnt" label="缺陷"  min-width="100" show-overflow-tooltip sortable>
 
-								<template slot="header">
-									<el-tooltip   content="已关闭缺陷数 / 总缺陷数 注意：统计包括下级数据"><span> 缺陷 </span></el-tooltip>
-								</template>
-								<template slot-scope="scope">
-										 {{scope.row.closedBugs}}/{{scope.row.bugCnt}}
-								</template>
-							</el-table-column>
-							<el-table-column prop="tagNames" label="标签"  min-width="100" show-overflow-tooltip>
-								<template slot-scope="scope">
-									<div class="cell-text">
+							<el-row>
+								<el-button  @click="showImportFromMenuTemplate()" icon="el-icon-upload2">由模板快速导入需求</el-button>
+							</el-row>
+						</el-row>
+						<el-button type="primary" v-if="!disabledMng"  round  slot="reference" icon="el-icon-plus"></el-button>
+					</el-popover>
 
-										{{scope.row.tagNames}}
-									</div>
-									<span class="cell-bar">
-										 <el-button @click="$refs.tagDialog.open({data:scope.row,action:'editTagIds'})">选标签</el-button>
-									</span>
-								</template>
-							</el-table-column>
+					<el-button class="hidden-md-and-down" @click="showParentMenu" icon="el-icon-top" title="更换上级"></el-button>
+					<el-button class="hidden-md-and-down"  v-if="!disabledMng "  type="danger" @click="batchDel" icon="el-icon-delete" title="删除"></el-button>
+
+					<xm-table-config class="hidden-lg-and-down" ref="tableConfig" style="display:inline;" :table="$refs.table"></xm-table-config>
+
+					</span>
+					</el-row> 
+					<el-row v-if="displayType=='table'">  
+					<el-table  element-loading-text="努力加载中" element-loading-spinner="el-icon-loading" :cell-style="cellStyleCalc" :expand-row-keys="expandRowKeysCpd" :header-cell-style="cellStyleCalc" :row-style="{height:'60px'}"   stripe fit border ref="table" :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId"  @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
+						<el-table-column sortable type="selection" width="40"></el-table-column>
+
+						<el-table-column prop="menuName" label="故事名称" min-width="300" fixed="left">
+							<template slot-scope="scope">
+								<div  v-if="scope.row.dclass=='1'" class="icon" style="background-color:  rgb(255, 153, 51);">
+								<i class="el-icon-s-promotion"></i>
+								</div>
+								<div v-if="scope.row.dclass=='2'" class="icon" style="background-color:  rgb(0, 153, 51);">
+								<i class="el-icon-s-flag"></i>
+								</div>
+								<div v-if="scope.row.dclass=='3'" class="icon" style="background-color:  rgb(79, 140, 255);">
+								<i class="el-icon-document"></i>
+								</div>
+								<span     >{{scope.row.seqNo}} &nbsp; {{scope.row.menuName}} </span>
+								<div class="tool-bar">
+								<span class="u-btn"> 
+									<el-button      @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑" circle plain > </el-button>     
+								</span>
+								</div>
 							</template>
-						</el-table>  
-					</el-row> 
-					<el-row v-else-if="displayType=='agileUser'">
-						<xm-menu-agile-kanban-user :xm-menus="xmMenus" :xm-product="xmProduct" ref="table" :table-height="maxTableHeight"></xm-menu-agile-kanban-user>
- 
-					</el-row> 
-					<el-row>
-						<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
-					</el-row>  
+
+
+						</el-table-column>
+						<template>
+						<el-table-column prop="mmUsername" label="跟进人"  min-width="100" show-overflow-tooltip  sortable>
+							<template slot-scope="scope"> 
+								<mdp-select-user-xm @visible-change="selectVisible(scope.row,$event)" :value="scope.row" userid-key="mmUserid" username-key="mmUsername" :project-id="scope.row.projectId" @change="editXmMenuSomeFields(scope.row,'mmUserid',$event)"></mdp-select-user-xm>
+							</template>
+						</el-table-column>
+						<el-table-column prop="productId" label="产品" width="100" show-overflow-tooltip sortable>
+						</el-table-column>
+						
+						<el-table-column prop="finishRate" label="进度" width="100" show-overflow-tooltip sortable>
+							<template slot-scope="scope">
+								<span  
+									:style="{borderRadius: '30px',color:scope.row.finishRate >= 100 ? 'green' : 'blue'}" 
+								>
+									{{ (scope.row.finishRate != null ? scope.row.finishRate : 0) + "%" }}
+								</span>  
+							</template>
+						</el-table-column>
+						<el-table-column prop="status" label="状态"  min-width="80"  sortable>
+							<template slot-scope="scope"> 
+										<mdp-select-dict-tag  @visible-change="selectVisible(scope.row,$event)" :dict="dicts['menuStatus']" v-model="scope.row.status" label="需求状态"   @change="editXmMenuSomeFields(scope.row,'status',$event)">
+										</mdp-select-dict-tag> 
+							</template>
+						</el-table-column>
+						<el-table-column prop="priority"  label="优先级" width="100" sortable>
+							<template slot-scope="scope"> 
+										<mdp-select-dict-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts['priority']" v-model="scope.row.priority" placeholder="优先级"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'priority',$event)">
+										</mdp-select-dict-tag>
+							</template>
+						</el-table-column>
+						<el-table-column prop="dtype" label="类型" width="100"  sortable v-if="false">
+							<template slot-scope="scope"> 
+										<mdp-select-dict-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts['demandType']" v-model="scope.row.dtype" placeholder="类型"  style="display:block;"  @change="editXmMenuSomeFields(scope.row,'dtype',$event)">
+										</mdp-select-dict-tag>
+							</template>
+						</el-table-column>
+						<el-table-column prop="source"  label="来源" width="100"  :formatter="formaterByDicts"  show-overflow-tooltip sortable  v-if="false">
+							<template slot-scope="scope">
+									
+										<mdp-select-dict-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts['demandSource']" v-model="scope.row.source" placeholder="来源"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'source',$event)">
+										</mdp-select-dict-tag>
+							</template>
+						</el-table-column>
+						<el-table-column prop="dlvl"  label="层次" width="100" sortable>
+							<template slot-scope="scope"> 
+										<mdp-select-dict-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts['demandLvl']"  v-model="scope.row.dlvl" placeholder="层次"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'dlvl',$event)">
+										</mdp-select-dict-tag>
+							</template>
+						</el-table-column>
+						<el-table-column prop="iterationName" label="迭代" width="150" show-overflow-tooltip sortable>
+							<template slot-scope="scope">
+								<div class="cell-text">
+									{{scope.row.iterationName}}
+								</div>
+								<span class="cell-bar">
+										<xm-iteration-select v-if="scope.row.dclass==='3'" style="display:inline;" :auto-select="false"  :product-id="scope.row.productId"    placeholder="迭代"  @row-click="editXmMenuSomeFields(scope.row,'iterationId',$event)"></xm-iteration-select>
+								</span>
+							</template>
+						</el-table-column>
+
+						<el-table-column prop="taskCnt" label="任务数"  min-width="100" show-overflow-tooltip sortable>
+							<template slot="header">
+								<el-tooltip   content="已完成 / 总数 注意：统计包括下级数据"><span>任务数</span></el-tooltip>
+							</template>
+							<template slot-scope="scope">
+									<div>{{scope.row.taskFinishCnt}}/{{scope.row.taskCnt}}</div>
+							</template>
+						</el-table-column>
+						
+						<el-table-column prop="budgetWorkload" label="工时"  min-width="100" show-overflow-tooltip sortable>
+							<template slot-scope="scope"> 
+								<span title="实际工时 / 预算工时 或者 (剩余工时+实际工时)">{{scope.row.actWorkload}} &nbsp;/ &nbsp;{{scope.row.budgetWorkload}}h </span>
+							</template> 
+						</el-table-column> 
+						<el-table-column prop="bugCnt" label="缺陷"  min-width="100" show-overflow-tooltip sortable>
+
+							<template slot="header">
+								<el-tooltip   content="已关闭缺陷数 / 总缺陷数 注意：统计包括下级数据"><span> 缺陷 </span></el-tooltip>
+							</template>
+							<template slot-scope="scope">
+										{{scope.row.closedBugs}}/{{scope.row.bugCnt}}
+							</template>
+						</el-table-column>
+						<el-table-column prop="tagNames" label="标签"  min-width="100" show-overflow-tooltip>
+							<template slot-scope="scope">
+								<div class="cell-text">
+
+									{{scope.row.tagNames}}
+								</div>
+								<span class="cell-bar">
+										<el-button @click="$refs.tagDialog.open({data:scope.row,action:'editTagIds'})">选标签</el-button>
+								</span>
+							</template>
+						</el-table-column>
+						</template>
+					</el-table>  
+				</el-row> 
+				<el-row v-else-if="displayType=='agileUser'">
+					<xm-menu-agile-kanban-user :xm-menus="xmMenus" :xm-product="xmProduct" ref="table" :table-height="maxTableHeight"></xm-menu-agile-kanban-user>
+
+				</el-row> 
+				<el-row>
+					<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
+				</el-row>  
 				<!--编辑 XmMenu xm_project_menu界面-->
 				<el-dialog title="编辑故事" :visible.sync="editFormVisible" :with-header="false" fullscreen width="90%" top="20px"    append-to-body   :close-on-click-modal="false" >
 					<xm-menu-edit :xm-menu="editForm" :sel-project="selProject" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit" @add-sub-menu="onAddSubMenu" @edit-fields="onEditSomeFields"></xm-menu-edit>
@@ -385,9 +383,7 @@
 					:with-header="false"
 					size="80%">
 					<xm-task-mng :sel-project="selProject"   :menu-id="editForm.menuId" :menu-name="editForm.menuName"></xm-task-mng>
-				</el-drawer> 
-			</el-col>
-		</el-row>
+				</el-drawer>   
 		
  			<tag-dialog ref="tagDialog" :tagIds="filters.tags?filters.tags.map(i=>i.tagId):[]" :jump="true" @select-confirm="onTagSelected">
 			</tag-dialog>
