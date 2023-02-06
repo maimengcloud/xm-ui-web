@@ -703,8 +703,8 @@ export default {
         { path: 'project/cost', component: _import('xm/core/xmProject/XmProjectCost'), name: 'XmProjectCost', meta: { title: '应付款',roles:["user"]}},
 
         { path: 'task/sbill', component: _import('xm/core/xmTaskSbill/XmTaskSbillMng'), name: 'XmTaskSbilllMng', meta: { title: '任务结算单',roles:["user"]}},
-         { path: 'workload/meday', component: _import('xm/core/xmWorkload/WorkloadSetDayListMy'), name: 'WorkloadSetDayListMy', meta: { title: '工时日报(我)',roles:["user"]}},
-        { path: 'workload/memonth', component: _import('xm/core/xmWorkload/WorkloadSetMonthListMy'), name: 'WorkloadSetMonthListMy', meta: { title: '工时月报(我)',roles:["user"]}},
+         { path: 'workload/day/me', component: _import('xm/core/xmWorkload/WorkloadSetDayListMy'), name: 'WorkloadSetDayListMy', meta: { title: '工时日报(我)',roles:["user"]}},
+        { path: 'workload/month/me', component: _import('xm/core/xmWorkload/WorkloadSetMonthListMy'), name: 'WorkloadSetMonthListMy', meta: { title: '工时月报(我)',roles:["user"]}},
          { path: 'workload/day', component: _import('xm/core/xmWorkload/WorkloadSetDayList'), name: 'WorkloadSetDayList', meta: { title: '工时日报',roles:["user"]}},
         { path: 'workload/month', component: _import('xm/core/xmWorkload/WorkloadSetMonthList'), name: 'WorkloadSetMonthList', meta: { title: '工时月报',roles:["user"]}},
       ]
