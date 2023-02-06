@@ -1,9 +1,5 @@
 <template>
-  <section class="padding-right">
-    <el-row>
-      <el-row 
-        class="padding-left" 
-      >
+  <section class="padding"> 
         <el-row>     
           
           <span> 
@@ -206,6 +202,7 @@
                 </template>
               </el-table-column>    
             </el-table>
+        </el-row>
             <el-pagination
               ref="pagination"
               layout="total, sizes, prev, pager, next"
@@ -216,10 +213,7 @@
               :page-size="pageInfo.pageSize"
               :total="pageInfo.total"
               style="float: right;"
-            ></el-pagination>  
-        </el-row>
-      </el-row>
-    </el-row>  
+            ></el-pagination>    
     <!--编辑 XmTask xm_task界面-->
     <el-dialog
       title="编辑计划"

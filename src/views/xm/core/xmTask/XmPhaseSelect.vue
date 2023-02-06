@@ -1,10 +1,5 @@
 <template>
-  <section class="padding-right">
-    <el-row>
-      <el-col
-        :span="24"
-        class="padding-left" 
-      >
+  <section class="padding"> 
         <el-row>    
             <xm-project-select style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="isTaskCenter?false:true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
            <el-input style="width:150px;" v-model="filters.key" placeholder="名称模糊查询" clearable></el-input>
@@ -82,6 +77,7 @@
 
               
             </el-table>
+        </el-row>
             <el-pagination
               ref="pagination"
               layout="total, sizes, prev, pager, next"
@@ -92,10 +88,7 @@
               :page-size="pageInfo.pageSize"
               :total="pageInfo.total"
               style="float: right; margin-top: 10px;"
-            ></el-pagination> 
-        </el-row>
-      </el-col>
-    </el-row>   
+            ></el-pagination>   
   </section>
 </template>
 
