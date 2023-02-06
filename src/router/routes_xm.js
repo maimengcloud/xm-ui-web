@@ -435,7 +435,28 @@ export default {
 
       ]
     },
+    {
+      path: '/xm/core',
+      component: Layout,
+      name: '产品管理',
+      iconCls: 'fa el-icon-menu',
+      meta: {
+        title: '产品管理',
+        icon: 'international'
+      },
+      // leaf: true,//只有一个节点
+      children: [
+         { path: 'product/mng', component: _import('xm/core/xmProduct/XmProductMng'), name: 'XmProductMng', meta: { title: '产品管理',roles:["user"] }},
+         { path: 'product/recycle', component: _import('xm/core/xmProduct/XmProductRecycle'), name: 'XmProductRecycle', meta: { title: '产品回收站',roles:["user"] }},
 
+         { path: 'product/tpl', component: _import('xm/core/xmProduct/XmProductTplMng'), name: 'XmProductTplMng', meta: { title: '产品模板',roles:["user"] }},
+         { path: 'menu/detail', component: _import('xm/core/xmMenu/XmMenuDetailRoute'), name: 'XmMenuDetailRoute', meta: { title: '需求明细',roles:["user"] },hidden:true},
+
+        { path: 'menu/mng', component: _import('xm/core/xmMenu/XmMenuMngRoute'), name: 'XmMenuMng', meta: { title: '需求管理',roles:["user"] }},
+          { path: 'iteration/mng', component: _import('xm/core/xmIteration/XmIterationMng'), name: 'XmIterationMng', meta: { title: '迭代管理',roles:["user"] }},
+
+      ]
+    },
     {
       path: '/xm/core/iteration',
       component: XmIterationLayout,
@@ -629,65 +650,7 @@ export default {
         { path: 'execuser/me', component: _import('xm/core/xmTaskExecuser/XmTaskExecuserForMy'), name: 'XmTaskExecuserForMy', meta: { title: '候选人(我的)',roles:["user"] }},
 
       ]
-    },
-
-    {
-      path: '/xm/rpt',
-      name: 'xmRpt',
-      component: Layout,
-      iconCls: 'fa el-icon-menu',
-      meta: {
-        title: '效能分析',
-        icon: 'chart'
-      },
-
-      children: [
-
-        { path: 'his', component: _import('xm/rpt/index/indexForHis'), name: 'rptHis', meta: { title: '历史报告',roles:["user"] }},
-        { path: 'his/detail', component: _import('xm/rpt/index/indexForHisDetail'), name: 'rptHisDetail', meta: { title: '报告明细',roles:["user"] },hidden:true},
-        { path: 'index', component: _import('xm/rpt/index/index'), name: 'rptIndex', meta: { title: '指标分析',roles:["user"] }},
-        { path: 'branch/datav',   name: 'branchDatavFullScreen', meta: {   title: '机构效能',openTab:true,outUrl:"${curlDomain}/"+process.env.CONTEXT+"/"+process.env.VERSION+"/#/datav/xm/branch/branchDatavFullScreen" }},
-      ]
-    },
-    {
-      path: '/xm/core',
-      component: Layout,
-      name: '产品管理',
-      iconCls: 'fa el-icon-menu',
-      meta: {
-        title: '产品管理',
-        icon: 'international'
-      },
-      // leaf: true,//只有一个节点
-      children: [
-         { path: 'product/mng', component: _import('xm/core/xmProduct/XmProductMng'), name: 'XmProductMng', meta: { title: '产品管理',roles:["user"] }},
-         { path: 'product/recycle', component: _import('xm/core/xmProduct/XmProductRecycle'), name: 'XmProductRecycle', meta: { title: '产品回收站',roles:["user"] }},
-
-         { path: 'product/tpl', component: _import('xm/core/xmProduct/XmProductTplMng'), name: 'XmProductTplMng', meta: { title: '产品模板',roles:["user"] }},
-         { path: 'menu/detail', component: _import('xm/core/xmMenu/XmMenuDetailRoute'), name: 'XmMenuDetailRoute', meta: { title: '需求明细',roles:["user"] },hidden:true},
-
-        { path: 'menu/mng', component: _import('xm/core/xmMenu/XmMenuMngRoute'), name: 'XmMenuMng', meta: { title: '需求管理',roles:["user"] }},
-          { path: 'iteration/mng', component: _import('xm/core/xmIteration/XmIterationMng'), name: 'XmIterationMng', meta: { title: '迭代管理',roles:["user"] }},
-
-      ]
-    },
-    {
-      path: '/xm/core',
-      component: Layout,
-      name: 'GroupMng',
-      iconCls: 'fa el-icon-menu',
-      meta: {
-        title: '团队管理',
-        icon: 'user'
-      },
-      // leaf: true,//只有一个节点
-      children: [
-         { path: 'group/mng', component: _import('xm/core/xmGroup/XmGroupAllMng'), name: 'XmGroupAllMng', meta: { title: '团队管理',roles:["user"] }},
-         { path: 'group/user', component: _import('xm/core/xmGroupUser/XmGroupUserMng'), name: 'XmGroupUserMng', meta: { title: '成员管理',roles:["user"] }},
-         { path: 'group/detail', component: _import('xm/core/xmGroup/XmGroupRoute'), name: 'XmGroupRoute', meta: { title: '项目团队',roles:["user"] } ,hidden:true},
-
-      ]
-    },
+    }, 
     {
       path: '/xm/core',
       component: Layout,
@@ -708,6 +671,43 @@ export default {
          { path: 'workload/day', component: _import('xm/core/xmWorkload/WorkloadSetDayList'), name: 'WorkloadSetDayList', meta: { title: '工时日报',roles:["user"]}},
         { path: 'workload/month', component: _import('xm/core/xmWorkload/WorkloadSetMonthList'), name: 'WorkloadSetMonthList', meta: { title: '工时月报',roles:["user"]}},
       ]
-    }
+    },
+    
+    {
+      path: '/xm/core',
+      component: Layout,
+      name: 'GroupMng',
+      iconCls: 'fa el-icon-menu',
+      meta: {
+        title: '团队管理',
+        icon: 'user'
+      },
+      // leaf: true,//只有一个节点
+      children: [
+         { path: 'group/mng', component: _import('xm/core/xmGroup/XmGroupAllMng'), name: 'XmGroupAllMng', meta: { title: '团队管理',roles:["user"] }},
+         { path: 'group/user', component: _import('xm/core/xmGroupUser/XmGroupUserMng'), name: 'XmGroupUserMng', meta: { title: '成员管理',roles:["user"] }},
+         { path: 'group/detail', component: _import('xm/core/xmGroup/XmGroupRoute'), name: 'XmGroupRoute', meta: { title: '项目团队',roles:["user"] } ,hidden:true},
+
+      ]
+    },
+
+    {
+      path: '/xm/rpt',
+      name: 'xmRpt',
+      component: Layout,
+      iconCls: 'fa el-icon-menu',
+      meta: {
+        title: '效能分析',
+        icon: 'chart'
+      },
+
+      children: [
+
+        { path: 'his', component: _import('xm/rpt/index/indexForHis'), name: 'rptHis', meta: { title: '历史报告',roles:["user"] }},
+        { path: 'his/detail', component: _import('xm/rpt/index/indexForHisDetail'), name: 'rptHisDetail', meta: { title: '报告明细',roles:["user"] },hidden:true},
+        { path: 'index', component: _import('xm/rpt/index/index'), name: 'rptIndex', meta: { title: '指标分析',roles:["user"] }},
+        { path: 'branch/datav',   name: 'branchDatavFullScreen', meta: {   title: '机构效能',openTab:true,outUrl:"${curlDomain}/"+process.env.CONTEXT+"/"+process.env.VERSION+"/#/datav/xm/branch/branchDatavFullScreen" }},
+      ]
+    },
   ]
 }
