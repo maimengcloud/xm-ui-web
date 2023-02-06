@@ -6,6 +6,7 @@
         mode="horizontal"
         @select="setInfotype"
         class="menus"
+        style="margin:0 auto;overflow-x: auto;overflow-y: hidden;display: flex;" 
         background-color="rgb(48, 65, 86)"
         text-color="rgb(191, 203, 217)"
         active-text-color="#409eff"
@@ -13,38 +14,14 @@
       >
         
       <el-menu-item :index="'/xm/core/test/overview?casedbId='+testCasedb.id">
-          <span
+          <div
             slot="title"
-            style="font-size: 18px; color: #409eff" 
-            class="hidden-md-and-down"
+            style="max-width:350px;font-size: 18px;font-weight: 600; color: #409EFF" 
+            class="xl-text"
             :title="testCasedb.name"
-          >
-            <font v-if="testCasedb.name.length >= 15">
-              <strong>
-                
-                &nbsp;<el-avatar class="top-icon"   style="background-color:#409EFF">测试</el-avatar>&nbsp;{{ testCasedb.name.substring(0, 15) }}</strong
-              ></font
-            >
-            <div  v-else>
-           
-            <font type="danger">
-              <strong>&nbsp; <el-avatar class="top-icon" style="background-color:#409EFF">测试</el-avatar>{{ testCasedb.name }}</strong></font
-            >
-            </div>
-          </span>
-          <span
-            slot="title"
-            style="color: #409eff"
-            class="hidden-lg-and-up"
-            :title="testCasedb.name"
-          >
-            <font v-if="testCasedb.name.length >= 15">
-              &nbsp;<el-avatar class="top-icon" style="background-color:#409EFF">测试</el-avatar>{{ testCasedb.name.substring(0, 15) }}</font
-            >
-            <font type="danger" v-else>
-              &nbsp;<el-avatar class="top-icon" style="background-color:#409EFF">测试</el-avatar>{{ testCasedb.name }}</font
-            >
-          </span>
+          > 
+                &nbsp;<el-avatar class="top-icon"   style="background-color:#409EFF">bugs</el-avatar>&nbsp;{{ testCasedb.name }}
+          </div> 
         </el-menu-item>
         <el-menu-item :index="'/xm/core/test/case?casedbId='+testCasedb.id">
           <span slot="title"><i class="el-icon-odometer"></i>用例管理</span>

@@ -6,44 +6,21 @@
         mode="horizontal"
         @select="setInfotype"
         class="menus"
+        style="margin:0 auto;overflow-x: auto;overflow-y: hidden;display: flex;" 
         background-color="rgb(48, 65, 86)"
         text-color="rgb(191, 203, 217)"
         active-text-color="#409eff"
         :router="true"
       >
         <el-menu-item :index="'/xm/core/iteration/overview?iterationId='+xmIteration.id">
-          <span
+          <div
             slot="title"
-            style="font-size: 18px; color: #ff8c00"
-            class="hidden-md-and-down"
+            style="max-width: 350px; font-weight: 600; font-size: 18px; color: #ff8c00"
+            class="xl-text"
             :title="xmIteration.iterationName"
-          >
-            <font v-if="xmIteration.iterationName.length >= 15"
-              ><strong
-                >&nbsp;<el-avatar class="top-icon"  style="background-color:#ff8c00">迭代</el-avatar>{{
-                  xmIteration.iterationName.substring(0, 15)
-                }}</strong
-              ></font
-            >
-            <font type="danger" v-else
-              ><strong
-                >&nbsp;<el-avatar class="top-icon"  style="background-color:#ff8c00">迭代</el-avatar>{{ xmIteration.iterationName }}</strong
-              ></font
-            >
-          </span>
-          <span
-            slot="title"
-            style="color: #ff8c00"
-            class="hidden-lg-and-up"
-            :title="xmIteration.iterationName"
-          >
-            <font v-if="xmIteration.iterationName.length >= 15"
-              >&nbsp;<el-avatar class="top-icon"  style="background-color:#ff8c00">迭代</el-avatar>{{ xmIteration.iterationName.substring(0, 15) }}</font
-            >
-            <font type="danger" v-else
-              >&nbsp;<el-avatar class="top-icon"  style="background-color:#ff8c00">迭代</el-avatar>{{ xmIteration.iterationName }}</font
-            >
-          </span>
+          >  &nbsp;<el-avatar class="top-icon"  style="background-color:#ff8c00">迭代</el-avatar>{{ xmIteration.iterationName }} 
+ 
+          </div> 
         </el-menu-item>
         <!--
         <el-menu-item :index="'/xm/core/iteration/project?iterationId='+xmIteration.id">

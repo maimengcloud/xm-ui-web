@@ -14,35 +14,16 @@
       >
         
         <el-menu-item :index="'/xm/core/project/overview?projectId='+projectInfo.id">
-          <span
-            slot="title"
-            style="font-size: 18px; color: #ffd04b"
-            class="hidden-sm-and-down"
+          <div
+            slot="title" 
+            style="max-width: 350px;font-weight: 600; font-size: 18px; color: #E6A23C" 
+            class="xl-text"
             :title="projectInfo.name"
-          >
-            <font v-if="projectInfo.name.length >= 15"
-              ><strong
-                >&nbsp;<el-avatar class="top-icon" style="background-color:#E6A23C">项目</el-avatar> {{ projectInfo.name.substring(0, 15) }}</strong
-              ></font
-            >
-            <font type="danger" v-else
-              ><strong>&nbsp;<el-avatar class="top-icon" style="background-color:#E6A23C">项目</el-avatar> {{ projectInfo.name }}</strong></font
-            >
-          </span>
-
-          <span
-            slot="title"
-            style="color: #ffd04b"
-            class="hidden-md-and-up"
-            :title="projectInfo.name"
-          >
-            <font v-if="projectInfo.name.length >= 15"
-              >&nbsp;<el-avatar class="top-icon" style="background-color:#E6A23C">项目</el-avatar>{{ projectInfo.name.substring(0, 15) }}</font
-            >
-            <font type="danger" v-else
-              >&nbsp;<el-avatar class="top-icon" style="background-color:#E6A23C">项目</el-avatar>{{ projectInfo.name }}</font
-            >
-          </span>
+          >  
+              &nbsp;<el-avatar class="top-icon" style="background-color:#E6A23C">项目</el-avatar>
+              <span>{{ projectInfo.name }}</span> 
+            
+          </div> 
         </el-menu-item>
         <el-menu-item :index="'/xm/core/project/product?projectId='+projectInfo.id">
           <span slot="title"><i class="el-icon-s-opportunity"></i>产品</span>

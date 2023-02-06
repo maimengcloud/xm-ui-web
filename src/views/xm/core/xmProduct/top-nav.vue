@@ -6,6 +6,7 @@
         mode="horizontal"
         @select="setInfotype"
         class="menus"
+        style="margin:0 auto;overflow-x: auto;overflow-y: hidden;display: flex;" 
         background-color="rgb(48, 65, 86)"
         text-color="rgb(191, 203, 217)"
         active-text-color="#409eff"
@@ -13,38 +14,14 @@
       >
         
       <el-menu-item :index="'/xm/core/product/overview?productId='+xmProduct.id">
-          <span
+          <div
             slot="title"
-            style="font-size: 18px; color: #409eff"
-            class="hidden-md-and-down"
+            style="max-width: 350px; font-weight: 600; font-size: 18px; color: #409EFF"
+            class="xl-text"
             :title="xmProduct.productName"
           >
-            <font v-if="xmProduct.productName.length >= 15">
-              <strong>
-                
-                &nbsp;<el-avatar class="top-icon"  style="background-color:#409EFF">产品</el-avatar>{{ xmProduct.productName.substring(0, 15) }}</strong
-              ></font
-            >
-            <div  v-else>
-           
-            <font type="danger">
-              <strong>&nbsp; <el-avatar class="top-icon"  style="background-color:#409EFF">产品</el-avatar>{{ xmProduct.productName }}</strong></font
-            >
-            </div>
-          </span>
-          <span
-            slot="title"
-            style="color: #409eff"
-            class="hidden-lg-and-up"
-            :title="xmProduct.productName"
-          >
-            <font v-if="xmProduct.productName.length >= 15">
-              &nbsp;<el-avatar class="top-icon"  style="background-color:#409EFF">产品</el-avatar>{{ xmProduct.productName.substring(0, 15) }}</font
-            >
-            <font type="danger" v-else>
-              &nbsp;<el-avatar class="top-icon"  style="background-color:#409EFF">产品</el-avatar>{{ xmProduct.productName }}</font
-            >
-          </span>
+            &nbsp; <el-avatar class="top-icon"  style="background-color:#409EFF">产品</el-avatar>{{ xmProduct.productName }} 
+          </div> 
         </el-menu-item>
         <el-menu-item :index="'/xm/core/product/project?productId='+xmProduct.id">
           <span slot="title"><i class="el-icon-odometer"></i>项目</span>
@@ -60,12 +37,13 @@
         </el-menu-item>
 
         <el-menu-item :index="'/xm/core/product/plan?productId='+xmProduct.id">
-          <span slot="title"><i class="el-icon-time"></i>计划</span>
+          <span slot="title"><i class="el-icon-time"></i>任务</span>
         </el-menu-item>
-
+        <!--
         <el-menu-item :index="'/xm/core/product/task?productId='+xmProduct.id" class="hidden-md-and-down">
           <span slot="title"><i class="el-icon-s-operation"></i>任务</span>
         </el-menu-item>
+        -->
         <el-menu-item :index="'/xm/core/product/casedb?productId='+xmProduct.id">
           <span slot="title"><i class="el-icon-question"></i>测试</span>
         </el-menu-item>
