@@ -4,7 +4,7 @@
           
           <span> 
            <xm-project-select style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="isTaskCenter?false:true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
-           <el-input style="width:50%;" v-else v-model="filters.key" placeholder="名称模糊查询"  class="hidden-md-and-down" clearable @keyup.enter.native="searchXmTasks()"></el-input>
+           <el-input style="width:50%;" v-else v-model="filters.key" placeholder="名称模糊查询"  clearable @keyup.enter.native="searchXmTasks()"></el-input>
            <span style="float:right;">
             <el-popover
               placement="top-start"

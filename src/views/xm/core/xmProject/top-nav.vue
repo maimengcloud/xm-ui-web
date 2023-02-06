@@ -9,6 +9,7 @@
         background-color="rgb(48, 65, 86)"
         text-color="rgb(191, 203, 217)"
         active-text-color="#409eff"
+        style="margin:0 auto;overflow-x: auto;overflow-y: hidden;display: flex;" 
         :router="true"
       >
         
@@ -54,12 +55,13 @@
         </el-menu-item>
 
         <el-menu-item :index="'/xm/core/project/plan?projectId='+projectInfo.id">
-          <span slot="title"><i class="el-icon-time"></i>计划</span>
+          <span slot="title"><i class="el-icon-time"></i>任务</span>
         </el-menu-item>
-
+        <!--
         <el-menu-item :index="'/xm/core/project/task?projectId='+projectInfo.id" class="hidden-md-and-down">
           <span slot="title"><i class="el-icon-s-operation"></i>任务</span>
         </el-menu-item>
+        -->
         <el-menu-item :index="'/xm/core/project/question?projectId='+projectInfo.id">
           <span slot="title"><i class="el-icon-question"></i>缺陷</span>
         </el-menu-item>
@@ -128,6 +130,10 @@
               >
             </el-menu-item> 
         </el-submenu>
+        
+        <el-menu-item :index="'/'">
+          <span slot="title"><i class="el-icon-s-home"></i>首页</span>
+        </el-menu-item>
       </el-menu>
     </el-row> 
   </section>
