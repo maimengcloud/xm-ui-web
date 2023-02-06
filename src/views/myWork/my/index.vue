@@ -23,27 +23,27 @@
           </div>
         </div>
         <div class="m_right">
-          <div class="m_right_menu" @click="gotolink('xm','/xm/core/xmProduct/XmProductMng')">
+          <div class="m_right_menu" @click="gotolink('xm','/xm/core/product/mng')">
             <img src="../img/cp.png" alt="">
             <span>产品管理</span>
           </div>
-           <div class="m_right_menu" @click="gotolink('xm','/xm/core/xmMenu/XmMenuMng')">
+           <div class="m_right_menu" @click="gotolink('xm','/xm/core/menu/mng')">
             <img src="../img/xqgl.png" alt="">
             <span>需求管理</span>
           </div>
-           <div class="m_right_menu" @click="gotolink('xm','/xm/core/xmProject/XmProjectAllMng')">
+           <div class="m_right_menu" @click="gotolink('xm','/xm/core/project/mng')">
             <img src="../img/xmgl.png" alt="">
             <span>项目管理</span>
           </div>
-           <div class="m_right_menu" @click="gotolink('xm','/xm/core/xmGroup/XmGroupAllMng')">
+           <div class="m_right_menu" @click="gotolink('xm','/xm/core/group/mng')">
             <img src="../img/tdgl.png" alt="">
             <span>团队管理</span>
           </div>
-           <div class="m_right_menu" @click="gotolink('xm','/xm/core/xmTask/XmTaskCenter')">
+           <div class="m_right_menu" @click="gotolink('xm','/xm/core/task/center')">
             <img src="../img/kfrw.png" alt="">
             <span>开发任务</span>
           </div>
-           <div class="m_right_menu" @click="gotolink('xm','/xm/core/xmQuestion/XmQuestionMng')">
+           <div class="m_right_menu" @click="gotolink('xm','/xm/core/question/mng')">
             <img src="../img/qx.png" alt="">
             <span>缺陷管理</span>
           </div>
