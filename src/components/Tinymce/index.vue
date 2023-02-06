@@ -135,7 +135,8 @@ export default {
         code_dialog_width: 1000,
         advlist_bullet_styles: "square",
         advlist_number_styles: "default",
-        imagetools_cors_hosts: ["www.qingqinkj.com", "codepen.io","www.maimengcloud.com"],
+        imagetools_cors_hosts: ["www.qingqinkj.com", "codepen.io","www.maimengcloud.com",'http://localhost:8067','http://localhost:8012'],
+        //imagetools_proxy:'localhost:8067',
         default_link_target: "_blank",
         link_title: false,
         convert_urls: false,
@@ -201,7 +202,7 @@ export default {
              upload(formData).then((res) => {  
               var tips = res.data.tips;
               if(tips.isOk){
-                success(res.data.data.url)
+                success('http://localhost:8067/api/m1/arc/arc/image/uploadImm/IM1675705794917148.png')
               }else{
                 failure(tips.msg)
               }

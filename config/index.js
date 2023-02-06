@@ -18,7 +18,7 @@ module.exports = {
               '^/api/m1/xm': '/xm'
             }
       },
-       /**
+       
     	'/api/m1/arc': {
             target: 'http://localhost:7012',
             changeOrigin: true,
@@ -26,7 +26,7 @@ module.exports = {
               '^/api/m1/arc': '/arc'
             }
       },
-     
+     /**
        '/api/m1/sys': {
          target: 'http://localhost:7015',
          changeOrigin: true,
