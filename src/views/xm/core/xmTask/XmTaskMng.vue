@@ -1,9 +1,8 @@
 <template>
-  <section class="padding-right">
+  <section class="padding">
     <el-row>
       <el-col
-        :span="24"
-        class="padding-left"
+        :span="24" 
         :class="{ 'flex-box': displayType == 'agil' }"
       >
         <el-row>
@@ -540,7 +539,14 @@
 								</template>
               </el-table-column>
             </el-table>
-            <el-pagination
+          </template>
+          <xm-gantt  v-else-if="displayType == 'grant'"
+            :tree-data="tasksTreeData"
+            :useRealTime="true"
+          ></xm-gantt>
+        </el-row>
+        
+        <el-pagination v-if="displayType != 'grant'"
               ref="pagination"
               layout="total, sizes, prev, pager, next"
               @current-change="handleCurrentChange"
@@ -551,12 +557,6 @@
               :total="pageInfo.total"
               style="float: right;"
             ></el-pagination>
-          </template>
-          <xm-gantt  v-else-if="displayType == 'grant'"
-            :tree-data="tasksTreeData"
-            :useRealTime="true"
-          ></xm-gantt>
-        </el-row>
       </el-col>
     </el-row>
     <el-drawer

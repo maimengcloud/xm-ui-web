@@ -44,14 +44,14 @@ export default {
           }else{
             this.$message.error("项目不存在，请确保项目编号正确")
             this.$router.push({
-              path:'/xm/core/xmProject/XmProjectMng'
+              path:'/xm/core/project/mng'
             })
           }
           
         }else{
           this.$message.error(tips.msg)
           this.$router.push({
-            path:'/xm/core/xmProject/XmProjectMng'
+            path:'/xm/core/project/mng'
           })
         }
       })
