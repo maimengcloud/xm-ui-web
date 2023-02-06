@@ -202,7 +202,9 @@ export default {
              upload(formData).then((res) => {  
               var tips = res.data.tips;
               if(tips.isOk){
-                success('http://localhost:8067/api/m1/arc/arc/image/uploadImm/IM1675705794917148.png')
+                success(res.data.data.url)
+                //success('http://localhost:8067/api/m1/arc/arc/image/uploadImm/IM1675705794917148.png')
+
               }else{
                 failure(tips.msg)
               }
