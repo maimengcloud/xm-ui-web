@@ -114,6 +114,10 @@
               >
             </el-menu-item> 
         </el-submenu>
+        
+        <el-menu-item :index="'/'">
+          <span slot="title"><i class="el-icon-s-home"></i>首页</span>
+        </el-menu-item>
       </el-menu>
     </el-row> 
   </section>

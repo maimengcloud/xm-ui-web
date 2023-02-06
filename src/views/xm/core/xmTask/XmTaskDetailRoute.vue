@@ -1,6 +1,6 @@
 <template>
-	<section class="padding">
-		 <xm-task-edit v-if="xmTask" :xm-task="xmTask"  :visible="showInfo"></xm-task-edit>
+	<section class="padding"> 
+		<xm-task-edit v-if="xmTask" :xm-task="xmTask"  :visible="showInfo"></xm-task-edit> 
 	</section>
 </template>
 

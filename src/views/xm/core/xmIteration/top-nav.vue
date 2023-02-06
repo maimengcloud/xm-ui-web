@@ -15,8 +15,7 @@
         <el-menu-item :index="'/xm/core/iteration/overview?iterationId='+xmIteration.id">
           <div
             slot="title"
-            style="max-width: 20vw; font-weight: 600; font-size: 18px; color: #ff8c00"
-            class="res-text"
+            style="max-width: 20vw; font-weight: 600; font-size: 18px; color: #ff8c00" 
             :title="xmIteration.iterationName"
           >  &nbsp;<el-avatar class="top-icon"  style="background-color:#ff8c00">迭代</el-avatar>{{ xmIteration.iterationName }} 
  
@@ -80,6 +79,10 @@
               >
             </el-menu-item> 
         </el-submenu>
+        
+        <el-menu-item :index="'/'">
+          <span slot="title"><i class="el-icon-s-home"></i>首页</span>
+        </el-menu-item>
       </el-menu>
     </el-row> 
   </section>
