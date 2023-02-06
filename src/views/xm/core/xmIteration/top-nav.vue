@@ -92,7 +92,7 @@
           <el-menu-item index="/helpCenter">
             <span slot="title"><i class="el-icon-date"></i>客服</span>
           </el-menu-item>
-          <el-menu-item index="/xm/core/xmIteration/XmIterationMng" >
+          <el-menu-item index="/xm/core/iteration/mng" >
               <span slot="title"
                 ><i class="el-icon-back"></i>回到迭代列表页</span
               >
