@@ -121,6 +121,17 @@ export default {
           hidden:true
         },
         {
+          path: 'test/plan',
+          component: _import('xm/core/xmTestPlan/XmTestPlanListForProject'),
+          name: 'projectTestPlan',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '项目-测试',
+            icon: 'project',roles:["user"]
+          },
+          hidden:true
+        },
+        {
           path: 'question',
           component: _import('xm/core/xmQuestion/XmQuestionForProject'),
           name: 'projectQuestion',

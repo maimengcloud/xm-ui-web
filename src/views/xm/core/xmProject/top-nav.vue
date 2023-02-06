@@ -43,6 +43,9 @@
           <span slot="title"><i class="el-icon-s-operation"></i>任务</span>
         </el-menu-item>
         -->
+        <el-menu-item :index="'/xm/core/project/test/plan?projectId='+projectInfo.id">
+          <span slot="title"><i class="el-icon-question"></i>测试</span>
+        </el-menu-item>
         <el-menu-item :index="'/xm/core/project/question?projectId='+projectInfo.id">
           <span slot="title"><i class="el-icon-question"></i>缺陷</span>
         </el-menu-item>
