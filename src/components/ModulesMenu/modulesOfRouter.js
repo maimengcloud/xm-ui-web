@@ -87,7 +87,7 @@ export const modulesOfRouter = [
     },  
     {
         id: 'xm-analysis',
-        path: '/xm/rpt/reportIndex',
+        path: '/xm/rpt/index',
         context: 'xm'
     },  
     {
@@ -102,27 +102,27 @@ export const modulesOfRouter = [
     },
     {
         id: 'xm-product',
-        path: '/xm/core/xmProduct/XmProductAllMng',
+        path: '/xm/core/product/mng',
         context: 'xm'
     },
     {
         id: 'xm-project',
-        path: '/xm/core/xmProject/XmProjectAllMng',
+        path: '/xm/core/project/mng',
         context: 'xm'
     },
     {
         id: 'xm-test',
-        path: '/xm/core/xmQuestion/XmQuestionAdd',
+        path: '/xm/core/question/mng',
         context: 'xm'
     },
     {
         id: 'xm-workload',
-        path: '/xm/core/xmWorkload/XmWorkloadInfoMy',
+        path: '/xm/core/workload/day',
         context: 'xm'
     },
     {
         id: 'xm-crowd',
-        path: '/xm/core/crowd/XmTaskCrowdMng',
+        path: '/xm/core/crowd/mng',
         context: 'xm'
     }
 ]

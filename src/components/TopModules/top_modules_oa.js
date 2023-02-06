@@ -67,7 +67,7 @@ var topModules=
     {
       moduleName:"项目",
       topModuleId:'xm',
-      link:"/xm/core/xmProject/XmProjectMng",
+      link:"/xm/core/project/mng",
       icon: require("../../assets/image/platform/module-project.png"),
       isHighlight:false,
       moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块

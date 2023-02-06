@@ -12,7 +12,7 @@ var categorys=
         moduleName:"项目管理",
         moduleId:'maim-project',
         topModuleId:'maim',isOpenSource:true,
-        sysLink:"/xm/"+process.env.VERSION+"/#/xm/core/xmProject/XmProjectMng",   
+        sysLink:"/xm/"+process.env.VERSION+"/#/xm/core/project/mng",   
         icon: require("@/assets/image/platform/module-project.png"),
         isHighlight:false,
         moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
@@ -21,7 +21,7 @@ var categorys=
         moduleName:"测试管理 ",
         moduleId:'maim-testhub',
         topModuleId:'maim',isOpenSource:true,
-        sysLink:"/xm/"+process.env.VERSION+"/#/xm/core/xmQuestion/XmQuestionMng",  
+        sysLink:"/xm/"+process.env.VERSION+"/#/xm/core/question/mng",  
         icon: require("@/assets/image/platform/module-customerCenter.png"),
         isHighlight:false,
         moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
@@ -30,7 +30,7 @@ var categorys=
         moduleName:"产品规划",
         moduleId:'maim-plan',
         topModuleId:'maim',isOpenSource:true,
-        sysLink:"/xm/"+process.env.VERSION+"/#/xm/core/xmProduct/XmProductAllMng", 
+        sysLink:"/xm/"+process.env.VERSION+"/#/xm/core/product/mng", 
         icon: require("@/assets/image/platform/module-intelligentForms.png"),
         isHighlight:false,
         moduleType : '1' // 模块类型，1-系统类模块 2-系统外模块
@@ -39,7 +39,7 @@ var categorys=
         moduleName:"效能管理",
         moduleId:'maim-performance',
         topModuleId:'maim',isOpenSource:true,
-        sysLink:"/xm/"+process.env.VERSION+"/#/xm/core/xmProjectState/XmProjectStateMng", 
+        sysLink:"/xm/"+process.env.VERSION+"/#/xm/core/rpt/index", 
         icon: require("@/assets/image/platform/module-cost.png"),
         isHighlight:false,
         moduleType : '2' // 模块类型，1-系统类模块 2-系统外模块
