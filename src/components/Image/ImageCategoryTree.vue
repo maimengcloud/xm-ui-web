@@ -1,5 +1,8 @@
 <template>
 	<section>
+		<el-row class="padding">
+			<el-button type="primary" style="float:left;" icon="el-icon-plus" @click.prevent.stop="addTopNode()">添加顶级分类</el-button>
+		</el-row>
 		<el-row>
 		<el-tree
 			:data="categoryTreeData"
@@ -21,8 +24,7 @@
 			<div class="custom-tree-node" slot-scope="{ node, data}">
 				<span>{{data.categoryName=='根'?'移动鼠标到此添加分类':data.categoryName}}</span>
 				<span class="el-ic">
-					<i class="el-icon-circle-plus" @click.prevent.stop="addTopNode()" title="添加顶级分类"></i>
-					<i class="el-icon-plus"  v-if=" !(!data.id || data.id=='C0'||data.id=='0')" @click.prevent.stop="addNode(data,node)" title="添加子分类"></i>
+ 					<i class="el-icon-plus"  v-if=" !(!data.id || data.id=='C0'||data.id=='0')" @click.prevent.stop="addNode(data,node)" title="添加子分类"></i>
 					<i class="el-icon-edit" v-if=" !(!data.id || data.id=='C0'||data.id=='0')" @click.prevent.stop="editNode(data,node)" title="修改名字"></i>
 					<i class="el-icon-delete" v-if=" !(!data.id || data.id=='C0'||data.id=='0')" @click.prevent.stop="deleteNode(data,node)" title="删除该分类"> </i>
 				</span>
@@ -31,7 +33,7 @@
 		<el-dialog
 			title="提示"
 			:visible.sync="addVisible"
-			width="60%" append-to-body>
+			width="60%" append-to-body  modal-append-to-body>
 				<el-form ref="addImageCategory" :model="addImageCategory" label-width="200" 	>
 					<el-form-item label="分类编号">
 						<el-input v-model="addImageCategory.id" placeholder="如果为空，则系统自动生成"></el-input>
@@ -52,7 +54,7 @@
 		<el-dialog
 			title="提示"
 			:visible.sync="editVisible"
-			width="60%" append-to-body>
+			width="60%" append-to-body modal-append-to-body>
 				<el-form ref="editImageCategory" :model="editImageCategory" label-width="200" 	>
 					<el-form-item label="分类编号"  prop="id">
 						{{editImageCategory.id}}

@@ -1,40 +1,31 @@
 <template>
 <section>
 	<el-row class="uploadImgWindow" v-loading="listLoading">
-		<el-col :span=6 class="leftBox"> 
+		<el-col :span="6" class="leftBox"> 
 			<category-tree ref="categoryTree" :show-count="false" show-checkbox  :default-expand-all="true" :expand-on-click-node="false"  v-on:check-change="handleLeftCategoryNodeClick"></category-tree> 
 		</el-col>
-		<el-col :span=18  class="rightBox">
-			<el-col :span=24  class="windowTitle">
-				<el-col :span=12 class="windowTitlefistchild">
+		<el-col :span="18"   class="rightBox">
+			<el-row class="windowTitle">
+				<el-col :span="12"  class="windowTitlefistchild">
 					<el-input v-model="filters.key" style="width:60%;" placeholder="按文件名模糊查询"></el-input>
 					<el-button type="primary" @click="searchImages" icon="el-icon-search"></el-button>
 				</el-col>
-				<el-col :span=4>
-					<el-upload :disabled="uploadOptions.categoryId==''||uploadOptions.categoryId==null" class="upload-demo"  :show-file-list="false" :action="uploadAction" :on-change="fileChange" :on-success="handleSuccess" :before-upload="beforeupload" :data="uploadOptions" multiple>
-						 <el-tooltip class="item" effect="dark" :content="uploadOptions.categoryId==''?'请先选择左边分类':'支持jpg和png,建议大小不超过200KB，超过1M将自动裁剪压缩'" placement="top-start">
-						      <el-button   type="primary">点击上传</el-button>
-						    </el-tooltip>
-						
-					</el-upload>
+				<el-col :span="6"  > 
+						<el-upload :disabled="uploadOptions.categoryId==''||uploadOptions.categoryId==null" class="upload-demo"  :show-file-list="false" :action="uploadAction" :on-change="fileChange" :on-success="handleSuccess" :before-upload="beforeupload" :data="uploadOptions" multiple>
+							<el-tooltip class="item" effect="dark" :content="uploadOptions.categoryId==''?'请先选择左边分类':'支持jpg和png,建议大小不超过200KB，超过1M将自动裁剪压缩'" placement="top-start">
+								<el-button   type="primary">点击上传</el-button>
+								</el-tooltip>
+							
+						</el-upload> 
 				</el-col>
-				<el-col :span=4>
-					<el-upload :disabled="uploadOptions.categoryId==''||uploadOptions.categoryId==null" class="upload-demo"  :show-file-list="false" :action="uploadAction" :on-change="fileChangeForShear" :on-success="handleSuccess" :before-upload="beforeupload" :data="uploadOptions" multiple>
-						 <el-tooltip class="item" effect="dark" :content="uploadOptions.categoryId==''?'请先选择分类':'支持jpg和png,建议大小不超过200KB，超过1M将自动裁剪压缩'" placement="top-start">
-						      <el-button   type="warning">裁剪上传</el-button>
-						    </el-tooltip>
-						
-					</el-upload>
+				<el-col :span="4" > 
+						<el-button  type="danger" @click="handelDel" >删除</el-button> 
 				</el-col>
-				
-				<el-col :span=4>
-					<el-button   type="danger" @click="handelDel" >删除</el-button>
-				</el-col>
-			</el-col>
+			</el-row>
 			
-			<el-col :span=24>
-				<el-col :span=24 type="flex" class="allImg">
-					  <el-col :span=4 v-for="o in images" style="height:200px;width:200px;" :key="o.id" class="imgBox">
+			<el-row>
+				<el-col :span="24"  type="flex" class="allImg">
+					  <el-col :span="4"  v-for="o in images" style="height:200px;width:200px;" :key="o.id" class="imgBox">
 					    <el-card :body-style="{ padding: '0px' }">
 					    	
 					    	<div style="width:100%;position:relative;" :index="o.url"  v-on:click="selectImg(o)"> 
@@ -50,11 +41,9 @@
 					    </el-card>
 					  </el-col>
 				</el-col>
-			</el-col>
-			<el-col :span="24">
-					<el-pagination  layout="total, sizes, prev,pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;">
-					</el-pagination>
-				</el-col>	
+			</el-row> 
+			<el-pagination  layout="total, sizes, prev,pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;">
+			</el-pagination> 
 	    </el-col>	
 	</el-row>
 	<el-dialog title="裁剪图片" :visible.sync="shearMngVisible"  width="1100px" top="0px" :close-on-click-modal="false" append-to-body>
@@ -105,7 +94,7 @@
 				},
 		selectImages: [],	 
 		listLoading: false,//查询中...		
-		uploadOptions:{branchId:this.branchId,categoryId:'',fileName:'',remark:'',deptid:this.deptid},//当前选择上传图片的类型
+		uploadOptions:{branchId:this.branchId,categoryId:'',fileName:'',remark:'',deptid:this.deptid,storedb:true},//当前选择上传图片的类型
 		shearMngVisible:false,
 		showAddCategoryForm: false,
 		categoryName: '',//分类名称

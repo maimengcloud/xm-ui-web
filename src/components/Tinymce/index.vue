@@ -5,13 +5,13 @@
   >
     <textarea :id="tinymceId" class="tinymce-textarea" />
     <el-dialog
-      id="editor-dialog"
-      class="image-dialog"
       title="选择图片"
       :visible.sync="dialogVisible"
-      width="70%"
+      top="20px"
+      width="80%"
       :close-on-click-modal="false"
       append-to-body
+      modal-append-to-body
     >
       <upload-image
         :multiple="true"
@@ -120,14 +120,14 @@ export default {
   methods: {
     initTinymce() {  
       const _this = this;
-      window.tinymce.init({
+      window.tinymce.init({ 
         language: _this.language,
         selector: `#${_this.tinymceId}`,
         height: _this.height,
         body_class: "panel-body ",
-        object_resizing: false,
+        object_resizing: true, 
         toolbar: _this.toolbar.length > 0 ? _this.toolbar : toolbar,
-        menubar: _this.menubar,
+        menubar: false,
         plugins: plugins,
         end_container_on_empty_block: true,
         powerpaste_word_import: "clean",
@@ -193,11 +193,19 @@ export default {
         //   return img
         // },
         images_upload_handler(blobInfo, success, failure, progress) {   
+          
              const formData = new FormData();   
+             formData.append('storedb',false)
              formData.append('file', blobInfo.blob()); 
              formData.append("categoryId",_this.uploadOptions.categoryId) 
              upload(formData).then((res) => {  
+              var tips = res.data.tips;
+              if(tips.isOk){
                 success(res.data.data.url)
+              }else{
+                failure(tips.msg)
+              }
+                
              })
           
          },

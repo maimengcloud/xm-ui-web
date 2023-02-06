@@ -32,3 +32,6 @@ export const addImage = params => { return axios.post(`${base}/mdp/arc/image/add
 export const listTags = params => { return axios.get(`${base}/mdp/arc/image/listTags`, params); };
 
 export const uploadBase64 = params => { return axios.post(`${base}/mdp/arc/image/upload/base64`, params); };
+
+export const upload = params => { return axios.post(`${base}/mdp/arc/image/upload`, params,{
+    'Content-type' : 'multipart/form-data'}); };
