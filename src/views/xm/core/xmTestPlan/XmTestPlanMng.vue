@@ -337,8 +337,16 @@ export default {
         initData: function(){
 
         },
-        goToTestPlanCase(row){ 
-            this.$emit('select',row);//  @row-click="rowClick"
+        goToTestPlanCase(row){  
+			var key="xm-test-plan-info-"+row.id
+            sessionStorage.setItem(key,JSON.stringify(row))
+            this.$router.push({
+                path:'/xm/core/test/plan/detail',
+                query:{
+					casedbId:row.casedbId,
+                    id:row.id
+                }
+            })
         },
         calcXmTestPlan(row){
             calcXmTestPlan({id:row.id}).then(res=>{ 

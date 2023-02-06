@@ -4,9 +4,9 @@
             
         </el-row>
 		<el-row>
-            <el-row v-if="activeIndex=='testPlanCase'&& xmTestPlan && xmTestPlan.id">
+            <el-row v-if=" xmTestPlan && xmTestPlan.id">
                 <el-row class="border padding-left padding-right">
-                     <el-button icon="el-icon-back" @click="activeIndex='testPlan'" type="text"></el-button>
+                     <el-button icon="el-icon-back" @click="goBackToPlanList()" type="text"></el-button>
                      <el-divider direction="vertical"></el-divider>
                      {{xmTestPlan.name}}
                      <el-divider direction="vertical"></el-divider>
@@ -47,8 +47,7 @@
                      <xm-rpt key="xmRpt"  ref="xmRpt" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan" :xm-product="{id:xmTestCasedb.productId,productName:xmTestCasedb.productName}" :xm-project="{id:xmTestPlan.projectId,name:xmTestPlan.projectName}"  category="测试计划级"></xm-rpt >
                 </el-row>
             </el-row> 
-            <xm-test-plan-mng v-else @select="onTestPlanSelect" :xm-test-casedb="xmTestCasedb"> </xm-test-plan-mng>
-        </el-row>     
+         </el-row>     
 	</section>
 </template>
 
@@ -72,7 +71,7 @@ export default {
         "xm-test-case-mng":()=>import("../xmTestCase/XmTestCaseMng.vue"),
         "xm-test-plan-case-mng":()=>import("../xmTestPlanCase/XmTestPlanCaseMng.vue")
     },
-    props:['visible','xmTestCasedb'],
+    props:['visible','xmTestCasedb','xmTestPlan'],
     computed: {
         ...mapGetters(['userInfo']),
         calcProgress(){
@@ -132,7 +131,6 @@ export default {
                 testPlanStatus:[],
              },
             activeIndex:'testPlan',//testPlanCase,testPlan
-            xmTestPlan:null,
             subPage:'testPlanCase',//testPlanCase,testBug
         }
     },//end data
@@ -161,6 +159,9 @@ export default {
                     })
                 }
             }) 
+        },
+        goBackToPlanList(){
+            this.$router.go(-1);
         }
  
     },//end methods

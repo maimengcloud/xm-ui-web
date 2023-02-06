@@ -196,13 +196,15 @@ export default {
             this.visible=true
         },
         select(row){ 
-			this.$route.push({
-				path:'/xm/core/test/plan',
-				query:{
+			var key="xm-test-plan-info-"+row.id
+            sessionStorage.setItem(key,JSON.stringify(row))
+            this.$router.push({
+                path:'/xm/core/test/plan/detail',
+                query:{
 					casedbId:row.casedbId,
-					id:row.id
-				}
-			})
+                    id:row.id
+                }
+            })
         }
 
     },//end methods
@@ -210,7 +212,7 @@ export default {
         this.$nextTick(() => {
             initDicts(this);
             this.initData()
-            //this.searchXmTestPlans();
+            this.searchXmTestPlans();
             this.maxTableHeight = util.calcTableMaxHeight(this.$refs.xmTestPlanTable.$el)
 
         });
