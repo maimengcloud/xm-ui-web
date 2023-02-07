@@ -4,7 +4,7 @@
       <el-row>
         <el-table :data="xmMenus" :max-height="400"  highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
           <el-table-column type="selection" label="全选"></el-table-column>
-          <el-table-column prop="menuName" label="名称" min-width="250" show-overflow-tooltip> 
+          <el-table-column prop="menuName" label="名称" min-width="350"> 
               <template slot-scope="scope" > 
                   <div class="cell-box">
                     <div class="cell-text"  >
@@ -33,7 +33,7 @@
                   </div>
 			  </template>
 		  </el-table-column>
-          <el-table-column prop="status" label="状态"  min-width="80"  sortable>
+          <el-table-column prop="status" label="状态"  width="100"  sortable>
 								<template slot-scope="scope"> 
 										 <mdp-select-dict-tag  @visible-change="selectVisible(scope.row,$event)" :dict="dicts.menuStatus"  v-model="scope.row.status" placeholder="需求状态"  style="display:block;"  @change="editXmMenuSomeFields(scope.row,'status',$event)">
  										 </mdp-select-dict-tag> 
@@ -55,7 +55,7 @@
 									</span>
 								</template>
 							</el-table-column> 
-							<el-table-column prop="finishRate" label="进度"  min-width="80" show-overflow-tooltip sortable>
+							<el-table-column prop="finishRate" label="进度" width="100" show-overflow-tooltip sortable>
 								<template slot-scope="scope">
 									<div v-if="scope.row.calcType!=='2'">
 										 <span v-if="scope.row.finishRate"><el-tag :type="scope.row.finishRate>=100?'success':'warning'">{{scope.row.finishRate}}%</el-tag></span>
@@ -63,7 +63,7 @@
 								</template>
 
 							</el-table-column> 
-							<el-table-column prop="mmUsername" label="跟进人"  min-width="100" show-overflow-tooltip  sortable>
+							<el-table-column prop="mmUsername" label="跟进人"  width="150" show-overflow-tooltip  sortable>
 								<template slot-scope="scope">
 									 <mdp-select-user-xm @visible-change="selectVisible(scope.row,$event)" userid-key="mmUserid" username-key="mmUsername" :project-id="linkProjectId" v-model="scope.row" @change="editXmMenuSomeFields(scope.row,'mmUserid',$enent)"></mdp-select-user-xm>
 								</template>
