@@ -28,11 +28,11 @@
                             <span class="cell-bar"><el-input style="display:inline;" v-model="scope.row.username" placeholder="" @change="editSomeFields(scope.row,'username',$event)" :maxlength="22"></el-input></span>
                         </el-table-column>
                         -->
-                         <el-table-column prop="caseName" label="标题" min-width="250" show-overflow-tooltip fixed="left">
+                         <el-table-column prop="caseName" label="标题" min-width="250">
                             <template slot-scope="scope">
                                 <span> <el-link  @click="showEdit( scope.row,scope.$index)">{{scope.row.caseName}} </el-link></span>
                                 <span class="tool-bar">
-                                    <el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" circle ></el-button> 
+                                     <el-button type="warning" @click="copyOne(scope.row,scope.$index)" icon="el-icon-document-copy" circle title="复制一行"></el-button> 
                                 </span>
                             </template>
                         </el-table-column>  
@@ -89,7 +89,7 @@
 
 import util from '@/common/js/util';//全局公共库
 import config from '@/common/config';//全局公共库
-import { initDicts,listXmTestCase, delXmTestCase, batchDelXmTestCase,editSomeFieldsXmTestCase } from '@/api/xm/core/xmTestCase';
+import { initDicts,listXmTestCase, delXmTestCase, batchDelXmTestCase,editSomeFieldsXmTestCase,addXmTestCase } from '@/api/xm/core/xmTestCase';
 import  XmTestCaseEdit from './XmTestCaseEdit';//新增修改界面
 import  XmFuncSelect from '../xmFunc/XmFuncSelect';//新增修改界面
 import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修改界面
@@ -361,6 +361,26 @@ export default {
         onEditFields(params){
             Object.assign(this.editForm,params)
             this.editFormBak={...this.editForm}
+        },
+        copyOne(row,index){
+            
+            var params={...row}
+            params.cuserid=this.userInfo.userid
+            params.cusername=this.userInfo.username
+            params.cbranchId=this.userInfo.branchId
+            params.caseStatus="0"
+            params.caseName=row.caseName+'V'
+            addXmTestCase(params).then(res=>{
+                var tips = res.data.tips
+                if(tips.isOk){ 
+                    var row2=res.data.data
+                    this.xmTestCases.splice(index+1,0,row2)
+                    this.pageInfo.total=this.pageInfo.total+1
+                    this.$message.success("复制成功")
+                }else{
+                    this.$message.error(tips.msg)
+                }
+            })
         }
 
     },//end methods

@@ -122,6 +122,9 @@
 					 <el-table-column prop="name" label="缺陷名称"  min-width="200" show-overflow-tooltip fixed="left">
 						<template slot-scope="scope">   
 									 <el-link type="primary" @click="showEdit(scope.row)"> {{scope.row.name}}</el-link>  
+									 <span class="tool-bar">
+                                     	<el-button type="warning" @click="copyOne(scope.row,scope.$index)" icon="el-icon-document-copy" circle title="复制一行"></el-button> 
+									</span>
 						</template>
 					</el-table-column>
 					<el-table-column prop="bugStatus" label="状态"  width="100">
@@ -222,7 +225,7 @@
 	import config from '@/common/config';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
-	import { listXmQuestion, delXmQuestion, batchDelXmQuestion, editStatus ,editXmQuestionSomeFields} from '@/api/xm/core/xmQuestion';
+	import { listXmQuestion,addXmQuestion,delXmQuestion, batchDelXmQuestion, editStatus ,editXmQuestionSomeFields} from '@/api/xm/core/xmQuestion';
 	import  XmQuestionAdd from './XmQuestionEdit';//新增界面
 	import  XmQuestionEdit from './XmQuestionEdit';//修改界面
 	import { mapGetters } from 'vuex'
@@ -1045,6 +1048,27 @@
 			},
 			onEditFields(row){
 				Object.assign(this.editForm,row) 
+			},
+			
+			copyOne(row,index){
+				
+				var params={...row}
+				params.id=null;
+				params.createUserid=this.userInfo.userid
+				params.createUsername=this.userInfo.username 
+				params.bugStatus="1"
+				params.name=row.name+'V'
+				addXmQuestion(params).then(res=>{
+					var tips = res.data.tips
+					if(tips.isOk){ 
+						var row2=res.data.data
+						this.xmQuestions.splice(index+1,0,row2)
+						this.pageInfo.total=this.pageInfo.total+1
+						this.$message.success("复制成功")
+					}else{
+						this.$message.error(tips.msg)
+					}
+				})
 			}
 		},//end methods
 		components: {
