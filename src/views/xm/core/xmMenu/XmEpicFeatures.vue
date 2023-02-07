@@ -688,8 +688,27 @@
 					sessionStorage.setItem(key,JSON.stringify(datas))
 				}
 				
+			},
+			copyOne(row,index){
+				
+				var params={...row}
+				params.id=null;
+				params.createUserid=this.userInfo.userid
+				params.createUsername=this.userInfo.username 
+				params.bugStatus="1"
+				params.name=row.name+'V'
+				addXmQuestion(params).then(res=>{
+					var tips = res.data.tips
+					if(tips.isOk){ 
+						var row2=res.data.data
+						this.xmQuestions.splice(index+1,0,row2)
+						this.pageInfo.total=this.pageInfo.total+1
+						this.$message.success("复制成功")
+					}else{
+						this.$message.error(tips.msg)
+					}
+				})
 			}
-
 		},//end methods
 		components: {
 		    'xm-menu-add':XmMenuAdd,

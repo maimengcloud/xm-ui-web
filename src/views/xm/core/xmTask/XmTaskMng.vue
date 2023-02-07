@@ -383,25 +383,22 @@
               </el-table-column>
               <el-table-column
                 sortable
-                prop="name"
-                class-name="title"
+                prop="name" 
                 fixed="left"
                 label="任务名称"
-                min-width="300" show-overflow-tooltip
+                min-width="400"
               >
                 <template slot-scope="scope">
+                  <div style="display:flex; flex-wrap:nowrap;">
                   <div    class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#409EFF'}">
-									<i :class="scope.row.ntype==='1'?'el-icon-time':'el-icon-s-operation'" ></i>
-									</div>
-                  <span    type="primary">
-                    {{ scope.row.sortLevel }}&nbsp;  {{ scope.row.name }}
-                    </span>
-
-									<div class="tool-bar">
-                    <span class="u-btn">
-                         <el-button    @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑任务" circle > </el-button>
-                     </span>
-									</div>
+									  <i :class="scope.row.ntype==='1'?'el-icon-time':'el-icon-s-operation'" style="width:20px;"></i>
+                  </div> 
+                    <el-link @click="showEdit(scope.row)">{{ scope.row.sortLevel }}&nbsp;  {{ scope.row.name }}</el-link>
+                 
+                     <span class="tool-bar">
+                        <el-button type="warning" @click="copyOne(scope.row,scope.$index)" icon="el-icon-document-copy" circle title="复制一行"></el-button> 
+									    </span>
+                </div>
                 </template>
               </el-table-column>
 
@@ -836,6 +833,7 @@ import {
   editRate,
   editTime,
   delXmTask,
+  addTask,
   batchDelXmTask,
   batchImportTaskFromTemplate,
   batchSaveBudget,
@@ -878,7 +876,7 @@ import XmGantt from "../components/xm-gantt";
   	import XmWorkloadEdit from "@/views/xm/core/xmWorkload/XmWorkloadEdit";
 
 import XmPhaseSelect from "./XmPhaseSelect.vue";
-	import { addXmTaskExecuser } from '@/api/xm/core/xmTaskExecuser';
+	import { addTaskExecuser } from '@/api/xm/core/xmTaskExecuser';
 import MdpSelectUserXm from "@/views/xm/core/components/MdpSelectUserXm/index";
 
 export default {
@@ -1849,7 +1847,7 @@ export default {
         if(this.sels.length>0){ 
           this.editXmTaskSomeFields(row,"executorUserid",params)
         }else{
-          addXmTaskExecuser(params).then(res=>{
+          addTaskExecuser(params).then(res=>{
             var tips = res.data.tips
             if(tips.isOk){
               //this.searchXmTasks();
@@ -2187,7 +2185,35 @@ export default {
       showWorkload(row){
         this.editForm=row
         this.taskWorkloadVisible=true;
-      }
+      },
+      
+			
+			copyOne(row,index){
+				
+				var params={...row}
+				params.id=null;
+				params.createUserid=this.userInfo.userid
+				params.createUsername=this.userInfo.username 
+        params.executorUserid=null
+        params.executorUseranme=null
+        params.execUserids=null;
+        params.execUsername=null; 
+        params.actWorkload=null;
+        params.actAt=null;
+        params.efunds=0 
+				params.name=row.name+'V'
+				addTask(params).then(res=>{
+					var tips = res.data.tips
+					if(tips.isOk){ 
+						var row2=res.data.data
+						this.xmTasks.splice(index+1,0,row2)
+						this.pageInfo.total=this.pageInfo.total+1
+						this.$message.success("复制成功")
+					}else{
+						this.$message.error(tips.msg)
+					}
+				})
+			}
     /**end 自定义函数请在上面加**/
   }, //end methods
   components: {

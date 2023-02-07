@@ -14,7 +14,7 @@
 					<el-popover
 						placement="top-start"
 						title="更多查询条件或者操作"
-						width="500"
+						width="600"
 						v-model="moreVisible"
 						trigger="manual" >
 						
@@ -45,137 +45,145 @@
 							</el-row>
 							<el-divider></el-divider> 
 							<el-row>
-								<font class="more-label-font">
-									责任人:
-								</font> 
-								<mdp-select-user-xm label="选择责任人" v-model="filters.mmUser" :clearable="true"></mdp-select-user-xm> 
+								<el-col :span="14">
+									<el-row>
+										<font class="more-label-font">
+											责任人:
+										</font> 
+										<mdp-select-user-xm label="选择责任人" v-model="filters.mmUser" :clearable="true"></mdp-select-user-xm> 
 
-							</el-row>
-							<el-row v-if="!xmIteration || !xmIteration.id">
-								<font class="more-label-font">
-									迭代:
-								</font>
-								<xm-iteration-select v-if="!xmIteration || !xmIteration.id" style="display:inline;" :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="selProject?selProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClearSelect">
-								</xm-iteration-select> 
-							</el-row> 
-							<el-row>
-								<font class="more-label-font">标签条件:</font>
-								<el-button  v-if="!filters.tags||filters.tags.length==0" @click.native="$refs.tagDialog.open()" icon="el-icon-search">标签</el-button>
-								<el-tag v-else @click="$refs.tagDialog.open()"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
+									</el-row>
+									<el-row>
+										<font class="more-label-font">
+											归属模块:
+										</font> 
+										<span v-if="filters.func">{{ filters.func.name }}&nbsp;</span><el-button type="text" v-if="filters.func" @click="filters.func=null" icon="el-icon-close"></el-button><el-button @click="funcVisible=true" type="text">选择模块</el-button>
+									</el-row>
+									<el-row v-if="!xmIteration || !xmIteration.id">
+										<font class="more-label-font">
+											归属迭代:
+										</font>
+										<xm-iteration-select v-if="!xmIteration || !xmIteration.id" style="display:inline;" :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="selProject?selProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClearSelect">
+										</xm-iteration-select> 
+									</el-row> 
+									<el-row>
+										<font class="more-label-font">标签条件:</font>
+										<el-button  v-if="!filters.tags||filters.tags.length==0" @click.native="$refs.tagDialog.open()" icon="el-icon-search">标签</el-button>
+										<el-tag v-else @click="$refs.tagDialog.open()"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
 
+									</el-row>
+									<el-row>
+										<font class="more-label-font">
+											是否加入迭代:
+										</font>
+										<el-select   v-model="filters.iterationFilterType" placeholder="加入过迭代？" clearable  style="width: 200px;" >
+											<el-option   value="not-join-any-iteration"  label="未加入过迭代"></el-option>
+											<el-option   value="join-any-iteration"  label="已加入过迭代"></el-option>
+											<el-option   value="not-join-curr-iteration"  :label="'未加入迭代【'+filters.iteration.iterationName+'】'"  v-if="filters.iteration && filters.iteration.id"></el-option>
+											<el-option   value="join-curr-iteration"  :label="'已加入本迭代【'+filters.iteration.iterationName+'】'" v-if="filters.iteration && filters.iteration.id"></el-option>
+										</el-select>
+									</el-row>
+									<el-row>
+										<font class="more-label-font">
+											是否分配任务:
+										</font>
+										<el-select  v-model="filters.taskFilterType" placeholder="已分配任务的需求？" clearable style="width: 200px;">
+											<el-option   value="not-join-any-project"  label="未分配过任务的需求"></el-option>
+											<el-option   value="join-any-project"  label="已分配过任务的需求"></el-option>
+											<el-option   value="not-join-curr-project"  :label="'未分配任务到项目【'+selProject.name+'】'" v-if="selProject && selProject.id"></el-option>
+											<el-option   value="join-curr-project"  :label="'已分配任务到项目【'+selProject.name+'】'"  v-if="selProject && selProject.id"></el-option>
+										</el-select>
+									</el-row> 
+								</el-col>
+								<el-col :span="10">
+									<el-row>
+										<font class="more-label-font">
+											需求类型:
+										</font>
+										<el-select style="width:100px;" v-model="filters.dtype" clearable placeholder="需求类型">
+											<el-option v-for="i in this.dicts.demandType" :label="i.name" :key="i.id" :value="i.id"></el-option>
+										</el-select>
+									</el-row>
+									<el-row>
+										<font class="more-label-font">
+											需求来源:
+										</font>
+										<el-select style="width:100px;" v-model="filters.source" placeholder="需求来源"  clearable >
+											<el-option v-for="i in this.dicts.demandSource" :label="i.name" :key="i.id" :value="i.id"></el-option>
+										</el-select>
+									</el-row>
+									<el-row>
+										<font class="more-label-font">
+											需求层次:
+										</font>
+										<el-select style="width:100px;" v-model="filters.dlvl" placeholder="需求层次"  clearable >
+											<el-option v-for="i in this.dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
+										</el-select>
+									</el-row>
+									<!--
+									<el-row>
+										<font class="more-label-font">
+											优先级:
+										</font>
+										<el-select v-model="filters.priority" placeholder="优先级"  clearable style="width: 200px;">
+												<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option>
+										</el-select>
+									</el-row>
+									-->
+									<!--
+									<el-row>
+										<font class="more-label-font">
+											需求状态:
+										</font>
+										<el-select v-model="filters.status" placeholder="需求状态" clearable style="width: 200px;">
+											<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.menuStatus" :key="index"></el-option>
+										</el-select>
+									</el-row>
+									-->
+									<el-row>
+										<font class="more-label-font">
+											需求编号:
+										</font>
+										<el-input v-model="filters.menuId" style="width: 100px;" placeholder="需求编号查询" clearable></el-input>
+									</el-row> 
+									<el-row>
+										<font class="more-label-font">开始时间:</font>
+										<mdp-date-range
+										v-model="filters"
+										type="daterange" 
+										start-key="planStartTimeStart"
+										end-key="planStartTimeEnd"
+										unlink-panels
+										range-separator="至"
+										start-placeholder="开始日期"
+										end-placeholder="完成日期"
+										value-format="yyyy-MM-dd HH:mm:ss" 
+										:default-time="['00:00:00', '23:59:59']" 
+										:auto-default="false"
+										key="planStartTime"
+										></mdp-date-range>
+									</el-row>
+									<el-row>
+										<font class="more-label-font">结束时间:</font>
+										<mdp-date-range
+										v-model="filters"
+										type="daterange" 
+										start-key="planEndTimeStart"
+										end-key="planEndTimeEnd"
+										unlink-panels
+										range-separator="至"
+										start-placeholder="开始日期"
+										end-placeholder="完成日期"
+										value-format="yyyy-MM-dd HH:mm:ss" 
+										:default-time="['00:00:00', '23:59:59']" 
+										:auto-default="false" 
+										key="planEndTime"
+										></mdp-date-range>
+									</el-row> 
+								</el-col>
 							</el-row>
-							<el-row>
-								<font class="more-label-font">
-									是否加入迭代:
-								</font>
-								<el-select   v-model="filters.iterationFilterType" placeholder="加入过迭代？" clearable  style="width: 200px;" >
-									<el-option   value="not-join-any-iteration"  label="未加入过迭代"></el-option>
-									<el-option   value="join-any-iteration"  label="已加入过迭代"></el-option>
-									<el-option   value="not-join-curr-iteration"  :label="'未加入迭代【'+filters.iteration.iterationName+'】'"  v-if="filters.iteration && filters.iteration.id"></el-option>
-									<el-option   value="join-curr-iteration"  :label="'已加入本迭代【'+filters.iteration.iterationName+'】'" v-if="filters.iteration && filters.iteration.id"></el-option>
-								</el-select>
-							</el-row>
-							<el-row>
-								<font class="more-label-font">
-									是否分配任务:
-								</font>
-								<el-select  v-model="filters.taskFilterType" placeholder="已分配任务的需求？" clearable style="width: 200px;">
-									<el-option   value="not-join-any-project"  label="未分配过任务的需求"></el-option>
-									<el-option   value="join-any-project"  label="已分配过任务的需求"></el-option>
-									<el-option   value="not-join-curr-project"  :label="'未分配任务到项目【'+selProject.name+'】'" v-if="selProject && selProject.id"></el-option>
-									<el-option   value="join-curr-project"  :label="'已分配任务到项目【'+selProject.name+'】'"  v-if="selProject && selProject.id"></el-option>
-								</el-select>
-							</el-row> 
-							<el-row>
-								<font class="more-label-font">
-									归属模块:
-								</font> 
-								<span v-if="filters.func">{{ filters.func.name }}&nbsp;</span><el-button v-if="filters.func" @click="filters.func=null">清除</el-button><el-button @click="funcVisible=true">选择模块</el-button>
-							</el-row>
-							<el-row>
-								<font class="more-label-font">
-									需求类型:
-								</font>
-								<el-select  v-model="filters.dtype" clearable placeholder="需求类型" style="width: 200px;">
-									<el-option v-for="i in this.dicts.demandType" :label="i.name" :key="i.id" :value="i.id"></el-option>
-								</el-select>
-							</el-row>
-							<el-row>
-								<font class="more-label-font">
-									需求来源:
-								</font>
-								<el-select v-model="filters.source" placeholder="需求来源"  clearable style="width: 200px;">
-									<el-option v-for="i in this.dicts.demandSource" :label="i.name" :key="i.id" :value="i.id"></el-option>
-								</el-select>
-							</el-row>
-							<el-row>
-								<font class="more-label-font">
-									需求层次:
-								</font>
-								<el-select v-model="filters.dlvl" placeholder="需求层次"  clearable style="width: 200px;">
-									<el-option v-for="i in this.dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
-								</el-select>
-							</el-row>
-							<!--
-							<el-row>
-								<font class="more-label-font">
-									优先级:
-								</font>
-								<el-select v-model="filters.priority" placeholder="优先级"  clearable style="width: 200px;">
-										<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option>
-								</el-select>
-							</el-row>
-							-->
-							<!--
-							<el-row>
-								<font class="more-label-font">
-									需求状态:
-								</font>
-								<el-select v-model="filters.status" placeholder="需求状态" clearable style="width: 200px;">
-									<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.menuStatus" :key="index"></el-option>
-								</el-select>
-							</el-row>
-							-->
-							<el-row>
-								<font class="more-label-font">
-									需求编号:
-								</font>
-								<el-input v-model="filters.menuId" style="width: 200px;" placeholder="需求编号查询" clearable></el-input>
-							</el-row> 
-							<el-row>
-								<font class="more-label-font">开始时间:</font>
-								<mdp-date-range
-								v-model="filters"
-								type="daterange" 
-								start-key="planStartTimeStart"
-								end-key="planStartTimeEnd"
-								unlink-panels
-								range-separator="至"
-								start-placeholder="开始日期"
-								end-placeholder="完成日期"
-								value-format="yyyy-MM-dd HH:mm:ss" 
-								:default-time="['00:00:00', '23:59:59']" 
-								:auto-default="false"
-								key="planStartTime"
-								></mdp-date-range>
-							</el-row>
-							<el-row>
-								<font class="more-label-font">结束时间:</font>
-								<mdp-date-range
-								v-model="filters"
-								type="daterange" 
-								start-key="planEndTimeStart"
-								end-key="planEndTimeEnd"
-								unlink-panels
-								range-separator="至"
-								start-placeholder="开始日期"
-								end-placeholder="完成日期"
-								value-format="yyyy-MM-dd HH:mm:ss" 
-								:default-time="['00:00:00', '23:59:59']" 
-								:auto-default="false" 
-								key="planEndTime"
-								></mdp-date-range>
-							</el-row> 
+							
+							
 							<el-row>
 								<el-button type="primary" style="float:right;" @click="searchXmMenus" icon="el-icon-search">查询</el-button> 
 							</el-row> 
@@ -229,23 +237,23 @@
 					<el-table  element-loading-text="努力加载中" element-loading-spinner="el-icon-loading" :cell-style="cellStyleCalc" :expand-row-keys="expandRowKeysCpd" :header-cell-style="cellStyleCalc"    stripe fit border ref="table" :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId"  @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
 						<el-table-column sortable type="selection" width="40"></el-table-column>
 
-						<el-table-column prop="menuName" label="故事名称" min-width="300" fixed="left">
+						<el-table-column prop="menuName" label="故事名称" min-width="350" fixed="left">
 							<template slot-scope="scope">
+							<div style="display:flex; flex-wrap:nowrap;">
 								<div  v-if="scope.row.dclass=='1'" class="icon" style="background-color:  rgb(255, 153, 51);">
-								<i class="el-icon-s-promotion"></i>
+								<i class="el-icon-s-promotion" style="width:20px;"></i>
 								</div>
 								<div v-if="scope.row.dclass=='2'" class="icon" style="background-color:  rgb(0, 153, 51);">
-								<i class="el-icon-s-flag"></i>
+								<i class="el-icon-s-flag"  style="width:20px;"></i>
 								</div>
 								<div v-if="scope.row.dclass=='3'" class="icon" style="background-color:  rgb(79, 140, 255);">
-								<i class="el-icon-document"></i>
+								<i class="el-icon-document"  style="width:20px;"></i>
 								</div>
-								<span     >{{scope.row.seqNo}} &nbsp; {{scope.row.menuName}} </span>
-								<div class="tool-bar">
-								<span class="u-btn"> 
-									<el-button      @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑" circle plain > </el-button>     
-								</span>
-								</div>
+								<el-link  @click="showEdit( scope.row,scope.$index)">{{scope.row.seqNo}} &nbsp; {{scope.row.menuName}} </el-link>
+								<div class="tool-bar"> 
+                                      	<el-button type="warning" @click="copyOne(scope.row,scope.$index)" icon="el-icon-document-copy" circle title="复制一行"></el-button> 
+ 								</div>
+							</div>
 							</template>
 
 
@@ -413,7 +421,7 @@
 	import treeTool from '@/common/js/treeTool';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
-	import { listXmMenu, delXmMenu, batchDelXmMenu,batchAddXmMenu,batchEditXmMenu,listXmMenuWithState,listXmMenuWithPlan,batchChangeParentMenu,editXmMenuSomeFields } from '@/api/xm/core/xmMenu';
+	import { listXmMenu, delXmMenu,addXmMenu,  batchDelXmMenu,batchAddXmMenu,batchEditXmMenu,listXmMenuWithState,listXmMenuWithPlan,batchChangeParentMenu,editXmMenuSomeFields } from '@/api/xm/core/xmMenu';
 	import { batchRelTasksWithMenu } from '@/api/xm/core/xmTask';
 	import { loadTasksToXmMenuState} from '@/api/xm/core/xmMenuState';
 
@@ -1357,6 +1365,25 @@
 				this.funcVisible=false; 
 			},
 
+			
+			copyOne(row,index){
+				
+				var params={...row}
+				params.menuId=null; 
+				params.status="0"
+				params.menuName=row.menuName+'V'
+				addXmMenu(params).then(res=>{
+					var tips = res.data.tips
+					if(tips.isOk){ 
+						var row2=res.data.data
+						this.xmMenus.splice(index+1,0,row2)
+						this.pageInfo.total=this.pageInfo.total+1
+						this.$message.success("复制成功")
+					}else{
+						this.$message.error(tips.msg)
+					}
+				})
+			}
 		},//end methods
 		components: {
 		    'xm-menu-add':XmMenuAdd,
