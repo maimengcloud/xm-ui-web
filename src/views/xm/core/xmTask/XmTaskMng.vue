@@ -411,7 +411,7 @@
                 width="100"
               >
 								<template slot-scope="scope">
-										 <mdp-select-dict-tag size="small" @visible-change="selectVisible(scope.row,$event)"  :dict="dicts['taskState']" v-model="scope.row.taskState" placeholder="任务状态"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'taskState',$event)">
+										 <mdp-select-dict-tag size="mini" @visible-change="selectVisible(scope.row,$event)"  :dict="dicts['taskState']" v-model="scope.row.taskState" placeholder="任务状态"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'taskState',$event)">
  										 </mdp-select-dict-tag>
 								</template>
               </el-table-column>
@@ -449,7 +449,7 @@
                 show-overflow-tooltip
               >
 								<template slot-scope="scope"> 
-                    <mdp-select-user-xm v-model="scope.row" userid-key="createUserid" @visible-change="selectVisible(scope.row,$event)" username-key="createUsername" :project-id="scope.row.projectId" @change="editXmTaskSomeFields(scope.row,'createUserid',$event)"></mdp-select-user-xm>
+                    <mdp-select-user-xm size="mini" v-model="scope.row" userid-key="createUserid" @visible-change="selectVisible(scope.row,$event)" username-key="createUsername" :project-id="scope.row.projectId" @change="editXmTaskSomeFields(scope.row,'createUserid',$event)"></mdp-select-user-xm>
  								</template>
               </el-table-column>
               <el-table-column
@@ -460,7 +460,7 @@
                 show-overflow-tooltip
               >
 								<template slot-scope="scope"> 
-                    <mdp-select-user-xm :key="scope.row.id" v-model="scope.row" userid-key="executorUserid" @visible-change="selectVisible(scope.row,$event)" username-key="executorUsername" :project-id="scope.row.projectId" @change="editXmTaskSomeFields(scope.row,'executorUserid',$event)"></mdp-select-user-xm>
+                    <mdp-select-user-xm size="mini" :key="scope.row.id" v-model="scope.row" userid-key="executorUserid" @visible-change="selectVisible(scope.row,$event)" username-key="executorUsername" :project-id="scope.row.projectId" @change="editXmTaskSomeFields(scope.row,'executorUserid',$event)"></mdp-select-user-xm>
  								</template>
               </el-table-column>
               <el-table-column
@@ -496,7 +496,7 @@
                 width="100"
               >
 								<template slot-scope="scope">
-										 <mdp-select-dict-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts['priority']" v-model="scope.row.level" placeholder="优先级"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'level',$event)">
+										 <mdp-select-dict-tag size="mini" @visible-change="selectVisible(scope.row,$event)" :dict="dicts['priority']" v-model="scope.row.level" placeholder="优先级"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'level',$event)">
  										 </mdp-select-dict-tag>
 
 								</template>

@@ -20,7 +20,7 @@
 							</div>  
               <div v-if="disabled!==true" class="field-oper" :class="{disabled:disabled===true,enabled:disabled!==true}">
                 <slot name="oper">
-                      <el-select v-model="myVal" @change="onSelectChange" :clearable="clearable" filterable value-key="userid" @visible-change="$emit('visible-change',$event)" @focus="$emit('focus',$event)" @blur="$emit('blur',$event)" @clear="$emit('blur',$event)" @click="$emit('click',$event)">  
+                      <el-select :size="size" v-model="myVal" @change="onSelectChange" :clearable="clearable" filterable value-key="userid" @visible-change="$emit('visible-change',$event)" @focus="$emit('focus',$event)" @blur="$emit('blur',$event)" @clear="$emit('blur',$event)" @click="$emit('click',$event)">  
                             
                             <el-option :value="myVal" disabled v-if="users && users.length>10">
                                 <el-row ><el-button v-if="users && users.length>0" :type="deptUserVisible?'':'primary'" @click.stop="deptUserVisible=false">常用用户</el-button> <el-button :type="deptUserVisible?'primary':''"  @click.stop="deptUserVisible=true">部门用户</el-button>
