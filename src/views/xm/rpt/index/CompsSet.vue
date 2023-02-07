@@ -11,14 +11,14 @@
                         <draggable @update="datadragEnd" v-model="datas" style='sort: false' >
 　　                        <transition-group >
                                 <div class="nav_item"  :class="{itemActive: item.isChecked,curr:item.isCurr}" v-for="(item, index) in datas" :key="index" @click="selectItem(item, index)">
-                                    <img :src="item.img" alt="">
-                                    <div class="desc">
-                                        <p>{{index+1}} {{item.rptName}}</p>
-                                        <span>
-                                            {{item.desc}}
-                                        </span>
-                                    </div> 
-                                     <el-checkbox  v-model="item.isChecked"  @change="onChange(item,$event)"></el-checkbox> 
+                                        <img :src="item.img" alt="" >
+                                        <div class="desc">
+                                            <p>{{index+1}} {{item.rptName}}</p>
+                                            <span>
+                                                {{item.desc}}
+                                            </span>
+                                        </div> 
+                                     <span class="check" > <el-checkbox  v-model="item.isChecked"  @click.native='stopDefault($event)' @change="onChange(item,$event)"></el-checkbox>  </span>
                                 </div>
 　　                        </transition-group>
                         </draggable>
@@ -29,14 +29,14 @@
                         <draggable @update="datadragEnd" v-model="datas" style='sort: false' >
 　　                        <transition-group >
                         <div class="nav_item" :class="{itemActive: item.isChecked,curr:item.isCurr}" v-for="(item, index) in datas" :key="index" @click="selectItem(item, index)">
-                            <div class="title"><p>{{index+1}} {{item.rptName}}</p></div> 
-                            <div class="context">
-                                <img :src="item.img" alt=""></img>
-                                <div class="desc">
-                                    <span>{{item.desc}}</span>
+                                 <div class="title"><p>{{index+1}} {{item.rptName}}</p></div> 
+                                <div class="context">
+                                    <img :src="item.img" alt=""></img>
+                                    <div class="desc">
+                                        <span>{{item.desc}}</span>
+                                    </div>
                                 </div>
-                            </div>
-                             <el-checkbox  v-model="item.isChecked" @change="onChange(item,$event)"></el-checkbox> 
+                                <span class="check" > <el-checkbox  v-model="item.isChecked"  @click.native='stopDefault($event)' @change="onChange(item,$event)"></el-checkbox></span>
                         </div>
 　　                        </transition-group>
                         </draggable>
@@ -211,16 +211,18 @@ export default {
             }) 
         },
         onChange(comp,checked){ 
-            this.$emit('change',comp,checked) 
-            if(checked!=='true'){
+            this.$emit('change',comp,checked)  
+            if(checked){
+                this.comps.forEach(k=>k.isCurr=false)
+                item.isCurr=true
+            }else{
                 comp.isCurr=false
             }
         },
         onCategroySelect(){
             this.selectItem(this.rptListCpd[0])
         },
-         selectItem(item){  
-            
+         selectItem(item){    
             this.comps.forEach(k=>k.isCurr=false)
             item.isCurr=true 
             item.isChecked=true;
@@ -232,6 +234,9 @@ export default {
             console.log('拖动前的索引 :' + evt.oldIndex)
             console.log('拖动后的索引 :' + evt.newIndex)  
              this.$emit('sort',evt,this.datas)
+         },
+         stopDefault(e){
+            e.stopPropagation()
          }
 
 

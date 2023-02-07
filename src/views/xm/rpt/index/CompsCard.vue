@@ -427,12 +427,14 @@ export default {
                 },200)
             })
         },
-        onCompChange(compCfg,checked){  
-            if(checked=='false'||!checked){
+        onCompChange(compCfg,checked){   
+            if(!checked){
                 var index=this.compCfgList.findIndex(k=>k.compId==compCfg.compId) 
                 if(index>=0){ 
                     this.compCfgList.splice(index,1)   
                 } 
+            }else{
+                this.onCompSelect(compCfg)
             }
         }
          
