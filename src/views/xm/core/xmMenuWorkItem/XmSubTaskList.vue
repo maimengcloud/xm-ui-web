@@ -14,8 +14,8 @@
                     </span>
                   </div> 
                     <el-link @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑任务"  class="cell-input hidden-lg-and-up">{{scope.row.sortLevel}}&nbsp;{{scope.row.name}}</el-link>
-
-                    <el-input type="textarea" autosize class="cell-input hidden-md-and-down" title="名称" style="width:85%;" placeholder="名称"  v-model="scope.row.name" @change="editXmTaskSomeFields(scope.row,'name',$event)"></el-input> 
+                    <el-input type="input" autosize class="cell-input hidden-md-and-down" title="序号" style="width:10%;" placeholder="序号"  v-model="scope.row.sortLevel" @change="editXmTaskSomeFields(scope.row,'sortLevel',$event)"></el-input> 
+                    <el-input type="textarea" autosize class="cell-input hidden-md-and-down" title="名称" style="width:75%;" placeholder="名称"  v-model="scope.row.name" @change="editXmTaskSomeFields(scope.row,'name',$event)"></el-input> 
 
                     <div class="cell-bar">
                            <el-button  class="hidden-md-and-down"  @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑任务" circle plain > </el-button>     

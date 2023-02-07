@@ -3,20 +3,26 @@
       <el-row>
         <el-table :data="xmBugs" :max-height="400" @selection-change="selsChange" @row-click="rowClick">
           <el-table-column type="selection" label="全选"></el-table-column>
-          <el-table-column prop="name" label="名称" min-width="250px"  show-overflow-tooltip>
-              <template slot-scope="scope">
-				  <div class="icon" style="background-color: #F56C6C;">
-					<i class="el-icon-warning"></i>
-					</div>
-					
-					<span class="my-cell-text">
-						 {{scope.row.name}}
-					</span>
-					<span class="my-cell-bar" >
-							  <el-input title="名称" placeholder="名称" v-model="scope.row.name"  style="width:98%;"  @change="editXmQuestionSomeFields(scope.row,'name',$event)"></el-input> 
-							   <el-button    @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑缺陷" circle plain > </el-button>     
+          <el-table-column prop="name" label="名称" min-width="350px">
+              <template slot-scope="scope">  
+					<div class="cell-box">
+                    <div class="cell-text"  >
+                      <div class="icon" :style="{backgroundColor:  '#F56C6C'}">
+						<i  style="width:20px;" class="el-icon-warning" ></i>
+                      </div>
+                    <span >
+                      {{scope.row.name}}
+                    </span>
+                  </div> 
+                    <el-link @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑任务"  class="cell-input hidden-lg-and-up">{{scope.row.sortLevel}}&nbsp;{{scope.row.name}}</el-link>
 
-					</span> 
+                    <el-input type="textarea" autosize class="cell-input hidden-md-and-down" title="名称" style="width:85%;" placeholder="名称"  v-model="scope.row.name" @change="editXmQuestionSomeFields(scope.row,'name',$event)"></el-input> 
+
+                    <div class="cell-bar">
+                           <el-button  class="hidden-md-and-down"  @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑任务" circle plain > </el-button>     
+                          <el-button type="warning" @click="copyOne(scope.row,scope.$index)" icon="el-icon-document-copy" circle title="复制一行"></el-button> 
+                   </div>
+                  </div>
 			  </template>
             </el-table-column> 
 
@@ -309,6 +315,26 @@ export default {
  				this.getXmBugs();
 
 			},  
+			copyOne(row,index){
+				
+				var params={...row}
+				params.id=null;
+				params.createUserid=this.userInfo.userid
+				params.createUsername=this.userInfo.username 
+				params.bugStatus="1"
+				params.name=row.name+'V'
+				addXmQuestion(params).then(res=>{
+					var tips = res.data.tips
+					if(tips.isOk){ 
+						var row2=res.data.data
+						this.xmBugs.splice(index+1,0,row2)
+						//this.pageInfo.total=this.pageInfo.total+1
+						this.$message.success("复制成功")
+					}else{
+						this.$message.error(tips.msg)
+					}
+				})
+			}
   }, //end methods
   components: { 
     XmGroupDialog,'xm-question-edit':()=>import('../xmQuestion/XmQuestionEdit'),MdpSelectUserXm,

@@ -5,26 +5,32 @@
         <el-table :data="xmMenus" :max-height="400"  highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
           <el-table-column type="selection" label="全选"></el-table-column>
           <el-table-column prop="menuName" label="名称" min-width="250" show-overflow-tooltip> 
-              <template slot-scope="scope" >
-				  <span style="display:inline;">
-				<div  v-if="scope.row.dclass=='1'" class="icon" style="background-color:  rgb(255, 153, 51);">
-				<i class="el-icon-s-promotion"></i>
-				</div>
-				<div v-if="scope.row.dclass=='2'" class="icon" style="background-color:  rgb(0, 153, 51);">
-				<i class="el-icon-s-flag"></i>
-				</div>
-				<div v-if="scope.row.dclass=='3'" class="icon" style="background-color:  rgb(79, 140, 255);">
-				<i class="el-icon-document"></i>
-				</div>
-				  </span>  
-					<span class="my-cell-text">
-						{{scope.row.seqNo}}&nbsp;&nbsp;{{scope.row.menuName}}
-					</span>
-					<span class="my-cell-bar">
-							<el-input title="序号" style="width:15%;"  v-model="scope.row.seqNo" placeholder="序号"  @change="editXmMenuSomeFields(scope.row,'seqNo',$event)"></el-input><el-input title="名称" placeholder="名称" v-model="scope.row.menuName"  style="width:75%;"  @change="editXmMenuSomeFields(scope.row,'menuName',$event)"></el-input> 
-							 <el-button    @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑需求" circle plain > </el-button>     
+              <template slot-scope="scope" > 
+                  <div class="cell-box">
+                    <div class="cell-text"  >
+						<div  v-if="scope.row.dclass=='1'" class="icon" style="background-color:  rgb(255, 153, 51);">
+						<i class="el-icon-s-promotion"></i>
+						</div>
+						<div v-if="scope.row.dclass=='2'" class="icon" style="background-color:  rgb(0, 153, 51);">
+						<i class="el-icon-s-flag"></i>
+						</div>
+						<div v-if="scope.row.dclass=='3'" class="icon" style="background-color:  rgb(79, 140, 255);">
+						<i class="el-icon-document"></i>
+						</div>
+						<span >
+							{{scope.row.seqNo}}&nbsp;&nbsp;{{scope.row.menuName}}
+						</span>
+                  </div> 
+                    <el-link @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑"  class="cell-input hidden-lg-and-up">{{scope.row.seqNo}}&nbsp;{{scope.row.menuName}}</el-link>
 
-					</span> 
+					<el-input type="input" title="序号" class="cell-input hidden-md-and-down" style="width:10%;"  v-model="scope.row.seqNo" placeholder="序号"  @change="editXmMenuSomeFields(scope.row,'seqNo',$event)"></el-input>
+					<el-input type="textarea" autosize title="名称" class="cell-input hidden-md-and-down" placeholder="名称" v-model="scope.row.menuName"  style="width:75%;"  @change="editXmMenuSomeFields(scope.row,'menuName',$event)"></el-input> 
+ 
+                    <div class="cell-bar">
+                           <el-button  class="hidden-md-and-down"  @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑任务" circle plain > </el-button>     
+                          <el-button type="warning" @click="copyOne(scope.row,scope.$index)" icon="el-icon-document-copy" circle title="复制一行"></el-button> 
+                   </div>
+                  </div>
 			  </template>
 		  </el-table-column>
           <el-table-column prop="status" label="状态"  min-width="80"  sortable>
@@ -312,6 +318,26 @@ export default {
 					}).catch( err  => this.load.del=false );
 				});
 			},
+
+			
+			copyOne(row,index){
+				
+				var params={...row}
+				params.menuId=null; 
+				params.status="0"
+				params.menuName=row.menuName+'V'
+				addXmMenu(params).then(res=>{
+					var tips = res.data.tips
+					if(tips.isOk){ 
+						var row2=res.data.data
+						this.xmMenus.splice(index+1,0,row2)
+						this.pageInfo.total=this.pageInfo.total+1
+						this.$message.success("复制成功")
+					}else{
+						this.$message.error(tips.msg)
+					}
+				})
+			}
   }, //end methods
   components: {  
 		  TagDialog, 
