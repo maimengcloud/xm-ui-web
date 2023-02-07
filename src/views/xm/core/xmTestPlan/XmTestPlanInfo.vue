@@ -6,7 +6,7 @@
 		<el-row>
             <el-row v-if=" xmTestPlan && xmTestPlan.id">
                 <el-row class="border padding-left padding-right">
-                     <el-button icon="el-icon-back" @click="goBackToPlanList()" type="text"></el-button>
+                     <el-button icon="el-icon-back" @click="goBackToPlanList()" type="primary" plain></el-button>
                      <el-divider direction="vertical"></el-divider>
                      {{xmTestPlan.name}}
                      <el-divider direction="vertical"></el-divider>

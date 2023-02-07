@@ -22,7 +22,7 @@
 				    <span class="cell-bar"><el-input style="display:inline;" v-model="scope.row.username" placeholder="" @change="editSomeFields(scope.row,'username',$event)" :maxlength="22"></el-input></span>
 				</el-table-column>
 				-->
- 				<el-table-column prop="name" label="计划名称" min-width="250" show-overflow-tooltip>
+ 				<el-table-column prop="name" label="计划名称" min-width="250">
 				    <template slot-scope="scope">
 				        <span> <el-link @click="goToTestPlanCase(scope.row)"> {{scope.row.name}}</el-link> </span>
                         <span  class="tool-bar"> 
@@ -30,7 +30,7 @@
                          </span>
                     </template>
 				</el-table-column>  
-                <el-table-column prop="projectName" label="项目" min-width="120" show-overflow-tooltip> 
+                <el-table-column prop="projectName" label="项目" min-width="120"> 
 				</el-table-column> 
                 <el-table-column prop="cusername" label="负责人" min-width="120" show-overflow-tooltip>
 				    <template slot-scope="scope"> 

@@ -17,11 +17,13 @@
 				    <span class="cell-bar"><el-input style="display:inline;" v-model="scope.row.username" placeholder="" @change="editSomeFields(scope.row,'username',$event)" :maxlength="22"></el-input></span>
 				</el-table-column>
 				-->
- 				<el-table-column prop="name" label="计划名称" min-width="250" show-overflow-tooltip>
+ 				<el-table-column prop="name" label="计划名称" min-width="250">
 				    <template slot-scope="scope">
 				        <span>  {{scope.row.name}} </span> 
                     </template>
 				</el-table-column>  
+                <el-table-column prop="projectName" label="项目" min-width="120"> 
+				</el-table-column> 
 				<el-table-column prop="status" label="状态" width="120" show-overflow-tooltip>
 				    <template slot-scope="scope"> 
                         <mdp-select-dict-tag :dict="dicts['testPlanStatus']" v-model="scope.row.status" effect="dark" :disabled="true"></mdp-select-dict-tag> 

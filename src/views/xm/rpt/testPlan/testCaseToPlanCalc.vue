@@ -120,7 +120,7 @@
 					return 0
 				}else{   
 					return this.rawDatas.reduce((n, i) => {
-						return (n += i.useTimes);
+						return (n += i.caseNum);
 					}, 0)
 				} 
 			},

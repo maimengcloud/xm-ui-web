@@ -23,8 +23,7 @@
               :height="tableHeight"
               :tree-props="{ children: 'children'  }"
               row-key="id"
-              ref="table"
-              :row-style="{height:'60px'}"
+              ref="table" 
             >
               <el-table-column
                 label="全选"
