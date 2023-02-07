@@ -3,18 +3,24 @@
       <el-row>
         <el-table :data="xmTasks"   :max-height="400"  v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
           <el-table-column type="selection" label="全选"></el-table-column>
-          <el-table-column prop="name" label="名称"> 
-                <template slot-scope="scope"> 
-                  <div    class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#1CC7EA'}">
-                    <i :class="scope.row.ntype==='1'?'el-icon-time':'el-icon-s-operation'" ></i>
-                  </div>   
-									<span class="my-cell-text">   
-										 {{scope.row.sortLevel}}&nbsp;{{scope.row.name}}
-									</span> 
-                    <span class="my-cell-bar">      
-                        <el-input title="序号" style="width:15%;" v-model="scope.row.sortLevel" placeholder="序号"  @change="editXmTaskSomeFields(scope.row,'sortLevel',$event)"></el-input> <el-input title="名称"  style="width:75%;" placeholder="名称" v-model="scope.row.name" @change="editXmTaskSomeFields(scope.row,'name',$event)"></el-input> 
-                        <el-button    @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑任务" circle plain > </el-button>     
-                    </span> 
+          <el-table-column prop="name" label="名称" min-width="300"> 
+                <template slot-scope="scope"> <div class="cell-box">
+                    <div class="cell-text"  >
+                      <div class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#1CC7EA'}"><i  style="width:20px;" :class="scope.row.ntype==='1'?'el-icon-time':'el-icon-s-operation'" ></i>
+                      </div>
+                    <span >
+                      {{scope.row.sortLevel}}&nbsp;{{scope.row.name}}
+                    </span>
+                  </div> 
+                    <el-link @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑任务"  class="cell-input hidden-lg-and-up">{{scope.row.sortLevel}}&nbsp;{{scope.row.name}}</el-link>
+
+                    <el-input type="textarea" autosize class="cell-input hidden-md-and-down" title="名称" style="width:85%;" placeholder="名称"  v-model="scope.row.name" @change="editXmTaskSomeFields(scope.row,'name',$event)"></el-input> 
+
+                    <div class="cell-bar">
+                           <el-button  class="hidden-md-and-down"  @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑任务" circle plain > </el-button>     
+                          <el-button type="warning" @click="copyOne(scope.row,scope.$index)" icon="el-icon-document-copy" circle title="复制一行"></el-button> 
+                   </div>
+                  </div>
                 </template>
               </el-table-column> 
               <el-table-column
@@ -521,7 +527,34 @@ export default {
       onWorkloadSubmit(data){
          Object.assign(this.editForm,data)
         this.$emit('workload-submit',data)
-      }
+      },
+      
+			copyOne(row,index){
+				
+				var params={...row}
+				params.id=null;
+				params.createUserid=this.userInfo.userid
+				params.createUsername=this.userInfo.username 
+        params.executorUserid=null
+        params.executorUseranme=null
+        params.execUserids=null;
+        params.execUsername=null; 
+        params.actWorkload=null;
+        params.actAt=null;
+        params.efunds=0 
+				params.name=row.name+'V'
+				addTask(params).then(res=>{
+					var tips = res.data.tips
+					if(tips.isOk){ 
+						var row2=res.data.data
+						this.xmTasks.splice(index+1,0,row2)
+						this.pageInfo.total=this.pageInfo.total+1
+						this.$message.success("复制成功")
+					}else{
+						this.$message.error(tips.msg)
+					}
+				})
+			}
   }, //end methods
   components: {  
     XmWorkloadRecordDialog,XmGroupDialog,'xm-task-edit':()=>import('../xmTask/XmTaskEdit'),MdpSelectUserXm,
