@@ -64,7 +64,7 @@
         },
         effect:{
             type:String,
-            default:'light'//dark / light / plain	
+            default:'dark'//dark / light / plain	
         },
       dict:{
         type:Array,
