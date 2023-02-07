@@ -372,7 +372,7 @@
               tooltip-effect="light"
               :height="tableHeight"
               row-key="id"
-              :row-style="{height:'60px'}"
+              
             >
               <el-table-column
                 label="全选"
@@ -411,7 +411,7 @@
                 width="100"
               >
 								<template slot-scope="scope">
-										 <mdp-select-dict-tag @visible-change="selectVisible(scope.row,$event)"  :dict="dicts['taskState']" v-model="scope.row.taskState" placeholder="任务状态"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'taskState',$event)">
+										 <mdp-select-dict-tag size="small" @visible-change="selectVisible(scope.row,$event)"  :dict="dicts['taskState']" v-model="scope.row.taskState" placeholder="任务状态"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'taskState',$event)">
  										 </mdp-select-dict-tag>
 								</template>
               </el-table-column>

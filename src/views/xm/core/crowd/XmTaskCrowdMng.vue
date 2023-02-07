@@ -208,7 +208,7 @@
               :tree-props="{ children: 'children'  }"
               row-key="id"
               ref="table"
-              :row-style="{height:'60px'}"
+              
             >
               <el-table-column
                 label="全选"

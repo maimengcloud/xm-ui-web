@@ -1,7 +1,7 @@
 <template>
-  <div class="field-box" @click="showSelect">
+  <div :class="{'field-box':true,'small':size=='small','medium':size=='medium'}" @click="showSelect"> 
     <slot name="avater" class="field-avater">
-      <el-avatar
+      <el-avatar :size="size"
         :class="{ 'dashed-circle': avaterCpd.isNull }"
         :icon="avaterCpd.icon"
         :style="{ backgroundColor: avaterCpd.color }"
@@ -22,7 +22,7 @@
     </div>
     <div class="field-oper" :class="{disabled:disabled===true,enabled:disabled!==true}">
       <slot name="oper">
-        <mdp-select-dict @visible-change="$emit('visible-change',$event)" @focus="$emit('focus',$event)" @blur="$emit('blur',$event)" @clear="$emit('blur',$event)" @click="$emit('click',$event)"
+        <mdp-select-dict :size="size" @visible-change="$emit('visible-change',$event)" @focus="$emit('focus',$event)" @blur="$emit('blur',$event)" @clear="$emit('blur',$event)" @click="$emit('click',$event)"
           v-if="disabled !== true"
           :dict="dict"
           ref="selectRef"
@@ -130,6 +130,10 @@ export default {
     },
   },
   props: {
+      size:{
+          type:String,
+          default:'small',// medium/small/mini	 
+      },
     disabled: {
       type: Boolean,
       default: false,

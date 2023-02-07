@@ -1,9 +1,9 @@
 <template>    
     
-						<div class="field-box" @click="showSelect">  
+						<div :class="{'field-box':true,'small':size=='small','medium':size=='medium'}" @click="showSelect">  
               <slot>
                 <slot name="avater" :value="myVal" :field="{label:label,color:color,getColor:getColor,icon:icon,getIcon:getIcon,disabled:disabled,clearable:clearable}">
-							    <el-avatar class="field-avater" :class="{'dashed-circle':avaterCpd.isNull}" :icon="avaterCpd.icon" :style="{backgroundColor:avaterCpd.color}">{{avaterCpd.innerText}}</el-avatar>  
+							    <el-avatar :size="size" class="field-avater" :class="{'dashed-circle':avaterCpd.isNull}" :icon="avaterCpd.icon" :style="{backgroundColor:avaterCpd.color}">{{avaterCpd.innerText}}</el-avatar>  
                 </slot>
               <div class="field-info"  :class="{disabled:disabled===true,enabled:disabled!==true}"> 
                 <slot name="info">
@@ -90,6 +90,10 @@ import util from '@/common/js/util'
       }
     },
     props: {
+        size:{
+            type:String,
+            default:'small',// medium/small/mini	 
+        },
       
         disabled:{
             type:Boolean,

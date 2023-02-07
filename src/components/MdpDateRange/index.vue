@@ -1,5 +1,5 @@
 <template>   
-  <el-date-picker :type="type" :style="styleObj"  v-model="dateRange" :value-format="valueFormat" :format="format" 
+  <el-date-picker :size="size" :type="type" :style="styleObj"  v-model="dateRange" :value-format="valueFormat" :format="format" 
        unlink-panels 
       :range-separator="rangeSepaSrator"
       :start-placeholder="startPlaceholder"
@@ -36,6 +36,10 @@ export default {
       }
   },
   props: {
+    size:{
+        type:String,
+        default:'small',// medium/small/mini	 
+    },
       
     value: {
       

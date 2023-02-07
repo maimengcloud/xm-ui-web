@@ -79,7 +79,7 @@
 			</div>
 			</el-row> 
 		<el-row >
-			<el-table ref="table" :cell-style="cellStyleCalc" :expand-row-keys="expandRowKeysCpd" :header-cell-style="cellStyleCalc" :row-style="{height:'60px'}"   stripe fit border  :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick"
+			<el-table ref="table" :cell-style="cellStyleCalc" :expand-row-keys="expandRowKeysCpd" :header-cell-style="cellStyleCalc"    stripe fit border  :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick"
 				element-loading-text="努力加载中"
 				element-loading-spinner="el-icon-loading" 
 			>

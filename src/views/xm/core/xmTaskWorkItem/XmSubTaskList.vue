@@ -1,7 +1,7 @@
 <template>
     <el-row  v-show="xmTasks.length>0">
       <el-row>
-        <el-table :data="xmTasks"  :row-style="{height:'60px'}" :max-height="400"  v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
+        <el-table :data="xmTasks"   :max-height="400"  v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
           <el-table-column type="selection" label="全选"></el-table-column>
           <el-table-column prop="name" label="名称"> 
                 <template slot-scope="scope"> 

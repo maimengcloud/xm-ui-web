@@ -1,6 +1,6 @@
 <template>    
     <el-row>
-						<div class="field-box">  
+						<div :class="{'field-box':true,'small':size=='small','medium':size=='medium'}">  
               <div class="avatar-container">
                 <div class="avatar-wrapper">
                   <img v-if="avaterCpd.userid" class="user-avatar" :class="{'dashed-circle':avaterCpd.isNull}"   :style="{backgroundColor:avaterCpd.color}" :src="getHeadimgurl(avaterCpd.userid,avaterCpd.headimgurl)" @error="onImgError(avaterCpd.userid,$event)"></img>  
@@ -154,6 +154,10 @@
       }
     },
     props: {
+      size:{
+          type:String,
+          default:'small',// medium/small/mini	 
+      },
         projectId:{
           type:String,
           default:''

@@ -1,6 +1,6 @@
 <template>   
-<div class="field-box">  
-							<el-avatar class="field-avater" :class="{'dashed-circle':avaterCpd.isNull}"  :icon="avaterCpd.icon" :style="{backgroundColor:avaterCpd.color}">{{avaterCpd.innerText}}</el-avatar> 
+<div :class="{'field-box':true,'small':size=='small','medium':size=='medium'}">  
+							<el-avatar :size="size" class="field-avater" :class="{'dashed-circle':avaterCpd.isNull}"  :icon="avaterCpd.icon" :style="{backgroundColor:avaterCpd.color}">{{avaterCpd.innerText}}</el-avatar> 
 							
               <div class="field-info"  :class="{disabled:disabled===true,enabled:disabled!==true}">
                 <slot name="field-info" :value="dateRange">
@@ -79,6 +79,10 @@ export default {
       }
   },
   props: {
+      size:{
+          type:String,
+          default:'small',// medium/small/mini	 
+      },
       disabled:{
         type:Boolean,
         default:false,

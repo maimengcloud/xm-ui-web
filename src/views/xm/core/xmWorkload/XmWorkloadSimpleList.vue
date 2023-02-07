@@ -13,7 +13,7 @@
 					 <el-tag type="warning">{{xmTask.budgetWorkload>0?Math.round(xmTask.actWorkload/xmTask.budgetWorkload*100):0}}%&nbsp;</el-tag>
 				</el-descriptions-item>
  			</el-descriptions> 
-			<el-table ref="xmWorkloadTable" :max-height="maxTableHeight" :data="xmWorkloads" :row-style="{height:'50px'}"  @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="xmWorkloadTable" :max-height="maxTableHeight" :data="xmWorkloads"   @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="55" show-overflow-tooltip></el-table-column>
  				<el-table-column prop="username" label="姓名" width="120" show-overflow-tooltip>
 					<template slot-scope="scope">

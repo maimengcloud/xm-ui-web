@@ -1,7 +1,7 @@
 <template>    
     <el-row>
-						<div class="field-box">  
-							<el-avatar class="avater" :class="{'dashed-circle':avaterCpd.isNull}"   :style="{backgroundColor:avaterCpd.color}" :src="getHeadimgurl(avaterCpd.userid,avaterCpd.headimgurl)" @error="onImgError(avaterCpd.userid,$event)">{{avaterCpd.innerText}}</el-avatar> 
+						<div :class="{'field-box':true,'small':size=='small','medium':size=='medium'}">  
+							<el-avatar :size="size" class="avater" :class="{'dashed-circle':avaterCpd.isNull}"   :style="{backgroundColor:avaterCpd.color}" :src="getHeadimgurl(avaterCpd.userid,avaterCpd.headimgurl)" @error="onImgError(avaterCpd.userid,$event)">{{avaterCpd.innerText}}</el-avatar> 
 							
               <div class="field-info"  :class="{disabled:disabled===true,enabled:disabled!==true}">
                 <slot name="info" :value="myVal">
@@ -14,7 +14,7 @@
 							</div>  
               <div v-if="disabled!==true" class="field-oper" :value="myVal"  :class="{disabled:disabled===true,enabled:disabled!==true}">
                 <slot name="oper">
-                    <el-select v-model="myVal" @change="onSelectChange" :clearable="clearable" value-key="userid" @visible-change="$emit('visible-change',$event)" @focus="$emit('focus',$event)" @blur="$emit('blur',$event)" @clear="$emit('blur',$event)" @click="$emit('click',$event)">  
+                    <el-select :size="size" v-model="myVal" @change="onSelectChange" :clearable="clearable" value-key="userid" @visible-change="$emit('visible-change',$event)" @focus="$emit('focus',$event)" @blur="$emit('blur',$event)" @clear="$emit('blur',$event)" @click="$emit('click',$event)">  
                           <el-option disabled value="" style="margin-bottom:5px;">
                               <el-row><el-button :type="deptUserVisible?'':'primary'" @click.stop="deptUserVisible=false">常用用户</el-button> <el-button :type="deptUserVisible?'primary':''"  @click.stop="deptUserVisible=true">部门用户</el-button><el-button v-if="projectId" :type="projectVisible?'primary':''"  @click.stop="projectVisible=true">项目组</el-button> </el-row>
                           </el-option>
@@ -128,6 +128,10 @@
       }
     },
     props: {
+        size:{
+            type:String,
+            default:'small',// medium/small/mini	 
+        },
         projectId:{
           type:String,
           default:''

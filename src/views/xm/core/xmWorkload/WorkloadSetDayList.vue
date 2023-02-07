@@ -55,7 +55,7 @@
       <el-table
         ref="xmWorkloadTable"
         :data="xmProjectWorkloadSetDays"
-        :row-style="{ height: '50px' }"
+        
         highlight-current-row
         v-loading="load.list"
         @row-click="rowClick"

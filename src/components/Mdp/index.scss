@@ -4,15 +4,15 @@
   margin-right: 5px;
   align-items: center;
   cursor: pointer;
-  height: 40px;
-  line-height: 40px;
+  height: 28px;
+  line-height: 28px;
   .field-avater {  
     background-color: #ff9f73;
   }
 
   .field-info {
-    height: 40px;
-    line-height: 40px; 
+    height: 28px;
+    line-height: 28px; 
     display: flex;
     flex-direction: column;
     .field-value {
@@ -21,7 +21,7 @@
       font-size: 0.75rem;
     }
     .field-value-center { 
-      line-height: 40px;
+      line-height: 28px;
       font-size: 0.75rem;
     }
     .field-label {
@@ -32,12 +32,11 @@
     }
   }
   .field-oper {
-    height: 40px;
-    line-height: 40px;
-    margin-left: 5px;
+    height: 28px;
+    line-height: 28px;
     margin-right: 5px; 
     display: none;
-  }
+  }  
 }
 .field-box:hover .field-info.enabled {
   display: none;
@@ -45,11 +44,14 @@
 .field-box:hover .field-oper.enabled {
   display: inline;
 }
+
+
 .dashed-circle {
-  width: 40px;
-  height: 40px;
-  border: 2px dashed #000000;
-  border-radius: 40px/40px;
+  height: 28px;
+  width:  28px;
+  line-height: 28px;
+  border: 2px dashed #000000; 
+  border-radius: 50%;
 }
 .field-box:hover .dashed-circle {
   border: 2px dashed #409eff;
@@ -57,7 +59,7 @@
 
 
 .avatar-container {
-  height: 40px;
+  height: 28px;
   display: flex;
   align-items: center;
   .avatar-wrapper {
@@ -66,8 +68,8 @@
       flex-direction: row;
       align-items: center;
       .user-avatar {
-          height: 36px;
-          width: 36px;
+          height: 28px;
+          width: 28px;
           border-radius: 50%;
           margin-right: 5px;
       }
@@ -76,7 +78,108 @@
           font-size: 0.75rem; 
       }
       .el-icon-caret-bottom {
-          font-size: 22px;
+          font-size: 18px;
+      }
+  }
+}
+
+
+
+.field-box.small { 
+  height: 32px;
+  line-height: 32px; 
+
+  .field-info {
+    height: 32px;
+    line-height: 32px;  
+    .field-value {
+      height: 20px;
+      line-height: 20px; 
+    }
+    .field-value-center { 
+      line-height: 32px; 
+    }
+    .field-label {
+      height: 20px;
+      line-height: 20px; 
+    }
+  }
+  .field-oper {
+    height: 32px;
+    line-height: 32px; 
+  }
+
+} 
+.small .dashed-circle {
+  height: 32px;
+  width:  32px;
+  line-height: 32px; 
+} 
+
+
+.small .avatar-container {
+  height: 32px; 
+  .avatar-wrapper { 
+      .user-avatar {
+          height: 32px;
+          width: 32px; 
+      }
+      .username{
+          color: #7D7D7D;
+          font-size: 0.75rem; 
+      }
+      .el-icon-caret-bottom {
+          font-size: 18px;
+      }
+  }
+}
+
+
+.field-box.medium { 
+  height: 36px;
+  line-height: 36px; 
+
+  .field-info {
+    height: 36px;
+    line-height: 36px;  
+    .field-value {
+      height: 20px;
+      line-height: 20px; 
+    }
+    .field-value-center { 
+      line-height: 36px; 
+    }
+    .field-label {
+      height: 20px;
+      line-height: 20px; 
+    }
+  }
+  .field-oper {
+    height: 36px;
+    line-height: 36px; 
+  }
+
+} 
+.medium .dashed-circle {
+  height: 36px;
+  width:  36px;
+  line-height: 36px; 
+} 
+
+
+.medium .avatar-container {
+  height: 36px; 
+  .avatar-wrapper { 
+      .user-avatar {
+          height: 36px;
+          width: 36px; 
+      }
+      .username{
+          color: #7D7D7D;
+          font-size: 0.75rem; 
+      }
+      .el-icon-caret-bottom {
+          font-size: 18px;
       }
   }
 }
