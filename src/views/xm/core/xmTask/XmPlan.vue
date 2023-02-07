@@ -1,10 +1,10 @@
 <template>
 	<section> 
 		<el-row class="box">
-			<el-col :span="8" class="left">
+			<el-col :span="7" class="left">
 				<xm-phase :xm-product="xmProduct" :sel-project="selProject" queryScope="plan" @row-click="onPhaseRowClick"></xm-phase>
 			</el-col> 
-			<el-col :span="16">
+			<el-col :span="17">
 				<xm-task-mng :xm-product="xmProduct" :sel-project="selProject" queryScope="task" :parent-task="parentTask"></xm-task-mng>
 			</el-col>
 		</el-row>

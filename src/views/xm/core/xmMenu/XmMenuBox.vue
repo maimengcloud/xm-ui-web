@@ -1,6 +1,6 @@
 <template> 
 		<el-row> 
-			<el-col :span="8">
+			<el-col :span="7">
 				<!--
 				<el-row class="padding-left padding-right" v-if="!xmProduct||!xmProduct.id" > 
 						<xm-product-select ref="xmProductSelect1" style="display:inline;"  :auto-select="true" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" @clear="onProductClearSelect" ></xm-product-select>
@@ -8,12 +8,12 @@
 				-->
 				<xm-epic-features class="padding-left padding-right" :xm-product="xmProductCpd" :sel-project="selProject"  @row-click="onEpicFeaturesRowClick"  @product-selected="onProductSelected" @product-clear="onProductClearSelect"></xm-epic-features>
 			</el-col> 
-			<el-col :span="16" v-if="xmProductCpd && xmProductCpd.id" class="row-right">
+			<el-col :span="17" v-if="xmProductCpd && xmProductCpd.id" class="row-right">
 				<xm-menu-mng class="padding-left padding-right" :xm-product="xmProductCpd" :sel-project="selProject"  :parent-menu="parentMenu" :xm-iteration="xmIteration" ></xm-menu-mng>
  
 			</el-col>
 			
-			<el-col :span="16" v-else-if="filters.xmProduct && filters.xmProduct.id" class="row-right">
+			<el-col :span="17" v-else-if="filters.xmProduct && filters.xmProduct.id" class="row-right">
 				<xm-menu-mng class="padding-left padding-right" :xm-product="filters.xmProduct" :sel-project="selProject" :parent-menu="parentMenu" :xm-iteration="xmIteration" ></xm-menu-mng>
  
 			</el-col>

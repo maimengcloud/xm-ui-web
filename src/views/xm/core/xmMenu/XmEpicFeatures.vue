@@ -89,31 +89,33 @@
 				
 				<el-table-column prop="menuName" label="史诗、特性名称" min-width="150" > 
 					<template slot="header">
-						<div style="display:flex;">
-							<div style="text-align: center;line-height: 32px;">史诗、特性</div>
+						<div style="display:flex;"> 
+							<div style="text-align: center;line-height: 32px;" title="史诗特性名称">史诗、特性</div>
 							&nbsp;&nbsp;
-							<el-button type="text" icon="el-icon-circle-close" @click="unselectRow()">清除选中</el-button>
+							<el-button type="text" icon="el-icon-circle-close " class="hidden-md-and-down" @click="unselectRow()" title="清除选中的行">清除选中</el-button>
+							<el-button type="text" icon="el-icon-circle-close " class="hidden-lg-and-up" @click="unselectRow()" title="清除选中的行"></el-button>
+
 							<el-input v-if=" !xmProduct || !xmProduct.id" v-model="filters.key" style="width:50%;margin-left: auto;"  placeholder="名称模糊查询"  clearable></el-input>  
 						</div>
 					</template>
-					<template slot-scope="scope">
-						<div  v-if="scope.row.dclass=='1'" class="icon" style="background-color:  rgb(255, 153, 51);">
+					<template slot-scope="scope"> 
+						<div  v-if="scope.row.dclass=='1'" class="icon hidden-md-and-down" style="background-color:  rgb(255, 153, 51);">
 						<i class="el-icon-s-promotion"></i>
 						</div>
-						<div v-if="scope.row.dclass=='2'" class="icon" style="background-color:  rgb(0, 153, 51);">
+						<div v-if="scope.row.dclass=='2'" class="icon hidden-md-and-down" style="background-color:  rgb(0, 153, 51);">
 						<i class="el-icon-s-flag"></i>
 						</div>
-						<div v-if="scope.row.dclass=='3'" class="icon" style="background-color:  rgb(79, 140, 255);">
+						<div v-if="scope.row.dclass=='3'" class="icon hidden-md-and-down" style="background-color:  rgb(79, 140, 255);">
 						<i class="el-icon-document"></i>
 						</div>
-						<span>{{scope.row.seqNo}} &nbsp; {{scope.row.menuName}} </span>
+						<span class="hidden-md-and-down">{{scope.row.seqNo}}</span><span>{{scope.row.menuName}} </span>
 						
-						<span  
+						<span
 							:style="{borderRadius: '30px',color:scope.row.finishRate >= 100 ? 'green' : 'blue'}" 
 						>
 							{{ (scope.row.finishRate != null ? scope.row.finishRate : 0) + "%" }}
 						</span>  
-							<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'menuStatus',scope.row.status)" :key="index" :type="item.className">{{item.name}}</el-tag>
+							<el-tag class="hidden-md-and-down" v-for="(item,index) in formatDictsWithClass(dicts,'menuStatus',scope.row.status)" :key="index" :type="item.className">{{item.name}}</el-tag>
 							<div class="tool-bar" v-if="!disabledMng">
 						<span class="u-btn">
 									<el-button  v-if=" scope.row.dclass==='1' "  @click.stop="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" title="新建特性" circle plain > </el-button>

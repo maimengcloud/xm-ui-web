@@ -133,7 +133,8 @@
 									<div style="display:flex;">
 										<div style="text-align: center;line-height: 32px;">计划名称</div>
 										&nbsp;&nbsp;
-										<el-button type="text" icon="el-icon-circle-close" @click="unselectRow()">清除选中</el-button>
+										<el-button type="text" class="hidden-lg-and-up" icon="el-icon-circle-close" @click="unselectRow()" title="清除选中的行">清除选中</el-button>
+										<el-button type="text" class="hidden-md-and-down" icon="el-icon-circle-close" @click="unselectRow()" title="清除选中的行">清除选中的行</el-button>
 										<el-input v-if=" !selProject || !selProject.id" v-model="filters.key" style="width:50%;margin-left: auto;"  placeholder="名称模糊查询"  clearable></el-input>  
 									</div>
               </template>
@@ -143,8 +144,8 @@
 									<i :class="scope.row.ntype==='1'?'el-icon-time':'el-icon-s-operation'" ></i>
 									</div>  
                   -->
-                  <span>
-                    {{ scope.row.sortLevel }}&nbsp;  {{ scope.row.name }}
+                  <span class="hidden-md-and-down">
+                    {{ scope.row.sortLevel }}&nbsp;</span><span> {{ scope.row.name }}
                     </span>
                   <el-link  
                     style="border-radius: 30px"
@@ -153,7 +154,8 @@
                     class="el-icon-refresh"
                   >
                     {{ (scope.row.rate != null ? scope.row.rate : 0) + "%" }}
-                  </el-link>  <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'taskState',scope.row.taskState)" :key="index" :type="item.className">{{item.name}}</el-tag>
+                  </el-link> 
+                   <el-tag class="hidden-md-and-down" v-for="(item,index) in formatDictsWithClass(dicts,'taskState',scope.row.taskState)" :key="index" :type="item.className">{{item.name}}</el-tag>
 									<div class="tool-bar">
                     <span class="u-btn">
                         <el-popover
