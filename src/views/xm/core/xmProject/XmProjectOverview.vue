@@ -1,18 +1,18 @@
 <template>
   <section>
-    <el-row class="page-main" :style="{overflowX: 'hidden',height:maxTableHeight+'px'}" ref="table"> 
-      <el-row :gutter="10" style="margin-bottom:10px">
+    <el-row :style="{overflowX: 'hidden',height:maxTableHeight+'px'}" ref="table"> 
+      <el-row :gutter="10">
           <el-col :span="8" >
             <el-card class="box-card" style="padding:0px ;height:425px">
               <div slot="header" class="clearfix">
                 <span>项目信息</span>
               </div>
-              <el-row style="margin-bottom:18px">
+              <el-row style="margin-bottom:10px">
                 <el-row>
-                  <span>项目负责人</span>&nbsp;<span><b>{{pmUsername}}</b></span>
-                </el-row> 
+                  <span>项目负责人</span>&nbsp;<span><b>{{pmUsername}}</b></span> 
+                 </el-row> 
               </el-row>
-              <el-row style="margin-bottom:18px">
+              <el-row style="margin-bottom:10px">
                 <el-col :span="8" @click="">
                   <div class="item">
                     <div class="icon" style="background-color:  rgb(79, 140, 255);">
@@ -49,7 +49,7 @@
                   </div>
                 </el-col>
               </el-row>
-              <el-row style="margin-bottom:18px">
+              <el-row style="margin-bottom:10px">
                 <div class="item">
                   <div class="icon2" style="background-color:  rgb(204, 204, 204);">
                     <i class="el-icon-date"></i>
@@ -61,35 +61,31 @@
                   </div>
                 </div>
               </el-row>
-              <el-row style="margin-bottom:18px">
+              <el-row style="margin-bottom:10px">
                 <div class="item">
                   <div class="icon2" style="background-color:  rgb(204, 204, 204);">
                     <i class="el-icon-star-off"></i>
                   </div>
                   <div class="info">
-                    <div class="title"> 需求数： {{this.selProject.menuCnt}}</div>
+                    <div class="title"> 需求数： {{this.selProject.menuCnt||0}}</div>
                   </div>
                 </div>
-              </el-row>
-              <el-row style="margin-bottom:18px">
-                <div class="item">
-                  <div class="icon2" style="background-color:  rgb(204, 204, 204);">
-                    <i class="el-icon-refresh"></i>
-                  </div>
-                  <div class="info">
-                    <div class="title"> 迭代数： {{(this.selProject.iterationCnt==null?0:this.selProject.iterationCnt)}} </div>
-                  </div>
-                </div>
-              </el-row>
-              <el-row style="margin-bottom:18px">
+              </el-row> 
+              <el-row style="margin-bottom:10px">
                 <div class="item">
                   <div class="icon2" style="background-color:  rgb(204, 204, 204);">
                     <i class="el-icon-alarm-clock"></i>
                   </div>
                   <div>
                     <div class="progress-item">
-                      <el-progress :percentage="taskProgress"></el-progress>
-                      <div class="title">任务进度</div>
+                      <el-progress :percentage="taskProgress">
+                      </el-progress>
+                      
+                      <el-tag v-if="planProgress>taskProgress" type="danger" effect="dark">整体进度 落后{{ planProgress-taskProgress }}%</el-tag>
+                          <el-tag v-else-if="planProgress<taskProgress" type="warning" effect="dark">整体进度 超前{{ taskProgress-planProgress }}%</el-tag>
+                          <el-tag v-else effect="dark" type="success">整体进度 理想</el-tag>
+                      <div class="title">
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -109,25 +105,48 @@
           <el-col :span="8" >
             <el-card class="box-card" style="height:425px">
               <div slot="header" class="clearfix">
-                <span>缺陷情况</span>
+                <span>需求情况</span>
               </div>
               <div>
-                <div id="bugPieChart" :style="{width: '100%', height: '410px'}"></div>
+                <div id="menuChart" :style="{width: '100%', height: '320px'}"></div>
               </div>
             </el-card>
           </el-col>
-        </el-row>
-      <el-row :gutter="10" style="margin-bottom:10px">
-          <el-col :span="12" >
+          
+          <el-col :span="8" >
             <el-card class="box-card" style="padding:0px ;height:425px">
               <div slot="header" class="clearfix">
-                <span>任务每日状态趋势</span>
+                <span>任务状态分布</span>
               </div>
               <div>
                 <div id="taskChart" :style="{width: '100%', height: '320px'}"></div>
               </div>
             </el-card>
           </el-col>
+          
+          <el-col :span="8" >
+            <el-card class="box-card" style="height:425px">
+              <div slot="header" class="clearfix">
+                <span>测试用例情况</span>
+              </div>
+              <div>
+                <div id="testCasePieChart" :style="{width: '100%', height: '320px'}"></div>
+              </div>
+            </el-card>
+          </el-col>
+          
+          <el-col :span="8" >
+            <el-card class="box-card" style="height:425px">
+              <div slot="header" class="clearfix">
+                <span>缺陷情况</span>
+              </div>
+              <div>
+                <div id="bugPieChart" :style="{width: '100%', height: '320px'}"></div>
+              </div>
+            </el-card>
+          </el-col>
+        </el-row>
+      <el-row :gutter="10" style="margin-bottom:10px">
           <el-col :span="12" >
             <el-card class="box-card" style="padding:0px ;height:425px">
               <div slot="header" class="clearfix">
@@ -139,10 +158,19 @@
                     <el-col :span="8">
                       <div>
                         <div style="text-align:center;">
+                          <span style="font-size:24px;" v-text="this.selProject.budgetWorkload"></span>
+                          <span style="font-size:5px;">h</span>
+                        </div>
+                        <div style="text-align:center;font-size:5px;">总估工时</div>
+                      </div>
+                    </el-col>
+                    <el-col :span="8">
+                      <div>
+                        <div style="text-align:center;">
                           <span style="font-size:24px;" v-text="this.selProject.estimateWorkload"></span>
                           <span style="font-size:5px;">h</span>
                         </div>
-                        <div style="text-align:center;font-size:5px;">预估工时</div>
+                        <div style="text-align:center;font-size:5px;">应完成工时</div>
                       </div>
                     </el-col>
                     <el-col :span="8">
@@ -151,18 +179,9 @@
                           <span style="font-size:24px;" v-text="this.selProject.actWorkload"></span>
                           <span style="font-size:5px;">h</span>
                         </div>
-                        <div style="text-align:center;font-size:5px;">登记工时</div>
+                        <div style="text-align:center;font-size:5px;" title="已登记的工时">已完成工时</div>
                       </div>
-                    </el-col>
-                    <el-col :span="8">
-                      <div>
-                        <div style="text-align:center;">
-                          <span style="font-size:24px;" v-text="workloadProgress"></span>
-                          <span style="font-size:5px;">%</span>
-                        </div>
-                        <div style="text-align:center;font-size:5px;">工时进度</div>
-                      </div>
-                    </el-col>
+                    </el-col> 
                   </div>
                 </el-row>
                 <el-row  >
@@ -197,14 +216,24 @@
                   </div>
                 </el-row>
                 <el-row>
-                  <span style="margin-left:20px;">项目预计进度</span>
+                  <span style="margin-left:20px;" title="应完成工时/总预估工时">预计进度</span>
                   <el-progress style="width: 90%;margin-left:20px;margin-top: 10px;margin-bottom: 20px;"   :stroke-width="14" :percentage="planProgress"></el-progress>
                 </el-row>
                 <el-row>
-                  <span style="margin-left:20px;">项目实际进度</span>
+                  <span style="margin-left:20px;" title="实际工时/总预估工时">实际进度</span>
                   <el-progress style="width: 90%;margin-left:20px;margin-top: 10px;"  color="#47CBF6" :stroke-width="14" :percentage="realProgress"></el-progress>
                 </el-row>
 
+              </div>
+            </el-card>
+          </el-col>
+          <el-col :span="12" >
+            <el-card class="box-card" style="height:425px">
+              <div slot="header" class="clearfix">
+                <span>合作开发工作量分布</span>
+              </div>
+              <div>
+                <div id="workloadDistribution" :style="{width: '100%', height: '320px'}"></div>
               </div>
             </el-card>
           </el-col>
@@ -216,27 +245,17 @@
               <span>总预算情况</span>
             </div>
             <div>
-              <div id="planTotalCostPie" :style="{width: '100%', height: '410px'}"></div>
+              <div id="planTotalCostPie" :style="{width: '100%', height: '320px'}"></div>
             </div>
           </el-card>
-        </el-col>
+        </el-col> 
         <el-col :span="8" >
           <el-card class="box-card" style="height:425px">
             <div slot="header" class="clearfix">
-              <span>工作量分布</span>
+              <span>关联产品和迭代情况</span>
             </div>
             <div>
-              <div id="workloadDistribution" :style="{width: '100%', height: '410px'}"></div>
-            </div>
-          </el-card>
-        </el-col>
-        <el-col :span="8" >
-          <el-card class="box-card" style="height:425px">
-            <div slot="header" class="clearfix">
-              <span>所含产品和迭代情况</span>
-            </div>
-            <div>
-              <div id="iterationAndProduct" :style="{width: '100%', height: '350px'}"></div>
+              <div id="iterationAndProduct" :style="{width: '100%', height: '320px'}"></div>
             </div>
           </el-card>
         </el-col>
@@ -283,7 +302,7 @@ export default {
     },
     deviation:function (){
       
-        return this.selProject.actWorkload -  this.selProject.estimateWorkload
+        return  this.selProject.actWorkload-this.selProject.estimateWorkload
        
     },
     deviationRate:function (){
@@ -332,7 +351,8 @@ export default {
   watch:{
     xmProjectStateCpd:function(){
       this.drawAllBar();
-      this.drawTaskByDate();
+      this.drawTaskPie();
+      this.drawTestCasePie();
       this.drawPieBug();
       this.drawCostPie();
       this.drawWorkload();
@@ -369,7 +389,7 @@ export default {
         },
         xAxis: {
           type: 'category',
-          data: ['需求', '任务', '缺陷']
+          data: ['需求', '任务','用例', '缺陷']
         },
         series: [
           {
@@ -385,12 +405,20 @@ export default {
                 value: this.selProject.menuCnt,
                 itemStyle: {
                   normal:{
-                    color: '#99CCFF'
+                    color: '#91CC75'
                   }
                 }
               },
               {
                 value: this.selProject.taskCnt,
+                itemStyle: {
+                  normal:{
+                    color: '#FAC858'
+                  }
+                }
+              },
+              {
+                value: this.selProject.testCases,
                 itemStyle: {
                   normal:{
                     color: '#99CCFF'
@@ -401,7 +429,7 @@ export default {
                 value: this.selProject.bugCnt,
                 itemStyle: {
                   normal:{
-                    color: '#99CCFF'
+                    color: '#EE6666'
                   }
                 }
               },
@@ -414,69 +442,180 @@ export default {
       // 绘制图表
       allChart.setOption(option);
     },
-    drawTaskByDate() {
+    
+    drawMenuPie() {
+      let taskChart = this.$echarts.init(document.getElementById("menuChart"));
+      let option = {  
+						title: { 
+							left: 'center'
+						}, 
+						tooltip: {
+							trigger: 'item',
+							
+						}, 
+						calculable: true,
+						
+						legend:{
+              show:true,
+							bottom: 'bottom',
+							data:['打开','执行中','已完成','已关闭'],
+						},
+						graphic: {
+							type: 'text',
+							left: 'center',
+							top: 'center',
+							style: {
+							// text: '总数',
+							text:
+								'需求数'+this.selProject.menuCnt,
+
+							textAlign: 'center',
+							fill: '#333',
+							width: 30,
+							height: 30,
+							fontSize: 14
+							}
+						}, 
+
+						series: [
+							{
+							type: 'pie',
+              center:['50%','40%'],
+							radius: ['40%','70%'],
+							data:[{name:'打开',value:this.selProject.menuUnstartCnt},{name:'执行中',value:this.selProject.menuExecCnt},{name:'已完成',value:this.selProject.menuFinishCnt},{name:'已关闭',value:this.selProject.menuCloseCnt}],
+							emphasis: {
+								itemStyle: {
+								shadowBlur: 10,
+								shadowOffsetX: 0,
+								shadowColor: 'rgba(0, 0, 0, 0.5)'
+								}
+							},
+
+							label: {
+								show: true, 
+								formatter:'{b}: {c}  ({d}%)'
+							},
+							}
+						] 
+      };
+
+      // 绘制图表
+      taskChart.setOption(option);
+    },
+    
+    drawTestCasePie() {
+      let taskChart = this.$echarts.init(document.getElementById("testCasePieChart"));
+      let option = {  
+						title: { 
+							left: 'center'
+						}, 
+						tooltip: {
+							trigger: 'item',
+							
+						}, 
+						calculable: true,
+						
+						legend:{
+              show:true,
+							bottom: 'bottom',
+							data:['设计中','执行中','已完成'],
+						},
+						graphic: {
+							type: 'text',
+							left: 'center',
+							top: 'center',
+							style: {
+							// text: '总数',
+							text:
+								'用例数'+this.selProject.testCases,
+
+							textAlign: 'center',
+							fill: '#333',
+							width: 30,
+							height: 30,
+							fontSize: 14
+							}
+						}, 
+
+						series: [
+							{
+							type: 'pie',
+              center:['50%','40%'],
+							radius: ['40%','70%'],
+							data:[{name:'设计中',value:this.selProject.designCases},{name:'执行中',value:this.selProject.execCases},{name:'已完成',value:this.selProject.finishCases}],
+							emphasis: {
+								itemStyle: {
+								shadowBlur: 10,
+								shadowOffsetX: 0,
+								shadowColor: 'rgba(0, 0, 0, 0.5)'
+								}
+							},
+
+							label: {
+								show: true, 
+								formatter:'{b}: {c}  ({d}%)'
+							},
+							}
+						] 
+      };
+
+      // 绘制图表
+      taskChart.setOption(option);
+    },
+    drawTaskPie() {
       let taskChart = this.$echarts.init(document.getElementById("taskChart"));
-      let option = {
-        tooltip: {
-          trigger: 'axis'
-        },
-        color:['rgb(0, 153, 255)','#6699CC'],
-        legend: {
-          data: ['未开始', '进行中']
-        },
-        grid: {
-          left: '1%',
-          right: '3%',
-          bottom: '5%',
-          containLabel: true
-        },
-        toolbox: {
-          feature: {
-            saveAsImage: {}
-          }
-        },
-        xAxis: {
-          type: 'category',
-          boundaryGap: false,
-          data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-        },
-        yAxis: {
-          type: 'value'
-        },
-        series: [
-          {
-            name: '未开始',
-            type: 'line',
-            //stack: '总量',
-            data: [120, 132, 101, 134, 90, 230, 210],
-            areaStyle: {
-              normal:{
-                color:"rgb(153, 204, 255)" , //设置折线图颜色
-              }
-            },
-            lineStyle:{
-              normal:{
-                color:'rgb(0, 153, 255)'
-              }
-            },
-          },
-          {
-            name: '进行中',
-            type: 'line',
-            //stack: '总量',
-            data: [220, 182, 191, 234, 290, 330, 310],
-            areaStyle: {
-              normal:{
-                color:"rgb(153, 204, 255)", //设置折线图颜色
-              }
-            },
-            lineStyle:{
-              normal:{
-                color:'#6699CC'
-              }
-            },
-          },
-        ],
+      let option = {  
+						title: { 
+							left: 'center'
+						}, 
+						tooltip: {
+							trigger: 'item',
+							
+						}, 
+						calculable: true,
+						
+						legend:{
+              show:true,
+							bottom: 'bottom',
+							data:['未开始','执行中','已完工','已结算','已关闭'],
+						},
+						graphic: {
+							type: 'text',
+							left: 'center',
+							top: 'center',
+							style: {
+							// text: '总数',
+							text:
+								'任务数'+this.totalTask,
+
+							textAlign: 'center',
+							fill: '#333',
+							width: 30,
+							height: 30,
+							fontSize: 14
+							}
+						}, 
+
+						series: [
+							{
+							type: 'pie',
+              center:['50%','40%'],
+							radius: ['40%','70%'],
+							data:[{name:'未开始',value:this.selProject.taskUnStartCnt},{name:'执行中',value:this.selProject.taskExecCnt},{name:'已完工',value:this.selProject.taskFinishCnt},{name:'已结算',value:this.selProject.taskSetCnt},{name:'已关闭',value:this.selProject.taskCloseCnt}],
+							emphasis: {
+								itemStyle: {
+								shadowBlur: 10,
+								shadowOffsetX: 0,
+								shadowColor: 'rgba(0, 0, 0, 0.5)'
+								}
+							},
+
+							label: {
+								show: true, 
+								formatter:'{b}: {c}  ({d}%)'
+							},
+							}
+						] 
       };
 
       // 绘制图表
@@ -485,46 +624,45 @@ export default {
     drawPieBug() {
       let bugPieChart = this.$echarts.init(document.getElementById("bugPieChart"));
       let option = {
+        title: { 
+							left: 'center'
+						}, 
         tooltip: {
           trigger: 'item',
           formatter: '{b} : {c} ({d}%)'
         },
-        legend: { 
+        legend: {   
+          show:true,
+					bottom: 'bottom',
+          data:['已激活','已确认','已解决','已关闭']
         },
+        graphic: {
+          type: 'text',
+          left: 'center',
+          top: 'center',
+          style: {
+          // text: '总数',
+          text:
+            '缺陷数'+this.selProject.bugCnt,
+
+          textAlign: 'center',
+          fill: '#333',
+          width: 30,
+          height: 30,
+          fontSize: 14
+          }
+        }, 
         series: [
           {
-            center:['55%','40%'],//饼图位置
+
             type: 'pie',
-            radius: '50%',//饼图半径大小
-            label:{            //饼图图形上的文本标签
-              normal:{
-                show:true,
-                position:'outer', //标签的位置:内部
-                textStyle : {
-                  fontWeight : 100 ,
-                  fontSize: document.body.clientWidth / 120, //标签字体大小
-                  color: "#000000"
-                },
-                formatter:'{b}\n{c}({d}%)',//b：name,c:value,d:占比
-                alignTo:'edge',
-                margin:10
-              }
+            center:['50%','40%'],
+            radius: ['40%','70%'],
+            label:{ 
+								show: true, 
+								formatter:'{b}: {c}  ({d}%)'
             },
             data: [
-              {value: this.selProject.closedBugs,
-                itemStyle: {
-                  normal:{
-                    color: '#5470C6'
-                  }
-                },
-                name: '已关闭'},
-              {value: this.selProject.resolvedBugs,
-                itemStyle: {
-                  normal:{
-                    color: '#91CC75'
-                  }
-                },
-                name: '已解决'},
               {value: this.selProject.activeBugs,
                 itemStyle: {
                   normal:{
@@ -539,14 +677,21 @@ export default {
                   }
                 },
                 name: '已确认'},
-            ],
-            emphasis: {
-              itemStyle: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: 'rgba(0, 0, 0, 0.5)'
-              }
-            }
+              {value: this.selProject.resolvedBugs,
+                itemStyle: {
+                  normal:{
+                    color: '#91CC75'
+                  }
+                },
+                name: '已解决'},
+              {value: this.selProject.closedBugs,
+                itemStyle: {
+                  normal:{
+                    color: '#5470C6'
+                  }
+                },
+                name: '已关闭'},
+            ], 
           }
         ]
       };
@@ -632,11 +777,27 @@ export default {
           bottom: 10,
           left: 'center',
         },
+        graphic: {
+          type: 'text',
+          left: 'center',
+          top: 'center',
+          style: {
+          // text: '总数',
+          text:
+            '总工作量h:'+this.selProject.budgetWorkload,
+
+          textAlign: 'center',
+          fill: '#333',
+          width: 30,
+          height: 30,
+          fontSize: 14
+          }
+        }, 
         series: [
           {
-            center:['55%','40%'],//饼图位置
             type: 'pie',
-            radius: '50%',//饼图半径大小
+            center:['50%','40%'],
+            radius: ['40%','70%'],
             label:{            //饼图图形上的文本标签
               normal:{
                 show:true,
@@ -651,6 +812,7 @@ export default {
                 margin:10
               }
             },
+            
             data: [
               {value: this.selProject.budgetIuserWorkload,
                 itemStyle: {
@@ -698,25 +860,35 @@ export default {
         yAxis: {
           type: 'value'
         },
-        series: [{
-          label: {
-            normal:{
-              show: true,
-              position: 'top',
-              color:'#000000',
-            }
-          },
-          data: [this.selProject.productCnt, this.selProject.iterationCnt],
-          type: 'bar',
-          showBackground: true,
-          itemStyle: {
-            normal:{
-              color: '#87CEFA'
-            }
-          },
-          backgroundStyle: {
-            color: '#FFFFFF'
-          }
+        series: [{  
+            label: {
+              normal:{
+                show: true,
+                position: 'top',
+                color:'#000000',
+              }
+            },
+          
+          data: [
+            {
+                value: this.selProject.productCnt,
+                itemStyle: {
+                  normal:{
+                    color: '#91CC75'
+                  }
+                }
+              },
+              {
+                value: this.selProject.iterationCnt,
+                itemStyle: {
+                  normal:{
+                    color: '#FAC858'
+                  }
+                }
+              },  
+        
+        ],
+          type: 'bar', 
         }]
       };
 
@@ -734,7 +906,9 @@ export default {
 				this.dicts=res.data.data;
 			})
     this.drawAllBar();
-    this.drawTaskByDate();
+    this.drawMenuPie();
+    this.drawTaskPie();
+    this.drawTestCasePie();
     this.drawPieBug();
     this.drawCostPie();
     this.drawWorkload();
@@ -766,23 +940,19 @@ export default {
 
 .icon {
   color: #fff;
-  height: 30px;
-  width: 30px;
+  height: 30px; 
   border-radius: 15px;
-  text-align: center;
-  line-height: 30px;
+  text-align: center; 
   font-size: 20px;
   display: inline-block;
   margin-right: 5px;
 }
 
 .icon2 {
-  color: #000000;
-  height: 30px;
+  color: #000000; 
   width: 30px;
   border-radius: 15px;
-  text-align: center;
-  line-height: 30px;
+  text-align: center; 
   font-size: 20px;
   display: inline-block;
   margin-right: 5px;
@@ -856,10 +1026,4 @@ export default {
   justify-content: flex-start;
 }
 </style>
-
-<style>
-.app-container{
-  padding: 20px;
-  padding-bottom: 0;
-}
-</style>
+ 

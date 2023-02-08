@@ -109,7 +109,7 @@
 								
 								<div class="info-task"  title="已完成需求数 / 总需求数 ">
 									<span>
-										<span class="item-total finish-task">{{p.menuFinishCnt==null?0:p.menuFinishCnt}}</span>
+										<span class="item-total finish-task">{{menuFinishCntCalc(p)}}</span>
 										<span style="margin: 0 .25rem !important;">/</span>
 										<span class="item-type total-task">{{p.menuCnt==null?0:p.menuCnt}}</span>
 									</span>
@@ -127,7 +127,7 @@
 								-->
 								<div class="info-task"   title="已完成 / 总任务数 ">
 									<span>
-										<span class="item-total finish-task">{{p.taskFinishCnt==null?0:p.taskFinishCnt}}</span>
+										<span class="item-total finish-task">{{((p.taskFinishCnt||0)+(p.taskSetCnt||0)+(p.taskCloseCnt||0))}}</span>
 										<span style="margin: 0 .25rem !important;">/</span>
 										<span class="item-type total-task">{{p.taskCnt==null?0:p.taskCnt}}</span>
 									</span>
@@ -224,7 +224,7 @@
 				</el-table-column> 
 				<el-table-column prop="taskCnt" label="任务数" sortable min-width="120" > 
 					<template slot-scope="scope">
-						<span title="完成的任务数 / 任务总数 ">{{scope.row.taskCnt>0?scope.row.taskFinishCnt+'&nbsp;/&nbsp;'+scope.row.taskCnt:''}}</span>
+						<span title="完成的任务数 / 任务总数 ">{{ ((scope.row.taskFinishCnt||0)+(scope.row.taskSetCnt||0)+(scope.row.taskCloseCnt||0))+'&nbsp;/&nbsp;'+(scope.row.taskCnt||0)}}</span>
 					</template>
 				</el-table-column>  
 				<el-table-column prop="bugCnt" label="缺陷" sortable min-width="120" >
@@ -882,6 +882,10 @@
 			guiderStart(forceDisplayWhileClosed) { // 初始化引导页
 				Guider.startByName('xmProjectMng',forceDisplayWhileClosed); 
 			},
+			menuFinishCntCalc(project){
+				var allFinishCnt= (project.menuFinishCnt||0 )+ (project.menuCloseCnt||0)
+				 return allFinishCnt;
+			}
 			/**end 自定义函数请在上面加**/
 			
 		},//end methods
