@@ -126,8 +126,7 @@
               <el-table-column 
                 prop="name"
                 class-name="title" 
-                label="计划名称"
-                min-width="300"
+                label="计划名称" 
               > 
               <template slot="header"> 
 									<div style="display:flex;">
@@ -145,23 +144,15 @@
 									</div>  
                   -->
                   <span class="hidden-md-and-down">
-                    {{ scope.row.sortLevel }}&nbsp;</span><span> {{ scope.row.name }}
+                    {{ scope.row.sortLevel }}&nbsp;
+                  </span>
+                  <span> {{ scope.row.name }}
                     </span>
-                  <el-link  
-                    style="border-radius: 30px"
-                    :type="scope.row.rate >= 100 ? 'success' : 'warning'"
-                    @click.stop="calcProgress(scope.row)"
-                    class="el-icon-refresh"
-                  >
-                    {{ (scope.row.rate != null ? scope.row.rate : 0) + "%" }}
-                  </el-link> 
-                   <el-tag class="hidden-md-and-down" v-for="(item,index) in formatDictsWithClass(dicts,'taskState',scope.row.taskState)" :key="index" :type="item.className">{{item.name}}</el-tag>
-									<div class="tool-bar">
+                    <div class="tool-bar left">
                     <span class="u-btn">
                         <el-popover
                           placement="top-start"
-                          title="选择创建计划/任务的方式"
-                          width="300"
+                          title="选择创建计划/任务的方式" 
                           trigger="click"
                         >
                           <el-row>
@@ -195,11 +186,22 @@
                               <el-button   @click.stop="showSubAdd( scope.row,scope.$index,'1')" icon="el-icon-plus" title="新建子计划">直接创建子计划 </el-button>   
                            </el-row>
                           </el-row> 
-                           <el-button   slot="reference"  :style="{backgroundColor:  '#E6A23C'}"   icon="el-icon-plus" title="新建子计划" circle plain > </el-button>   
+                           <el-button   slot="reference"  icon="el-icon-plus" title="新建子计划" circle plain > </el-button>   
                         </el-popover> 
                         <el-button      @click.stop="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑" circle plain > </el-button>     
                      </span>
 									</div>
+                  <el-tag style="float: right;" class="hidden-md-and-down" v-for="(item,index) in formatDictsWithClass(dicts,'taskState',scope.row.taskState)" :key="index" :type="item.className">{{item.name}}</el-tag>
+
+                  <el-link
+                    style="border-radius: 30px; float: right;"
+                    :type="scope.row.rate >= 100 ? 'success' : 'warning'"
+                    @click.stop="calcProgress(scope.row)"
+                    class="el-icon-refresh"
+                  >
+                    {{ (scope.row.rate != null ? scope.row.rate : 0) + "%" }}
+                  </el-link> 
+									
                 </template>
               </el-table-column>    
             </el-table>
@@ -1141,5 +1143,8 @@ export default {
   overflow-x: auto;
   overflow-y: hidden;
 }
+.tool-bar.left{  
   
+  transform: translate(-160%, -50%);
+}
 </style>

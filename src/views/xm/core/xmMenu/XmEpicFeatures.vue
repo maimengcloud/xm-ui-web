@@ -110,19 +110,20 @@
 						</div>
 						<span class="hidden-md-and-down">{{scope.row.seqNo}}</span><span>{{scope.row.menuName}} </span>
 						
+
+							<div class="tool-bar left" v-if="!disabledMng">
+						<span class="u-btn">
+									<el-button size="mini"   v-if=" scope.row.dclass==='1' "  @click.stop="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" title="新建特性" circle > </el-button>
+										
+							<el-button  size="mini"    @click.stop="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑" circle  > </el-button>     
+						</span>
+						</div>
+						<el-tag style="float:right;" class="hidden-md-and-down" v-for="(item,index) in formatDictsWithClass(dicts,'menuStatus',scope.row.status)" :key="index" :type="item.className">{{item.name}}</el-tag>
 						<span
-							:style="{borderRadius: '30px',color:scope.row.finishRate >= 100 ? 'green' : 'blue'}" 
+							:style="{borderRadius: '30px',color:scope.row.finishRate >= 100 ? 'green' : 'blue',float:'right'}" 
 						>
 							{{ (scope.row.finishRate != null ? scope.row.finishRate : 0) + "%" }}
 						</span>  
-							<el-tag class="hidden-md-and-down" v-for="(item,index) in formatDictsWithClass(dicts,'menuStatus',scope.row.status)" :key="index" :type="item.className">{{item.name}}</el-tag>
-							<div class="tool-bar" v-if="!disabledMng">
-						<span class="u-btn">
-									<el-button  v-if=" scope.row.dclass==='1' "  @click.stop="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" title="新建特性" circle plain > </el-button>
-										
-							<el-button      @click.stop="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑" circle plain > </el-button>     
-						</span>
-						</div>
 					</template> 
 				</el-table-column> 
 			</el-table>  
@@ -740,6 +741,10 @@
  
 .align-right{
 	float: right;
+}
+.tool-bar.left{  
+  
+  transform: translate(-100%, -50%);
 }
 </style>
 
