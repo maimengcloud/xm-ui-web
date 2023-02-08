@@ -123,8 +123,8 @@
 						<template slot-scope="scope">   
 									 <el-link type="primary" @click="showEdit(scope.row)"> {{scope.row.name}}</el-link>  
 									 <span class="tool-bar">
-                                     	<el-button type="warning" @click="copyOne(scope.row,scope.$index)" icon="el-icon-document-copy" circle title="复制一行"></el-button> 
-									</span>
+                                     	<el-button @click="copyOne(scope.row,scope.$index)" icon="el-icon-document-copy" circle title="复制一行"></el-button> 
+ 									</span>
 						</template>
 					</el-table-column>
 					<el-table-column prop="bugStatus" label="状态"  width="100">

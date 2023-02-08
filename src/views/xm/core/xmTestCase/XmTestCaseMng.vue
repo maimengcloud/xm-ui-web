@@ -32,7 +32,7 @@
                             <template slot-scope="scope">
                                 <span> <el-link  @click="showEdit( scope.row,scope.$index)">{{scope.row.caseName}} </el-link></span>
                                 <span class="tool-bar">
-                                     <el-button type="warning" @click="copyOne(scope.row,scope.$index)" icon="el-icon-document-copy" circle title="复制一行"></el-button> 
+                                     <el-button @click="copyOne(scope.row,scope.$index)" icon="el-icon-document-copy" circle title="复制一行"></el-button> 
                                 </span>
                             </template>
                         </el-table-column>  

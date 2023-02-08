@@ -20,7 +20,7 @@
 
                     <div class="cell-bar">
                            <el-button  class="hidden-md-and-down"  @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑任务" circle plain > </el-button>     
-                          <el-button type="warning" @click="copyOne(scope.row,scope.$index)" icon="el-icon-document-copy" circle title="复制一行"></el-button> 
+                          <el-button @click="copyOne(scope.row,scope.$index)" icon="el-icon-document-copy" circle title="复制一行"></el-button> 
                    </div>
                   </div>
 			  </template>
