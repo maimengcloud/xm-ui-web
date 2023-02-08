@@ -24,9 +24,9 @@
 				-->
  				<el-table-column prop="name" label="计划名称" min-width="250">
 				    <template slot-scope="scope">
-				        <span> <el-link @click="goToTestPlanCase(scope.row)"> {{scope.row.name}}</el-link> </span>
+				        <span> <el-link type="primary" @click="goToTestPlanCase(scope.row)"> {{scope.row.name}}</el-link> </span>
                         <span  class="tool-bar"> 
-                         <el-button type="primary" @click="goToTestPlanCase(scope.row)" icon="el-icon-finished"  circle title="规划用例"></el-button> 
+                         <el-button type="primary" @click="showEdit(scope.row)" icon="el-icon-edit"  circle title="编辑"></el-button> 
                          </span>
                     </template>
 				</el-table-column>  

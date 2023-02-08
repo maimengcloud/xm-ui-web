@@ -13,7 +13,7 @@
                  </el-row> 
               </el-row>
               <el-row style="margin-bottom:10px">
-                <el-col :span="8" @click="">
+                <el-col :span="8">
                   <div class="item">
                     <div class="icon" style="background-color:  rgb(79, 140, 255);">
                       <i class="el-icon-right"></i>
@@ -460,7 +460,7 @@ export default {
 						graphic: {
 							type: 'text',
 							left: 'center',
-							top: 'center',
+              top: '40%',
 							style: {
 							// text: '总数',
 							text:
@@ -520,7 +520,7 @@ export default {
 						graphic: {
 							type: 'text',
 							left: 'center',
-							top: 'center',
+              top: '40%',
 							style: {
 							// text: '总数',
 							text:
@@ -579,7 +579,7 @@ export default {
 						graphic: {
 							type: 'text',
 							left: 'center',
-							top: 'center',
+              top: '40%',
 							style: {
 							// text: '总数',
 							text:
@@ -636,7 +636,7 @@ export default {
         graphic: {
           type: 'text',
           left: 'center',
-          top: 'center',
+          top: '40%',
           style: {
           // text: '总数',
           text:
@@ -777,7 +777,7 @@ export default {
         graphic: {
           type: 'text',
           left: 'center',
-          top: 'center',
+          top: '40%',
           style: {
           // text: '总数',
           text:
