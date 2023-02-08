@@ -6,6 +6,27 @@
             <el-card class="box-card" style="padding:0px ;height:425px">
               <div slot="header" class="clearfix">
                 <span>项目信息</span>
+
+                <el-popover
+                  placement="bottom"
+                  title="标题"
+                  width="200"
+                  trigger="click" > 
+
+                  <el-row>
+                    <el-button type="primary" @click="loadTasksToXmProjectState" v-loading="load.calcProject">计算项目预算数据</el-button>
+                    <br>
+                      <font color="blue" style="font-size:10px;">将从项目任务中汇总进度、预算工作量、实际工作量、预算金额、实际金额、缺陷数、需求数等数据到项目统计表</font>
+                  </el-row>
+                  <el-row>
+                    <el-button  type="primary" @click="loadTasksSettleToXmProjectState"  v-loading="load.calcSettle">计算项目结算数据</el-button>
+                    <br>
+                      <font color="blue"  style="font-size:10px;">将从项目任务汇总结算数据项目统计表</font>
+                  </el-row>
+
+                  <el-button slot="reference" style="float:right;" icon="el-icon-video-play" type="text">统计</el-button>
+                </el-popover>
+               
               </div>
               <el-row style="margin-bottom:10px">
                 <el-row>
@@ -206,7 +227,7 @@
             </el-card>
           </el-col>
         </el-row> 
-        <el-row :gutter="10">
+        <el-row :gutter="10" style="margin-bottom:10px">
           <el-col :span="8" >
             <el-card class="box-card" style="height:425px">
               <div slot="header" class="clearfix">
@@ -272,10 +293,12 @@ import util from "@/common/js/util"; // 全局公共库
 import { mapGetters } from "vuex";
 import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 	import {  getDefOptions} from '@/api/xm/core/xmProject'; 
-
+	import { listXmProject} from '@/api/xm/core/xmProject'; 
+  import {  loadTasksToXmProjectState , loadTasksSettleToXmProjectState} from '@/api/xm/core/xmProjectState';
+  import store from '@/store'
 export default {
   computed: {
-    ...mapGetters(["userInfo"]),
+    ...mapGetters(["userInfo",'projectInfo']),
     competeTasks: function (){
       return this.selProject.taskCnt-this.selProject.taskUnstartCnt-this.selProject.taskExecCnt;
     },
@@ -361,6 +384,7 @@ export default {
   },
   data() {
     return {
+      load:{list:false,add:false,calcProject:false,calcSettle:false},
       isActive: true,
       maxTableHeight:300,
       dicts: getDefOptions(),//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
@@ -911,6 +935,40 @@ export default {
 
       // 绘制图表
       iterationAndProduct.setOption(option);
+    },
+
+    
+    loadTasksToXmProjectState(){
+        var row=this.selProject;
+        var params={projectId:row.id}
+        this.load.calcProject=true;
+      loadTasksToXmProjectState(params).then((res1) => {
+          this.load.calcProject=false; 
+          this.load.list=true;
+          listXmProject({id:row.id}).then(res=>{
+            this.load.list=false;
+            var tips = res.data.tips;
+            if(tips.isOk){
+              var selProject=res.data.data[0]  
+              if(this.projectInfo && this.projectInfo.id){
+                store.dispatch('setProjectInfo',selProject)
+              } 
+              Object.assign(this.selProject,selProject)
+              this.$emit("edit-fields",selProject);
+            }
+            this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
+          })
+          
+        }).catch( err  => this.load.calcProject=false ); 
+    },
+    loadTasksSettleToXmProjectState(){
+        var row=this.selProject;
+        var params={projectId:row.id}
+      loadTasksSettleToXmProjectState(params).then((res) => {
+          this.load.calcProject=false;
+          var tips=res.data.tips; 
+          this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
+        }).catch( err  => this.load.calcProject=false ); 
     },
   },
 
