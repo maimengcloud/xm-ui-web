@@ -42,7 +42,7 @@
                       <i class="el-icon-check"></i>
                     </div>
                     <div class="info">
-                      <div v-text="finish" >
+                      <div v-text="competeTasks" >
                       </div>
                       <div class="title">已完成</div>
                     </div>
@@ -276,7 +276,7 @@ import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
 export default {
   computed: {
     ...mapGetters(["userInfo"]),
-    finish: function (){
+    competeTasks: function (){
       return this.selProject.taskCnt-this.selProject.taskUnstartCnt-this.selProject.taskExecCnt;
     },
     notStart: function() {
