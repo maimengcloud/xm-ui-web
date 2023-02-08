@@ -7,8 +7,7 @@
           <el-table-column prop="menuName" label="名称" min-width="350"> 
               <template slot-scope="scope" > 
                   <div class="cell-box">
-                    <div class="cell-text"  >
-						<div  v-if="scope.row.dclass=='1'" class="icon" style="background-color:  rgb(255, 153, 51);">
+ 						<div  v-if="scope.row.dclass=='1'" class="icon" style="background-color:  rgb(255, 153, 51);">
 						<i class="el-icon-s-promotion"></i>
 						</div>
 						<div v-if="scope.row.dclass=='2'" class="icon" style="background-color:  rgb(0, 153, 51);">
@@ -17,18 +16,11 @@
 						<div v-if="scope.row.dclass=='3'" class="icon" style="background-color:  rgb(79, 140, 255);">
 						<i class="el-icon-document"></i>
 						</div>
-						<span >
-							{{scope.row.seqNo}}&nbsp;&nbsp;{{scope.row.menuName}}
-						</span>
-                  </div> 
-                    <el-link @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑"  class="cell-input hidden-lg-and-up">{{scope.row.seqNo}}&nbsp;{{scope.row.menuName}}</el-link>
-
-					<el-input type="input" title="序号" class="cell-input hidden-md-and-down" style="width:10%;"  v-model="scope.row.seqNo" placeholder="序号"  @change="editXmMenuSomeFields(scope.row,'seqNo',$event)"></el-input>
-					<el-input type="textarea" autosize title="名称" class="cell-input hidden-md-and-down" placeholder="名称" v-model="scope.row.menuName"  style="width:75%;"  @change="editXmMenuSomeFields(scope.row,'menuName',$event)"></el-input> 
- 
+ 						<el-link @click="showEdit( scope.row,scope.$index)"   title="编辑" >{{scope.row.seqNo}}&nbsp;{{scope.row.menuName}}</el-link>
+  
+  
                     <div class="cell-bar">
-                           <el-button  class="hidden-md-and-down"  @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑任务" circle plain > </el-button>     
-                          <el-button @click="copyOne(scope.row,scope.$index)" icon="el-icon-document-copy" circle title="复制一行"></el-button> 
+                           <el-button @click="copyOne(scope.row,scope.$index)" icon="el-icon-document-copy" circle title="复制一行"></el-button> 
                    </div>
                   </div>
 			  </template>

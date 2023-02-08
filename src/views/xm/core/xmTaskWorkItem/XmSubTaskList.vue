@@ -4,25 +4,18 @@
         <el-table :data="xmTasks"   :max-height="400"  v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
           <el-table-column type="selection" label="全选"></el-table-column>
           <el-table-column prop="name" label="名称" min-width="300"> 
-                <template slot-scope="scope"> <div class="cell-box">
-                    <div class="cell-text"  >
-                      <div class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#1CC7EA'}"><i  style="width:20px;" :class="scope.row.ntype==='1'?'el-icon-time':'el-icon-s-operation'" ></i>
+                <template slot-scope="scope"> 
+                  <div class="cell-box">
+                        <div class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#1CC7EA'}"><i  style="width:20px;" :class="scope.row.ntype==='1'?'el-icon-time':'el-icon-s-operation'" ></i>
                       </div>
                     <span >
-                      {{scope.row.sortLevel}}&nbsp;{{scope.row.name}}
-                    </span>
-                  </div> 
-                    <el-link @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑任务"  class="cell-input hidden-lg-and-up">{{scope.row.sortLevel}}&nbsp;{{scope.row.name}}</el-link>
-                    <el-input type="input" class="cell-input hidden-md-and-down" title="序号" style="width:10%;" placeholder="序号"  v-model="scope.row.sortLevel" @change="editXmTaskSomeFields(scope.row,'sortLevel',$event)"></el-input> 
-
-                    <el-input type="textarea" autosize class="cell-input hidden-md-and-down" title="名称" style="width:75%;" placeholder="名称"  v-model="scope.row.name" @change="editXmTaskSomeFields(scope.row,'name',$event)"></el-input> 
-
+                      <el-link @click="showEdit(scope.row)">{{scope.row.sortLevel}}&nbsp;{{scope.row.name}}</el-link>
+                    </span>  
                     <div class="cell-bar">
-                           <el-button  class="hidden-md-and-down"  @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑任务" circle plain > </el-button>     
-                          <el-button @click="copyOne(scope.row,scope.$index)" icon="el-icon-document-copy" circle title="复制一行"></el-button> 
+                           <el-button @click="copyOne(scope.row,scope.$index)" icon="el-icon-document-copy" circle title="复制一行"></el-button> 
                    </div>
                   </div>
-                </template>
+                 </template>
               </el-table-column> 
               <el-table-column
                 label="状态"

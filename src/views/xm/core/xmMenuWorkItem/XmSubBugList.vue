@@ -6,21 +6,15 @@
           <el-table-column prop="name" label="名称" min-width="350px">
               <template slot-scope="scope">  
 					<div class="cell-box">
-                    <div class="cell-text"  >
-                      <div class="icon" :style="{backgroundColor:  '#F56C6C'}">
+                       <div class="icon" :style="{backgroundColor:  '#F56C6C'}">
 						<i  style="width:20px;" class="el-icon-warning" ></i>
                       </div>
-                    <span >
-                      {{scope.row.name}}
-                    </span>
-                  </div> 
-                    <el-link @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑任务"  class="cell-input hidden-lg-and-up">{{scope.row.sortLevel}}&nbsp;{{scope.row.name}}</el-link>
+					  <el-link @click="showEdit( scope.row,scope.$index)"  title="编辑任务">{{scope.row.sortLevel}}&nbsp;{{scope.row.name}}</el-link>
 
-                    <el-input type="textarea" autosize class="cell-input hidden-md-and-down" title="名称" style="width:85%;" placeholder="名称"  v-model="scope.row.name" @change="editXmQuestionSomeFields(scope.row,'name',$event)"></el-input> 
-
+ 
+ 
                     <div class="cell-bar">
-                           <el-button  class="hidden-md-and-down"  @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑任务" circle plain > </el-button>     
-                          <el-button @click="copyOne(scope.row,scope.$index)" icon="el-icon-document-copy" circle title="复制一行"></el-button> 
+                           <el-button @click="copyOne(scope.row,scope.$index)" icon="el-icon-document-copy" circle title="复制一行"></el-button> 
                    </div>
                   </div>
 			  </template>
