@@ -21,12 +21,23 @@
 			:check-strictly="true"
 			:check-on-click-node="true"
 			ref="nodeTree">
-			<div class="custom-tree-node" slot-scope="{ node, data}">
-				<span>{{data.categoryName=='根'?'移动鼠标到此添加分类':data.categoryName}}</span>
-				<span class="el-ic">
- 					<i class="el-icon-plus"  v-if=" !(!data.id || data.id=='C0'||data.id=='0')" @click.prevent.stop="addNode(data,node)" title="添加子分类"></i>
-					<i class="el-icon-edit" v-if=" !(!data.id || data.id=='C0'||data.id=='0')" @click.prevent.stop="editNode(data,node)" title="修改名字"></i>
-					<i class="el-icon-delete" v-if=" !(!data.id || data.id=='C0'||data.id=='0')" @click.prevent.stop="deleteNode(data,node)" title="删除该分类"> </i>
+			<div class="custom-tree-node" slot-scope="{ node, data}"> 
+				<div style="height:1.2em;">{{data.categoryName=='根'?'移动鼠标到此添加分类':data.categoryName}}</div> 
+				<span class="el-ic" @click.stop title="鼠标点击其它地方可关闭窗口">
+						<el-popover
+							title="鼠标点击其它地方可关闭窗口"
+							placement="top"
+							width="300" 
+
+							open-delay="500"
+							trigger="hover"> 
+							<el-button type="primary" style="margin-left:0px;margin-bottom: 10px;" icon="el-icon-plus"  v-if=" !(!data.id || data.id=='C0'||data.id=='0')" @click.prevent.stop="addNode(data,node)" title="添加子分类">添加子分类</el-button>
+
+							<el-button style="margin-left:0px;margin-bottom: 10px;" icon="el-icon-edit" v-if=" !(!data.id || data.id=='C0'||data.id=='0')" @click.prevent.stop="editNode(data,node)" title="修改名字">修改名字</el-button>
+
+							<el-button style="margin-left:0px;margin-bottom: 10px;" type="danger" v-if=" !(!data.id || data.id=='C0'||data.id=='0')" icon="el-icon-delete" @click.prevent.stop="deleteNode(data,node)">删除该分类</el-button>
+							<el-button slot="reference" icon="el-icon-setting" circle plain></el-button>
+						</el-popover> 
 				</span>
 			</div>
 		</el-tree>
@@ -184,6 +195,7 @@
 		    	this.$emit('current-change',data, node);
 		    },
 		    handleNodeClick(data, node, comp) {
+				debugger;
 				this.currentImageCategory=Object.assign({},data)
 				this.$emit('node-click',data, node, comp);
 			},
@@ -274,7 +286,7 @@
 						if(!params.branchId){
 							params.branchId=this.userInfo.branchId
 						}
-						this.$confirm('确认删除吗？', '提示', {}).then(() => {
+						this.$confirm('确认删除【'+data.categoryName+'】吗？', '提示', {}).then(() => {
 							delImageCategory(params).then(res=>{
 								//console.log("res--"+JSON.stringify(res));
 								if(res.data.tips.isOk){
