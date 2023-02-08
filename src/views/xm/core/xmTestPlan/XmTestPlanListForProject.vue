@@ -18,7 +18,7 @@
 				-->
  				<el-table-column prop="name" label="计划名称" min-width="250">
 				    <template slot-scope="scope">
-				        <span>  {{scope.row.name}} </span> 
+				        <el-link @click="select(scope.row)">  {{scope.row.name}} </el-link> 
                     </template>
 				</el-table-column>  
  				<el-table-column prop="projectName" label="项目" min-width="150">

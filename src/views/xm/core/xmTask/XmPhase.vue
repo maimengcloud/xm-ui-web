@@ -1144,7 +1144,6 @@ export default {
   overflow-y: hidden;
 }
 .tool-bar.left{  
-  
-  transform: translate(-160%, -50%);
+  margin-right: 9em;
 }
 </style>

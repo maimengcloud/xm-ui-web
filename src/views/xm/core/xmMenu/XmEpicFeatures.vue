@@ -111,8 +111,15 @@
 						<span class="hidden-md-and-down">{{scope.row.seqNo}}</span><span>{{scope.row.menuName}} </span>
 						
 
-							<div class="tool-bar left" v-if="!disabledMng">
-						<span class="u-btn">
+						<div class="tool-bar hidden-lg-and-up" v-if="!disabledMng">
+								<span class="u-btn">
+									<el-button size="mini"   v-if=" scope.row.dclass==='1' "  @click.stop="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" title="新建特性" circle > </el-button>
+										
+							<el-button  size="mini"    @click.stop="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑" circle  > </el-button>     
+						</span>
+						</div>
+						<div class="tool-bar hidden-md-and-down" v-if="!disabledMng">
+								<span class="u-btn">
 									<el-button size="mini"   v-if=" scope.row.dclass==='1' "  @click.stop="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" title="新建特性" circle > </el-button>
 										
 							<el-button  size="mini"    @click.stop="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑" circle  > </el-button>     
@@ -742,10 +749,9 @@
 .align-right{
 	float: right;
 }
-.tool-bar.left{  
-  margin-right:6em; 
+.tool-bar.hidden-md-and-down{  
+  margin-right:8em; 
 }
-
 table tr:hover{
 	 cursor: pointer!important;
 }
