@@ -78,11 +78,11 @@
                   </div>
                   <div>
                     <div class="progress-item">
-                      <el-progress :percentage="taskProgress">
+                      <el-progress :percentage="realProgress">
                       </el-progress>
                       
-                      <el-tag v-if="planProgress>taskProgress" type="danger" effect="dark">整体进度 落后{{ planProgress-taskProgress }}%</el-tag>
-                          <el-tag v-else-if="planProgress<taskProgress" type="warning" effect="dark">整体进度 超前{{ taskProgress-planProgress }}%</el-tag>
+                      <el-tag v-if="planProgress>realProgress" type="danger" effect="dark">整体进度 落后{{ planProgress-realProgress }}%</el-tag>
+                          <el-tag v-else-if="planProgress<realProgress" type="warning" effect="dark">整体进度 超前{{ realProgress-planProgress }}%</el-tag>
                           <el-tag v-else effect="dark" type="success">整体进度 理想</el-tag>
                       <div class="title">
                       </div>
@@ -187,7 +187,7 @@
                 <el-row  >
                   <div class="item">
                     <el-col :span="8">
-                      <div>
+                      <div title="总估工时-已完成工时">
                         <div style="text-align:center;">
                           <span style="font-size:24px;" v-text="remainWorkload"></span>
                           <span style="font-size:5px;">h</span>
@@ -196,7 +196,7 @@
                       </div>
                     </el-col>
                     <el-col :span="8">
-                      <div>
+                      <div title="已完成工时-当前应完成工时">
                         <div style="text-align:center;">
                           <span style="font-size:24px;" v-text="deviation"></span>
                           <span style="font-size:5px;">h</span>
@@ -205,7 +205,7 @@
                       </div>
                     </el-col>
                     <el-col :span="8">
-                      <div>
+                      <div title="（已完成工时-当前应完成工时）/ 当前应完成工时">
                         <div style="text-align:center;">
                           <span style="font-size:24px;" v-text="deviationRate"></span>
                           <span style="font-size:5px;">%</span>
@@ -281,10 +281,7 @@ export default {
     },
     totalTask: function() {
       return this.selProject.taskCnt;
-    },
-    taskProgress: function (){
-      return this.selProject.finishRate?parseInt(this.selProject.finishRate):0;
-    },
+    }, 
     taskStartTime: function (){
       return this.selProject.startTime?this.selProject.startTime.substring(0,10):'';
     },
