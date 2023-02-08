@@ -1,30 +1,25 @@
 <template>
 <section>
-	<el-row class="uploadImgWindow" v-loading="listLoading">
-		<el-col :span="6" class="leftBox"> 
+	<el-row v-loading="listLoading">
+		<el-col :span="6" class="border"> 
 			<category-tree ref="categoryTree" :show-count="false" show-checkbox  :default-expand-all="true" :expand-on-click-node="false"  v-on:check-change="handleLeftCategoryNodeClick"></category-tree> 
 		</el-col>
-		<el-col :span="18"   class="rightBox">
-			<el-row class="windowTitle">
-				<el-col :span="12"  class="windowTitlefistchild">
-					<el-input v-model="filters.key" style="width:60%;" placeholder="按文件名模糊查询"></el-input>
-					<el-button type="primary" @click="searchImages" icon="el-icon-search"></el-button>
-				</el-col>
-				<el-col :span="6"  > 
-						<el-upload :disabled="uploadOptions.categoryId==''||uploadOptions.categoryId==null" class="upload-demo"  :show-file-list="false" :action="uploadAction" :on-change="fileChange" :on-success="handleSuccess" :before-upload="beforeupload" :data="uploadOptions" multiple>
+		<el-col :span="18">
+			<el-row class="padding-left " style="height:36px;overflow: hidden;">
+ 					<el-input v-model="filters.key" style="width:40%;" placeholder="按文件名模糊查询"></el-input>
+					<el-button @click="searchImages" icon="el-icon-search"></el-button> 
+					<el-button type="primary" @click="handleConfirm">确定选择</el-button>
+						<el-upload style="height:40px;width:120px;display: inline;margin-bottom: 0px;" :disabled="uploadOptions.categoryId==''||uploadOptions.categoryId==null" class="upload-demo"  :show-file-list="false" :action="uploadAction" :on-change="fileChange" :on-success="handleSuccess" :before-upload="beforeupload" :data="uploadOptions" multiple>
 							<el-tooltip class="item" effect="dark" :content="uploadOptions.categoryId==''?'请先选择左边分类':'支持jpg和png,建议大小不超过200KB，超过1M将自动裁剪压缩'" placement="top-start">
-								<el-button   type="primary">点击上传</el-button>
+								<el-button  icon="el-icon-upload">上传图库</el-button>
 								</el-tooltip>
 							
-						</el-upload> 
-				</el-col>
-				<el-col :span="4" > 
-						<el-button  type="danger" @click="handelDel" >删除</el-button> 
-				</el-col>
-			</el-row>
-			
-			<el-row>
-				<el-col :span="24"  type="flex" class="allImg">
+						</el-upload>   
+						<el-button  type="danger" @click="handelDel" >删除</el-button>  
+
+			</el-row> 
+			<el-row class="padding-left">
+				<el-col :span="24"  type="flex" class="allImg border padding">
 					  <el-col :span="4"  v-for="o in images" style="height:200px;width:200px;" :key="o.id" class="imgBox">
 					    <el-card :body-style="{ padding: '0px' }">
 					    	
@@ -45,14 +40,7 @@
 			<el-pagination  layout="total, sizes, prev,pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;">
 			</el-pagination> 
 	    </el-col>	
-	</el-row>
-	<el-dialog title="裁剪图片" :visible.sync="shearMngVisible"  width="1100px" top="0px" :close-on-click-modal="false" append-to-body>
-		<shear-mng :visible="shearMngVisible" :imgWidth="imgWidth" :imgHeight="imgHeight" :image="selectImages" :storedb="storedb" :branch-id="uploadOptions.branchId" :category-id="uploadOptions.categoryId" :remark="uploadOptions.remark" @cancel="shearMngVisible=false" @upload-success="uploadSuccess"></shear-mng>
-	</el-dialog> 
-	<el-row class="bottomBox">
-		<el-button type="primary" @click="handleConfirm">确定</el-button>
-		<el-button @click.native="handleCancel">取消</el-button>
-	</el-row>	
+	</el-row> 
 </section>
 </template>
 
@@ -61,8 +49,7 @@
 	import config from '@/common/config';//全局公共库import 
 	import { listImageCategory,addImageCategory } from '@/api/mdp/arc/imageCategory';
     import  ImageCategoryTree from './ImageCategoryTree'; //树
-	import ShearMng from './ShearSelectUpload'; 
-	import { mapGetters } from 'vuex'
+ 	import { mapGetters } from 'vuex'
 	 
 	
   	export default {
@@ -307,6 +294,7 @@
 				this.getImages();
 			},
 			handleCancel:function(){
+				this.selectImages=[]
 				this.$emit('cancel');
 			},
 			handleConfirm(){
@@ -323,6 +311,7 @@
 				}else{
 					this.$emit('confirm',this.selectImages[0]);
 				} 
+				this.selectImages=[]
 				this.$emit('cancel');
 			},
 			uploadSuccess(image){   
@@ -392,8 +381,7 @@
 			}
     },
     components: {
-"category-tree": ImageCategoryTree,
-		'shear-mng':ShearMng 
+"category-tree": ImageCategoryTree, 
 		    //在下面添加其它组件
 		}, 
 	mounted() { 
