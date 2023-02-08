@@ -351,7 +351,7 @@ export default {
   watch:{
     xmProjectStateCpd:function(){
       this.drawAllBar();
-      this.drawTaskPie();
+      this.drawTask();
       this.drawTestCasePie();
       this.drawPieBug();
       this.drawCostPie();
@@ -562,7 +562,7 @@ export default {
       // 绘制图表
       taskChart.setOption(option);
     },
-    drawTaskPie() {
+    drawTask() {
       let taskChart = this.$echarts.init(document.getElementById("taskChart"));
       let option = {  
 						title: { 
@@ -924,7 +924,7 @@ export default {
 			})
     this.drawAllBar();
     this.drawMenuPie();
-    this.drawTaskPie();
+    this.drawTask();
     this.drawTestCasePie();
     this.drawPieBug();
     this.drawCostPie();
