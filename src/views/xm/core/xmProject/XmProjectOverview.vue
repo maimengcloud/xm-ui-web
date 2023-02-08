@@ -109,7 +109,7 @@
                 <span>关联产品和迭代情况</span>
               </div>
               <div>
-                <div id="iterationAndProduct" :style="{width: '100%', height: '320px'}"></div>
+                <div id="iterationAndProduct" :style="{width: '100%', height: '350px'}"></div>
               </div>
             </el-card>
           </el-col>
@@ -234,7 +234,7 @@
                 <span>任务状态分布</span>
               </div>
               <div>
-                <div id="taskChart" :style="{width: '100%', height: '320px'}"></div>
+                <div id="taskChart" :style="{width: '100%', height: '350px'}"></div>
               </div>
             </el-card>
           </el-col>
@@ -481,7 +481,7 @@ export default {
 							{
 							type: 'pie',
               center:['50%','40%'],
-							radius: ['40%','70%'],
+							radius: ['35%','60%'],
 							data:[{name:'打开',value:this.selProject.menuUnstartCnt},{name:'执行中',value:this.selProject.menuExecCnt},{name:'已完成',value:this.selProject.menuFinishCnt},{name:'已关闭',value:this.selProject.menuCloseCnt}],
 							emphasis: {
 								itemStyle: {
@@ -541,7 +541,7 @@ export default {
 							{
 							type: 'pie',
               center:['50%','40%'],
-							radius: ['40%','70%'],
+							radius: ['35%','60%'],
 							data:[{name:'设计中',value:this.selProject.designCases},{name:'执行中',value:this.selProject.execCases},{name:'已完成',value:this.selProject.finishCases}],
 							emphasis: {
 								itemStyle: {
@@ -674,7 +674,7 @@ export default {
 
             type: 'pie',
             center:['50%','40%'],
-            radius: ['40%','70%'],
+            radius: ['35%','60%'],
             label:{ 
 								show: true, 
 								formatter:'{b}: {c}  ({d}%)'
@@ -814,7 +814,7 @@ export default {
           {
             type: 'pie',
             center:['50%','40%'],
-            radius: ['40%','70%'],
+            radius: ['35%','60%'],
             label:{            //饼图图形上的文本标签
               normal:{
                 show:true,
