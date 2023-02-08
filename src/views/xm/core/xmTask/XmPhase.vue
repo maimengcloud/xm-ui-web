@@ -148,19 +148,16 @@
                   </span>
                   <span> {{ scope.row.name }}
                     </span>
-                    <div class="tool-bar left">
-                    <span class="u-btn">
+                    <div class="tool-bar" @click.stop> 
                         <el-popover
                           placement="top-start"
-                          title="选择创建计划/任务的方式" 
-                          trigger="click"
+                          open-delay="500"
+                          title="创建、修改计划" 
+                          trigger="hover"
                         >
                           <el-row>
                             <el-row>
-                              
-                              <div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
-                                <i :class=" 'el-icon-time' " ></i>
-                              </div>  
+                               
                               <el-button 
                                 @click="showEpicFeaturesForCreateSubTask(scope.row)" 
                                 icon="el-icon-plus"
@@ -168,10 +165,7 @@
                               >
                             </el-row>
                             <el-row>
-                              
-                              <div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
-                                <i :class=" 'el-icon-time' " ></i>
-                              </div>  
+                               
                               <el-button 
                                 @click="showTaskTemplate"
                                 icon="el-icon-plus"
@@ -179,17 +173,21 @@
                               >
                             </el-row>
                             <el-row>
-                              
-                              <div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
-                                <i :class=" 'el-icon-time' " ></i>
-                              </div>  
-                              <el-button   @click.stop="showSubAdd( scope.row,scope.$index,'1')" icon="el-icon-plus" title="新建子计划">直接创建子计划 </el-button>   
+                               
+                              <el-button type="primary"  @click.stop="showSubAdd( scope.row,scope.$index,'1')" icon="el-icon-plus" title="新建子计划">直接创建子计划 </el-button>   
                            </el-row>
                           </el-row> 
-                           <el-button   slot="reference"  icon="el-icon-plus" title="新建子计划" circle plain > </el-button>   
-                        </el-popover> 
-                        <el-button      @click.stop="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑" circle plain > </el-button>     
-                     </span>
+                          <el-row>
+                             
+                            <el-button      @click.stop="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑"  > 编辑计划</el-button>     
+                          </el-row>
+                          <el-row>
+                             
+                            <el-button   v-if="editForm && editForm.id==scope.row.id"   @click.stop="unselectRow()" icon="el-icon-close" title="编辑"  > 清除选中状态</el-button>     
+                          </el-row>
+                           <el-button   slot="reference"  icon="el-icon-setting" title="新建\修改计划" circle plain > </el-button>   
+
+                        </el-popover>  
 									</div>
                   <el-tag style="float: right;" class="hidden-md-and-down" v-for="(item,index) in formatDictsWithClass(dicts,'taskState',scope.row.taskState)" :key="index" :type="item.className">{{item.name}}</el-tag>
 

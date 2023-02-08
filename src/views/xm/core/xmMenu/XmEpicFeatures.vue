@@ -110,21 +110,19 @@
 						</div>
 						<span class="hidden-md-and-down">{{scope.row.seqNo}}</span><span>{{scope.row.menuName}} </span>
 						
+						<div class="tool-bar" v-if="!disabledMng" @click.stop>
+							<el-popover 
+								placement="top"
+								width="100"  
+								open-delay="500"
+								trigger="hover"> 
+								<el-button type="primary" style="margin-left:0px;margin-bottom: 10px;"  v-if=" scope.row.dclass==='1' "  @click.stop="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" title="新建特性"  > 新建特性 </el-button>
 
-						<div class="tool-bar hidden-lg-and-up" v-if="!disabledMng">
-								<span class="u-btn">
-									<el-button size="mini"   v-if=" scope.row.dclass==='1' "  @click.stop="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" title="新建特性" circle > </el-button>
-										
-							<el-button  size="mini"    @click.stop="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑" circle  > </el-button>     
-						</span>
-						</div>
-						<div class="tool-bar hidden-md-and-down" v-if="!disabledMng">
-								<span class="u-btn">
-									<el-button size="mini"   v-if=" scope.row.dclass==='1' "  @click.stop="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" title="新建特性" circle > </el-button>
-										
-							<el-button  size="mini"    @click.stop="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑" circle  > </el-button>     
-						</span>
-						</div>
+								<el-button style="margin-left:0px;margin-bottom: 10px;"   @click.stop="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑"   >修改 </el-button>     
+
+ 								<el-button slot="reference" icon="el-icon-setting" circle plain></el-button>
+							</el-popover>  		
+ 						</div>
 						<el-tag style="float:right;" class="hidden-md-and-down" v-for="(item,index) in formatDictsWithClass(dicts,'menuStatus',scope.row.status)" :key="index" :type="item.className">{{item.name}}</el-tag>
 						<span
 							:style="{borderRadius: '30px',color:scope.row.finishRate >= 100 ? 'green' : 'blue',float:'right'}" 
