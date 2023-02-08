@@ -95,59 +95,27 @@
           <el-col :span="8" >
             <el-card class="box-card" style="height:425px">
               <div slot="header" class="clearfix">
-                <span>所有工作项数量分布</span>
+                <span>总预算情况</span>
               </div>
               <div>
-                <div id="allChart" :style="{width: '100%', height: '350px'}"></div>
+                <div id="planTotalCostPie" :style="{width: '100%', height: '320px'}"></div>
               </div>
             </el-card>
-          </el-col>
+          </el-col>  
+
           <el-col :span="8" >
             <el-card class="box-card" style="height:425px">
               <div slot="header" class="clearfix">
-                <span>需求情况</span>
+                <span>关联产品和迭代情况</span>
               </div>
               <div>
-                <div id="menuChart" :style="{width: '100%', height: '320px'}"></div>
-              </div>
-            </el-card>
-          </el-col>
-          
-          <el-col :span="8" >
-            <el-card class="box-card" style="padding:0px ;height:425px">
-              <div slot="header" class="clearfix">
-                <span>任务状态分布</span>
-              </div>
-              <div>
-                <div id="taskChart" :style="{width: '100%', height: '320px'}"></div>
-              </div>
-            </el-card>
-          </el-col>
-          
-          <el-col :span="8" >
-            <el-card class="box-card" style="height:425px">
-              <div slot="header" class="clearfix">
-                <span>测试用例情况</span>
-              </div>
-              <div>
-                <div id="testCasePieChart" :style="{width: '100%', height: '320px'}"></div>
-              </div>
-            </el-card>
-          </el-col>
-          
-          <el-col :span="8" >
-            <el-card class="box-card" style="height:425px">
-              <div slot="header" class="clearfix">
-                <span>缺陷情况</span>
-              </div>
-              <div>
-                <div id="bugPieChart" :style="{width: '100%', height: '320px'}"></div>
+                <div id="iterationAndProduct" :style="{width: '100%', height: '320px'}"></div>
               </div>
             </el-card>
           </el-col>
         </el-row>
-      <el-row :gutter="10" style="margin-bottom:10px">
-          <el-col :span="12" >
+        <el-row :gutter="10" style="margin-bottom:10px">
+          <el-col :span="16" >
             <el-card class="box-card" style="padding:0px ;height:425px">
               <div slot="header" class="clearfix">
                 <span>项目工时</span>
@@ -227,7 +195,7 @@
               </div>
             </el-card>
           </el-col>
-          <el-col :span="12" >
+          <el-col :span="8" >
             <el-card class="box-card" style="height:425px">
               <div slot="header" class="clearfix">
                 <span>合作开发工作量分布</span>
@@ -237,29 +205,64 @@
               </div>
             </el-card>
           </el-col>
+        </el-row> 
+        <el-row :gutter="10">
+          <el-col :span="8" >
+            <el-card class="box-card" style="height:425px">
+              <div slot="header" class="clearfix">
+                <span>所有工作项数量分布</span>
+              </div>
+              <div>
+                <div id="allChart" :style="{width: '100%', height: '350px'}"></div>
+              </div>
+            </el-card>
+          </el-col>
+          <el-col :span="8" >
+            <el-card class="box-card" style="height:425px">
+              <div slot="header" class="clearfix">
+                <span>需求情况</span>
+              </div>
+              <div>
+                <div id="menuChart" :style="{width: '100%', height: '320px'}"></div>
+              </div>
+            </el-card>
+          </el-col>
+          
+          <el-col :span="8" >
+            <el-card class="box-card" style="padding:0px ;height:425px">
+              <div slot="header" class="clearfix">
+                <span>任务状态分布</span>
+              </div>
+              <div>
+                <div id="taskChart" :style="{width: '100%', height: '320px'}"></div>
+              </div>
+            </el-card>
+          </el-col>
+          
         </el-row>
-      <el-row :gutter="10" style="margin-bottom:10px">
-        <el-col :span="8" >
-          <el-card class="box-card" style="height:425px">
-            <div slot="header" class="clearfix">
-              <span>总预算情况</span>
-            </div>
-            <div>
-              <div id="planTotalCostPie" :style="{width: '100%', height: '320px'}"></div>
-            </div>
-          </el-card>
-        </el-col> 
-        <el-col :span="8" >
-          <el-card class="box-card" style="height:425px">
-            <div slot="header" class="clearfix">
-              <span>关联产品和迭代情况</span>
-            </div>
-            <div>
-              <div id="iterationAndProduct" :style="{width: '100%', height: '320px'}"></div>
-            </div>
-          </el-card>
-        </el-col>
-      </el-row>
+        <el-row :gutter="10" style="margin-bottom:10px">
+          <el-col :span="8" >
+            <el-card class="box-card" style="height:425px">
+              <div slot="header" class="clearfix">
+                <span>测试用例情况</span>
+              </div>
+              <div>
+                <div id="testCasePieChart" :style="{width: '100%', height: '320px'}"></div>
+              </div>
+            </el-card>
+          </el-col>
+          
+          <el-col :span="8" >
+            <el-card class="box-card" style="height:425px">
+              <div slot="header" class="clearfix">
+                <span>缺陷情况</span>
+              </div>
+              <div>
+                <div id="bugPieChart" :style="{width: '100%', height: '320px'}"></div>
+              </div>
+            </el-card>
+          </el-col>
+        </el-row>
     </el-row>
   </section>
 </template>
@@ -569,48 +572,65 @@ export default {
 							trigger: 'item',
 							
 						}, 
-						calculable: true,
-						
-						legend:{
-              show:true,
-							bottom: 'bottom',
+						calculable: true, 
+
+            grid: {
+              left: '3%',
+              right: '4%',
+              bottom: '10%',
+              containLabel: true
+            },
+            yAxis: {
+              type: 'value'
+            },
+            xAxis: {
+              type: 'category',
 							data:['未开始','执行中','已完工','已结算','已关闭'],
-						},
-						graphic: {
-							type: 'text',
-							left: 'center',
-              top: '40%',
-							style: {
-							// text: '总数',
-							text:
-								'任务数'+this.totalTask,
-
-							textAlign: 'center',
-							fill: '#333',
-							width: 30,
-							height: 30,
-							fontSize: 14
-							}
-						}, 
-
+            },
 						series: [
 							{
-							type: 'pie',
-              center:['50%','40%'],
-							radius: ['40%','70%'],
-							data:[{name:'未开始',value:this.selProject.taskUnStartCnt},{name:'执行中',value:this.selProject.taskExecCnt},{name:'已完工',value:this.selProject.taskFinishCnt},{name:'已结算',value:this.selProject.taskSetCnt},{name:'已关闭',value:this.selProject.taskCloseCnt}],
-							emphasis: {
-								itemStyle: {
-								shadowBlur: 10,
-								shadowOffsetX: 0,
-								shadowColor: 'rgba(0, 0, 0, 0.5)'
-								}
-							},
+              label: {
+                normal:{
+                  show: true,
+                  position: 'top',
+                  color:'#000000',
+                }
+              },
+							type: 'bar',
+              center:['50%','40%'],  
 
-							label: {
-								show: true, 
-								formatter:'{b}: {c}  ({d}%)'
-							},
+							data:[
+                {name:'未开始',value:this.selProject.taskUnStartCnt,
+                itemStyle: {
+                  normal:{
+                    color: '#FAC858'
+                  }
+                }
+                },
+                {name:'执行中',value:this.selProject.taskExecCnt,
+                itemStyle: {
+                  normal:{
+                    color: '#91CC75'
+                  }
+                }},
+                {name:'已完工',value:this.selProject.taskFinishCnt,
+                itemStyle: {
+                  normal:{
+                    color: '#FAC858'
+                  }
+                }},
+                {name:'已结算',value:this.selProject.taskSetCnt,
+                itemStyle: {
+                  normal:{
+                    color: '#99CCFF'
+                  }
+                }},
+                {name:'已关闭',value:this.selProject.taskCloseCnt,
+                itemStyle: {
+                  normal:{
+                    color: '#EE6666'
+                  }
+                }}],  
 							}
 						] 
       };
