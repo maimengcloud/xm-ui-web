@@ -743,8 +743,11 @@
 	float: right;
 }
 .tool-bar.left{  
-  
-  transform: translate(-100%, -50%);
+  margin-right:6em; 
+}
+
+table tr:hover{
+	 cursor: pointer!important;
 }
 </style>
 
