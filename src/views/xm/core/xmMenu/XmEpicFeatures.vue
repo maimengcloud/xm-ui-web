@@ -1,13 +1,12 @@
 <template>
 	<section class="padding"> 
-		<el-row>
-			<div style="display:flex;">
+		<el-row v-show="!batchVisible">  
+				<div style="display:flex;justify-content: space-between;">
 				<xm-product-select v-if=" !xmProduct || !xmProduct.id" ref="xmProductSelect1" style="display:inline;"  :auto-select="true" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" @clear="onProductClearSelect" ></xm-product-select>
-				<el-input v-else v-model="filters.key" style="width:50%;"  placeholder="名称模糊查询"  clearable></el-input>  
-
-				&nbsp;&nbsp; 
-				<span style="margin-left: auto;">
-					<el-popover
+				<el-input v-else v-model="filters.key"  placeholder="名称模糊查询"  clearable></el-input>  
+				<span style="display:flex;"> 
+ 					<el-popover 
+						style="margin-left:5px;"
 						placement="top-start"
 						width="250"
 						trigger="click" >
@@ -38,9 +37,11 @@
 								<el-button  @click="showImportFromMenuTemplate()" icon="el-icon-upload2">由模板快速导入需求</el-button>
 							</el-row>
 						</el-row>
-						<el-button type="primary" v-if="!disabledMng" round  slot="reference" icon="el-icon-plus"></el-button>
+						<el-button type="primary" v-if="!disabledMng" circle plain  slot="reference" icon="el-icon-plus"></el-button>
 					</el-popover> 
-					<el-popover 
+					<el-popover  
+					
+						style="margin-left:5px;"
 						placement="top-start"
 						title="更多操作"
 						width="400"
@@ -73,26 +74,43 @@
 						<el-row> 
 							<el-button    type="primary"      @click="searchXmMenus" icon="el-icon-search" title="查询" style="float:right;">查询</el-button> 
 						</el-row>  
-						<el-button slot="reference" @click="moreVisible=!moreVisible" icon="el-icon-more"></el-button>
-					</el-popover>  
-			</span>
-			</div>
+						<el-button slot="reference" @click="moreVisible=!moreVisible" icon="el-icon-more" circle plain></el-button>
+					</el-popover>   
+					</span>
+ 				</div>
 			</el-row> 
+			<el-row  v-show="batchVisible"> 
+				<div style="display:flex;">
+				<el-input v-if=" xmProduct  && xmProduct.id" v-model="filters.key"  placeholder="名称模糊查询"  clearable></el-input>  
+
+				<el-button type="danger" 
+					style="margin-left:5px;"
+					@click="batchDel"
+					v-loading="load.del"
+					icon="el-icon-delete"
+					title="批量删除" v-if="!disabledMng"
+					>删除</el-button>
+				<el-button type="primary"  @click="showParentMenu" icon="el-icon-top" title="更换上级">更换上级</el-button> 
+			</div>
+			</el-row>
 		<el-row >
 			<el-table ref="table" :row-style="{height:'46px'}" :cell-style="cellStyleCalc" :expand-row-keys="expandRowKeysCpd" :header-cell-style="cellStyleCalc"    stripe fit border  :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick"
 				element-loading-text="努力加载中"
 				element-loading-spinner="el-icon-loading" 
 			>
-				<template v-if="!disabledMng">
+				<template v-if="batchVisible">
 					<el-table-column sortable type="selection" width="40"></el-table-column> 
 				</template>
 				
-				<el-table-column prop="menuName" label="史诗、特性名称" min-width="150" > 
-					<template slot="header">
+				<el-table-column prop="menuName" label="史诗特性" min-width="150" > 
+					<template slot="header" slot-scope="scope">
 						<div style="display:flex;"> 
-							<div style="text-align: center;line-height: 32px;" title="史诗特性名称">史诗、特性</div> 
- 
-							<el-input v-if=" !xmProduct || !xmProduct.id" v-model="filters.key" style="width:50%;margin-left: auto;"  placeholder="名称模糊查询"  clearable></el-input>  
+							<div style="width:40%;text-align: left;line-height: 32px;" title="史诗特性名称">史诗、特性 
+							</div> 
+							<div style="line-height: 32px;display:flex;justify-content: right;width:60%;">
+								<el-checkbox v-if="!disabledMng" title="您可以批量删除、批量更换上级等操作" v-model="batchVisible"><span style="color:#C0C4CC;">批量</span></el-checkbox>
+								<el-input size="mini" v-if=" !xmProduct || !xmProduct.id" v-model="filters.key"   placeholder="名称模糊查询"  clearable></el-input>  
+							</div>
 						</div>
 					</template>
 					<template slot-scope="scope">  
@@ -200,6 +218,7 @@
     	},
 		data() { 
 			return {
+				batchVisible:false,
 				columnsConfig:[/**{label:'',property:'',isShow:true} */],
 				filters: {
 					key: '',
@@ -416,6 +435,10 @@
 			},  
 			//批量删除xmMenu
 			batchDel: function () {
+				if(!this.batchVisible){
+					this.$notify.warning("请先开启【批量】操作模式")
+					return;
+				}
 				if(this.sels.length==0){
 					this.$notify({position:'bottom-left',showClose:true,message: "请先选择要删除的需求", type: 'warning'});
 					return;
@@ -589,6 +612,11 @@
 				}).catch( err  => this.load.edit=false );
 			},       
 			showParentMenu(){
+				
+				if(!this.batchVisible){
+					this.$notify.warning("请先开启【批量】操作模式")
+					return;
+				}
 				if(this.filters.product && this.filters.product.id){
 					if(this.sels.length==0){
 						this.$notify({position:'bottom-left',showClose:true,message:'请先选择一个或者多个需求',type:'warning'})

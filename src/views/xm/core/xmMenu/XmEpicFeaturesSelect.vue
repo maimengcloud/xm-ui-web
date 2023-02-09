@@ -1,12 +1,15 @@
 <template>
 	<section class="padding"> 
-		<el-row > 
+		<el-row> 
+			
+			<div style="display:flex;">
 			<xm-product-select ref="xmProductSelect1" style="display:inline;" v-if="!xmProduct || !xmProduct.id"   :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClearSelect"></xm-product-select> 
 				
-			<el-input v-if="xmProduct && xmProduct.id" style="width:10em;" v-model="filters.key" placeholder="名称模糊查询"  clearable></el-input>
-			<el-button icon="el-icon-search" @click="searchXmMenus()"></el-button> 
-			<el-button v-if="showSelect!==false && multi===true" type="primary" @click="selectConfirm()">确认选择</el-button> 
-			</el-row>
+			<el-input v-else  v-model="filters.key" placeholder="名称模糊查询"  clearable></el-input>
+			<el-button style="margin-left:5px;" icon="el-icon-search" @click="searchXmMenus()"></el-button> 
+			<el-button style="margin-left:5px;" v-if="showSelect!==false && multi===true" type="primary" @click="selectConfirm()">确认选择</el-button> 
+			</div>
+		</el-row>
 		<el-row>
 			<el-table element-loading-text="努力加载中" :row-style="{height:'46px'}" element-loading-spinner="el-icon-loading"    stripe fit border ref="table" :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
 				<template v-if="showSelect!==false && multi===true">
@@ -14,7 +17,7 @@
 					</el-table-column> 
 				</template>
 				<el-table-column prop="menuName" label="史诗、特性名称" min-width="150" >
-					<template slot="header">史诗、特性名称 
+					<template slot="header">史诗、特性
 						<el-input v-if="!xmProduct || !xmProduct.id" style="width:10em;" v-model="filters.key" placeholder="名称模糊查询"  clearable></el-input>
 					</template>
 					<template slot-scope="scope">

@@ -1,12 +1,12 @@
 <template>
   <section class="padding"> 
-        <el-row>     
-          
-          <span> 
-           <xm-project-select style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="isTaskCenter?false:true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
-           <el-input style="width:50%;" v-else v-model="filters.key" placeholder="名称模糊查询"  clearable @keyup.enter.native="searchXmTasks()"></el-input>
-           <span style="float:right;">
-            <el-popover
+        <el-row v-show="!batchVisible">     
+          <div style="display:flex;justify-content: space-between;">
+               <xm-project-select style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="isTaskCenter?false:true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
+              <el-input v-else v-model="filters.key" placeholder="名称模糊查询"  clearable @keyup.enter.native="searchXmTasks()"></el-input>
+             <span style="display:flex;">
+             <el-popover
+              style="margin-left:5px;"
               placement="top-start"
               title="选择创建计划/任务的方式"
               width="300"
@@ -50,12 +50,14 @@
               <el-button
                 slot="reference" 
                 type="primary"
-                round
+                circle
+                plain 
                 icon="el-icon-plus"
                 title="新建计划"
               ></el-button>
             </el-popover>  
             <el-popover
+              style="margin-left:5px;"
               placement="top-start"
               title="更多条件、操作"
               width="400"
@@ -92,12 +94,27 @@
                   >
                   </span>
                 </el-row> 
-              <el-button slot="reference" @click="moreVisible=!moreVisible">更多</el-button>
+              <el-button slot="reference" @click="moreVisible=!moreVisible" icon="el-icon-more" circle plain></el-button>
             </el-popover> 
           </span>
-          </span>
+           </div>
+           
         </el-row>
-
+        <el-row v-show="batchVisible"> 
+              <el-button type="danger" 
+                      @click="batchDel"
+                      v-loading="load.del"
+                      icon="el-icon-delete"
+                      title="批量删除"
+                      >删除</el-button
+                    >
+                  <el-button 
+                    @click="showParentTaskList"  
+                    title="更换任务的上级，实现任务搬家功能"
+                    icon="el-icon-upload2"
+                    v-loading="load.edit"
+                  > 更换上级</el-button>     
+        </el-row>
         <el-row> 
             <el-table class="task-table" :row-style="{height:'46px'}"
              element-loading-text="努力加载中" element-loading-spinner="el-icon-loading"
@@ -117,22 +134,29 @@
               row-key="id"
               ref="table"
             >
-              <el-table-column
-                label="全选"
-                type="selection"
-                width="50" 
-              >
-              </el-table-column> 
+              <template v-if="batchVisible">
+                <el-table-column
+                  label="全选"
+                  type="selection"
+                  width="50" 
+                >
+                </el-table-column> 
+              </template>
+
               <el-table-column 
                 prop="name"
                 class-name="title" 
                 label="计划名称" 
               > 
-              <template slot="header"> 
+              <template slot="header" slot-scope="scope"> 
 									<div style="display:flex;">
-										<div style="text-align: center;line-height: 32px;">计划名称</div> 
- 										<el-input v-if=" !selProject || !selProject.id" v-model="filters.key" style="width:50%;margin-left: auto;"  placeholder="名称模糊查询"  clearable></el-input>  
-									</div>
+										<div style="width:40%;text-align: left;line-height: 32px;">计划名称</div> 
+                     <div style="line-height: 32px;width:60%;display: flex;justify-content: right;">
+                      <el-checkbox title="您可以批量删除、批量更换上级等操作" v-model="batchVisible"><span style="color:#C0C4CC;">批量</span></el-checkbox>
+                      <el-input v-if="!selProject||!selProject.id"  v-model="filters.key" size="mini" style="margin-left:5px;"  placeholder="名称模糊查询"  clearable></el-input>  
+                    </div>
+
+                  </div>
               </template>
                 <template slot-scope="scope">
                   <!--
@@ -390,6 +414,7 @@ export default {
   },
   data() { 
     return {
+      batchVisible:false,
       filters: {
         key: "",
         isMyTask: "0", //0不区分我的，1 时我的任务
@@ -773,6 +798,10 @@ export default {
     }, 
     //批量删除xmTask
     batchDel: function () {
+      if(!this.batchVisible){
+        this.$notify.warning("请先开启【批量】操作模式")
+        return;
+      }
       if(this.sels.length==0){
         this.$notify.warning("请先选中要删除的记录")
         return;
@@ -976,6 +1005,10 @@ export default {
       return params;
     }, 
     showParentTaskList(){
+      if(!this.batchVisible){
+        this.$notify.warning("请先开启【批量】操作模式")
+        return;
+      }
       if(this.sels.length==0){
         this.$notify({position:'bottom-left',showClose:true,message:"请先选择一个或者多个需要更换上级的计划/任务",type:'warning'})
         return;

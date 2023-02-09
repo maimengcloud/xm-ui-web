@@ -200,7 +200,7 @@
               }} 
               </div>
               </el-link>
-              <el-button type="text" size="mini" title="取消选中状态" circle plain v-if="editForm&&editForm.id" icon="el-icon-circle-close" @click.stop="clearSelect"></el-button>&nbsp;
+              <el-button type="text" size="mini" title="取消选中状态" circle plain v-if="editForm&&editForm.id" icon="el-icon-circle-close" @click.stop="clearSelect"></el-button>
             </slot>
               </span>
         </slot>
