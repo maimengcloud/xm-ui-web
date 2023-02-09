@@ -825,7 +825,7 @@ export default {
           style: {
           // text: '总数',
           text:
-            '总工作量h:'+this.selProject.budgetWorkload,
+            '总工时:'+this.selProject.budgetWorkload,
 
           textAlign: 'center',
           fill: '#333',

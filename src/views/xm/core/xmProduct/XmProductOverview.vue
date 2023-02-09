@@ -813,7 +813,7 @@ export default {
           style: {
           // text: '总数',
           text:
-            '总工作量h:'+this.xmProduct.budgetWorkload,
+            '总工时:'+this.xmProduct.budgetWorkload,
 
           textAlign: 'center',
           fill: '#333',

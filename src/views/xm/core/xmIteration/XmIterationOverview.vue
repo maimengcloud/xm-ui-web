@@ -808,7 +808,7 @@ export default {
           style: {
           // text: '总数',
           text:
-            '总工作量h:'+this.xmIteration.budgetWorkload,
+            '总工时:'+this.xmIteration.budgetWorkload,
 
           textAlign: 'center',
           fill: '#333',
