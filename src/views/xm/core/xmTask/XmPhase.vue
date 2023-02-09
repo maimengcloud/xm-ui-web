@@ -130,11 +130,8 @@
               > 
               <template slot="header"> 
 									<div style="display:flex;">
-										<div style="text-align: center;line-height: 32px;">计划名称</div>
-										&nbsp;&nbsp;
-										<el-button type="text" class="hidden-lg-and-up" icon="el-icon-circle-close" @click="unselectRow()" title="取消选中状态">取消选中状态</el-button>
-										<el-button type="text" class="hidden-md-and-down" icon="el-icon-circle-close" @click="unselectRow()" title="取消选中状态">取消选中状态</el-button>
-										<el-input v-if=" !selProject || !selProject.id" v-model="filters.key" style="width:50%;margin-left: auto;"  placeholder="名称模糊查询"  clearable></el-input>  
+										<div style="text-align: center;line-height: 32px;">计划名称</div> 
+ 										<el-input v-if=" !selProject || !selProject.id" v-model="filters.key" style="width:50%;margin-left: auto;"  placeholder="名称模糊查询"  clearable></el-input>  
 									</div>
               </template>
                 <template slot-scope="scope">

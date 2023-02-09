@@ -12,28 +12,25 @@
 			<el-table ref="xmFuncTable"  element-loading-text="努力加载中" element-loading-spinner="el-icon-loading"  :data="xmFuncsTreeData" :max-height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;" current-row-key="id" row-key="id" :tree-props="{children: 'children'}" >
 				 
                 <el-table-column prop="name" label="模块" min-width="150" > 
-								<template slot="header"> 模块 &nbsp;<slot name="title-bar"></slot><el-button type="text" @click="unselectRow()">取消选中状态</el-button></template>
+								<template slot="header"> 模块 &nbsp;<slot name="title-bar"></slot> </template>
 								<template slot-scope="scope">
 									 
 									<span> {{scope.row.name}}</span> 
- 									 <div class="tool-bar"> 
-                                        <el-popover :open-delay=500
-                                            placement="top-start"
-                                            title="增删改"
-                                            width="400"
-                                            trigger="hover">
-                                            
-                                            <el-button  type="primary"  @click.stop="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" title="新建子模块" >新建子模块 </el-button>
-                                            <el-button      @click.stop="showEdit( scope.row,scope.$index )" icon="el-icon-edit" title="编辑">编辑</el-button> 
-                                            <el-button type="danger" v-loading="load.del" @click="handleDel(scope.row,scope.$index)"   icon="el-icon-delete"  >删除</el-button>
-  
-                                            <el-button slot="reference" icon="el-icon-setting" @click.stop></el-button>
-                                        </el-popover>
-                                                    
+ 
+                                    <el-popover class="tool-bar" :open-delay=500
+                                        placement="top-start"
+                                        title="增删改"
+                                        width="400"
+                                        trigger="hover">
+                                        
+                                        <el-button  type="primary"  @click.stop="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" title="新建子模块" >新建子模块 </el-button>
+                                        <el-button      @click.stop="showEdit( scope.row,scope.$index )" icon="el-icon-edit" title="编辑">编辑</el-button> 
+                                        <el-button type="danger" v-loading="load.del" @click="handleDel(scope.row,scope.$index)"   icon="el-icon-delete"  >删除</el-button>
 
-                                            
-                                         
-									</div>
+                                        <el-button type="text" size="mini" circle plain slot="reference" icon="el-icon-setting" @click.stop></el-button>
+                                    </el-popover> 
+                                    <el-button type="text" size="mini" circle plain v-if="editForm&&editForm.id==scope.row.id" @click.stop="unselectRow()" title="取消选中状态" icon="el-icon-circle-close"></el-button>
+
   								</template> 
 							</el-table-column> 
                             <template v-if="showSelect">
