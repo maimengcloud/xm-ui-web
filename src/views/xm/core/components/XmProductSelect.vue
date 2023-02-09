@@ -13,14 +13,6 @@
           @click="refreshSelect"
           title="重新从后台刷新数据回来"
           >刷新</el-button
-        >&nbsp;&nbsp;
-        <el-button
-          v-if="editForm && editForm.id"
-          type="text"
-          icon="el-icon-circle-close"
-          @click="clearSelect"
-          title="清空当前选中的产品"
-          >取消选中状态&nbsp;&nbsp;</el-button
         >
 		<el-button
               @click="addProductVisible = true"
@@ -167,6 +159,8 @@
             <template slot="header" slot-scope="scope"> 产品名称 </template>
             <template slot-scope="scope">
               <div class="icon" style="background-color:#409eff"><i class="el-icon-s-opportunity" ></i></div><font>{{ scope.row.productName }}</font>
+              <el-button type="text" size="mini" circle plain v-if="editForm&&editForm.id==scope.row.id" @click.stop="clearSelect()" title="取消选中状态" icon="el-icon-circle-close"></el-button>
+
             </template>
           </el-table-column>
         </el-table>
@@ -204,7 +198,7 @@
               }} 
               </div>
               </el-link> 
-              <el-button v-if="editForm&&editForm.id" type="text" icon="el-icon-circle-close" @click.stop="clearSelect"></el-button>&nbsp;
+              <el-button  type="text" size="mini" title="取消选中状态" circle plain v-if="editForm&&editForm.id" icon="el-icon-circle-close" @click.stop="clearSelect"></el-button>&nbsp;
             </slot>
               </div>
             

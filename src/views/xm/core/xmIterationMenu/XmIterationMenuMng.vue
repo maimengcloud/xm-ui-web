@@ -25,7 +25,7 @@
 
 								<el-table-column prop="menuName" label="已加入迭代的用户故事" min-width="140" >
 									<template slot-scope="scope">
-
+										<div style="display:flex;">
 									<div  v-if="scope.row.dclass=='1'" class="icon" style="background-color:  rgb(255, 153, 51);">
 										<i class="el-icon-s-promotion"></i>
 										</div>
@@ -35,14 +35,9 @@
 										<div v-if="scope.row.dclass=='3'" class="icon" style="background-color:  rgb(79, 140, 255);">
 										<i class="el-icon-document"></i>
 									</div>
-										<span class="vlink" type="primary">{{scope.row.seqNo}}
-										&nbsp;&nbsp;{{scope.row.menuName}}
-										</span>
-										<div class="tool-bar">
-											<span class="u-btn"> 
-												<el-button      @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑" circle plain > </el-button>     
-											</span>
-										</div>
+										 <el-link @click="showEdit( scope.row,scope.$index)" >{{scope.row.seqNo}}
+										&nbsp;&nbsp;{{scope.row.menuName}}</el-link>  
+									</div>
 									</template>
 								</el-table-column> 
 								<el-table-column prop="finishRate" label="进度" width="100" show-overflow-tooltip sortable>

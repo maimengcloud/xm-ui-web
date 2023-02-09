@@ -11,9 +11,8 @@
 				icon="el-icon-refresh"
 				@click="refreshSelect"
 				title="重新从后台刷新数据回来"
-				>刷新</el-button>&nbsp;&nbsp;
-				<el-button v-if="clearable!==false && editForm && editForm.id" type="text" icon="el-icon-circle-close" @click="clearSelectIteration" title="清空当前选中的迭代">清空&nbsp;&nbsp;</el-button> 
-				
+				>刷新</el-button> 
+ 				
 				<el-button
 					@click="addIterationVisible = true"
 					icon="el-icon-plus"
@@ -112,6 +111,8 @@
  					<el-table-column prop="iterationName" label="迭代" > 
 						<template slot-scope="scope"> 
 							<div class="icon" style="background-color:#409eff"><i class="el-icon-connection" ></i></div>{{scope.row.iterationName}}  <font   :color="calcFinishRate(scope.row)==100?'green':'#FF8C00'">{{calcFinishRate(scope.row)}}%</font>
+							<el-button type="text" size="mini" circle plain v-if="editForm&&editForm.id==scope.row.id" @click.stop="clearSelectIteration()" title="取消选中状态" icon="el-icon-circle-close"></el-button>
+
 						</template>
 					</el-table-column> 
 				</el-table>
@@ -135,7 +136,7 @@
 									}} 
 									</div>
 							</el-link>
-							 <el-button v-if="editForm&&editForm.id" type="text"  icon="el-icon-circle-close" @click.stop="clearSelectIteration"></el-button>&nbsp;
+							 <el-button type="text" size="mini" title="取消选中状态" circle plain  v-if="editForm&&editForm.id" icon="el-icon-circle-close" @click.stop="clearSelectIteration"></el-button>&nbsp;
 							</slot>
 					</div>
 				</slot>
