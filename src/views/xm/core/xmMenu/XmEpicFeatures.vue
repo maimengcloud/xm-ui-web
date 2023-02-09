@@ -107,7 +107,7 @@
 						</div>
 						<span class="hidden-md-and-down">{{scope.row.seqNo}}</span>
 						<span>{{scope.row.menuName}} </span>
-							<el-popover class="tool-bar" v-if="!disabledMng"  @click.stop
+							<el-popover class="hidden-bar" v-if="!disabledMng"  @click.stop
 								placement="top"
 								width="100"  
 								:open-delay=500

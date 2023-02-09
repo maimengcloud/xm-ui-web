@@ -237,24 +237,37 @@
   padding: 10px 10px 0 !important;
 }
 
+.hidden-bar{  
+	visibility: hidden; 
+}
+
+table tr:hover{
+	.hidden-bar{  
+		visibility: visible;  
+	}
+}
+table tr.hover-row{
+	.hidden-bar{  
+		visibility: visible;  
+	}
+}
 .tool-bar{ 
+  z-index: 500;
+  position:absolute;
 	visibility: hidden;
+  top: 50%; 
+  right:5px; 
+  transform: translate(0%, -50%); 
 }
 
 table tr:hover{
 	.tool-bar{  
-		visibility: visible; 
-		.u-btn{   
-			float: right;
-		} 
+		visibility: visible;  
 	}
 }
 table tr.hover-row{
 	.tool-bar{  
-		visibility: visible; 
-		.u-btn{   
-			float: right;
-		} 
+		visibility: visible;  
 	}
 }
 .cell-box{

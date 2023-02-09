@@ -145,7 +145,7 @@
                   </span>
                   <span> {{ scope.row.name }}
                     </span> 
-                        <el-popover class="tool-bar" @click.stop
+                        <el-popover class="hidden-bar" @click.stop
                           placement="top-start"
                           :open-delay=500 
                           trigger="hover"
