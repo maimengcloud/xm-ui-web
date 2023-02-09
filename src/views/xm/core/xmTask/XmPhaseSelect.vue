@@ -1,13 +1,14 @@
 <template>
-  <section class="padding"> 
-        <el-row>    
-            <xm-project-select style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="isTaskCenter?false:true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
-           <el-input style="width:150px;" v-model="filters.key" placeholder="名称模糊查询" clearable></el-input>
-           <el-button icon="el-icon-search" @click="searchXmTasks()" type="primary"></el-button> 
+  <section> 
+        <el-row>   
+          <div style="display:flex;justify-content: space-between;">
+             <xm-project-select style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="isTaskCenter?false:true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
+           <el-input v-else v-model="filters.key" placeholder="名称模糊查询" clearable></el-input>
+           <el-button style="margin-left:10px;" icon="el-icon-search" @click="searchXmTasks()">查询</el-button> 
+          </div> 
         </el-row>
 
-        <el-row class="padding-top"> 
-            <el-table class="task-table" :row-style="{height:'46px'}" 
+             <el-table class="task-table" 
              element-loading-text="努力加载中" element-loading-spinner="el-icon-loading"
               :data="tasksTreeData"
               @sort-change="sortChange"
@@ -24,14 +25,7 @@
               :tree-props="{ children: 'children'  }"
               row-key="id"
               ref="table" 
-            >
-              <el-table-column
-                label="全选"
-                type="selection"
-                width="50"
-                fixed="left"
-              >
-              </el-table-column> 
+            > 
               <el-table-column 
                 prop="name"
                 class-name="title"
@@ -40,7 +34,16 @@
                 min-width="300" show-overflow-tooltip
               >
               
-              <template slot="header">计划名称</template>
+              
+              <template slot="header" slot-scope="scope"> 
+									<div style="display:flex;">
+										<div style="width:50%;text-align: left;line-height: 32px;">计划名称</div> 
+                     <div style="line-height: 32px;width:50%;display: flex;justify-content: right;">
+                       <el-input v-if="!selProject||!selProject.id"  v-model="filters.key" size="mini" style="margin-left:5px;"  placeholder="名称模糊查询"  clearable></el-input>  
+                    </div>
+
+                  </div>
+              </template>
                 <template slot-scope="scope">
                   <div    class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#409EFF'}">
 									<i :class="scope.row.ntype==='1'?'el-icon-time':'el-icon-s-operation'" ></i>
@@ -48,8 +51,7 @@
                   <span>
                     {{ scope.row.sortLevel }}&nbsp;  {{ scope.row.name }}
                     </span> 
-                    <el-button type="text" size="mini" circle plain v-if="editForm&&editForm.id==scope.row.id" @click.stop="unselectRow()" title="取消选中状态" icon="el-icon-circle-close"></el-button>
-                </template>
+                 </template>
               </el-table-column>
               
               <el-table-column
@@ -67,6 +69,7 @@
               <el-table-column
                 label="操作" 
                 width="100"
+                align="right"
               >  
 								<template slot-scope="scope">
 									<div>
@@ -76,8 +79,8 @@
               </el-table-column> 
 
               
-            </el-table>
-        </el-row>
+            </el-table> 
+            <el-row>
             <el-pagination
               ref="pagination"
               layout="total, sizes, prev, pager, next"
@@ -89,6 +92,7 @@
               :total="pageInfo.total"
               style="float: right; margin-top: 10px;"
             ></el-pagination>   
+          </el-row> 
   </section>
 </template>
 

@@ -310,7 +310,7 @@ table tr.hover-row{
   overflow: hidden;
   white-space: nowrap;  
   max-width:15vw;
-}
+} 
  /**
  *解决表格固定列无法滚动问题
  */
@@ -335,9 +335,12 @@ table tr.hover-row{
 .el-dialog__header{
   padding: 20px !important;  
 }
+.el-dialog__footer{
+  padding: 20px !important;  
+}
 .el-dialog__body{
-  padding-top: 0px !important;
-  padding-bottom: 10px !important;
+  padding-top: 0px !important; 
+  padding-bottom: 20px !important; 
   padding-left: 20px !important;
   padding-right: 20px !important;
 }

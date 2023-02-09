@@ -5,8 +5,8 @@
 			<div style="display:flex;">
 			<xm-product-select ref="xmProductSelect1" style="display:inline;" v-if="!xmProduct || !xmProduct.id"   :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClearSelect"></xm-product-select> 
 				
-			<el-input v-else  v-model="filters.key" placeholder="名称模糊查询"  clearable></el-input>
-			<el-button style="margin-left:5px;" icon="el-icon-search" @click="searchXmMenus()"></el-button> 
+			<el-input v-else v-model="filters.key" placeholder="名称模糊查询"  clearable></el-input>
+			<el-button style="margin-left:5px;" icon="el-icon-search" @click="searchXmMenus()">查询</el-button> 
 			<el-button style="margin-left:5px;" v-if="showSelect!==false && multi===true" type="primary" @click="selectConfirm()">确认选择</el-button> 
 			</div>
 		</el-row>
@@ -31,8 +31,7 @@
 						<i class="el-icon-document"></i>
 						</div>
 						<span class="hidden-md-and-down">{{scope.row.seqNo}} &nbsp;</span><span>{{scope.row.menuName}} </span> 
-						<el-button type="text" size="mini" circle plain v-if="editForm&&editForm.menuId==scope.row.menuId" @click.stop="unselectRow()" title="取消选中状态" icon="el-icon-circle-close"></el-button>
-
+ 
 						<span  style="float:right;"
 							:style="{borderRadius: '30px',color:scope.row.finishRate >= 100 ? 'green' : 'blue'}" 
 						>
@@ -41,7 +40,8 @@
 					</template> 
 				</el-table-column>  
 				<template v-if="showSelect!==false && multi!==true">
-				<el-table-column   label="操作"  width="100"  > 
+				<el-table-column   label="操作"  width="100"  
+                align="right" > 
 					<template slot-scope="scope"> 
 						<el-button      @click="select( scope.row,scope.$index)"   title="选择" type="primary"> 选择</el-button>     
 					</template>
