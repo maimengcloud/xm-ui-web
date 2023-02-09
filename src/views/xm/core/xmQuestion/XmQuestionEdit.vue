@@ -80,11 +80,11 @@
 												<mdp-date-x label="结束时间" style="max-width:100%;" value-format="yyyy-MM-dd HH:mm:ss" v-model="editForm.endTime" @change="editXmQuestionSomeFields(editForm,'endTime',$event)"></mdp-date-x>
  									</el-col>
 								</el-row>
-								<el-tabs v-model="activateTabPaneName">
+								<el-tabs v-model="activateTabPaneName" ref="editRef">
 								
-									<el-tab-pane label="缺陷描述" name="12">
+									<el-tab-pane label="缺陷描述" name="12" >
 										<el-form-item label="" prop="description" label-width="0px">  
-												<vue-editor v-if="visible && activateTabPaneName=='12'" class="rich-context" :id="'description_'+editForm.id" :branch-id="userInfo.branchId" v-model="editForm.description"></vue-editor> 
+												<vue-editor :height="maxTableHeight" v-if="visible && activateTabPaneName=='12'" class="rich-context" :id="'description_'+editForm.id" :branch-id="userInfo.branchId" v-model="editForm.description"></vue-editor> 
 										</el-form-item>
 										<el-row style="float:right;" v-if="opType!=='add'">
 												<el-button @click.native="handleCancel">取消</el-button>
@@ -344,6 +344,7 @@
 				funcVisible:false,
 				stepConfigVisible:false,
 				caseVisible:false,
+				maxTableHeight:300,
 				/**end 在上面加自定义属性**/
 			}//end return
 		},//end data
@@ -676,7 +677,9 @@
 			'xm-workload-record':()=>import("../xmWorkload/XmWorkloadRecord"),
 		},
 		mounted() { 
-			this.initData();
+			this.initData(); 
+			this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.editRef.$el)-200;
+
 			initSimpleDicts('all',['bugSeverity','bugSolution','bugStatus','bugType','priority','bugRepRate','bugReason']).then(res=>{
 				if(res.data.tips.isOk){
 					 this.dicts=res.data.data

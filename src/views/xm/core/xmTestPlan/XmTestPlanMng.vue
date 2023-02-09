@@ -26,7 +26,7 @@
 				    <template slot-scope="scope">
 				        <span> <el-link type="primary" @click="goToTestPlanCase(scope.row)"> {{scope.row.name}}</el-link> </span>
                         <span  class="tool-bar"> 
-                         <el-button type="primary" @click="showEdit(scope.row)" icon="el-icon-edit"  circle title="编辑"></el-button> 
+                         <el-button  @click="showEdit(scope.row)" icon="el-icon-edit"  circle title="编辑"></el-button> 
                          </span>
                     </template>
 				</el-table-column>  

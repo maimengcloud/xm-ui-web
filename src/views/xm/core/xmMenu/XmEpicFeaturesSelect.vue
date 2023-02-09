@@ -1,9 +1,9 @@
 <template>
 	<section class="padding"> 
 		<el-row > 
-			<xm-product-select ref="xmProductSelect1" style="display:inline;" v-if="!xmProduct"   :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClearSelect"></xm-product-select> 
+			<xm-product-select ref="xmProductSelect1" style="display:inline;" v-if="!xmProduct || !xmProduct.id"   :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClearSelect"></xm-product-select> 
 				
-			<el-input style="width:120px;" v-model="filters.key" placeholder="名称模糊查询"  clearable></el-input>
+			<el-input v-if="xmProduct && xmProduct.id" style="width:10em;" v-model="filters.key" placeholder="名称模糊查询"  clearable></el-input>
 			<el-button icon="el-icon-search" @click="searchXmMenus()"></el-button> 
 			<el-button v-if="showSelect!==false && multi===true" type="primary" @click="selectConfirm()">确认选择</el-button> 
 			</el-row>
@@ -14,7 +14,9 @@
 					</el-table-column> 
 				</template>
 				<el-table-column prop="menuName" label="史诗、特性名称" min-width="150" >
-					<template slot="header">史诗、特性名称 &nbsp;<el-button type="text" @click="unselectRow()">清除选中的行</el-button></template>
+					<template slot="header">史诗、特性名称 
+						<el-input v-if="!xmProduct || !xmProduct.id" style="width:10em;" v-model="filters.key" placeholder="名称模糊查询"  clearable></el-input>
+					</template>
 					<template slot-scope="scope">
 						<div  v-if="scope.row.dclass=='1'" class="icon" style="background-color:  rgb(255, 153, 51);">
 						<i class="el-icon-s-promotion"></i>
@@ -25,8 +27,10 @@
 						<div v-if="scope.row.dclass=='3'" class="icon" style="background-color:  rgb(79, 140, 255);">
 						<i class="el-icon-document"></i>
 						</div>
-						<span>{{scope.row.seqNo}} &nbsp; {{scope.row.menuName}} </span> 
-						<span  
+						<span class="hidden-md-and-down">{{scope.row.seqNo}} &nbsp;</span><span>{{scope.row.menuName}} </span> 
+						<el-button type="text" size="mini" circle plain v-if="editForm&&editForm.menuId==scope.row.menuId" @click.stop="unselectRow()" title="清除选中的行" icon="el-icon-circle-close"></el-button>
+
+						<span  style="float:right;"
 							:style="{borderRadius: '30px',color:scope.row.finishRate >= 100 ? 'green' : 'blue'}" 
 						>
 							{{ (scope.row.finishRate != null ? scope.row.finishRate : 0) + "%" }}
