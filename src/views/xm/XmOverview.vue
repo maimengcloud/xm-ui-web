@@ -1,6 +1,44 @@
 <template>
   <section>
-    <el-row :style="{overflowX: 'hidden',height:maxTableHeight+'px'}" ref="table"> 
+    <el-row class="padding" :style="{overflowX: 'hidden',height:maxTableHeight+'px'}" ref="table">
+      <el-row class="row_1" style="margin-bottom:20px;">
+        <div class="r r1">
+          <span style="color: #4779F6">{{formatNum(xmBranch.projectCnt,0) || 0}}</span>
+          <p>项目数</p>
+        </div>
+        <div class="r r2">
+          <span style="color: #4779F6">{{formatNum(xmBranch.budgetWorkload,0) || 0}}</span>
+          <p>项目总工时</p>
+        </div>
+        <div class="r r3">
+          <span style="color: #F6AE47">{{formatNum(xmBranch.productCnt,0) || 0}}</span>
+          <p>产品数</p>
+        </div>
+        <div class="r r4">
+          <span style="color: #F6AE47">{{formatNum(xmBranch.productBudgetWorkload,0) || 0}}</span>
+          <p>产品总工时</p>
+        </div>
+        <div class="r r5">
+          <span style="color: #47CBF6">{{formatNum(xmBranch.phaseCnt,0) || 0}}</span>
+          <p>计划数</p>
+        </div>
+        <div class="r r6">
+          <span style="color: #47CBF6">{{formatNum(xmBranch.iterationCnt,0) || 0}}</span>
+          <p>迭代数</p>
+        </div>
+        <div class="r r7">
+          <span style="color: #F68D47">{{formatNum(xmBranch.planWorkerCnt,0) || 0}}</span>
+          <p>总人数</p>
+        </div>
+        <div class="r r8">
+          <span style="color: #7D7D7D">{{formatNum(xmBranch.taskCnt,0) || 0}}</span>
+          <p>任务数</p>
+        </div>
+        <div class="r r9">
+          <span style="color: #7D7D7D">{{formatNum(xmBranch.menuCnt,0) || 0}}</span>
+          <p>需求数</p>
+        </div>
+      </el-row>
       <el-row :gutter="10">
           <el-col :span="8" >
             <el-card class="box-card" style="padding:0px ;height:425px">
@@ -11,22 +49,22 @@
                   placement="bottom"
                   title="标题"
                   width="200"
-                  trigger="click" > 
+                  trigger="click" >
 
                   <el-row>
                     <el-button type="primary" @click="loadProjectStateToXmBranchState" v-loading="load.calcProduct">计算企业汇总数据</el-button>
                     <br>
                       <font color="blue" style="font-size:10px;">将从项目任务及企业任务中汇总进度、预算工作量、实际工作量、预算金额、实际金额、缺陷数、需求数等数据到企业统计表</font>
-                  </el-row> 
+                  </el-row>
 
                   <el-button slot="reference" style="float:right;" icon="el-icon-video-play" type="text">统计</el-button>
                 </el-popover>
-               
+
               </div>
               <el-row style="margin-bottom:10px">
                 <el-row>
-                  <span>企业</span>&nbsp;<span><b>{{userInfo.branchName}}</b></span> 
-                 </el-row> 
+                  <span>企业</span>&nbsp;<span><b>{{userInfo.branchName}}</b></span>
+                 </el-row>
               </el-row>
               <el-row style="margin-bottom:10px">
                 <el-col :span="8">
@@ -86,7 +124,7 @@
                     <div class="title"> 需求数： {{this.xmBranch.menuCnt||0}}</div>
                   </div>
                 </div>
-              </el-row> 
+              </el-row>
               <el-row style="margin-bottom:10px">
                 <div class="item">
                   <div class="icon2" style="background-color:  rgb(204, 204, 204);">
@@ -96,7 +134,7 @@
                     <div class="progress-item">
                       <el-progress :percentage="realProgress">
                       </el-progress>
-                      
+
                       <el-tag v-if="planProgress>realProgress" type="danger" effect="dark">整体进度 落后{{ planProgress-realProgress }}%</el-tag>
                           <el-tag v-else-if="planProgress<realProgress" type="warning" effect="dark">整体进度 超前{{ realProgress-planProgress }}%</el-tag>
                           <el-tag v-else effect="dark" type="success">整体进度 理想</el-tag>
@@ -117,7 +155,7 @@
                 <div id="planTotalCostPie" :style="{width: '100%', height: '320px'}"></div>
               </div>
             </el-card>
-          </el-col>  
+          </el-col>
 
           <el-col :span="8" >
             <el-card class="box-card" style="height:425px">
@@ -165,7 +203,7 @@
                         </div>
                         <div style="text-align:center;font-size:5px;" title="已登记的工时">已完成工时</div>
                       </div>
-                    </el-col> 
+                    </el-col>
                   </div>
                 </el-row>
                 <el-row  >
@@ -221,7 +259,7 @@
               </div>
             </el-card>
           </el-col>
-        </el-row> 
+        </el-row>
         <el-row :gutter="10" style="margin-bottom:10px">
           <el-col :span="8" >
             <el-card class="box-card" style="height:425px">
@@ -243,7 +281,7 @@
               </div>
             </el-card>
           </el-col>
-          
+
           <el-col :span="8" >
             <el-card class="box-card" style="padding:0px ;height:425px">
               <div slot="header" class="clearfix">
@@ -254,7 +292,7 @@
               </div>
             </el-card>
           </el-col>
-          
+
         </el-row>
         <el-row :gutter="10" style="margin-bottom:10px">
           <el-col :span="8" >
@@ -267,7 +305,7 @@
               </div>
             </el-card>
           </el-col>
-          
+
           <el-col :span="8" >
             <el-card class="box-card" style="height:425px">
               <div slot="header" class="clearfix">
@@ -286,9 +324,9 @@
 <script>
 import util from "@/common/js/util"; // 全局公共库
 import { mapGetters } from "vuex";
-import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询 
-	import { listXmBranchState} from '@/api/xm/core/xmBranchState'; 
-import { loadTasksToXmMenuState} from '@/api/xm/core/xmMenuState'; 
+import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
+	import { listXmBranchState} from '@/api/xm/core/xmBranchState';
+import { loadTasksToXmMenuState} from '@/api/xm/core/xmMenuState';
   import {  loadProjectStateToXmBranchState} from '@/api/xm/core/xmBranchState';
   import store from '@/store'
 export default {
@@ -302,7 +340,7 @@ export default {
     },
     totalTask: function() {
       return this.xmBranch.taskCnt;
-    }, 
+    },
     taskStartTime: function (){
       return this.xmBranch.startTime?this.xmBranch.startTime.substring(0,10):'';
     },
@@ -319,9 +357,9 @@ export default {
       return Math.round(this.xmBranch.actWorkload/this.xmBranch.budgetWorkload*100);
     },
     deviation:function (){
-      
+
         return  this.xmBranch.actWorkload-this.xmBranch.estimateWorkload
-       
+
     },
     deviationRate:function (){
       return Math.round(this.deviation/this.xmBranch.estimateWorkload*100);
@@ -347,7 +385,7 @@ export default {
     },
     xmBranchStateCpd(){
       return this.xmBranch
-    }, 
+    },
 
   },
 
@@ -449,19 +487,19 @@ export default {
       // 绘制图表
       allChart.setOption(option);
     },
-    
+
     drawMenuPie() {
       let taskChart = this.$echarts.init(document.getElementById("menuChart"));
-      let option = {  
-						title: { 
+      let option = {
+						title: {
 							left: 'center'
-						}, 
+						},
 						tooltip: {
 							trigger: 'item',
-							
-						}, 
+
+						},
 						calculable: true,
-						
+
 						legend:{
               show:true,
 							bottom: 'bottom',
@@ -482,7 +520,7 @@ export default {
 							height: 30,
 							fontSize: 14
 							}
-						}, 
+						},
 
 						series: [
 							{
@@ -499,29 +537,29 @@ export default {
 							},
 
 							label: {
-								show: true, 
+								show: true,
 								formatter:'{b}: {c}  ({d}%)'
 							},
 							}
-						] 
+						]
       };
 
       // 绘制图表
       taskChart.setOption(option);
     },
-    
+
     drawTestCasePie() {
       let taskChart = this.$echarts.init(document.getElementById("testCasePieChart"));
-      let option = {  
-						title: { 
+      let option = {
+						title: {
 							left: 'center'
-						}, 
+						},
 						tooltip: {
 							trigger: 'item',
-							
-						}, 
+
+						},
 						calculable: true,
-						
+
 						legend:{
               show:true,
 							bottom: 'bottom',
@@ -542,7 +580,7 @@ export default {
 							height: 30,
 							fontSize: 14
 							}
-						}, 
+						},
 
 						series: [
 							{
@@ -559,11 +597,11 @@ export default {
 							},
 
 							label: {
-								show: true, 
+								show: true,
 								formatter:'{b}: {c}  ({d}%)'
 							},
 							}
-						] 
+						]
       };
 
       // 绘制图表
@@ -571,15 +609,15 @@ export default {
     },
     drawTask() {
       let taskChart = this.$echarts.init(document.getElementById("taskChart"));
-      let option = {  
-						title: { 
+      let option = {
+						title: {
 							left: 'center'
-						}, 
+						},
 						tooltip: {
 							trigger: 'item',
-							
-						}, 
-						calculable: true, 
+
+						},
+						calculable: true,
 
             grid: {
               left: '3%',
@@ -604,7 +642,7 @@ export default {
                 }
               },
 							type: 'bar',
-              center:['50%','40%'],  
+              center:['50%','40%'],
 
 							data:[
                 {name:'未开始',value:this.xmBranch.taskUnstartCnt,
@@ -637,9 +675,9 @@ export default {
                   normal:{
                     color: '#EE6666'
                   }
-                }}],  
+                }}],
 							}
-						] 
+						]
       };
 
       // 绘制图表
@@ -648,14 +686,14 @@ export default {
     drawPieBug() {
       let bugPieChart = this.$echarts.init(document.getElementById("bugPieChart"));
       let option = {
-        title: { 
+        title: {
 							left: 'center'
-						}, 
+						},
         tooltip: {
           trigger: 'item',
           formatter: '{b} : {c} ({d}%)'
         },
-        legend: {   
+        legend: {
           show:true,
 					bottom: 'bottom',
           data:['已激活','已确认','已解决','已关闭']
@@ -675,15 +713,15 @@ export default {
           height: 30,
           fontSize: 14
           }
-        }, 
+        },
         series: [
           {
 
             type: 'pie',
             center:['50%','40%'],
             radius: ['35%','60%'],
-            label:{ 
-								show: true, 
+            label:{
+								show: true,
 								formatter:'{b}: {c}  ({d}%)'
             },
             data: [
@@ -715,7 +753,7 @@ export default {
                   }
                 },
                 name: '已关闭'},
-            ], 
+            ],
           }
         ]
       };
@@ -816,7 +854,7 @@ export default {
           height: 30,
           fontSize: 14
           }
-        }, 
+        },
         series: [
           {
             type: 'pie',
@@ -836,7 +874,7 @@ export default {
                 margin:10
               }
             },
-            
+
             data: [
               {value: this.xmBranch.budgetIuserWorkload,
                 itemStyle: {
@@ -884,7 +922,7 @@ export default {
         yAxis: {
           type: 'value'
         },
-        series: [{  
+        series: [{
             label: {
               normal:{
                 show: true,
@@ -892,7 +930,7 @@ export default {
                 color:'#000000',
               }
             },
-          
+
           data: [
             {
                 value: this.xmBranch.productCnt,
@@ -917,10 +955,10 @@ export default {
                     color: '#FAC858'
                   }
                 }
-              },  
-        
+              },
+
         ],
-          type: 'bar', 
+          type: 'bar',
         }]
       };
 
@@ -928,44 +966,53 @@ export default {
       iterationAndProduct.setOption(option);
     },
 
-    
+
     loadProjectStateToXmBranchState(){
         var row=this.xmBranch;
         var params={id:row.id}
         this.load.calcProject=true;
       loadProjectStateToXmBranchState(params).then((res1) => {
-          this.load.calcProject=false; 
+          this.load.calcProject=false;
           this.load.list=true;
           listXmBranchState({id:row.id}).then(res=>{
             this.load.list=false;
             var tips = res.data.tips;
             if(tips.isOk){
-              this.xmBranch=res.data.data[0]    
+              this.xmBranch=res.data.data[0]
             }
             this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
           })
-          
-        }).catch( err  => this.load.calcProject=false ); 
+
+        }).catch( err  => this.load.calcProject=false );
     },
     loadTasksToXmMenuState(){
         var row=this.xmBranch;
         var params={productId:row.id}
       loadTasksToXmMenuState(params).then((res) => {
           this.load.calcProject=false;
-          var tips=res.data.tips; 
+          var tips=res.data.tips;
           this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
-        }).catch( err  => this.load.calcProject=false ); 
+        }).catch( err  => this.load.calcProject=false );
+    },
+
+
+    formatNum(num,defVal){
+      if(num){
+       return parseInt(num)
+      }else{
+        return defVal
+      }
     },
   },
 
   mounted() {
-    
+
     listXmBranchState({id:this.userInfo.branchId}).then(res=>{
             this.load.list=false;
             var tips = res.data.tips;
             if(tips.isOk){
-              this.xmBranch=res.data.data[0]    
-              
+              this.xmBranch=res.data.data[0]
+
               this.drawAllBar();
               this.drawMenuPie();
               this.drawTask();
@@ -979,11 +1026,11 @@ export default {
     this.$nextTick(() => {
       this.maxTableHeight=util.calcTableMaxHeight(this.$refs.table.$el)
     });
-			
+
 			initSimpleDicts('all',['xmBranchPstatus']).then(res=>{
 				this.dicts=res.data.data;
 			})
-    
+
 
   },
 
@@ -1011,19 +1058,19 @@ export default {
 
 .icon {
   color: #fff;
-  height: 30px; 
+  height: 30px;
   border-radius: 15px;
-  text-align: center; 
+  text-align: center;
   font-size: 20px;
   display: inline-block;
   margin-right: 5px;
 }
 
 .icon2 {
-  color: #000000; 
+  color: #000000;
   width: 30px;
   border-radius: 15px;
-  text-align: center; 
+  text-align: center;
   font-size: 20px;
   display: inline-block;
   margin-right: 5px;
@@ -1096,5 +1143,30 @@ export default {
   display: flex;
   justify-content: flex-start;
 }
+.row_1 {
+  background-color: #fff;
+  display: flex;
+  flex-direction: row;
+  height: 120px;
+  margin-top: 10px;
+  .r {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    span {
+      margin-bottom: 14px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    p {
+      font-size: 18px;
+      color: #7D7D7D;
+      font-weight: bold;
+      opacity: 0.55;
+    }
+  }
+}
 </style>
- 
+
