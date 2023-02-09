@@ -7,7 +7,7 @@
         </el-row>
 
         <el-row class="padding-top"> 
-            <el-table class="task-table" row-style="height:46px;"
+            <el-table class="task-table" :row-style="{height:'46px'}" 
              element-loading-text="努力加载中" element-loading-spinner="el-icon-loading"
               :data="tasksTreeData"
               @sort-change="sortChange"
@@ -40,7 +40,7 @@
                 min-width="300" show-overflow-tooltip
               >
               
-              <template slot="header">计划名称 &nbsp;<el-button type="text" @click="unselectRow()">取消选中状态</el-button></template>
+              <template slot="header">计划名称</template>
                 <template slot-scope="scope">
                   <div    class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#409EFF'}">
 									<i :class="scope.row.ntype==='1'?'el-icon-time':'el-icon-s-operation'" ></i>
@@ -48,6 +48,7 @@
                   <span>
                     {{ scope.row.sortLevel }}&nbsp;  {{ scope.row.name }}
                     </span> 
+                    <el-button type="text" size="mini" circle plain v-if="editForm&&editForm.id==scope.row.id" @click.stop="unselectRow()" title="取消选中状态" icon="el-icon-circle-close"></el-button>
                 </template>
               </el-table-column>
               

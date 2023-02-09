@@ -17,7 +17,7 @@
 									 
 									<span> {{scope.row.name}}</span> 
  									 <div class="tool-bar"> 
-                                        <el-popover :open-delay="500"
+                                        <el-popover :open-delay=500
                                             placement="top-start"
                                             title="增删改"
                                             width="400"

@@ -99,7 +99,7 @@
         </el-row>
 
         <el-row> 
-            <el-table class="task-table" row-style="height:46px;"
+            <el-table class="task-table" :row-style="{height:'46px'}"
              element-loading-text="努力加载中" element-loading-spinner="el-icon-loading"
               :data="tasksTreeData"
               @sort-change="sortChange"
@@ -147,12 +147,10 @@
                     {{ scope.row.sortLevel }}&nbsp;
                   </span>
                   <span> {{ scope.row.name }}
-                    </span>
-                    <div class="tool-bar" @click.stop> 
-                        <el-popover
+                    </span> 
+                        <el-popover class="tool-bar" @click.stop
                           placement="top-start"
-                          open-delay="500"
-                          title="创建、修改计划" 
+                          :open-delay=500 
                           trigger="hover"
                         >
                           <el-row>
@@ -180,19 +178,16 @@
                           <el-row>
                              
                             <el-button      @click.stop="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑"  > 编辑计划</el-button>     
-                          </el-row>
-                          <el-row>
-                             
-                            <el-button   v-if="editForm && editForm.id==scope.row.id"   @click.stop="unselectRow()" icon="el-icon-close" title="编辑"  > 取消选中状态状态</el-button>     
-                          </el-row>
-                           <el-button   slot="reference"  icon="el-icon-setting" title="新建\修改计划" circle plain > </el-button>   
+                          </el-row> 
+                          <el-button type="text" slot="reference" icon="el-icon-setting" size="mini" circle plain></el-button>
 
-                        </el-popover>  
-									</div>
+                        </el-popover>   
+                  <el-button type="text" size="mini" circle plain v-if="editForm&&editForm.id==scope.row.id" @click.stop="unselectRow()" title="取消选中状态" icon="el-icon-circle-close"></el-button>
+
                   <el-tag style="float: right;" class="hidden-md-and-down" v-for="(item,index) in formatDictsWithClass(dicts,'taskState',scope.row.taskState)" :key="index" :type="item.className">{{item.name}}</el-tag>
 
                   <el-link
-                    style="border-radius: 30px; float: right;"
+                    style="float: right;line-height: 24px;height: 24px;"
                     :type="scope.row.rate >= 100 ? 'success' : 'warning'"
                     @click.stop="calcProgress(scope.row)"
                     class="el-icon-refresh"

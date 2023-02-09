@@ -79,7 +79,7 @@
 			</div>
 			</el-row> 
 		<el-row >
-			<el-table ref="table" row-style="height:46px;" :cell-style="cellStyleCalc" :expand-row-keys="expandRowKeysCpd" :header-cell-style="cellStyleCalc"    stripe fit border  :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick"
+			<el-table ref="table" :row-style="{height:'46px'}" :cell-style="cellStyleCalc" :expand-row-keys="expandRowKeysCpd" :header-cell-style="cellStyleCalc"    stripe fit border  :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick"
 				element-loading-text="努力加载中"
 				element-loading-spinner="el-icon-loading" 
 			>
@@ -110,7 +110,7 @@
 							<el-popover class="tool-bar" v-if="!disabledMng"  @click.stop
 								placement="top"
 								width="100"  
-								open-delay="500"
+								:open-delay=500
 								trigger="hover"> 
 								<el-button type="primary" style="margin-left:0px;margin-bottom: 10px;"  v-if=" scope.row.dclass==='1' "  @click.stop="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" title="新建特性"  > 新建特性 </el-button>
 
