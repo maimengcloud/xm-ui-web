@@ -13,15 +13,7 @@
           @click="refreshSelect"
           title="重新从后台刷新数据回来"
           >刷新</el-button
-        >&nbsp;&nbsp;
-        <el-button
-          v-if="editForm && editForm.id"
-          type="text"
-          icon="el-icon-circle-close"
-          @click="clearSelect"
-          title="清空当前选中的项目"
-          >取消选中状态&nbsp;&nbsp;</el-button
-        >
+        > 
 		<el-button
               @click="addProjectVisible = true"
               icon="el-icon-plus"
@@ -170,6 +162,8 @@
             </template>
             <template slot-scope="scope">
              <div class="icon" style="background-color:#ffd04b"><i class="el-icon-odometer" ></i></div><font>{{ scope.row.name }}</font>
+             <el-button type="text" size="mini" circle plain v-if="editForm&&editForm.id==scope.row.id" @click.stop="clearSelect()" title="取消选中状态" icon="el-icon-circle-close"></el-button>
+
             </template>
           </el-table-column>
         </el-table>

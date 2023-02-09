@@ -14,7 +14,7 @@
               >
               <template v-slot:title="{project}">
                 <h4 href="#"><div style="max-width:15vw;" class="res-text hidden-md-and-down"><i style="font-size:16px;" class="el-icon-sort"></i> {{project && project.id?project.name:'请选择一个项目'}}</div></h4>
-                <h4 href="#"><div style="max-width:19vw;" class="res-text hidden-lg-and-up"><i style="font-size:16px;" class="el-icon-sort"></i> {{project & project.id ?project.name:'请选择一个项目'}}</div></h4>
+                <h4 href="#"><div style="max-width:19vw;" class="res-text hidden-lg-and-up"><i style="font-size:16px;" class="el-icon-sort"></i> {{project && project.id ?project.name:'请选择一个项目'}}</div></h4>
               </template>
             </xm-project-select> 
           </el-row> 
