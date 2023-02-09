@@ -6,14 +6,14 @@
         :class="{ 'flex-box': displayType == 'agil' }"
       >
         <el-row>
-          <xm-project-select style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="isTaskCenter?false:true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
+           <xm-project-select style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="isTaskCenter?false:true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
           
  
           <el-select
             v-model="selkey"
             placeholder="场景"
             clearable 
-            style="width: 100px"
+            style="width: 8em;"
           >
             <el-option class="showall" value="" label="全部场景"
               >全部场景</el-option
@@ -34,12 +34,12 @@
               >我放弃的</el-option
             >
           </el-select>
-          <mdp-select-dict class="hidden-md-and-down" placeholder="任务状态" style="width: 100px"  clearable :dict="dicts['taskState']" v-model="filters.taskState"/>
+          <mdp-select-dict class="hidden-md-and-down" placeholder="状态" style="width: 6em;"  clearable :dict="dicts['taskState']" v-model="filters.taskState"/>
 
-          <mdp-select-dict class="hidden-md-and-down" placeholder="类型" style="width: 100px"  clearable :dict="dicts['taskType']" v-model="filters.taskType"/>
+          <mdp-select-dict class="hidden-md-and-down" placeholder="类型" style="width: 6em;"  clearable :dict="dicts['taskType']" v-model="filters.taskType"/>
  
           <el-input
-            style="max-width: 200px"
+            style="width: 15em;"
             v-model="filters.key" clearable
             placeholder="任务名称"
           >
@@ -331,7 +331,7 @@
             ></el-button
           >
           </span>
-        </el-row>
+         </el-row>
 
         <el-row ref="table">
           <template v-if="displayType!='grant'">

@@ -3,11 +3,11 @@
 				<el-row>
 					<xm-product-select ref="xmProductSelect1" style="display:inline;" v-if="(!xmProduct||!xmProduct.id)&&(!xmIteration||!xmIteration.id)"   :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClearSelect"></xm-product-select>
 
-					<mdp-select-dict v-model="filters.priority" placeholder="优先级"  clearable style="width: 100px;" :dict="dicts['priority']">
+					<mdp-select-dict v-model="filters.priority" placeholder="优先级"  clearable style="width: 6em;" :dict="dicts['priority']">
 					</mdp-select-dict>
-					<mdp-select-dict v-model="filters.status" placeholder="需求状态" clearable style="width: 100px;" :dict="dicts['menuStatus']">
+					<mdp-select-dict v-model="filters.status" placeholder="状态" clearable style="width: 6em;" :dict="dicts['menuStatus']">
 					</mdp-select-dict>
-					<el-input v-model="filters.key" style="max-width: 200px;" placeholder="需求名称查询" clearable>
+					<el-input v-model="filters.key" style="max-width: 15em;" placeholder="需求名称查询" clearable>
 					</el-input>
 					<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search"></el-button>
 
