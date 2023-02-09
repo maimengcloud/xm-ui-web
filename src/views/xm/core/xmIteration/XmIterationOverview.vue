@@ -607,7 +607,7 @@ export default {
               center:['50%','40%'],  
 
 							data:[
-                {name:'未开始',value:this.xmIteration.taskUnStartCnt,
+                {name:'未开始',value:this.xmIteration.taskUnstartCnt,
                 itemStyle: {
                   normal:{
                     color: '#FAC858'

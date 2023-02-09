@@ -624,7 +624,7 @@ export default {
               center:['50%','40%'],  
 
 							data:[
-                {name:'未开始',value:this.selProject.taskUnStartCnt,
+                {name:'未开始',value:this.selProject.taskUnstartCnt,
                 itemStyle: {
                   normal:{
                     color: '#FAC858'

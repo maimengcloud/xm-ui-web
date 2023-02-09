@@ -14,15 +14,10 @@
                   trigger="click" > 
 
                   <el-row>
-                    <el-button type="primary" @click="loadTasksToXmBranchState" v-loading="load.calcProduct">计算企业汇总数据</el-button>
+                    <el-button type="primary" @click="loadProjectStateToXmBranchState" v-loading="load.calcProduct">计算企业汇总数据</el-button>
                     <br>
                       <font color="blue" style="font-size:10px;">将从项目任务及企业任务中汇总进度、预算工作量、实际工作量、预算金额、实际金额、缺陷数、需求数等数据到企业统计表</font>
-                  </el-row>
-                  <el-row>
-                    <el-button  type="primary" @click="loadTasksToXmMenuState"  v-loading="load.calcMenu">计算所有需求数据</el-button>
-                    <br>
-                      <font color="blue"  style="font-size:10px;">将从项目任务汇总进度、预算工作量、实际工作量、预算金额、实际金额等数据到需求统计表</font>
-                  </el-row>
+                  </el-row> 
 
                   <el-button slot="reference" style="float:right;" icon="el-icon-video-play" type="text">统计</el-button>
                 </el-popover>
@@ -127,7 +122,7 @@
           <el-col :span="8" >
             <el-card class="box-card" style="height:425px">
               <div slot="header" class="clearfix">
-                <span>关联企业和迭代情况</span>
+                <span>产品、项目、迭代个数统计</span>
               </div>
               <div>
                 <div id="iterationAndProduct" :style="{width: '100%', height: '350px'}"></div>
@@ -294,7 +289,7 @@ import { mapGetters } from "vuex";
 import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询 
 	import { listXmBranchState} from '@/api/xm/core/xmBranchState'; 
 import { loadTasksToXmMenuState} from '@/api/xm/core/xmMenuState'; 
-  import {  loadTasksToXmBranchState} from '@/api/xm/core/xmBranchState';
+  import {  loadProjectStateToXmBranchState} from '@/api/xm/core/xmBranchState';
   import store from '@/store'
 export default {
   computed: {
@@ -612,7 +607,7 @@ export default {
               center:['50%','40%'],  
 
 							data:[
-                {name:'未开始',value:this.xmBranch.taskUnStartCnt,
+                {name:'未开始',value:this.xmBranch.taskUnstartCnt,
                 itemStyle: {
                   normal:{
                     color: '#FAC858'
@@ -934,23 +929,18 @@ export default {
     },
 
     
-    loadTasksToXmBranchState(){
+    loadProjectStateToXmBranchState(){
         var row=this.xmBranch;
         var params={id:row.id}
         this.load.calcProject=true;
-      loadTasksToXmBranchState(params).then((res1) => {
+      loadProjectStateToXmBranchState(params).then((res1) => {
           this.load.calcProject=false; 
           this.load.list=true;
           listXmBranchState({id:row.id}).then(res=>{
             this.load.list=false;
             var tips = res.data.tips;
             if(tips.isOk){
-              var xmBranch=res.data.data[0]  
-              if(this.xmBranch && this.xmBranch.id){
-                store.dispatch('setXmBranch',xmBranch)
-              } 
-              Object.assign(this.xmBranch,xmBranch)
-              this.$emit("edit-fields",xmBranch);
+              this.xmBranch=res.data.data[0]    
             }
             this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
           })
