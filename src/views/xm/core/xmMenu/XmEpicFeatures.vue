@@ -79,7 +79,7 @@
 			</div>
 			</el-row> 
 		<el-row >
-			<el-table ref="table" :cell-style="cellStyleCalc" :expand-row-keys="expandRowKeysCpd" :header-cell-style="cellStyleCalc"    stripe fit border  :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick"
+			<el-table ref="table" row-style="height:46px;" :cell-style="cellStyleCalc" :expand-row-keys="expandRowKeysCpd" :header-cell-style="cellStyleCalc"    stripe fit border  :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick"
 				element-loading-text="努力加载中"
 				element-loading-spinner="el-icon-loading" 
 			>
@@ -90,15 +90,12 @@
 				<el-table-column prop="menuName" label="史诗、特性名称" min-width="150" > 
 					<template slot="header">
 						<div style="display:flex;"> 
-							<div style="text-align: center;line-height: 32px;" title="史诗特性名称">史诗、特性</div>
-							&nbsp;&nbsp;
-							<el-button type="text" icon="el-icon-circle-close " class="hidden-md-and-down" @click="unselectRow()" title="清除选中的行">清除选中</el-button>
-							<el-button type="text" icon="el-icon-circle-close " class="hidden-lg-and-up" @click="unselectRow()" title="清除选中的行"></el-button>
-
+							<div style="text-align: center;line-height: 32px;" title="史诗特性名称">史诗、特性</div> 
+ 
 							<el-input v-if=" !xmProduct || !xmProduct.id" v-model="filters.key" style="width:50%;margin-left: auto;"  placeholder="名称模糊查询"  clearable></el-input>  
 						</div>
 					</template>
-					<template slot-scope="scope"> 
+					<template slot-scope="scope">  
 						<div  v-if="scope.row.dclass=='1'" class="icon hidden-md-and-down" style="background-color:  rgb(255, 153, 51);">
 						<i class="el-icon-s-promotion"></i>
 						</div>
@@ -108,10 +105,9 @@
 						<div v-if="scope.row.dclass=='3'" class="icon hidden-md-and-down" style="background-color:  rgb(79, 140, 255);">
 						<i class="el-icon-document"></i>
 						</div>
-						<span class="hidden-md-and-down">{{scope.row.seqNo}}</span><span>{{scope.row.menuName}} </span>
-						
-						<div class="tool-bar" v-if="!disabledMng" @click.stop>
-							<el-popover 
+						<span class="hidden-md-and-down">{{scope.row.seqNo}}</span>
+						<span>{{scope.row.menuName}} </span>
+							<el-popover class="tool-bar" v-if="!disabledMng"  @click.stop
 								placement="top"
 								width="100"  
 								open-delay="500"
@@ -120,15 +116,16 @@
 
 								<el-button style="margin-left:0px;margin-bottom: 10px;"   @click.stop="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑"   >修改 </el-button>     
 
- 								<el-button slot="reference" icon="el-icon-setting" circle plain></el-button>
+ 								<el-button type="text" slot="reference" icon="el-icon-setting" size="mini" circle plain></el-button>
 							</el-popover>  		
- 						</div>
+						 <el-button type="text" size="mini" circle plain v-if="editForm&&editForm.menuId==scope.row.menuId" @click.stop="unselectRow()" title="取消选中状态" icon="el-icon-circle-close"></el-button>
+
 						<el-tag style="float:right;" class="hidden-md-and-down" v-for="(item,index) in formatDictsWithClass(dicts,'menuStatus',scope.row.status)" :key="index" :type="item.className">{{item.name}}</el-tag>
 						<span
 							:style="{borderRadius: '30px',color:scope.row.finishRate >= 100 ? 'green' : 'blue',float:'right'}" 
 						>
 							{{ (scope.row.finishRate != null ? scope.row.finishRate : 0) + "%" }}
-						</span>  
+						</span>   
 					</template> 
 				</el-table-column> 
 			</el-table>  

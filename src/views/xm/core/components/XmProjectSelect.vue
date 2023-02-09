@@ -20,7 +20,7 @@
           icon="el-icon-circle-close"
           @click="clearSelect"
           title="清空当前选中的项目"
-          >清除选中&nbsp;&nbsp;</el-button
+          >取消选中状态&nbsp;&nbsp;</el-button
         >
 		<el-button
               @click="addProjectVisible = true"

@@ -8,7 +8,7 @@
 			<el-button v-if="showSelect!==false && multi===true" type="primary" @click="selectConfirm()">确认选择</el-button> 
 			</el-row>
 		<el-row>
-			<el-table element-loading-text="努力加载中" element-loading-spinner="el-icon-loading"    stripe fit border ref="table" :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
+			<el-table element-loading-text="努力加载中" row-style="height:46px;" element-loading-spinner="el-icon-loading"    stripe fit border ref="table" :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
 				<template v-if="showSelect!==false && multi===true">
 					<el-table-column   label="" type="selection"  width="60"  >  
 					</el-table-column> 
@@ -28,7 +28,7 @@
 						<i class="el-icon-document"></i>
 						</div>
 						<span class="hidden-md-and-down">{{scope.row.seqNo}} &nbsp;</span><span>{{scope.row.menuName}} </span> 
-						<el-button type="text" size="mini" circle plain v-if="editForm&&editForm.menuId==scope.row.menuId" @click.stop="unselectRow()" title="清除选中的行" icon="el-icon-circle-close"></el-button>
+						<el-button type="text" size="mini" circle plain v-if="editForm&&editForm.menuId==scope.row.menuId" @click.stop="unselectRow()" title="取消选中状态" icon="el-icon-circle-close"></el-button>
 
 						<span  style="float:right;"
 							:style="{borderRadius: '30px',color:scope.row.finishRate >= 100 ? 'green' : 'blue'}" 

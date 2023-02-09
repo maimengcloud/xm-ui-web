@@ -99,7 +99,7 @@
         </el-row>
 
         <el-row> 
-            <el-table class="task-table" 
+            <el-table class="task-table" row-style="height:46px;"
              element-loading-text="努力加载中" element-loading-spinner="el-icon-loading"
               :data="tasksTreeData"
               @sort-change="sortChange"
@@ -132,8 +132,8 @@
 									<div style="display:flex;">
 										<div style="text-align: center;line-height: 32px;">计划名称</div>
 										&nbsp;&nbsp;
-										<el-button type="text" class="hidden-lg-and-up" icon="el-icon-circle-close" @click="unselectRow()" title="清除选中的行">清除选中</el-button>
-										<el-button type="text" class="hidden-md-and-down" icon="el-icon-circle-close" @click="unselectRow()" title="清除选中的行">清除选中的行</el-button>
+										<el-button type="text" class="hidden-lg-and-up" icon="el-icon-circle-close" @click="unselectRow()" title="取消选中状态">取消选中状态</el-button>
+										<el-button type="text" class="hidden-md-and-down" icon="el-icon-circle-close" @click="unselectRow()" title="取消选中状态">取消选中状态</el-button>
 										<el-input v-if=" !selProject || !selProject.id" v-model="filters.key" style="width:50%;margin-left: auto;"  placeholder="名称模糊查询"  clearable></el-input>  
 									</div>
               </template>
@@ -183,7 +183,7 @@
                           </el-row>
                           <el-row>
                              
-                            <el-button   v-if="editForm && editForm.id==scope.row.id"   @click.stop="unselectRow()" icon="el-icon-close" title="编辑"  > 清除选中状态</el-button>     
+                            <el-button   v-if="editForm && editForm.id==scope.row.id"   @click.stop="unselectRow()" icon="el-icon-close" title="编辑"  > 取消选中状态状态</el-button>     
                           </el-row>
                            <el-button   slot="reference"  icon="el-icon-setting" title="新建\修改计划" circle plain > </el-button>   
 
