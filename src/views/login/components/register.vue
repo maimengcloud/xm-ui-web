@@ -2,12 +2,30 @@
   <div>
     <div class="login_form">
         <el-form  autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm">
-            <el-form-item prop="phoneno"> 
+          
+
+            <el-form-item prop="displayUserid"  title="登录账号"> 
+                <el-input  class="inp" name="displayUserid" type="text" v-model="loginForm.displayUserid" autoComplete="on" placeholder="登录账号" >
+                </el-input>
+            </el-form-item>
+
+            <el-form-item prop="password"  title="登录密码"> 
+                <el-input class="inp" show-password  name="password" :type="passwordType" v-model="loginForm.password" autoComplete="on" placeholder="密码">
+                </el-input>
+            </el-form-item>
+
+            
+            <el-form-item prop="username"  title="用户名称"> 
+                <el-input class="inp" name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="用户名称" >
+                </el-input>
+            </el-form-item>
+            
+            <el-form-item prop="phoneno" title="手机号码"> 
                 <el-input class="inp" name="phoneno" type="text" v-model="loginForm.phoneno" autoComplete="on" placeholder="手机号码"> 
                 </el-input>
             </el-form-item>
 
-            <el-form-item prop="smsCode"> 
+            <el-form-item prop="smsCode" title="短信验证码"> 
                 <el-input class="inp smsCode" name="smsCode" type="text" v-model="loginForm.smsCode" autoComplete="on" placeholder="短信验证码">
                 </el-input>
                 <el-button class="sendCode" @click.prevent="sendPhonenoSmsCode"><span class="text">发送验证码</span></el-button> 
@@ -16,20 +34,6 @@
               </span>
             </el-form-item>
 
-            <el-form-item prop="username"> 
-                <el-input class="inp" name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="用户名称" >
-                </el-input>
-            </el-form-item>
-
-            <el-form-item prop="displayUserid"> 
-                <el-input  class="inp" name="displayUserid" type="text" v-model="loginForm.displayUserid" autoComplete="on" placeholder="用户编号" >
-                </el-input>
-            </el-form-item>
-
-            <el-form-item prop="password"> 
-                <el-input class="inp" show-password  name="password" :type="passwordType" v-model="loginForm.password" autoComplete="on" placeholder="密码">
-                </el-input>
-            </el-form-item>
 
             <el-button class="register" :loading="loading" @click.native.prevent="handleRegister">
                 <span class="text">注 册</span>
