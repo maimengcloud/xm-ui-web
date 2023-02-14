@@ -2,7 +2,7 @@
 <section>
     <el-row  class="padding-left padding-right">
         <el-col :span="6">
-            <comps-set  :category="category" @row-click="onCompSelect" ref="compsSet" :show-checked-only="isRptShow||showCheckedOnly" @sort="onSort" @change="onCompChange"></comps-set>
+            <comps-set  :category="category" @row-click="onCompSelect" ref="compsSet" :show-checked-only="isRptShow||showCheckedOnly" :is-rpt-cfg="isRptCfg" @sort="onSort" @change="onCompChange"></comps-set>
         </el-col>
         <el-col :span="18"> 
             <el-row  class="padding">
@@ -10,13 +10,15 @@
                 <span class="rpt-name" v-else-if="xmRptConfig && xmRptConfig.id">{{  xmRptConfig.name}}</span>
                 <span class="rpt-name" v-else>{{  rptConfigParamsCpd.name+'-报告'}}</span> 
                 <span style="float:right;">
-                    <el-button type="text" v-if="isRptShow==true && isRptCfg==false" @click="toQueryRptData" icon="el-icon-time">查看历史报告</el-button>  
-                    <el-button type="primary" v-if="isRptShow==true && isRptCfg==false && (!xmRptData||!xmRptData.id)" @click="showCreateRptData()" icon="el-icon-time">保存报告(可供历史查询)</el-button>  
-                    <el-button type="text" v-if="isRptShow==false && isRptCfg==false" @click="isRptShow=true" icon="el-icon-time">查看报告</el-button>  
+
                     <el-button type="warning" v-if="isRptShow==true" @click="undoRptShow" icon="el-icon-error">退出报告</el-button>  
                     <el-button type="text" v-if="isRptCfg==false&&isRptShow==false" @click="toRptCfg" icon="el-icon-setting">制作报告</el-button>  
                     <el-button type="primary" v-if="isRptCfg==true" @click="undoRptCfg" icon="el-icon-error">取消制作</el-button> 
-                    <el-button type="warning" v-if="isRptCfg==true" @click="toSaveRptCfg">保存报告</el-button>  
+                    <el-button type="warning" v-if="isRptCfg==true" @click="toSaveRptCfg">保存&退出</el-button>  
+                    
+                    <el-button type="primary" v-if="isRptShow==true && isRptCfg==false && (!xmRptData||!xmRptData.id)" @click="showCreateRptData()" icon="el-icon-time">存档</el-button>  
+                    <el-button type="text" v-if="isRptShow==false && isRptCfg==false" @click="isRptShow=true" icon="el-icon-time">查看报告</el-button>  
+                    <el-button type="text" v-if="isRptShow==true && isRptCfg==false" @click="toQueryRptData" icon="el-icon-time">查看历史报告</el-button>   
                     <el-button type="text" v-if="paramsVisible==true" @click="paramsVisible=false">隐藏过滤条件</el-button>  
                     <el-button type="text" v-if="paramsVisible==false" @click="paramsVisible=true">显示过滤条件</el-button> 
                     <el-button type="text" v-if="isRptShow==true && isRptCfg==false && xmRptData && xmRptData.id" @click="toShareRpt" icon="el-icon-share">分享</el-button>  
@@ -298,14 +300,6 @@ export default {
                 var cfgJson=JSON.parse(this.xmRptConfig.cfg) 
                 cfgJson.forEach(k=>k.id=k.compId+seq.sn())
                 this.compCfgList=cfgJson; 
-                this.$refs.compsSet.setCheckeds(this.compCfgList.map(k=>k.compId),true)
-            }else{ 
-                var defList=this.$refs['compsSet'].rptListCpd
-                if(defList && defList.length>3){
-                    defList=defList.slice(0,3);
-                } 
-                defList.forEach(k=>k.id=k.compId+seq.sn())
-                this.compCfgList=JSON.parse(JSON.stringify(defList))   
                 this.$refs.compsSet.setCheckeds(this.compCfgList.map(k=>k.compId),true)
             }
         },

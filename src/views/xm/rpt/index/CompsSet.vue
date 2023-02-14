@@ -18,7 +18,7 @@
                                                 {{item.desc}}
                                             </span>
                                         </div> 
-                                     <span class="check" > <el-checkbox  v-model="item.isChecked"  @click.native='stopDefault($event)' @change="onChange(item,$event)"></el-checkbox>  </span>
+                                     <span v-if="isRptCfg" class="check" > <el-checkbox  v-model="item.isChecked"  @click.native='stopDefault($event)' @change="onChange(item,$event)"></el-checkbox>  </span>
                                 </div>
 　　                        </transition-group>
                         </draggable>
@@ -36,7 +36,7 @@
                                         <span>{{item.desc}}</span>
                                     </div>
                                 </div>
-                                <span class="check" > <el-checkbox  v-model="item.isChecked"  @click.native='stopDefault($event)' @change="onChange(item,$event)"></el-checkbox></span>
+                                <span class="check" v-if="isRptCfg"> <el-checkbox  v-model="item.isChecked"  @click.native='stopDefault($event)' @change="onChange(item,$event)"></el-checkbox></span>
                         </div>
 　　                        </transition-group>
                         </draggable>
@@ -61,7 +61,7 @@ import { mapGetters } from 'vuex'
 import store from '@/store'
 
 export default {
-    props: ['category','showCheckedOnly'],
+    props: ['category','showCheckedOnly','isRptCfg'],
     components:{
         draggable
     },
