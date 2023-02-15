@@ -1,19 +1,19 @@
 <template>
-	<section class="padding">
+	<section class="padding-left padding-right">
 		<el-row>
 			
 			 <el-input v-model="filters.key" style="width:30%;" placeholder="请输入关键字进行查找项目" v-if="!xmIteration && !xmProduct"> 
 			</el-input>
 			<el-button @click="searchXmProjects" icon="el-icon-search" v-if="!xmIteration && !xmProduct"></el-button>
-			<span style="text-align:right;">
-			 <xm-project-select v-if="xmProduct && xmProduct.id" @row-click="onXmProjectSelect" :auto-select="false" :link-product-id="xmProduct.id">
-				 <font slot="title">添加更多项目到产品中</font>
-			 </xm-project-select>
-			 
-			 <xm-project-select v-if="xmIteration && xmIteration.id"  @row-click="onXmProjectSelect" :auto-select="false" :link-iteration-id="xmIteration.id">
-				 <font slot="title">添加更多项目到产品中</font>
-			 </xm-project-select>
-			</span>
+			<div style="text-align:right;padding-right:40px;">
+				<xm-project-select v-if="xmProduct && xmProduct.id" @row-click="onXmProjectSelect" :auto-select="false" :link-product-id="xmProduct.id">
+					<el-link type="primary" slot="title">添加更多项目到产品中</el-link>
+				</xm-project-select>
+				
+				<xm-project-select v-if="xmIteration && xmIteration.id"  @row-click="onXmProjectSelect" :auto-select="false" :link-iteration-id="xmIteration.id">
+					<el-link type="primary" slot="title">添加更多项目到产品中</el-link>
+				</xm-project-select>
+			</div>
 		</el-row>
 		<el-row>   
 			<el-table ref="table" :height="tableHeight"  stripe :data="xmProjects"  highlight-current-row v-loading="load.list" border  style="width: 100%;">

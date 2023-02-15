@@ -1,16 +1,16 @@
 <template>
 	<section>
 		<el-row> 
-			<span style="float:right;">
+			<div style="float:right;padding-right:40px;">
 				<xm-product-select @row-click="onProductSelect" :autoSelect="false" v-if="selProject && selProject.id">
-					<font slot="title">选择更多产品加入项目</font>
+					<el-link type="primary" slot="title">选择更多产品加入项目</el-link>
 				</xm-product-select>  
  				<xm-project-select :autoSelect="false" @row-click="onProjectSelect" v-if="xmProduct && xmProduct.id">
-					 <font slot="title">
+					 <el-link type="primary" slot="title">
 						 选择更多项目加入产品
-					 </font>
+					 </el-link>
 				</xm-project-select> 
- 			</span>
+ 			</div>
 		</el-row>
 		<el-row>
 			<!--列表 XmProductProjectLink 产品与项目的关联关系表，一般由产品经理挂接项目到产品上-->

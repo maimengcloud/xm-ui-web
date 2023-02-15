@@ -179,7 +179,7 @@ export default {
     var innerHeight=window.innerHeight  
     var pageHeight=32 
     var top=150;
-    var bottomHeight=32
+    var bottomHeight=24
 
     
     if(table!=null){  
