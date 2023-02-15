@@ -96,7 +96,8 @@
 			<!--列表 XmProject xm_project-->
 			<el-row v-show="showType" v-loading="load.list" :style="{overflowX:'hidden',height:maxTableHeight+'px'}" >
 				<el-row>
-					<el-col  v-cloak v-for="(p,i) in ScreenData" :key="i" :xl="6" :lg="8" :md="8" :sm="12">
+					<el-col  v-cloak v-for="(p,i) in ScreenData" :key="i" :xl="6" :lg="8" :md="8" :sm="12" :xs="24">
+						
 						<el-card @click.native="intoInfo(p,i)" class="project-card" shadow="always" id="prj-view-box">
 							<div class="project-name" title="这是项目名称">{{p.name}}</div>
 							<div class="project-id"><span title="项目代号">{{p.id}} </span>
@@ -160,6 +161,7 @@
 							</div>
 						</el-card>
 					</el-col>
+ 
 				</el-row>
 				<el-row  v-if="!load.list && xmProjects.length<=0">
 						<el-result icon="info" title="信息提示" subTitle="没有查到相关项目，有可能是您暂时还没有项目，有可能是您无权限查询项目。">
@@ -289,7 +291,7 @@
 				</el-table-column>
 			</el-table>
 		</el-row> 
-		<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
+		<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[12,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
 
 		<el-dialog title="项目新增" :visible.sync="addFormVisible" :with-header="false" width="80%" top="20px" :close-on-click-modal="false" append-to-body>
 			<xm-project-add :sel-project="addForm" op-type="add" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-project-add>
@@ -410,7 +412,7 @@
 				xmProjects: [],//查询结果
 				pageInfo:{//分页数据
 					total:0,//服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
-					pageSize:10,//每页数据
+					pageSize:12,//每页数据
 					count:true,//是否需要重新计算总记录数
 					pageNum:1,//当前页码、从1开始计算
 					orderFields:['create_time'],//排序列 如 ['sex','student_id']，必须为数据库字段

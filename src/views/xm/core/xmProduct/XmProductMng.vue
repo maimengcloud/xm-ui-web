@@ -320,7 +320,7 @@
 					</el-table>
 					
 					</el-row>
-					<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
+					<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[12,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 
 							<!--编辑 XmProduct 产品表界面-->
 					<el-drawer title="编辑产品" :visible.sync="editFormVisible"  size="60%"   append-to-body   :close-on-click-modal="false">
@@ -445,7 +445,7 @@
 				xmProducts: [],//查询结果
 				pageInfo:{//分页数据
 					total:0,//服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
-					pageSize:10,//每页数据
+					pageSize:12,//每页数据
 					count:true,//是否需要重新计算总记录数
 					pageNum:1,//当前页码、从1开始计算
 					orderFields:[],//排序列 如 ['sex','student_id']，必须为数据库字段
