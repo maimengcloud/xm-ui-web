@@ -1,6 +1,6 @@
 <template>
-	<section>
-		 <xm-menu-mng class="padding-top"></xm-menu-mng>
+	<section class="padding">
+		 <xm-menu-mng></xm-menu-mng>
 	</section>
 </template>
 

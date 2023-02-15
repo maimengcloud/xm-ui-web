@@ -1,6 +1,6 @@
 <template>
 	<section>
-		<el-row class="xm-task">
+		<el-row class="padding">
 			 <xm-task-mng :is-task-center="1" ptype="0" ntype="0" queryScope="task"></xm-task-mng>
 		</el-row>
 	</section>

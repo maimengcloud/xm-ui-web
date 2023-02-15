@@ -1,11 +1,7 @@
 <template>
-	<section>
-        <el-row>
-            
-        </el-row>
-		<el-row>
+	<section>  
             <el-row v-if=" xmTestPlan && xmTestPlan.id">
-                <el-row class="border padding-left padding-right">
+                <el-row class="padding-left padding-right">
                      <el-button icon="el-icon-back" @click="goBackToPlanList()" type="primary" plain></el-button>
                      <el-divider direction="vertical"></el-divider>
                      {{xmTestPlan.name}}
@@ -35,8 +31,8 @@
                 <el-row v-if="subPage=='testPlanCase'" class="padding-right">
                      <xm-test-plan-case-mng   :xm-test-plan="xmTestPlan" :xm-test-casedb="xmTestCasedb"></xm-test-plan-case-mng>
                 </el-row>
-                <el-row v-if="subPage=='testBug'">
-                     <xm-question-mng   :xm-test-plan="xmTestPlan" :xm-test-casedb="xmTestCasedb" :xm-product="{id:xmTestPlan.productId,productName:xmTestPlan.productName}" :sel-project="{id:xmTestPlan.projectId,name:xmTestPlan.projectName}"></xm-question-mng>
+                <el-row v-if="subPage=='testBug'" class="padding-left padding-right">
+                     <xm-question-mng :xm-test-plan="xmTestPlan" :xm-test-casedb="xmTestCasedb" :xm-product="{id:xmTestPlan.productId,productName:xmTestPlan.productName}" :sel-project="{id:xmTestPlan.projectId,name:xmTestPlan.projectName}"></xm-question-mng>
                 </el-row>
                 
                 <el-row v-if="subPage=='testRpt'">
@@ -46,8 +42,7 @@
                 <el-row v-if="subPage=='xmRpt'">
                      <xm-rpt key="xmRpt"  ref="xmRpt" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan" :xm-product="{id:xmTestCasedb.productId,productName:xmTestCasedb.productName}" :xm-project="{id:xmTestPlan.projectId,name:xmTestPlan.projectName}"  category="测试计划级"></xm-rpt >
                 </el-row>
-            </el-row> 
-         </el-row>     
+            </el-row>    
 	</section>
 </template>
 
