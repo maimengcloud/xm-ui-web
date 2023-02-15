@@ -201,8 +201,7 @@
             ></xm-iteration-mng>
           </el-tab-pane>
           <el-tab-pane
-            label="需求"
-            lazy
+            label="需求" 
             name="menus" 
           >
             <xm-menu-mng
@@ -214,8 +213,7 @@
             ></xm-menu-mng>
           </el-tab-pane>
           <el-tab-pane
-            label="任务"
-            lazy
+            label="任务" 
             name="tasks" 
           >
             <xm-task-mng
@@ -228,8 +226,7 @@
             ></xm-task-mng>
           </el-tab-pane>
           <el-tab-pane
-            label="缺陷"
-            lazy
+            label="缺陷" 
             name="bugs" 
           >
             <xm-question-mng
