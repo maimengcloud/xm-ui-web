@@ -11,6 +11,28 @@ export default {
     {
       path: '/xm/core',
       component: Layout,
+      name: '产品管理',
+      iconCls: 'fa el-icon-menu',
+      meta: {
+        title: '产品管理',
+        icon: 'international'
+      },
+      // leaf: true,//只有一个节点
+      children: [
+         { path: 'product/mng', component: _import('xm/core/xmProduct/XmProductMng'), name: 'XmProductMng', meta: { title: '产品管理',roles:["user"] }},
+         { path: 'product/recycle', component: _import('xm/core/xmProduct/XmProductRecycle'), name: 'XmProductRecycle', meta: { title: '产品回收站',roles:["user"] }},
+
+         { path: 'product/tpl', component: _import('xm/core/xmProduct/XmProductTplMng'), name: 'XmProductTplMng', meta: { title: '产品模板',roles:["user"] }},
+         { path: 'menu/detail', component: _import('xm/core/xmMenu/XmMenuDetailRoute'), name: 'XmMenuDetailRoute', meta: { title: '需求明细',roles:["user"] },hidden:true},
+
+        { path: 'menu/mng', component: _import('xm/core/xmMenu/XmMenuMngRoute'), name: 'XmMenuMng', meta: { title: '需求管理',roles:["user"] }},
+          { path: 'iteration/mng', component: _import('xm/core/xmIteration/XmIterationMng'), name: 'XmIterationMng', meta: { title: '迭代管理',roles:["user"] }},
+
+      ]
+    },
+    {
+      path: '/xm/core',
+      component: Layout,
       name: '项目管理',
       iconCls: 'fa el-icon-menu',
       meta: {
@@ -446,28 +468,7 @@ export default {
 
       ]
     },
-    {
-      path: '/xm/core',
-      component: Layout,
-      name: '产品管理',
-      iconCls: 'fa el-icon-menu',
-      meta: {
-        title: '产品管理',
-        icon: 'international'
-      },
-      // leaf: true,//只有一个节点
-      children: [
-         { path: 'product/mng', component: _import('xm/core/xmProduct/XmProductMng'), name: 'XmProductMng', meta: { title: '产品管理',roles:["user"] }},
-         { path: 'product/recycle', component: _import('xm/core/xmProduct/XmProductRecycle'), name: 'XmProductRecycle', meta: { title: '产品回收站',roles:["user"] }},
-
-         { path: 'product/tpl', component: _import('xm/core/xmProduct/XmProductTplMng'), name: 'XmProductTplMng', meta: { title: '产品模板',roles:["user"] }},
-         { path: 'menu/detail', component: _import('xm/core/xmMenu/XmMenuDetailRoute'), name: 'XmMenuDetailRoute', meta: { title: '需求明细',roles:["user"] },hidden:true},
-
-        { path: 'menu/mng', component: _import('xm/core/xmMenu/XmMenuMngRoute'), name: 'XmMenuMng', meta: { title: '需求管理',roles:["user"] }},
-          { path: 'iteration/mng', component: _import('xm/core/xmIteration/XmIterationMng'), name: 'XmIterationMng', meta: { title: '迭代管理',roles:["user"] }},
-
-      ]
-    },
+    
     {
       path: '/xm/core/iteration',
       component: XmIterationLayout,
