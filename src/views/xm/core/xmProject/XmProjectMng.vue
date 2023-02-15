@@ -147,7 +147,8 @@
 								
 								<el-tag v-if="getPlanRealProgress(p)>0" type="warning" effect="dark">超前{{ getPlanRealProgress(p) }}%</el-tag>
 								<el-tag v-else-if="getPlanRealProgress(p)<0" type="danger" effect="dark">落后{{ 0-getPlanRealProgress(p) }}%</el-tag>
-								<el-tag v-else effect="dark" type="success">理想</el-tag>
+								<el-tag v-else-if="getProgress(p)>0" effect="dark" type="success" class="el-icon-check"> </el-tag>
+								<el-tag v-else-if="getProgress(p)==0" effect="dark" type="info">未开始 </el-tag>
 							</div>
 							<div class="project-footer">
 								<div class="project-type" title="项目经理">
@@ -890,13 +891,23 @@
 				var allFinishCnt= (project.menuFinishCnt||0 )+ (project.menuCloseCnt||0)
 				 return allFinishCnt;
 			},
+			getProgress(project){
+				var planRate=0;
+				if(!project.estimateWorkload||!project.budgetWorkload){
+					planRate= 0;
+					return planRate;
+				}
+				planRate= Math.round(project.estimateWorkload/project.budgetWorkload*100);
+				return planRate
+			},
 			getPlanRealProgress(project){
 				var planRate=0;
 				if(!project.estimateWorkload||!project.budgetWorkload){
 					planRate= 0;
+					return planRate;
 				}
-				planRate= Math.round(project.estimateWorkload/project.budgetWorkload*100);
-				return (project.finishRate||0)-planRate
+				planRate=project.estimateWorkload/project.budgetWorkload*100;
+				return  Math.round((project.finishRate||0)-planRate)
 			}
 			/**end 自定义函数请在上面加**/
 			

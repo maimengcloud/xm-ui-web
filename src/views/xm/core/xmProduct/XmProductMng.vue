@@ -184,9 +184,15 @@
 											</span>
 											<span class="item-type">缺陷</span>
 										</div>
-									</div>
+									</div> 
+								
 								<div class="project-rate">
 									<el-progress :percentage="(p.finishRate==null?0:p.finishRate)"></el-progress>
+									
+									<el-tag v-if="getPlanRealProgress(p)>0" type="warning" effect="dark">超前{{ getPlanRealProgress(p) }}%</el-tag>
+									<el-tag v-else-if="getPlanRealProgress(p)<0" type="danger" effect="dark">落后{{ 0-getPlanRealProgress(p) }}%</el-tag>
+									<el-tag v-else-if="getProgress(p)>0" effect="dark" type="success" class="el-icon-check"> </el-tag>
+									<el-tag v-else-if="getProgress(p)==0" effect="dark" type="info">未开始 </el-tag>
 								</div>
 								<div class="project-footer"> 
 									<div class="project-type" title="产品经理">
@@ -820,6 +826,25 @@
 					})
 				}
 			},
+			
+			getProgress(p){
+				var planRate=0;
+				if(!p.estimateWorkload||!p.budgetWorkload){
+					planRate= 0;
+					return planRate;
+				}
+				planRate= Math.round(p.estimateWorkload/p.budgetWorkload*100);
+				return planRate
+			},
+			getPlanRealProgress(p){
+				var planRate=0;
+				if(!p.estimateWorkload||!p.budgetWorkload){
+					planRate= 0;
+					return planRate;
+				}
+				planRate=  p.estimateWorkload/p.budgetWorkload*100;
+				return Math.round((p.finishRate||0)-planRate)
+			}
 		},//end methods
 		components: {
 		    'xm-product-add':XmProductAdd,
