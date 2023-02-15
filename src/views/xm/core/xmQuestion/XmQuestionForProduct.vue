@@ -1,5 +1,5 @@
 <template>
-	<xm-question-mng class="padding-top" :xm-product="xmProduct"></xm-question-mng>
+	<xm-question-mng class="padding-left padding-right" :xm-product="xmProduct"></xm-question-mng>
 </template>
 
 <script>

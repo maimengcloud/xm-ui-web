@@ -1,5 +1,5 @@
 <template>
-  <section class="padding">
+  <section>
     <el-row>
       <el-col
         :span="24" 

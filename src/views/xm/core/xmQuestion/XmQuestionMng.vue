@@ -1,5 +1,5 @@
 <template>
-	<section class="padding">
+	<section>
 			<el-row>
 				<xm-product-select v-if="!xmProduct&&!xmIteration" style="display:inline;" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" @clear="clearProduct"></xm-product-select>
 			  	<xm-project-select v-if="!selProject" style="display:inline;" ref="xmProjectSelect" :auto-select="false" :link-product-id="xmProduct?xmProduct.id:null" @row-click="onProjectConfirm" @clear="clearProject"></xm-project-select>

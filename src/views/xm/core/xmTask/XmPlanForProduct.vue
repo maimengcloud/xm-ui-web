@@ -1,7 +1,7 @@
 <template>
-	<section> 
-		<el-row class="box">
-			<el-col :span="7" class="left">
+	<section class="padding-left padding-right"> 
+		<el-row  :gutter="10">
+			<el-col :span="7">
 				<xm-phase :xm-product="xmProduct"   queryScope="plan" @row-click="onPhaseRowClick" @project-row-click="onProjectRowClick"></xm-phase>
 			</el-col> 
 			<el-col :span="17">

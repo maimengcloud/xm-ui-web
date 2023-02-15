@@ -1,5 +1,5 @@
 <template>
-	<xm-question-mng v-if="xmIteration && xmIteration.id" class="padding-top" :xm-product="xmProduct" :xm-iteration="xmIteration"></xm-question-mng>
+	<xm-question-mng class="padding-left padding-right" v-if="xmIteration && xmIteration.id" :xm-product="xmProduct" :xm-iteration="xmIteration"></xm-question-mng>
 </template>
 
 <script>

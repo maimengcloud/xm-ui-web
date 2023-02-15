@@ -1,5 +1,5 @@
 <template>
-	<section class="padding"> 
+	<section> 
 		<el-row v-show="!batchVisible">  
 				<div style="display:flex;justify-content: space-between;">
 				<xm-product-select v-if=" !xmProduct || !xmProduct.id" ref="xmProductSelect1" style="display:inline;"  :auto-select="true" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" @clear="onProductClearSelect" ></xm-product-select>
