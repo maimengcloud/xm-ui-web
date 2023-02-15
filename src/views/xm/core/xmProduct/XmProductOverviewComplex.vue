@@ -8,7 +8,7 @@
         <div class="border">
           <el-row 
           ref="pageBody"
-          class="padding" :style="{ maxHeight: maxTableHeight + 'px', overflowY: 'auto' }">
+          class="padding" :style="{ maxHeight: (maxTableHeight-24) + 'px', overflowY: 'auto' }">
           <h4 class="padding-bottom">常用功能导航</h4>
           <el-steps
             :active="calcProductPstatusStep"
@@ -194,29 +194,25 @@
             <el-tab-pane
               label="产品概览"
               name="overview"
-              v-if="xmProduct && xmProduct.id"
             > 
-            <xm-product-overview  v-if="showPanelName=='overview' && xmProduct && xmProduct.id" :xm-product="xmProduct"></xm-product-overview>
+            <xm-product-overview v-if="showPanelName=='overview' && xmProduct && xmProduct.id" :xm-product="xmProduct"></xm-product-overview>
 
             </el-tab-pane>
             <el-tab-pane
               label="产品详情"
-              name="detail"
-              v-if="xmProduct && xmProduct.id"
+              name="detail" 
             > 
             <xm-product-edit  v-if="showPanelName=='detail'" :xm-product="xmProduct"></xm-product-edit> 
             </el-tab-pane>
             <el-tab-pane
               label="配置关联项目"
-              name="productProjectLink"
-              v-if="xmProduct && xmProduct.id"
+              name="productProjectLink" 
             > 
             <xm-product-project-link-mng  v-if="showPanelName=='productProjectLink'" :xm-product="xmProduct"></xm-product-project-link-mng>
             </el-tab-pane>
             <el-tab-pane
               label="执行数据汇总计划"
-              name="productCalc"
-              v-if="xmProduct && xmProduct.id"
+              name="productCalc" 
             > 
             <div v-if="showPanelName=='productCalc'" class="padding">
               <el-row>
@@ -233,15 +229,13 @@
             </el-tab-pane>
             <el-tab-pane
               label="当前审批流"
-              name="currFlow"
-              v-if="xmProduct && xmProduct.id"
+              name="currFlow" 
             > 
             <task-mng v-if="showPanelName === 'currFlow' " ref="currFlow" :biz-parent-pkid="xmProduct.id" > </task-mng>  
             </el-tab-pane>
             <el-tab-pane
               label="历史审批流"
-              name="hisFlow"
-              v-if="xmProduct && xmProduct.id"
+              name="hisFlow" 
             > 
             <procinst-mng v-if="showPanelName === 'hisFlow' " ref="hisFlow" isAll="true" :biz-parent-pkid="xmProduct.id"></procinst-mng>   
             </el-tab-pane>
@@ -417,7 +411,7 @@ export default {
   mounted() {
     
     this.$nextTick(() => { 
-      this.maxTableHeight  = util.calcTableMaxHeight(this.$refs.pageBody.$el);
+      this.maxTableHeight  = util.calcMaxHeight(this.$refs.pageBody.$el);
     });
     initDicts(this)
   },

@@ -121,8 +121,7 @@
         <el-tabs :value="showPanel" @tab-click="tabClick">
           <el-tab-pane
             label="项目概览"
-            name="projectOverview"
-            v-if="selProject && selProject.id"
+            name="projectOverview" 
           >
             <xm-project-overview
               v-if="selProject && showPanel == 'projectOverview'"
@@ -133,8 +132,7 @@
           </el-tab-pane>
           <el-tab-pane
             label="项目详情"
-            name="detail"
-            v-if="selProject && selProject.id"
+            name="detail" 
           >
             <xm-project-detail
               v-if="showPanel == 'detail'"
@@ -146,8 +144,7 @@
           </el-tab-pane>
           <el-tab-pane
             label="配置关联的产品"
-            name="productProjectLink"
-            v-if="selProject && selProject.id && !xmProduct"
+            name="productProjectLink" 
           >
             <xm-product-project-link-mng class="padding-top"
               v-if="showPanel == 'productProjectLink'"
@@ -160,10 +157,8 @@
 					</el-tab-pane>  
 					-->
           <el-tab-pane
-            label="需求"
-            lazy
-            name="menus"
-            v-if="selProject && selProject.id"
+            label="需求" 
+            name="menus" 
           >
             <xm-menu-mng
               v-if="selProject && showPanel == 'menus'"
@@ -175,10 +170,8 @@
           </el-tab-pane>
           
           <el-tab-pane
-            label="计划"
-            lazy
-            name="plan"
-            v-if="selProject && selProject.id"
+            label="计划" 
+            name="plan" 
           >
             <xm-plan
               v-if="selProject&&selProject.id && showPanel == 'plan'"
@@ -190,10 +183,8 @@
             ></xm-plan>
           </el-tab-pane>
           <el-tab-pane
-            label="任务"
-            lazy
-            name="tasks"
-            v-if="selProject && selProject.id"
+            label="任务" 
+            name="tasks" 
           >
             <xm-task-mng
               v-if="selProject && showPanel == 'tasks'"
@@ -205,10 +196,8 @@
             ></xm-task-mng>
           </el-tab-pane>
           <el-tab-pane
-            label="缺陷"
-            lazy
-            name="bugs"
-            v-if="selProject && selProject.id"
+            label="缺陷" 
+            name="bugs" 
           >
             <xm-question-mng
               v-if="selProject && showPanel == 'bugs'"
@@ -218,10 +207,8 @@
             ></xm-question-mng>
           </el-tab-pane>
           <el-tab-pane
-            label="团队"
-            lazy
-            name="group"
-            v-if="selProject && selProject.id"
+            label="团队" 
+            name="group" 
           >
 			<xm-group-mng
 			v-if="showPanel == 'group'"
@@ -230,8 +217,7 @@
           </el-tab-pane>
           <el-tab-pane
             label="执行统计"
-            name="projectCalc"
-            v-if="selProject && selProject.id"
+            name="projectCalc" 
           >
             <div v-if="showPanel == 'projectCalc'">
               <el-row>
@@ -261,7 +247,7 @@
             </div>
           </el-tab-pane>
           
-					<el-tab-pane label="效能分析" name="效能" v-if="selProject && selProject.id"> 
+					<el-tab-pane label="效能分析" name="效能"> 
 						<xm-rpt v-if="selProject && showPanel=='效能'" :xm-project="selProject" :xm-iteration="xmIteration" :xm-product="xmProduct" category="项目级"></xm-rpt>
  					</el-tab-pane> 
         </el-tabs> 

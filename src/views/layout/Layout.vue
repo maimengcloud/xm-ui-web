@@ -4,7 +4,7 @@
     <div class="main-container">
       <navbar></navbar>
       <tags-view></tags-view>
-      <app-main></app-main>
+      <app-main ref="main" :style="{overflowY:'auto',maxHeight:maxHeight?maxHeight+'px':'90vh'}"></app-main>
     </div>
   </div>
 </template>
@@ -20,10 +20,38 @@ export default {
     AppMain,
     TagsView
   },
+  data(){
+    return {
+      maxHeight:null,
+    }
+  },
+  methods:{
+    
+    calcMaxHeight(cssSelector) {     
+    var table=cssSelector;
+    debugger;
+    if(typeof cssSelector == 'string'){
+      table=document.querySelector(cssSelector);
+    }  
+    var innerHeight=window.innerHeight  
+    var top=150;
+    if(table!=null){  
+      var rect=table.getBoundingClientRect()    
+      if(rect && rect.top!=0){ 
+        top=rect.top;
+      } 
+    } 
+    var maxTableHeight =innerHeight-top;  
+    return maxTableHeight;
+  }, 
+  },
   computed: {
     sidebar() {
       return this.$store.state.app.sidebar
     }
+  },
+  mounted(){
+    this.maxHeight=this.calcMaxHeight(this.$refs.main.$el)
   }
 }
 </script>

@@ -283,12 +283,12 @@
 			</el-col>
 			<el-col :xl="20" :lg="20" :md="19" :sm="19" :xs="19" class="padding-left padding-right">
 				<el-tabs :value="showPanel" @tab-click="tabClick">  
-					<el-tab-pane label="迭代概览" lazy  name="iterationOverview" v-if="xmIteration && xmIteration.id"> 
+					<el-tab-pane label="迭代概览" lazy  name="iterationOverview" > 
 						 
 						<xm-iteration-overview v-if="xmIteration && showPanel=='iterationOverview'"  :xm-iteration="xmIteration" :sel-project="projectInfo"></xm-iteration-overview>
 				 
 					</el-tab-pane>
-					<el-tab-pane label="执行统计" lazy  name="iterationCalc" v-if="xmIteration && xmIteration.id">
+					<el-tab-pane label="执行统计" lazy  name="iterationCalc" >
 						  <div v-if="showPanel=='iterationCalc'">
 							<el-row>
 							<el-button type="primary" @click="loadTasksToXmIterationState" v-loading="load.calcIteration">计算迭代统计数据</el-button>

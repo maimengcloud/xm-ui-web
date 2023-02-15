@@ -150,23 +150,37 @@ export default {
       }
       return classNames[typeIndex]
   },
+  
+  calcMaxHeight(cssSelector) {     
+    debugger;
+    var table=cssSelector;
+    if(typeof cssSelector == 'string'){
+      table=document.querySelector(cssSelector);
+    }  
+    var innerHeight=window.innerHeight   
+    var top=150; 
+
+    
+    if(table!=null){  
+      var rect=table.getBoundingClientRect()     
+
+      if(rect && rect.top){ 
+        top=rect.top;
+      }  
+    } 
+    var maxTableHeight =innerHeight-top;  
+    return maxTableHeight;
+  }, 
   calcTableMaxHeight(cssSelector) {     
     var table=cssSelector;
     if(typeof cssSelector == 'string'){
       table=document.querySelector(cssSelector);
-    } 
+    }  
     var innerHeight=window.innerHeight  
-    var defaultInnerHeight=616;  
-    var pageHeight=32/defaultInnerHeight*innerHeight 
-    var top=150/defaultInnerHeight*innerHeight;
-    var bottomHeight=36/defaultInnerHeight*innerHeight
-    if(innerHeight>=916){
-      bottomHeight=20/defaultInnerHeight*innerHeight
-    }else if(innerHeight>=800){
-      bottomHeight=26/defaultInnerHeight*innerHeight
-    }else if(innerHeight>=700){
-      bottomHeight=32/defaultInnerHeight*innerHeight
-    }
+    var pageHeight=32 
+    var top=150;
+    var bottomHeight=32
+
     
     if(table!=null){  
       var rect=table.getBoundingClientRect()    

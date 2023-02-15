@@ -8,7 +8,7 @@
         </el-row> 
           <el-row 
             ref="pageBody"
-            class="padding" :style="{height:maxTableHeight+'px',overflowY:'auto'}">
+            class="padding" :style="{maxHeight:(maxTableHeight-24)+'px',overflowY:'auto'}">
         <el-steps :active="calcProjectStatusStep" finish-status="success" direction="vertical">
           <el-step
             v-for="(i, index) in dicts['projectStatus']"
@@ -126,32 +126,28 @@
         <el-tabs :value="showPanelName" @tab-click="tabClick">
           <el-tab-pane
             label="项目概览"
-            name="overview"
-            v-if="projectInfo && projectInfo.id"
+            name="overview" 
           > 
-          <xm-project-overview  v-if="showPanelName=='overview'" :sel-project="projectInfo"></xm-project-overview>
+          <xm-project-overview  v-if="showPanelName=='overview' && projectInfo && projectInfo.id" :sel-project="projectInfo"></xm-project-overview>
 
           </el-tab-pane>
           <el-tab-pane
             label="项目详情"
-            name="detail"
-            v-if="projectInfo && projectInfo.id"
+            name="detail" 
           > 
           <xm-project-detail  v-if="showPanelName=='detail'" :sel-project="projectInfo" @submit="afterEditSubmit" @edit-fields="onEditFields" ref="detail"></xm-project-detail> 
 
           </el-tab-pane>
           <el-tab-pane
             label="关联产品"
-            name="productProjectLink"
-            v-if="projectInfo && projectInfo.id"
+            name="productProjectLink" 
           > 
           <xm-product-project-link-mng v-if="showPanelName=='productProjectLink'" :sel-project="projectInfo"></xm-product-project-link-mng>
 
           </el-tab-pane>
           <el-tab-pane
             label="执行项目数据统计计划"
-            name="projectCalc"
-            v-if="projectInfo && projectInfo.id"
+            name="projectCalc" 
           > 
           <div v-if="showPanelName=='projectCalc'" class="padding">
           <el-row>
@@ -168,22 +164,18 @@
           </el-tab-pane>
           <el-tab-pane
             label="当前审批流"
-            name="currFlow"
-            v-if="projectInfo && projectInfo.id"
+            name="currFlow" 
           > 
           <task-mng v-if="showPanelName === 'currFlow' " ref="currFlow" :biz-parent-pkid="projectInfo.id" @submit="afterFlowSubmit"> </task-mng>  
 
           </el-tab-pane>
           <el-tab-pane
             label="历史审批流"
-            name="hisFlow"
-            v-if="projectInfo && projectInfo.id"
+            name="hisFlow" 
           > 
-          <procinst-mng v-if="showPanelName === 'hisFlow' " ref="hisFlow" isAll="true" :biz-parent-pkid="projectInfo.id"></procinst-mng> 
-
-          </el-tab-pane>
+          <procinst-mng v-if="showPanelName === 'hisFlow' " ref="hisFlow" isAll="true" :biz-parent-pkid="projectInfo.id"></procinst-mng>  
+          </el-tab-pane> 
         </el-tabs> 
-        <xm-iteration-link-for-project v-if="showPanelName=='iterationProjectLink'" :sel-project="projectInfo"></xm-iteration-link-for-project>
         
         
         
@@ -364,7 +356,7 @@ export default {
     
     
     this.$nextTick(() => {
-      this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.pageBody.$el);  
+      this.maxTableHeight =  util.calcMaxHeight(this.$refs.pageBody.$el);  
     });
   },
 

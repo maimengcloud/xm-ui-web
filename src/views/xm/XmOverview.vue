@@ -1,6 +1,6 @@
 <template>
   <section>
-    <el-row class="padding" :style="{overflowX: 'hidden',height:maxTableHeight+'px'}" ref="table">
+    <el-row class="padding" ref="table">
       <el-row class="row_1" style="margin-bottom:20px;">
         <div class="r r1">
           <span style="color: #4779F6">{{formatNum(xmBranch.projectCnt,0) || 0}}</span>

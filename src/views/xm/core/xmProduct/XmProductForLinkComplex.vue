@@ -157,7 +157,6 @@
           <el-tab-pane
             label="产品概览"
             name="productOverview"
-            v-if="xmProduct && xmProduct.id"
           >
             <xm-product-overview
               v-if="xmProduct && showPanel == 'productOverview'"
@@ -168,8 +167,7 @@
 
           <el-tab-pane
             label="产品详情"
-            name="detail"
-            v-if="xmProduct && xmProduct.id"
+            name="detail" 
           >
             <xm-product-edit
               v-if="showPanel == 'detail'"
@@ -186,8 +184,7 @@
           <el-tab-pane
             label="配置关联的项目"
             lazy
-            name="productProjectLink"
-            v-if="xmProduct && xmProduct.id && !projectInfo"
+            name="productProjectLink" 
           >
             <xm-product-project-link-mng
               v-if="showPanel == 'productProjectLink'"
@@ -196,8 +193,7 @@
           </el-tab-pane>
           <el-tab-pane
             label="迭代"
-            name="iterationProductLink"
-            v-if="xmProduct && xmProduct.id"
+            name="iterationProductLink" 
           >
             <xm-iteration-mng style="margin-top:-10px;"
               v-if="showPanel == 'iterationProductLink'"
@@ -207,8 +203,7 @@
           <el-tab-pane
             label="需求"
             lazy
-            name="menus"
-            v-if="xmProduct && xmProduct.id"
+            name="menus" 
           >
             <xm-menu-mng
               v-if="xmProduct && showPanel == 'menus'"
@@ -221,8 +216,7 @@
           <el-tab-pane
             label="任务"
             lazy
-            name="tasks"
-            v-if="xmProduct && xmProduct.id"
+            name="tasks" 
           >
             <xm-task-mng
               v-if="xmProduct && showPanel == 'tasks'"
@@ -236,8 +230,7 @@
           <el-tab-pane
             label="缺陷"
             lazy
-            name="bugs"
-            v-if="xmProduct && xmProduct.id"
+            name="bugs" 
           >
             <xm-question-mng
               v-if="xmProduct && showPanel == 'bugs'"
@@ -248,8 +241,7 @@
           </el-tab-pane>
           <el-tab-pane
             label="执行统计"
-            name="productCalc"
-            v-if="xmProduct && xmProduct.id"
+            name="productCalc" 
           >
             <div
               v-if="showPanel == 'productCalc'"
@@ -282,7 +274,7 @@
             </div>
           </el-tab-pane>
           
-					<el-tab-pane label="效能分析" name="效能"  v-if="xmProduct && xmProduct.id"> 
+					<el-tab-pane label="效能分析" name="效能"> 
 						<xm-rpt v-if="xmProduct && showPanel=='效能'" :xm-project="projectInfo" :xm-iteration="xmIteration" :xm-product="xmProduct" category="产品级"></xm-rpt>
  					</el-tab-pane> 
         </el-tabs>

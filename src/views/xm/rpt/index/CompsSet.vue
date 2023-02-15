@@ -5,7 +5,7 @@
                 <el-option v-for="(item,index) in categorys" :label="item" :value="item" :key="index"></el-option>
             </el-select>
         </el-row> 
-        <el-row ref="table" :style="{height:maxTableHeight+'px',overflow:'auto'}"> 
+        <el-row ref="table" :style="{height:(maxTableHeight-24)+'px',overflow:'auto'}"> 
                 <div class="moduleset-lg hidden-md-and-down"> 
                     <div class="nav">
                         <draggable @update="datadragEnd" v-model="datas" style='sort: false' >
@@ -247,7 +247,7 @@ export default {
         //this.comps.forEach(k=>k.id=k.id?k.id:k.compId) 
        
         this.$nextTick(()=>{
-            this.maxTableHeight = util.calcTableMaxHeight(this.$refs.table.$el)
+            this.maxTableHeight = util.calcMaxHeight(this.$refs.table.$el)
             if(this.category){
                 this.filters.category=this.category
             }else{

@@ -1,6 +1,6 @@
 <template>
   <section>
-    <el-row :style="{overflowX: 'hidden',height:maxTableHeight+'px'}" ref="table"> 
+    <el-row :style="{overflowX: 'hidden',height:(maxTableHeight-24)+'px'}" ref="table"> 
       <el-row :gutter="10">
           <el-col :span="8" >
             <el-card class="box-card" style="padding:0px ;height:425px">
@@ -974,7 +974,7 @@ export default {
 
   mounted() {
     this.$nextTick(() => {
-      this.maxTableHeight=util.calcTableMaxHeight(this.$refs.table.$el)
+      this.maxTableHeight=util.calcMaxHeight(this.$refs.table.$el)
     });
 			
 			initSimpleDicts('all',['projectType','priority','projectStatus']).then(res=>{

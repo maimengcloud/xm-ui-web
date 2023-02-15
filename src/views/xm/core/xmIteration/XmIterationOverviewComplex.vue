@@ -11,7 +11,7 @@
           <h4>常用功能导航</h4>
         </el-row>
         <el-row
-          ref="pageBody" class="padding" :style="{ maxHeight: maxTableHeight + 'px', overflowY: 'auto' }"
+          ref="pageBody" class="padding" :style="{ height: (maxTableHeight-24) + 'px', overflowY: 'auto' }"
         >
         <el-steps
           :active="calcIterationStatusStep"
@@ -272,22 +272,22 @@
       </el-col>
       <el-col  :xl="20" :lg="20" :md="19" :sm="19" :xs="19" class="padding-left padding-right">
         <el-tabs :value="showPanel" @tab-click="tabClick">  
-					<el-tab-pane label="迭代概览" lazy  name="overview" v-if="xmIteration && xmIteration.id"> 
+					<el-tab-pane label="迭代概览" lazy  name="overview" > 
             <xm-iteration-overview class="padding-top" v-if="showPanel=='overview'" :xm-iteration="xmIteration"></xm-iteration-overview>
 
  				 
 					</el-tab-pane> 
-					<el-tab-pane label="迭代详情" lazy  name="detail" v-if="xmIteration && xmIteration.id"> 
+					<el-tab-pane label="迭代详情" lazy  name="detail" > 
 						 
             <xm-iteration-edit v-if="showPanel=='detail'" :xm-iteration="xmIteration" @edit-fields="onEditFields"></xm-iteration-edit>
 
 					</el-tab-pane>
-					<el-tab-pane label="配置需求范围" lazy  name="iterationMenuMng" v-if="xmIteration && xmIteration.id"> 
+					<el-tab-pane label="配置需求范围" lazy  name="iterationMenuMng" > 
             <xm-iteration-menu-mng v-if="showPanel=='iterationMenuMng'" :xm-iteration="xmIteration"  ref="iterationMenuMng"  class="padding-top"></xm-iteration-menu-mng>
 
  				 
 					</el-tab-pane> 
-					<el-tab-pane label="执行统计" lazy  name="iterationCalc" v-if="xmIteration && xmIteration.id">
+					<el-tab-pane label="执行统计" lazy  name="iterationCalc" >
 
             <div v-if="showPanel=='iterationCalc'" class="padding">
               <el-row>
@@ -407,7 +407,7 @@ export default {
 
   mounted() {
     this.$nextTick(() => { 
-      this.maxTableHeight  = util.calcTableMaxHeight(this.$refs.pageBody.$el);
+      this.maxTableHeight  = util.calcMaxHeight(this.$refs.pageBody.$el);
     });
     initDicts(this) 
   },

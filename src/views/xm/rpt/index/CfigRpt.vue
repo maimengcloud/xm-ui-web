@@ -10,15 +10,13 @@
                 <span class="rpt-name" v-else-if="xmRptConfig && xmRptConfig.id">{{  xmRptConfig.name}}</span>
                 <span class="rpt-name" v-else>{{  rptConfigParamsCpd.name+'-报告'}}</span> 
                 <span style="float:right;">
-
+                    <el-button type="text" v-if="isRptShow==true && isRptCfg==false" @click="toQueryRptData" icon="el-icon-time">查看历史报告</el-button>  
+                    <el-button type="primary" v-if="isRptShow==true && isRptCfg==false && (!xmRptData||!xmRptData.id)" @click="showCreateRptData()" icon="el-icon-time">存档</el-button>  
+                    <el-button type="text" v-if="isRptShow==false && isRptCfg==false" @click="isRptShow=true" icon="el-icon-time">查看报告</el-button>  
                     <el-button type="warning" v-if="isRptShow==true" @click="undoRptShow" icon="el-icon-error">退出报告</el-button>  
                     <el-button type="text" v-if="isRptCfg==false&&isRptShow==false" @click="toRptCfg" icon="el-icon-setting">制作报告</el-button>  
                     <el-button type="primary" v-if="isRptCfg==true" @click="undoRptCfg" icon="el-icon-error">取消制作</el-button> 
                     <el-button type="warning" v-if="isRptCfg==true" @click="toSaveRptCfg">保存&退出</el-button>  
-                    
-                    <el-button type="primary" v-if="isRptShow==true && isRptCfg==false && (!xmRptData||!xmRptData.id)" @click="showCreateRptData()" icon="el-icon-time">存档</el-button>  
-                    <el-button type="text" v-if="isRptShow==false && isRptCfg==false" @click="isRptShow=true" icon="el-icon-time">查看报告</el-button>  
-                    <el-button type="text" v-if="isRptShow==true && isRptCfg==false" @click="toQueryRptData" icon="el-icon-time">查看历史报告</el-button>   
                     <el-button type="text" v-if="paramsVisible==true" @click="paramsVisible=false">隐藏过滤条件</el-button>  
                     <el-button type="text" v-if="paramsVisible==false" @click="paramsVisible=true">显示过滤条件</el-button> 
                     <el-button type="text" v-if="isRptShow==true && isRptCfg==false && xmRptData && xmRptData.id" @click="toShareRpt" icon="el-icon-share">分享</el-button>  
@@ -26,7 +24,7 @@
                     <el-button type="text" @click="exportToPdf">pdf</el-button> 
                 </span> 
             </el-row>
-            <el-row :style="{height:(maxTableHeight-24)+'px',overflowY:'auto',overflowX:'hidden',}" ref="table">
+            <el-row :style="{height:maxTableHeight+'px',overflowY:'auto',overflowX:'hidden',}" ref="table">
                 <div class="empty" v-if="compCfgList.length == 0" >
                     <el-empty description="暂未选择报表，请至少选择一个报表"></el-empty>
                 </div>
@@ -437,7 +435,7 @@ export default {
     mounted() {
         this.$nextTick(() => {
             this.initData();
-            this.maxTableHeight = util.calcMaxHeight(this.$refs.table.$el)
+            this.maxTableHeight = util.calcTableMaxHeight(this.$refs.table.$el)
         })
     },
 
