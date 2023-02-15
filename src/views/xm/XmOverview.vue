@@ -333,13 +333,13 @@ export default {
   computed: {
     ...mapGetters(["userInfo"]),
     competeTasks: function (){
-      return this.xmBranch.taskCnt-this.xmBranch.taskUnstartCnt-this.xmBranch.taskExecCnt;
+      return this.xmBranch.taskCnt||0-this.xmBranch.taskUnstartCnt||0-this.xmBranch.taskExecCnt||0;
     },
     notStart: function() {
-      return  this.xmBranch.taskUnstartCnt+this.xmBranch.taskExecCnt;
+      return  this.xmBranch.taskUnstartCnt||0+this.xmBranch.taskExecCnt||0;
     },
     totalTask: function() {
-      return this.xmBranch.taskCnt;
+      return this.xmBranch.taskCnt||0;
     },
     taskStartTime: function (){
       return this.xmBranch.startTime?this.xmBranch.startTime.substring(0,10):'';
@@ -358,14 +358,17 @@ export default {
     },
     deviation:function (){
 
-        return  this.xmBranch.actWorkload-this.xmBranch.estimateWorkload
+        return  Math.round(this.xmBranch.actWorkload||0-this.xmBranch.estimateWorkload||0)
 
     },
     deviationRate:function (){
+      if(!this.xmBranch.estimateWorkload||!this.deviation){
+        return 0
+      }
       return Math.round(this.deviation/this.xmBranch.estimateWorkload*100);
     },
     remainWorkload:function (){
-      return Math.round(this.xmBranch.budgetWorkload - this.xmBranch.actWorkload);
+      return Math.round(this.xmBranch.budgetWorkload||0 - this.xmBranch.actWorkload||0);
     },
     planProgress:function (){
       if(!this.xmBranch.estimateWorkload||!this.xmBranch.budgetWorkload){
