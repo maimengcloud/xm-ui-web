@@ -42,16 +42,11 @@
 											plain
 											@click="showIterationMenu"
 											>配置需求范围</el-button
-										> 
-										<el-button
-											class="step-btn"
-											type="danger"
-											
-											plain
-											icon="el-icon-d-caret" 
-											@click="editSomeFields(xmIteration, 'istatus', '1')"
-											>开启需求评审</el-button
-										> 
+										>  
+										
+										<el-popconfirm @confirm="editSomeFields(xmIteration, 'istatus', '1')" title="将迭代状态改为评审中?">
+											<el-button slot="reference" class="step-btn" type="danger" icon="el-icon-d-caret"  plain>开启需求评审</el-button>
+										</el-popconfirm>
 										</span>
 										<span v-if="xmIteration.istatus != i.id">
 										<el-button
@@ -90,16 +85,11 @@
 											plain
 											@click="showPanel='bugs'"
 											>缺陷登记</el-button
-										>
-										<el-button
-											class="step-btn"
-											type="danger"
-											
-											plain
-											icon="el-icon-d-caret"
-											@click="editSomeFields(xmIteration, 'istatus', '2')"
-											>进入计划会</el-button
-										>
+										> 
+										
+										<el-popconfirm @confirm="editSomeFields(xmIteration, 'istatus', '2')" title="将迭代状态改为计划中?">
+											<el-button slot="reference" class="step-btn" type="danger" icon="el-icon-d-caret"  plain>进入计划会</el-button>
+										</el-popconfirm>
 										</span>
 										<span v-if="xmIteration.istatus != i.id">
 										
@@ -123,16 +113,11 @@
 											plain
 											@click="showPanel = 'tasks'"
 											>任务管理</el-button
-										> 
-										<el-button
-											class="step-btn"
-											type="danger"
-											
-											plain
-											icon="el-icon-d-caret"
-											@click="editSomeFields(xmIteration, 'istatus', '3')"
-											>设为研发中</el-button
-										>
+										>  
+										
+										<el-popconfirm @confirm="editSomeFields(xmIteration, 'istatus', '3')" title="将迭代状态改为研发中?">
+											<el-button slot="reference" class="step-btn" type="danger" icon="el-icon-d-caret"  plain>设为研发中</el-button>
+										</el-popconfirm>
 										</span>
 										<span v-if="xmIteration.istatus != i.id">
 										<el-button
@@ -171,16 +156,10 @@
 											plain
 											@click="showPanel = '效能'"
 											>效能分析</el-button
-										> 
-										<el-button
-											class="step-btn"
-											type="danger"
-											
-											plain
-											icon="el-icon-d-caret"
-											@click="editSomeFields(xmIteration, 'istatus', '4')"
-											>设为测试中</el-button
-										>
+										>  
+										<el-popconfirm @confirm="editSomeFields(xmIteration, 'istatus', '4')" title="将迭代状态改为测试中?">
+											<el-button slot="reference" class="step-btn" type="danger" icon="el-icon-d-caret"  plain>设为测试中</el-button>
+										</el-popconfirm>
 										</span>
 										<span v-if="xmIteration.istatus != i.id"> 
 										<el-button
@@ -203,16 +182,10 @@
 												plain
 												@click="showPanel = 'bugs'"
 												>缺陷管理</el-button
-											>  
-											<el-button
-												class="step-btn"
-												type="danger"
-												
-												plain
-												icon="el-icon-d-caret"
-												@click="editSomeFields(xmIteration, 'istatus', '5')"
-												>设为待上线</el-button
-											>
+											>   
+											<el-popconfirm @confirm="editSomeFields(xmIteration, 'istatus', '5')" title="将迭代状态改为待上线?">
+												<el-button slot="reference" class="step-btn" type="danger" icon="el-icon-d-caret"  plain>设为待上线</el-button>
+											</el-popconfirm>
 										</span>
 										
 										<span v-if="xmIteration.istatus != i.id">
@@ -228,17 +201,10 @@
 									</el-row>
 									<el-row v-else-if="i.id == '5'"
 										><!--上线中-->
-										<span v-if="xmIteration.istatus == i.id">
-										
-										<el-button
-											class="step-btn"
-											type="danger"
-											
-											plain
-											icon="el-icon-d-caret"
-											@click="editSomeFields(xmIteration, 'istatus', '6')"
-											>设为已完成</el-button
-										>
+										<span v-if="xmIteration.istatus == i.id"> 
+											<el-popconfirm @confirm="editSomeFields(xmIteration, 'istatus', '6')" title="将迭代状态改为已完成?">
+												<el-button slot="reference" class="step-btn" type="danger" icon="el-icon-d-caret"  plain>设为已完成</el-button>
+											</el-popconfirm>
 										</span>
 										<span v-if="xmIteration.istatus != i.id">
 										
@@ -246,16 +212,10 @@
 									</el-row>
 									<el-row v-else-if="i.id == '6'"
 										><!--已完成-->
-										<span v-if="xmIteration.istatus == i.id">
-										<el-button
-											class="step-btn"
-											type="danger"
-											
-											plain
-											icon="el-icon-d-caret"
-											@click="editSomeFields(xmIteration, 'istatus', '7')"
-											>设为已关闭</el-button
-										>
+										<span v-if="xmIteration.istatus == i.id"> 
+											<el-popconfirm @confirm="editSomeFields(xmIteration, 'istatus', '7')" title="将迭代状态改为已关闭?">
+												<el-button slot="reference" class="step-btn" type="danger" icon="el-icon-d-caret"  plain>设为已关闭</el-button>
+											</el-popconfirm>
 										</span>
 										<span v-if="xmIteration.istatus != i.id"> 
 										
@@ -263,16 +223,10 @@
 									</el-row>
 									<el-row v-else-if="i.id == '7'"
 										><!--已关闭-->
-										<span v-if="xmIteration.istatus == i.id">
-										<el-button
-											class="step-btn"
-											type="danger"
-											
-											plain
-											icon="el-icon-d-caret"
-											@click="editSomeFields(xmIteration, 'istatus', '0')"
-											>重新打开</el-button
-										>
+										<span v-if="xmIteration.istatus == i.id"> 
+										<el-popconfirm @confirm="editSomeFields(xmIteration, 'istatus', '0')" title="将迭代状态改为已打开?">
+												<el-button slot="reference" class="step-btn" type="danger" icon="el-icon-d-caret"  plain>重新打开</el-button>
+											</el-popconfirm>
 										</span> 
 									</el-row>  
 									</el-row>
