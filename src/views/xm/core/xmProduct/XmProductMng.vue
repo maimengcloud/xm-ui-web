@@ -874,7 +874,7 @@
 	font-size: 12px;
 	color: #999; 
 	margin-top: 10px;
-	margin-right: 10px;
+	margin-right: 20px;
 }
 .project-card:hover{
 	border-color: #00abfc;

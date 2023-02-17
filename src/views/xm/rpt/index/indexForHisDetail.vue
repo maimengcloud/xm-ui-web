@@ -1,5 +1,5 @@
 <template> 
-<section> 
+<section class="padding"> 
   <el-row>
      <comps-card v-if="xmRptData && xmRptData.id" ref="compsCard" :xm-rpt-data="xmRptData" :show-params="false"/>  
   </el-row>

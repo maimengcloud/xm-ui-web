@@ -1,5 +1,5 @@
 <template>
-	<section>
+	<section class="padding">
 		 <rpt-index :xm-product="xmProduct" :xm-test-casedb="testCasedb"  category="测试库级"></rpt-index>
 	</section>
 </template>

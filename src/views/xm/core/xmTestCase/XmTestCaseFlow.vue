@@ -1,5 +1,5 @@
 <template>
-	<section>
+	<section class="padding">
 		 <xm-test-case-mng v-if="testCasedb&&testCasedb.id" :xm-test-casedb="testCasedb" scene="caseFlow"></xm-test-case-mng>
 	</section>
 </template>

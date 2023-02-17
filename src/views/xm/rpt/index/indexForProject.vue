@@ -1,5 +1,5 @@
 <template>
-	<section>
+	<section class="padding">
 		 <rpt-index :xm-project="projectInfo"  category="项目级"></rpt-index>
 	</section>
 </template>

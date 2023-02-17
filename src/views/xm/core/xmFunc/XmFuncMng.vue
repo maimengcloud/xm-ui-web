@@ -1,5 +1,5 @@
 <template>
-	<section class="page-container border padding">
+	<section class="border padding">
 		<el-row>
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>
 			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmFuncs" icon="el-icon-search">查询</el-button>

@@ -1,5 +1,5 @@
 <template>
-	<section>
+	<section class="padding">
 		 <xm-test-plan-mng v-if="testCasedb&&testCasedb.id" :xm-test-casedb="testCasedb"></xm-test-plan-mng>
 	</section>
 </template>

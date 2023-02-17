@@ -1,5 +1,5 @@
 <template>
-	<section class="padding-left padding-right">
+	<section>
 		<el-row>
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"  clearable></el-input>
             <mdp-select-dict style="width:15%;" clearable placeholder="状态" :dict="dicts['testPlanStatus']" v-model="filters.status" effect="dark"></mdp-select-dict> 
@@ -12,7 +12,7 @@
 			    <el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button>
 		    </span>
 		</el-row>
-		<el-row>
+		<el-row class="padding-top">
 			<!--列表 XmTestPlan 测试计划-->
 			<el-table ref="xmTestPlanTable" :data="xmTestPlans" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="55" show-overflow-tooltip fixed="left"></el-table-column>

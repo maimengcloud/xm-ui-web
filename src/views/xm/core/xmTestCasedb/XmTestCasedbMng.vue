@@ -1,5 +1,5 @@
 <template>
-	<section class="padding">
+	<section>
 		<el-row>
             <xm-product-select v-if="!xmProduct" style="display:inline;" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" @clear="clearProduct"></xm-product-select>
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询" clearable></el-input>
@@ -20,7 +20,7 @@
 				    <span class="cell-bar"><el-input style="display:inline;" v-model="scope.row.username" placeholder="" @change="editSomeFields(scope.row,'username',$event)" :maxlength="22"></el-input></span>
 				</el-table-column>
 				-->
- 				<el-table-column prop="name" label="用例库名称" min-width="120" show-overflow-tooltip>
+ 				<el-table-column prop="name" label="用例库名称" min-width="250">
 				    <template slot-scope="scope">
 				        <span v-if="select!==true"><el-link @click="goCasedbInfo(scope.row)">{{scope.row.name}} </el-link> </span>
                         <span v-else> {{scope.row.name}}  </span>

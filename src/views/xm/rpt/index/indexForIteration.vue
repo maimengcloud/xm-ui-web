@@ -1,5 +1,5 @@
 <template>
-	<section>
+	<section class="padding">
 		 <rpt-index :xm-iteration="xmIteration" :xm-product="xmProduct" category="迭代级"></rpt-index>
 	</section>
 </template>

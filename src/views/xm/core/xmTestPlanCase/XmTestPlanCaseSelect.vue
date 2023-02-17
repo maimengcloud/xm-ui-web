@@ -2,7 +2,7 @@
 	<section>
         <el-row> 
             <el-col :span="6" v-if="!xmTestCase||!xmTestCase.id">
-                <xm-func-select   class="padding-right padding-left" :xm-product="xmProductCpd" @row-click="onXmFuncRowClick"> 
+                <xm-func-select  :xm-product="xmProductCpd" @row-click="onXmFuncRowClick"> 
                 </xm-func-select>
             </el-col>
             <el-col :span="(xmTestCase&&xmTestCase.id)?24:18">
@@ -13,7 +13,7 @@
 
                     <el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestPlanCases" icon="el-icon-search">查询</el-button> 
                 </el-row>
-                <el-row>
+                <el-row class="padding-top">
                     <!--列表 XmTestPlanCase 测试计划与用例关系表-->
                     <el-table ref="xmTestPlanCaseTable" :data="xmTestPlanCases" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
                          <!--

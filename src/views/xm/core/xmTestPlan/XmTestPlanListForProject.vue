@@ -1,6 +1,6 @@
 <template>
     
-	<section class="padding-left padding-right" ref="xmTestPlanTable">
+	<section class="padding" ref="xmTestPlanTable">
  		<el-row>
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"  clearable></el-input>
 			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestPlans" icon="el-icon-search">查询</el-button>

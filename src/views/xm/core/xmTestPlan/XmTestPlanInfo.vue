@@ -1,7 +1,7 @@
 <template>
 	<section>  
             <el-row v-if=" xmTestPlan && xmTestPlan.id">
-                <el-row class="padding-left padding-right">
+                <el-row class="padding">
                      <el-button icon="el-icon-back" @click="goBackToPlanList()" type="primary" plain></el-button>
                      <el-divider direction="vertical"></el-divider>
                      {{xmTestPlan.name}}
@@ -28,10 +28,10 @@
                      </span>
                 </el-row> 
                 
-                <el-row v-if="subPage=='testPlanCase'" class="padding-right">
+                <el-row v-if="subPage=='testPlanCase'" class="padding-left padding-right">
                      <xm-test-plan-case-mng   :xm-test-plan="xmTestPlan" :xm-test-casedb="xmTestCasedb"></xm-test-plan-case-mng>
                 </el-row>
-                <el-row v-if="subPage=='testBug'" class="padding-left padding-right">
+                <el-row v-if="subPage=='testBug'"  class="padding-left padding-right">
                      <xm-question-mng :xm-test-plan="xmTestPlan" :xm-test-casedb="xmTestCasedb" :xm-product="{id:xmTestPlan.productId,productName:xmTestPlan.productName}" :sel-project="{id:xmTestPlan.projectId,name:xmTestPlan.projectName}"></xm-question-mng>
                 </el-row>
                 

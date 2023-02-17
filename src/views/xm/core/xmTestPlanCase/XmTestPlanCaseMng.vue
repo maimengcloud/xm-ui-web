@@ -1,8 +1,8 @@
 <template>
 	<section>
-        <el-row> 
+        <el-row :gutter="10"> 
             <el-col :span="6" v-if="!xmTestCase||!xmTestCase.id">
-                <xm-func-select v-if="xmProductCpd && xmProductCpd.id" class="padding-right padding-left" :xm-product="xmProductCpd" @row-click="onXmFuncRowClick"> 
+                <xm-func-select v-if="xmProductCpd && xmProductCpd.id" :xm-product="xmProductCpd" @row-click="onXmFuncRowClick"> 
                 </xm-func-select>
             </el-col>
             <el-col :span="!xmTestCase||!xmTestCase.id?18:24">
@@ -17,7 +17,7 @@
                         <el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button>
                     </span>
                 </el-row>
-                <el-row>
+                <el-row class="padding-top">
                     <!--列表 XmTestPlanCase 测试计划与用例关系表-->
                     <el-table ref="xmTestPlanCaseTable" :data="xmTestPlanCases" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
                         <el-table-column  type="selection" width="55" show-overflow-tooltip fixed="left"></el-table-column>

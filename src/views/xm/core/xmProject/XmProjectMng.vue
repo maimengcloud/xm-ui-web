@@ -987,7 +987,7 @@
 	cursor: pointer;
 	font-size: 12px;
 	color: #999;
-	margin-right: 10px;
+	margin-right: 20px;
 	margin-top: 10px;
 }
 .project-card:hover{

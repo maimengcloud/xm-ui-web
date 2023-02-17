@@ -7,7 +7,7 @@
                     <el-button type="primary" @click="showAdd" icon="el-icon-plus" title="添加顶级模块">  </el-button> 
 		    </span>
 		</el-row>
-		<el-row>
+		<el-row class="padding-top">
 			<!--列表 XmFunc 功能模块表-->
 			<el-table ref="xmFuncTable"  element-loading-text="努力加载中" element-loading-spinner="el-icon-loading"  :data="xmFuncsTreeData" :max-height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;" current-row-key="id" row-key="id" :tree-props="{children: 'children'}" >
 				 
