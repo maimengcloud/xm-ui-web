@@ -1,5 +1,5 @@
 <template>
-	<section class="border padding">
+	<section class="padding">
 		<el-row>
             <xm-product-select v-if="!xmProduct" style="display:inline;" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" @clear="clearProduct"></xm-product-select>
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询" clearable></el-input>
@@ -9,7 +9,7 @@
 			    <el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button>
 		    </span>
 		</el-row>
-		<el-row>
+		<el-row  class="padding-top">
 			<!--列表 XmTestCasedb 测试用例库-->
 			<el-table ref="xmTestCasedbTable" :data="xmTestCasedbs" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="55" show-overflow-tooltip fixed="left"></el-table-column>

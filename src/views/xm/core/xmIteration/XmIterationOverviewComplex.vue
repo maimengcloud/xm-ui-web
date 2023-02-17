@@ -2,16 +2,15 @@
   <section>
     <el-row>
       <el-col
-        :span="4"
-        class="padding"
-        :style="{  overflowY: 'auto' }"
+        :span="4" 
+        :xl="4" :lg="4" :md="5" :sm="5" :xs="5" class="padding"
       >
       <div class="border">
         <el-row  class="padding">
           <h4>常用功能导航</h4>
         </el-row>
         <el-row
-          ref="pageBody" class="padding" :style="{ height: (maxTableHeight-24) + 'px', overflowY: 'auto' }"
+          ref="pageBody" class="padding" :style="{ maxHeight: (maxTableHeight-24) + 'px', overflowY: 'auto' }"
         >
         <el-steps
           :active="calcIterationStatusStep"
@@ -270,10 +269,10 @@
       </el-row>
       </div>
       </el-col>
-      <el-col  :xl="20" :lg="20" :md="19" :sm="19" :xs="19" class="padding-left padding-right">
+      <el-col  :xl="20" :lg="20" :md="19" :sm="19" :xs="19">
         <el-tabs :value="showPanel" @tab-click="tabClick">  
 					<el-tab-pane label="迭代概览"  name="overview" > 
-            <xm-iteration-overview class="padding-top" v-if="showPanel=='overview'" :xm-iteration="xmIteration"></xm-iteration-overview>
+            <xm-iteration-overview v-if="showPanel=='overview'" :xm-iteration="xmIteration"></xm-iteration-overview>
 
  				 
 					</el-tab-pane> 
@@ -283,13 +282,13 @@
 
 					</el-tab-pane>
 					<el-tab-pane label="配置需求范围"  name="iterationMenuMng" > 
-            <xm-iteration-menu-mng v-if="showPanel=='iterationMenuMng'" :xm-iteration="xmIteration"  ref="iterationMenuMng"  class="padding-top"></xm-iteration-menu-mng>
+            <xm-iteration-menu-mng class="padding-right" v-if="showPanel=='iterationMenuMng'" :xm-iteration="xmIteration"  ref="iterationMenuMng"></xm-iteration-menu-mng>
 
  				 
 					</el-tab-pane> 
 					<el-tab-pane label="执行统计"  name="iterationCalc" >
 
-            <div v-if="showPanel=='iterationCalc'" class="padding">
+            <div v-if="showPanel=='iterationCalc'">
               <el-row>
                 <el-button type="primary" @click="loadTasksToXmIterationState" v-loading="load.calcIteration">计算迭代统计数据</el-button>
                 <br>

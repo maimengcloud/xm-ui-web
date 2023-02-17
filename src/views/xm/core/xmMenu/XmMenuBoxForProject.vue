@@ -1,5 +1,5 @@
 <template>
-	<section>  
+	<section class="padding">  
 		<xm-menu-box v-if="projectInfo && projectInfo.id" :sel-project="projectInfo"></xm-menu-box>
 	</section>
 </template>

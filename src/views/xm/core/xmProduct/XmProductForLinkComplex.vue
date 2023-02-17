@@ -195,7 +195,7 @@
             label="迭代"
             name="iterationProductLink" 
           >
-            <xm-iteration-mng style="margin-top:-10px;"
+            <xm-iteration-mng
               v-if="showPanel == 'iterationProductLink'"
               :xm-product="xmProduct"
             ></xm-iteration-mng>

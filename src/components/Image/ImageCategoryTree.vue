@@ -1,10 +1,12 @@
 <template>
-	<section>
-		<el-row class="padding">
-			<el-button type="primary" style="float:left;" icon="el-icon-plus" @click.prevent.stop="addTopNode()">添加顶级分类</el-button>
+	<section class="border">
+		<el-row>
+			<div style="display:flex;justify-content: left;">
+			<el-input v-model="nodeFilterText"></el-input><el-button style="float:right;" icon="el-icon-plus" @click.prevent.stop="addTopNode()">顶级分类</el-button>
+			</div>
 		</el-row>
 		<el-row>
-		<el-tree
+		<el-tree 
 			:data="categoryTreeData"
 			:props="defaultTreeProps"
 			:filter-node-method="filterNode"
@@ -23,9 +25,8 @@
 			ref="nodeTree">
 			<div class="custom-tree-node" slot-scope="{ node, data}"> 
 				<div style="height:1.2em;">{{data.categoryName=='根'?'移动鼠标到此添加分类':data.categoryName}}</div> 
-				<span class="el-ic" @click.stop title="鼠标点击其它地方可关闭窗口">
+				<span class="el-ic" @click.stop>
 						<el-popover
-							title="鼠标点击其它地方可关闭窗口"
 							placement="top"
 							width="300" 
 
@@ -44,43 +45,44 @@
 		<el-dialog
 			title="提示"
 			:visible.sync="addVisible"
-			width="60%" append-to-body  modal-append-to-body>
+			width="400" append-to-body  >
 				<el-form ref="addImageCategory" :model="addImageCategory" label-width="200" 	>
-					<el-form-item label="分类编号">
-						<el-input v-model="addImageCategory.id" placeholder="如果为空，则系统自动生成"></el-input>
-					</el-form-item>
 					<el-form-item label="分类名称"  prop="categoryName"
 					:rules="[
 						{ required: true, message: '名称不能为空'}
 						]">
 						<el-input v-model="addImageCategory.categoryName" ></el-input>
 					</el-form-item>
-					<el-form-item label="">
-						<el-button @click="addVisible = false">取 消</el-button>
-						<el-button type="primary" v-loading="addLoading"  @click="addImageCategorySubmit">确 定</el-button>
-					</el-form-item>
+					<el-form-item label="分类编号">
+						<el-input v-model="addImageCategory.id" placeholder="如果为空，则系统自动生成"></el-input>
+					</el-form-item> 
 				</el-form>
+				<el-row slot="footer">
+					<el-button @click="addVisible = false">取 消</el-button>
+						<el-button type="primary" v-loading="addLoading"  @click="addImageCategorySubmit">确 定</el-button>
+				</el-row>
 		</el-dialog>
 
 		<el-dialog
 			title="提示"
 			:visible.sync="editVisible"
-			width="60%" append-to-body modal-append-to-body>
+			width="400" append-to-body >
 				<el-form ref="editImageCategory" :model="editImageCategory" label-width="200" 	>
-					<el-form-item label="分类编号"  prop="id">
-						{{editImageCategory.id}}
-					</el-form-item>
 					<el-form-item label="分类名称"  prop="categoryName"
 					:rules="[
 						{ required: true, message: '名称不能为空'}
 						]">
 						<el-input v-model="editImageCategory.categoryName" ></el-input>
 					</el-form-item>
-					<el-form-item label="">
+					<el-form-item label="分类编号"  prop="id">
+						{{editImageCategory.id}}
+					</el-form-item> 
+				</el-form>
+				
+				<el-row slot="footer">
 						<el-button @click="editVisible = false">取 消</el-button>
 						<el-button type="primary" v-loading="editLoading" @click="editImageCategorySubmit">确 定</el-button>
-					</el-form-item>
-				</el-form>
+				</el-row>
 		</el-dialog>
 		</el-row>
 	</section>
@@ -118,7 +120,8 @@
 	    computed:{
 
 			categoryTreeData() {
-				 var datas= this.translateDataToTree(this.treeData);
+				var d=this.treeData 
+				 var datas= this.translateDataToTree(d);
 				 if(datas==null || datas.length==0){
 					 return [{pid:'',id:'C0',categoryType:'',categoryName:'根'}]
 				 }else{
@@ -216,10 +219,10 @@
 							addImageCategory(this.addImageCategory).then(res=>{
 								//console.log("res--"+JSON.stringify(res));
 								this.addLoading=false;
-								if(res.data.tips.isOk){
-
-									this.$message.success(res.data.tips.msg);
-									this.getTreeData(true);
+								if(res.data.tips.isOk){ 
+									this.$message.success(res.data.tips.msg); 
+									this.treeData.push(res.data.data)
+									this.addVisible=false;
 								}else{
 									this.$message.error(res.data.tips.msg);
 								}
@@ -242,7 +245,8 @@
 								if(res.data.tips.isOk){
 									this.editVisible=false;
 									this.$message.success(res.data.tips.msg);
-									this.getTreeData(true);
+									this.getTreeData(true); 
+									this.editVisible=false;
 								}else{
 									this.$message.error(res.data.tips.msg);
 								}

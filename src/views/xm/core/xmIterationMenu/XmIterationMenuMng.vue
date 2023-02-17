@@ -1,13 +1,13 @@
 <template>
 	<section>
-		<el-row>
+		<el-row :gutter="10">
 			<el-col :span="8">
 				<xm-epic-features-select :xm-product="{id:xmIteration.productId,name:''}" :show-select="false" @row-click="onEpicFeatureSelect"></xm-epic-features-select>
 			</el-col>
 			<el-col :span="16">
 				<el-row>
 					<el-col :span="24">
-						<el-row class="padding-left">
+						<el-row>
 							<el-input v-model="filters.key" style="width: 60%;" placeholder="模糊查询" clearable>
 							</el-input>
 							<el-button v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmIterationMenus" icon="el-icon-search"></el-button>
@@ -18,7 +18,7 @@
 							</span>
 
 						</el-row>
-						<el-row class="page-main padding-left">
+						<el-row class="padding-top">
 							<!--列表 XmIterationMenu 迭代定义-->
 							<el-table ref="table" :height="maxTableHeight" :data="xmIterationMenusTreeData"  row-key="menuId"   @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 								<el-table-column  type="selection" width="45"></el-table-column>

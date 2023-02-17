@@ -314,13 +314,12 @@ table tr.hover-row{
  /**
  *解决表格固定列无法滚动问题
  */
-.el-table {
-  .el-table__fixed {
-    height:auto !important; 
-    bottom:17px !important;  
-  }
-}
 
+.el-table__body-wrapper{
+
+  z-index:2
+
+}
 .icon {
   color: #fff;
   height: 20px;

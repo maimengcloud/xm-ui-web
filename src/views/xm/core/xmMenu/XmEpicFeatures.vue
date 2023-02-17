@@ -93,7 +93,7 @@
 				<el-button type="primary"  @click="showParentMenu" icon="el-icon-top" title="更换上级">更换上级</el-button> 
 			</div>
 			</el-row>
-		<el-row >
+		<el-row class="padding-top">
 			<el-table ref="table" :row-style="{height:'46px'}" :cell-style="cellStyleCalc" :expand-row-keys="expandRowKeysCpd" :header-cell-style="cellStyleCalc"    stripe fit border  :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick"
 				element-loading-text="努力加载中"
 				element-loading-spinner="el-icon-loading" 

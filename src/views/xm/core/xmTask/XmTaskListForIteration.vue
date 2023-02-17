@@ -1,5 +1,5 @@
 <template>
-	<section>
+	<section  class="padding">
 		 <xm-task-mng  v-if="xmIteration && xmIteration.id" :xm-product="xmProduct" :xm-iteration="xmIteration" ptype="1" query-scope="task"></xm-task-mng>
 	</section>
 </template>

@@ -1,5 +1,5 @@
 <template>
-	<section class="padding-left padding-right"> 
+	<section  class="padding"> 
 		<el-row  :gutter="10">
 			<el-col :span="7">
 				<xm-phase :xm-product="xmProduct"   queryScope="plan" @row-click="onPhaseRowClick" @project-row-click="onProjectRowClick"></xm-phase>

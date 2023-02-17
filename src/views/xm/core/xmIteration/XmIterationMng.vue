@@ -1,5 +1,5 @@
 <template>
-  <section class="padding">
+  <section>
     <el-row>
       <xm-product-select
         v-if="!xmProduct || !xmProduct.id"
@@ -106,7 +106,7 @@
         >
       </span>
     </el-row>
-    <el-row>
+    <el-row class="padding-top">
       <!--列表 XmIteration 迭代定义-->
       <el-table
         ref="table"

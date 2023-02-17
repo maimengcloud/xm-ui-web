@@ -1,27 +1,26 @@
 <template>
 <section>
-	<el-row v-loading="listLoading">
-		<el-col :span="6" class="border"> 
+	<el-row v-loading="listLoading" :gutter="10">
+		<el-col :span="6"> 
 			<category-tree ref="categoryTree" :show-count="false" show-checkbox  :default-expand-all="true" :expand-on-click-node="false"  v-on:check-change="handleLeftCategoryNodeClick"></category-tree> 
 		</el-col>
 		<el-col :span="18">
-			<el-row class="padding-left " style="height:36px;overflow: hidden;">
- 					<el-input v-model="filters.key" style="width:40%;" placeholder="按文件名模糊查询"></el-input>
-					<el-button @click="searchImages" icon="el-icon-search"></el-button> 
-					<el-button type="primary" @click="handleConfirm">确定选择</el-button>
-						<el-upload style="height:40px;width:120px;display: inline;margin-bottom: 0px;" :disabled="uploadOptions.categoryId==''||uploadOptions.categoryId==null" class="upload-demo"  :show-file-list="false" :action="uploadAction" :on-change="fileChange" :on-success="handleSuccess" :before-upload="beforeupload" :data="uploadOptions" multiple>
-							<el-tooltip class="item" effect="dark" :content="uploadOptions.categoryId==''?'请先选择左边分类':'支持jpg和png,建议大小不超过200KB，超过1M将自动裁剪压缩'" placement="top-start">
-								<el-button  icon="el-icon-upload">上传图库</el-button>
-								</el-tooltip>
-							
+			<el-row>
+				<div style=" display:flex;flex-wrap: nowrap;justify-content: flex-start;">
+ 					<el-input style="max-width:20em;" v-model="filters.key"   placeholder="按文件名模糊查询"></el-input>		
+					<el-button style="margin-left:5px;" @click="searchImages" icon="el-icon-search"></el-button>  
+ 					<el-button style="margin-left:5px;" type="primary" @click="handleConfirm">确定选择</el-button>
+						<el-upload style="margin-left:5px;" :disabled="!uploadOptions.categoryId" :show-file-list="false" :action="uploadAction" :on-change="fileChange" :on-success="handleSuccess" :before-upload="beforeupload" :data="uploadOptions" multiple>
+ 								<el-button  icon="el-icon-upload" @click="onClickUpload">上传图库</el-button> 
+ 							
 						</el-upload>   
-						<el-button  type="danger" @click="handelDel" >删除</el-button>  
-
+						<el-button style="margin-left:5px;" type="danger" @click="handelDel" >删除</el-button>  
+				</div>
 			</el-row> 
-			<el-row class="padding-left">
+			<el-row class="padding-top">
 				<el-col :span="24"  type="flex" class="allImg border padding">
-					  <el-col :span="4"  v-for="o in images" style="height:200px;width:200px;" :key="o.id" class="imgBox">
-					    <el-card :body-style="{ padding: '0px' }">
+					  <el-col :span="4"  v-for="o in images" style="height:200px;" :key="o.id" class="imgBox">
+					    <el-card :body-style="{ padding: '2px' }">
 					    	
 					    	<div style="width:100%;position:relative;" :index="o.url"  v-on:click="selectImg(o)"> 
 					    		<div class="blank" v-show="o.show">
@@ -365,6 +364,13 @@
 				} 
 				this.searchImages();
 			},
+			onClickUpload(){
+				if( !this.uploadOptions.categoryId){
+					this.$message({ message:"请在选择适当的分类。", type: 'error' });
+					return;
+				}
+				return;
+			},
 			handelDel(){
 				if(this.selectImages.length==0){
 					this.$message({ message:"请选择要删除的图片", type: 'error' });
@@ -392,42 +398,15 @@
   }
 </script>
 
-<style>
-.uploadImgWindow{
-	height: 500px; 
-	border: 1px solid #eee;
-	text-align: center;
-	color: #333;
-}
-.leftBox{
-	height:100%;
-	border-right: 1px solid #ccc;
-}
-.rightBox{
-	height:100%;
-	overflow:hidden;
-}
+<style lang="less" scope> 
+ 
+ 
 .allImg{
 	height:400px;
 	overflow-y :auto;
-}
-.windowTitle{
-    border-bottom: 1px solid #ccc;
-    height: 45px;
-    line-height: 42px;
-    text-align: right;
-    padding-right:20px;
-    margin-bottom: 2px;
-}
-.bottomBox{
-	text-align:center;
-	padding:15px;
-}
+}  
 
-  .el-row {
-   flex-wrap: wrap;
-    margin-bottom: 6px;
-  }
+ 
 
   ul>li{
   	text-align:left;

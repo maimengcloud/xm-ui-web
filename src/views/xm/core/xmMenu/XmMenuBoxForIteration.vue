@@ -1,5 +1,5 @@
 <template>
-	<section>  
+	<section class="padding">  
 		<xm-menu-box v-if="xmProduct&&xmProduct.id" :xm-iteration="xmIteration" :xm-product="xmProduct"></xm-menu-box>
 	</section>
 </template>

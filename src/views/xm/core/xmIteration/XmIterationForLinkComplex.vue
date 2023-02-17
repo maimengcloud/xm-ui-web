@@ -12,7 +12,7 @@
 						</xm-iteration-select>
 						 
   				 </el-row> 
-				<el-row ref="pageBody" class="padding" :style="{ maxHeight: maxTableHeight + 'px', overflowY: 'auto' }"> 
+				<el-row ref="pageBody" :style="{ maxHeight: maxTableHeight + 'px', overflowY: 'auto' }"> 
  								<el-steps v-if="xmIteration&&xmIteration.id"
 								:active="calcIterationStatusStep"
 								finish-status="success"
@@ -281,7 +281,7 @@
 						</el-row>	
 					</div>		 
 			</el-col>
-			<el-col :xl="20" :lg="20" :md="19" :sm="19" :xs="19" class="padding-left padding-right">
+			<el-col :xl="20" :lg="20" :md="19" :sm="19" :xs="19">
 				<el-tabs :value="showPanel" @tab-click="tabClick">  
 					<el-tab-pane label="迭代概览"  name="iterationOverview" > 
 						 
@@ -302,22 +302,22 @@
 						</div>
 					</el-tab-pane>
 					
-					<el-tab-pane label="迭代详情" name="detail" v-if="xmIteration&&xmIteration.id">
+					<el-tab-pane label="迭代详情" name="detail">
 						<xm-iteration-edit v-if="showPanel=='detail'" :xm-iteration="xmIteration" @edit-fields="onEditFields" :xm-product="xmProductCpd"></xm-iteration-edit>
 					</el-tab-pane> 
-					<el-tab-pane label="需求列表" name="menus" v-if="xmIteration&&xmIteration.id">
+					<el-tab-pane label="需求列表" name="menus">
 						<xm-menu-mng v-if="xmIteration && showPanel=='menus'" :xm-product="xmProductCpd"  :xm-iteration="xmIteration" :sel-project="projectInfo"></xm-menu-mng>
 					</el-tab-pane>
-					<el-tab-pane label="配置需求范围" name="iterationMenuMng" v-if="xmIteration&&xmIteration.id">
+					<el-tab-pane label="配置需求范围" name="iterationMenuMng">
       					<xm-iteration-menu-mng v-if="showPanel=='iterationMenuMng'" :xm-iteration="xmIteration" :xm-product="xmProductCpd"></xm-iteration-menu-mng>
 					</el-tab-pane>
-					<el-tab-pane label="任务列表" name="tasks" v-if="xmIteration&&xmIteration.id">
+					<el-tab-pane label="任务列表" name="tasks">
 						<xm-task-mng v-if="xmIteration && showPanel=='tasks'" :xm-product="xmProductCpd" :xm-iteration="xmIteration" :sel-project="projectInfo"></xm-task-mng>
 					</el-tab-pane>  
-					<el-tab-pane label="缺陷列表" name="bugs" v-if="xmIteration&&xmIteration.id">
+					<el-tab-pane label="缺陷列表" name="bugs">
 						<xm-question-mng v-if="xmIteration && showPanel=='bugs'" :xm-product="xmProductCpd" :xm-iteration="xmIteration" :sel-project="projectInfo"></xm-question-mng>
 					</el-tab-pane> 
-					<el-tab-pane label="效能分析" name="效能" v-if="xmIteration&&xmIteration.id"> 
+					<el-tab-pane label="效能分析" name="效能"> 
 						<xm-rpt v-if="xmIteration && showPanel=='效能'" :xm-project="projectInfo" :xm-iteration="xmIteration" :xm-product="xmProductCpd" category="迭代级"></xm-rpt>
  					</el-tab-pane> 
 				</el-tabs>
@@ -484,7 +484,7 @@
 			this.$nextTick(() => {
 				initDicts(this)
 				
-      this.maxTableHeight = util.calcTableMaxHeight(this.$refs.pageBody.$el);
+      this.maxTableHeight = util.calcMaxHeight(this.$refs.pageBody.$el);
 				});
 
 			}

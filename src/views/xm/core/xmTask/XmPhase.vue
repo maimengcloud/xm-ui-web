@@ -115,7 +115,7 @@
                     v-loading="load.edit"
                   > 更换上级</el-button>     
         </el-row>
-        <el-row> 
+        <el-row class="padding-top"> 
             <el-table class="task-table" :row-style="{height:'46px'}"
              element-loading-text="努力加载中" element-loading-spinner="el-icon-loading"
               :data="tasksTreeData"

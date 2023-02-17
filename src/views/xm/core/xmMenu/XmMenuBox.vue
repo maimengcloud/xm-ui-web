@@ -1,5 +1,5 @@
 <template> 
-	<section class="padding-left padding-right">
+	<section>
 		<el-row :gutter="10"> 
 			<el-col :span="7">
 				<!--

@@ -333,7 +333,7 @@
           </span>
          </el-row>
 
-        <el-row ref="table">
+        <el-row ref="table" class="padding-top">
           <template v-if="displayType!='grant'">
             <xm-task-agile-kanban
               :tableHeight="tableHeight"

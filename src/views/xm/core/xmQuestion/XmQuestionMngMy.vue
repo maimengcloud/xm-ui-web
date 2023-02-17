@@ -1,5 +1,5 @@
 <template>
-	<xm-question-mng :query-scene="'my'" class="padding-top"></xm-question-mng>
+	<xm-question-mng :query-scene="'my'" class="padding"></xm-question-mng>
 </template>
 
 <script>

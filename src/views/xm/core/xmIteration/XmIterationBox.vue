@@ -1,5 +1,5 @@
 <template>
-	<section class="padding">
+	<section>
 		<el-row >
 			<el-input v-if="filters.queryScope=='iterationId'"  v-model="filters.id" style="width:20%;"  placeholder="输入迭代编号" @keyup.enter.native="searchXmProducts"> </el-input>
 			<el-date-picker v-if="filters.queryScope!='iterationId'" v-model="dateRangerOnline" type="daterange" align="right" unlink-panels range-separator="至"
@@ -49,7 +49,7 @@
 				<el-button type="primary" @click="showAdd" icon="el-icon-plus" round>迭代计划</el-button>
 			</span>
  		</el-row>
-		<el-row>
+		<el-row class="padding-top">
 			<!--列表 XmIteration 迭代定义-->
 			<el-table ref="table" :height="maxTableHeight" v-if="!gstcVisible" :data="xmIterationTreeData" row-key="id"  default-expand-all :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column type="selection" aria-disabled width="55"></el-table-column>

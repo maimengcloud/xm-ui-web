@@ -1,5 +1,5 @@
 <template>
-	<xm-question-mng class="padding-left padding-right" :sel-project="projectInfo"></xm-question-mng>
+	<xm-question-mng class="padding" :sel-project="projectInfo"></xm-question-mng>
 </template>
 
 <script>
