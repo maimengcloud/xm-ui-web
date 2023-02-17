@@ -940,10 +940,8 @@
 
 </script>
 
-<style scoped>
-* >>> .sub-navbar{
-	background: #fafbfc;
-}
+<style lang="scss" scoped> 
+ 
 .changebtn{
 	float: right;
 	padding: 2px 10px;
@@ -1009,6 +1007,7 @@
 .project-info{
 	display: flex;
 	margin-top: 8px;
+	justify-content: space-around;
 }
 .project-info>div{
 	display: flex;
@@ -1025,10 +1024,16 @@
 	font-size: 18px;
 	color: #666;
 }
-.info-task{
-	padding-left: 20px;
-	width: 70%;
-	border-left: 1px solid #efefef;
+
+.info-task{  
+	span{
+		display: flex;
+		justify-content:center;
+	}
+	.item-type{
+		align-content: center;
+		text-align: center;
+	}
 }
 .finish-task{
 	color: #00abfc !important;

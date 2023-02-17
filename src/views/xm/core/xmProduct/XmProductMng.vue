@@ -133,7 +133,7 @@
 									<div class="project-info"> 
 										
 										<div class="info-task"  title="已完成需求数 / 总需求数 ">
-											<span>
+											<span class="nums">
 												<span class="item-total finish-task">{{p.menuFinishCnt==null?0:p.menuFinishCnt}}</span>
 												<span style="margin: 0 .25rem !important;">/</span>
 												<span class="item-type total-task">{{p.menuCnt==null?0:p.menuCnt}}</span>
@@ -853,7 +853,7 @@
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped> 
 
 
 .more-label-font{
@@ -894,6 +894,7 @@
 }
 .project-info{
 	display: flex;
+	justify-content: space-around;
 	margin-top: 8px;
 }
 .project-info>div{
@@ -911,10 +912,15 @@
 	font-size: 18px;
 	color: #666;
 }
-.info-task{
-	padding-left: 20px;
-	width: 70%;
-	border-left: 1px solid #efefef;
+.info-task{  
+	span{
+		display: flex;
+		justify-content:center;
+	}
+	.item-type{
+		align-content: center;
+		text-align: center;
+	}
 }
 .finish-task{
 	color: #00abfc !important;
@@ -937,10 +943,10 @@
 	display: flex;
 }
 .project-footer>div{
-	width: 30%;
+	width: 50%;
 }
 .project-footer>div:not(:first-child){
-	width: 70%;
+	width: 50%;
 }
 .project-period{
 	line-height: 40px;
