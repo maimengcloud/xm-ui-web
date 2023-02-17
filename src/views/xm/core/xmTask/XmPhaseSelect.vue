@@ -456,7 +456,7 @@ export default {
       if(this.isTaskCenter ||(this.selProject && this.selProject.id)){
         this.getXmTasks();
       } 
-      this.tableHeight = this.source == 'GZT' ? this.tableHeight : util.calcTableMaxHeight(this.$refs.table.$el);
+      this.tableHeight = this.source == 'GZT' ? this.tableHeight : util.calcTableMaxHeight(this.$refs.table.$el)-40;
  
     });
   },

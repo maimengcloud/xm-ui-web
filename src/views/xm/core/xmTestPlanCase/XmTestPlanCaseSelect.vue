@@ -1,6 +1,6 @@
 <template>
 	<section>
-        <el-row> 
+        <el-row :gutter="10"> 
             <el-col :span="6" v-if="!xmTestCase||!xmTestCase.id">
                 <xm-func-select  :xm-product="xmProductCpd" @row-click="onXmFuncRowClick"> 
                 </xm-func-select>
@@ -262,7 +262,7 @@ export default {
             initDicts(this);
             this.initData()
             this.searchXmTestPlanCases();
-            this.maxTableHeight = util.calcTableMaxHeight(this.$refs.xmTestPlanCaseTable.$el)
+            this.maxTableHeight = util.calcTableMaxHeight(this.$refs.xmTestPlanCaseTable.$el)-40
 
         });
     }

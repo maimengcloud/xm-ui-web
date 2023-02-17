@@ -327,7 +327,7 @@ export default {
             initDicts(this);
             this.initData()
             this.loadDatasFirstCache();
-            this.maxTableHeight = util.calcTableMaxHeight(this.$refs.xmFuncTable.$el)
+            this.maxTableHeight = util.calcTableMaxHeight(this.$refs.xmFuncTable.$el)-40
 
         });
     }

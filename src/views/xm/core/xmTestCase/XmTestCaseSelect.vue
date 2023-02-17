@@ -1,6 +1,6 @@
 <template>
 	<section>
-        <el-row>
+        <el-row :gutter="10">
             
             <el-col :span="6">
                 <xm-func-select v-if="xmTestCasedb && xmTestCasedb.productId" class="padding-right padding-left" :xm-product="{id:xmTestCasedb.productId,productName:xmTestCasedb.productName}" @row-click="onXmFuncRowClick"> 
@@ -340,7 +340,7 @@ export default {
             initDicts(this);
             this.initData()
             this.searchXmTestCases();
-            this.maxTableHeight = util.calcTableMaxHeight(this.$refs.xmTestCaseTable.$el)
+            this.maxTableHeight = util.calcTableMaxHeight(this.$refs.xmTestCaseTable.$el)-40
 
         });
     }
