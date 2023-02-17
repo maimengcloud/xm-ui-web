@@ -46,16 +46,10 @@
                       plain
                       @click="showPanel = 'menus'"
                       >需求管理</el-button
-                    > 
-                    <el-button
-                      class="step-btn" type="danger" icon="el-icon-d-caret"
-                      
-                      plain
-                      @click="
-                        editXmProductSomeFields(xmProduct, 'pstatus', '1')
-                      "
-                      >设为研发中</el-button
-                    >
+                    >   
+                    <el-popconfirm @confirm="editXmProductSomeFields(xmProduct, 'pstatus', '1')" title="将产品状态设为研发中?">
+                      <el-button slot="reference" class="step-btn" type="danger" icon="el-icon-d-caret"  plain>设为研发中</el-button>
+                    </el-popconfirm>
                   </span>
                   <span v-if="xmProduct.pstatus != i.id">
                     <el-button
@@ -87,15 +81,9 @@
                       @click="showPanel = 'bugs'"
                       >缺陷管理</el-button
                     >  
-                    <el-button
-                      class="step-btn" type="danger" icon="el-icon-d-caret"
-                      
-                      plain
-                      @click="
-                        editXmProductSomeFields(xmProduct, 'pstatus', '2')
-                      "
-                      >设为已完成</el-button
-                    >
+                    <el-popconfirm @confirm="editXmProductSomeFields(xmProduct, 'pstatus', '2')" title="将产品状态设为已完成?">
+                      <el-button slot="reference" class="step-btn" type="danger" icon="el-icon-d-caret"  plain>设为已完成</el-button>
+                    </el-popconfirm>
                   </span>
                   <span v-if="xmProduct.pstatus != i.id">
                     <el-button
@@ -118,34 +106,27 @@
                 </el-row>
                 <el-row v-else-if="i.id == '2'"
                   ><!--已完成-->
-                  <span v-if="xmProduct.pstatus == i.id">
-                    <el-button
-                      class="step-btn" type="danger" icon="el-icon-d-caret"
-                      
-                      plain
-                      @click="
-                        editXmProductSomeFields(xmProduct, 'pstatus', '3')
-                      "
-                      >设为已关闭</el-button
-                    >
+                  <span v-if="xmProduct.pstatus == i.id"> 
+                    
+                    <el-popconfirm @confirm="editXmProductSomeFields(xmProduct, 'pstatus', '3')" title="将产品状态设为已关闭?">
+                      <el-button slot="reference" class="step-btn" type="danger" icon="el-icon-d-caret"  plain>设为已关闭</el-button>
+                    </el-popconfirm>
                   </span>
-                  <span v-if="xmProduct.pstatus != i.id"> </span>
+                  <span v-if="xmProduct.pstatus != i.id">
+                     
+                  </span>
                 </el-row>
                 <el-row v-else-if="i.id == '3'"
                   ><!--已关闭-->
-                  <span v-if="xmProduct.pstatus == i.id">
-                    <el-button
-                      class="step-btn" type="danger" icon="el-icon-d-caret"
-                      
-                      plain
-                      @click="
-                        editXmProductSomeFields(xmProduct, 'pstatus', '0')
-                      "
-                      >重新打开</el-button
-                    >
+                  <span v-if="xmProduct.pstatus == i.id">   
+                    <el-popconfirm @confirm="editXmProductSomeFields(xmProduct, 'pstatus', '0')" title="将产品状态设为打开状态?">
+                      <el-button slot="reference" class="step-btn" type="danger" icon="el-icon-d-caret"  plain>重新打开</el-button>
+                    </el-popconfirm>
                   </span>
-                  <span v-if="xmProduct.pstatus != i.id"> </span>
-                </el-row>
+                  <span v-if="xmProduct.pstatus != i.id">
+                     
+                  </span>
+                </el-row> 
               </el-row>
             </el-step>
           </el-steps>

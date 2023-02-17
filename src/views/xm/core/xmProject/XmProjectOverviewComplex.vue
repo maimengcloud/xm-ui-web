@@ -97,27 +97,39 @@
               <el-button class="step-btn" type="warning"    plain @click="showHisFlow()">结项审批</el-button>  
             </span>  
 			   </el-row>
-               <el-row v-else-if="i.id=='6'"><!--已结项--> 
-			   		<span v-if="projectInfo.status==i.id"> 
-						<el-button class="step-btn"  type="danger" icon="el-icon-d-caret"    plain @click="editXmProjectSomeFields(projectInfo,'status','7')">转入售后</el-button>
-					</span> 
-					<span v-if="projectInfo.status!=i.id">
-					</span>  
-			   </el-row>
-               <el-row v-else-if="i.id=='7'"><!--售后-->
-					<span v-if="projectInfo.status==i.id"> 
-						<el-button class="step-btn"  type="danger" icon="el-icon-d-caret"    plain @click="editXmProjectSomeFields(projectInfo,'status','8')">设为已完成</el-button>
-					</span> 
-			   </el-row>
-               <el-row v-else-if="i.id=='8'"><!--已完成-->
-					<span v-if="projectInfo.status==i.id"> 
-						<el-button class="step-btn"  type="danger" icon="el-icon-d-caret"    plain @click="editXmProjectSomeFields(projectInfo,'status','9')">关闭项目</el-button>
-					</span> 
-					
-			   </el-row>
-               <el-row v-else-if="i.id=='9'"><!--已关闭-->
-					
-			   </el-row> 
+          <el-row v-else-if="i.id=='6'"><!--已结项--> 
+              <span v-if="projectInfo.status==i.id"> 
+                
+                <el-popconfirm @confirm="editXmProjectSomeFields(projectInfo, 'status', '7')" title="将项目状态改为售后?">
+                  <el-button slot="reference" class="step-btn" type="danger" icon="el-icon-d-caret"  plain>转入售后</el-button>
+                </el-popconfirm>
+               </span> 
+              <span v-if="projectInfo.status!=i.id">
+              </span>  
+          </el-row>
+          <el-row v-else-if="i.id=='7'"><!--售后-->
+              <span v-if="projectInfo.status==i.id"> 
+                
+                <el-popconfirm @confirm="editXmProjectSomeFields(projectInfo, 'status', '8')" title="将项目状态改为已完成?">
+                  <el-button slot="reference" class="step-btn" type="danger" icon="el-icon-d-caret"  plain>设为已完成</el-button>
+                </el-popconfirm>
+               </span> 
+          </el-row>
+          <el-row v-else-if="i.id=='8'"><!--已完成-->
+              <span v-if="projectInfo.status==i.id"> 
+                <el-popconfirm @confirm="editXmProjectSomeFields(projectInfo, 'status', '9')" title="将项目状态改为已关闭?">
+                  <el-button slot="reference" class="step-btn" type="danger" icon="el-icon-d-caret"  plain>关闭项目</el-button>
+                </el-popconfirm>
+               </span> 
+              
+          </el-row>
+          <el-row v-else-if="i.id=='9'"><!--已关闭-->  
+            <span v-if="projectInfo.status==i.id"> 
+              <el-popconfirm @confirm="editXmProjectSomeFields(projectInfo, 'status', '3')" title="将项目状态改为实施中?">
+                <el-button slot="reference" class="step-btn" type="danger" icon="el-icon-d-caret"  plain>重新实施</el-button>
+              </el-popconfirm>
+            </span>
+          </el-row> 
             </el-row>
           </el-step>
         </el-steps>
@@ -208,6 +220,8 @@ import {  loadTasksToXmProjectState , loadTasksSettleToXmProjectState} from '@/a
 import { listXmProject} from '@/api/xm/core/xmProject'; 
 
 import { initDicts,getDefOptions,editXmProjectSomeFields } from "@/api/xm/core/xmProject";
+
+import store from '@/store'
 
 export default {
   components: { XmProjectOverview, XmProjectDetail, XmProductProjectLinkMng ,TaskMng,ProcinstMng,XmProjectSetting},
@@ -347,7 +361,7 @@ export default {
             if(tips.isOk){
               this.$emit('edit-fields',params)
               Object.assign(row,params)  
-              store.dispathc("setProjectInfo",row)
+              store.dispatch("setProjectInfo",row)
             }else{    
               this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
             }

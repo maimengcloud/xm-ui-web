@@ -33,6 +33,10 @@
           <el-row slot="description">
           <el-row v-if="i.id=='0'"><!--初始-->
               <span v-if="selProject.status==i.id"> 
+                
+                <el-popconfirm @confirm="editXmProjectSomeFields(selProject, 'status', '1')" title="将项目状态改为售前?">
+                  <el-button slot="reference" class="step-btn" type="danger" icon="el-icon-d-caret"  plain>进入售前</el-button>
+                </el-popconfirm>   
                 <el-button class="step-btn" type="warning"    plain @click="editXmProjectSomeFields(selProject,'status','1')">进入售前</el-button>
               </span>
               <span v-if="selProject.status!=i.id">
@@ -40,8 +44,10 @@
           </el-row>
           <el-row v-else-if="i.id=='1'"><!--售前-->
               <span v-if="selProject.status==i.id">
-                <el-button class="step-btn" type="warning"    plain @click="showMenusPage">需求管理</el-button>
-                <el-button class="step-btn" type="danger" icon="el-icon-d-caret"    plain @click="editXmProjectSomeFields(selProject,'status','2')">设为立项中</el-button>
+                <el-button class="step-btn" type="warning"    plain @click="showMenusPage">需求管理</el-button> 
+                <el-popconfirm @confirm="editXmProjectSomeFields(selProject, 'status', '2')" title="将项目状态改为立项中，立项中的项目可以发起立项申请流程?">
+                  <el-button slot="reference" class="step-btn" type="danger" icon="el-icon-d-caret"  plain>设为立项中</el-button>
+                </el-popconfirm>              
               </span>
               <span v-if="selProject.status!=i.id">
                 <el-button class="step-btn" type="warning"    plain @click="showMenusPage">需求管理</el-button> 
@@ -53,8 +59,11 @@
                 <el-button class="step-btn" type="warning"    plain @click="showPanel='plan'">创建计划</el-button> 
                 <el-button class="step-btn" type="warning"    plain @click="showProjectGaiSuan()">项目估算</el-button>
                 <el-button class="step-btn" type="warning"    plain @click="showProjectShouYi()">项目收益</el-button>
-                <el-button class="step-btn" type="danger" icon="el-icon-d-caret"    plain @click="editXmProjectSomeFields(selProject,'status','3')">设为立项中</el-button>
-              </span>
+                
+                <el-popconfirm @confirm="editXmProjectSomeFields(selProject, 'status', '2')" title="将项目状态改为立项中，立项中的项目可以发起立项申请流程?">
+                  <el-button slot="reference" class="step-btn" type="danger" icon="el-icon-d-caret"  plain>设为立项中</el-button>
+                </el-popconfirm>
+               </span>
               <span v-if="selProject.status!=i.id">
                 <el-button class="step-btn" type="warning"    plain @click="showPanel='group'">团队管理</el-button>  
                 <el-button class="step-btn" type="warning"    plain @click="showPanel='plan'">计划管理</el-button>  
@@ -66,21 +75,26 @@
               <span v-if="selProject.status==i.id"> 
                 <el-button class="step-btn" type="warning"    plain @click="showPanel='tasks'">任务管理</el-button>
                 <el-button class="step-btn" type="warning"    plain @click="showPanel='bugs'">缺陷管理</el-button> 
-                <el-button class="step-btn" type="danger" icon="el-icon-d-caret"    plain @click="editXmProjectSomeFields(selProject,'status','4')">暂停项目</el-button>
-                <el-button class="step-btn" type="warning"    plain @click="projectChangeRequire()">变更申请</el-button>
-                <el-button class="step-btn" type="danger" icon="el-icon-d-caret"   plain @click="editXmProjectSomeFields(selProject,'status','5')">设为结项中</el-button>
-              </span>
+                <el-popconfirm @confirm="editXmProjectSomeFields(selProject, 'status', '4')" title="将项目状态改为暂停中，暂停中的项目不允许进行操作，恢复状态后才可以继续?">
+                  <el-button slot="reference" class="step-btn" type="danger" icon="el-icon-d-caret"  plain>暂停项目</el-button>
+                </el-popconfirm>
+                 <el-button class="step-btn" type="warning"    plain @click="projectChangeRequire()">变更申请</el-button>
+                <el-popconfirm @confirm="editXmProjectSomeFields(selProject, 'status', '5')" title="将项目状态改为结项中，结项申请中的项目可以发起结项流程?">
+                  <el-button slot="reference" class="step-btn" type="danger" icon="el-icon-d-caret"  plain>设为结项中</el-button>
+                </el-popconfirm>
+               </span>
               <span v-if="selProject.status!=i.id"> 
                 <el-button class="step-btn" type="warning"    plain @click="showPanel='tasks'">任务管理</el-button>
-                <el-button class="step-btn" type="warning"    plain @click="showPanel='bugs'">缺陷管理</el-button> 
-                <el-button v-if="selProject.status<i.id" class="step-btn" type="danger" icon="el-icon-d-caret"    plain @click="editXmProjectSomeFields(selProject,'status','5')">结项申请</el-button>
-                <el-button class="step-btn" type="warning"    plain @click="projectChangeRequire()">变更申请</el-button>
+                <el-button class="step-btn" type="warning"    plain @click="showPanel='bugs'">缺陷管理</el-button>  
+                 <el-button class="step-btn" type="warning"    plain @click="projectChangeRequire()">变更申请</el-button>
               </span> 
           </el-row>
           <el-row v-else-if="i.id=='4'"><!--暂停中-->
-              <span v-if="selProject.status==i.id"> 
-                <el-button class="step-btn" type="danger" icon="el-icon-d-caret"    plain @click="editXmProjectSomeFields(selProject,'status','3')">重新激活</el-button>
-              </span>  
+              <span v-if="selProject.status==i.id">  
+                <el-popconfirm @confirm="editXmProjectSomeFields(selProject, 'status', '3')" title="将项目重新激活?">
+                  <el-button slot="reference" class="step-btn" type="danger" icon="el-icon-d-caret"  plain>重新激活</el-button>
+                </el-popconfirm>
+               </span>  
           </el-row>
         <el-row v-else-if="i.id=='5'"><!--结项中-->
               <span v-if="selProject.status==i.id">  
@@ -91,24 +105,36 @@
           </el-row>
           <el-row v-else-if="i.id=='6'"><!--已结项--> 
               <span v-if="selProject.status==i.id"> 
-                <el-button class="step-btn" type="danger" icon="el-icon-d-caret"    plain @click="editXmProjectSomeFields(selProject,'status','7')">转入售后</el-button>
-              </span> 
+                
+                <el-popconfirm @confirm="editXmProjectSomeFields(selProject, 'status', '7')" title="将项目状态改为售后?">
+                  <el-button slot="reference" class="step-btn" type="danger" icon="el-icon-d-caret"  plain>转入售后</el-button>
+                </el-popconfirm>
+               </span> 
               <span v-if="selProject.status!=i.id">
               </span>  
           </el-row>
           <el-row v-else-if="i.id=='7'"><!--售后-->
               <span v-if="selProject.status==i.id"> 
-                <el-button class="step-btn" type="danger" icon="el-icon-d-caret"    plain @click="editXmProjectSomeFields(selProject,'status','8')">设为已完成</el-button>
-              </span> 
+                
+                <el-popconfirm @confirm="editXmProjectSomeFields(selProject, 'status', '8')" title="将项目状态改为已完成?">
+                  <el-button slot="reference" class="step-btn" type="danger" icon="el-icon-d-caret"  plain>设为已完成</el-button>
+                </el-popconfirm>
+               </span> 
           </el-row>
           <el-row v-else-if="i.id=='8'"><!--已完成-->
               <span v-if="selProject.status==i.id"> 
-                <el-button class="step-btn" type="danger" icon="el-icon-d-caret"    plain @click="editXmProjectSomeFields(selProject,'status','9')">关闭项目</el-button>
-              </span> 
+                <el-popconfirm @confirm="editXmProjectSomeFields(selProject, 'status', '9')" title="将项目状态改为已关闭?">
+                  <el-button slot="reference" class="step-btn" type="danger" icon="el-icon-d-caret"  plain>关闭项目</el-button>
+                </el-popconfirm>
+               </span> 
               
           </el-row>
-          <el-row v-else-if="i.id=='9'"><!--已关闭-->
-              
+          <el-row v-else-if="i.id=='9'"><!--已关闭--> 
+            <span v-if="selProject.status==i.id"> 
+              <el-popconfirm @confirm="editXmProjectSomeFields(selProject, 'status', '3')" title="将项目状态改为实施中?">
+                  <el-button slot="reference" class="step-btn" type="danger" icon="el-icon-d-caret"  plain>重新实施</el-button>
+                </el-popconfirm>
+            </span>
           </el-row> 
           </el-row>
         </el-step>
@@ -296,6 +322,8 @@ import XmPlan from "../xmTask/XmPlan.vue";
 import xmGroupMng from "../xmGroup/XmGroupMng";
  
 import XmRpt from "@/views/xm/rpt/index";
+import store from '@/store'
+
 import {
 	initDicts,
   getDefOptions,
@@ -435,6 +463,32 @@ export default {
     showMenusPage() {
       this.showPanel = "menus"; 
     },
+    
+			
+			editXmProjectSomeFields(row,fieldName,$event){ 
+				 
+				var func=(params)=>{
+					editXmProjectSomeFields(params).then(res=>{
+						var tips = res.data.tips;
+						if(tips.isOk){
+							
+							Object.assign(row,params) 
+							Object.assign(this.selProject,row) 
+							this.$emit('edit-fields',row)
+							store.dispatch("setProjectInfo",this.selProject)
+							this.editFormBak=Object.assign({},row)
+						}else{   
+							Object.assign(this.editForm,this.editFormBak)
+ 							this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+						}
+					})
+				}
+				var params={ids:[row.id]}; 
+				  
+					params[fieldName]=$event  
+				 
+					func(params) 
+			},
   }, //end methods
   components: {
     //在下面添加其它组件
