@@ -63,85 +63,7 @@
 							<el-row v-if="opType!=='add' && editForm.description!=editFormBak.description">  
  									<el-button v-loading="load.edit" type="primary" @click.native=" editXmProjectSomeFields(editForm,'description',editForm.description)" :disabled="load.edit==true">保存描述</el-button>   
 							</el-row>
-						</el-tab-pane>
-						<el-tab-pane label="控制开关" name="2">   
-							<el-form-item label="优先级" prop="priority">   
-								
- 									<el-select v-model="editForm.wtype"  @change="editXmProjectSomeFields(editForm,'priority',$event)">
-										<el-option v-for="(item,index) in dicts['priority']" :key="index" :value="item.id" :label="item.name"></el-option>
-									</el-select>
-							</el-form-item>  
-							<el-form-item label="报工方式" prop="wtype">  
-								<el-select v-model="editForm.wtype"  @change="editXmProjectSomeFields(editForm,'wtype',$event)">
-									<el-option   label="无须报工" value="0"  ></el-option> 
-									<el-option   label="每日报工" value="1"  ></el-option> 
-									<el-option   label="工期内任意日报工" value="2"  ></el-option> 
-								</el-select>  
-							</el-form-item>   
-							<el-form-item label="总预算控制" prop="budgetCtrl">
-								<el-checkbox  v-model="editForm.budgetCtrl"  :true-label="'1'" :false-label="'0'"   @change="editXmProjectSomeFields(editForm,'budgetCtrl',$event)">项目计划总预算大于项目总预算后将无法添加新的计划任务，进行项目预算变更后方可继续添加计划任务。</el-checkbox>  
- 							</el-form-item>  
-							<el-form-item label="总预算超额预警" prop="budgetEarly">
-								<el-checkbox  v-model="editForm.budgetEarly"  :true-label="'1'" :false-label="'0'"   @change="editXmProjectSomeFields(editForm,'budgetEarly',$event)">总预算超出&nbsp;<el-input  type="number" v-model="editForm.earlyAmt" placeholder="预警额度" style="width:180px;" @change="editXmProjectSomeFields(editForm,'earlyAmt',$event)"></el-input> &nbsp;元将进入预警清单</el-checkbox> 
- 							</el-form-item> 
-							<el-form-item label="实际金额控制" prop="phaseActCtrl">
-								<el-checkbox  v-model="editForm.phaseActCtrl"  :true-label="'1'" :false-label="'0'"  @change="editXmProjectSomeFields(editForm,'phaseActCtrl',$event)">每条计划实际金额不能大于预算金额; 任务的实际金额合计不能大于与任务关联的上级计划的预算。</el-checkbox>  
- 							</el-form-item>     
-							<el-form-item label="任务开关">
-								 <el-row>
-								  预算金额超出&nbsp;<el-input  type="number" v-model="editForm.maxTaskAmt"  style="width:180px;" @change="editXmProjectSomeFields(editForm,'maxTaskAmt',$event)"></el-input> &nbsp;元的任务将被禁止保存 
- 								</el-row>
-								<el-row>
-									<el-checkbox  v-model="editForm.menuLink"  :true-label="'1'" :false-label="'0'"  @change="editXmProjectSomeFields(editForm,'menuLink',$event)">任务是否必须严格关联用户故事</el-checkbox>  
-									<el-checkbox  v-model="editForm.phaseLink"  :true-label="'1'" :false-label="'0'"  @change="editXmProjectSomeFields(editForm,'phaseLink',$event)">任务是否必须严格关联计划</el-checkbox>  
-								</el-row>
-								<!--0-代表不限制,1-同组织，2-同项目组（默认），3-同小组-->
-							</el-form-item>    
-                 
-							<el-form-item label="团队相关:小组crud、加减人、小组组长管理等"> 
-								<el-row> 
-									<el-radio-group v-model="qxCode.groupScope" @change="editXmProjectSomeFields(editForm,'groupScope',$event)">
-									<el-radio label="0">不限制，允许任何人</el-radio>
-									<el-radio label="1">同机构下的人员</el-radio>
-									<el-radio label="2">同项目内人员</el-radio>
-									<el-radio label="3">同项目下同小组内人员</el-radio>
-									</el-radio-group>
-									</el-row>
-								<el-row>
-									<el-checkbox  v-model="qxCode.groupTransmit"  :true-label="'1'" :false-label="'0'"  @change="editXmProjectSomeFields(editForm,'groupTransmit',$event)">是否检查用户的上下级关系</el-checkbox>  
-								</el-row>
-								<!--0-代表不限制,1-同组织，2-同项目组（默认），3-同小组-->
-								</el-form-item>   
-								
-							<el-form-item label="测试相关：缺陷crud"> 
-								<el-row> 
-								<el-radio-group v-model="qxCode.testScope" @change="editXmProjectSomeFields(editForm,'testScope',$event)">
-									<el-radio label="0">不限制，允许任何人</el-radio>
-									<el-radio label="1">同机构下的人员</el-radio>
-									<el-radio label="2">同项目内人员</el-radio>
-									<el-radio label="3">同项目下同小组内人员</el-radio>
-								</el-radio-group>
-								</el-row>
-								<el-row>
-									<el-checkbox  v-model="qxCode.testTransmit"  :true-label="'1'" :false-label="'0'"  @change="editXmProjectSomeFields(editForm,'testTransmit',$event)">是否检查用户的上下级关系</el-checkbox>  
-								</el-row>
-								<!--0-代表不限制,1-同组织，2-同项目组（默认），3-同小组-->
-							</el-form-item>      
-							<el-form-item label="任务相关：计划crud、任务crud、任务指派、报工等"> 
-								<el-row> 
-									<el-radio-group v-model="qxCode.taskScope" @change="editXmProjectSomeFields(editForm,'taskScope',$event)">
-									<el-radio label="0">不限制，允许任何人</el-radio>
-									<el-radio label="1">同机构下的人员</el-radio>
-									<el-radio label="2">同项目内人员</el-radio>
-									<el-radio label="3">同项目下同小组内人员</el-radio>
-									</el-radio-group>
-									</el-row>
-								<el-row>
-									<el-checkbox  v-model="qxCode.taskTransmit"  :true-label="'1'" :false-label="'0'"  @change="editXmProjectSomeFields(editForm,'taskTransmit',$event)">是否检查用户的上下级关系</el-checkbox>  
-								</el-row>
-							<!--0-代表不限制,1-同组织，2-同项目组（默认），3-同小组-->
-							</el-form-item> 
-						</el-tab-pane>
+						</el-tab-pane> 
 						<el-tab-pane label="工期" name="3">
 							<el-row>  
  									<span v-if="opType!=='add'" style="float:right;">
@@ -974,8 +896,6 @@
 				} else if (fieldName == "pmUserid") {
 					params["pmUserid"] = $event[0].userid;
 					params["pmUsername"] = $event[0].username;
-				}else if (fieldName == "groupScope"||fieldName == "groupTransmit"||fieldName == "testScope"||fieldName=="testTransmit"||fieldName == "taskScope"||fieldName=="taskTransmit") {
-					params["qxCode"] = [this.qxCode.groupScope,this.qxCode.groupTransmit,this.qxCode.testScope,this.qxCode.testTransmit,this.qxCode.taskScope,this.qxCode.taskTransmit].join(",") 
 				} else{
 					params[fieldName]=$event 
 				}

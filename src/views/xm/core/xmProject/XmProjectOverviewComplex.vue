@@ -132,6 +132,13 @@
 
           </el-tab-pane>
           <el-tab-pane
+            label="项目设置"
+            name="setting" 
+          > 
+          <xm-project-setting  v-if="showPanelName=='setting'" :sel-project="projectInfo" @edit-fields="onEditFields" ref="detail"></xm-project-setting> 
+
+          </el-tab-pane>
+          <el-tab-pane
             label="项目详情"
             name="detail" 
           > 
@@ -190,6 +197,7 @@ import util from "@/common/js/util"; // 全局公共库
 import { mapGetters } from "vuex"; 
 import XmProjectOverview from './XmProjectOverview.vue';
 import XmProjectDetail from './XmProjectDetail.vue';
+import XmProjectSetting from './XmProjectSetting.vue';
 import XmProductProjectLinkMng from '../xmProductProjectLink/XmProductProjectLinkMng.vue'; 
 
 import TaskMng from '@/views/mdp/workflow/ru/task/TaskMng'; 
@@ -200,7 +208,7 @@ import { listXmProject} from '@/api/xm/core/xmProject';
 import { initDicts,getDefOptions,editXmProjectSomeFields } from "@/api/xm/core/xmProject";
 
 export default {
-  components: { XmProjectOverview, XmProjectDetail, XmProductProjectLinkMng ,TaskMng,ProcinstMng},
+  components: { XmProjectOverview, XmProjectDetail, XmProductProjectLinkMng ,TaskMng,ProcinstMng,XmProjectSetting},
   computed: {
     ...mapGetters(["userInfo","projectInfo"]),
     calcProjectStatusStep() {
