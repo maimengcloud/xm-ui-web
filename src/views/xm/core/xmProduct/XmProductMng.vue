@@ -1,24 +1,6 @@
 <template>
-	<section>
-		<el-row  class="padding-left padding-right">
-			<!--
-		<el-row :span="6" class="border padding" > 
-			<el-row>
-				<el-row>
-					您可以通过 &nbsp;<el-button   @click="showAdd" icon="el-icon-plus" type="primary" plain>项目</el-button>&nbsp;创建一个新项目
-				</el-row>
-				<el-row> 
-					通过&nbsp;<el-button @click="templateVisible=true" type="primary" plain style="margin-bottom:5px;">公共模板</el-button>&nbsp;体验项目的过程。<br/>
-				</el-row>
-				<el-row> 
-					通过&nbsp;<el-button @click="templateVisible=true" type="primary" plain style="margin-bottom:5px;">拷贝模板</el-button>&nbsp;快速创建新项目。<br/>
-				</el-row>
-			</el-row> 
-		</el-row> 
-		-->
-		<el-row :span="24" class="padding-left">
-			<el-row >
-				<el-row>
+	<section class="padding">
+				<el-row >
 					<el-select   v-model="filters.queryScope"  style="width:120px;"  placeholder="产品查询范围" clear>
 						<el-option :label="userInfo.branchName+'机构下所有的产品'" value="branchId"></el-option>
 						<el-option label="我相关的产品" value="compete"></el-option>
@@ -109,10 +91,10 @@
 								<el-button type="primary" @click="searchXmProducts" style="float:right;" icon="el-icon-search">查询</el-button>
 							</el-row>
 						</el-row>
-						<el-button  slot="reference"  style="margin-top: 10px;" icon="el-icon-more" id="guider-two"></el-button>
+						<el-button  slot="reference" icon="el-icon-more" id="guider-two"></el-button>
 					</el-popover>
 					<span style="float:right;">
-					<el-popover style="padding-left:10px;"  
+					<el-popover  
 							placement="top-start"
 							width="450" 
 							trigger="click" > 
@@ -133,7 +115,7 @@
 									</el-badge>
 								</el-row> 
 							</el-row>   
- 							<el-button type="primary" slot="reference"  style="margin-top: 10px;"  icon="el-icon-plus" v-if="!xmIteration" id="guider-one" round>产品</el-button>
+ 							<el-button type="primary" slot="reference"  icon="el-icon-plus" v-if="!xmIteration" id="guider-one" round>产品</el-button>
 					</el-popover>
 					</span>
 				</el-row>
@@ -382,9 +364,6 @@
 							<el-button type="primary" @click="onCopyToConfirm" :disabled="load.add" v-loading="load.add">确 定</el-button>
 						</span>
 					</el-dialog>
-			</el-row>
-		</el-row>
-		</el-row> 
 		
 		<el-dialog :visible.sync="templateVisible" append-to-body width="60%" top="20px">
 			<xm-product-tpl-mng @copy="searchXmProducts" :show-type="'simple'" ref="xmProductTplMngRef"></xm-product-tpl-mng>
@@ -893,8 +872,9 @@
 .project-card{
 	cursor: pointer;
 	font-size: 12px;
-	color: #999;
-	margin: 10px 12px;
+	color: #999; 
+	margin-top: 10px;
+	margin-right: 10px;
 }
 .project-card:hover{
 	border-color: #00abfc;
