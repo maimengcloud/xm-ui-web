@@ -24,11 +24,12 @@
 					width="800"
 					v-model="moreVisible"
 					trigger="manual" > 
+						<el-button @click="moreVisible=false" type="text" style="float:right;margin-top:-40px;"  icon="el-icon-close">关闭</el-button>
+
 						<el-descriptions class="margin-top"  :column="2" border>
-							<template slot="extra">
-								<el-button @click="moreVisible=false" type="text" style="float:right;margin-top:-40px;"  icon="el-icon-close">关闭</el-button>
+							<template slot="extra"> 
 								<el-button @click="handleExport"   icon="el-icon-download">导出</el-button>
-								<el-button   type="primary" style="float:right;" icon="el-icon-search" @click="searchXmQuestions">查询</el-button> 							</template>
+							</template>
 							<el-descriptions-item>
 								<template slot="label">
 									<i class="el-icon-user"></i>
@@ -49,7 +50,7 @@
 									需求
 								</template>
 								<font  v-if="  filters.menus && filters.menus.length>0">
-									<el-tag  v-for="(item,index) in filters.menus" :key="index"  closable  @close="clearFiltersMenu(item)">{{item.menuName.substr(0,10)}}</el-tag>
+									<el-tag  closable  @close="clearFiltersMenu()">{{filters.menus[0].menuName.substr(0,10)+'等('+filters.menus.length+')个'}}</el-tag>
 								</font>
 								<el-button v-else    @click="showMenu" type="plian" icon="el-icon-search">选需求</el-button>
 							</el-descriptions-item>
@@ -58,14 +59,14 @@
 									<i class="el-icon-question"></i>
 									缺陷编号
 								</template> 
-								<el-input v-model="filters.id" style="width:200px;" clearable></el-input>
+								<el-input v-model="filters.id"  clearable></el-input>
 							</el-descriptions-item>
 							<el-descriptions-item>
 								<template slot="label">
 									<i class="el-icon-top"></i>
 									优先级
 								</template>								
-								<mdp-select-dict   v-model="filters.priority" placeholder="请选择优先级" clearable style="width:200px;" :dict="dicts['priority']"/> 
+								<mdp-select-dict   v-model="filters.priority" placeholder="请选择优先级" clearable  :dict="dicts['priority']"/> 
 
 							</el-descriptions-item>
 							<el-descriptions-item>
@@ -73,7 +74,7 @@
 									<i class="el-icon-document-checked"></i>
 									解决方案
 								</template>
-								<mdp-select-dict  v-model="filters.solution" placeholder="请选择解决方案" clearable style="width:200px;" :dict="dicts['bugSolution']"/> 
+								<mdp-select-dict  v-model="filters.solution" placeholder="请选择解决方案" clearable  :dict="dicts['bugSolution']"/> 
 							</el-descriptions-item>
 							<el-descriptions-item>
 								<template slot="label">
@@ -111,6 +112,12 @@
 									:picker-options="pickerOptions"
 								></el-date-picker>
 							</el-descriptions-item>
+
+							<el-descriptions-item>
+								<el-button   type="primary" style="float:right;" icon="el-icon-search" @click="searchXmQuestions">查询</el-button>
+
+							</el-descriptions-item>
+
 						</el-descriptions>
 
 					<el-button  slot="reference" icon="el-icon-more" @click="moreVisible=!moreVisible"></el-button>
@@ -127,6 +134,7 @@
 				<!--列表 XmQuestion xm_question-->
 				<el-table  element-loading-text="努力加载中" element-loading-spinner="el-icon-loading"  ref="table" :height="maxTableHeight" :data="xmQuestions" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  					<el-table-column  label="全选" type="selection" min-width="50"  fixed="left"></el-table-column>
+ 					
 					  <el-table-column prop="id" label="缺陷编号" width="120" show-overflow-tooltip fixed="left">
 						<template slot-scope="scope">  
 							{{scope.row.id}} 
@@ -279,6 +287,7 @@
 			const endDate = new Date();
 			beginDate.setTime(beginDate.getTime() - 3600 * 1000 * 24 * 7 * 4 * 12 );
 			return {
+				batchOper:false,
 				filters: {
 					key: '',
 					bugStatus:'',
@@ -558,19 +567,14 @@
 					this.menuVisible=false
 					return;
 				}
-				this.menuVisible=false
-
-				this.filters.menus=menus;
-				this.searchXmQuestions();
+				this.menuVisible=false 
+				this.filters.menus=JSON.parse(JSON.stringify(menus)); 
 			},
-			clearFiltersMenu(menu){
-				var index=this.filters.menus.findIndex(i=>i.menuId==menu.menuId)
-				this.filters.menus.splice(index,1); 
+			clearFiltersMenu(){
+ 				this.filters.menus=[]
 			},
-			clearFiltersTag(tag){
-				var index=this.filters.tags.findIndex(i=>i.tagId==tag.tagId)
-				this.filters.tags.splice(index,1);
-				this.searchXmQuestions();
+			clearFiltersTag(){
+ 				this.filters.tags=[]
 			},
 			//显示编辑界面 XmQuestion xm_question
 			showEdit: function ( row,index ) {
@@ -979,9 +983,8 @@
 					if (!tags || tags.length == 0) { 
 						this.filters.tags=[]
 					}else{
-						this.filters.tags=tags
-					}
-					this.searchXmQuestions();
+						this.filters.tags=JSON.parse(JSON.stringify(tags))
+					} 
 				}
 				
 			}, 

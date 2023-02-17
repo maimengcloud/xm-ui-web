@@ -65,11 +65,11 @@
 									type="text"
 									>关闭</el-button
 									> 
-							</el-row>
-              <el-divider></el-divider>
-              <el-row>
-                <font class="more-label-font">显示方式:</font
-                >   
+							</el-row> 
+              <el-descriptions class="margin-top"  :column="2" size="mini" border>
+
+              <el-descriptions-item :span="2">
+                <template slot="label">显示方式</template>   
                 <span class="more-label-font">
                     <el-radio v-model="displayType" label="grant" >甘特图</el-radio>
                     <el-radio v-model="displayType" label="agile">故事分组</el-radio>
@@ -77,27 +77,23 @@
                     <el-radio v-model="displayType" label="agileWeek">按周分组</el-radio>
                     <el-radio v-model="displayType" label="table">列表</el-radio> 
                 </span>
-              </el-row>
-              <el-divider></el-divider>
-              <el-row>
-                <el-col :span="12"> 
-                  <font class="more-label-font">责任人:</font> 
-                  <mdp-select-user-xm label="选择责任人" v-model="filters.createUser" :clearable="true"></mdp-select-user-xm> 
-                </el-col>
-                <el-col :span="12"> 
-                  <font class="more-label-font">执行人:</font> 
-                  <mdp-select-user-xm label="选择执行人" v-model="filters.executor" :clearable="true"></mdp-select-user-xm> 
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12">
+              </el-descriptions-item> 
+              <el-descriptions-item> 
+                  <template slot="label">责任人</template> 
+                  <mdp-select-user-xm label="选择责任人" v-model="filters.createUser" :clearable="true"></mdp-select-user-xm>  
+                </el-descriptions-item>  
+                <el-descriptions-item>
+                  <template slot="label">执行人</template> 
+                  <mdp-select-user-xm label="选择执行人" v-model="filters.executor" :clearable="true"></mdp-select-user-xm>  
+              </el-descriptions-item>
+              <el-descriptions-item>  
+                <template slot="label">产品</template>
+                <xm-product-select :auto-select="false" :link-project-id="filters.selProject && filters.selProject.id?filters.selProject.id:null" @row-click="onProductSelected" @clear="onProductClearSelect"></xm-product-select>
+
+              </el-descriptions-item>  
+              <el-descriptions-item>
                   
-                <font class="more-label-font">产品:</font
-                > <xm-product-select :auto-select="false" :link-project-id="filters.selProject && filters.selProject.id?filters.selProject.id:null" @row-click="onProductSelected" @clear="onProductClearSelect"></xm-product-select>
-                </el-col>
-                <el-col :span="12">
-                  
-                <font class="more-label-font">需求:</font>
+                <template slot="label">需求</template>
                 <font v-if="filters.menus && filters.menus.length > 0">
                   <el-tag
                     v-for="(item, index) in filters.menus"
@@ -109,12 +105,10 @@
                 </font>
                 <el-button v-else @click="showMenuStory" type="plian" icon="el-icon-search"
                   >选需求</el-button
-                >
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12">
-                  <font class="more-label-font">技能:</font>
+                > 
+              </el-descriptions-item>
+              <el-descriptions-item> 
+                  <template slot="label">技能</template>
                 <el-button
                   v-if="!filters.skillTags || filters.skillTags.length == 0"
                   icon="el-icon-search"
@@ -130,9 +124,9 @@
                   @close="skillTagClear(skill)"
                   >{{ skill.skillName }}</el-tag
                 >
-                </el-col>
-                <el-col :span="12">
-                    <font class="more-label-font">标签:</font>
+                </el-descriptions-item>  
+                <el-descriptions-item>
+                    <template slot="label">标签</template>
                   <el-button
                     v-if="!filters.tags || filters.tags.length == 0"
                     @click.native="$refs.tagDialog.open()" icon="el-icon-search"
@@ -142,31 +136,25 @@
                     v-else
                     @click="$refs.tagDialog.open()"
                     closable
-                    @close="clearFiltersTag(filters.tags[0])"
+                    @close="clearFiltersTag()"
                     >{{ filters.tags[0].tagName.substr(0, 5) }}等({{
                       filters.tags.length
                     }})个</el-tag
-                  >
-                </el-col>
-              </el-row>
-              <el-row> 
-                <el-col :span="12" > 
-                  
-                  <font class="more-label-font">众包任务:</font>
+                  > 
+              </el-descriptions-item>
+              <el-descriptions-item>  
+                  <template slot="label">众包任务</template>
 
                   <el-checkbox  class="more-label-font"
                     v-model="filters.taskOut"
                     true-label="1"
                     false-label=""
                     >只查众包</el-checkbox
-                  >
-                </el-col>
-              </el-row> 
+                  > 
+              </el-descriptions-item> 
               
-              <el-row>
-                <el-col :span="12">
-                  
-                  <font class="more-label-font">最后变动日期:</font>
+              <el-descriptions-item> 
+                  <template slot="label">最后变动日期</template>
                   <mdp-date-range
                     v-model="filters"
                     type="daterange" 
@@ -180,12 +168,10 @@
                     :default-time="['00:00:00', '23:59:59']" 
                     :auto-default="false"
                     key="ltime"
-                  ></mdp-date-range>
-                </el-col> 
-              </el-row> 
-              <el-row>
-                <el-col :span="12">
-                  <font class="more-label-font">计划开始时间:</font>
+                  ></mdp-date-range> 
+              </el-descriptions-item> 
+              <el-descriptions-item> 
+                  <template slot="label">计划开始时间</template>
                   <mdp-date-range
                     v-model="filters"
                     type="daterange" 
@@ -200,9 +186,9 @@
                     :auto-default="false"
                     key="planStartTime"
                   ></mdp-date-range>
-                </el-col>
-                <el-col :span="12">
-                  <font class="more-label-font">实际开始时间:</font>
+              </el-descriptions-item>  
+              <el-descriptions-item>
+                  <template slot="label">实际开始时间</template>
                 <mdp-date-range
                   v-model="filters"
                   type="daterange" 
@@ -215,13 +201,10 @@
                   value-format="yyyy-MM-dd HH:mm:ss" 
                   :default-time="['00:00:00', '23:59:59']" 
                   :auto-default="false"
-                ></mdp-date-range>
-                  
-                </el-col>
-              </el-row> 
-              <el-row>
-                <el-col :span="12">
-                  <font class="more-label-font">计划结束时间:</font>
+                ></mdp-date-range> 
+              </el-descriptions-item> 
+              <el-descriptions-item> 
+                  <template slot="label">计划结束时间</template>
                 <mdp-date-range
                   v-model="filters"
                   type="daterange" 
@@ -235,10 +218,11 @@
                   :default-time="['00:00:00', '23:59:59']" 
                   :auto-default="false" 
                   key="planEndTime"
-                ></mdp-date-range>
-                </el-col>
-                <el-col :span="12">
-                  <font class="more-label-font">实际结束时间:</font>
+                ></mdp-date-range> 
+                
+              </el-descriptions-item>  
+              <el-descriptions-item>
+                  <template slot="label">实际结束时间</template>
                 <mdp-date-range
                   v-model="filters"
                   type="daterange" 
@@ -251,17 +235,17 @@
                   value-format="yyyy-MM-dd HH:mm:ss" 
                   :default-time="['00:00:00', '23:59:59']" 
                   :auto-default="false"
-                ></mdp-date-range>
-                </el-col>
-              </el-row>  
-              <el-row>
+                ></mdp-date-range> 
+              </el-descriptions-item>  
+              <el-descriptions-item>
                 <el-button style="float:right;"
                   type="primary"
                   icon="el-icon-search"
                   @click="searchXmTasks"
                   >查询</el-button
                 >
-              </el-row>
+              </el-descriptions-item>
+            </el-descriptions> 
             <el-button   slot="reference" @click="moreVisible=!moreVisible">更多</el-button>
           </el-popover>
           <span style="float:right;">
@@ -1914,10 +1898,8 @@ export default {
       }
       this.editXmTaskSomeFields( row,fieldName,params) 
     },
-    clearFiltersTag(tag){
-      var index=this.filters.tags.findIndex(i=>i.tagId==tag.tagId)
-      this.filters.tags.splice(index,1);
-      this.searchXmTasks();
+    clearFiltersTag(){
+       this.filters.tags=[] 
     },
     onTagSelected(tags,option){
 				if(option && option.action=='editTagIds'){
@@ -1926,9 +1908,8 @@ export default {
 					if (!tags || tags.length == 0) {
 						this.filters.tags=[]
 					}else{
-						this.filters.tags=tags
-					}
-					this.searchXmTasks();
+						this.filters.tags=JSON.parse(JSON.stringify(tags))
+					} 
 				}
 
 			},
