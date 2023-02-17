@@ -199,6 +199,12 @@
 
             </el-tab-pane>
             <el-tab-pane
+              label="设置"
+              name="setting" 
+            > 
+            <xm-product-setting  v-if="showPanelName=='setting'" :xm-product="xmProduct"></xm-product-setting> 
+            </el-tab-pane>
+            <el-tab-pane
               label="产品详情"
               name="detail" 
             > 
@@ -251,6 +257,7 @@ import util from "@/common/js/util"; // 全局公共库
 import { mapGetters } from "vuex";
 import XmProductOverview from './XmProductOverview.vue';
 import XmProductEdit from './XmProductEdit.vue'; 
+import XmProductSetting from './XmProductSetting.vue'; 
 import XmProductProjectLinkMng from '../xmProductProjectLink/XmProductProjectLinkMng.vue'; 
 import { loadTasksToXmProductState } from '@/api/xm/core/xmProductState';
 import { listXmProductWithState } from '@/api/xm/core/xmProduct';
@@ -262,7 +269,7 @@ import { initDicts,editXmProductSomeFields } from "@/api/xm/core/xmProduct";
 import store from '@/store'
 
 export default {
-  components: { XmProductOverview, XmProductEdit, XmProductProjectLinkMng,TaskMng,ProcinstMng,},
+  components: { XmProductOverview, XmProductEdit, XmProductProjectLinkMng,TaskMng,ProcinstMng,XmProductSetting},
   computed: {
     ...mapGetters(["userInfo","xmProduct"]),
     calcProductPstatusStep() {

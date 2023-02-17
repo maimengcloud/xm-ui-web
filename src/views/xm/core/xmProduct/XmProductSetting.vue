@@ -10,12 +10,7 @@
         ref="editForm"
       >
        
-        <el-form-item label="产品名称" prop="productName"   v-if="opType !== 'add'">  
-				<el-input  
-					v-model="editForm.productName"
-					placeholder="产品名称"
-					@change="editSomeFields(editForm, 'productName', $event)"
-				></el-input>   
+ 				<h3>{{ editForm.productName }}</h3>   
          <el-row   class=" label-font-color">
           <span >产品代号:</span>
           {{ editForm.code }}  <el-divider direction="vertical"></el-divider><span  
@@ -26,27 +21,7 @@
             content="产品代号用于签订合同等甲乙方共享的场景;产品编号为内部编号，用于内部流转,编号生成规则:产品代号+四位随机码 "
             ><i class="el-icon-question"></i
           ></el-tooltip>
-        </el-row>   
-        </el-form-item>  
-        <el-form-item label="产品名称" prop="productName" v-if="opType === 'add'">  
-				<el-input
-					v-model="editForm.productName"
-					placeholder="产品名称" 
-				></el-input>   
-        </el-form-item> 
-        <el-form-item label="产品代号" prop="code" v-if="opType === 'add'">
-          <el-input
-            v-model="editForm.code"
-            style="width: 200px"
-            placeholder="产品代号，不可为空"
-          >
-          </el-input>
-          <el-button @click.native="createProductCode">自动生成</el-button>
-          <el-tooltip
-            content="产品代号用于签订合同等甲乙方共享的场景;产品编号为内部编号，用于内部流转，生成规则:产品代号+四位随机码 "
-            ><i class="el-icon-question"></i
-          ></el-tooltip>
-        </el-form-item> 
+        </el-row>      
 		 <el-form-item label="管理成员">
         <el-row class="padding padding-top">
 			
@@ -85,22 +60,68 @@
           </el-col>
 		
         </el-row> 
-		</el-form-item>   
-							<el-form-item label="备注" prop="remark">
-                <el-input
-                  v-model="editForm.remark"
-                  :rows="10"
-                  type="textarea"
-                  :autosize="{ minRows: 4, maxRows: 20 }"
-                  placeholder="备注"
-                  @change="editSomeFields(editForm, 'remark', $event)"
-                ></el-input>
-              </el-form-item> 
-      </el-form>
-		
-		<el-row v-if="opType==='add'" style="float:right;">
-			<el-button type="primary" @click="addSubmit">保存</el-button>
-		</el-row> 
+		</el-form-item> 
+     
+                 <el-form-item label="团队相关:小组crud、加减人、小组组长管理等"> 
+                   <el-row> 
+                     <el-radio-group v-model="qxCode.groupScope" @change="editSomeFields(editForm,'groupScope',$event)">
+                       <el-radio label="0">不限制，允许任何人</el-radio>
+                       <el-radio label="1">同机构下的人员</el-radio>
+                       <el-radio label="2">同产品内人员</el-radio>
+                       <el-radio label="3">同产品下同小组内人员</el-radio>
+                     </el-radio-group>
+                     </el-row>
+                   <el-row>
+                       <el-checkbox  v-model="qxCode.groupTransmit"  :true-label="'1'" :false-label="'0'"  @change="editSomeFields(editForm,'groupTransmit',$event)">是否检查用户的上下级关系</el-checkbox>  
+                   </el-row>
+                   <!--0-代表不限制,1-同组织，2-同项目组（默认），3-同小组-->
+                 </el-form-item>   
+                 
+              <el-form-item label="测试相关：缺陷crud、用例crud、测试计划、测试执行等"> 
+                <el-row> 
+                  <el-radio-group v-model="qxCode.testScope" @change="editSomeFields(editForm,'testScope',$event)">
+                       <el-radio label="0">不限制，允许任何人</el-radio>
+                       <el-radio label="1">同机构下的人员</el-radio>
+                       <el-radio label="2">同产品内人员</el-radio>
+                       <el-radio label="3">同产品下同小组内人员</el-radio>
+                  </el-radio-group>
+                  </el-row>
+                <el-row>
+                    <el-checkbox  v-model="qxCode.testTransmit"  :true-label="'1'" :false-label="'0'"  @change="editSomeFields(editForm,'testTransmit',$event)">缺陷、用例等指派及crud是否检查用户的上下级关系</el-checkbox>  
+                </el-row>
+                <!--0-代表不限制,1-同组织，2-同项目组（默认），3-同小组-->
+              </el-form-item>     
+                 
+                 <el-form-item label="迭代crud、迭代负责人管理"> 
+                   <el-row> 
+                     <el-radio-group v-model="qxCode.iterationScope" @change="editSomeFields(editForm,'iterationScope',$event)">
+                       <el-radio label="0">不限制，允许任何人</el-radio>
+                       <el-radio label="1">同机构下的人员</el-radio>
+                       <el-radio label="2">同产品内人员</el-radio>
+                       <el-radio label="3">同产品下同小组内人员</el-radio>
+                     </el-radio-group>
+                     </el-row>
+                   <el-row>
+                       <el-checkbox  v-model="qxCode.iterationTransmit"  :true-label="'1'" :false-label="'0'"  @change="editSomeFields(editForm,'iterationTransmit',$event)">迭代指派及crud是否检查用户的上下级关系</el-checkbox>  
+                   </el-row>
+                   <!--0-代表不限制,1-同组织，2-同项目组（默认），3-同小组-->
+                 </el-form-item> 
+                 
+                 <el-form-item label="需求相关：史诗、特性、故事的crud"> 
+                   <el-row> 
+                     <el-radio-group v-model="qxCode.menuTransmit" @change="editSomeFields(editForm,'menuScope',$event)">
+                       <el-radio label="0">不限制，允许任何人</el-radio>
+                       <el-radio label="1">同机构下的人员</el-radio>
+                       <el-radio label="2">同产品内人员</el-radio>
+                       <el-radio label="3">同产品下同小组内人员</el-radio>
+                     </el-radio-group>
+                     </el-row>
+                   <el-row>
+                       <el-checkbox  v-model="qxCode.menuTransmit"  :true-label="'1'" :false-label="'0'"  @change="editSomeFields(editForm,'menuTransmit',$event)">需求指派及crud是否检查用户的上下级关系</el-checkbox>  
+                   </el-row>
+                   <!--0-代表不限制,1-同组织，2-同项目组（默认），3-同小组-->
+                 </el-form-item>   
+      </el-form> 
     </el-row>
   </section>
 </template>
@@ -118,22 +139,8 @@ import store from '@/store'
 export default {
   computed: {
     ...mapGetters(["userInfo", "roles"]),
-    calcXmProductPstatusStep() {
-      if (this.dicts["xmProductPstatus"]) {
-        var index = this.dicts["xmProductPstatus"].findIndex((i) => {
-          if (i.id == this.editForm.pstatus) {
-            return true;
-          } else {
-            return false;
-          }
-        });
-        return index + 1;
-      } else {
-        return 0;
-      }
-    },
   },
-  props: ["xmProduct", "visible", "opType",'selProject'],
+  props: ["xmProduct", "visible"],
   watch: {
     xmProduct: {
       handler() {
@@ -155,39 +162,7 @@ export default {
     return {
       dicts: { xmProductPstatus: [] }, //下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
       load: { list: false, add: false, del: false, edit: false }, //查询中...
-      editFormRules: {
-        productName: [
-          { required: true, message: "产品名称不能为空", trigger: "change" },
-          {
-            min: 2,
-            max: 250,
-            message: "名称长度在10-250个字符",
-            trigger: "change",
-          },
-        ],
-
-        id: [
-          { required: true, message: "产品编号不能为空", trigger: "change" },
-        ],
-        code: [
-          { required: true, message: "产品代号不能为空", trigger: "change" },
-        ],
-
-        pmUserid: [
-          { required: true, message: "产品经理不能为空", trigger: "change" },
-        ],
-
-        admUserid: [
-          { required: true, message: "产品总监不能为空", trigger: "change" },
-        ],
-        remark: [
-          {
-            min: 0,
-            max: 250,
-            message: "备注长度在10-250个字符",
-            trigger: "change",
-          },
-        ],
+      editFormRules: { 
       },
       //新增界面数据 产品表
       editForm: {
@@ -259,10 +234,8 @@ export default {
         locked: "",
         del: "",
         ltime: "",
-      },
-      userSelectVisible: false,
-      currTabPane:"1",
-				/** 
+      }, 
+ 				/** 
         权限码0,1,2,3,4,5,67,8,9，逗号分割
         共10位,不定长，暂时只启用前6个位
         第0位代表需求指派及crud权限：
@@ -294,35 +267,7 @@ export default {
       this.$refs["editForm"].resetFields();
       this.$emit("cancel");
     },
-    //新增提交XmProduct 产品表 父组件监听@submit="afterAddSubmit"
-    addSubmit: function () {
-				
-				this.$refs.editForm.validate((valid) => {
-					if (valid) {
-            
-						var msg=this.selProject&&this.selProject.id?'将自动关联项目【'+(this.selProject.name?this.selProject.name:this.selProject.id)+'】':'';
-						this.$confirm('确认提交吗？'+msg, '提示', {}).then(() => { 
-							this.load.add=true
-							let params = Object.assign({}, this.editForm); 
-							if(this.selProject &&this.selProject.id){
-								params.links=[{projectId:this.selProject.id}]
-							}
-							params.branchId=this.userInfo.branchId
-							addXmProduct(params).then((res) => {
-								this.load.add=false
-								var tips=res.data.tips;
-								if(tips.isOk){
-									//this.$refs['addForm'].resetFields();
-									this.$emit('submit',res.data.data);//  @submit="afterAddSubmit"
-								}
-								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
-							}).catch( err  => this.load.add=false);
-						});
-					}else{
-						this.$notify({position:'bottom-left',showClose:true,message: "表单检查不通过", type: 'error' }); 
-					}
-				});
-			},
+    
 
     editSomeFields(row, fieldName, $event) {
 		if(this.opType==='add'){
@@ -339,11 +284,8 @@ export default {
       } else if (fieldName == "pmUserid") {
         params["pmUserid"] = $event[0].userid;
         params["pmUsername"] = $event[0].username;
-      } else if (fieldName == "startTime") {
-        params["startTime"] = row.startTime;
-        params["endTime"] = row.endTime;
-      } else if (fieldName == "groupScope"||fieldName == "groupTransmit"||fieldName == "testScope"||fieldName=="testTransmit"||fieldName == "menuScope"||fieldName=="menuTransmit"||fieldName == "iterationScope"||fieldName=="iterationTransmit") {
-        params["qxCode"] = [,this.qxCode.groupScope,this.qxCode.groupTransmit,this.qxCode.testScope,this.qxCode.testTransmit,this.qxCode.menuScope,this.qxCode.menuTransmit,this.qxCode.iterationScope,this.qxCode.iterationTransmit].join(",") 
+      } if (fieldName == "groupScope"||fieldName == "groupTransmit"||fieldName == "testScope"||fieldName=="testTransmit"||fieldName == "menuScope"||fieldName=="menuTransmit"||fieldName == "iterationScope"||fieldName=="iterationTransmit") {
+        params["qxCode"] = [this.qxCode.groupScope,this.qxCode.groupTransmit,this.qxCode.testScope,this.qxCode.testTransmit,this.qxCode.menuScope,this.qxCode.menuTransmit,this.qxCode.iterationScope,this.qxCode.iterationTransmit].join(",") 
       } else {
         params[fieldName] = $event;
       }
@@ -370,28 +312,10 @@ export default {
         })
         .catch((e) => Object.assign(this.editForm, this.editFormBak));
     },
-	
-			
-	createProductCode(){ 
-		createProductCode({}).then(res=>{
-			var tips=res.data.tips;
-			if(tips.isOk){  
-				this.$set(this.editForm,'code',res.data.data)
-			}
-			this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
-		})
-	},
+	 
   
 			initData(){
-				this.editForm=Object.assign(this.editForm,this.xmProduct)
-				if(this.opType==='add'){ 
-					this.editForm.pmUserid=this.userInfo.userid
-					this.editForm.pmUsername=this.userInfo.username
-					this.editForm.admUserid=this.userInfo.userid
-					this.editForm.admUsername=this.userInfo.username
-					this.editForm.assUserid=this.userInfo.userid
-					this.editForm.assUsername=this.userInfo.username 
-				} 
+				this.editForm=Object.assign(this.editForm,this.xmProduct) 
 				this.editFormBak={...this.editForm}
 			},
       
