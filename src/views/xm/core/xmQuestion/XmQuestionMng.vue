@@ -207,7 +207,7 @@
 			</el-dialog>
 
 			<!--新增 XmQuestion xm_question界面-->
-			<el-dialog title="新增缺陷"  :visible.sync="addFormVisible"   width="90%" top="10px"  append-to-body   :close-on-click-modal="false">
+			<el-dialog title="新增缺陷"  :visible.sync="addFormVisible" fullscreen  width="90%" top="10px"  append-to-body   :close-on-click-modal="false">
 				<xm-question-add  :xm-menu="xmMenu" op-type="add" :xm-test-plan-case="xmTestPlanCase" :xm-test-plan="xmTestPlan" :xm-product="filters.product" :xm-iteration="xmIteration" :xm-test-case="xmTestCase" :qtype="qtype" :sel-project=" filters.selProject " :xm-question="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-question-add>
 			</el-dialog>
  			<xm-group-dialog ref="xmGroupDialog" :sel-project=" filters.selProject " :is-select-single-user="1" @user-confirm="onUserConfirm"></xm-group-dialog> 

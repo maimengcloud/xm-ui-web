@@ -1,9 +1,9 @@
 <template>
 	<section > 
-		<el-row :style="{overflow:'auto',maxHeight:maxTableHeight+'px'}" ref="table">
+		<el-row>
 		<!--编辑界面 XmTestPlanCase 测试计划与用例关系表--> 
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef" label-position="left" > 
-				<el-row>
+				<el-row ref="table">
 					<el-col  :span="6" class="border padding">
 					
 						<el-form-item label="测试库" prop="casedbName">
@@ -29,8 +29,8 @@
 							<el-input v-model="editForm.verNum" placeholder="版本号" :maxlength="50" @change="editSomeFields(editForm,'verNum',$event)"></el-input>
 						</el-form-item>   
 					</el-col>
-					<el-col :span="18" class="border padding">
-				<el-form-item label="" prop="caseName" label-width="0px">  
+					<el-col :span="18" class="border padding-left padding-right padding-top">
+						<el-form-item label="" prop="caseName" label-width="0px">  
 					
 					<el-row>
 					<span class="title-font-size">{{editForm.caseName}}</span> 
@@ -39,22 +39,28 @@
 					<span > 用例编号:  {{editForm.caseId}}  </span> 
 					</el-row>
 					<el-row class="padding">
-						<el-col :span="8"> 
+						<el-col :span="6"> 
 							   <mdp-select-user-xm label="执行人" userid-key="execUserid" username-key="execUsername" v-model="editForm" @change="editSomeFields(editForm,'execUserid',$event)"></mdp-select-user-xm>
 						</el-col> 
-						<el-col :span="8">  
+						<el-col :span="6">  
 							<mdp-select-dict-x label="优先级" :dict="dicts['priority']" v-model="editForm.priority"  @change="editSomeFields(editForm,'priority',$event)"></mdp-select-dict-x>
 						</el-col> 
 						
-						<el-col :span="8">  
+						<el-col :span="6">  
 							<mdp-select-dict-x label="执行结果" :dict="dicts['testStepTcode']" v-model="editForm.execStatus" :get-icon="getExecStatusIcon"  @change="editSomeFields(editForm,'execStatus',$event)"></mdp-select-dict-x> 
 						</el-col> 
+						<el-col :span="6">  
+							<el-button v-if="opType!='add'" style="margin-top:12px;float:right;" @click="$emit('next')" type="primary">下一条</el-button>  
+							<el-row v-if="opType=='add'">
+								<el-button @click.native="handleCancel">取消</el-button>
+								<el-button v-loading="load.edit" type="primary" @click.native="saveSubmit" :disabled="load.edit==true">提交</el-button>
+							</el-row>
+ 						</el-col> 
 					</el-row>
  				</el-form-item>  
 				<el-tabs v-model="activateName" >
-					<el-tab-pane name="1" label="用例信息"  >
-						<el-row  >
-						<el-row class="padding-top">
+					<el-tab-pane name="1" label="用例信息"  > 
+						<el-row>
 							<el-col :span="6">
 								<el-row class="label-font-size">
 									用例状态
@@ -100,19 +106,7 @@
 								{{editForm.preRemark?editForm.preRemark:'无'}}
 							</el-row>  
 						</el-row>
-						<el-row class="padding-top"> 
-							<el-row class="label-font-size padding-top">
-								测试步骤
-							</el-row> 
-							<el-row class="padding">
-								<test-step-result class="padding" v-model="editForm.testStep">
-									<el-button slot="addBug" @click="addBugVisible=true" icon="el-icon-plus"  circle></el-button> 
-								</test-step-result>
-							</el-row> 
-							<el-row v-if="opType!='add' && editFormBak.testStep!=editForm.testStep" > 
-								<el-button v-loading="load.edit" type="primary" @click.native="editSomeFields(editForm,'testStep',editForm.testStep)" :disabled="load.edit==true">保存测试步骤</el-button>
-							</el-row>
-						</el-row>
+						
 						<el-row class="padding-top"> 
 							<el-row class="label-font-size padding-top">
 								备注
@@ -120,20 +114,34 @@
 							<el-row class="padding">
 								{{editForm.caseRemark?editForm.caseRemark:'无'}}
 							</el-row>  
-						</el-row>
-						
-						<el-form-item label="执行备注" prop="remark">
-							<el-input type="textarea" :rows="6" v-model="editForm.remark" placeholder="执行备注" :maxlength="2147483647" @change="editSomeFields(editForm,'remark',$event)"></el-input>
-						</el-form-item> 
-						</el-row>
+						</el-row>  
  					</el-tab-pane> 
-					<el-tab-pane name="3" label="缺陷"> 
-						<el-row v-if="activateName=='3'">
-							<xm-question-mng   :xm-test-plan-case="editForm"  :xm-product="{id:editForm.productId,productName:editForm.productName}" :sel-project="{id:editForm.projectId,name:editForm.projectName}"></xm-question-mng>
+					<el-tab-pane name="21" label="测试步骤"> 
+						<el-row> 
+							<el-row class="label-font-size">
+								测试步骤
+							</el-row> 
+							<el-row class="padding">
+								<test-step-result class="padding" v-model="editForm.testStep">
+									<el-button slot="addBug" @click="addBugVisible=true" icon="el-icon-plus"  circle></el-button> 
+								</test-step-result>
+							</el-row> 
+							<el-row class="label-font-size">
+								执行备注
+							</el-row> 
+							<el-row class="padding">
+								<el-input type="textarea" :rows="6" v-model="editForm.remark" placeholder="执行备注" :maxlength="2147483647" @change="editSomeFields(editForm,'remark',$event)"></el-input>
+							</el-row>  
+							<el-row v-if="opType!='add' && editFormBak.testStep!=editForm.testStep" > 
+								<el-button v-loading="load.edit" type="primary" @click.native="editSomeFields(editForm,'testStep',editForm.testStep)" :disabled="load.edit==true">保存测试步骤</el-button>
+							</el-row>
 						</el-row>
 					</el-tab-pane>
+					<el-tab-pane name="3" label="缺陷"> 
+ 						<xm-question-mng   v-if="activateName=='3'" :xm-test-plan-case="editForm"  :xm-product="{id:editForm.productId,productName:editForm.productName}" :sel-project="{id:editForm.projectId,name:editForm.projectName}"></xm-question-mng>
+ 					</el-tab-pane>
 					
-					<el-tab-pane :label="'工时( '+(editForm.actWorkload?editForm.actWorkload:0)+' / '+(editForm.budgetWorkload?editForm.budgetWorkload:0)+' h )'" name="55"> 
+					<el-tab-pane :label="'工时( '+( editForm.actWorkload||0)+' / '+( editForm.budgetWorkload||0)+' h )'" name="55"> 
 						<xm-workload-record v-if="activateName=='55'" biz-type="4" :xm-test-plan-case="editForm" ></xm-workload-record>
 					</el-tab-pane>
 					<el-tab-pane name="4" label="附件">
@@ -146,22 +154,16 @@
 					
 				</el-row>    
 			</el-form> 
-		</el-row>
-		<el-row>   
-				<el-button style="margin-top:12px;float:right;" @click="$emit('next')" type="primary">下一条</el-button> 
-		</el-row>
-		<el-row v-if="opType=='add'">
-		    <el-button @click.native="handleCancel">取消</el-button>
-            <el-button v-loading="load.edit" type="primary" @click.native="saveSubmit" :disabled="load.edit==true">提交</el-button>
-		</el-row>
+		</el-row> 
+
 				
 		
-		<el-dialog append-to-body title="需求明细"  :visible.sync="menuFormVisible" width="80%"  top="20px"  :close-on-click-modal="false">
+		<el-dialog append-to-body title="需求明细"  :visible.sync="menuFormVisible" fullscreen width="80%"  top="20px"  :close-on-click-modal="false">
 			<xm-menu-edit :visible="menuFormVisible"  :reload="true" :xm-menu="{menuId:editForm.menuId,menuName:editForm.menuName}" ></xm-menu-edit>
 		</el-dialog>
 		
 		<!--新增 XmQuestion xm_question界面-->
-		<el-dialog title="新增缺陷"  :visible.sync="addBugVisible"   width="90%" top="20px"  append-to-body   :close-on-click-modal="false">
+		<el-dialog title="新增缺陷"  :visible.sync="addBugVisible" fullscreen  width="90%" top="20px"  append-to-body   :close-on-click-modal="false">
 			<xm-question-add  op-type="add" :xm-product="{id:editForm.productId,productName:editForm.productName}" :xm-test-plan-case="editForm"  :sel-project=" {id:editForm.projectId,name:editForm.projectName} "  :visible="addBugVisible" @cancel="addBugVisible=false" ></xm-question-add>
 		</el-dialog> 
 	</section>
@@ -325,7 +327,7 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 		    this.$nextTick(() => {
                 initDicts(this);  
                 this.initData()
-                this.maxTableHeight = util.calcTableMaxHeight(this.$refs.table.$el)-100
+                this.maxTableHeight = util.calcMaxHeight(this.$refs.table.$el)
             });
 		}
 	}

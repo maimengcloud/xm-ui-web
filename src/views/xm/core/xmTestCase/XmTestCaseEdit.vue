@@ -25,7 +25,7 @@
 							<el-input v-model="editForm.verNum" placeholder="版本号" :maxlength="50" @change="editSomeFields(editForm,'verNum',$event)"></el-input>
 						</el-form-item>   
 					</el-col>
-					<el-col :span="18" class="border padding">
+					<el-col :span="18" class="border padding-left padding-right padding-top">
 
 						<el-form-item label="用例标题" prop="caseName">    
  									<el-input v-model="editForm.caseName" placeholder="测试用例 标题"  @change="editSomeFields(editForm,'caseName',$event)"></el-input> 
@@ -48,12 +48,11 @@
 								<el-col :span="6">  
 									<mdp-select-dict-x label="优先级" :dict="dicts['priority']" v-model="editForm.cpriority"  @change="editSomeFields(editForm,'cpriority',$event)"></mdp-select-dict-x>
 								</el-col> 
-								
-							</el-row>
+							</el-row> 
 						<el-tabs v-model="activeTab">
 							<el-tab-pane name="1" label="基本信息">
 								<el-form-item label="" prop="preRmark" label-width="0px">
-									<el-row class="label-font-color padding-top">
+									<el-row class="label-font-color">
 										前置条件
 									</el-row> 
 									<el-row>
@@ -61,7 +60,7 @@
 									</el-row> 
 								</el-form-item>   
 								<el-form-item label="" prop="testStep" label-width="0px">
-									<el-row class="label-font-color padding-top">
+									<el-row class="label-font-color">
 										测试步骤
 									</el-row> 
 									<el-row>
@@ -72,7 +71,7 @@
 									</el-row>
 								</el-form-item>     
 								<el-form-item label="" prop="caseRmark" label-width="0px">
-									<el-row class="label-font-color padding-top">
+									<el-row class="label-font-color">
 										用例描述
 									</el-row> 
 									<el-row>
@@ -88,25 +87,26 @@
 								<xm-test-plan-case-mng :xm-test-casedb="xmTestCasedb" :xm-test-case="editForm" v-if="activeTab=='3'"></xm-test-plan-case-mng>
 							</el-tab-pane>
 							
-							<el-tab-pane :label="'工时( '+(editForm.actWorkload?editForm.actWorkload:0)+' / '+(editForm.budgetWorkload?editForm.budgetWorkload:0)+' h )'" name="55"> 
+							<el-tab-pane :label="'工时( '+( editForm.actWorkload||0)+' / '+( editForm.budgetWorkload||0)+' h )'" name="55"> 
 								<xm-workload-record v-if="activeTab=='55'" biz-type="3" :xm-test-case="editForm" ></xm-workload-record>
 							</el-tab-pane>
 							<el-tab-pane name="4" label="日志" v-if="opType!=='add'"></el-tab-pane>
 						</el-tabs>
 						
-				
+						<el-row v-if="opType=='add'" class="padding">
+							<span style="float:right;">
+							<el-button @click.native="handleCancel">取消</el-button>
+							<el-button v-loading="load.edit" type="primary" @click.native="saveSubmit" :disabled="load.edit==true">提交</el-button>
+							</span>
+						</el-row>  
 					</el-col>
 					
-				</el-row>     
+				</el-row> 
+  
 			</el-form>
 		</el-row>
 
-		<el-row v-if="opType=='add'" >
-			<span style="float:right;">
-		    <el-button @click.native="handleCancel">取消</el-button>
-            <el-button v-loading="load.edit" type="primary" @click.native="saveSubmit" :disabled="load.edit==true">提交</el-button>
-			</span>
-		</el-row>
+
 		<el-dialog append-to-body title="需求选择"  :visible.sync="menuVisible" width="80%" top="20px"  :close-on-click-modal="false">
 			<xm-menu-select :is-select-menu="true" checkScope="3"  @selected="onMenuSelected" :xm-product="{id:editForm.productId}"></xm-menu-select>
 		</el-dialog>

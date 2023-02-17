@@ -1,7 +1,7 @@
 <template>
 	<section>
-        <el-row>
-            <el-col :span="6" class="padding-right">
+        <el-row :gutter="10">
+            <el-col :span="6">
                 <xm-func-select v-if="xmProductCpd"  :xm-product="xmProductCpd" @row-click="onXmFuncRowClick"> 
                 </xm-func-select>
             </el-col>
@@ -73,12 +73,12 @@
                 
 		<el-row>
 			<!--编辑 XmTestCase 测试用例界面-->
-			<el-dialog title="编辑测试用例" :visible.sync="editFormVisible"  width="90%" top="20px"  append-to-body   :close-on-click-modal="false">
+			<el-dialog title="编辑测试用例" :visible.sync="editFormVisible" fullscreen width="90%" top="20px"  append-to-body   :close-on-click-modal="false">
 			    <xm-test-case-edit op-type="edit" :xm-test-case="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit" @edit-fields="onEditFields"></xm-test-case-edit>
 			</el-dialog>
 
 			<!--新增 XmTestCase 测试用例界面-->
-			<el-dialog title="新增测试用例" :visible.sync="addFormVisible"  width="90%" top="20px"  append-to-body  :close-on-click-modal="false">
+			<el-dialog title="新增测试用例" :visible.sync="addFormVisible" fullscreen width="90%" top="20px"  append-to-body  :close-on-click-modal="false">
 			    <xm-test-case-edit op-type="add" :xm-menu="xmMenu" :xm-product="xmProduct" :xm-test-casedb="xmTestCasedb" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-test-case-edit>
 			</el-dialog>
 	    </el-row>
