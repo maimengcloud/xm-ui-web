@@ -37,6 +37,14 @@
                       type="warning"
                       
                       plain
+                      @click="showPanelName='setting'"
+                      >产品设置</el-button
+                    >
+                    <el-button
+                      class="step-btn"
+                      type="warning"
+                      
+                      plain
                       @click="linkProject()"
                       >关联项目</el-button
                     >
@@ -58,6 +66,14 @@
                       plain
                       @click="jumpTo('productMenu')"
                       >需求管理</el-button
+                    >
+                    <el-button
+                      class="step-btn"
+                      type="warning"
+                      
+                      plain
+                      @click="showPanelName='setting'"
+                      >产品设置</el-button
                     >
                     <el-button
                       class="step-btn"

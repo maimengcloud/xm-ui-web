@@ -20,11 +20,13 @@
 			   		<span v-if="projectInfo.status==i.id">
 						<el-button class="step-btn" type="warning"    plain @click="createProduct()">创建产品</el-button>
 						<el-button class="step-btn" type="warning"    plain @click="linkProduct()">关联产品</el-button>
+						<el-button class="step-btn" type="warning"    plain @click="showPanelName='setting'">项目配置</el-button>
 						<el-button class="step-btn" type="warning"    plain @click="jumpTo('projectEnv')">环境清单</el-button>
 						<el-button class="step-btn" type="danger" icon="el-icon-d-caret"    plain @click="editXmProjectSomeFields(projectInfo,'status','1')">进入售前</el-button>
 					</span>
-					<span v-if="projectInfo.status!=i.id"> 
-						<el-button class="step-btn" type="warning"    plain @click="linkProduct()">关联产品</el-button>
+					<span v-if="projectInfo.status!=i.id"> 						
+						<el-button class="step-btn" type="warning"    plain @click="linkProduct()">关联产品</el-button>            
+            <el-button class="step-btn" type="warning"    plain @click="showPanelName='setting'">项目配置</el-button>  
 						<el-button class="step-btn" type="warning"    plain @click="jumpTo('projectEnv')">环境清单</el-button>
 					</span> 
 			   </el-row>
