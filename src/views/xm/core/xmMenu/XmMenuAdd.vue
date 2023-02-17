@@ -1,6 +1,6 @@
 <template>
 	<section class="padding">
-		<el-row class="page-main ">
+		<el-row>
 			<!--新增界面 XmMenu 项目需求表--> 
 			<el-form :model="addForm"  label-width="125px" label-position="left" :rules="addFormRules" ref="addForm"> 
 						 
@@ -15,7 +15,7 @@
 									</el-input>
 									<el-row class="label-font-color"><span v-if="addForm.productName">归属产品：{{ addForm.productName}} &nbsp;&nbsp;|&nbsp;&nbsp;</span><span v-if="addForm.productId"> 产品编号：{{ addForm.productId }}&nbsp;&nbsp;|&nbsp;&nbsp;</span><span v-if="  addForm.iterationName ">迭代名称：{{addForm.iterationName}}&nbsp;&nbsp;|&nbsp;&nbsp;</span><span v-if="addForm.iterationId">迭代编号：{{addForm.iterationId}}</span></el-row>
 								</el-form-item>    
-						<el-row class="padding"> 
+						<el-row class="padding-bottom"> 
 								<el-col :span="8" v-if="xmMenu.dclass!='1'"> 
 									<mdp-field-x v-if="(!parentMenu || !parentMenu.menuId) && (!xmMenu || !xmMenu.pmenuId) " v-model="addForm.pmenuName" :label="addForm.dclass==='3'?'归属特性':(addForm.dclass==='2'?'归属史诗':'归属')" :icon="addForm.dclass==='2'?'el-icon-s-promotion':'el-icon-s-flag'" :color="addForm.dclass==='2'?'rgb(255, 153, 51)':'rgb(0, 153, 51)'">
 										<el-button slot="oper"
@@ -37,7 +37,7 @@
 									<mdp-select-user-xm  label="提出人" v-model="addForm" userid-key="proposerId" username-key="proposerName"></mdp-select-user-xm>   
 								</el-col>
 						</el-row> 
-						<el-row>
+						<el-row class="padding-top">
 							<el-col :span="8">
 								<el-form-item  label="需求类型" prop="dtype" >   
 									<el-select v-model="addForm.dtype">
@@ -62,14 +62,6 @@
 						</el-row>
 						
 						<el-row> 
-							<el-col :span="12"> 
-								<el-form-item  label="归属模块" prop="funcName" v-if="addForm.dclass>='3'"> 
-									{{ addForm.funcName }}
-										<el-button
-											@click="funcVisible=true"  
-											title="设置模块" > 设置</el-button>  
-								</el-form-item>
-							</el-col> 
 							<el-col :span="12">
 								<el-form-item label="排序序号" prop="seqNo">  
 									 <el-input style="max-width:90%;" v-model="addForm.seqNo" placeholder="请输入排序序号"> 
@@ -82,6 +74,14 @@
 									</el-input>  
 								</el-form-item>   
 							</el-col>  
+							<el-col :span="12"> 
+								<el-form-item  label="归属模块" prop="funcName" v-if="addForm.dclass>='3'"> 
+									{{ addForm.funcName }}
+										<el-button
+											@click.native="funcVisible=true"  
+											title="设置模块" > 设置</el-button>  
+								</el-form-item>
+							</el-col> 
 							<el-col :span="12">
 								<el-form-item label="截止时间" prop="startTime">  
 									 <mdp-date-range type="daterange" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" v-model="addForm" start-key="startTime" end-key="endTime"></mdp-date-range>
@@ -110,7 +110,7 @@
 		</el-dialog>
 		
 		<el-dialog append-to-body title="模块选择"  :visible.sync="funcVisible" size="40%" top="20px"  :close-on-click-modal="false">
-			<xm-func-select :show-select="true" class="padding-left padding-right" v-if="funcVisible"  @select="onFuncSelected" :xm-product="{id:editForm.productId,productName:editForm.productName}"></xm-func-select>
+			<xm-func-select :show-select="true" class="padding-left padding-right" v-if="funcVisible"  @select="onFuncSelected" :xm-product="{id:addForm.productId,productName:addForm.productName}"></xm-func-select>
 		</el-dialog>
 	</section>
 </template>
