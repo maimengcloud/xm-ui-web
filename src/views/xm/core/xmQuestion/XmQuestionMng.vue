@@ -23,83 +23,96 @@
 					title="更多条件、操作"
 					width="800"
 					v-model="moreVisible"
-					trigger="manual" >
-					
-					<el-button @click="moreVisible=false" type="text" style="float:right;margin-top:-40px;"  icon="el-icon-close">关闭</el-button>
-					<el-divider></el-divider>
-					<el-row>
-						<el-button @click="handleExport"   icon="el-icon-download">导出</el-button>
-					</el-row>
-					 <el-divider></el-divider>  
-						<el-row>
-							<el-col :span="12">
-								<font class="more-label-font">创建者:</font>
+					trigger="manual" > 
+						<el-descriptions class="margin-top"  :column="2" border>
+							<template slot="extra">
+								<el-button @click="moreVisible=false" type="text" style="float:right;margin-top:-40px;"  icon="el-icon-close">关闭</el-button>
+								<el-button @click="handleExport"   icon="el-icon-download">导出</el-button>
+								<el-button   type="primary" style="float:right;" icon="el-icon-search" @click="searchXmQuestions">查询</el-button> 							</template>
+							<el-descriptions-item>
+								<template slot="label">
+									<i class="el-icon-user"></i>
+									创建者
+								</template>
 								<mdp-select-user-xm label="选择创建者" v-model="filters.createUser" :clearable="true"></mdp-select-user-xm>  
-							</el-col>  
-							<el-col :span="12">
-								<font class="more-label-font">指派给:</font>
+							</el-descriptions-item>
+							<el-descriptions-item>
+								<template slot="label">
+									<i class="el-icon-user"></i>
+									指派给
+								</template>
 								<mdp-select-user-xm label="选择负责人" v-model="filters.handlerUser" :clearable="true"></mdp-select-user-xm>   
-							</el-col>
-						</el-row> 
-						<el-row>
-							<el-col :span="12">
-								<font class="more-label-font">需求:</font>
-							<font  v-if="  filters.menus && filters.menus.length>0">
-								<el-tag  v-for="(item,index) in filters.menus" :key="index"  closable  @close="clearFiltersMenu(item)">{{item.menuName.substr(0,10)}}</el-tag>
-							</font>
-							<el-button v-else    @click="showMenu" type="plian" icon="el-icon-search">选需求</el-button>
-						
-							</el-col>  
-							<el-col :span="12">
-								<font class="more-label-font">缺陷编号:</font>  
+							</el-descriptions-item>
+							<el-descriptions-item>
+								<template slot="label">
+									<i class="el-icon-document"></i>
+									需求
+								</template>
+								<font  v-if="  filters.menus && filters.menus.length>0">
+									<el-tag  v-for="(item,index) in filters.menus" :key="index"  closable  @close="clearFiltersMenu(item)">{{item.menuName.substr(0,10)}}</el-tag>
+								</font>
+								<el-button v-else    @click="showMenu" type="plian" icon="el-icon-search">选需求</el-button>
+							</el-descriptions-item>
+							<el-descriptions-item>
+								<template slot="label">
+									<i class="el-icon-question"></i>
+									缺陷编号
+								</template> 
 								<el-input v-model="filters.id" style="width:200px;" clearable></el-input>
-							</el-col>  
-						</el-row>
-						<el-row>
-							<el-col :span="12">
-							<font class="more-label-font">优先级:</font>  
+							</el-descriptions-item>
+							<el-descriptions-item>
+								<template slot="label">
+									<i class="el-icon-top"></i>
+									优先级
+								</template>								
 								<mdp-select-dict   v-model="filters.priority" placeholder="请选择优先级" clearable style="width:200px;" :dict="dicts['priority']"/> 
-							</el-col>  
-							<el-col :span="12">
-							<font class="more-label-font">解决方案:</font>  
+
+							</el-descriptions-item>
+							<el-descriptions-item>
+								<template slot="label">
+									<i class="el-icon-document-checked"></i>
+									解决方案
+								</template>
 								<mdp-select-dict  v-model="filters.solution" placeholder="请选择解决方案" clearable style="width:200px;" :dict="dicts['bugSolution']"/> 
-							</el-col>  
-						</el-row>
-						<el-row>
-							<el-col :span="12">
-							<font class="more-label-font">创建时间:</font>
-							<el-date-picker
-								v-model="dateRanger"
-								type="daterange"
-								align="right"
-								unlink-panels
-								range-separator="至"
-								start-placeholder="开始日期"
-								end-placeholder="完成日期"
-								value-format="yyyy-MM-dd HH:mm:ss"
-								:default-time="['00:00:00','23:59:59']"
-								:picker-options="pickerOptions"
-							></el-date-picker>
-							</el-col>  
-							<el-col :span="12">
-							<font class="more-label-font">更新时间:</font>
-							<el-date-picker
-								v-model="ltimeRanger"
-								type="daterange"
-								align="right"
-								unlink-panels
-								range-separator="至"
-								start-placeholder="更新时间"
-								end-placeholder="更新时间"
-								value-format="yyyy-MM-dd HH:mm:ss"
-								:default-time="['00:00:00','23:59:59']"
-								:picker-options="pickerOptions"
-							></el-date-picker>
-							</el-col>  
-						</el-row>
-						<el-row>
-							<el-button   type="primary" style="float:right;" icon="el-icon-search" @click="searchXmQuestions">查询</el-button> 
-						</el-row> 
+							</el-descriptions-item>
+							<el-descriptions-item>
+								<template slot="label">
+									<i class="el-icon-watch"></i>
+									创建时间
+								</template>
+								<el-date-picker
+									v-model="dateRanger"
+									type="daterange"
+									align="right"
+									unlink-panels
+									range-separator="至"
+									start-placeholder="开始日期"
+									end-placeholder="完成日期"
+									value-format="yyyy-MM-dd HH:mm:ss"
+									:default-time="['00:00:00','23:59:59']"
+									:picker-options="pickerOptions"
+								></el-date-picker>
+							</el-descriptions-item>
+							<el-descriptions-item>
+								<template slot="label">
+									<i class="el-icon-watch-1"></i>
+									更新时间
+								</template>
+								<el-date-picker
+									v-model="ltimeRanger"
+									type="daterange"
+									align="right"
+									unlink-panels
+									range-separator="至"
+									start-placeholder="更新时间"
+									end-placeholder="更新时间"
+									value-format="yyyy-MM-dd HH:mm:ss"
+									:default-time="['00:00:00','23:59:59']"
+									:picker-options="pickerOptions"
+								></el-date-picker>
+							</el-descriptions-item>
+						</el-descriptions>
+
 					<el-button  slot="reference" icon="el-icon-more" @click="moreVisible=!moreVisible"></el-button>
 				</el-popover> 
 				<span style="float:right;"> 
