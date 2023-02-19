@@ -1,11 +1,20 @@
 <template>
 	<section>
+		<el-row class="padding-bottom">
+			<span style="font-size:0.8em;color:#909399;">
+				<h4>注意：</h4> 
+				测试库的环境变量在整个测试库范围内共享。<br/>
+				测试计划的环境变量在整个测试计划范围内共享。<br/> 
+				环境变量可以在自动化测试用例中通过<Strong>${env.变量名}</Strong>进行引用，比如变量baseApi,可以通过 ${env.baseApi}进行引用<br/>
+				赋值顺序：优先查找测试计划中变量，如果不存在，则从测试库中查找变量<br/> 
+			</span>
+		</el-row>
 		<el-table
 			:data="envList"
 			style="width: 100%">
 			<el-table-column
 				prop="id"
-				label="参数名(英文)"
+				label="变量名(英文)"
 				min-width="100">
 				<template scope="scope">
 					<el-input v-model="scope.row.id"></el-input>
@@ -13,7 +22,7 @@
 			</el-table-column>
 			<el-table-column
 				prop="value"
-				label="参数值"
+				label="变量值"
 				min-width="250">
 				<template scope="scope">
 					<el-input v-model="scope.row.value"></el-input>

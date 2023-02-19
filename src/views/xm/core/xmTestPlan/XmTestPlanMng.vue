@@ -1,10 +1,11 @@
 <template>
 	<section>
 		<el-row>
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"  clearable></el-input>
+			<el-input v-model="filters.key" style="width: 15%;" placeholder="模糊查询"  clearable></el-input>
             <mdp-select-dict style="width:15%;" clearable placeholder="状态" :dict="dicts['testPlanStatus']" v-model="filters.status" effect="dark"></mdp-select-dict> 
 
             <mdp-select-dict style="width:15%;" clearable placeholder="结果" :dict="dicts['testPlanTcode']" v-model="filters.tcode" effect="dark" ></mdp-select-dict> 
+            <mdp-select-dict placeholder="测试方式" style="width:15%;" clearable :dict="dicts['testType']" v-model="filters.testType" effect="dark"></mdp-select-dict> 
 
 			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestPlans" icon="el-icon-search">查询</el-button>
 			<span style="float:right;">
@@ -43,6 +44,12 @@
 				<el-table-column prop="status" label="状态" width="120" show-overflow-tooltip>
 				    <template slot-scope="scope"> 
                         <mdp-select-dict-tag :dict="dicts['testPlanStatus']" v-model="scope.row.status" effect="dark" @change="editSomeFields(scope.row,'status',$event)"></mdp-select-dict-tag> 
+                   </template>
+				</el-table-column>
+                
+				<el-table-column prop="testType" label="测试方式" width="120" show-overflow-tooltip>
+				    <template slot-scope="scope"> 
+                        <mdp-select-dict-tag :dict="dicts['testType']" v-model="scope.row.testType" effect="dark" @change="editSomeFields(scope.row,'testType',$event)"></mdp-select-dict-tag> 
                    </template>
 				</el-table-column>
 				<el-table-column prop="tcode" label="测试结果" width="120" show-overflow-tooltip>
@@ -129,6 +136,7 @@ export default {
                 key: '',
                 status:'',
                 tcode:'',
+                testType:'',
             },
             xmTestPlans: [],//查询结果
             pageInfo:{//分页数据
@@ -214,6 +222,9 @@ export default {
             }
             if(this.filters.status){
                 params.status=this.filters.status
+            }
+            if(this.filters.testType){
+                params.testType=this.filters.testType
             }
             if(this.xmTestCasedb && this.xmTestCasedb.id){
                 params.casedbId=this.xmTestCasedb.id

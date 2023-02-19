@@ -3,10 +3,10 @@
             <el-row v-if=" xmTestPlan && xmTestPlan.id">
                 <el-row class="padding">
                      <el-button icon="el-icon-back" @click="goBackToPlanList()" type="primary" plain></el-button>
+                     <el-divider direction="vertical"></el-divider> 
+                     <el-link :type="subPage=='testPlanEdit'?'primary':''" @click="subPage='testPlanEdit'"><i class="el-icon-setting"></i>{{xmTestPlan.name}}</el-link> 
                      <el-divider direction="vertical"></el-divider>
-                     {{xmTestPlan.name}}
-                     <el-divider direction="vertical"></el-divider>
-                     <el-link :type="subPage=='testPlanEnv'?'primary':''" @click="subPage='testPlanEnv'"><i class="el-icon-setting"></i>&nbsp;环境</el-link>
+                     <el-link :type="subPage=='testPlanEnv'?'primary':''" @click="subPage='testPlanEnv'"><i class="el-icon-setting"></i>&nbsp;环境变量</el-link>
                      <el-divider direction="vertical"></el-divider>
                      <el-link :type="subPage=='testPlanCase'?'primary':''" @click="subPage='testPlanCase'"><i class="el-icon-video-play"></i>&nbsp;执行测试</el-link>
                      <el-divider direction="vertical"></el-divider>
@@ -29,6 +29,9 @@
                         </span>
                      </span>
                 </el-row> 
+                <el-row v-if="subPage=='testPlanEdit'" class="padding-left padding-right">
+                     <xm-test-plan-edit   :xm-test-plan="xmTestPlan" :xm-test-casedb="xmTestCasedb"></xm-test-plan-edit>
+                </el-row>
                 <el-row v-if="subPage=='testPlanEnv'" class="padding-left padding-right">
                      <xm-test-plan-env   :xm-test-plan="xmTestPlan" :xm-test-casedb="xmTestCasedb"></xm-test-plan-env>
                 </el-row>
@@ -67,6 +70,7 @@ export default {
         "xm-test-plan-rpt":()=>import("../../rpt/index/index.vue"), 
         "xm-rpt":()=>import("../../rpt/index"), 
         "xm-test-plan-env":()=>import("../xmTestPlan/XmTestPlanEnv.vue"),
+        "xm-test-plan-edit":()=>import("../xmTestPlan/XmTestPlanEdit.vue"),
         "xm-test-plan-mng":()=>import("../xmTestPlan/XmTestPlanMng.vue"),
         "xm-test-case-mng":()=>import("../xmTestCase/XmTestCaseMng.vue"),
         "xm-test-plan-case-mng":()=>import("../xmTestPlanCase/XmTestPlanCaseMng.vue")
@@ -127,7 +131,7 @@ export default {
         xmTestPlan:{ 
             deep:true,
             handler(){
-                 this.subPage="testPlanEnv"
+                 this.subPage="testPlanEdit"
             }
         }
     },
@@ -135,8 +139,9 @@ export default {
         return {
              dicts:{
                 testPlanStatus:[],
+                testType:[]
              },
-             subPage:'testPlanEnv',//testPlanCase,testBug
+             subPage:'testPlanEdit',//testPlanCase,testBug
         }
     },//end data
     methods: {

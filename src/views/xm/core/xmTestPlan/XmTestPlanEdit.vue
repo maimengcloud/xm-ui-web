@@ -2,17 +2,7 @@
 	<section  class="padding"> 
 		<el-row ref="table">
 		<!--编辑界面 XmTestPlan 测试计划--> 
-			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef" label-position="left">
-			
-				<el-form-item label="归属项目" prop="projectId">
-					 
-					<span v-if="opType=='add'">
-					 	<xm-project-select v-if="!selProject || !selProject.id" ref="xmProjectSelect" :link-product-id="xmTestCasedb? xmTestCasedb.productId:null"  @row-click="onPorjectConfirm" :auto-select="false">
-							
-						</xm-project-select>
-					</span> 
- 					<div v-else>{{editForm.projectName}}</div>
-				</el-form-item>  
+			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef" label-position="left"> 
 				 <el-form-item prop="name" label-width="0px">
 				  <el-row class="padding-bottom">
 					<my-input v-model="editForm.name" placeholder="计划名称" :maxlength="255" @change="editSomeFields(editForm,'name',$event)"></my-input>
@@ -21,21 +11,34 @@
 					 <span class="label-font-color padding-left">测试计划编号:{{ editForm.id }}</span>
  				  </el-row>
 				  </el-form-item>
-				<el-row class="padding">
-					<el-col :span="8">
+				<el-row class="padding-bottom">
+					<el-col :span="6">
 						<mdp-select-user-xm label="负责人" userid-key="cuserid" username-key="cusername" v-model="editForm" :project-id="editForm.projectId" :product-id="editForm.productId" @change="editSomeFields(editForm,'cuserid',$event)"></mdp-select-user-xm>
 					</el-col>
-					<el-col :span="8">
+					<el-col :span="6">
 						<mdp-select-dict-x label="状态" :dict="dicts['testPlanStatus']" v-model="editForm.status"  @change="editSomeFields(editForm,'status',$event)"></mdp-select-dict-x>
 					</el-col>
 					
-					<el-col :span="8">
+					<el-col :span="6">
+						<mdp-select-dict-x label="测试方式" :dict="dicts['testType']" v-model="editForm.testType"  @change="editSomeFields(editForm,'testType',$event)"></mdp-select-dict-x>
+					</el-col>
+					<el-col :span="6">
 						<mdp-select-dict-x label="测试结果" :dict="dicts['testPlanTcode']" v-model="editForm.tcode"  @change="editSomeFields(editForm,'tcode',$event)"></mdp-select-dict-x>
 					</el-col>
 				</el-row>   
- 				<el-form-item label="归属测试库" prop="casedbName">
+				
+				<el-form-item label="归属测试库" prop="casedbName" class="padding-top">
 					{{editForm.casedbName}}
 				</el-form-item>  
+				<el-form-item label="归属项目" prop="projectId" >
+					 
+					 <span v-if="opType=='add'">
+						  <xm-project-select v-if="!selProject || !selProject.id" ref="xmProjectSelect" :link-product-id="xmTestCasedb? xmTestCasedb.productId:null"  @row-click="onPorjectConfirm" :auto-select="false">
+							 
+						 </xm-project-select>
+					 </span> 
+					  <div v-else>{{editForm.projectName}}</div>
+				 </el-form-item>  
 				<el-form-item label="归属产品" prop="productName">
 					{{editForm.productName}}
 				</el-form-item>  
@@ -94,6 +97,7 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 				dicts:{
 					testPlanStatus:[],
 					testPlanTcode:[],
+					testType:[],
 
 				},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
 				editFormRules: {

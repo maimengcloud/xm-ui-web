@@ -33,7 +33,7 @@
           <span slot="title"><i class="el-icon-connection"></i>测试计划</span>
         </el-menu-item> 
         <el-menu-item :index="'/xm/core/test/env?casedbId='+testCasedb.id">
-            <span slot="title"><i class="el-icon-setting"></i>环境</span>
+            <span slot="title"><i class="el-icon-setting"></i>环境变量</span>
           </el-menu-item> 
         <el-menu-item :index="'/xm/core/test/rpt?casedbId='+testCasedb.id">
           <span slot="title"><i class="el-icon-time"></i>统计分析</span>

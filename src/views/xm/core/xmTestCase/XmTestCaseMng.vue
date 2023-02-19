@@ -215,6 +215,10 @@ export default {
             if(this.filters.caseStatus){
                 params.caseStatus=this.filters.caseStatus
             }
+            
+            if(this.filters.testType){
+                params.testType=this.filters.testType
+            }
             if(this.filters.xmFunc && this.filters.xmFunc.id){
                 params.funcPidPathsLike=this.filters.xmFunc.pidPaths
             }
