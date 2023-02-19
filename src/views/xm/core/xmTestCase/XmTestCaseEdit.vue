@@ -89,7 +89,7 @@
 										<i class="el-icon-edit"></i>{{autoStep.url}}
 									</div>
 									<div class="field-bar">
-										<el-input v-model="autoStep.url" placeholder="url"></el-input>
+										<el-input v-model="autoStep.url" placeholder="url 如${env.baseApi}/user/list,支持通过 ${env.变量名}引用环境变量"></el-input>
 									</div>
 								</el-form-item>
 								<el-form-item label="请求方法">
@@ -119,7 +119,7 @@
 										label="参数值"
 										min-width="250">
 										<template scope="scope">
-											<el-input v-model="scope.row.value"></el-input>
+											<el-input v-model="scope.row.value" placeholder="支持通过 ${env.变量名}引用环境变量"></el-input>
 										</template>
 									</el-table-column>  
 									<el-table-column label="操作" width="180">
@@ -133,7 +133,10 @@
 										</template>
 									</el-table-column>
 								</el-table>
-								<el-row class="padding" style="float:right;"><el-button @click="saveAutoStep" type="primary">保存</el-button></el-row>
+ 								<el-row class="padding" style="float:right;">
+									<el-button @click="sendMsgForTestSetting" title="仅仅用于测试用例配置是否正确，不会保存任何执行结果，如果需要正式使用，请构建测试计划，进行统一管理">发送</el-button>
+									<el-button @click="saveAutoStep" type="primary">保存</el-button>
+								</el-row>
  							</el-tab-pane>
 							<el-tab-pane name="13" label="Body"  v-if="editForm.testType=='1'">
 								<mdp-select-dict-x style="margin-bottom:10px;" class="padding" label="参数格式" v-model="autoStep.bodyType" :dict="dicts.autoTestBodyType"></mdp-select-dict-x>
@@ -156,7 +159,7 @@
 										label="参数值"
 										min-width="250">
 										<template scope="scope">
-											<el-input v-model="scope.row.value"></el-input>
+											<el-input v-model="scope.row.value" placeholder="支持通过 ${env.变量名}引用环境变量"></el-input>
 										</template>
 									</el-table-column>  
 									<el-table-column label="操作" width="180">
@@ -170,7 +173,10 @@
 										</template>
 									</el-table-column>
 								</el-table>
-								<el-row class="padding" style="float:right;"><el-button @click="saveAutoStep" type="primary">保存</el-button></el-row>
+ 								<el-row class="padding" style="float:right;">
+									<el-button @click="sendMsgForTestSetting" title="仅仅用于测试用例配置是否正确，不会保存任何执行结果，如果需要正式使用，请构建测试计划，进行统一管理">发送</el-button>
+									<el-button @click="saveAutoStep" type="primary">保存</el-button>
+								</el-row>
 
  							</el-tab-pane>
 							<el-tab-pane name="14" label="Cookie"  v-if="editForm.testType=='1'">  
@@ -190,7 +196,7 @@
 										label="参数值"
 										min-width="250">
 										<template scope="scope">
-											<el-input v-model="scope.row.value"></el-input>
+											<el-input v-model="scope.row.value" placeholder="支持通过 ${env.变量名}引用环境变量"></el-input>
 										</template>
 									</el-table-column>  
 									<el-table-column label="操作" width="180">
@@ -204,7 +210,10 @@
 										</template>
 									</el-table-column>
 								</el-table>
-								<el-row class="padding" style="float:right;"><el-button @click="saveAutoStep" type="primary">保存</el-button></el-row>
+ 								<el-row class="padding" style="float:right;">
+									<el-button @click="sendMsgForTestSetting" title="仅仅用于测试用例配置是否正确，不会保存任何执行结果，如果需要正式使用，请构建测试计划，进行统一管理">发送</el-button>
+									<el-button @click="saveAutoStep" type="primary">保存</el-button>
+								</el-row>
  							</el-tab-pane>
 							<el-tab-pane name="15" label="Header"  v-if="editForm.testType=='1'">
 								<el-table
@@ -223,7 +232,7 @@
 										label="参数值"
 										min-width="250">
 										<template scope="scope">
-											<el-input v-model="scope.row.value"></el-input>
+											<el-input v-model="scope.row.value" placeholder="支持通过 ${env.变量名}引用环境变量"></el-input>
 										</template>
 									</el-table-column>  
 									<el-table-column label="操作" width="180">
@@ -237,7 +246,10 @@
 										</template>
 									</el-table-column>
 								</el-table>
-								<el-row class="padding" style="float:right;"><el-button @click="saveAutoStep" type="primary">保存</el-button></el-row>
+ 								<el-row class="padding" style="float:right;">
+									<el-button @click="sendMsgForTestSetting" title="仅仅用于测试用例配置是否正确，不会保存任何执行结果，如果需要正式使用，请构建测试计划，进行统一管理">发送</el-button>
+									<el-button @click="saveAutoStep" type="primary">保存</el-button>
+								</el-row>
  							</el-tab-pane>
 							<el-tab-pane name="16" label="Auth"  v-if="editForm.testType=='1'">
 								
@@ -250,7 +262,7 @@
 											<i class="el-icon-edit"></i>{{basicAuth.username}}
 										</div>
 										<div class="field-bar">
-											<el-input v-model="basicAuth.username" placeholder="username"></el-input>
+											<el-input v-model="basicAuth.username" placeholder="username 支持通过 ${env.变量名}引用环境变量" ></el-input>
 										</div>
 									</el-form-item> 
 									<el-form-item label="password"   class="field">
@@ -258,28 +270,31 @@
 											<i class="el-icon-edit"></i>{{basicAuth.password||'暂无'}}
 										</div>
 										<div class="field-bar">
-											<el-input  v-model="basicAuth.password" placeholder="password"></el-input>
+											<el-input  v-model="basicAuth.password" placeholder="password 支持通过 ${env.变量名}引用环境变量" ></el-input>
 										</div>
 									</el-form-item>
 								</el-row>
 
 								<el-row v-if="autoStep.authType=='bearer-token'">
-									<el-form-item  label="BearerToken" class="field">
+									<el-form-item  label="Bearer" class="field">
 										<div class="field-text">
 											<i class="el-icon-edit"></i>{{bearerToken.bearerToken}}
 										</div>
 										<div class="field-bar">
-											<el-input v-model="bearerToken.bearerToken" placeholder="BearerToken"></el-input>
+											<el-input type="textarea" autosize v-model="bearerToken.bearerToken" placeholder="Bearer 支持通过 ${env.变量名}引用环境变量"></el-input>
 										</div>
 									</el-form-item>  
 								</el-row> 
- 								<el-row class="padding" style="float:right;"><el-button @click="saveAutoStep" type="primary">保存</el-button></el-row>
+ 								<el-row class="padding" style="float:right;">
+									<el-button @click="sendMsgForTestSetting" title="仅仅用于测试用例配置是否正确，不会保存任何执行结果，如果需要正式使用，请构建测试计划，进行统一管理">发送</el-button>
+									<el-button @click="saveAutoStep" type="primary">保存</el-button>
+								</el-row>
  							</el-tab-pane>
 							<el-tab-pane name="17" label="响应"  v-if="editForm.testType=='1'">
 								<el-row class="padding">可使用的变量 res={config:{协议配置},data:{接口返回的业务数据对象} ,headers:{协议头,key-value型},status:状态码如200/201 }</el-row>
 								<el-form-item  label="成功与失败的逻辑判断">
 									<el-input type="textarea" :rows="10" v-model="autoStep.expectResult" placeholder="成功与失败的判断"  ></el-input>  
-								</el-form-item> 
+								</el-form-item>  
 								<el-form-item  label="例子">
   										if(res.status==200){<br/>
 										&nbsp;&nbsp;return true;<br/>
@@ -287,6 +302,15 @@
 										&nbsp;&nbsp;return false;<br/>
 										}<br/> 
 								</el-form-item>
+								<el-form-item  label="响应数据预览" >
+									<el-row> <el-checkbox v-model="resDataVisible">显示响应数据</el-checkbox></el-row>
+									<json-viewer v-if="resDataVisible==true" :value="testRes" copyable theme="my-awesome-json-theme"></json-viewer>
+
+ 								</el-form-item>
+								<el-row class="padding" style="float:right;">
+									<el-button @click="sendMsgForTestSetting" title="仅仅用于测试用例配置是否正确，不会保存任何执行结果，如果需要正式使用，请构建测试计划，进行统一管理">发送</el-button>
+									<el-button @click="saveAutoStep" type="primary">保存</el-button>
+								</el-row>
  							</el-tab-pane> 
 							<el-tab-pane name="2" label="缺陷"  v-if="opType!=='add'">
 								<xm-question-mng  v-if="activeTab=='2'" :xm-test-case="editForm"  :xm-product="{id:editForm.productId,productName:editForm.productName}" :sel-project="{id:editForm.projectId,name:editForm.projectName}"></xm-question-mng>
@@ -345,6 +369,10 @@ import  XmTestPlanCaseMng from '@/views/xm/core/xmTestPlanCase/XmTestPlanCaseMng
  	import MyInput from '@/components/MDinput/index';
 	
 import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修改界面
+
+import axios from 'axios'//免登录访问
+import JsonViewer from 'vue-json-viewer' 
+
 	export default {
 	    name:'xmTestCaseEdit',
 	    components: {
@@ -352,6 +380,7 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 			XmMenuEdit:()=>import("../xmMenu/XmMenuDetail"),
 			XmTestCasedbMng:()=>import('../xmTestCasedb/XmTestCasedbMng'),
 			'xm-workload-record':()=>import("../xmWorkload/XmWorkloadRecord"),
+			JsonViewer,
         },
 		computed: {
 		    ...mapGetters([ 'userInfo'  ]),
@@ -448,13 +477,15 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 					url:'',
 					method:'GET',
 					authType:'none',
+					authData:{},
 					bodyType:'json',
-					params:{},
-					body:{},
-					cookie:{},
+					params:[],
+					body:[],
+					cookies:[],
 					expectResult:''
 				}, 
-
+				testRes:{},
+				resDataVisible:false,
 			}//end return
 		},//end data
 		methods: {
@@ -523,7 +554,176 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 			deleteHeaderRow(row,index){
 				this.headerList.splice(index,1)
 			},
+			calcAutoStep(){
+				var autoStep={...this.autoStep}
+				autoStep.authData={}
+				//auth 授权数据组合
+				if(this.autoStep.authType=='bearer-token'){
+					autoStep.authData.bearerToken=this.bearerToken.bearerToken
+				}else if(this.autoStep.authType=='basic-auth'){
+					autoStep.authData=this.basicAuth
+				}
+
+				//查询参数组合
+				autoStep.params=this.paramsList.filter(k=>k.id)
+
+				//body 参数组合
+				if(this.autoStep.bodyType=='json'){
+					autoStep.body=this.bodyJson
+				}else if(this.autoStep.bodyType=='xml'){
+					autoStep.body=this.bodyXml
+				}else if(this.autoStep.bodyType=='raw'){
+					autoStep.body=this.bodyRaw
+				}else if(this.autoStep.bodyType=='form-data'){
+					autoStep.body=this.bodyList.filter(k=>k.id)
+				}else if(this.autoStep.bodyType=='x-www-form-urlencoded'){
+					autoStep.body=this.bodyList.filter(k=>k.id)
+				}else if(this.autoStep.bodyType=='x-www-form-urlencoded'){
+					autoStep.body=this.bodyList.filter(k=>k.id)
+				}else{
+					autoStep.body=null
+				}
+
+				//header 参数组合
+				autoStep.headers=this.headerList.filter(k=>k.id)
+
+				autoStep.cookies=this.cookieList.filter(k=>k.id)
+
+				return autoStep; 
+			},
+			initAutoStep(){
+				if(this.xmTestCase.autoStep){
+					this.autoStep=JSON.parse(this.xmTestCase.autoStep)
+					//参数
+					if(this.autoStep.params){
+						this.paramsList=this.autoStep.params
+					}
+					if(this.autoStep.headers){
+						this.headerList=this.autoStep.headers
+					}
+					if(this.autoStep.cookies){
+						this.cookieList=this.autoStep.cookies
+					}
+					if(this.autoStep.authType=='bearer-token'){
+						this.bearerToken=this.autoStep.authData
+					}
+					if(this.autoStep.authType=='basic-auth'){
+						this.basicAuth=this.autoStep.authData
+					}
+					if(this.autoStep.bodyType=='json'){
+						this.bodyJson=this.autoStep.body
+					}else if(this.autoStep.bodyType=='xml'){
+						this.bodyXml=this.autoStep.body
+					}else if(this.autoStep.bodyType=='raw'){
+						this.bodyRaw=this.autoStep.body
+					}else if(this.autoStep.bodyType=='form-data'){
+						this.bodyList=this.autoStep.body
+					}else if(this.autoStep.bodyType=='x-www-form-urlencoded'){
+						this.bodyList=this.autoStep.body
+					} 
+				}else{
+
+				}
+				
+			},
+
 			saveAutoStep(){
+				var autoStepObj=this.calcAutoStep();
+				var autoStepStr=JSON.stringify(autoStepObj)
+				this.editSomeFields(this.editForm,'autoStep',autoStepStr)
+			},
+			autoStepToAxios(autoStepObj){
+				var axiosObj={url:autoStepObj.url,method:autoStepObj.method}
+
+				//参数处理
+				if(autoStepObj.method=='GET'){
+					var params={}
+					autoStepObj.params.forEach(k=>{ 
+						params[k.id]=k.value 
+					})
+					axiosObj.params=params
+				}else if(autoStepObj.method=='POST'){
+					var params={}
+					autoStepObj.params.forEach(k=>{ 
+						params[k.id]=k.value 
+					})
+					axiosObj.params=params
+					if(autoStepObj.bodyType=='json'){
+						axiosObj.data=autoStepObj.body
+					}else if(autoStepObj.bodyType=='xml'){
+						axiosObj.data=autoStepObj.body
+					}else if(autoStepObj.bodyType=='raw'){
+						axiosObj.data=autoStepObj.body
+					}else if(autoStepObj.bodyType=='form-data'){
+						var data={}
+						autoStepObj.body.forEach(k=>{
+							data[k.id]=k.value
+						})
+						axiosObj.data=data;
+					}else if(autoStepObj.bodyType=='x-www-form-urlencoded'){
+						var data={}
+						autoStepObj.body.forEach(k=>{
+							data[k.id]=k.value
+						})
+						axiosObj.data=data;
+					} 
+				}
+
+				//header处理
+				if(autoStepObj.headers){
+					axiosObj.headers={}
+					autoStepObj.headers.forEach(k=>{
+						axiosObj.headers[k.id]=k.value
+					})
+				}else {
+					axiosObj.headers={}
+				}
+				debugger;
+				if(autoStepObj.authType=='bearer-token'){ 
+					axiosObj.headers['Authorization'] = 'Bearer '+autoStepObj.authData.bearerToken
+				}else if(autoStepObj.authType=='basic-auth'){
+					var username=autoStepObj.authData.username
+					var password=autoStepObj.authData.password
+					var authorizationBasic = window.btoa(username + ':' + password);
+ 					axiosObj.headers['Authorization'] = 'Basic '+authorizationBasic
+				}
+
+				//cookie 处理
+				if(autoStepObj.cookies){
+					axiosObj.cookies={}
+					autoStepObj.cookies.forEach(k=>{
+						axiosObj.cookies[k.id]=k.value
+					})
+				}  
+				return axiosObj
+			},
+			sendMsgForTestSetting(){
+				debugger;
+				var autoStepObj=this.calcAutoStep();
+				if(!autoStepObj.url){
+					this.$notify({position:'bottom-left',showClose:true,message:'url不能为空',type: 'error'}) 
+					return;
+				}
+				var axiosObj=this.autoStepToAxios(autoStepObj)
+				//axiosObj.headers['Access-Control-Allow-Origin']='*'
+				//axios.defaults.withCredentials = true // 若跨域请求需要带 cookie 身份识别
+				//axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+				axios(axiosObj).then(res=>{
+					this.testRes=res
+					if(autoStepObj.expectResult){
+						var func=new Function('res','env',autoStepObj.expectResult)
+						var result=func(res,{})
+						if(result==true){
+							this.$notify({position:'bottom-left',showClose:true,message:'成功',type: 'success'}) 
+
+						}else{
+							this.$notify({position:'bottom-left',showClose:true,message:'失败',type: 'error'}) 
+
+						}
+					}else{
+						this.$notify({position:'bottom-left',showClose:true,message:'执行完毕',type: res.status==200?'success':'error'}) 
+					}
+				})
 
 			},
 			initData: function(){
@@ -557,9 +757,9 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 					this.editForm.id=null
 					
                 }
+				this.initAutoStep();
                 this.editFormBak={...this.editForm}
             },
-
             editSomeFields(row,fieldName,$event){
                 if(this.opType=='add'){
                     return;
@@ -588,6 +788,9 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
                   if(tips.isOk){
                     this.editFormBak={...this.editForm}
 					this.$emit('edit-fields',params)
+					if(fieldName=='autoStep'){
+						this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+					}
                   }else{
                     Object.assign(this.editForm,this.editFormBak)
                     this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
