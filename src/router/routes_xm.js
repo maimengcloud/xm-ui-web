@@ -640,7 +640,9 @@ export default {
         { path: 'overview', component: _import('xm/core/xmTestCasedb/Overview'), name: 'testOverview', meta: { title: '测试管理',roles:["user"] },hidden:true},
         { path: 'case', component: _import('xm/core/xmTestCase/XmTestCaseList'), name: 'testCase', meta: { title: '用例管理',roles:["user"] },hidden:true},
         { path: 'flow', component: _import('xm/core/xmTestCase/XmTestCaseFlow'), name: 'testFlow', meta: { title: '用例评审',roles:["user"] },hidden:true},
-        { path: 'plan', component: _import('xm/core/xmTestPlan/Overview'), name: 'testPlan', meta: { title: '测试计划',roles:["user"] },hidden:true},
+        { path: 'plan', component: _import('xm/core/xmTestPlan/Overview'), name: 'testPlan', meta: { title: '测试计划',roles:["user"] },hidden:true},        
+        { path: 'env', component: _import('xm/core/xmTestCasedb/EnvIndex'), name: 'testEnv', meta: { title: '环境',roles:["user"] },hidden:true},
+
         { path: 'plan/detail', component: _import('xm/core/xmTestPlan/Detail'), name: 'testPlanDetail', meta: { title: '测试计划明细',roles:["user"] },hidden:true},
 
         { path: 'group', component: _import('xm/core/xmGroup/XmGroupForTest'), name: 'testGroup', meta: { title: '团队',roles:["user"] },hidden:true},

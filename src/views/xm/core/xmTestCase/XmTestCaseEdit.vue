@@ -93,7 +93,7 @@
 									</div>
 								</el-form-item>
 								<el-form-item label="请求方法">
-									<mdp-select-dict-tag label="请求方法" v-model="autoStep.method" :dict="dicts.autoTestMethod" effect="dark"></mdp-select-dict-tag>
+									<mdp-select-dict-tag label="请求方法" v-model="autoStep.method" :dict="dicts.autoTestMethod"></mdp-select-dict-tag>
 								</el-form-item>
  								<el-form-item label="查询参数"   class="field">
 									<div class="field-text">

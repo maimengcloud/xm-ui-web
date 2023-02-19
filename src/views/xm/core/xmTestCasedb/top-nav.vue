@@ -31,8 +31,10 @@
 				</el-menu-item> 
         <el-menu-item :index="'/xm/core/test/plan?casedbId='+testCasedb.id">
           <span slot="title"><i class="el-icon-connection"></i>测试计划</span>
-        </el-menu-item>
-
+        </el-menu-item> 
+        <el-menu-item :index="'/xm/core/test/env?casedbId='+testCasedb.id">
+            <span slot="title"><i class="el-icon-setting"></i>环境</span>
+          </el-menu-item> 
         <el-menu-item :index="'/xm/core/test/rpt?casedbId='+testCasedb.id">
           <span slot="title"><i class="el-icon-time"></i>统计分析</span>
         </el-menu-item>
@@ -42,9 +44,6 @@
         </el-menu-item>
         <el-submenu index="更多">
           <template slot="title">更多 </template> 
-          <el-menu-item :index="'/xm/core/test/env?casedbId='+testCasedb.id">
-            <span slot="title"><i class="el-icon-setting"></i>环境清单</span>
-          </el-menu-item> 
           <el-menu-item index="/forum">
             <span slot="title"><i class="el-icon-date"></i>论坛</span>
           </el-menu-item>
