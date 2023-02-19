@@ -28,39 +28,45 @@
 					<el-input v-model="scope.row.name"></el-input>
 				</template>
 			</el-table-column>  
-			<el-table-column label="操作" width="180">
+			<el-table-column label="操作" width="280">
 				<template slot="header" slot-scope="scope">
-					操作											
-					<el-button v-if="!envList||envList.length==0" @click="addEnvRow({},0)" icon="el-icon-plus" circle plain></el-button>  
+					操作	
+					<div style="display:flex;">								
+						<el-button v-if="!envList||envList.length==0" @click="addEnvRow({},0)" icon="el-icon-plus"></el-button>  
+						<el-button v-if="!envList||envList.length==0" @click="importFromCasedb({},0)" icon="el-icon-plus" plain>从测试库导入</el-button> 
+					</div>		
 				</template>
 				<template scope="scope">
 					<el-button type="danger" @click="deleteEnvRow(scope.row,scope.$index)" icon="el-icon-delete" circle plain></el-button> 
-					<el-button @click="addEnvRow(scope.row,scope.$index)" icon="el-icon-plus" circle plain></el-button> 
+					<el-button @click="addEnvRow(scope.row,scope.$index)" icon="el-icon-plus" circle plain></el-button>  
+					<el-button @click="importFromCasedb(scope.row,scope.$index)" icon="el-icon-plus" plain>从测试库导入</el-button> 
 				</template>
 			</el-table-column>
 		</el-table>
 		<slot name="submit" :value="envList">
 			<el-row class="padding" style="float:right;"><el-button @click="saveData" type="primary">保存</el-button></el-row>
-		</slot>
-		
+		</slot> 
+		<el-dialog append-to-body title="选择测试库环境变量" width="900px" top="10px" :visible.sync="xmTestCasedbEnvVisible">
+			<xm-test-casedb-env-select :xmTestCasedb="xmTestCasedb" @select="onCasedbEnvSelect"></xm-test-casedb-env-select>
+		</el-dialog>
  	</section>
 </template>
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	import { editSomeFieldsXmTestCasedb } from '@/api/xm/core/xmTestCasedb';
-
+	import { editSomeFieldsXmTestPlan } from '@/api/xm/core/xmTestPlan';
+	import XmTestCasedbEnvSelect from '../xmTestCasedb/XmTestCasedbEnvSelect.vue';
 	import { mapGetters } from 'vuex'; 
  
 	export default { 
-		props:['xmTestCasedb'],
+		props:['xmTestPlan','xmTestCasedb'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
 				]), 
 		}, 
 		watch:{
-			xmTestCasedb:{
+			xmTestPlan:{
 				deep:true,
 				handler:function(){
 					this.initData();
@@ -71,6 +77,7 @@
 		data() {
 			return {  
 				envList:[{id:'',value:'',name:''}],
+				xmTestCasedbEnvVisible:false,
 			}
 		},//end data
 		methods: {  
@@ -83,22 +90,31 @@
 			},
 			
 			saveData(){
-				this.editSomeFields(this.xmTestCasedb,"envJson",JSON.stringify(this.envList));
+				this.editSomeFields(this.xmTestPlan,"envJson",JSON.stringify(this.envList));
 			},
 			initData(){
-				if(this.xmTestCasedb.envJson){
-					this.envList=JSON.parse(this.xmTestCasedb.envJson)
+				if(this.xmTestPlan.envJson){
+					this.envList=JSON.parse(this.xmTestPlan.envJson)
 				}else{
 					this.envList=[]
 				}
 			},
-			
+			importFromCasedb(row,index){
+				this.xmTestCasedbEnvVisible=true;
+			},
+			onCasedbEnvSelect(rows){
+				if(rows && rows.length>0){
+					this.envList.push(...rows)
+				}
+				this.xmTestCasedbEnvVisible=false;
+				
+			},
             editSomeFields(row,fieldName,$event){
                 
                 let params={};
                 params['ids']=[row].map(i=>i.id)
 				params[fieldName]=$event  
-                var func = editSomeFieldsXmTestCasedb
+                var func = editSomeFieldsXmTestPlan
                 func(params).then(res=>{
                   let tips = res.data.tips;
                   if(tips.isOk){
@@ -112,6 +128,7 @@
             },
 		},//end methods
 		components: {  
+			XmTestCasedbEnvSelect,
  		},  
 		mounted() {   
 			this.initData()

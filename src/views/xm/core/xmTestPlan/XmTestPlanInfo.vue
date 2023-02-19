@@ -6,6 +6,8 @@
                      <el-divider direction="vertical"></el-divider>
                      {{xmTestPlan.name}}
                      <el-divider direction="vertical"></el-divider>
+                     <el-link :type="subPage=='testPlanEnv'?'primary':''" @click="subPage='testPlanEnv'"><i class="el-icon-setting"></i>&nbsp;环境</el-link>
+                     <el-divider direction="vertical"></el-divider>
                      <el-link :type="subPage=='testPlanCase'?'primary':''" @click="subPage='testPlanCase'"><i class="el-icon-video-play"></i>&nbsp;执行测试</el-link>
                      <el-divider direction="vertical"></el-divider>
                      <el-link :type="subPage=='testBug'?'primary':''"  @click="subPage='testBug'"><i class="el-icon-question"></i>&nbsp;缺陷</el-link> 
@@ -27,7 +29,9 @@
                         </span>
                      </span>
                 </el-row> 
-                
+                <el-row v-if="subPage=='testPlanEnv'" class="padding-left padding-right">
+                     <xm-test-plan-env   :xm-test-plan="xmTestPlan" :xm-test-casedb="xmTestCasedb"></xm-test-plan-env>
+                </el-row>
                 <el-row v-if="subPage=='testPlanCase'" class="padding-left padding-right">
                      <xm-test-plan-case-mng   :xm-test-plan="xmTestPlan" :xm-test-casedb="xmTestCasedb"></xm-test-plan-case-mng>
                 </el-row>
@@ -62,6 +66,7 @@ export default {
         XmProductSelect,XmQuestionMng,
         "xm-test-plan-rpt":()=>import("../../rpt/index/index.vue"), 
         "xm-rpt":()=>import("../../rpt/index"), 
+        "xm-test-plan-env":()=>import("../xmTestPlan/XmTestPlanEnv.vue"),
         "xm-test-plan-mng":()=>import("../xmTestPlan/XmTestPlanMng.vue"),
         "xm-test-case-mng":()=>import("../xmTestCase/XmTestCaseMng.vue"),
         "xm-test-plan-case-mng":()=>import("../xmTestPlanCase/XmTestPlanCaseMng.vue")
@@ -118,6 +123,12 @@ export default {
         visible(val){
             if(val==true){ 
             }
+        },
+        xmTestPlan:{ 
+            deep:true,
+            handler(){
+                 this.subPage="testPlanEnv"
+            }
         }
     },
     data() {
@@ -125,17 +136,12 @@ export default {
              dicts:{
                 testPlanStatus:[],
              },
-            activeIndex:'testPlan',//testPlanCase,testPlan
-            subPage:'testPlanCase',//testPlanCase,testBug
+             subPage:'testPlanEnv',//testPlanCase,testBug
         }
     },//end data
     methods: {
 
-        ...util,
-        onTestPlanSelect(row){
-            this.activeIndex='testPlanCase'
-            this.xmTestPlan=row
-        },
+        ...util, 
         showRptConfig(){
             this.$refs['rpt'].isRptCfg=true
         },

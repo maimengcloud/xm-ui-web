@@ -15,7 +15,9 @@
 				]), 
 		}, 
 		watch:{
-			 
+			 $route(){ 
+				this.initData();
+			 }
 		},
 		data() {
 			return {  
@@ -23,21 +25,23 @@
 			}
 		},//end data
 		methods: {  
-			  
+			  initData(){
+				var planId=this.$route.query.id
+				if(planId){ 
+					var key="xm-test-plan-info-"+planId
+					var str=sessionStorage.getItem(key)
+					if(str && str!='null' && str!='undefined'){
+						this.xmTestPlan=JSON.parse(str)
+					}
+				}
+			  }
 		},//end methods
 		components: {  
 			XmTestPlanInfo,
 			//在下面添加其它组件
 		},  
-		mounted() {   
-			var planId=this.$route.query.id
-			if(planId){ 
-				var key="xm-test-plan-info-"+planId
-				var str=sessionStorage.getItem(key)
-				if(str && str!='null' && str!='undefined'){
-					this.xmTestPlan=JSON.parse(str)
-				}
-			}
+		mounted() {    
+			this.initData();
 		}
 	}
 </script>
