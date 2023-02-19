@@ -21,6 +21,10 @@
 							{{editForm.menuName}} &nbsp;&nbsp;&nbsp; <el-link @click="menuVisible=true" type="primary">{{editForm.menuName?'更改':'设置'}}</el-link>&nbsp;&nbsp;&nbsp;
 							<el-link v-if="editForm.menuId" @click="menuFormVisible=true" type="primary">查看需求</el-link>
 						</el-form-item> 
+
+						<el-form-item label="测试方式" prop="testType">
+							<mdp-select-dict placeholder="测试方式" clearable :dict="dicts['testType']" v-model="editForm.testType" effect="dark" @change="editSomeFields(editForm,'testType',$event)"></mdp-select-dict> 
+						</el-form-item>  
 						<el-form-item label="版本号" prop="verNum">
 							<el-input v-model="editForm.verNum" placeholder="版本号" :maxlength="50" @change="editSomeFields(editForm,'verNum',$event)"></el-input>
 						</el-form-item>   
@@ -79,7 +83,211 @@
 									</el-row> 
 								</el-form-item>  
 							</el-tab-pane>
-							
+							<el-tab-pane name="12" label="Params"  v-if="editForm.testType=='1'">
+								<el-form-item label="url"   class="field">
+									<div class="field-text">
+										<i class="el-icon-edit"></i>{{autoStep.url}}
+									</div>
+									<div class="field-bar">
+										<el-input v-model="autoStep.url" placeholder="url"></el-input>
+									</div>
+								</el-form-item>
+								<el-form-item label="请求方法">
+									<mdp-select-dict-tag label="请求方法" v-model="autoStep.method" :dict="dicts.autoTestMethod" effect="dark"></mdp-select-dict-tag>
+								</el-form-item>
+ 								<el-form-item label="查询参数"   class="field">
+									<div class="field-text">
+										<i class="el-icon-edit"></i>{{queryStrCpd||'暂无'}}
+									</div>
+									<div class="field-bar">
+										<el-input type="textarea" :rows="3"  v-model="queryStr" placeholder="查询参数" @focus="initQueryStr"></el-input>
+									</div>
+								</el-form-item>
+								<el-table
+									:data="paramsList"
+									style="width: 100%">
+									<el-table-column
+										prop="id"
+										label="参数名"
+										min-width="200">
+										<template scope="scope">
+											<el-input v-model="scope.row.id"></el-input>
+										</template>
+									</el-table-column>
+									<el-table-column
+										prop="value"
+										label="参数值"
+										min-width="250">
+										<template scope="scope">
+											<el-input v-model="scope.row.value"></el-input>
+										</template>
+									</el-table-column>  
+									<el-table-column label="操作" width="180">
+										<template slot="header" slot-scope="scope">
+											操作											
+											<el-button v-if="!paramsList||paramsList.length==0" @click="addParamsRow({},0)" icon="el-icon-plus" circle plain></el-button>  
+										</template>
+										<template scope="scope">
+											<el-button type="danger" @click="deleteParamsRow(scope.row,scope.$index)" icon="el-icon-delete" circle plain></el-button> 
+											<el-button @click="addParamsRow(scope.row,scope.$index)" icon="el-icon-plus" circle plain></el-button> 
+										</template>
+									</el-table-column>
+								</el-table>
+								<el-row class="padding" style="float:right;"><el-button @click="saveAutoStep" type="primary">保存</el-button></el-row>
+ 							</el-tab-pane>
+							<el-tab-pane name="13" label="Body"  v-if="editForm.testType=='1'">
+								<mdp-select-dict-x style="margin-bottom:10px;" class="padding" label="参数格式" v-model="autoStep.bodyType" :dict="dicts.autoTestBodyType"></mdp-select-dict-x>
+								<el-input v-if="autoStep.bodyType=='json'" type="textarea" :rows="10" v-model="bodyJson"></el-input>
+								<el-input v-if="autoStep.bodyType=='xml'" type="textarea" :rows="10" v-model="bodyXml"></el-input>
+
+								<el-table v-if="autoStep.bodyType=='form-data'||autoStep.bodyType=='x-www-form-urlencoded'"
+									:data="bodyList"
+									style="width: 100%">
+									<el-table-column
+										prop="id"
+										label="参数名"
+										min-width="200">
+										<template scope="scope">
+											<el-input v-model="scope.row.id"></el-input>
+										</template>
+									</el-table-column>
+									<el-table-column
+										prop="value"
+										label="参数值"
+										min-width="250">
+										<template scope="scope">
+											<el-input v-model="scope.row.value"></el-input>
+										</template>
+									</el-table-column>  
+									<el-table-column label="操作" width="180">
+										<template slot="header" slot-scope="scope">
+											操作											
+											<el-button v-if="!bodyList||bodyList.length==0" @click="addBodyRow({},0)" icon="el-icon-plus" circle plain></el-button>  
+										</template>
+										<template scope="scope">
+											<el-button type="danger" @click="deleteBodyRow(scope.row,scope.$index)" icon="el-icon-delete" circle plain></el-button> 
+											<el-button @click="addBodyRow(scope.row,scope.$index)" icon="el-icon-plus" circle plain></el-button> 
+										</template>
+									</el-table-column>
+								</el-table>
+								<el-row class="padding" style="float:right;"><el-button @click="saveAutoStep" type="primary">保存</el-button></el-row>
+
+ 							</el-tab-pane>
+							<el-tab-pane name="14" label="Cookie"  v-if="editForm.testType=='1'">  
+								<el-table
+									:data="cookieList"
+									style="width: 100%">
+									<el-table-column
+										prop="id"
+										label="参数名"
+										min-width="200">
+										<template scope="scope">
+											<el-input v-model="scope.row.id"></el-input>
+										</template>
+									</el-table-column>
+									<el-table-column
+										prop="value"
+										label="参数值"
+										min-width="250">
+										<template scope="scope">
+											<el-input v-model="scope.row.value"></el-input>
+										</template>
+									</el-table-column>  
+									<el-table-column label="操作" width="180">
+										<template slot="header" slot-scope="scope">
+											操作											
+											<el-button v-if="!cookieList||cookieList.length==0" @click="addCookieRow({},0)" icon="el-icon-plus" circle plain></el-button>  
+										</template>
+										<template scope="scope">
+											<el-button type="danger" @click="deleteCookieRow(scope.row,scope.$index)" icon="el-icon-delete" circle plain></el-button> 
+											<el-button @click="addCookieRow(scope.row,scope.$index)" icon="el-icon-plus" circle plain></el-button> 
+										</template>
+									</el-table-column>
+								</el-table>
+								<el-row class="padding" style="float:right;"><el-button @click="saveAutoStep" type="primary">保存</el-button></el-row>
+ 							</el-tab-pane>
+							<el-tab-pane name="15" label="Header"  v-if="editForm.testType=='1'">
+								<el-table
+									:data="headerList"
+									style="width: 100%">
+									<el-table-column
+										prop="id"
+										label="参数名"
+										min-width="200">
+										<template scope="scope">
+											<el-input v-model="scope.row.id"></el-input>
+										</template>
+									</el-table-column>
+									<el-table-column
+										prop="value"
+										label="参数值"
+										min-width="250">
+										<template scope="scope">
+											<el-input v-model="scope.row.value"></el-input>
+										</template>
+									</el-table-column>  
+									<el-table-column label="操作" width="180">
+										<template slot="header" slot-scope="scope">
+											操作											
+											<el-button v-if="!headerList||headerList.length==0" @click="addHeaderRow({},0)" icon="el-icon-plus" circle plain></el-button>  
+										</template>
+										<template scope="scope">
+											<el-button type="danger" @click="deleteHeaderRow(scope.row,scope.$index)" icon="el-icon-delete" circle plain></el-button> 
+											<el-button @click="addHeaderRow(scope.row,scope.$index)" icon="el-icon-plus" circle plain></el-button> 
+										</template>
+									</el-table-column>
+								</el-table>
+								<el-row class="padding" style="float:right;"><el-button @click="saveAutoStep" type="primary">保存</el-button></el-row>
+ 							</el-tab-pane>
+							<el-tab-pane name="16" label="Auth"  v-if="editForm.testType=='1'">
+								
+								<mdp-select-dict-x style="margin-bottom:10px;" class="padding" label="授权方式" v-model="autoStep.authType" :dict="dicts.autoTestAuthType"></mdp-select-dict-x>
+								 
+
+								<el-row v-if="autoStep.authType=='basic-auth'">
+									<el-form-item  label="username" class="field">
+										<div class="field-text">
+											<i class="el-icon-edit"></i>{{basicAuth.username}}
+										</div>
+										<div class="field-bar">
+											<el-input v-model="basicAuth.username" placeholder="username"></el-input>
+										</div>
+									</el-form-item> 
+									<el-form-item label="password"   class="field">
+										<div class="field-text">
+											<i class="el-icon-edit"></i>{{basicAuth.password||'暂无'}}
+										</div>
+										<div class="field-bar">
+											<el-input  v-model="basicAuth.password" placeholder="password"></el-input>
+										</div>
+									</el-form-item>
+								</el-row>
+
+								<el-row v-if="autoStep.authType=='bearer-token'">
+									<el-form-item  label="BearerToken" class="field">
+										<div class="field-text">
+											<i class="el-icon-edit"></i>{{bearerToken.bearerToken}}
+										</div>
+										<div class="field-bar">
+											<el-input v-model="bearerToken.bearerToken" placeholder="BearerToken"></el-input>
+										</div>
+									</el-form-item>  
+								</el-row> 
+ 								<el-row class="padding" style="float:right;"><el-button @click="saveAutoStep" type="primary">保存</el-button></el-row>
+ 							</el-tab-pane>
+							<el-tab-pane name="17" label="响应"  v-if="editForm.testType=='1'">
+								<el-row class="padding">可使用的变量 res={config:{协议配置},data:{接口返回的业务数据对象} ,headers:{协议头,key-value型},status:状态码如200/201 }</el-row>
+								<el-form-item  label="成功与失败的逻辑判断">
+									<el-input type="textarea" :rows="10" v-model="autoStep.expectResult" placeholder="成功与失败的判断"  ></el-input>  
+								</el-form-item> 
+								<el-form-item  label="例子">
+  										if(res.status==200){<br/>
+										&nbsp;&nbsp;return true;<br/>
+										}else{<br/>
+										&nbsp;&nbsp;return false;<br/>
+										}<br/> 
+								</el-form-item>
+ 							</el-tab-pane> 
 							<el-tab-pane name="2" label="缺陷"  v-if="opType!=='add'">
 								<xm-question-mng  v-if="activeTab=='2'" :xm-test-case="editForm"  :xm-product="{id:editForm.productId,productName:editForm.productName}" :sel-project="{id:editForm.projectId,name:editForm.projectName}"></xm-question-mng>
 							</el-tab-pane>
@@ -147,6 +355,9 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
         },
 		computed: {
 		    ...mapGetters([ 'userInfo'  ]),
+			queryStrCpd(){
+				return this.paramsList.filter(k=>k.id).map(k=>k.id+'='+k.value).join("&")
+			}
 
 		},
 		props:['xmTestCase','visible','opType','xmTestCasedb','xmProduct','xmMenu'],
@@ -162,13 +373,27 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 	      	if(visible==true){
  	      		this.initData()
 	      	}
-	      } 
+	      },
+		  queryStr(){
+			var paramsList=[]
+			this.queryStr.split("&").forEach(k=>{
+				var k2=k.split("=")
+				var p={}
+				if(k2.length>1){
+					p={id:k2[0],value:k2[1]}
+				}else{
+					p={id:k2[0],value:''}
+				} 
+				paramsList.push(p)
+			})
+			this.paramsList=paramsList
+		  }
 	    },
 		data() {
 			return {
 			    currOpType:'add',//add/edit
  				load:{ list: false, edit: false, del: false, add: false },//查询中...
-				dicts:{caseType:[]},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
+				dicts:{caseType:[],autoTestMethod:[],autoTestBodyType:[],autoTestAuthType:[]},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
 				editFormRules: {
 					caseName: [
 						{ required: true, message: '测试用例名称不能为空', trigger: 'change' },
@@ -190,6 +415,46 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 				funcVisible:false,
 				activeTab:'1',
 				testCasedbVisible:false,
+
+				paramsList:[{id:'',value:''}],//[{id:'',value:''}]
+				queryStr:'',
+
+				bodyList:[{id:'',value:''}],//[{id:'',value:''}]
+				bodyJson:'',
+				bodyXml:'',
+ 
+				
+				cookieList:[{id:'',value:''}],//[{id:'',value:''}]
+				
+				headerList:[{id:'',value:''}],//[{id:'',value:''}]
+				authTypeList:[{id:'',value:''}],//[{id:'',value:''}]
+				bearerToken:{
+					bearerToken:''
+				},
+				
+				basicAuth:{
+					username:'',
+					password:'',
+				},
+				expectResultSample:function(res){
+					//其中res={config:{},data:{} ,headers:{},status:200 }
+					if(res.status==200){
+						return true;
+					}else{
+						return false;
+					}
+				},
+				autoStep:{
+					url:'',
+					method:'GET',
+					authType:'none',
+					bodyType:'json',
+					params:{},
+					body:{},
+					cookie:{},
+					expectResult:''
+				}, 
+
 			}//end return
 		},//end data
 		methods: {
@@ -228,6 +493,38 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 					    this.$notify({ showClose:true, message: "表单验证不通过，请修改表单数据再提交", type: 'error' });
 					}
 				});
+			},
+			initQueryStr(){
+				this.queryStr=this.paramsList.map(k=>k.id+'='+k.value).join("&")
+			},
+			addParamsRow(row,index){
+				this.paramsList.splice(index+1,0,{id:'',value:''})
+			}, 
+			deleteParamsRow(row,index){
+				this.paramsList.splice(index,1)
+			},
+			addBodyRow(row,index){
+				this.bodyList.splice(index+1,0,{id:'',value:''})
+			}, 
+			deleteBodyRow(row,index){
+				this.bodyList.splice(index,1)
+			},
+			
+			addCookieRow(row,index){
+				this.cookieList.splice(index+1,0,{id:'',value:''})
+			}, 
+			deleteCookieRow(row,index){
+				this.cookieList.splice(index,1)
+			},
+			
+			addHeaderRow(row,index){
+				this.headerList.splice(index+1,0,{id:'',value:''})
+			}, 
+			deleteHeaderRow(row,index){
+				this.headerList.splice(index,1)
+			},
+			saveAutoStep(){
+
 			},
 			initData: function(){
 				this.editForm={...this.editFormInit}

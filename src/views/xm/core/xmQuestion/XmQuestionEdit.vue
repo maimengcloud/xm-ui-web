@@ -719,20 +719,5 @@
   height:auto !important;;
 }
 
-.field-bar{
-    display:none;
-  }
-.field-text{
-    display:inline;
-  }
-.field:hover{ 
-  cursor: pointer;
-	.field-bar{
-		display: inline;  
-	}
-  .field-text{
-    display:none;
-  }
-}
 
 </style>

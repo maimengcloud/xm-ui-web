@@ -231,6 +231,7 @@ export default {
             }
             this.load.list = true;
             listXmTestCase(params).then((res) => {
+                debugger;
                 var tips=res.data.tips;
                 if(tips.isOk){
                     this.pageInfo.total = res.data.total;
