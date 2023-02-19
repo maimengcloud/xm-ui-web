@@ -89,7 +89,7 @@
 										<i class="el-icon-edit"></i>{{autoStep.url}}
 									</div>
 									<div class="field-bar">
-										<el-input v-model="autoStep.url" placeholder="url 如${env.baseApi}/user/list,支持通过 ${env.变量名}引用环境变量"></el-input>
+										<el-input v-model="autoStep.url" placeholder="url 如#{baseApi}/user/list,支持通过 #{变量名}引用环境变量"></el-input>
 									</div>
 								</el-form-item>
 								<el-form-item label="请求方法">
@@ -119,7 +119,7 @@
 										label="参数值"
 										min-width="250">
 										<template scope="scope">
-											<el-input v-model="scope.row.value" placeholder="支持通过 ${env.变量名}引用环境变量"></el-input>
+											<el-input v-model="scope.row.value" placeholder="支持通过 #{变量名}引用环境变量"></el-input>
 										</template>
 									</el-table-column>  
 									<el-table-column label="操作" width="180">
@@ -159,7 +159,7 @@
 										label="参数值"
 										min-width="250">
 										<template scope="scope">
-											<el-input v-model="scope.row.value" placeholder="支持通过 ${env.变量名}引用环境变量"></el-input>
+											<el-input v-model="scope.row.value" placeholder="支持通过 #{变量名}引用环境变量"></el-input>
 										</template>
 									</el-table-column>  
 									<el-table-column label="操作" width="180">
@@ -196,7 +196,7 @@
 										label="参数值"
 										min-width="250">
 										<template scope="scope">
-											<el-input v-model="scope.row.value" placeholder="支持通过 ${env.变量名}引用环境变量"></el-input>
+											<el-input v-model="scope.row.value" placeholder="支持通过 #{变量名}引用环境变量"></el-input>
 										</template>
 									</el-table-column>  
 									<el-table-column label="操作" width="180">
@@ -232,7 +232,7 @@
 										label="参数值"
 										min-width="250">
 										<template scope="scope">
-											<el-input v-model="scope.row.value" placeholder="支持通过 ${env.变量名}引用环境变量"></el-input>
+											<el-input v-model="scope.row.value" placeholder="支持通过 #{变量名}引用环境变量"></el-input>
 										</template>
 									</el-table-column>  
 									<el-table-column label="操作" width="180">
@@ -262,7 +262,7 @@
 											<i class="el-icon-edit"></i>{{basicAuth.username}}
 										</div>
 										<div class="field-bar">
-											<el-input v-model="basicAuth.username" placeholder="username 支持通过 ${env.变量名}引用环境变量" ></el-input>
+											<el-input v-model="basicAuth.username" placeholder="username 支持通过 #{变量名}引用环境变量" ></el-input>
 										</div>
 									</el-form-item> 
 									<el-form-item label="password"   class="field">
@@ -270,7 +270,7 @@
 											<i class="el-icon-edit"></i>{{basicAuth.password||'暂无'}}
 										</div>
 										<div class="field-bar">
-											<el-input  v-model="basicAuth.password" placeholder="password 支持通过 ${env.变量名}引用环境变量" ></el-input>
+											<el-input  v-model="basicAuth.password" placeholder="password 支持通过 #{变量名}引用环境变量" ></el-input>
 										</div>
 									</el-form-item>
 								</el-row>
@@ -281,7 +281,7 @@
 											<i class="el-icon-edit"></i>{{bearerToken.bearerToken}}
 										</div>
 										<div class="field-bar">
-											<el-input type="textarea" autosize v-model="bearerToken.bearerToken" placeholder="Bearer 支持通过 ${env.变量名}引用环境变量"></el-input>
+											<el-input type="textarea" autosize v-model="bearerToken.bearerToken" placeholder="Bearer 支持通过 #{变量名}引用环境变量"></el-input>
 										</div>
 									</el-form-item>  
 								</el-row> 
@@ -292,6 +292,8 @@
  							</el-tab-pane>
 							<el-tab-pane name="17" label="响应"  v-if="editForm.testType=='1'">
 								<el-row class="padding">可使用的变量 res={config:{协议配置},data:{接口返回的业务数据对象} ,headers:{协议头,key-value型},status:状态码如200/201 }</el-row>
+								<el-row class="padding">可使用的变量 env={key1:value1,key2:value2,等等},env为测试库环境变量及测试计划的环境变量合并，重复则以测试计划的为准。可通过env['key1']获取值</el-row>
+
 								<el-form-item  label="成功与失败的逻辑判断">
 									<el-input type="textarea" :rows="10" v-model="autoStep.expectResult" placeholder="成功与失败的判断"  ></el-input>  
 								</el-form-item>  
@@ -632,20 +634,37 @@ import JsonViewer from 'vue-json-viewer'
 				var autoStepStr=JSON.stringify(autoStepObj)
 				this.editSomeFields(this.editForm,'autoStep',autoStepStr)
 			},
-			autoStepToAxios(autoStepObj){
+			parseEnvVarValue(valueTpl,env){
+				if(!env){
+					return valueTpl
+				} 
+				if(!valueTpl){
+					return valueTpl;
+				}else{ 
+					var reg = /\#\{(\w+)\}/g; 
+					var value=valueTpl.replace(reg,function(){   
+						var arg=arguments;
+						var key=arguments[1]
+						return env[key] 
+					}) 
+					return value
+				}
+				
+			},
+			autoStepToAxios(autoStepObj,env){
 				var axiosObj={url:autoStepObj.url,method:autoStepObj.method}
 
 				//参数处理
 				if(autoStepObj.method=='GET'){
 					var params={}
 					autoStepObj.params.forEach(k=>{ 
-						params[k.id]=k.value 
+						params[k.id]=this.parseEnvVarValue(k.value,env)
 					})
 					axiosObj.params=params
 				}else if(autoStepObj.method=='POST'){
 					var params={}
 					autoStepObj.params.forEach(k=>{ 
-						params[k.id]=k.value 
+						params[k.id]=this.parseEnvVarValue(k.value,env)
 					})
 					axiosObj.params=params
 					if(autoStepObj.bodyType=='json'){
@@ -657,13 +676,13 @@ import JsonViewer from 'vue-json-viewer'
 					}else if(autoStepObj.bodyType=='form-data'){
 						var data={}
 						autoStepObj.body.forEach(k=>{
-							data[k.id]=k.value
+							data[k.id]=this.parseEnvVarValue(k.value,env)
 						})
 						axiosObj.data=data;
 					}else if(autoStepObj.bodyType=='x-www-form-urlencoded'){
 						var data={}
 						autoStepObj.body.forEach(k=>{
-							data[k.id]=k.value
+							data[k.id]=this.parseEnvVarValue(k.value,env)
 						})
 						axiosObj.data=data;
 					} 
@@ -673,17 +692,16 @@ import JsonViewer from 'vue-json-viewer'
 				if(autoStepObj.headers){
 					axiosObj.headers={}
 					autoStepObj.headers.forEach(k=>{
-						axiosObj.headers[k.id]=k.value
+						axiosObj.headers[k.id]=this.parseEnvVarValue(k.value,env)
 					})
 				}else {
 					axiosObj.headers={}
 				}
-				debugger;
-				if(autoStepObj.authType=='bearer-token'){ 
-					axiosObj.headers['Authorization'] = 'Bearer '+autoStepObj.authData.bearerToken
+ 				if(autoStepObj.authType=='bearer-token'){ 
+					axiosObj.headers['Authorization'] = 'Bearer '+this.parseEnvVarValue(autoStepObj.authData.bearerToken,env)
 				}else if(autoStepObj.authType=='basic-auth'){
-					var username=autoStepObj.authData.username
-					var password=autoStepObj.authData.password
+					var username=this.parseEnvVarValue(autoStepObj.authData.username,env)
+					var password=this.parseEnvVarValue(autoStepObj.authData.password,env)
 					var authorizationBasic = window.btoa(username + ':' + password);
  					axiosObj.headers['Authorization'] = 'Basic '+authorizationBasic
 				}
@@ -697,14 +715,31 @@ import JsonViewer from 'vue-json-viewer'
 				}  
 				return axiosObj
 			},
-			sendMsgForTestSetting(){
-				debugger;
+			sendMsgForTestSetting(){ 
 				var autoStepObj=this.calcAutoStep();
 				if(!autoStepObj.url){
 					this.$notify({position:'bottom-left',showClose:true,message:'url不能为空',type: 'error'}) 
 					return;
 				}
-				var axiosObj=this.autoStepToAxios(autoStepObj)
+				var casedbEnv={};
+				if(this.xmTestCasedb && this.xmTestCasedb.envJson){
+					casedbEnv={}
+					var casedbEnvList=JSON.parse(this.xmTestCasedb.envJson)
+					casedbEnvList.forEach(k=>{
+						casedbEnv[k.id]=k.value
+					})
+				}
+
+				var testPlanEnv={};
+				if(this.xmTestPlan && this.xmTestPlan.envJson){
+					testPlanEnv={}
+					var testPlanEnvList=JSON.parse(this.xmTestPlan.envJson)
+					testPlanEnvList.forEach(k=>{
+						testPlanEnv[k.id]=k.value
+					})
+				}  
+				Object.assign(casedbEnv,testPlanEnv)
+				var axiosObj=this.autoStepToAxios(autoStepObj,casedbEnv) 
 				//axiosObj.headers['Access-Control-Allow-Origin']='*'
 				//axios.defaults.withCredentials = true // 若跨域请求需要带 cookie 身份识别
 				//axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
@@ -712,7 +747,7 @@ import JsonViewer from 'vue-json-viewer'
 					this.testRes=res
 					if(autoStepObj.expectResult){
 						var func=new Function('res','env',autoStepObj.expectResult)
-						var result=func(res,{})
+						var result=func(res,casedbEnv)
 						if(result==true){
 							this.$notify({position:'bottom-left',showClose:true,message:'成功',type: 'success'}) 
 
