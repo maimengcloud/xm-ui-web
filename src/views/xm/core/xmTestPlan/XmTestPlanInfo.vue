@@ -13,13 +13,12 @@
                      <el-link :type="subPage=='testBug'?'primary':''"  @click="subPage='testBug'"><i class="el-icon-question"></i>&nbsp;缺陷</el-link> 
                      <el-divider direction="vertical"></el-divider>
                      <el-link :type="subPage=='xmRpt'?'primary':''"  @click="subPage='xmRpt'"><i class="el-icon-s-data"></i>&nbsp;报表</el-link>
-                    <el-divider direction="vertical"> 
-                    </el-divider>
+ 
                       <span style="float:right;">
                         <span > 
-                          <el-tag style="margin-top:5px;" v-for="(item,index) in formatDictsWithClass(dicts,'testPlanStatus',xmTestPlan.status)" :key="index" :type="item.className">{{item.name}}</el-tag> 
+                          <el-tag style="margin-top:5px;" class="hidden-md-and-down" v-for="(item,index) in formatDictsWithClass(dicts,'testPlanStatus',xmTestPlan.status)" :key="index" :type="item.className">{{item.name}}</el-tag> 
                           <span style="color:#C0C4CC;">&nbsp;通过率&nbsp;</span>{{calcTongGuoRate}}%&nbsp;&nbsp;<span style="color:#C0C4CC;">&nbsp;已测/总用例&nbsp;</span>{{calcYiCeshiCases}}&nbsp;/&nbsp;{{calcTotalCases}}&nbsp;&nbsp;
-                           <div style="display:inline-flex"><el-progress  style="width:100px;" :stroke-width="22" :text-inside="true"  :status="calcYiCeshiCases>0 && xmTestPlan.errCases<=0 ?'success':'exception'" :percentage="calcProgress"></el-progress>
+                           <div style="display:inline-flex" class="hidden-md-and-down"><el-progress  style="width:100px;" :stroke-width="22" :text-inside="true"  :status="calcYiCeshiCases>0 && xmTestPlan.errCases<=0 ?'success':'exception'" :percentage="calcProgress"></el-progress>
                            </div>
                         </span>
                         <span>
