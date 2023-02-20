@@ -45,6 +45,7 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import config from "@/common/config"; //全局公共库import
+
  	import { initDicts, addXmTestCasedb,editXmTestCasedb,editSomeFieldsXmTestCasedb } from '@/api/xm/core/xmTestCasedb';
 	import { mapGetters } from 'vuex'
 	

@@ -361,6 +361,8 @@
 	import util from '@/common/js/util';//全局公共库
 	import config from "@/common/config"; //全局公共库import
  	import { initDicts, addXmTestCase,editXmTestCase,editSomeFieldsXmTestCase } from '@/api/xm/core/xmTestCase';
+	 import {autoStepToAxios,initAutoStep,calcAutoStep,initEnvVars} from '@/api/xm/core/XmTestAutoStep.js';//全局公共库
+
 	import { mapGetters } from 'vuex'
 	import XmMenuSelect from '../xmMenu/XmMenuSelect' 
 	import XmFuncSelect from '../xmFunc/XmFuncSelect'
@@ -446,14 +448,16 @@ import JsonViewer from 'vue-json-viewer'
 				funcVisible:false,
 				activeTab:'1',
 				testCasedbVisible:false,
-
+ 
+				testRes:{},
+				resDataVisible:false,
 				paramsList:[{id:'',value:''}],//[{id:'',value:''}]
 				queryStr:'',
 
 				bodyList:[{id:'',value:''}],//[{id:'',value:''}]
 				bodyJson:'',
 				bodyXml:'',
- 
+
 				
 				cookieList:[{id:'',value:''}],//[{id:'',value:''}]
 				
@@ -466,15 +470,9 @@ import JsonViewer from 'vue-json-viewer'
 				basicAuth:{
 					username:'',
 					password:'',
-				},
-				expectResultSample:function(res){
-					//其中res={config:{},data:{} ,headers:{},status:200 }
-					if(res.status==200){
-						return true;
-					}else{
-						return false;
-					}
-				},
+				},  
+
+				
 				autoStep:{
 					url:'',
 					method:'GET',
@@ -486,8 +484,7 @@ import JsonViewer from 'vue-json-viewer'
 					cookies:[],
 					expectResult:''
 				}, 
-				testRes:{},
-				resDataVisible:false,
+				
 			}//end return
 		},//end data
 		methods: {
@@ -556,190 +553,18 @@ import JsonViewer from 'vue-json-viewer'
 			deleteHeaderRow(row,index){
 				this.headerList.splice(index,1)
 			},
-			calcAutoStep(){
-				var autoStep={...this.autoStep}
-				autoStep.authData={}
-				//auth 授权数据组合
-				if(this.autoStep.authType=='bearer-token'){
-					autoStep.authData.bearerToken=this.bearerToken.bearerToken
-				}else if(this.autoStep.authType=='basic-auth'){
-					autoStep.authData=this.basicAuth
-				}
-
-				//查询参数组合
-				autoStep.params=this.paramsList.filter(k=>k.id)
-
-				//body 参数组合
-				if(this.autoStep.bodyType=='json'){
-					autoStep.body=this.bodyJson
-				}else if(this.autoStep.bodyType=='xml'){
-					autoStep.body=this.bodyXml
-				}else if(this.autoStep.bodyType=='raw'){
-					autoStep.body=this.bodyRaw
-				}else if(this.autoStep.bodyType=='form-data'){
-					autoStep.body=this.bodyList.filter(k=>k.id)
-				}else if(this.autoStep.bodyType=='x-www-form-urlencoded'){
-					autoStep.body=this.bodyList.filter(k=>k.id)
-				}else if(this.autoStep.bodyType=='x-www-form-urlencoded'){
-					autoStep.body=this.bodyList.filter(k=>k.id)
-				}else{
-					autoStep.body=null
-				}
-
-				//header 参数组合
-				autoStep.headers=this.headerList.filter(k=>k.id)
-
-				autoStep.cookies=this.cookieList.filter(k=>k.id)
-
-				return autoStep; 
-			},
-			initAutoStep(){
-				if(this.xmTestCase.autoStep){
-					this.autoStep=JSON.parse(this.xmTestCase.autoStep)
-					//参数
-					if(this.autoStep.params){
-						this.paramsList=this.autoStep.params
-					}
-					if(this.autoStep.headers){
-						this.headerList=this.autoStep.headers
-					}
-					if(this.autoStep.cookies){
-						this.cookieList=this.autoStep.cookies
-					}
-					if(this.autoStep.authType=='bearer-token'){
-						this.bearerToken=this.autoStep.authData
-					}
-					if(this.autoStep.authType=='basic-auth'){
-						this.basicAuth=this.autoStep.authData
-					}
-					if(this.autoStep.bodyType=='json'){
-						this.bodyJson=this.autoStep.body
-					}else if(this.autoStep.bodyType=='xml'){
-						this.bodyXml=this.autoStep.body
-					}else if(this.autoStep.bodyType=='raw'){
-						this.bodyRaw=this.autoStep.body
-					}else if(this.autoStep.bodyType=='form-data'){
-						this.bodyList=this.autoStep.body
-					}else if(this.autoStep.bodyType=='x-www-form-urlencoded'){
-						this.bodyList=this.autoStep.body
-					} 
-				}else{
-
-				}
-				
-			},
-
 			saveAutoStep(){
-				var autoStepObj=this.calcAutoStep();
-				var autoStepStr=JSON.stringify(autoStepObj)
-				this.editSomeFields(this.editForm,'autoStep',autoStepStr)
-			},
-			parseEnvVarValue(valueTpl,env){
-				if(!env){
-					return valueTpl
-				} 
-				if(!valueTpl){
-					return valueTpl;
-				}else{ 
-					var reg = /\#\{(\w+)\}/g; 
-					var value=valueTpl.replace(reg,function(){   
-						var arg=arguments;
-						var key=arguments[1]
-						return env[key] 
-					}) 
-					return value
-				}
-				
-			},
-			autoStepToAxios(autoStepObj,env){
-				var axiosObj={url:autoStepObj.url,method:autoStepObj.method}
-
-				//参数处理
-				if(autoStepObj.method=='GET'){
-					var params={}
-					autoStepObj.params.forEach(k=>{ 
-						params[k.id]=this.parseEnvVarValue(k.value,env)
-					})
-					axiosObj.params=params
-				}else if(autoStepObj.method=='POST'){
-					var params={}
-					autoStepObj.params.forEach(k=>{ 
-						params[k.id]=this.parseEnvVarValue(k.value,env)
-					})
-					axiosObj.params=params
-					if(autoStepObj.bodyType=='json'){
-						axiosObj.data=autoStepObj.body
-					}else if(autoStepObj.bodyType=='xml'){
-						axiosObj.data=autoStepObj.body
-					}else if(autoStepObj.bodyType=='raw'){
-						axiosObj.data=autoStepObj.body
-					}else if(autoStepObj.bodyType=='form-data'){
-						var data={}
-						autoStepObj.body.forEach(k=>{
-							data[k.id]=this.parseEnvVarValue(k.value,env)
-						})
-						axiosObj.data=data;
-					}else if(autoStepObj.bodyType=='x-www-form-urlencoded'){
-						var data={}
-						autoStepObj.body.forEach(k=>{
-							data[k.id]=this.parseEnvVarValue(k.value,env)
-						})
-						axiosObj.data=data;
-					} 
-				}
-
-				//header处理
-				if(autoStepObj.headers){
-					axiosObj.headers={}
-					autoStepObj.headers.forEach(k=>{
-						axiosObj.headers[k.id]=this.parseEnvVarValue(k.value,env)
-					})
-				}else {
-					axiosObj.headers={}
-				}
- 				if(autoStepObj.authType=='bearer-token'){ 
-					axiosObj.headers['Authorization'] = 'Bearer '+this.parseEnvVarValue(autoStepObj.authData.bearerToken,env)
-				}else if(autoStepObj.authType=='basic-auth'){
-					var username=this.parseEnvVarValue(autoStepObj.authData.username,env)
-					var password=this.parseEnvVarValue(autoStepObj.authData.password,env)
-					var authorizationBasic = window.btoa(username + ':' + password);
- 					axiosObj.headers['Authorization'] = 'Basic '+authorizationBasic
-				}
-
-				//cookie 处理
-				if(autoStepObj.cookies){
-					axiosObj.cookies={}
-					autoStepObj.cookies.forEach(k=>{
-						axiosObj.cookies[k.id]=k.value
-					})
-				}  
-				return axiosObj
+				var autoStep=calcAutoStep(this)
+				this.editSomeFields(this.editForm,'autoStep',JSON.stringify(autoStep));
 			},
 			sendMsgForTestSetting(){ 
-				var autoStepObj=this.calcAutoStep();
+				var autoStepObj=calcAutoStep(this);
 				if(!autoStepObj.url){
 					this.$notify({position:'bottom-left',showClose:true,message:'url不能为空',type: 'error'}) 
 					return;
 				}
-				var casedbEnv={};
-				if(this.xmTestCasedb && this.xmTestCasedb.envJson){
-					casedbEnv={}
-					var casedbEnvList=JSON.parse(this.xmTestCasedb.envJson)
-					casedbEnvList.forEach(k=>{
-						casedbEnv[k.id]=k.value
-					})
-				}
-
-				var testPlanEnv={};
-				if(this.xmTestPlan && this.xmTestPlan.envJson){
-					testPlanEnv={}
-					var testPlanEnvList=JSON.parse(this.xmTestPlan.envJson)
-					testPlanEnvList.forEach(k=>{
-						testPlanEnv[k.id]=k.value
-					})
-				}  
-				Object.assign(casedbEnv,testPlanEnv)
-				var axiosObj=this.autoStepToAxios(autoStepObj,casedbEnv) 
+				var env=initEnvVars(this.xmTestCasedb?this.xmTestCasedb.envJson:null,this.xmTestPlan ?this.xmTestPlan.envJson:null);
+				var axiosObj=autoStepToAxios(autoStepObj,env) 
 				//axiosObj.headers['Access-Control-Allow-Origin']='*'
 				//axios.defaults.withCredentials = true // 若跨域请求需要带 cookie 身份识别
 				//axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
@@ -747,7 +572,7 @@ import JsonViewer from 'vue-json-viewer'
 					this.testRes=res
 					if(autoStepObj.expectResult){
 						var func=new Function('res','env',autoStepObj.expectResult)
-						var result=func(res,casedbEnv)
+						var result=func(res,env)
 						if(result==true){
 							this.$notify({position:'bottom-left',showClose:true,message:'成功',type: 'success'}) 
 
@@ -792,7 +617,7 @@ import JsonViewer from 'vue-json-viewer'
 					this.editForm.id=null
 					
                 }
-				this.initAutoStep();
+				initAutoStep(this,this.editForm.autoStep);
                 this.editFormBak={...this.editForm}
             },
             editSomeFields(row,fieldName,$event){

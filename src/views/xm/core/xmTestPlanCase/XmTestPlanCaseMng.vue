@@ -9,12 +9,13 @@
                 <el-row>
                     <el-input v-model="filters.key" style="width: 15%;" placeholder="模糊查询"  clearable></el-input>
                     <mdp-select-dict style="width:15%;" placeholder="用例状态" clearable :dict="dicts['testCaseStatus']" v-model="filters.caseStatus" effect="dark"></mdp-select-dict> 
-                    <mdp-select-dict placeholder="测试方式" style="width:15%;" clearable :dict="dicts['testType']" v-model="filters.execType" effect="dark"></mdp-select-dict> 
+                    <mdp-select-dict placeholder="测试方式" style="width:15%;" clearable :dict="dicts['testType']" v-model="filters.testType" effect="dark"></mdp-select-dict> 
 
                     <mdp-select-dict style="width:15%;" placeholder="执行结果" clearable :dict="dicts['testStepTcode']" v-model="filters.execStatus" effect="dark"></mdp-select-dict> 
 
                     <el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestPlanCases" icon="el-icon-search">查询</el-button>
                     <span style="float:right;" v-if="!xmTestCase||!xmTestCase.id">
+                        <el-button type="primary" @click="batchExec" icon="el-icon-video-play">批量执行</el-button> 
                         <el-button type="primary" @click="showAdd" icon="el-icon-plus">将用例纳入计划</el-button>
                         <el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button>
                     </span>
@@ -43,6 +44,11 @@
                             </template>
                         </el-table-column>  
                         <template v-if="select!==true"> 
+                            <el-table-column prop="testType" label="执行方式" width="120" >
+                                <template slot-scope="scope">
+                                    <mdp-select-dict-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts['testType']" v-model="scope.row.testType" @change="editSomeFields(scope.row,'testType',$event)" :disabled="true"></mdp-select-dict-tag>  
+                                </template>
+                            </el-table-column>
                             <el-table-column prop="execStatus" label="执行结果" width="120" show-overflow-tooltip>
                                 <template slot-scope="scope"> 
                                     <mdp-select-dict-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts['testStepTcode']" v-model="scope.row.execStatus" effect="dark" @change="editSomeFields(scope.row,'execStatus',$event)"></mdp-select-dict-tag> 
@@ -81,7 +87,7 @@
 		<el-row>
 			<!--编辑 XmTestPlanCase 测试计划与用例关系表界面-->
 			<el-dialog title="测试执行" :visible.sync="editFormVisible"  fullscreen  width="90%" top="20px"  append-to-body   :close-on-click-modal="false">
-			    <xm-test-plan-case-edit op-type="edit" :xm-test-plan-case="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit" @edit-fields="onEditFields" @next="nextEdit"></xm-test-plan-case-edit>
+			    <xm-test-plan-case-edit op-type="edit" :xm-test-plan-case="editForm" :xm-test-casedb="xmTestCasedb" :xm-test-plan="xmTestPlan" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit" @edit-fields="onEditFields" @next="nextEdit"></xm-test-plan-case-edit>
 			</el-dialog>
 
 			<!--新增 XmTestPlanCase 测试计划与用例关系表界面-->
@@ -140,7 +146,7 @@ export default {
             filters: {
                 key: '',
                 xmFunc:null,
-                execType:'',
+                testType:'',
                 caseStatus:'',
                 execStatus:''
             },
@@ -229,8 +235,8 @@ export default {
             if(this.filters.execStatus){
                 params.execStatus=this.filters.execStatus
             }
-            if(this.filters.execType){
-                params.execType=this.filters.execType
+            if(this.filters.testType){
+                params.testType=this.filters.testType
             }
             if(this.xmTestCasedb && this.xmTestCasedb.id){
                 params.casedbId=this.xmTestCasedb.id
@@ -389,6 +395,52 @@ export default {
                 this.searchXmTestPlanCases();
             })
         } ,
+        batchExec(){
+            this.pageInfo.pageSize=500
+            this.pageInfo.count=false;
+            this.pageInfo.pageNum=1
+            let params = {
+                pageSize: this.pageInfo.pageSize,
+                pageNum: this.pageInfo.pageNum,
+                total: this.pageInfo.total,
+                count:this.pageInfo.count
+            }; 
+            if(this.xmTestPlan && this.xmTestPlan.id){
+                params.planId=this.xmTestPlan.id
+            }else{
+                this.$notify({ position:'bottom-left',showClose:true, message:'当前视图不允许批量执行,请选定测试计划后再试', type: 'error' });
+                return;
+            } 
+            this.load.list = true;
+            listXmTestPlanCase(params).then((res) => {
+                var tips=res.data.tips;
+                if(tips.isOk){
+                    this.pageInfo.total = res.data.total;
+                    this.pageInfo.count=false;
+                    this.xmTestPlanCases = res.data.data;
+                    doBatchExec(this.xmTestPlanCases)
+                }else{
+                    this.$notify({ position:'bottom-left',showClose:true, message: tips.msg, type: 'error' });
+                }
+                this.load.list = false;
+            }).catch( err => this.load.list = false );
+            
+        },
+        doBatchExec(planCases){
+            if(!planCases||planCases.length==0){
+                this.$notify({ position:'bottom-left',showClose:true, message:'测试用例为0条，无须执行', type: 'error' }); 
+                return;
+            }
+            if(planCases.length>=this.pageInfo.pageSize){
+                this.$notify({ position:'bottom-left',showClose:true, message:'测试用例不能超过'+(this.pageInfo.pageSize-1)+'条', type: 'error' }); 
+                return;
+            }
+            this.doBatchExecVisible=true;
+            planCases.forEach(k=>{
+                
+            })
+
+        },
         onXmFuncRowClick(row){
             this.filters.xmFunc=row
             this.searchXmTestPlanCases();
