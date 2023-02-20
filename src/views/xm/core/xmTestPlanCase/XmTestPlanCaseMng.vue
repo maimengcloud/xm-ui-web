@@ -107,8 +107,10 @@ import  XmTestPlanCaseEdit from './XmTestPlanCaseEdit';//新增修改界面
 import  XmTestCaseSelect from '../xmTestCase/XmTestCaseSelect';//新增修改界面 
 import  XmFuncSelect from '../xmFunc/XmFuncSelect';//新增修改界面
 import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修改界面
-import { mapGetters } from 'vuex'
+import {autoStepToAxios,initEnvVars} from '@/api/xm/core/XmTestAutoStep.js';//全局公共库
 
+import { mapGetters } from 'vuex'
+import axios from 'axios'//免登录访问
 export default {
     name:'xmTestPlanCaseMng',
     components: {
@@ -364,7 +366,15 @@ export default {
         }).catch((e)=>Object.assign(this.editForm,this.editFormBak))
       },
       
-
+      editSomeFieldsForExec(sels,fieldName,$event){
+        let params={}; 
+        params['pkList']=sels.map(i=>{ return { caseId:i.caseId,  planId:i.planId}})
+        params[fieldName]=$event  
+        var func = editSomeFieldsXmTestPlanCase
+        func(params).then(res=>{ 
+           
+        }).catch((e)=>{})
+      },
         selectVisible(row,visible){
             if(visible==true){
                 this.rowClick(row);
@@ -396,49 +406,70 @@ export default {
             })
         } ,
         batchExec(){
-            this.pageInfo.pageSize=500
-            this.pageInfo.count=false;
-            this.pageInfo.pageNum=1
-            let params = {
-                pageSize: this.pageInfo.pageSize,
-                pageNum: this.pageInfo.pageNum,
-                total: this.pageInfo.total,
-                count:this.pageInfo.count
-            }; 
-            if(this.xmTestPlan && this.xmTestPlan.id){
-                params.planId=this.xmTestPlan.id
-            }else{
-                this.$notify({ position:'bottom-left',showClose:true, message:'当前视图不允许批量执行,请选定测试计划后再试', type: 'error' });
-                return;
-            } 
-            this.load.list = true;
-            listXmTestPlanCase(params).then((res) => {
-                var tips=res.data.tips;
-                if(tips.isOk){
-                    this.pageInfo.total = res.data.total;
-                    this.pageInfo.count=false;
-                    this.xmTestPlanCases = res.data.data;
-                    doBatchExec(this.xmTestPlanCases)
-                }else{
-                    this.$notify({ position:'bottom-left',showClose:true, message: tips.msg, type: 'error' });
-                }
-                this.load.list = false;
-            }).catch( err => this.load.list = false );
-            
-        },
-        doBatchExec(planCases){
-            if(!planCases||planCases.length==0){
+            if(this.sels.length==0){
                 this.$notify({ position:'bottom-left',showClose:true, message:'测试用例为0条，无须执行', type: 'error' }); 
                 return;
             }
-            if(planCases.length>=this.pageInfo.pageSize){
-                this.$notify({ position:'bottom-left',showClose:true, message:'测试用例不能超过'+(this.pageInfo.pageSize-1)+'条', type: 'error' }); 
+            if(this.sels.length>100){
+                this.$notify({ position:'bottom-left',showClose:true, message:'一次批量执行测试用例不能超过'+(100)+'条', type: 'error' }); 
                 return;
             }
+            this.doBatchExec(this.sels)
+        },
+        doBatchExec(planCases){  
             this.doBatchExecVisible=true;
-            planCases.forEach(k=>{
-                
-            })
+            var igCases=planCases.filter(k=> !k.autoStep || k.testType!='1')
+            var cases=planCases.filter(k=>k.autoStep && k.testType=='1') 
+            var execAll=[]
+            var env=initEnvVars(this.xmTestCasedb?this.xmTestCasedb.envJson:null,this.xmTestPlan ?this.xmTestPlan.envJson:null);
+            cases.forEach(k=>{
+                this.sendMsgForTestSetting(k,env,execAll)
+            }) 
+            var okCases=execAll.filter(k=>k.execStatus=='2')
+            if(okCases.length>0){
+                this.editSomeFieldsForExec(okCases,"execStatus",'2')
+            }
+            
+            var errCases=execAll.filter(k=>k.execStatus=='4')
+            if(errCases.length>0){
+                this.editSomeFieldsForExec(errCases,"execStatus",'4')
+            }
+
+         },
+        sendMsgForTestSetting(planCase,env,execAll){ 
+             
+            var autoStepObj=JSON.parse(planCase.autoStep)
+            if(!autoStepObj.url){
+                planCase.execStatus='1' 
+                execAll.push(planCase)
+            }else{
+                var axiosObj=autoStepToAxios(autoStepObj,env) 
+                //axiosObj.headers['Access-Control-Allow-Origin']='*'
+                //axios.defaults.withCredentials = true // 若跨域请求需要带 cookie 身份识别
+                //axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+                axios(axiosObj).then(res=>{ 
+                     if(autoStepObj.expectResult){
+                        var func=new Function('res','env',autoStepObj.expectResult)
+                        var result=func(res,env) 
+                        planCase.execStatus=result==true?"2":"4"
+                    }else{
+                        planCase.execStatus=res.status==200?"2":"4"
+
+                    }
+                    execAll.push(planCase)
+                }).catch(res=>{ 
+                    var func=new Function('res','env',autoStepObj.expectResult)
+                    var result=func(res,env)
+                    if(result==true){
+                        planCase.execStatus="2"
+                     }else{ 
+                        planCase.execStatus="4"
+                    }
+                    execAll.push(planCase)
+                    
+                })
+            }
+            
 
         },
         onXmFuncRowClick(row){
