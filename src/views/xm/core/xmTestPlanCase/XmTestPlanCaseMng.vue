@@ -378,6 +378,11 @@ export default {
                 return;
 
             }
+            if(cases.some(k=>k.testType!=this.xmTestPlan.testType)){
+                if(this.xmTestPlan.testType=='1'){
+                    this.$notify({position:'bottom-left',showClose:true,message:"当前计划为自动化测试计划，请选择自动测试的用例加入",type:'error'}) 
+                }
+            }
             this.addFormVisible=false;
             importFromTestCase({planId:this.xmTestPlan.id,caseIds:cases.map(i=>i.id)}).then(res=>{
                 this.searchXmTestPlanCases();
