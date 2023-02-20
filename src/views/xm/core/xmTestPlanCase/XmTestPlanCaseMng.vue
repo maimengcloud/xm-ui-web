@@ -381,6 +381,7 @@ export default {
             if(cases.some(k=>k.testType!=this.xmTestPlan.testType)){
                 if(this.xmTestPlan.testType=='1'){
                     this.$notify({position:'bottom-left',showClose:true,message:"当前计划为自动化测试计划，请选择自动测试的用例加入",type:'error'}) 
+                    return;
                 }
             }
             this.addFormVisible=false;
