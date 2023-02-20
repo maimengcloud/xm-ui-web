@@ -100,11 +100,11 @@
 										<i class="el-icon-edit"></i>{{queryStrCpd||'暂无'}}
 									</div>
 									<div class="field-bar">
-										<el-input type="textarea" :rows="3"  v-model="queryStr" placeholder="查询参数" @focus="initQueryStr"></el-input>
+										<el-input type="textarea" :rows="3"  v-model="queryStr" placeholder="查询参数" @focus="initQueryStr" @change="onQueryStrChange"></el-input>
 									</div>
 								</el-form-item>
 								<el-table
-									:data="paramsList"
+									:data="autoStep.params"
 									style="width: 100%">
 									<el-table-column
 										prop="id"
@@ -125,7 +125,7 @@
 									<el-table-column label="操作" width="180">
 										<template slot="header" slot-scope="scope">
 											操作											
-											<el-button v-if="!paramsList||paramsList.length==0" @click="addParamsRow({},0)" icon="el-icon-plus" circle plain></el-button>  
+											<el-button v-if="!autoStep.params||autoStep.params.length==0" @click="addParamsRow({},0)" icon="el-icon-plus" circle plain></el-button>  
 										</template>
 										<template scope="scope">
 											<el-button type="danger" @click="deleteParamsRow(scope.row,scope.$index)" icon="el-icon-delete" circle plain></el-button> 
@@ -140,11 +140,11 @@
  							</el-tab-pane>
 							<el-tab-pane name="13" label="Body"  v-if="editForm.testType=='1'">
 								<mdp-select-dict-x style="margin-bottom:10px;" class="padding" label="参数格式" v-model="autoStep.bodyType" :dict="dicts.autoTestBodyType"></mdp-select-dict-x>
-								<el-input v-if="autoStep.bodyType=='json'" type="textarea" :rows="10" v-model="bodyJson"></el-input>
-								<el-input v-if="autoStep.bodyType=='xml'" type="textarea" :rows="10" v-model="bodyXml"></el-input>
+								<el-input v-if="autoStep.bodyType=='json'" type="textarea" :rows="10" v-model="autoStep.body"></el-input>
+								<el-input v-if="autoStep.bodyType=='xml'" type="textarea" :rows="10" v-model="autoStep.body"></el-input>
 
 								<el-table v-if="autoStep.bodyType=='form-data'||autoStep.bodyType=='x-www-form-urlencoded'"
-									:data="bodyList"
+									:data="autoStep.body"
 									style="width: 100%">
 									<el-table-column
 										prop="id"
@@ -165,7 +165,7 @@
 									<el-table-column label="操作" width="180">
 										<template slot="header" slot-scope="scope">
 											操作											
-											<el-button v-if="!bodyList||bodyList.length==0" @click="addBodyRow({},0)" icon="el-icon-plus" circle plain></el-button>  
+											<el-button v-if="!autoStep.body||autoStep.body.length==0" @click="addBodyRow({},0)" icon="el-icon-plus" circle plain></el-button>  
 										</template>
 										<template scope="scope">
 											<el-button type="danger" @click="deleteBodyRow(scope.row,scope.$index)" icon="el-icon-delete" circle plain></el-button> 
@@ -181,7 +181,7 @@
  							</el-tab-pane>
 							<el-tab-pane name="14" label="Cookie"  v-if="editForm.testType=='1'">  
 								<el-table
-									:data="cookieList"
+									:data="autoStep.cookies"
 									style="width: 100%">
 									<el-table-column
 										prop="id"
@@ -202,7 +202,7 @@
 									<el-table-column label="操作" width="180">
 										<template slot="header" slot-scope="scope">
 											操作											
-											<el-button v-if="!cookieList||cookieList.length==0" @click="addCookieRow({},0)" icon="el-icon-plus" circle plain></el-button>  
+											<el-button v-if="!autoStep.cookies||autoStep.cookies.length==0" @click="addCookieRow({},0)" icon="el-icon-plus" circle plain></el-button>  
 										</template>
 										<template scope="scope">
 											<el-button type="danger" @click="deleteCookieRow(scope.row,scope.$index)" icon="el-icon-delete" circle plain></el-button> 
@@ -217,7 +217,7 @@
  							</el-tab-pane>
 							<el-tab-pane name="15" label="Header"  v-if="editForm.testType=='1'">
 								<el-table
-									:data="headerList"
+									:data="autoStep.headers"
 									style="width: 100%">
 									<el-table-column
 										prop="id"
@@ -238,7 +238,7 @@
 									<el-table-column label="操作" width="180">
 										<template slot="header" slot-scope="scope">
 											操作											
-											<el-button v-if="!headerList||headerList.length==0" @click="addHeaderRow({},0)" icon="el-icon-plus" circle plain></el-button>  
+											<el-button v-if="!autoStep.headers||autoStep.headers.length==0" @click="addHeaderRow({},0)" icon="el-icon-plus" circle plain></el-button>  
 										</template>
 										<template scope="scope">
 											<el-button type="danger" @click="deleteHeaderRow(scope.row,scope.$index)" icon="el-icon-delete" circle plain></el-button> 
@@ -259,18 +259,18 @@
 								<el-row v-if="autoStep.authType=='basic-auth'">
 									<el-form-item  label="username" class="field">
 										<div class="field-text">
-											<i class="el-icon-edit"></i>{{basicAuth.username}}
+											<i class="el-icon-edit"></i>{{autoStep.authData.username}}
 										</div>
 										<div class="field-bar">
-											<el-input v-model="basicAuth.username" placeholder="username 支持通过 #{变量名}引用环境变量" ></el-input>
+											<el-input v-model="autoStep.authData.username" placeholder="username 支持通过 #{变量名}引用环境变量" ></el-input>
 										</div>
 									</el-form-item> 
 									<el-form-item label="password"   class="field">
 										<div class="field-text">
-											<i class="el-icon-edit"></i>{{basicAuth.password||'暂无'}}
+											<i class="el-icon-edit"></i>{{autoStep.authData.password||'暂无'}}
 										</div>
 										<div class="field-bar">
-											<el-input  v-model="basicAuth.password" placeholder="password 支持通过 #{变量名}引用环境变量" ></el-input>
+											<el-input  v-model="autoStep.authData.password" placeholder="password 支持通过 #{变量名}引用环境变量" ></el-input>
 										</div>
 									</el-form-item>
 								</el-row>
@@ -278,10 +278,10 @@
 								<el-row v-if="autoStep.authType=='bearer-token'">
 									<el-form-item  label="Bearer" class="field">
 										<div class="field-text">
-											<i class="el-icon-edit"></i>{{bearerToken.bearerToken}}
+											<i class="el-icon-edit"></i>{{autoStep.authData.bearerToken}}
 										</div>
 										<div class="field-bar">
-											<el-input type="textarea" autosize v-model="bearerToken.bearerToken" placeholder="Bearer 支持通过 #{变量名}引用环境变量"></el-input>
+											<el-input type="textarea" autosize v-model="autoStep.authData.bearerToken" placeholder="Bearer 支持通过 #{变量名}引用环境变量"></el-input>
 										</div>
 									</el-form-item>  
 								</el-row> 
@@ -361,7 +361,7 @@
 	import util from '@/common/js/util';//全局公共库
 	import config from "@/common/config"; //全局公共库import
  	import { initDicts, addXmTestCase,editXmTestCase,editSomeFieldsXmTestCase } from '@/api/xm/core/xmTestCase';
-	 import {autoStepToAxios,initAutoStep,calcAutoStep,initEnvVars} from '@/api/xm/core/XmTestAutoStep.js';//全局公共库
+	 import {autoStepToAxios,initEnvVars} from '@/api/xm/core/XmTestAutoStep.js';//全局公共库
 
 	import { mapGetters } from 'vuex'
 	import XmMenuSelect from '../xmMenu/XmMenuSelect' 
@@ -389,7 +389,7 @@ import JsonViewer from 'vue-json-viewer'
 		computed: {
 		    ...mapGetters([ 'userInfo'  ]),
 			queryStrCpd(){
-				return this.paramsList.filter(k=>k.id).map(k=>k.id+'='+k.value).join("&")
+				return this.autoStep.params.filter(k=>k.id).map(k=>k.id+'='+k.value).join("&")
 			}
 
 		},
@@ -406,20 +406,14 @@ import JsonViewer from 'vue-json-viewer'
 	      	if(visible==true){
  	      		this.initData()
 	      	}
-	      },
-		  queryStr(){
-			var paramsList=[]
-			this.queryStr.split("&").forEach(k=>{
-				var k2=k.split("=")
-				var p={}
-				if(k2.length>1){
-					p={id:k2[0],value:k2[1]}
-				}else{
-					p={id:k2[0],value:''}
-				} 
-				paramsList.push(p)
-			})
-			this.paramsList=paramsList
+	      }, 
+		  'autoStep.bodyType'(){
+			if(this.autoStep.bodyType=='form-data'||this.autoStep.bodyType=='x-www-form-urlencoded'){
+				this.autoStep.body=[]
+			}else{
+				this.autoStep.body=''
+			}
+			
 		  }
 	    },
 		data() {
@@ -449,41 +443,33 @@ import JsonViewer from 'vue-json-viewer'
 				activeTab:'1',
 				testCasedbVisible:false,
  
+				queryStr:'',
 				testRes:{},
 				resDataVisible:false,
-				paramsList:[{id:'',value:''}],//[{id:'',value:''}]
-				queryStr:'',
-
-				bodyList:[{id:'',value:''}],//[{id:'',value:''}]
-				bodyJson:'',
-				bodyXml:'',
-
-				
-				cookieList:[{id:'',value:''}],//[{id:'',value:''}]
-				
-				headerList:[{id:'',value:''}],//[{id:'',value:''}]
-				authTypeList:[{id:'',value:''}],//[{id:'',value:''}]
-				bearerToken:{
-					bearerToken:''
-				},
-				
-				basicAuth:{
-					username:'',
-					password:'',
-				},  
-
-				
 				autoStep:{
 					url:'',
 					method:'GET',
 					authType:'none',
-					authData:{},
+					authData:{ 
+					},
 					bodyType:'json',
 					params:[],
 					body:[],
 					cookies:[],
 					expectResult:''
 				}, 
+				autoStepInit:{
+					url:'',
+					method:'',
+					authType:'',
+					authData:{ 
+					},
+					bodyType:'',
+					params:[],
+					body:[],
+					cookies:[],
+					expectResult:''
+				}
 				
 			}//end return
 		},//end data
@@ -525,40 +511,53 @@ import JsonViewer from 'vue-json-viewer'
 				});
 			},
 			initQueryStr(){
-				this.queryStr=this.paramsList.map(k=>k.id+'='+k.value).join("&")
+				this.queryStr=this.autoStep.params.map(k=>k.id+'='+k.value).join("&")
+			},
+			onQueryStrChange(){ 
+				this.autoStep.params=[]
+				this.queryStr.split("&").forEach(k=>{
+					var k2=k.split("=")
+					var p={}
+					if(k2.length>1){
+						p={id:k2[0],value:k2[1]}
+					}else{
+						p={id:k2[0],value:''}
+					} 
+					this.autoStep.params.push(p)
+				}) 
 			},
 			addParamsRow(row,index){
-				this.paramsList.splice(index+1,0,{id:'',value:''})
+				this.autoStep.params.splice(index+1,0,{id:'',value:''})
 			}, 
 			deleteParamsRow(row,index){
-				this.paramsList.splice(index,1)
+				this.autoStep.params.splice(index,1)
 			},
 			addBodyRow(row,index){
-				this.bodyList.splice(index+1,0,{id:'',value:''})
+				this.autoStep.body.splice(index+1,0,{id:'',value:''})
 			}, 
 			deleteBodyRow(row,index){
-				this.bodyList.splice(index,1)
+				this.autoStep.body.splice(index,1)
 			},
 			
 			addCookieRow(row,index){
-				this.cookieList.splice(index+1,0,{id:'',value:''})
+				this.autoStep.cookies.splice(index+1,0,{id:'',value:''})
 			}, 
 			deleteCookieRow(row,index){
-				this.cookieList.splice(index,1)
+				this.autoStep.cookies.splice(index,1)
 			},
 			
 			addHeaderRow(row,index){
-				this.headerList.splice(index+1,0,{id:'',value:''})
+				this.autoStep.headers.splice(index+1,0,{id:'',value:''})
 			}, 
 			deleteHeaderRow(row,index){
-				this.headerList.splice(index,1)
+				this.autoStep.headers.splice(index,1)
 			},
 			saveAutoStep(){
-				var autoStep=calcAutoStep(this)
+				var autoStep=this.autoStep
 				this.editSomeFields(this.editForm,'autoStep',JSON.stringify(autoStep));
 			},
 			sendMsgForTestSetting(){ 
-				var autoStepObj=calcAutoStep(this);
+				var autoStepObj=this.autoStep;
 				if(!autoStepObj.url){
 					this.$notify({position:'bottom-left',showClose:true,message:'url不能为空',type: 'error'}) 
 					return;
@@ -617,7 +616,13 @@ import JsonViewer from 'vue-json-viewer'
 					this.editForm.id=null
 					
                 }
-				initAutoStep(this,this.editForm.autoStep);
+
+				if(!this.editForm.autoStep){
+					this.autoStep={...this.autoStepInit}
+				}else{
+					this.autoStep=JSON.parse(this.editForm.autoStep)
+				}
+				this.initQueryStr();
                 this.editFormBak={...this.editForm}
             },
             editSomeFields(row,fieldName,$event){
