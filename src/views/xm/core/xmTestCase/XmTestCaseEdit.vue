@@ -23,7 +23,7 @@
 						</el-form-item> 
 
 						<el-form-item label="测试方式" prop="testType">
-							<mdp-select-dict placeholder="测试方式" clearable :dict="dicts['testType']" v-model="editForm.testType" effect="dark" @change="editSomeFields(editForm,'testType',$event)"></mdp-select-dict> 
+							<mdp-select-dict-tag placeholder="测试方式" clearable :dict="dicts['testType']" v-model="editForm.testType" effect="dark" @change="editSomeFields(editForm,'testType',$event)"></mdp-select-dict-tag> 
 						</el-form-item>  
 						<el-form-item label="版本号" prop="verNum">
 							<el-input v-model="editForm.verNum" placeholder="版本号" :maxlength="50" @change="editSomeFields(editForm,'verNum',$event)"></el-input>

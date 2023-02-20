@@ -7,9 +7,11 @@
             </el-col>
             <el-col :span="!xmTestCase||!xmTestCase.id?18:24">
                 <el-row>
-                    <el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"  clearable></el-input>
-                    <mdp-select-dict style="width:20%;" placeholder="用例状态" clearable :dict="dicts['testCaseStatus']" v-model="filters.caseStatus" effect="dark"></mdp-select-dict> 
-                    <mdp-select-dict style="width:20%;" placeholder="执行结果" clearable :dict="dicts['testStepTcode']" v-model="filters.execStatus" effect="dark"></mdp-select-dict> 
+                    <el-input v-model="filters.key" style="width: 15%;" placeholder="模糊查询"  clearable></el-input>
+                    <mdp-select-dict style="width:15%;" placeholder="用例状态" clearable :dict="dicts['testCaseStatus']" v-model="filters.caseStatus" effect="dark"></mdp-select-dict> 
+                    <mdp-select-dict placeholder="测试方式" style="width:15%;" clearable :dict="dicts['testType']" v-model="filters.execType" effect="dark"></mdp-select-dict> 
+
+                    <mdp-select-dict style="width:15%;" placeholder="执行结果" clearable :dict="dicts['testStepTcode']" v-model="filters.execStatus" effect="dark"></mdp-select-dict> 
 
                     <el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestPlanCases" icon="el-icon-search">查询</el-button>
                     <span style="float:right;" v-if="!xmTestCase||!xmTestCase.id">
@@ -138,7 +140,7 @@ export default {
             filters: {
                 key: '',
                 xmFunc:null,
-                
+                execType:'',
                 caseStatus:'',
                 execStatus:''
             },
@@ -226,6 +228,9 @@ export default {
             }
             if(this.filters.execStatus){
                 params.execStatus=this.filters.execStatus
+            }
+            if(this.filters.execType){
+                params.execType=this.filters.execType
             }
             if(this.xmTestCasedb && this.xmTestCasedb.id){
                 params.casedbId=this.xmTestCasedb.id

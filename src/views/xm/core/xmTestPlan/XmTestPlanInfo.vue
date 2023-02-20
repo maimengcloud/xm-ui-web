@@ -18,7 +18,7 @@
                       <span style="float:right;">
                         <span > 
                           <el-tag style="margin-top:5px;" v-for="(item,index) in formatDictsWithClass(dicts,'testPlanStatus',xmTestPlan.status)" :key="index" :type="item.className">{{item.name}}</el-tag> 
-                          <span style="color:#C0C4CC;">&nbsp;通过率&nbsp;</span>{{calcTongGuoRate}}&nbsp;&nbsp;<span style="color:#C0C4CC;">&nbsp;已测/总用例&nbsp;</span>{{calcYiCeshiCases}}&nbsp;/&nbsp;{{calcTotalCases}}&nbsp;&nbsp;
+                          <span style="color:#C0C4CC;">&nbsp;通过率&nbsp;</span>{{calcTongGuoRate}}%&nbsp;&nbsp;<span style="color:#C0C4CC;">&nbsp;已测/总用例&nbsp;</span>{{calcYiCeshiCases}}&nbsp;/&nbsp;{{calcTotalCases}}&nbsp;&nbsp;
                            <div style="display:inline-flex"><el-progress  style="width:100px;" :stroke-width="22" :text-inside="true"  :status="calcYiCeshiCases>0 && xmTestPlan.errCases<=0 ?'success':'exception'" :percentage="calcProgress"></el-progress>
                            </div>
                         </span>
@@ -97,7 +97,7 @@ export default {
                 return 0;
             }
             var tongGuoCases=parseInt(this.xmTestPlan.okCases?this.xmTestPlan.okCases:0)
-            var totalCases=parseInt(this.xmTestPlan.totalCases?this.xmTestPlan.totalCases:0)
+            var totalCases=parseInt(this.xmTestPlan.totalCases||0)-parseInt(this.xmTestPlan.toTestCases||0)
             if(tongGuoCases>0){
                 if(totalCases>0){
                    return parseInt( tongGuoCases*100/totalCases)
