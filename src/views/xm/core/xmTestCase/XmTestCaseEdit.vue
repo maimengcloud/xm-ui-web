@@ -29,15 +29,21 @@
 							<el-input v-model="editForm.verNum" placeholder="版本号" :maxlength="50" @change="editSomeFields(editForm,'verNum',$event)"></el-input>
 						</el-form-item>   
 					</el-col>
-					<el-col :span="18" class="border padding-left padding-right padding-top">
-
+					<el-col :span="18" class="border padding-left padding-right padding-top"> 
 						<el-form-item label="用例标题" prop="caseName">    
  									<el-input v-model="editForm.caseName" placeholder="测试用例 标题"  @change="editSomeFields(editForm,'caseName',$event)"></el-input> 
  							<el-row class="label-font-color" v-if="opType=='edit'">
-							<span><span >用例编号:</span>&nbsp;&nbsp;{{editForm.id}} &nbsp;&nbsp;</span> 
+							<span><span >编号:</span>&nbsp;&nbsp;{{editForm.id}} &nbsp;&nbsp;</span> 
 							</el-row>
-						</el-form-item>    
-						<el-row class="padding">
+						</el-form-item>   
+						<el-form-item label="接口地址" prop="url">     
+							<div style="display:flex;">
+								<mdp-select-dict-tag label="请求方法" v-model="autoStep.method" :dict="dicts.autoTestMethod" ></mdp-select-dict-tag>  
+									<el-input  v-model="autoStep.url" placeholder="url 如#{baseApi}/user/list,支持通过 #{变量名}引用环境变量"></el-input>
+								<el-button style="margin-left:10px;" type="primary" @click="sendMsgForTestSetting" title="执行用例">发送</el-button>
+							</div>
+						</el-form-item>
+ 						<el-row class="padding">
 								
 								<el-col :span="6">  
 									<mdp-select-dict-x label="状态" :dict="dicts['testCaseStatus']" v-model="editForm.caseStatus"  @change="editSomeFields(editForm,'caseStatus',$event)"></mdp-select-dict-x> 
@@ -63,7 +69,7 @@
 										<el-input type="textarea" :rows="4" v-model="editForm.preRemark" placeholder="请输入前置条件"  @change="editSomeFields(editForm,'preRemark',$event)"></el-input>
 									</el-row> 
 								</el-form-item>   
-								<el-form-item label="" prop="testStep" label-width="0px">
+								<el-form-item label="" prop="testStep" label-width="0px" v-if="editForm.testType!='1'">
 									<el-row class="label-font-color">
 										测试步骤
 									</el-row> 

@@ -123,7 +123,7 @@
 							</el-row>  
 						</el-row>  
  					</el-tab-pane> 
-					<el-tab-pane name="21" label="测试步骤"> 
+					<el-tab-pane name="21" label="测试步骤" v-if="editForm.testType!='1'"> 
 						<el-row> 
 							<el-row class="label-font-size">
 								测试步骤

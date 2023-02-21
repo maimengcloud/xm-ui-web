@@ -389,9 +389,10 @@ table tr.hover-row{
   display:inline;
 }
 .field:hover{ 
-cursor: pointer;
-.field-bar{
-  display: inline;  
+  cursor: pointer;
+  .field-bar{
+    width: 100%;
+    display: inline;  
 }
 .field-text{
   display:none;
