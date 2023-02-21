@@ -679,7 +679,7 @@ export default {
       },
       //leaf: true,//只有一个节点
       children: [
-        { path: 'project/cost', component: _import('xm/core/xmProject/XmProjectCost'), name: 'XmProjectCost', meta: { title: '应付款',roles:["user"]}},
+        { path: 'branch/cost', component: _import('xm/core/xmProject/XmProjectCost'), name: 'XmProjectCost', meta: { title: '应付款',roles:["user"]}},
 
         { path: 'task/sbill', component: _import('xm/core/xmTaskSbill/XmTaskSbillMng'), name: 'XmTaskSbilllMng', meta: { title: '任务结算单',roles:["user"]}},
          { path: 'workload/day/me', component: _import('xm/core/xmWorkload/WorkloadSetDayListMy'), name: 'WorkloadSetDayListMy', meta: { title: '工时日报(我)',roles:["user"]}},

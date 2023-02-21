@@ -1,8 +1,6 @@
 <template>
-	<section>
-		<el-row class="xm-task">
-			 <xm-task-execuser-mng :is-my="1"></xm-task-execuser-mng>
-		</el-row>
+	<section> 
+			 <xm-task-execuser-mng :is-my="1"></xm-task-execuser-mng> 
 	</section>
 </template>
 

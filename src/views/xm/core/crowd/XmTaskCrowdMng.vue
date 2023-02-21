@@ -71,7 +71,7 @@
             @close="skillTagClear(skill)"
             >{{ skill.skillName }}</el-tag
           >
-          <el-button
+          <el-button 
             style="margin-top: 10px;"
             v-if="!filters.tags || filters.tags.length == 0"
             @click.native="$refs.tagDialog.open()"
@@ -87,14 +87,14 @@
             }})个</el-tag
           >
           <el-input
-            style="width: 150px"
+            style="width: 10em"
             v-model="filters.key"
             placeholder="计划/任务名称"
           > 
           </el-input>
           
-        <el-input v-model="filters.projectId" style="width: 150px;" placeholder="项目编号" clearable></el-input> 
-        <el-input v-model="filters.cbranchId" style="width: 150px;" placeholder="项目归属公司编号" clearable></el-input> 
+        <el-input v-model="filters.projectId" style="width: 10em;" placeholder="项目编号" clearable></el-input> 
+        <el-input class="hidden-md-and-down" v-model="filters.cbranchId" style="width: 10em;" placeholder="项目公司编号" clearable></el-input> 
           <el-button
             @click="searchXmTasks"
             type="primary"

@@ -6,7 +6,7 @@
           <el-row v-if="    (xmProduct&&xmProduct.id) || (xmIteration && xmIteration.id)"> 
               <xm-project-select
                 ref="xmProjectSelect"
-                :auto-select="true"
+                :auto-select="false "
                 :link-iteration-id="xmIteration ? xmIteration.id : null"
                 :link-product-id="xmProduct ? xmProduct.id : null"
                 @row-click="onProjectRowClick"
@@ -144,7 +144,7 @@
         </div>
       </el-col>
       <el-col :xl="20" :lg="20" :md="19" :sm="19" :xs="19" class="padding-left padding-right">
-        <el-tabs :value="showPanel" @tab-click="tabClick">
+        <el-tabs :value="showPanel" @tab-click="tabClick" v-if="selProject && selProject.id">
           <el-tab-pane
             label="项目概览"
             name="projectOverview" 

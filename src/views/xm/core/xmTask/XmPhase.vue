@@ -116,7 +116,7 @@
                   > 更换上级</el-button>     
         </el-row>
         <el-row class="padding-top"> 
-            <el-table class="task-table" :row-style="{height:'46px'}"
+            <el-table
              element-loading-text="努力加载中" element-loading-spinner="el-icon-loading"
               :data="tasksTreeData"
               @sort-change="sortChange"
@@ -145,7 +145,6 @@
 
               <el-table-column 
                 prop="name"
-                class-name="title" 
                 label="计划名称" 
               > 
               <template slot="header" slot-scope="scope"> 
@@ -167,7 +166,7 @@
                   <span class="hidden-md-and-down">
                     {{ scope.row.sortLevel }}&nbsp;
                   </span>
-                  <span> {{ scope.row.name }}
+                  <span style="font-size:14px;"> {{ scope.row.name }}
                     </span> 
                         <el-popover class="hidden-bar" @click.stop
                           placement="top-start"
@@ -1128,45 +1127,6 @@ export default {
   },
 };
 </script>
-
-<style scoped> 
-.align-right {
-  float: right;
-}
-</style>
-<style lang="scss" scoped>
-.extra {
-  border-bottom: 1px solid #dedede;
-  padding: 8px;
-}
-.field-label {
-  display: inline-block;
-  width: 60px;
-  font-size: 12px;
-  font-weight: bold;
-}
-.task-header {
-  border-top: 1px solid #dedede;
-}
-.title {
-  font-size: 18px;
-  font-weight: bold;
-  line-height: 36px;
-}
-.compact {
-  font-size: 12px;
-  color: #8c92a4;
-}
-.compact > span {
-  color: #00b2f3;
-}
-.remarks {
-  margin-top: 10px;
-  font-size: 16px;
-  overflow-x: auto;
-  overflow-y: hidden;
-}
-.tool-bar.left{  
-  margin-right: 9em;
-}
+ 
+<style lang="scss" scoped>  
 </style>

@@ -124,7 +124,7 @@
 						<i class="el-icon-document"></i>
 						</div>
 						<span class="hidden-md-and-down">{{scope.row.seqNo}}</span>
-						<span>{{scope.row.menuName}} </span>
+						<span style="font-size:14px;">{{scope.row.menuName}} </span>
 							<el-popover class="hidden-bar" v-if="!disabledMng"  @click.stop
 								placement="top"
 								width="100"  

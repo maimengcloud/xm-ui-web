@@ -4,7 +4,7 @@
 			<el-col :xl="4" :lg="4" :md="5" :sm="5" :xs="5" class="padding">
 				<div class="border">
 				 <el-row >
- 						<xm-iteration-select  ref="xmIterationSelect" :auto-select="true" :link-project-id="projectInfo?projectInfo.id:null" :product-id="xmProduct?xmProduct.id:null"  @row-click="onIterationRowClick" @clear="onIterationClearSelect">
+ 						<xm-iteration-select  ref="xmIterationSelect" :auto-select="false" :link-project-id="projectInfo?projectInfo.id:null" :product-id="xmProduct?xmProduct.id:null"  @row-click="onIterationRowClick" @clear="onIterationClearSelect">
 							<template v-slot:title="{iteration}">
 								<h4 href="#"><div style="max-width:15vw;" class="res-text hidden-md-and-down"><i style="font-size:16px;" class="el-icon-sort"></i> {{iteration&&iteration.id?iteration.iterationName:'请选择一个迭代'}}</div></h4> 
 								<h4 href="#"><div style="max-width:19vw;" class="res-text hidden-lg-and-up"><i style="font-size:16px;" class="el-icon-sort"></i> {{iteration&&iteration.id?iteration.iterationName:'请选择一个迭代'}}</div></h4> 
@@ -236,7 +236,7 @@
 					</div>		 
 			</el-col>
 			<el-col :xl="20" :lg="20" :md="19" :sm="19" :xs="19">
-				<el-tabs :value="showPanel" @tab-click="tabClick">  
+				<el-tabs :value="showPanel" @tab-click="tabClick" v-if="xmIteration && xmIteration.id">  
 					<el-tab-pane label="迭代概览"  name="iterationOverview" > 
 						 
 						<xm-iteration-overview v-if="xmIteration && showPanel=='iterationOverview'"  :xm-iteration="xmIteration" :sel-project="projectInfo"></xm-iteration-overview>

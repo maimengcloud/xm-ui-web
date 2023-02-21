@@ -1,17 +1,17 @@
 <template>
 	<section class="padding">
 		<el-row>
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="任务名称、用户姓名模糊查询" clearable></el-input>
-			<el-input v-model="filters.taskId" style="width:150px;" placeholder="任务编号查询" clearable></el-input>
+			<el-input v-model="filters.key" style="width: 10em;" placeholder="任务名称" clearable></el-input>
+			<el-input v-model="filters.taskId" style="width:10em;" placeholder="任务编号" clearable></el-input>
 			<span v-if="!selProject || !selProject.id">
-				<el-input  v-model="filters.projectId" style="width: 150px;" placeholder="项目编号" clearable></el-input>
-				<el-input v-model="filters.branchId" style="width: 150px;" placeholder="项目公司编号" clearable></el-input> 
+				<el-input  v-model="filters.projectId" style="width: 10em;" placeholder="项目编号" clearable></el-input>
+				<el-input v-model="filters.branchId" style="width: 10em;" placeholder="项目公司编号" clearable></el-input> 
 			</span>
-			<el-input v-model="filters.execUserBranchId" style="width: 150px;" placeholder="用户公司编号" clearable></el-input>  
- 			<el-select v-model="filters.status"   placeholder="候选状态" clearable>
+			<el-input v-model="filters.execUserBranchId" style="width: 10em;" placeholder="用户公司编号" clearable></el-input>  
+ 			<el-select v-model="filters.status" style="width:6em;"  placeholder="候选状态" clearable>
 				 <el-option v-for="(item,index) in dicts.projectTaskExecuserStatus" :value="item.id" :label="item.name" :key="index"></el-option>
 			 </el-select>
- 			<el-select v-model="filters.taskState"   placeholder="任务状态" clearable>
+ 			<el-select v-model="filters.taskState" style="width:6em;"  placeholder="任务状态" clearable>
 				 <el-option v-for="(item,index) in dicts.taskState" :value="item.id" :label="item.name" :key="index"></el-option>
 			 </el-select>
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmTaskExecusers">查询</el-button> 
@@ -20,7 +20,7 @@
 			</span>
 			<!-- <el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button>  -->
 		</el-row>
-		<el-row class="page-main ">
+		<el-row class="padding-top">
 			<!--列表 XmTaskExecuser xm_task_execuser-->
 			<el-table ref="table" :height="tableHeight" :data="xmTaskExecusers" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				

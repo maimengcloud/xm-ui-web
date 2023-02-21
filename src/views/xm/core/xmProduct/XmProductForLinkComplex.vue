@@ -6,7 +6,7 @@
         <el-row>
             <xm-product-select
               ref="xmProductSelect"
-              :auto-select="true"
+              :auto-select="false"
               :link-project-id="projectInfo ? projectInfo.id : null"
               :iterationId="xmIteration ? xmIteration.id : null"
               @row-click="onProductRowClick"
@@ -134,7 +134,7 @@
         </div>
       </el-col>
       <el-col :xl="20" :lg="20" :md="19" :sm="19" :xs="19" class="padding-left padding-right">
-        <el-tabs :value="showPanel" @tab-click="tabClick"> 
+        <el-tabs :value="showPanel" @tab-click="tabClick" v-if="xmProduct && xmProduct.id"> 
           <el-tab-pane
             label="产品概览"
             name="productOverview"
