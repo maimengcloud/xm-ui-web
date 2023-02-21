@@ -34,7 +34,7 @@ export default {
     
     if(!this.$route.query.iterationId){
       this.$message.error("地址不合规")
-      this.$route.back(-1)
+      this.$router.back(-1)
     }
     if(!this.xmIteration||this.xmIteration.id!=this.$route.query.iterationId){  
       listXmIterationWithState({id:this.$route.query.iterationId}).then(res=>{

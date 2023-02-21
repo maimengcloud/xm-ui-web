@@ -94,6 +94,18 @@
 			<el-dialog title="选择测试用例" :visible.sync="addFormVisible"  width="80%" top="20px" append-to-body  :close-on-click-modal="false">
 			    <xm-test-case-select :xm-test-plan="xmTestPlan" :xm-test-casedb="xmTestCasedb" :visible="addFormVisible" @cancel="addFormVisible=false" @select="onXmTestCaseSelect"></xm-test-case-select>
 			</el-dialog>
+
+            
+			<el-dialog title="批量执行自动化测试用例" :visible.sync="doBatchExecVisible"  width="600" top="20px" append-to-body  :close-on-click-modal="false">
+                <el-result v-if="load.doBatch" icon="warning" title="警告提示" :subTitle="'正在批量执行测试用例，请勿关闭窗口,当前进度【'+batchProgress+'%】'">
+                     
+                </el-result>
+                <el-result v-if="!load.doBatch" icon="success" title="执行完毕" :subTitle="'成功用例【'+okCasesNum+'】,失败【'+errCasesNum+'】,忽略【'+igCasesNum+'】'">
+                    <template slot="extra">
+                        <el-button type="primary" size="medium" @click="doBatchBack">返回</el-button>
+                    </template>
+                </el-result>
+ 			</el-dialog>
 	    </el-row>
 	</section>
 </template>
@@ -110,7 +122,8 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 import {autoStepToAxios,initEnvVars} from '@/api/xm/core/XmTestAutoStep.js';//全局公共库
 
 import { mapGetters } from 'vuex'
-import axios from 'axios'//免登录访问
+import axios from 'axios'//免登录访问 
+
 export default {
     name:'xmTestPlanCaseMng',
     components: {
@@ -152,6 +165,11 @@ export default {
                 caseStatus:'',
                 execStatus:''
             },
+            batchProgress:0,
+            okCasesNum:0,
+            errCasesNum:0,
+            igCasesNum:0,
+
             xmTestPlanCases: [],//查询结果
             pageInfo:{//分页数据
                 total:0,//服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
@@ -161,7 +179,7 @@ export default {
                 orderFields:[],//排序列 如 ['sex','student_id']，必须为数据库字段
                 orderDirs:[]//升序 asc,降序desc 如 性别 升序、学生编号降序 ['asc','desc']
             },
-            load:{ list: false, edit: false, del: false, add: false },//查询中...
+            load:{ list: false, edit: false, del: false, add: false,doBatch:false },//查询中...
             sels: [],//列表选中数据
             dicts:{
                 testCaseStatus:[],
@@ -177,6 +195,7 @@ export default {
                 bugs:'',execUserid:'',caseId:'',ltime:'',ctime:'',execStatus:'',execUsername:'',planId:'',caseName:'',priority:'',remark:'',testStep:''
             },
             maxTableHeight:300,
+            doBatchExecVisible:false,
         }
     },//end data
     methods: {
@@ -365,7 +384,10 @@ export default {
           }
         }).catch((e)=>Object.assign(this.editForm,this.editFormBak))
       },
-      
+      doBatchBack(){
+        this.doBatchExecVisible=false;
+        this.searchXmTestPlanCases();
+      },
       editSomeFieldsForExec(sels,fieldName,$event){
         let params={}; 
         params['pkList']=sels.map(i=>{ return { caseId:i.caseId,  planId:i.planId}})
@@ -416,60 +438,71 @@ export default {
             }
             this.doBatchExec(this.sels)
         },
-        doBatchExec(planCases){  
+        async doBatchExec(planCases){   
             this.doBatchExecVisible=true;
+            this.load.doBatch=true;
             var igCases=planCases.filter(k=> !k.autoStep || k.testType!='1')
+            if(igCases.length>0){
+                this.editSomeFieldsForExec(igCases,"execStatus",'1')
+            }
+            this.igCasesNum=igCases.length;
+            this.batchProgress=Math.round(igCases.length/planCases.length)
             var cases=planCases.filter(k=>k.autoStep && k.testType=='1') 
             var execAll=[]
             var env=initEnvVars(this.xmTestCasedb?this.xmTestCasedb.envJson:null,this.xmTestPlan ?this.xmTestPlan.envJson:null);
-            cases.forEach(k=>{
-                this.sendMsgForTestSetting(k,env,execAll)
-            }) 
+            for( let k of cases ){
+                var data= await this.sendMsgForTestSetting(k,env)
+                 execAll.push(data)
+                 this.batchProgress=Math.round((igCases.length+execAll.length)/planCases.length)
+
+            } 
             var okCases=execAll.filter(k=>k.execStatus=='2')
+            this.okCasesNum=okCases.length
             if(okCases.length>0){
-                this.editSomeFieldsForExec(okCases,"execStatus",'2')
+               this.editSomeFieldsForExec(okCases,"execStatus",'2')
             }
             
             var errCases=execAll.filter(k=>k.execStatus=='4')
+            this.errCasesNum=errCases.length;
             if(errCases.length>0){
                 this.editSomeFieldsForExec(errCases,"execStatus",'4')
             }
-
+            this.load.doBatch=false;
          },
-        sendMsgForTestSetting(planCase,env,execAll){ 
-             
-            var autoStepObj=JSON.parse(planCase.autoStep)
-            if(!autoStepObj.url){
-                planCase.execStatus='1' 
-                execAll.push(planCase)
-            }else{
-                var axiosObj=autoStepToAxios(autoStepObj,env) 
-                //axiosObj.headers['Access-Control-Allow-Origin']='*'
-                //axios.defaults.withCredentials = true // 若跨域请求需要带 cookie 身份识别
-                //axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
-                axios(axiosObj).then(res=>{ 
-                     if(autoStepObj.expectResult){
-                        var func=new Function('res','env',autoStepObj.expectResult)
-                        var result=func(res,env) 
-                        planCase.execStatus=result==true?"2":"4"
-                    }else{
-                        planCase.execStatus=res.status==200?"2":"4"
+        sendMsgForTestSetting:function(planCase,env){ 
+             return new Promise((resolve,reject)=>{
+                var autoStepObj=JSON.parse(planCase.autoStep)
+                if(!autoStepObj.url){
+                    planCase.execStatus='1'  
+                    resolve(planCase)
+                }else{
+                    var axiosObj=autoStepToAxios(autoStepObj,env) 
+                    //axiosObj.headers['Access-Control-Allow-Origin']='*'
+                    //axios.defaults.withCredentials = true // 若跨域请求需要带 cookie 身份识别
+                    //axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+                    axios(axiosObj).then(res=>{ 
+                        if(autoStepObj.expectResult){
+                            var func=new Function('res','env',autoStepObj.expectResult)
+                            var result=func(res,env) 
+                            planCase.execStatus=result==true?"2":"4"
+                        }else{
+                            planCase.execStatus=res.status==200?"2":"4"
 
-                    }
-                    execAll.push(planCase)
-                }).catch(res=>{ 
-                    var func=new Function('res','env',autoStepObj.expectResult)
-                    var result=func(res,env)
-                    if(result==true){
-                        planCase.execStatus="2"
-                     }else{ 
-                        planCase.execStatus="4"
-                    }
-                    execAll.push(planCase)
-                    
-                })
-            }
-            
+                        }
+                        resolve(planCase)
+                    }).catch(res=>{ 
+                        var func=new Function('res','env',autoStepObj.expectResult)
+                        var result=func(res,env)
+                        if(result==true){
+                            planCase.execStatus="2"
+                        }else{ 
+                            planCase.execStatus="4"
+                        }
+                        resolve(planCase)
+                    })
+                }
+             })
+             
 
         },
         onXmFuncRowClick(row){

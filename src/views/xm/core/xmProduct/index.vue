@@ -34,7 +34,7 @@ export default {
     
     if(!this.$route.query.productId){
       this.$message.error("地址不合规")
-      this.$route.back(-1)
+      this.$router.back(-1)
     }
     if(!this.xmProduct||this.xmProduct.id!=this.$route.query.productId){  
       listXmProductWithState({id:this.$route.query.productId}).then(res=>{

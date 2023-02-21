@@ -34,7 +34,7 @@ export default {
     
     if(!this.$route.query.casedbId){
       this.$message.error("地址不合规")
-      this.$route.back(-1)
+      this.$router.back(-1)
     }
     if(!this.testCasedb||this.testCasedb.id!=this.$route.query.casedbId){  
       listXmTestCasedb({id:this.$route.query.casedbId}).then(res=>{
@@ -44,16 +44,12 @@ export default {
             store.dispatch('setTestCasedb',res.data.data[0])
           }else{
             this.$message.error("测试用例库不存在，请确保测试用例库编号正确")
-            this.$router.push({
-              path:'/xm/core/casedb/mng'
-            })
+            this.$router.back(-1)
           }
           
         }else{
           this.$message.error(tips.msg)
-          this.$router.push({
-            path:'/xm/core/casedb/mng'
-          })
+          this.$router.back(-1)
         }
       })
     }

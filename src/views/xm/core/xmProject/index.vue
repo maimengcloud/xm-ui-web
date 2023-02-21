@@ -33,7 +33,7 @@ export default {
   mounted() {   
     if(!this.$route.query.projectId){
       this.$message.error("地址不合规")
-      this.$route.back(-1)
+      this.$router.back(-1)
     }
     if(!this.projectInfo||this.projectInfo.id!=this.$route.query.projectId){  
       listXmProject({id:this.$route.query.projectId}).then(res=>{
