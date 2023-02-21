@@ -22,7 +22,7 @@
         <el-row
           ref="pageBody"
           class="padding" 
-          :style="{ maxHeight: maxTableHeight + 'px', overflowY: 'auto' }"
+          :style="{ maxHeight: maxTableHeight + 'px', overflowY: 'hidden' }"
         >
 
           <el-steps v-if="xmProduct && xmProduct.id"
@@ -553,17 +553,5 @@ export default {
 .step-btn {
   margin-left: 0px;
   margin-bottom: 5px;
-}
-.product-title{
-  cursor: pointer;
-  width:250px;
-  display: block;
-  .text{ 
-      font-size: 16px;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      white-space: nowrap;  
-      width:100%;
-  }
-}
+} 
 </style>

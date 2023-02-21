@@ -12,8 +12,8 @@
 						</xm-iteration-select>
 						 
   				 </el-row> 
-				<el-row ref="pageBody" :style="{ maxHeight: maxTableHeight + 'px', overflowY: 'auto' }"> 
- 								<el-steps v-if="xmIteration&&xmIteration.id"
+				<el-row ref="pageBody" :style="{ maxHeight: maxTableHeight + 'px', overflowY: 'hidden' }"> 
+ 								<el-steps v-if="xmIteration&&xmIteration.id" 
 								:active="calcIterationStatusStep"
 								finish-status="success"
 								direction="vertical"
@@ -355,7 +355,7 @@
 				xmIteration:null,
 				showPanel:'iterationOverview',//menus,tasks,bugs,iterationStateShow 
 				iterationAddVisible:false,
-				maxTableHeight:300,
+				maxTableHeight:700,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -435,10 +435,14 @@
 
 		},
 		mounted() { 
+			
+			
 			this.$nextTick(() => {
+				debugger;
 				initDicts(this)
+				//this.maxTableHeight = util.calcTableMaxHeight(this.$refs.pageBody.$el);
 				
-      this.maxTableHeight = util.calcMaxHeight(this.$refs.pageBody.$el);
+				
 				});
 
 			}

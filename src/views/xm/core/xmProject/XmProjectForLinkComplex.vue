@@ -21,7 +21,7 @@
           <el-row
             ref="pageBody"
             class="padding" 
-            :style="{ maxHeight: maxTableHeight + 'px', overflowY: 'auto' }"
+            :style="{ maxHeight: maxTableHeight + 'px', overflowY: 'hidden' }"
           > 
           
         <el-steps :active="calcProjectStatusStep" finish-status="success" direction="vertical" v-if="selProject">
