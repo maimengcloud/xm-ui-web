@@ -26,11 +26,11 @@
                                   <i v-if=" myVal && myVal.userid==item.userid" class="el-icon-check"></i> 
                                   <i v-else>&nbsp;&nbsp;</i>  
                             </div>
-                          </el-option> 
-                      </el-select> 
-                      <slot name="extOper">
+                          </el-option>  
+                          <slot name="extOper">
 
-                      </slot>
+                          </slot>
+                      </el-select> 
                       </slot>
                   </div> 
 						</div> 

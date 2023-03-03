@@ -60,9 +60,9 @@
 								<el-row class="padding"> 
 									<el-col :span="6"> 
 											<mdp-select-user-xm :project-id="editForm.projectId" :product-id="editForm.productId" label="责任人" v-model="editForm" userid-key="handlerUserid" username-key="handlerUsername" @change="editXmQuestionSomeFields(editForm,'handlerUserid',$event)">
-												<el-row slot="extOper">
+												<el-row slot="extOper" style="margin-left:20px;">
 														指派给 <el-button type="text" @click="sendToAsk"> 提出人</el-button>  <el-button type="text"  @click="sendToCreater"> 创建人</el-button>  
-													</el-row> 
+												</el-row> 
 											</mdp-select-user-xm>
  
 													

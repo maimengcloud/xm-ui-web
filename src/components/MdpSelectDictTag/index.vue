@@ -1,7 +1,8 @@
 <template>    
     <div :class="{'field-box':true,'small':size=='small','medium':size=='medium'}">
         <div class="field-info" :class="{disabled:disabled===true,enabled:disabled!==true}">
-           <div v-if="(currentItem&&currentItem.id)"><el-tag     :type="currentItem.className" :closable="closable" :effect="effect">{{currentItem.name}}</el-tag></div> 
+           <div v-if="(currentItem&&currentItem.id)">
+            <el-tag     :type="currentItem.className" :closable="closable" :color="currentItem.color" :effect="effect">{{currentItem.name}}</el-tag></div> 
            <div v-else> {{currentItem.name}} </div> 
         </div>
         <div v-if="disabled!==true" class="field-oper" :class="{disabled:disabled===true,enabled:disabled!==true}">

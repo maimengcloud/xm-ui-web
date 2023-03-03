@@ -20,36 +20,39 @@
 							</div>  
               <div v-if="disabled!==true" class="field-oper" :class="{disabled:disabled===true,enabled:disabled!==true}">
                 <slot name="oper">
-                      <el-select :size="size" v-model="myVal" @change="onSelectChange" :clearable="clearable" filterable value-key="userid" @visible-change="$emit('visible-change',$event)" @focus="$emit('focus',$event)" @blur="$emit('blur',$event)" @clear="$emit('blur',$event)" @click="$emit('click',$event)">  
-                            
-                            <el-option :value="myVal" disabled v-if="users && users.length>10">
-                                <el-row ><el-button v-if="users && users.length>0" :type="deptUserVisible?'':'primary'" @click.stop="deptUserVisible=false">常用用户</el-button> <el-button :type="deptUserVisible?'primary':''"  @click.stop="deptUserVisible=true">部门用户</el-button>
-                                  <el-button v-if="projectId||productId" :type="projectVisible?'primary':''"  @click.stop="projectVisible=true">项目组</el-button> 
-                                  <el-button v-if="projectId||productId" :type="productVisible?'primary':''"  @click.stop="productVisible=true">产品组</el-button> 
-                                </el-row>
-                            </el-option>
-                            <el-option class="avatar-container" v-for="(item,index) in users" :key="index" :value="item" :label="item.username">  
-                            
-                              <div class="avatar-wrapper">
-                                    <img class="user-avatar"  :style="{backgroundColor:getMyColor(item)}" :src="getHeadimgurl(item.userid,item.headimgurl)" @error="onImgError(item.userid,$event)"></img>  
-                                    <span class="username">{{item.username}}</span>
-                                    <i v-if="myVal && myVal.userid==item.userid" class="el-icon-check"></i> 
-                                    <i v-else>&nbsp;&nbsp;</i>  
-                              </div>
-                            </el-option> 
-                            <el-option :value="myVal" disabled>
-                                <el-row><el-button v-if="users && users.length>0" :type="deptUserVisible?'':'primary'" @click.stop="deptUserVisible=false">常用用户</el-button> <el-button :type="deptUserVisible?'primary':''"  @click.stop="deptUserVisible=true">部门用户</el-button>
-                                  <el-button v-if="projectId||productId" :type="projectVisible?'primary':''"  @click.stop="projectVisible=true">项目组</el-button>
-                                  <el-button v-if="projectId||productId" :type="productVisible?'primary':''"  @click.stop="productVisible=true">产品组</el-button> 
+                    <el-select :size="size" v-model="myVal" @change="onSelectChange" :clearable="clearable" filterable value-key="userid" @visible-change="$emit('visible-change',$event)" @focus="$emit('focus',$event)" @blur="$emit('blur',$event)" @clear="$emit('blur',$event)" @click="$emit('click',$event)">  
+                        
+                        <el-option :value="myVal" disabled v-if="users && users.length>10">
+                            <el-row ><el-button v-if="users && users.length>0" :type="deptUserVisible?'':'primary'" @click.stop="deptUserVisible=false">常用用户</el-button> <el-button :type="deptUserVisible?'primary':''"  @click.stop="deptUserVisible=true">部门用户</el-button>
+                              <el-button v-if="projectId||productId" :type="projectVisible?'primary':''"  @click.stop="projectVisible=true">项目组</el-button> 
+                              <el-button v-if="projectId||productId" :type="productVisible?'primary':''"  @click.stop="productVisible=true">产品组</el-button> 
+                            </el-row>
+                        </el-option>
+                        <el-option class="avatar-container" v-for="(item,index) in users" :key="index" :value="item" :label="item.username">  
+                        
+                          <div class="avatar-wrapper">
+                                <img class="user-avatar"  :style="{backgroundColor:getMyColor(item)}" :src="getHeadimgurl(item.userid,item.headimgurl)" @error="onImgError(item.userid,$event)"></img>  
+                                <span class="username">{{item.username}}</span>
+                                <i v-if="myVal && myVal.userid==item.userid" class="el-icon-check"></i> 
+                                <i v-else>&nbsp;&nbsp;</i>  
+                          </div>
+                        </el-option> 
+                        <el-option :value="myVal" disabled>
+                            <el-row>
+                              <el-button v-if="users && users.length>0" :type="deptUserVisible?'':'primary'" @click.stop="deptUserVisible=false">常用用户</el-button> 
+                              <el-button :type="deptUserVisible?'primary':''"  @click.stop="deptUserVisible=true">部门用户</el-button>
+                              <el-button v-if="projectId||productId" :type="projectVisible?'primary':''"  @click.stop="projectVisible=true">项目组</el-button>
+                              <el-button v-if="projectId||productId" :type="productVisible?'primary':''"  @click.stop="productVisible=true">产品组</el-button> 
 
-                                </el-row>
-                            </el-option>
-                        </el-select> 
+                            </el-row>
+                        </el-option>
                         <slot name="extOper">
 
                         </slot>
-                      </slot>
-                  </div>
+                    </el-select> 
+
+                  </slot>
+              </div>
 						</div> 
             <el-dialog v-if="disabled!==true" :visible.sync="deptUserVisible" append-to-body top="20px" width="60%">
                <users-select :visible="deptUserVisible" :isSingleUser="true"  :isSelectByDept="true" @confirm="onTeamUsersConfirm"></users-select>
