@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section :class="{'padding':!xmProduct&&!selProject}">
     <el-row>
       <xm-product-select
         v-if="!xmProduct || !xmProduct.id"
@@ -17,22 +17,7 @@
         placeholder="输入迭代编号"
         @keyup.enter.native="searchXmProducts"
       >
-      </el-input>
-      <el-date-picker
-        v-if="filters.queryScope != 'iterationId'"
-        v-model="dateRangerOnline"
-        type="daterange"
-        align="right"
-        unlink-panels
-        range-separator="至"
-        start-placeholder="上线日期"
-        end-placeholder="上线日期"
-        value-format="yyyy-MM-dd HH:mm:ss"
-        class="hidden-md-and-down"
-        :default-time="['00:00:00', '23:59:59']"
-        :picker-options="pickerOptions"
-      >
-      </el-date-picker>
+      </el-input> 
       <el-input v-model="filters.key" style="width: 15%" placeholder="模糊查询">
       </el-input>
       <el-button
@@ -52,52 +37,61 @@
           >关闭</el-button
           > 
       </el-row> 
-        <el-divider></el-divider> 
-          
-          <el-row>
-            <font class="more-label-font">迭代名称:</font
-            ><el-input
-              v-model="filters.key"
-              style="width: 200px;"
-              placeholder="模糊查询"
-            ></el-input>
-          </el-row>
-          <el-row>
-            <el-input
-              v-if="filters.queryScope == 'iterationId'"
-              v-model="filters.id"
-              style="width: 200px;"
-              placeholder="输入产品编号"
-              @keyup.enter.native="searchXmProducts"
-            >
-            </el-input>
-          </el-row>
-          <el-row
-            v-if="filters.queryScope != 'iterationId'"
-          >
-            <font class="more-label-font">上线时间:</font>
-            <el-date-picker
-              v-model="dateRangerOnline"
-              type="daterange"
-              align="right"
-              unlink-panels
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="完成日期"
-              value-format="yyyy-MM-dd HH:mm:ss"
-              :default-time="['00:00:00', '23:59:59']"
-              :picker-options="pickerOptions"
-            ></el-date-picker>
-          </el-row>
-          <el-row>
-            <el-button
-              style="float:right;"
-              type="primary"
-              icon="el-icon-search"
-              @click="getXmIterations"
-              >查询</el-button
-            >
-          </el-row> 
+      <el-descriptions class="margin-top" size="mini" :column="1" border>    
+									<el-descriptions-item v-if="xmProduct">
+										<template slot="label">
+											<i class="el-icon-document"></i>
+											当前产品
+										</template>
+										<el-tag v-if="xmProduct">{{xmProduct.productName}}</el-tag>									
+									</el-descriptions-item>    
+									<el-descriptions-item v-if="selProject">
+										<template slot="label">
+											<i class="el-icon-document"></i>
+											当前项目
+										</template>
+										<el-tag v-if="selProject">{{selProject?selProject.name:''}}</el-tag>
+									</el-descriptions-item>     
+									<el-descriptions-item :span="2">
+										<template slot="label">
+											<i class="el-icon-watch-1"></i>
+											创建时间
+										</template>
+										
+										<mdp-date-range
+												v-model="filters"
+												type="daterange" 
+												start-key="onlineTimeStart"
+												end-key="onlineTimeEnd"
+												unlink-panels
+												range-separator="至"
+												start-placeholder="开始日期"
+												end-placeholder="完成日期"
+												value-format="yyyy-MM-dd HH:mm:ss" 
+												:default-time="['00:00:00', '23:59:59']" 
+												:auto-default="false" 
+												key="planEndTime"
+												></mdp-date-range>
+									</el-descriptions-item> 
+									<el-descriptions-item>
+										<template slot="label">
+											<i class="el-icon-document"></i>
+											迭代编号
+										</template> 										
+										<el-input v-model="filters.id" clearable></el-input> 
+									</el-descriptions-item>
+									<el-descriptions-item>
+										<template slot="label">
+											<i class="el-icon-document"></i>
+											迭代名称
+										</template> 										
+										<el-input v-model="filters.key" clearable ></el-input> 
+									</el-descriptions-item>
+									
+									<el-descriptions-item>
+										<el-button type="primary" style="float:right;" @click="searchXmIterations" icon="el-icon-search">查询</el-button> 
+									</el-descriptions-item>
+								</el-descriptions>  
         <el-button slot="reference" icon="el-icon-more" @click="moreVisible=true"></el-button>
       </el-popover>
       <span style="float: right">
@@ -138,20 +132,17 @@
         </el-table-column>
         <el-table-column prop="finishRate" label="总进度" min-width="80" sortable>
           <template slot-scope="scope">
-            <font
-              ><el-tag
+             <el-tag style="width:4em;"
                 :type="scope.row.finishRate >= 100 ? 'success' : 'warning'"
                 >{{ scope.row.finishRate }}%</el-tag
               >
-
-              <el-tooltip content="点击统计进度，由任务汇总"
-                ><el-button
+                <el-button title="点击统计进度，由任务汇总"
                   type="text"
+                  circle
+                  plain
                   icon="el-icon-video-play"
                   @click.stop="loadTasksToXmIterationState(scope.row)"
-                ></el-button
-              ></el-tooltip>
-            </font>
+                ></el-button> 
           </template>
         </el-table-column>
         <el-table-column  sortable
@@ -350,10 +341,9 @@ export default {
         queryScope: "", //迭代查询范围 iterationId\branchId\compete\''
         id: "", //迭代编号
 		    xmProduct:null,
+        onlineTimeStart:'',
+        onlineTimeEnd:'',
       },
-      pickerOptions: util.getPickerOptions("datarange"),
-      dateRanger: [], //创建时间选择范围
-      dateRangerOnline: [], //上线时间选择范围
       xmIterations: [], //查询结果
       pageInfo: {
         //分页数据
@@ -542,16 +532,12 @@ export default {
         if (this.filters.queryScope == "branchId") {
           params.branchId = this.userInfo.branchId;
         }
-      }
-
-      if (
-        this.filters.queryScope != "iterationId" &&
-        this.dateRangerOnline &&
-        this.dateRangerOnline.length == 2
-      ) {
-        params.onlineTimeStart = this.dateRangerOnline[0];
-        params.onlineTimeEnd = this.dateRangerOnline[1];
-      }
+      } 
+      if(this.filters.onlineTimeStart && this.filters.onlineTimeEnd){
+        params.onlineTimeStart = this.filters.onlineTimeStart;
+        params.onlineTimeEnd =  this.filters.onlineTimeEnd; 
+      } 
+       
       this.load.list = true;
       listXmIterationWithState(params)
         .then((res) => {
@@ -759,12 +745,10 @@ export default {
       }
     },
 	onProductSelected(row){
-		this.filters.xmProduct=row
-		this.searchXmIterations()
+		this.filters.xmProduct=row 
 	},
 	onProductClearSelect(){
-		this.filters.xmProduct=null;
-		this.searchXmIterations()
+		this.filters.xmProduct=null; 
 	} 
   }, //end methods
   components: {

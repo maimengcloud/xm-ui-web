@@ -690,8 +690,7 @@
 			},
 			/**begin 自定义函数请在下面加**/
 			clearFiltersPmUser:function(){
-				 this.filters.pmUser=null;
-				  this.searchXmProducts();
+				 this.filters.pmUser=null; 
 			},
 			selectFiltersPmUser(){
 				this.selectFiltersPmUserVisible=true;
@@ -702,12 +701,10 @@
 				 }else{
 					 this.filters.pmUser=null;
 				 }
-				 this.selectFiltersPmUserVisible=false;
-				 this.searchXmProducts();
+				 this.selectFiltersPmUserVisible=false; 
 			},
 			setFiltersPmUserAsMySelf(){
-				this.filters.pmUser=this.userInfo;
-				this.searchXmProducts();
+				this.filters.pmUser=this.userInfo; 
 			},
 			onProjectSelected(projects){
 

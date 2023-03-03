@@ -32,7 +32,6 @@
 									<el-button    @click="handleExport" icon="el-icon-download">导出</el-button>
 									<el-button     @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">汇总进度</el-button>
 									<el-button  type="danger" @click="batchDel" icon="el-icon-delete" title="删除">删除</el-button>
-									<el-button type="primary" style="float:right;" @click="searchXmMenus" icon="el-icon-search">查询</el-button> 
  							</template>
 							
 							 <el-descriptions-item>
@@ -166,6 +165,12 @@
 										key="planEndTime"
 										></mdp-date-range>
 							</el-descriptions-item>
+
+							<el-descriptions-item :span="2">
+								<el-button type="primary" style="float:right;" @click="searchXmMenus" icon="el-icon-search">查询</el-button> 
+
+							</el-descriptions-item>
+
 						</el-descriptions>
 							 
 							<el-button  slot="reference" icon="el-icon-more" @click="moreVisible=!moreVisible"></el-button>
