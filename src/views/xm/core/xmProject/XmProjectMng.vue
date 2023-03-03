@@ -27,7 +27,6 @@
 							<template slot="extra">  
 								<el-button type="text" @click="templateVisible=!templateVisible">{{templateVisible?'隐藏模板':'显示模板'}}</el-button>
 								<el-button type="text"  @click="guiderStart(true)" icon="el-icon-help">新手导航</el-button>
- 								<el-button type="primary" style="float:right;" @click="searchXmProjects" icon="el-icon-search">查询</el-button> 
  							</template> 
 							<el-descriptions-item>
 								<template slot="label">
@@ -72,6 +71,10 @@
 									项目编号
 								</template> 										
 								<el-input v-model="filters.id" clearable style="width:100%;"></el-input> 
+							</el-descriptions-item>
+							
+							<el-descriptions-item>
+								<el-button type="primary" style="float:right;" @click="searchXmProjects" icon="el-icon-search">查询</el-button> 
 							</el-descriptions-item>
 						</el-descriptions>
 					<el-button  slot="reference" icon="el-icon-more" id="prj-more-btn"></el-button>
@@ -210,10 +213,12 @@
 								</template>
 							</el-result>
 					</el-row>
- 					<el-table-column prop="name" label="标题" sortable min-width="250"  fixed="left">
+ 					<el-table-column prop="name" label="项目名称" sortable min-width="250"  fixed="left">
 						<template slot-scope="scope">
 							<el-link type="primary" @click.stop="intoInfo(scope.row)">{{scope.row.name}}</el-link>
 						</template>
+					</el-table-column>  
+					<el-table-column prop="id" label="项目编码" sortable min-width="180"  fixed="left" show-overflow-tooltip> 
 					</el-table-column> 
 					<el-table-column prop="status" label="状态" width="100" sortable  fixed="left"> 
 						<template slot-scope="scope"> 
@@ -225,11 +230,11 @@
 							<mdp-select-dict-tag :dict="dicts['bizFlowState']" :disabled="true" v-model="scope.row.bizFlowState"></mdp-select-dict-tag>		
 						</template>
 					</el-table-column>
-					<el-table-column prop="finishRate" label="进度" width="200" sortable>
+					<el-table-column prop="finishRate" label="进度" width="180" sortable>
 						<template slot-scope="scope"> 
 							
 							<div style="display:flex;"> 
-								<div style="width:40px;">
+								<div style="width:3em;">
 									{{getProgress(scope.row)}} %
 								</div>
 								<el-button  id="guider-four" type="text" circle plain icon="el-icon-video-play"  title="统计项目的工作量、进度、需求、bugs等数据"  @click.stop="loadTasksToXmProjectState( scope.row)"></el-button> 
