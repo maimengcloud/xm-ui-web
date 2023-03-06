@@ -466,7 +466,6 @@
 	float: right; 
 }
 .title {
-	display: flex;
 	height: 32px;
 	line-height: 32px;
 	text-align: left;
