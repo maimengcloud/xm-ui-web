@@ -64,7 +64,7 @@
               <el-row>
                 <el-col :span="8">
                   <div class="item">
-                    <div class="icon" style="background-color:  rgb(79, 140, 255);">
+                    <div class="icon1" style="background-color:  rgb(79, 140, 255);">
                       <i class="el-icon-right"></i>
                     </div>
                     <div class="info">
@@ -75,7 +75,7 @@
                 </el-col>
                 <el-col :span="8">
                   <div class="item">
-                    <div class="icon" style="background-color:  rgb(255, 153, 51);">
+                    <div class="icon1" style="background-color:  rgb(255, 153, 51);">
                       <i class="el-icon-loading"></i>
                     </div>
                     <div class="info">
@@ -87,7 +87,7 @@
                 </el-col>
                 <el-col :span="8">
                   <div class="item">
-                    <div class="icon" style="background-color:  rgb(0, 153, 51);">
+                    <div class="icon1" style="background-color:  rgb(0, 153, 51);">
                       <i class="el-icon-check"></i>
                     </div>
                     <div class="info">
@@ -1036,25 +1036,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.container {
-  margin: 10px;
-}
-
-.header {
-  display: flex;
-  justify-content: flex-start;
-  padding: 10px;
-
-  span {
-    padding-right: 15px;
-  }
-}
-
-.col {
-  margin-bottom: 20px;
-}
-
-.icon {
+ 
+.icon1 {
   color: #fff;
   height: 30px;
   border-radius: 15px;
@@ -1076,6 +1059,7 @@ export default {
 }
 
 .item {
+  margin-top:10px;
   display: flex;
   justify-content: flex-start;
   position: relative;
