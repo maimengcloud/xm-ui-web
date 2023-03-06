@@ -1,6 +1,6 @@
 <template>
 	<section class="padding"> 
-		<el-row > 
+		<el-row class="padding-left padding-right"> 
 			<xm-product-select class="hidden-md-and-down" :auto-select="false" @row-click="onProductSelected" @clear="onProductClose"></xm-product-select> 
 			<el-select v-model="menukey" @change="handleSelect" clearable style="width:10em;">
 				<el-option value="all" label="全部"></el-option>
@@ -109,23 +109,39 @@
 			<!--列表 XmProject xm_project-->
 			<el-row v-show="showType" v-loading="load.list" :style="{overflowX:'hidden',height:maxTableHeight+'px'}" >
 				<el-row>
-					<el-col  v-cloak v-for="(p,i) in ScreenData" :key="i" :xl="6" :lg="8" :md="8" :sm="12" :xs="24">
+					<el-col  v-cloak v-for="(p,i) in ScreenData" :key="i" :xl="6" :lg="8" :md="8" :sm="12" :xs="24" class="project-card">
 						
-						<el-card @click.native="intoInfo(p,i)" class="project-card" shadow="always" id="prj-view-box">
-							<div class="project-name" title="这是项目名称">{{p.name}}</div>
-							<div class="project-id"><span title="项目代号">{{p.id}} </span>
-								<el-tag title="项目状态" v-for="(item,index) in formatDictsWithClass(dicts,'projectStatus',p.status)" :key="index" :type="item.className">{{item.name}}</el-tag>
-								<el-link id="prj-del-btn" type="danger" style="font-size:14px;float:right;margin-left:2px;"  title="删除项目" @click.stop="handleDel(p)" v-loading="load.add">删除</el-link>
-								<el-link id="prj-copy-btn" type="primary" style="font-size:14px;float:right;margin-left:2px;"  title="通过复制快速创建新项目" @click.stop="onCopyToBtnClick(p)" v-loading="load.add">复制&nbsp;</el-link> 
-								<!--<el-link id="prj-calc-btn" type="warning" style="font-size:14px;float:right;margin-left:2px;"  title="统计项目的工作量、进度、需求、bugs等数据" @click.stop="loadTasksToXmProjectState(p)" v-loading="load.add">统计</el-link>-->
+						<el-card @click.native="intoInfo(p,i)"  shadow="always" id="prj-view-box">
+							<div   slot="header" style="display:flex;justify-content: space-between;">
+								<div class="project-name">
+									<el-tag title="项目状态" v-for="(item,index) in formatDictsWithClass(dicts,'projectStatus',p.status)" :key="index" :type="item.className">{{item.name}}</el-tag>
+									{{p.name}}
+								</div> 
+								<el-popover
+									placement="top-start"
+									title="更多操作"
+									width="200"
+									trigger="hover">
+									<div class="project-id"> 
+										<el-link id="prj-copy-btn" type="primary"  title="通过复制快速创建新项目" @click.stop="onCopyToBtnClick(p)" v-loading="load.add">复制&nbsp;</el-link> 
+										<el-link v-if="menukey=='myFocus'"  type="primary"  @click.stop="focusOrUnfocus(p)" >取消关注</el-link> 
+										<el-link v-else  type="primary"   @click.stop="focusOrUnfocus(p)" >关注</el-link>  
+										<el-link   type="danger" title="删除项目" @click.stop="handleDel(p)" v-loading="load.del">删除</el-link>
+
+										<!--<el-link id="prj-calc-btn" type="warning" style="font-size:14px;float:right;margin-left:2px;"  title="统计项目的工作量、进度、需求、bugs等数据" @click.stop="loadTasksToXmProjectState(p)" v-loading="load.add">统计</el-link>-->
+									</div>
+
+									<el-button size="mini" slot="reference" icon="el-icon-setting" circle plain></el-button>
+								</el-popover>
 							</div>
+							
 							<div class="project-info"> 
 								
 								<div class="info-task"  title="已完成需求数 / 总需求数 ">
 									<span>
 										<span class="item-total finish-task">{{menuFinishCntCalc(p)}}</span>
-										<span style="margin: 0 .25rem !important;">/</span>
-										<span class="item-type total-task">{{p.menuCnt==null?0:p.menuCnt}}</span>
+										<span style="margin: 0.2rem 0.25rem !important;">/</span>
+										<span class="item-total total-task">{{p.menuCnt==null?0:p.menuCnt}}</span>
 									</span>
 									<span class="item-type">需求</span>
 								</div>
@@ -142,16 +158,16 @@
 								<div class="info-task"   title="已完成 / 总任务数 ">
 									<span>
 										<span class="item-total finish-task">{{((p.taskFinishCnt||0)+(p.taskSetCnt||0)+(p.taskCloseCnt||0))}}</span>
-										<span style="margin: 0 .25rem !important;">/</span>
-										<span class="item-type total-task">{{p.taskCnt==null?0:p.taskCnt}}</span>
+										<span style="margin: 0.2rem 0.25rem !important;">/</span>
+										<span class="item-total total-task">{{p.taskCnt==null?0:p.taskCnt}}</span>
 									</span>
 									<span class="item-type">任务</span>
 								</div>
 								<div class="info-task"  title="已关闭 / 总缺陷数 ">
 									<span>
 										<span class="item-total finish-task">{{p.closedBugs==null?0:p.closedBugs}}</span>
-										<span style="margin: 0 .25rem !important;">/</span>
-										<span class="item-type total-task">{{p.bugCnt==null?0:p.bugCnt}}</span>
+										<span style="margin: 0.2rem 0.25rem !important;">/</span>
+										<span class="item-total total-task">{{p.bugCnt==null?0:p.bugCnt}}</span>
 									</span>
 									<span class="item-type">缺陷</span>
 								</div>
@@ -455,7 +471,7 @@
 				},
 				/**begin 自定义属性请在下面加 请加备注**/
 				menukey: "all",
-				showType: false,
+				showType: true,
 				showInfo: false,
 				selectProject: null,
 				finishFlag: false,
@@ -997,8 +1013,7 @@
 	cursor: pointer;
 	font-size: 12px;
 	color: #999;
-	margin-right: 20px;
-	margin-top: 10px;
+	padding: 10px; 
 }
 .project-card:hover{
 	border-color: #00abfc;

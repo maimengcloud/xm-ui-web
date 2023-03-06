@@ -1,6 +1,6 @@
 <template>
 	<section class="padding">
-				<el-row >
+				<el-row class="padding-left padding-right">
 					<el-select   v-model="filters.queryScope"  style="width:120px;"  placeholder="产品查询范围" clear>
 						<el-option :label="userInfo.branchName+'机构下所有的产品'" value="branchId"></el-option>
 						<el-option label="我相关的产品" value="compete"></el-option>
@@ -137,13 +137,29 @@
 				<el-row v-show="showType" v-loading="load.list"  :style="{overflowX:'hidden',height:maxTableHeight+'px'}">
 					<!--列表 XmProject xm_project-->
 					<el-row  v-if="xmProducts.length>0">
-						<el-col  v-cloak v-for="(p,i) in xmProducts" :key="i" :xl="6" :lg="8" :md="8" :sm="12">
-							<el-card @click.native="intoInfo(p,i)" class="project-card" shadow="always">
-								<div class="project-name" title="这是产品名称">{{p.productName}}</div>
-								<div class="project-id eui-text-truncate">{{p.id}}
-									<el-tag title="产品状态" v-for="(item,index) in formatDictsWithClass(dicts,'xmProductPstatus',p.pstatus)" :key="index" :type="item.className">{{item.name}}</el-tag>
-									<el-link id="prj-del-btn" type="danger" style="font-size:14px;float:right;margin-left:2px;"  title="删除产品" @click.stop="handleDel(p)" v-loading="load.add">删除</el-link>
-									<el-link id="prj-copy-btn" type="primary" style="font-size:14px;float:right;margin-left:2px;"  title="通过复制快速创建新产品" @click.stop="onCopyToBtnClick(p)" v-loading="load.add">复制&nbsp;</el-link> 
+						<el-col  v-cloak v-for="(p,i) in xmProducts" :key="i" :xl="6" :lg="8" :md="8" :sm="12" class="project-card">
+							<el-card @click.native="intoInfo(p,i)"  shadow="always">
+								<div   slot="header" style="display:flex;justify-content: space-between;">
+									<div class="project-name">
+										<el-tag title="产品状态" v-for="(item,index) in formatDictsWithClass(dicts,'xmProductPstatus',p.pstatus)" :key="index" :type="item.className">{{item.name}}</el-tag>
+										{{p.productName}}
+									</div> 
+									<el-popover
+										placement="top-start"
+										title="更多操作"
+										width="200"
+										trigger="hover">
+										<div class="project-id"> 
+											<el-link id="prj-copy-btn" type="primary"  title="通过复制快速创建新产品" @click.stop="onCopyToBtnClick(p)" v-loading="load.add">复制&nbsp;</el-link> 
+											<el-link v-if="menukey=='myFocus'"  type="primary"  @click.stop="focusOrUnfocus(p)" >取消关注</el-link> 
+											<el-link v-else  type="primary"   @click.stop="focusOrUnfocus(p)" >关注</el-link>  
+											<el-link   type="danger" title="删除项目" @click.stop="handleDel(p)" v-loading="load.del">删除</el-link>
+
+											<!--<el-link id="prj-calc-btn" type="warning" style="font-size:14px;float:right;margin-left:2px;"  title="统计项目的工作量、进度、需求、bugs等数据" @click.stop="loadTasksToXmProjectState(p)" v-loading="load.add">统计</el-link>-->
+										</div>
+
+										<el-button size="mini" slot="reference" icon="el-icon-setting" circle plain></el-button>
+									</el-popover>
 								</div> 
 									<div class="project-info"> 
 										
@@ -151,7 +167,7 @@
 											<span class="nums">
 												<span class="item-total finish-task">{{p.menuFinishCnt==null?0:p.menuFinishCnt}}</span>
 												<span style="margin: 0 .25rem !important;">/</span>
-												<span class="item-type total-task">{{p.menuCnt==null?0:p.menuCnt}}</span>
+												<span class="item-total total-task">{{p.menuCnt==null?0:p.menuCnt}}</span>
 											</span>
 											<span class="item-type">需求</span>
 										</div>
@@ -169,7 +185,7 @@
 											<span>
 												<span class="item-total finish-task">{{p.taskFinishCnt==null?0:p.taskFinishCnt}}</span>
 												<span style="margin: 0 .25rem !important;">/</span>
-												<span class="item-type total-task">{{p.taskCnt==null?0:p.taskCnt}}</span>
+												<span class="item-total total-task">{{p.taskCnt==null?0:p.taskCnt}}</span>
 											</span>
 											<span class="item-type">任务</span>
 										</div>
@@ -177,7 +193,7 @@
 											<span>
 												<span class="item-total finish-task">{{p.closedBugs==null?0:p.closedBugs}}</span>
 												<span style="margin: 0 .25rem !important;">/</span>
-												<span class="item-type total-task">{{p.bugCnt==null?0:p.bugCnt}}</span>
+												<span class="item-total total-task">{{p.bugCnt==null?0:p.bugCnt}}</span>
 											</span>
 											<span class="item-type">缺陷</span>
 										</div>
@@ -467,7 +483,7 @@
 				maxTableHeight:300,  
 				projectVisible:false,
 				productSelectVisible:false,
-				showType:false,
+				showType:true,
 				xmProductCopy:{
 					id:'',productName:'',code:'',isTpl:'',copyMenu:'1',copyPhase:'1',copyGroup:'1',copyGroupUser:'0'
 				},
@@ -876,9 +892,8 @@
 .project-card{
 	cursor: pointer;
 	font-size: 12px;
-	color: #999; 
-	margin-top: 10px;
-	margin-right: 20px;
+	color: #999;  
+	padding: 10px;
 }
 .project-card:hover{
 	border-color: #00abfc;
