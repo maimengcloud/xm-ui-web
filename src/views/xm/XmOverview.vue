@@ -61,7 +61,7 @@
                 </el-popover>
 
               </div> 
-              <el-row>
+              <el-row style="margin-bottom:10px">
                 <el-col :span="8">
                   <div class="item">
                     <div class="icon1" style="background-color:  rgb(79, 140, 255);">
@@ -98,7 +98,7 @@
                   </div>
                 </el-col>
               </el-row>
-              <el-row>
+              <el-row style="margin-bottom:10px">
                 <div class="item">
                   <div class="icon2" style="background-color:  rgb(204, 204, 204);">
                     <i class="el-icon-date"></i>
@@ -110,7 +110,7 @@
                   </div>
                 </div>
               </el-row>
-              <el-row>
+              <el-row style="margin-bottom:10px">
                 <div class="item">
                   <div class="icon2" style="background-color:  rgb(204, 204, 204);">
                     <i class="el-icon-star-off"></i>
@@ -120,7 +120,7 @@
                   </div>
                 </div>
               </el-row>
-              <el-row>
+              <el-row style="margin-bottom:10px">
                 <div class="item">
                   <div class="icon2" style="background-color:  rgb(204, 204, 204);">
                     <i class="el-icon-alarm-clock"></i>
@@ -1059,7 +1059,6 @@ export default {
 }
 
 .item {
-  margin-top:10px;
   display: flex;
   justify-content: flex-start;
   position: relative;

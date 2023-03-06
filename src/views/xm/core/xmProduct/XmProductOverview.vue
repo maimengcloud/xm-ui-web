@@ -1024,7 +1024,6 @@ export default {
 }
 
 .item {
-  margin-top:5px;
   display: flex;
   justify-content: flex-start;
   position: relative;

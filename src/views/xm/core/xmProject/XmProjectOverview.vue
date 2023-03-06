@@ -29,7 +29,7 @@
                
               </div>
               <el-row style="margin-bottom:10px">
-                <el-row>
+                <el-row >
                   <span>项目负责人</span>&nbsp;<span><b>{{pmUsername}}</b></span> 
                  </el-row> 
               </el-row>
@@ -1035,7 +1035,6 @@ export default {
 }
 
 .item {
-  margin-top:5px;
   display: flex;
   justify-content: flex-start;
   position: relative;
