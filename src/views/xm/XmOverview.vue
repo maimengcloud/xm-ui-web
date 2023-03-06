@@ -39,11 +39,11 @@
           <p>需求数</p>
         </div>
       </el-row>
-      <el-row :gutter="10">
+      <el-row :gutter="10" style="margin-bottom:10px">
           <el-col :span="8" >
-            <el-card class="box-card" style="padding:0px ;height:425px">
-              <div slot="header" class="clearfix">
-                <span>企业信息</span>
+            <el-card class="box-card" style="height:425px">
+              <div slot="header">
+                <span>企业</span>&nbsp;<span><b>{{userInfo.branchName}}</b></span>
 
                 <el-popover
                   placement="bottom"
@@ -57,16 +57,11 @@
                       <font color="blue" style="font-size:10px;">将从项目任务及企业任务中汇总进度、预算工作量、实际工作量、预算金额、实际金额、缺陷数、需求数等数据到企业统计表</font>
                   </el-row>
 
-                  <el-button slot="reference" style="float:right;" icon="el-icon-video-play" type="text">统计</el-button>
+                  <el-button slot="reference" circle plain style="float:right;" icon="el-icon-video-play" type="text"></el-button>
                 </el-popover>
 
-              </div>
-              <el-row style="margin-bottom:10px">
-                <el-row>
-                  <span>企业</span>&nbsp;<span><b>{{userInfo.branchName}}</b></span>
-                 </el-row>
-              </el-row>
-              <el-row style="margin-bottom:10px">
+              </div> 
+              <el-row>
                 <el-col :span="8">
                   <div class="item">
                     <div class="icon" style="background-color:  rgb(79, 140, 255);">
@@ -103,7 +98,7 @@
                   </div>
                 </el-col>
               </el-row>
-              <el-row style="margin-bottom:10px">
+              <el-row>
                 <div class="item">
                   <div class="icon2" style="background-color:  rgb(204, 204, 204);">
                     <i class="el-icon-date"></i>
@@ -115,7 +110,7 @@
                   </div>
                 </div>
               </el-row>
-              <el-row style="margin-bottom:10px">
+              <el-row>
                 <div class="item">
                   <div class="icon2" style="background-color:  rgb(204, 204, 204);">
                     <i class="el-icon-star-off"></i>
@@ -125,7 +120,7 @@
                   </div>
                 </div>
               </el-row>
-              <el-row style="margin-bottom:10px">
+              <el-row>
                 <div class="item">
                   <div class="icon2" style="background-color:  rgb(204, 204, 204);">
                     <i class="el-icon-alarm-clock"></i>
