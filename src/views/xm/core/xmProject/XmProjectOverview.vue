@@ -1014,8 +1014,7 @@ export default {
 }
 
 .icon1 {
-  color: #fff;
-  height: 30px; 
+  color: #fff; 
   border-radius: 15px;
   text-align: center; 
   font-size: 20px;
@@ -1024,8 +1023,7 @@ export default {
 }
 
 .icon2 {
-  color: #000000; 
-  width: 30px;
+  color: #000000;  
   border-radius: 15px;
   text-align: center; 
   font-size: 20px;

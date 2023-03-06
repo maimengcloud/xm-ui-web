@@ -61,7 +61,7 @@
                 </el-popover>
 
               </div> 
-              <el-row style="margin-bottom:10px">
+              <el-row style="margin-bottom:20px">
                 <el-col :span="8">
                   <div class="item">
                     <div class="icon1" style="background-color:  rgb(79, 140, 255);">
@@ -98,7 +98,7 @@
                   </div>
                 </el-col>
               </el-row>
-              <el-row style="margin-bottom:10px">
+              <el-row style="margin-bottom:20px">
                 <div class="item">
                   <div class="icon2" style="background-color:  rgb(204, 204, 204);">
                     <i class="el-icon-date"></i>
@@ -110,7 +110,7 @@
                   </div>
                 </div>
               </el-row>
-              <el-row style="margin-bottom:10px">
+              <el-row style="margin-bottom:20px">
                 <div class="item">
                   <div class="icon2" style="background-color:  rgb(204, 204, 204);">
                     <i class="el-icon-star-off"></i>
@@ -120,7 +120,7 @@
                   </div>
                 </div>
               </el-row>
-              <el-row style="margin-bottom:10px">
+              <el-row style="margin-bottom:20px">
                 <div class="item">
                   <div class="icon2" style="background-color:  rgb(204, 204, 204);">
                     <i class="el-icon-alarm-clock"></i>
@@ -1038,8 +1038,7 @@ export default {
 <style scoped lang="scss">
  
 .icon1 {
-  color: #fff;
-  height: 30px;
+  color: #fff; 
   border-radius: 15px;
   text-align: center;
   font-size: 20px;
@@ -1048,8 +1047,7 @@ export default {
 }
 
 .icon2 {
-  color: #000000;
-  width: 30px;
+  color: #000000; 
   border-radius: 15px;
   text-align: center;
   font-size: 20px;
