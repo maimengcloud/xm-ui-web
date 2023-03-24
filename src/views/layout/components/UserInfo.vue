@@ -194,7 +194,7 @@ export default {
                     if(res0.data.data.length<=1){
                         this.$notify.warning("当前没有关联的账户，无须切换");
                     }else{
-                        this.phonenoUsersVisible=true;
+                        this.phonenoUsersVisible=true; 
                     }
                 }else{
                     this.$notify.error(res0.data.tips.msg);
@@ -264,7 +264,7 @@ export default {
                             setToken( res.data.data.accessToken.tokenValue)
                             removeCacheUserInfo();
                             this.$store.dispatch('GetUserInfo').then((res2)=>{  
-                                this.$router.push({ path: '/' });
+                                this.$router.go(0) 
                             }).catch(err=>{
                                     
                             }); 

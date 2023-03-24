@@ -2,18 +2,18 @@
     <div>
         <div v-if="!isRestPwd">
             <div class="login_form">
-                <el-form autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm">
-                    <el-form-item prop="displayUserid" v-show="loginForm.authType=='password_display_userid'">
-                        <el-input class="inp"  type="text" v-model="loginForm.displayUserid" autoComplete="on"  placeholder="账号"></el-input>
+                <el-form autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="top">
+                    <el-form-item prop="displayUserid" v-show="loginForm.authType=='password_display_userid'" label="登录账号">
+                        <el-input class="inp"  type="text" v-model="loginForm.displayUserid" autoComplete="on"  placeholder="登录账号"></el-input>
                     </el-form-item>
-                    <el-form-item  prop="password" v-show="loginForm.authType=='password_display_userid'">
-                        <el-input class="inp" show-password v-model="loginForm.password" autoComplete="on" placeholder="密码"></el-input>
+                    <el-form-item  prop="password" v-show="loginForm.authType=='password_display_userid'"  label="登录密码">
+                        <el-input class="inp" show-password v-model="loginForm.password" autoComplete="on" placeholder="登录密码"></el-input>
                     </el-form-item>
-                    <el-form-item prop="phoneno" v-show="loginForm.authType=='sms'"> 
+                    <el-form-item prop="phoneno" v-show="loginForm.authType=='sms'" label="手机号码"> 
                         <el-input class="inp" name="phoneno" type="text" v-model="loginForm.phoneno" autoComplete="on" placeholder="手机号码">
                         </el-input>
                     </el-form-item>
-                    <el-form-item prop="smsCode" v-show="loginForm.authType=='sms'"> 
+                    <el-form-item prop="smsCode" v-show="loginForm.authType=='sms'" label="短信验证码"> 
                         <el-input class="inp smsCode" name="smsCode" type="text" v-model="loginForm.smsCode" autoComplete="on" placeholder="短信验证码">
                         </el-input>
                         <el-button class="sendCode" :disabled="abledBut" @click.prevent="sendPhonenoSmsCode('login')">
@@ -22,17 +22,19 @@
                         </el-button>
                     
                     </el-form-item>
+                    
+                    <el-button class="login" :loading="loading" @click.native.prevent="handleLogin">
+                        <span class="text">登 录</span>
+                    </el-button>
                 </el-form>
+
+                
                 <div class="oper">
                     <a @click="isRestPwd = true">忘记密码</a>
                     <a @click="loginByShowAccount">演示账户登录</a>
                     <a v-if="loginForm.authType == 'password_display_userid' " @click="loginForm.authType = 'sms'">手机号登录</a>
                     <a v-if="loginForm.authType == 'sms' " @click="loginForm.authType = 'password_display_userid' ">密码登录</a>
                 </div>
-
-                <el-button class="login" :loading="loading" @click.native.prevent="handleLogin">
-                    <span class="text">登 录</span>
-                </el-button>
             </div>
             <div class="bottom">
                 <el-divider content-position="center">第三方登录方式</el-divider>
@@ -47,12 +49,12 @@
 
         <div v-if="isRestPwd">
             <div class="login_form">
-                <el-form autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm">
-                    <el-form-item prop="phoneno" > 
+                <el-form autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="top">
+                    <el-form-item prop="phoneno" label="手机号码"> 
                         <el-input class="inp" name="phoneno" type="text" v-model="loginForm.phoneno" autoComplete="on" placeholder="手机号码">
                         </el-input>
                     </el-form-item>
-                    <el-form-item prop="smsCode"> 
+                    <el-form-item prop="smsCode"  label="短信验证码"> 
                         <el-input class="inp smsCode" name="smsCode" type="text" v-model="loginForm.smsCode" autoComplete="on" placeholder="短信验证码">
                         </el-input>
                         <el-button :disabled="abledBut" class="sendCode" @click.prevent="sendPhonenoSmsCode('changePassword')">
@@ -61,7 +63,7 @@
                         </el-button>
                     </el-form-item>
  
-                     <el-form-item prop="password" > 
+                     <el-form-item prop="password" label="新密码"> 
                         <el-input class="inp" show-password name="password" :type="passwordType" v-model="loginForm.password" autoComplete="on" placeholder="新密码">
                         </el-input>
                     </el-form-item>
@@ -80,7 +82,7 @@
 </template>
 
 <script>
-import { sendSmsCode } from '@/api/sms/sms';
+import { sendNoAuthSmsCode } from '@/api/sms/sms';
 import { mapGetters } from 'vuex'; 
 import md5 from 'js-md5';
 import { resetPasswordByPhoneno,getTpaState } from '@/api/login'; 
@@ -105,6 +107,11 @@ export default {
                 this.abledBut = false
                 this.setTimeNum = 60
             }
+        },
+        isRestPwd(){
+            clearInterval(this.timeWrap)
+            this.abledBut = false
+            this.setTimeNum = 60
         }
     },
 
@@ -198,7 +205,7 @@ export default {
                 phoneno:this.loginForm.phoneno,
                 scene:scene
             }
-            sendSmsCode(params).then(res=>{
+            sendNoAuthSmsCode(params).then(res=>{
                 if(res.data.tips.isOk){
                     this.$notify.success("发送成功");
                     if (this.setTimeNum > 0) {

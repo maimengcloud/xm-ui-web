@@ -1,4 +1,6 @@
-import axios from '@/utils/request'
+import axiosAuth from '@/utils/request'
+import axios from '@/utils/requestNoAuth'//免登录访问
+
 
 import config from '@/common/config'
 
@@ -8,8 +10,12 @@ let base=config.getSmsBasePath();
  * 发送短信验证码、验证短信验证码接口
  **/
  
+ 
 //发送短信验证码
-export const sendSmsCode = params => { return axios.post(`${base}/sms/sendSmsCode`, params); };
+export const sendNoAuthSmsCode = params => { return axios.post(`${base}/sms/sendSmsCode`, params); };
+ 
+//发送短信验证码
+export const sendSmsCode = params => { return axiosAuth.post(`${base}/sms/sendSmsCode`, params); };
 
 //验证短信验证码 
-export const validateSmsCode = params => { return axios.post(`${base}/sms/validateSmsCode`, params); };
+export const validateSmsCode = params => { return axiosAuth.post(`${base}/sms/validateSmsCode`, params); };

@@ -1,4 +1,4 @@
-import axios from 'axios'//免登录访问
+import axios from '@/utils/requestNoAuth'//免登录访问
 import axiosAuth from '@/utils/request'//待token访问
 
 
@@ -8,27 +8,7 @@ import { getToken, setToken, removeToken,getCacheUserInfo,setCacheUserInfo,remov
 import config from '@/common/config'
 
 let base=config.getOauth2LoginBasePath();
-
-
-var curlDomain=window.location.protocol+"//"+window.location.host; //   返回https://mp.csdn.net
-var baseApiUrl="";
-if(process.env.BASE_API ){
-  if(process.env.BASE_API.indexOf("http")<0 && process.env.BASE_API.indexOf("wwww.")<0){
-    baseApiUrl=curlDomain+"/"+process.env.BASE_API+"/"+process.env.VERSION;
-  }else{
-    baseApiUrl=process.env.BASE_API+"/"+process.env.VERSION;
-  }
-
-}else{
-  baseApiUrl=curlDomain+"/api/"+process.env.VERSION
-}
-var indexOfHttp=baseApiUrl.indexOf("://");
-if(indexOfHttp>0){
-  baseApiUrl=baseApiUrl.substr(0,indexOfHttp+3)+baseApiUrl.substr(indexOfHttp+3,baseApiUrl.length).replace("//","/");
-}else{
-  baseApiUrl=baseApiUrl.replace("//","/")
-}
-
+ 
 
 //let base='';
 export function doLoginByUserloginid(userloginid, password,grantType,authType,deptid,userid) {
@@ -41,7 +21,7 @@ export function doLoginByUserloginid(userloginid, password,grantType,authType,de
     userid:userid,
   }
   return axios({
-    url: baseApiUrl+'/'+base+'/login/token?grantType='+grantType,
+    url: base+'/login/token?grantType='+grantType,
     method: 'post',
     data
   })
@@ -66,7 +46,7 @@ export function checkUserid(userid ) {
     userid: userid
   }
   return axios({
-    url: baseApiUrl+'/'+base+'/user/check/userid',
+    url: base+'/user/check/userid',
     method: 'post',
     data
   })
@@ -77,7 +57,7 @@ export function checkDisplayUserid(displayUserid ) {
     displayUserid: displayUserid
   }
   return axios({
-    url: baseApiUrl+'/'+base+'/user/check/displayUserid',
+    url: base+'/user/check/displayUserid',
     method: 'post',
     data
   })
@@ -89,14 +69,14 @@ export function checkPhoneno(phoneno ) {
     phoneno: phoneno
   }
   return axios({
-    url: baseApiUrl+'/'+base+'/user/check/phoneno',
+    url: base+'/user/check/phoneno',
     method: 'post',
     data
   })
 }
 export function queryByUserloginid( params ) {
   return axios({
-    url: baseApiUrl+'/'+base+'/user/queryByUserloginid',
+    url: base+'/user/queryByUserloginid',
     method: 'get',
     params:params
   })
@@ -114,7 +94,7 @@ export function doRegister( userInfo ) {
     branchId:userInfo.branchId
   }
   return axios({
-    url: baseApiUrl+'/'+base+'/user/register',
+    url: base+'/user/register',
     method: 'post',
     data
   })
@@ -129,7 +109,7 @@ export function resetPasswordByPhoneno( userInfo ) {
     userid:userInfo.userid
   }
   return axios({
-    url: baseApiUrl+'/'+base+'/user/password/reset?type=sms',
+    url: base+'/user/password/reset?type=sms',
     method: 'post',
     data
   })
@@ -165,7 +145,7 @@ export function getUserInfo(params) {
 export function sendEmail(params) {
   const data=params;
   return axios({
-    url: baseApiUrl+'/'+base+'/user/sendEmail',
+    url: base+'/user/sendEmail',
     method: 'post',
     data
   })
@@ -176,7 +156,7 @@ export function sendEmail(params) {
 
 export function validEmailCode(params) {
   return axios({
-    url: baseApiUrl+'/'+base+'/user/validEmailCode',
+    url: base+'/user/validEmailCode',
     method: 'get',
     params:params
   })

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form  autoComplete="on" label-width="120px" :model="loginForm" :rules="loginRules" ref="loginForm"> 
+    <el-form  autoComplete="on" label-width="120px" label-position="top" :model="loginForm" :rules="loginRules" ref="loginForm"> 
       <div>
         <div class="logo">
           <img src="../../assets/image/logo1.png" alt="" />  

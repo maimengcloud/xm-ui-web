@@ -1,34 +1,37 @@
 <template>
   <div>
     <div class="login_form">
-        <el-form  autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm">
+        <el-form  autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="top">
           
 
-            <el-form-item prop="displayUserid"  title="登录账号"> 
+            <el-form-item prop="displayUserid"  label="登录账号"> 
                 <el-input  class="inp" name="displayUserid" type="text" v-model="loginForm.displayUserid" autoComplete="on" placeholder="登录账号" >
                 </el-input>
             </el-form-item>
 
-            <el-form-item prop="password"  title="登录密码"> 
+            <el-form-item prop="password"  label="登录密码"> 
                 <el-input class="inp" show-password  name="password" :type="passwordType" v-model="loginForm.password" autoComplete="on" placeholder="密码">
                 </el-input>
             </el-form-item>
 
             
-            <el-form-item prop="username"  title="用户名称"> 
+            <el-form-item prop="username"  label="用户名称"> 
                 <el-input class="inp" name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="用户名称" >
                 </el-input>
             </el-form-item>
             
-            <el-form-item prop="phoneno" title="手机号码"> 
+            <el-form-item prop="phoneno" label="手机号码"> 
                 <el-input class="inp" name="phoneno" type="text" v-model="loginForm.phoneno" autoComplete="on" placeholder="手机号码"> 
                 </el-input>
             </el-form-item>
 
-            <el-form-item prop="smsCode" title="短信验证码"> 
+            <el-form-item prop="smsCode" label="短信验证码"> 
                 <el-input class="inp smsCode" name="smsCode" type="text" v-model="loginForm.smsCode" autoComplete="on" placeholder="短信验证码">
                 </el-input>
-                <el-button class="sendCode" @click.prevent="sendPhonenoSmsCode"><span class="text">发送验证码</span></el-button> 
+                <el-button class="sendCode" :disabled="abledBut" @click.prevent="sendPhonenoSmsCode">  
+                    <span class="text" v-if="!abledBut">发送验证码</span>
+                    <span class="text" v-else>({{setTimeNum}}s)</span>
+                 </el-button> 
               <span v-if="phonenoUsers!=null && phonenoUsers.length>0"> 该手机号已注册有{{phonenoUsers.length}}个账户<font color="blue"></font>
                 <el-button type="text"  @click="phonenoUsersVisible=true">查看明细</el-button>
               </span>
@@ -67,7 +70,7 @@
 </template>
 
 <script>
-import { sendSmsCode } from '@/api/sms/sms';
+import { sendNoAuthSmsCode } from '@/api/sms/sms';
 import { checkPhoneno,checkDisplayUserid,doRegister,queryByUserloginid } from '@/api/login';
 import LangSelect from '@/components/LangSelect';
 import SocialSign from '../socialsignin';
@@ -141,6 +144,9 @@ export default {
       addBranchFormVisible:false,  //显示添加机构对话框 
       phonenoUsers:[],
       phonenoUsersVisible:false,
+      
+      abledBut: false, //是否禁止
+		  setTimeNum: 60,  // 倒计时时间
     }
   },
   methods: {
@@ -167,9 +173,16 @@ export default {
       queryByUserloginid({userloginid:this.loginForm.phoneno,idType:"phoneno"}).then(res0=>{  
         if(res0.data.tips.isOk){
           this.phonenoUsers=res0.data.data; 
-          sendSmsCode(params).then(res=>{
+          sendNoAuthSmsCode(params).then(res=>{
             if(res.data.tips.isOk){
               this.$notify.success("发送成功");
+              
+              if (this.setTimeNum > 0) {
+                    this.abledBut = true
+                    this.timeWrap = setInterval(() => {
+                        this.setTimeNum -= 1
+                    }, 1000)
+                }
             }else{
               this.$notify.error(res.data.tips.msg);
             }

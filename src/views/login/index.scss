@@ -11,8 +11,7 @@
 }
 
 .login_content {
-    width: 1200px;
-    height: 600px;
+    width: 1200px; 
     background: #FCFCFE;
     border-radius: 30px;
     display: flex;
@@ -47,11 +46,11 @@
         }
         .login_box {
             width: 418px;
-            height: 472px;
             border: 1px solid #F1F1F1;
             box-shadow: 1px 7px 25px 2px rgba(22, 22, 93, 0.04);
             border-radius: 5px 5px 5px 5px;
             margin-top: 40px;
+            margin-bottom: 40px;
             .login_box_content {
                 padding: 28px 30px 16px 30px;
                 .top {
@@ -95,13 +94,14 @@
                     }
                 }
                 .oper {
+                    margin-top: 20px;
                     display: flex;
                     justify-content: space-between;
                     color: #40485B;
                     font-size: 14px;
                 }
                 .login {
-                    margin-top: 40px;
+                    margin-top: 20px;
                     width: 100%;
                     background-color: #FE9A00;
                     height: 42px;
