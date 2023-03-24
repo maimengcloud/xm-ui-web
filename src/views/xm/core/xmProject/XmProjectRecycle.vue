@@ -5,8 +5,8 @@
 			</el-input> 
 			<el-button @click="searchXmProjects" icon="el-icon-search"></el-button>
 		</el-row>
-		<el-row class="page-main ">  
-			 <el-table  ref="table" :height="maxTableHeight" v-cloak stripe :data="xmProjects" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+		<el-row class="padding-top">  
+			 <el-table  ref="table" border :height="maxTableHeight" v-cloak stripe :data="xmProjects" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 						<el-table-column  type="index" label="序号" width="80" ></el-table-column>
 						<el-table-column prop="id" label="项目编码" min-width="120" ></el-table-column>
 						<el-table-column prop="name" label="标题" min-width="200" >
@@ -28,7 +28,7 @@
 								{{scope.row.startTime? scope.row.startTime.substr(0,10) : ""}}~{{scope.row.endTime? scope.row.endTime.substr(0,10) : ""}}
 							</template>
 						</el-table-column> 
-						<el-table-column label="操作" width="245" fixed="right">
+						<el-table-column label="操作" width="120" fixed="right">
 							<template slot-scope="scope"> 
 								<el-button  type="primary" @click.stop="unDel(scope.row)" >撤销删除</el-button>   
 							</template>

@@ -5,12 +5,12 @@
 				<dept-tree ref="deptTree" show-root default-expand-all show-checkbox :expand-on-click-node="false"  @node-click="handleLeftDeptNodeClick" @branch-row-click="branchRowClick"></dept-tree>
 			</el-col>
 			<el-col :span="18">
-				<el-row>
+				<el-row class="padding-bottom">
 					<el-input v-model="filters.key" style="width: 40%;" placeholder="名称 编号 手机号码 模糊查询"></el-input>
 					<el-button type="primary" v-loading="load.list" v-on:click="searchUsers">查询</el-button>
 					<el-button type="primary" v-if="sels.length>0"  v-on:click="confirmUsers">确定</el-button>
 				</el-row>
-				<el-row class="selected-tag">
+				<el-row class="selected-tag padding-bottom" v-if="sels && sels.length>0">
 					<span v-for="sel in sels" :key="sel.userid" style="margin-left:5px;">
 					<el-tag
 						 type="plain"
@@ -26,9 +26,8 @@
 				</el-row>
 				<!--列表 User sys_user-->
 				<el-table :row-key="'userid'" :height="maxTableHeight" :data="users" current-row-key="userid"    @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" style="width: 100%;" ref="userTable" @row-click="rowClick">
-					<el-table-column :reserve-selection="true"	type="selection" width="65"></el-table-column>
-					<el-table-column type="index" width="65"></el-table-column>
-					<el-table-column prop="username" sortable label="用户名称" min-width="120" >
+					<el-table-column :reserve-selection="true"	type="selection" width="50"></el-table-column>
+ 					<el-table-column prop="username" sortable label="用户名称" min-width="250" >
 						<template slot-scope="scope">
 							<div class="avatar-container" @click="showEdit(scope.$index,scope.row)">
 								<div class="avatar-wrapper">

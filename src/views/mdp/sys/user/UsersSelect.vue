@@ -7,8 +7,7 @@
 				</el-row>
 				<el-table  :row-key="'userid'"	 :data="users" :height="maxTableHeight" highlight-current-row v-loading="load.list" border @selection-change="selsChange" style="width: 100%;" ref="userTable" @row-click="rowClick">
 					<el-table-column :reserve-selection="true"	type="selection" width="65"></el-table-column>
-					<el-table-column type="index" width="65"></el-table-column>
-					<el-table-column prop="username" sortable label="用户名称" min-width="120" >
+ 					<el-table-column prop="username" sortable label="用户名称" min-width="250" >
 						<template slot-scope="scope">
 							<div class="avatar-container">
 								<div class="avatar-wrapper">

@@ -185,7 +185,7 @@
 									<mdp-select-user-xm v-if="p.pmUserid" :value="p" userid-key="pmUserid" username-key="pmUsername" :disabled="true"></mdp-select-user-xm> 
 									<mdp-select-user-xm v-else-if="p.createUserid" :value="p" userid-key="createUserid" username-key="createUsername" :disabled="true"></mdp-select-user-xm> 
 
-								</div>
+								</div> 
 								<div class="project-period">{{p.startTime?p.startTime.substr(0,10):''}} ~{{p.endTime?p.endTime.substr(0,10):''}}</div>
 							</div>
 						</el-card>
@@ -1083,10 +1083,10 @@
 	display: flex;
 }
 .project-footer>div{
-	width: 30%;
+	width: 50%;
 }
 .project-footer>div:not(:first-child){
-	width: 70%;
+	width: 50%;
 }
 .project-period{
 	line-height: 40px;

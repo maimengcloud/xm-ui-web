@@ -1,6 +1,6 @@
 <template>
 	<section class="padding">  
-		<el-row>
+		<el-row class="padding-bottom">
 			<el-select   v-model="filters.queryScope"    placeholder="产品查询范围">
 				<el-option :label="userInfo.branchName+'机构下所有的产品'" value="branchId"></el-option>
 				<el-option label="我相关的产品" value="compete"></el-option>
@@ -81,9 +81,9 @@
 				<el-button  slot="reference"   icon="el-icon-more"></el-button>
 			</el-popover>
 		</el-row>
-		<el-row > 
+		<el-row> 
 			<!--列表 XmProduct 产品表-->
-			<el-table  ref="table" :height="maxTableHeight" :data="xmProducts" :row-class-name="tableRowClassName" @sort-change="sortChange" :highlight-current-row="true" current-row-key="id" v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table  ref="table"  border :height="maxTableHeight" :data="xmProducts" :row-class-name="tableRowClassName" @sort-change="sortChange" :highlight-current-row="true" current-row-key="id" v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  				 <el-table-column type="index" width="60"> 
 				</el-table-column>
 				<el-table-column prop="productName" label="产品名称" min-width="200" sortable>

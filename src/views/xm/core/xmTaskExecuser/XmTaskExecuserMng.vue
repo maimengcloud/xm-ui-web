@@ -79,12 +79,11 @@
 					<el-table-column prop="skillRemark" label="技能" min-width="150" sortable  show-overflow-tooltip> 
 					</el-table-column>  
 					<el-table-column prop="remarks" label="备注" min-width="150" sortable  show-overflow-tooltip> 
-					</el-table-column>  
-				<el-table-column  label="报价信息" min-width="150">
+					</el-table-column>   
 					
 					 <el-table-column prop="createTime" label="报价时间" width="150" sortable> 
 					</el-table-column>  
-					 <el-table-column prop="quoteWorkload" label="报价工作量" width="100" sortable>  
+					 <el-table-column prop="quoteWorkload" label="报价工时" width="100" sortable>  
 						<template slot-scope="scope">
 							{{scope.row.quoteWorkload?scope.row.quoteWorkload:'-'}}h
 						</template>
@@ -94,8 +93,7 @@
 						<template slot-scope="scope">
 							￥{{scope.row.quotePrice?scope.row.quotePrice:'-'}}元
 						</template>
-					</el-table-column>   
-				</el-table-column> 
+					</el-table-column>    
 			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
  
