@@ -328,7 +328,8 @@ export default {
   computed: {
     ...mapGetters(["userInfo"]),
     competeTasks: function (){
-      return this.xmBranch.taskCnt||0-this.xmBranch.taskUnstartCnt||0-this.xmBranch.taskExecCnt||0;
+      var data=this.totalTask-this.notStart
+      return data
     },
     notStart: function() {
       return  this.xmBranch.taskUnstartCnt||0+this.xmBranch.taskExecCnt||0;
