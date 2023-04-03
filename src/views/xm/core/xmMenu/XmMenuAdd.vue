@@ -99,7 +99,8 @@
 		</el-row>
 		<el-row class="padding">
 			<el-button @click.native="handleCancel">关闭</el-button>  
-			<el-button v-loading="load.add" type="primary" @click.native="addSubmit" :disabled="load.add==true">提交</el-button>  
+			<el-button v-loading="load.add" type="primary" @click.native="addSubmit(1)" :disabled="load.add==true">提交(关闭窗口)</el-button>  
+			<el-button v-loading="load.add" type="primary" @click.native="addSubmit(2)" :disabled="load.add==true">提交(继续新增)</el-button>  
 		</el-row>
 		<el-dialog title="上级需求详情" :visible.sync="pmenuFormVisible" :with-header="false" width="90%" top="20px"    append-to-body   :close-on-click-modal="false" >
 			<xm-menu-edit v-if="pmenuFormVisible" :reload="true" :xm-menu="{menuId:addForm.pmenuId}" :sel-project="selProject" :visible="pmenuFormVisible" @cancel="pmenuFormVisible=false"></xm-menu-edit>
@@ -203,7 +204,7 @@
  				this.$emit('cancel');
 			},
 			//新增提交XmMenu 项目需求表 父组件监听@submit="afterAddSubmit"
-			addSubmit: function () {
+			addSubmit: function (submitType) {
 				if(this.addForm.productId==null){
 					this.$notify({position:'bottom-left',showClose:true,message: '请选择产品/或者上级需求进行新增', type:'error' }); 
 					return;
@@ -239,6 +240,13 @@
 								var tips=res.data.tips;
 								if(tips.isOk){
  									this.$emit('submit',res.data.data);//  @submit="afterAddSubmit"
+									 if(submitType==1){
+										this.handleCancel()
+									}else{
+										var seqNos=this.addForm.seqNo.split(".")
+										seqNos[seqNos.length-1]=parseInt(seqNos[seqNos.length-1])+1
+ 										this.addForm.seqNo=seqNos.join(".");
+									}
 								}
 								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch( err  => this.load.add=false);

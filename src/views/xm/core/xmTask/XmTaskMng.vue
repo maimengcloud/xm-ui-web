@@ -1407,8 +1407,7 @@ export default {
       this.addForm.ntype=ntype;
       this.addFormVisible = true;
     },
-    afterAddSubmit(row) {
-      this.addFormVisible = false;
+    afterAddSubmit(row) { 
       this.pageInfo.count = true;
       this.xmTasks.push(row)
         //this.getXmTasks()
@@ -1618,6 +1617,7 @@ export default {
         i.actWorkload = 0;
         i.taskState = "0";
         i.rate = 0;
+        i.sortLevel=i.seqNo
         i.taskOut = i.taskOut ? i.taskOut : "0";
         i.taskClass = i.taskClass ? i.taskClass : "1";
         i.toTaskCenter = i.toTaskCenter ? i.toTaskCenter : "1";

@@ -833,8 +833,7 @@
 			showProdcutAdd:function(){
 				this.$refs.xmProductMng.showAdd();
 			},
-			afterAddSubmit(row){
-				this.addFormVisible=false;
+			afterAddSubmit(row){ 
 				this.pageInfo.count=true; 
 				this.xmMenus.push(row); 
 				if(this.parentMenu){

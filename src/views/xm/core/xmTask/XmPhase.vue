@@ -886,6 +886,7 @@ export default {
         i.actWorkload = 0;
         i.taskState = "0";
         i.rate = 0;
+        i.sortLevel=i.seqNo;
         i.taskOut = i.taskOut ? i.taskOut : "0";
         i.taskClass = i.taskClass ? i.taskClass : "1";
         i.toTaskCenter = i.toTaskCenter ? i.toTaskCenter : "1";

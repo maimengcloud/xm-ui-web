@@ -208,7 +208,8 @@
 				</el-tabs>    
 				<el-row class="padding" style="float:right;">
 					<el-button @click.native="handleCancel">取消</el-button>
-					<el-button v-loading="load.add" type="primary" @click.native="addSubmit" :disabled="load.add==true">提交</el-button>
+					<el-button v-loading="load.add" type="primary" @click.native="addSubmit(1)" :disabled="load.add==true">提交(关闭窗口)</el-button>
+					<el-button v-loading="load.add" type="primary" @click.native="addSubmit(2)" :disabled="load.add==true">提交(继续新增)</el-button>
 				</el-row> 
 			</el-form>
 		</el-row> 
@@ -364,7 +365,7 @@
  				this.$emit('cancel');
 			},
 			//新增提交XmTask xm_task 父组件监听@submit="afterAddSubmit"
-			addSubmit: function () {
+			addSubmit: function (submitType) {
 				if(this.addForm.ntype!='1'){
 					if(this.xmIteration && this.xmIteration.id){
 						if(!this.addForm.menuId){
@@ -409,8 +410,16 @@
 								var tips=res.data.tips;
 								if(tips.isOk){ 
 									this.$emit('submit',res.data.data);//  @submit="afterAddSubmit"
+									if(submitType==1){
+										this.handleCancel()
+									}else{
+										var sortLevels=this.addForm.sortLevel.split(".")
+										sortLevels[sortLevels.length-1]=parseInt(sortLevels[sortLevels.length-1])+1
+ 										this.addForm.sortLevel=sortLevels.join(".");
+									}
 								}
 								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
+								
 							}).catch( err  => this.load.add=false);
 						});
 					}else{
