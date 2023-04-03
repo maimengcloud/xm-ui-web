@@ -211,7 +211,7 @@
 							
 							<el-col :span="12">
 								<el-form-item label="排序序号" prop="sortLevel" >   
-									<el-input  v-model="editForm.sortLevel" style="max-width:90%;"   placeholder="如1.0或者1.2.3等" title="序号，如1.0、1.1.1或者1，2，3等" ></el-input> 
+									<el-input  v-model="editForm.sortLevel" style="max-width:90%;" @change="editXmTaskSomeFields(editForm,'sortLevel',$event)"  placeholder="如1.0或者1.2.3等" title="序号，如1.0、1.1.1或者1，2，3等" ></el-input> 
 								</el-form-item>  
 							</el-col>
 							<el-col :span="12">
