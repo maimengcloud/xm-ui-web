@@ -452,7 +452,14 @@
               >
 
                 <template slot-scope="scope">
-                  	<span title="实际工时 / 预算工时 或者 (剩余工时+实际工时)">{{scope.row.actWorkload}} &nbsp;/ &nbsp;{{scope.row.rworkload?parseInt(scope.row.actWorkload)+parseInt(scope.row.rworkload):scope.row.budgetWorkload}}h </span>
+                  <el-link
+                    style="border-radius: 30px"
+                    :type= "'warning'"
+                    @click="setInitWorkload(scope.row)"
+                  >
+                  <span title="实际工时 / 预算工时 或者 (剩余工时+实际工时)">{{scope.row.actWorkload}} &nbsp;/ &nbsp;{{scope.row.rworkload?parseInt(scope.row.actWorkload)+parseInt(scope.row.rworkload):scope.row.budgetWorkload}}h </span>
+                  </el-link>
+                  	
                 </template>
               </el-table-column>
               <el-table-column sortable prop="productId" label="产品" width="100" show-overflow-tooltip>
@@ -632,8 +639,30 @@
         @cancel="taskWorkloadVisible=false"
         @submit="onTaskWorkloadSubmit"
       ></xm-workload-edit>
-    </el-dialog>
+    </el-dialog> 
 
+    <el-drawer
+      v-if="taskWorkloadInitVisible == true"
+      :size="600"
+      :visible.sync="taskWorkloadInitVisible"
+      append-to-body
+    >
+      <el-form class="padding" ref="workloadInit" :model="editForm" label-position="top" label-width="80px" size="mini">
+        <el-form-item label="更新范围">
+          <div v-if="sels.length==0">
+            {{ editForm.name }}   
+          </div>  
+          <div v-if="sels.length>0">
+            {{ editForm.name }} <font color="red">等{{sels.length}}个任务</font>
+          </div>  
+        </el-form-item> 
+        <el-form-item label="预估工时(小时)">
+          <el-input style="width:50%;" v-model="editForm.budgetWorkload" @change="editXmTaskSomeFields(editForm,'budgetWorkload',$event)">
+          </el-input>
+        </el-form-item> 
+      </el-form>
+       
+    </el-drawer>
     <!-- 新增 XmTask xm_task界面-->
     <el-dialog
       class="xm-task-add"
@@ -858,6 +887,7 @@ import XmGantt from "../components/xm-gantt";
 
   	import TagDialog from "@/views/mdp/arc/tag/TagDialog";
   	import XmWorkloadEdit from "@/views/xm/core/xmWorkload/XmWorkloadEdit";
+  	import XmWorkloadInit from "@/views/xm/core/xmWorkload/XmWorkloadInit";
 
 import XmPhaseSelect from "./XmPhaseSelect.vue";
 	import { addTaskExecuser } from '@/api/xm/core/xmTaskExecuser';
@@ -1054,6 +1084,7 @@ export default {
       selectParentTaskVisible:false,
       execUserVisible:false,
       taskWorkloadVisible:false,
+      taskWorkloadInitVisible:false,
       maps:new Map(),
       moreVisible:false,
     };
@@ -2105,6 +2136,9 @@ export default {
 							  Object.assign(row,params)
 						}
             Object.assign(this.editFormBak,this.editForm)
+            if(this.sels.length>0){
+              this.searchXmTasks();
+            }
 					}else{
             Object.assign(this.editForm,this.editFormBak)
 						this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
@@ -2163,12 +2197,20 @@ export default {
         this.taskWorkloadVisible=false;
         this.searchXmTasks();
       },
+      onTaskWorkloadInitSubmit(){
+        this.taskWorkloadInitVisible=false;
+        this.searchXmTasks();
+      },
+      
       showWorkload(row){
         this.editForm=row
         this.taskWorkloadVisible=true;
       },
       
-			
+			setInitWorkload(row){ 
+        this.editForm=row
+        this.taskWorkloadInitVisible=true;
+      },
 			copyOne(row,index){
 				
 				var params={...row}
@@ -2219,6 +2261,7 @@ export default {
     XmGroupDialog,
     XmTableConfig,
     XmWorkloadEdit,
+    XmWorkloadInit,
     XmPhaseSelect,
     MdpSelectUserXm,
     //在下面添加其它组件
