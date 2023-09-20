@@ -10,6 +10,14 @@ module.exports = {
     assetsSubDirectory: '',
     assetsPublicPath: '/',
     proxyTable: {
+      
+    	'/api/m1/oauth2client': {
+          target: 'http://localhost:7002',
+          changeOrigin: true,
+          pathRewrite: {
+            '^/api/m1/oauth2client': ''
+          }
+    },
         /**
     	'/api/m1/xm': {
             target: 'http://localhost:7067',
