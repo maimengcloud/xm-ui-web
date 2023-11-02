@@ -1,8 +1,8 @@
 import axios from '@/utils/request'
 
-import config from '@/common/config'
+import config from '@/api/mdp_pub/mdp_config'
 
-let base=config.getSysBasePath();
+let base=config.getSysContext()
 
 //默认只开放普通查询，所有查询，只要上传	 分页参数 {currentPage:1,pageSize:10,total:0}，后台都会自动按分页查询 其它 api用到再打开，没用到的api请注释掉，
 

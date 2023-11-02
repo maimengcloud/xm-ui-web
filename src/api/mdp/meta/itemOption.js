@@ -1,8 +1,8 @@
 import axios from '@/utils/request'
 
-import config from '@/common/config'
+import config from '@/api/mdp_pub/mdp_config'
 
-let base=config.getSysBasePath();
+let base=config.getSysContext()
 
 /**
  * 数据项取值列表
@@ -32,6 +32,12 @@ export const editItemOption = params => { return axios.post(`${base}/mdp/meta/it
 
 //新增一条数据项取值列表
 export const addItemOption = params => { return axios.post(`${base}/mdp/meta/itemOption/add`, params); };
+
+//普通查询 条件之间and关系
+export const queryItemOptionById = params => { return axios.get(`${base}/mdp/meta/itemOption/queryById`, { params: params }); };
+
+//批量修改某些字段
+export const editSomeFieldsItemOption = params => { return axios.post(`${base}/mdp/meta/itemOption/editSomeFields`, params); };
 
 
 //刷新缓存

@@ -3,11 +3,7 @@ import Layout from '../views/layout/Layout'
 const _import = require('./_import_' + process.env.NODE_ENV)
 
 export default {
-	routes: [
-		
-		{ path: '/changeEmailStepOne', component: _import('myWork/set/ChangeEmailStepOne'), hidden: true },
-		{ path: '/changeEmailStepTwo', component: _import('myWork/set/ChangeEmailStepTwo'), hidden: true },
-		{ path: '/updateUserInfo', component: _import('myWork/set/index'), hidden: true },
+	routes: [ 
 		{
 			path: '/my/work',
 			component: Layout,
@@ -52,7 +48,7 @@ export default {
                 },
 				{
 					path: 'userLoginRecord',
-					component: _import('myWork/userLoginRecord/index'),
+					component: _import('myWork/my/components/LoginRecord'),
 					name: '登录日志',
 					meta: {
 						title: '登录日志',

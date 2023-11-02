@@ -18,12 +18,10 @@
 </template>
 
 <script>
-	import util from '../../../../common/js/util';//全局公共库
+	import util from '@/components/mdp-ui/js/util';//全局公共库
 	import { editUser,changePassword } from '../../../../api/mdp/sys/user';
 	import { sendEmail,validEmailCode } from '@/api/login';
-	import { mapGetters } from 'vuex' 
-	import SingleShearUpload from "@/components/Image/Single/Index";
-	import BranchAdd from "@/views/mdp/sys/branch/BranchEdit";
+	import { mapGetters } from 'vuex'  
 	import logo1 from "@/assets/image/logo1.png"
 	import VueQr from 'vue-qr'	
 	export default {
@@ -96,7 +94,7 @@
 			}
 		},
 		components: {  
-			SingleShearUpload,VueQr,BranchAdd,
+			VueQr
 		},
 		mounted() {  
 			var valiCode=this.$route.query.valiCode;

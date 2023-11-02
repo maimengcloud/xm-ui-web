@@ -45,8 +45,7 @@
 	</section>
 </template>
 
-<script>
-	import dateUtil from '@/common/js/dateUtil';//全局公共库
+<script> 
 	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { mapGetters } from 'vuex'
 	import { addAppMdpDef } from '@/api/mdp/app/appMdpDef';
@@ -105,7 +104,7 @@
 							params.deptid=this.userInfo.deptid
 							params.branchId=this.userInfo.branchId
 							params.cuserid=this.userInfo.userid
-							params.cdate=dateUtil.formatDate(new Date(),'yyyy-MM-dd HH:mm:ss');
+							params.cdate=this.$mdp.formatDate(new Date(),'yyyy-MM-dd HH:mm:ss');
 							addAppMdpDef(params).then((res) => {
 								this.load.add=false
 								var tips=res.data.tips;

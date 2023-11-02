@@ -14,7 +14,7 @@
 				<el-table-column sortable type="index" width="55" show-overflow-tooltip  fixed="left"></el-table-column>
  				<el-table-column prop="name" label="模块名称" min-width="120" show-overflow-tooltip>
 					<template slot-scope="scope">
-						<div class="avatar-container" @click="showEdit(scope.$index,scope.row)">
+						<div class="avatar-container" @click="showEdit(scope.row)">
 							<div class="avatar-wrapper">
 								<img v-if=" scope.row.logoUrl" class="user-avatar" :src="scope.row.logoUrl">
 								<img v-else class="user-avatar" src="../../../../assets/image/user_img.gif">
@@ -25,7 +25,7 @@
 				</el-table-column> 
 				<el-table-column prop="billMode" label="计费模式" min-width="100" show-overflow-tooltip>
                     <template slot-scope="scope"> 
-                        {{ formatDicts(dicts,'moduleBillMode',scope.row.billMode)}}  
+ 						<mdp-select show-style="tag" item-code="moduleBillMode" v-model="scope.row.billMode" :disabled="true"></mdp-select>
                     </template>
 				</el-table-column>
 				<el-table-column prop="uniFee" label="每人月均费用" min-width="120" show-overflow-tooltip>
@@ -82,33 +82,27 @@
 				</el-table-column>
 			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
-  
-			<!--编辑 MenuModule 模块定义表-用于进行机构级别的权限控制，机构如果购买了模块，则能够进行访问界面-->
-			<el-drawer title="编辑模块" :visible.sync="editFormVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
-				  <menu-module-edit op-type="edit" :menu-module="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></menu-module-edit>
-			</el-drawer>
-
-			<!--新增 MenuModule 模块定义表-用于进行机构级别的权限控制，机构如果购买了模块，则能够进行访问界面-->
-			<el-drawer title="新增模块" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
-				<menu-module-edit op-type="add" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></menu-module-edit>
-			</el-drawer> 
+			<mdp-dialog ref="formDialog">
+                <template v-slot="{visible,data,dialog}">
+                     <menu-module-form :visible="visible" :parent-op-type="currOpType" :sub-op-type="data.subOpType" :form-data="data.formData" @close="dialog.close()" @submit="afterFormSubmit" @fields-change="afterEditSomeFields"/>
+                </template>
+            </mdp-dialog>
 		</el-card>
 	</section>
 </template>
 
 <script>
-	import util from '@/common/js/util';//全局公共库
-	import config from '@/common/config';//全局公共库 
- 	import { initDicts,listMenuModule, delMenuModule, batchDelMenuModule,editSomeFieldsMenuModule } from '@/api/mdp/menu/menuModule';
-	import  MenuModuleEdit from './MenuModuleEdit';//新增修改界面
+	import util from '@/components/mdp-ui/js/util';//全局公共库
+	import config from '@/api/mdp_pub/mdp_config';//全局公共库 
+ 	import { listMenuModule, delMenuModule, batchDelMenuModule,editSomeFieldsMenuModule } from '@/api/mdp/menu/menuModule';
 	import { mapGetters } from 'vuex'
-	
-	import {modulesOfIcon} from "@/components/ModulesMenu/modulesOfIcon.js";
+	import MenuModuleForm from './Form'
+	import {modulesOfIcon} from "../../../layout/ModulesMenu/modulesOfIcon.js";
 
 	export default {
 	    name:'menuModuleMng',
 		components: {
-		    MenuModuleEdit,
+			MenuModuleForm
 		},
 		props:['visible'],
 		computed: {
@@ -232,15 +226,13 @@
 				}).catch( err => this.load.list = false );
 			},
 
-			//显示编辑界面 MenuModule 模块定义表-用于进行机构级别的权限控制，机构如果购买了模块，则能够进行访问
-			showEdit: function ( row,index ) {
-				this.editFormVisible = true;
-				this.editForm = Object.assign({}, row);
+			//显示编辑界面 MenuModuleBranch 管理端机构表（机构下面若干部门）
+			showEdit: function ( row,index ) { 
+				this.$refs['formDialog'].open({formData:row,subOpType:'detail'})
 			},
-			//显示新增界面 MenuModule 模块定义表-用于进行机构级别的权限控制，机构如果购买了模块，则能够进行访问
+			//显示新增界面 MenuModuleBranch 管理端机构表（机构下面若干部门）
 			showAdd: function () {
-				this.addFormVisible = true;
-				//this.addForm=Object.assign({}, this.editForm);
+				this.$refs['formDialog'].open({formData:this.addForm,subOpType:'add'}) 
 			},
 			afterAddSubmit(){
 				this.addFormVisible=false;
@@ -344,10 +336,9 @@
 		},//end methods
 		mounted() {
 			this.$nextTick(() => {
-			    initDicts(this);
+			    
 			    this.initData()
-				this.searchMenuModules();
-                this.maxTableHeight = util.calcTableMaxHeight(this.$refs.menuModuleTable.$el)
+				this.searchMenuModules(); 
 
         	});
 		}

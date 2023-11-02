@@ -24,8 +24,8 @@
                     </template>
 				</el-table-column> 
 				<el-table-column prop="billMode" label="计费模式" min-width="100" show-overflow-tooltip>
-                    <template slot-scope="scope"> 
-                        {{ formatDicts(dicts,'moduleBillMode',scope.row.billMode)}}  
+                    <template slot-scope="scope">  
+						<mdp-select show-style="tag" item-code="moduleBillMode" v-model="scope.row.billMode" :disabled="true"></mdp-select> 
                     </template>
 				</el-table-column>
 				<el-table-column prop="uniFee" label="人均费用" min-width="120" show-overflow-tooltip>
@@ -65,8 +65,8 @@
 				-->
 				<el-table-column prop="bizFlowState" label="审核状态" min-width="80" show-overflow-tooltip>
                     <template slot-scope="scope"> 
-                       <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'bizFlowState',scope.row.bizFlowState)" :key="index" :type="item.className">{{item.name}}</el-tag>
-                    </template>
+						<mdp-select show-style="tag" item-code="bizFlowState" v-model="scope.row.bizFlowState" :disabled="true"></mdp-select> 
+                     </template>
 				</el-table-column>
 				<!--
 				<el-table-column prop="procInstId" label="审核流程实例编号" min-width="80" show-overflow-tooltip>
@@ -104,9 +104,9 @@
 </template>
 
 <script>
-	import util from '@/common/js/util';//全局公共库
-	import config from '@/common/config';//全局公共库 
- 	import { initDicts,listModule, delModule, batchDelModule,editSomeFieldsModule } from '@/api/mdp/sys/module';
+	import util from '@/components/mdp-ui/js/util';//全局公共库
+	import config from '@/api/mdp_pub/mdp_config';//全局公共库 
+ 	import { listModule, delModule, batchDelModule,editSomeFieldsModule } from '@/api/mdp/sys/module';
 	import  ModuleEdit from './ModuleEdit';//新增修改界面
 	import { mapGetters } from 'vuex'
 	
@@ -326,7 +326,7 @@
 		},//end methods
 		mounted() {
 			this.$nextTick(() => {
-			    initDicts(this);
+			    
 			    this.initData()
 				this.searchModules();
                 this.maxTableHeight = util.calcTableMaxHeight(this.$refs.moduleTable.$el)

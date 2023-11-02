@@ -46,10 +46,10 @@
 </template>
 
 <script>
-	import util from '@/common/js/util';//全局公共库
-	import seq from '@/common/js/sequence';//全局公共库
+	import util from '@/components/mdp-ui/js/util';//全局公共库
+	import seq from '@/components/mdp-ui/js/sequence';//全局公共库
 	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
-	import { initDicts, addMenuDef, batchInsertMenuDef } from '@/api/mdp/menu/menuDef';
+	import {  addMenuDef, batchInsertMenuDef } from '@/api/mdp/menu/menuDef';
 	import { listMenuModule } from '@/api/mdp/menu/menuModule'; 
 	import MenuTree from './MenuTree'
 	import { mapGetters } from 'vuex';  
@@ -58,8 +58,7 @@
 	export default {
 
 	    computed: {
-	    	'routersTreeData': function(){
-				
+	    	'routersTreeData': function(){ 
 	    		var routers=this.permission_routers.filter(i=>i.meta&&i.meta.title&&!i.hidden); 
 	    		routers.forEach((i,index)=>{ 
 	    			i.rpath=i.path
@@ -135,8 +134,7 @@
 				this.jsonRoutersText=this.jsonRoutersText.replace(/component[ ]*\:[_/'"() \w]*,{1}/g,"");
 				this.jsonRouters=eval('(' + this.jsonRoutersText + ')');
 			},
-			batchImportMenus(){
-				
+			batchImportMenus(){ 
 				let routers=this.jsonRouters;
 				if(this.importType=='1'){
 					try{
@@ -277,7 +275,7 @@
 		},
 		mounted() {
 			
-			initDicts(this);
+			
 			this.addForm=Object.assign(this.addForm, this.menuDef);  
 			//this.addForm.pid=this.pmenu.id
 			listMenuModule({}).then(res=>this.menuModules=res.data.data);

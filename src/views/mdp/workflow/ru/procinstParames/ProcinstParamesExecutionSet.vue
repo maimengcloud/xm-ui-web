@@ -4,33 +4,16 @@
 				<el-button class="hidden-md-and-down"   type="text"  @click.native="handleCancel" icon="el-icon-back">取消</el-button>  
 				<el-button   type="text"  v-if="screenWidth>=500"  @click.native="handlePrint" icon="el-icon-printer">打印</el-button>    
 				<el-button   type="text"  v-if="isArchive"  @click.native="handleArchive"  icon="el-icon-s-grid">归档</el-button>   
-				<el-button  type="text"   @click.native="tagSelectVisible=true" :loading="tagSetLoading"  icon="el-icon-finished">打标签</el-button> 
-				<el-button  type="text" v-if="displayDiagram==false" @click="showDiagram()" icon="el-icon-picture-outline">流程图</el-button>   
-				<el-button  type="text"  @click="showNodeInfoDialog"  icon="el-icon-s-check">审批人</el-button>
+ 				<el-button  type="text"  @click="showDiagram()" icon="el-icon-picture-outline">流程图</el-button>   
+				<el-button  type="text"  @click="showNodeInfoDialog()"  icon="el-icon-s-check">审批人</el-button>
 				<el-button class="hidden-md-and-down"  type="text"  @click="showComment=!showComment"  icon="el-icon-document">{{showComment==false?"显示流转信息":"隐藏流转信息"}}</el-button>
 				<el-button   type="text"  @click="showMainContext=!showMainContext"  icon="el-icon-document" class=" hidden-md-and-down">{{showMainContext==false?"显示正文":"隐藏正文"}}</el-button>
 				<el-button   type="text"  @click="showMainContextOnly=!showMainContextOnly"  icon="el-icon-finished" class=" hidden-sm-and-down">{{showMainContextOnly==false?"只看正文":"显示全部"}}</el-button>
-				<el-popover 
-					placement="top"
-					width="600"
-					trigger="click"
-					v-model="modelFilesVisible"> 
-					<div v-if="modelFilesVisible==true" style="text-align: right; margin: 0"> 
-							<attachment-upload  :branch-id="userInfo.branchId" :deptid="userInfo.deptid" :archive-id="procDefId" :category-id="taskInfo.categoryId"></attachment-upload>
-					</div> 
-					<el-button slot="reference"   type="text"    class="hidden-sm-and-down"  v-on:click="modelFilesVisible=!modelFilesVisible"  icon="el-icon-connection">附件模板</el-button>
-				</el-popover>				
-				<el-popover 
-					placement="top"
-					width="600"
-					trigger="click"
-					v-model="modelFilesVisible"> 
-					<div v-if="modelFilesVisible==true" style="text-align: right; margin: 0"> 
-							<attachment-upload  :branch-id="userInfo.branchId" :deptid="userInfo.deptid" :archive-id="taskInfo.paramsId" :category-id="taskInfo.categoryId"></attachment-upload>
-					</div> 
-					<el-button slot="reference"   type="text"    class="hidden-sm-and-down"  v-on:click="modelFilesVisible=!modelFilesVisible"  icon="el-icon-connection">流程附件</el-button>
-				</el-popover> 
-	    </el-row> 
+ 
+				<el-button  type="text"    v-on:click="$refs['attTplDialog'].open({})"  icon="el-icon-document-copy">附件模板</el-button>
+
+				<el-button type="text"    v-on:click="$refs['attDialog'].open({})"  icon="el-icon-document-copy">流程附件</el-button>
+ 	    </el-row> 
 		<el-row class="page-title padding-top"> 
 			<el-row  class="hidden-md-and-down"> 
 				<el-col class="wf-sub-title"> {{addForm.mainTitle}}</el-col> 
@@ -40,21 +23,15 @@
 				<el-col class="wf-sub-title" v-if="addForm.mainTitle.length>30"> {{addForm.mainTitle}}</el-col> 
 			</el-row>  
 			<el-row style="padding-top:10px;"> 
-				<el-col :span="24" class="wf-sub-sub-title">  
-					<font  v-if="addForm.tagNames" >
-					<el-tag  v-for="tag in (addForm.tagNames.split(','))" :key="tag"
-						:type="'warning'"
-						:disable-transitions="false" >
-						{{tag}}
-					</el-tag>
-					</font>
+				<el-col :span="24" class="wf-sub-sub-title">   
+					<mdp-select-tag placeholder="标签" empty-text="标签" show-style="tag" v-model="addForm.tagIds" multiple split="," @change2=" onTagSelected "></mdp-select-tag>
 					发起部门: <font class="name-font">{{addForm.startDeptName}} </font>&nbsp;&nbsp;&nbsp;
 					由&nbsp; <font class="name-font">{{addForm.startUsername}}</font>&nbsp;于&nbsp;
 					 <font class="name-font">{{addForm.startDate}}</font> &nbsp;发起
 					</el-col>   
 			</el-row> 
 		</el-row>
-		<el-row class="page-main page-height-75 padding-top">
+		<el-row class="page-main padding-top">
 			<el-row v-show="showMainContextOnly==true">
 				<div style="padding: 20px;" v-html="addForm.mainContext"></div>
 			</el-row>
@@ -62,7 +39,7 @@
 				
 				<el-row> 
 					<!--新增界面 ProcinstParames 流程实例参数设置表-->  
-						<el-form :model="addForm"  :label-width="labelWidth()" label-position="top" :rules="addFormRules" ref="addForm" >  
+						<el-form :model="addForm"  :label-width="labelWidth()" :rules="addFormRules" ref="addForm" >  
 							<el-row>   
 									预计
 									<el-date-picker style="width:20%;"
@@ -71,50 +48,14 @@
 										:picker-options="pickerOptions"
 										placeholder="选择计划完成日期" >
 									</el-date-picker>
-									完成  <el-button   @click.native="updateFlowPlanFinishTime" :loading="addLoading" icon="el-icon-finished">保存日期</el-button>  
-									<el-popover
-										placement="top-start"
-										title="设置主办监控人"
-										width="400"
-										trigger="manual" v-model="sponsorsAndMonitorsVisible"> 
-										<el-row> 
-											<el-col :span="24" style="padding-top:5px;">
-												<font class="more-label-font">主办人:</font> 
-												<el-select disabled   value-key="userid"    v-model="sponsors" multiple placeholder="请选择">
-													<el-option
-													v-for="item in baseUserList"
-													:key="item.userid"
-													:label="item.username"
-													:value="item">
-													<span style="float: left">{{ item.username }}</span>
-													<span style="float: right; color: #8492a6; font-size: 14px">{{ item.shortName }}</span>
-													</el-option>
-												</el-select> 
-											</el-col> 
-											<el-col :span="24" style="padding-top:5px;">
-												<font class="more-label-font">监控人:</font>  
-												<el-select disabled   value-key="userid"   v-model="monitors" multiple placeholder="请选择">
-													<el-option
-													v-for="item in baseUserList"
-													:key="item.userid"
-													:label="item.username"
-													:value="item">
-													<span style="float: left">{{ item.username }}</span>
-													<span style="float: right; color: #8492a6; font-size: 13px">{{ item.shortName }}</span>
-													</el-option>
-												</el-select> 
-											</el-col> 
-										</el-row>
-										<el-button  slot="reference" icon="el-icon-s-check" @click="showSponsorsAndMonitors">主办人、监控人查询</el-button>
-									</el-popover>  
+									&nbsp;&nbsp;完成&nbsp;&nbsp;  <el-button   @click.native="updateFlowPlanFinishTime" :loading="addLoading" icon="el-icon-finished">保存日期</el-button>  
+									 
+									  &nbsp;&nbsp;主办&nbsp;&nbsp;  <mdp-select-user placeholder="主办人" v-model="addForm.sponsors" :multiple="true" split="," title="主办人"/>
+									  &nbsp;&nbsp;监控&nbsp;&nbsp;  <mdp-select-user placeholder="监控人" v-model="addForm.monitors" :multiple="true" split=","  title="监控人"/> 
 							</el-row>   
 							<el-row  v-if="addForm.isRefForm=='1' && addForm.formId && addForm.formShowType!='table'" style="padding-top:10px;">
-								<form-data-mng-for-flow-form :formShowType="addForm.formShowType"  :companyDepts="companyDepts" :companyEmployees="companyEmployees" :formId="addForm.formId"  :qxCode="qxCode"  :procInstId="procInstId" :flowStartUserid="addForm.userid" :submitEvent="formDataSubmitEvent" @submit="startSubmit"><div></div></form-data-mng-for-flow-form> 
-							</el-row>
-							<el-row  v-if="actAssignee&&actAssignee.formId?true:false"  style="padding-top:10px;">
-								<form-data-for-flow-node :visible="actAssignee&&actAssignee.formId?true:false" :form-id="actAssignee.formId" :form-fields-json="actAssignee.formFieldsJson"  :submit-event="formDataSubmitEvent" @submit="startSubmit"><div></div></form-data-for-flow-node> 
-							</el-row>						
-
+								<flow-form ref="flowFormRef" :formShowType="addForm.formShowType"  :formId="addForm.formId"  :qxCode="qxCode"  :procInstId="procInstId" :flowStartUserid="addForm.userid"  @submit="startSubmit" @change="onFormDataChange"><div></div></flow-form> 
+							</el-row>		
 							<el-row  v-if="addForm.mainContext && addForm.mainContext.length>0 && showMainContext"> 
 									<div  class="wf-main-context-box" v-if="screenWidth>=500">
 										<div style="padding: 20px;" class="wf-main-context" v-html="addForm.mainContext"></div>
@@ -124,7 +65,7 @@
 								</div> 
 							</el-row>   
 							<el-row v-show="showComment">
-								<comment-step :task="task"  :procInstId="procInstId" :refresh="refreshCommentList"   @get-comments="getComments"></comment-step>  
+								<comment-step v-if="procInstId" ref="commentStepRef" :task="task"  :procInstId="procInstId"  @get-comments="getComments"></comment-step>  
 							</el-row> 
 							<div v-if="task.taskId"> 
 								<el-form-item :label="'办理意见'" prop="commentMsg">
@@ -183,104 +124,74 @@
 									</el-col>
 								</el-form-item> 
 								<el-form-item v-show="task.action=='transfer'||task.action=='delegate'||needAssignee!=''||(actAssignee&&actAssignee.showNextAssignees=='1')"  :label="nextAssigneeListLabel" prop="needAssignee"> 
-									<el-col :xs="24" :sm="18" :md="16" :lg="14" :xl="12">
-										<el-select    value-key="userid"  v-model="task.nextAssigneeList" multiple @change="nextAssigneeListSelectChange"  placeholder="如果不选则系统自动判断">
-										<el-option
-										v-for="item in baseUserList"
-										:key="item.userid"
-										:label="item.username"
-										:value="item">
-										<span style="float: left">{{ item.username }}</span>
-										<span style="float: right; color: #8492a6; font-size: 13px">{{ item.shortName }}</span>
-										</el-option>
-									</el-select>
-									<el-button   @click.native="showCommonUserSelectDialog" :loading="addLoading">更多人员</el-button>  
+									<el-col :xs="24" :sm="18" :md="16" :lg="14" :xl="12"> 
+									<mdp-select-user :multiple="false" @change2="(user)=>{
+										task.nextAssigneeList=[user];
+										nextAssigneeListSelectChange();
+									}"></mdp-select-user>
 									</el-col>
 								</el-form-item> 
 							</div> 
 						</el-form> 
-				</el-row>
-				<el-dialog 
-					title="流程图"
-					:visible.sync="displayDiagram"
-					width="80%" append-to-body	> 
-					<el-image   :fit="'contain'" :src="diagramUrl">
-						<div slot="error" class="image-slot">
-							<i class="el-icon-picture-outline"></i>
-						</div>
-						<div slot="placeholder" class="image-slot">
-							正在全力加载中。。。。。。。。。。<i class="el-icon-loading"></i>
-						</div>
-					</el-image>  
-					<span slot="footer" class="dialog-footer"> 
-						<el-button type="primary" @click="displayDiagram = false">关闭</el-button>
-					</span>
-				</el-dialog> 
-				<el-dialog append-to-body
-					title="查看审批人"
-					:visible.sync="nodeInfoVisible"
-					width="60%"> 
-					<procinst-node-info-set   :node-infos="nodeInfos"   :visible="nodeInfoVisible"   @cancel="onNodeInfosCancel"   @confirm="onNodeInfosConfirm"></procinst-node-info-set> 
-				</el-dialog>
-				<el-dialog append-to-body
-					title="设置标签"
-					:visible.sync="tagSelectVisible"
-					width="60%"> 
-					<tag-mng :tagIds="addForm.tagIds==null?null:addForm.tagIds.split(',')"  :jump="true" @select-confirm="onTagSelected"></tag-mng> 
-				</el-dialog>
-				
-				<el-dialog append-to-body
-					title="选择员工"
-					:visible.sync="userSelectVisible"
-					width="60%">  
-					<users-select :select-userids="task.nextAssigneeList.map(i=>i.userid)"   @confirm="onUserSelected"></users-select> 
-				</el-dialog> 
-				<el-dialog append-to-body
-					title="候选人/候选部门/候选岗位配置"
-					:visible.sync="selectCandidateSetVisible"
-					width="60%"> 
-					<task-candidate-set :taskId="taskInfo.taskId" :procInstId="taskInfo.procInstId" @confirm="selectCandidateSetVisible=false"></task-candidate-set> 
-				</el-dialog> 
+				</el-row> 
+				<mdp-dialog  ref="nodeInfosSetDialog"
+					title="查看审批人" 
+					width="70%"> 
+					<template v-slot="{visible,data,dialog}">
+						<procinst-node-info-set   :node-infos="data.nodeInfos"   :visible="visible"   @cancel="dialog.close();"   @confirm="onNodeInfosConfirm"></procinst-node-info-set> 
+
+					</template>
+				</mdp-dialog> 
 			</el-row>
 		</el-row>
-		<el-row>  
-			<el-button    @click.native="handleCancel" icon="el-icon-back">取消</el-button>  
+		<el-row class="footer">  
+			<el-button    @click.native="handleCancel" icon="el-icon-back">关闭</el-button>  
 			<el-button   v-if="screenWidth>=500"  @click.native="handlePrint" icon="el-icon-printer">打印</el-button>    
 			<el-button   v-if="isArchive"  @click.native="handleArchive" icon="el-icon-s-grid">归档</el-button> 
 			<el-button   v-if="task.taskId"   @click.native="addComment" :loading="addLoading" icon="el-icon-finished">只存办理意见</el-button>  
 			<el-button   v-if="task.action!='claim' && task.taskId" type="primary" @click.native="completeHandle" :loading="addLoading"  icon="el-icon-finished">提交任务</el-button>  
 			<el-button  v-if="task.action=='claim' && task.taskId"  @click.native="completeHandle" :loading="addLoading"  icon="el-icon-finished">领取任务</el-button>  
-			<el-button  v-if="task.action=='claim' && task.taskId  && sponsors.some(i=>i.userid==userInfo.userid)"  @click.native="showTaskCandidateSet" :loading="addLoading"  icon="el-icon-s-check">添加候选人</el-button> 
+			<el-button  v-if="task.action=='claim' && task.taskId  && task.sponsors && task.sponsors.indexOf(userInfo.userid)>=0"  @click.native="showTaskCandidateSet" :loading="addLoading"  icon="el-icon-s-check">添加候选人</el-button> 
  
 		</el-row>
+		
+		<mdp-dialog ref="diagramDialog">
+            <template v-slot="{visible,data,dialog}">
+                <el-image v-if="visible" :fit="'contain'" :src="data.diagramUrl">
+                <div slot="error" class="image-slot">
+                    <i class="el-icon-picture-outline"></i>
+                </div>
+                <div slot="placeholder" class="image-slot">
+                    正在全力加载中。。。。。。。。。。
+                    <i class="el-icon-loading"></i>
+                </div>
+                </el-image>
+            </template>
+          </mdp-dialog>
+		  <mdp-dialog ref="attTplDialog">
+            <template v-slot="{visible,data,dialog}">
+				<mdp-select-att  sub-op-type="mng" crely-type="procDefId" :crely-id="addForm.procDefId"></mdp-select-att>
+            </template>
+          </mdp-dialog> 
+		  <mdp-dialog ref="attDialog">
+            <template v-slot="{visible,data,dialog}">
+				<mdp-select-att  sub-op-type="mng" crely-type="procDefId" :crely-id="addForm.procDefId" crely-stype="procInstId" :crely-sid="addForm.procInstId"></mdp-select-att>
+            </template>
+          </mdp-dialog> 
 	</section>
 </template>
 
 <script>
-	import seq from '@/common/js/sequence';//全局公共库
-	import util from '@/common/js/util';//全局公共库import 
-	import config from '@/common/config';//全局公共库import 
-	//import { getCompanyEmployees,getCompanyDepts, selectCacheOptions,getDefaultValue,getCodeName } from '@/api/common/code';//下拉框数据查询
-	import { listProcinstParames,editPlanFinishTime } from '@/api/mdp/workflow/ru/procinstParames';
+	import seq from '@/components/mdp-ui/js/sequence';//全局公共库
+	import util from '@/components/mdp-ui/js/util';//全局公共库import 
+	import config from '@/api/mdp_pub/mdp_config';//全局公共库import 
+ 	import { listProcinstParames,editPlanFinishTime } from '@/api/mdp/workflow/ru/procinstParames';
 	import { completeTask,addComment } from '@/api/mdp/workflow/ru/task';
-	import  FormDataMngForFlowForm from '@/views/mdp/form/formData/FormDataMngForFlowForm';//新增界面
-	
-	import  FormDataForFlowNode from '@/views/mdp/form/formData/FormDataForFlowNode';//新增界面
-
-	import { uploadBase64ArchiveAttachment } from '@/api/mdp/arc/archiveAttachment'; 
-	import AttachmentUpload from '@/views/mdp/arc/archiveAttachment/AttachmentUpload';  
+	import  FlowForm from '@/views/mdp/lcode/formData/FlowForm';//新增界面
 	import  CommentStep from '@/views/mdp/workflow/hi/comment/CommentStep';//评论
-	import html2canvas from 'html2canvas'
-	import { listUserNames } from '@/api/mdp/sys/user';
-	import { listDept } from '@/api/mdp/sys/dept';
-	import { getBpmnActAssignees } from '@/api/mdp/workflow/re/procdefNodeInfo'; 
-	import { getNodeInfos,updateNodeInfos } from '@/api/mdp/workflow/ru/procinstNodeInfo'; 
-	
-	import Sticky from '@/components/Sticky' // 粘性header组件
-	import { mapGetters } from 'vuex' 
-	import TaskCandidateSet from '@/views/mdp/workflow/ru/task/candidate/TaskCandidateSet';   
-	import TagMng from '@/views/mdp/arc/tag/TagMng';  
-	import UsersSelect from '@/views/mdp/sys/user/UsersSelect'; 
+	import html2canvas from 'html2canvas' 
+	import { getNodeInfos,updateNodeInfos } from '@/api/mdp/workflow/ru/procinstNodeInfo';  
+	import { mapGetters } from 'vuex'  
 	import { batchInsertOrDeleteTags } from '@/api/mdp/workflow/ru/procinstTag';
 	import ProcinstNodeInfoSet from '@/views/mdp/workflow/ru/procinstParames/ProcinstNodeInfoSet';  
 
@@ -307,7 +218,7 @@
 		      	 	 return "下一步办理人"
 		    }
 		},
-		props:['procDefId','procInstId','taskInfo','visible','isArchive','companyEmployees','companyDepts'],
+		props:['procDefId','procInstId','taskInfo','visible','isArchive'],
 		watch: {
 	      'procInstId':function( procInstId ) { 
 	    	  
@@ -316,7 +227,7 @@
 	    	  this.$nextTick(() => {
 					this.comments=[]
 				})
-			this.previewOnlineUrl=""; 
+				
 			this.task.taskId=taskInfo.taskId
 			this.task.taskName=taskInfo.taskName
 			this.task.assigneeName=taskInfo.assigneeName
@@ -364,16 +275,13 @@
 				  return;
 			  }
 			  var date=new Date()
-			  this.modelFilesVisible=false;
-			  this.refreshCommentList=visible
+			  this.modelFilesVisible=false; 
 	    	  this.needAssignee=""
 		      this.task.nextAssigneeList=[]
 		      this.task.rejectActivity.taskId='' 
 	    	  this.$nextTick(() => {
-				  this.getProcinstParamess(); 
-				  //this.listNodeInfos();
+				  this.getProcinstParamess();  
 				}); 
-			  //this.initBaseUserList();
 	      }
 	    },	
 		data() {
@@ -572,27 +480,18 @@
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				sponsors:[],//
 				monitors:[],//  
-				formDataSubmitEvent:false,
 		        //上传服务器的任务参数
 		        task:{taskId:'',commentMsg:'同意',procInstId:this.procInstId,assignee:'',action:'complete',nextAssigneeList:[],rejectActivity:{taskId:'',taskDefKey:''}},
 		        /**从父组件传过来的任务信息
 		        taskInfo:{id:'',rev:'',executionId:'',procInstId:'',procDefId:'',name:'',parentTaskId:'',description:'',taskDefKey:'',owner:'',assignee:'',delegation:'',priority:'',createTime:'',dueDate:'',category:'',suspensionState:'',tenantId:'',formKey:'',claimTime:'',
 					mainTitle:'',sponsors:'',userid:'',deptid:''
 				}
-				**/
-				refreshCommentList: false,//是否刷新评论列表
+				**/ 
 				needAssignee:'',//need-mulit-assignee 需要一个或者多个 need-single-assignee 只需要一个
 				needAssigneeMsg: '',
 				needAssigneeNum:0,//需要多少个会签人员
-		        activeTab:'flowinfoTab',
-		        diagramUrl:'',
-				displayDiagram:false, 
 				modelFilesVisible:false,
 				actAssignee:null,
-				baseUserList:[],
-				selectCandidateSetVisible:false, 
-				tagSelectVisible:false,
-				tagSetLoading:false,
 				qxCode:'',
 				showAttachment:false,
 				showComment:true,
@@ -600,11 +499,14 @@
 				showMainContextOnly:false,
 				nodeInfos:[],
 				nodeInfoVisible:false,
-				sponsorsAndMonitorsVisible:false,
+				formDataChangeLogs:[],
 				/**end 在上面加自定义属性**/
 			}//end return
 		},//end data
 		methods: {
+			onFormDataChange(formData,changeLogs){ 
+				this.formDataChangeLogs=changeLogs
+			},
 			nextAssigneeListSelectChange: function(value){
 				 this.$refs.addForm.validateField('needAssignee');
 				 this.$refs.addForm.validateField('action');
@@ -618,15 +520,6 @@
 						 this.task.nextAssigneeList=[{userid:comment.userid,username:comment.username}]
 					 }
 				 }
-			},
-			onUserSelected: function(users){  
-				users.forEach(u=>{
-					if(!this.baseUserList.some(i=>i.userid==u.userid)){
-						this.baseUserList.push(u);
-					} 
-					this.userSelectVisible=false; 
-					this.task.nextAssigneeList=users;
-				})
 			},
 			tranActionComments(nextAssigneeList){
 				  //var nextAssigneeList
@@ -659,8 +552,7 @@
 					this.$refs.addForm.validateField('needAssignee');
 			},
 			getComments: function(comments){
-				
-				this.refreshCommentList=false;
+				 
 				let temp=comments.filter(i=>i.taskDefKey!=this.taskInfo.taskDefKey);
 				let commentsTemp=[];
 				temp.forEach(i=>{
@@ -672,25 +564,22 @@
 					this.comments=commentsTemp
 				})
 				
-			},
-
+			}, 
 			 
 			addComment:function(){
 				if(this.task.commentMsg==''){
 					this.$notify({position:'bottom-left',showClose:true,message: "办理意见不能为空", type:'error' }); 
 					return;
 				}
-				this.addLoading = true; 
-				this.refreshCommentList=false
+				this.addLoading = true;  
 				var comment={userid:this.userInfo.userid,taskId:this.task.taskId,procInstId:this.task.procInstId,commentMsg:this.task.commentMsg};
 				addComment(comment).then(res=>{
 					if(res.data.tips.isOk){
-						this.refreshCommentList=true
+						this.$refs['commentStepRef'].getComments();
 						this.addLoading=false;
 						this.addForm.commentMsg=""
 						this.$notify({position:'bottom-left',showClose:true,message:'保存办理意见成功', type:'success' }); 
-					}else{
-						this.refreshCommentList=false
+					}else{ 
 						this.addLoading=false;
 						this.$notify({position:'bottom-left',showClose:true,message: res.data.tips.msg, type:'error' }); 
 					}
@@ -701,8 +590,7 @@
 			// 取消按钮点击 父组件监听@cancel="addFormVisible=false" 监听
 			handleCancel:function(){
 				
-				this.modelFilesVisible=false;
-				this.refreshCommentList=false;
+				this.modelFilesVisible=false; 
 				this.addLoading=false;
 				this.listLoading=false;
 				this.$emit('cancel');
@@ -713,13 +601,18 @@
 					if (valid) {
 						this.$confirm('确认提交吗？', '提示', {}).then(() => {
 							this.addLoading = true;  
+							if(this.formDataChangeLogs && this.formDataChangeLogs.length>0){  
+								formData.changeLogs=this.userInfo.username+" 更新数据："+this.formDataChangeLogs.map(k=>{
+
+									return k.fieldTitle+":"+(k.oldValue?(k.oldValue+" --> "):"")+(k.currVal?k.currVal:'')
+								}).join(';')
+								formData.changeData=true 
+							}
 							let procinstParames=Object.assign({},this.addForm) 
 							procinstParames.lastTaskId=this.taskInfo.id
 							procinstParames.lastTaskName=this.taskInfo.name
 							procinstParames.lastTaskDefId=this.taskInfo.taskDefKey
-							procinstParames.lastComment=this.task.commentMsg
-							procinstParames.monitors=this.monitors.map(i=>i.userid).join(",");
-							procinstParames.sponsors=this.sponsors.map(i=>i.userid).join(",");
+							procinstParames.lastComment=this.task.commentMsg 
 							let params = {procinstParames:procinstParames,formData:formData};  
 							params=Object.assign(params,this.task);
 							params.actId=this.taskInfo.taskDefKey
@@ -737,12 +630,13 @@
 							}else{//修改过标签
 								params.changeTags="1"
 							}
+							
 
 							completeTask(params).then((res) => {
 								this.addLoading = false; 
 								var tips=res.data.tips;
-								if(tips.isOk){
-									this.$emit('submit');//  @submit="afterAddSubmit"
+								if(tips.isOk){ 
+									this.$emit('submit',res,tips.isOk,'add');//  @submit="afterAddSubmit"
 									this.needAssignee=''
 									this.needAssigneeMsg=''
 									this.needAssigneeNum=-1
@@ -753,11 +647,15 @@
 									this.needAssigneeMsg=tips.msg
 									this.needAssigneeNum=tips.needAssigneeNum;
 									this.$refs.addForm.validateField('needAssignee');
+									this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
+
 								}else if(tips.tipscode=='need-single-assignee'){
 									this.needAssignee=tips.tipscode
 									this.needAssigneeMsg=tips.msg 
 									this.needAssigneeNum=1;
 									this.$refs.addForm.validateField('needAssignee');
+									this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
+
 								}else{
 									this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
 								}
@@ -768,9 +666,6 @@
 						});
 					}
 				});
-			},
-			showTaskCandidateSet:function(){
-				this.selectCandidateSetVisible=true;
 			},
 			 imgWidth:function(){
 				if (screen.width <=375){
@@ -826,37 +721,18 @@
 			},
 			
 			showDiagram(){
-				this.diagramUrl=config.getBaseDomainUrl()+"/"+process.env.VERSION+config.getWorkflowBasePath()+'/mdp/workflow/ru/diagram/'+this.procDefId+'/'+this.procInstId
-				this.displayDiagram=true;
-			},
-			initBaseUserList(sponsorsAndMonitorsVisible){
-				var that=this;
-				var sponsors=that.addForm.sponsors?that.addForm.sponsors.split(',').map(i=>{return {userid:i,username:i}}):[];
-				var monitors=that.addForm.monitors?that.addForm.monitors.split(',').map(i=>{return {userid:i,username:i}}):[];
-				var userids=[].concat(sponsors.map(u=>u.userid)).concat(monitors.map(u=>u.userid));
-				that.baseUserList=sponsors.concat(monitors.filter(m=>!sponsors.some(s=>s.userid==m.userid)))
-				that.sponsors=sponsors;
-				that.monitors=monitors;
 
-				listUserNames({userids:that.baseUserList.map(i=>i.userid),branchId:that.userInfo.branchId}).then(res=>{
-					if(res.data.tips.isOk){
-						that.baseUserList=res.data.data 
-						that.baseUserList.forEach(u=>{
-							that.monitors.forEach((m,index)=>{
-								if(m.userid==u.userid){
-									that.$set(that.monitors,index,u)
-								}
-							});
-							that.sponsors.forEach((m,index)=>{
-								if(m.userid==u.userid){
-									that.$set(that.sponsors,index,u)
-								}
-							});
-						})
-					}
-					this.sponsorsAndMonitorsVisible=sponsorsAndMonitorsVisible
-				});
+				var diagramUrl =
+                "/" +
+                process.env.BASE_API +
+                "/" +
+                process.env.VERSION +
+                "/" +
+                config.getWorkflowContext() +
+                "/mdp/workflow/ru/diagram/"+this.procDefId+'/'+this.procInstId
+            	this.$refs['diagramDialog'].open({diagramUrl:diagramUrl}) 
 			},
+			 
 			handleUploadChange(){
 			},
 			completeHandle(){
@@ -865,17 +741,14 @@
 				}
 				if(this.addForm.formId==''||this.addForm.formId==null || this.addForm.isRefForm!='1'){
 					this.startSubmit()
-				}else{
-					var date=new Date();
-					this.formDataSubmitEvent=date.getTime();  
+				}else{ 
+					this.$refs['flowFormRef'].editSubmit();
 				}
 				
 			},
 		    handlePrint() {
-				this.displayDiagram=true;
 				this.$nextTick(() => {
 		        html2canvas(document.getElementById("flowinfoTab")).then(canvas=>{
-		        	//this.displayDiagram=false;
 		                //生成base64图片数据  
 		                var dataUrl = canvas.toDataURL();  
 		               
@@ -897,14 +770,7 @@
 			},
 			
 			
-			onTagSelected(tags){
-				this.tagSelectVisible=false; 
-				//TOD 批量更新后台数据标签
-				if(!tags || tags.length==0){
-						this.$notify.error("最少选中一个标签");
-						return;
-				}
-				this.tagSetLoading=true;
+			onTagSelected(tags){ 
 				var procinstTagsVos=[]; 
 				var procinstTags={
 					procDefId:this.taskInfo.procDefId,
@@ -916,7 +782,6 @@
 				procinstTagsVos.push(procinstTags);
 				var params= procinstTagsVos 
 					batchInsertOrDeleteTags(params).then(res=>{ 
-						this.tagSetLoading=false;
 						if(res.data.tips.isOk){
 							var tagIds=tags.map(i=>i.tagId).join(",");
 							var tagNames=tags.map(i=>i.tagName).join(","); 
@@ -926,17 +791,15 @@
 						}else{
 							this.$notify.error(res.data.tips.msg);
 						}
-					}).catch(e=>this.tagSetLoading=false);
+					}).catch(e=>{});
 				
 				
 				
 			},
 		    //流程归档
 		    handleArchive() {
-		    	this.displayDiagram=true;
 				this.$nextTick(() => {
 		        html2canvas(document.getElementById("flowinfoTab")).then(canvas=>{
-		        	//this.displayDiagram=false;
 		                //生成base64图片数据  
 		                var fileData = canvas.toDataURL(); 
 		                let params={
@@ -945,7 +808,7 @@
 		                	archiveId:this.addForm.id,
 		                	categoryId:this.addForm.categoryId
 		                }  
-		                uploadBase64ArchiveAttachment(params).then(res=>{
+		                this.$mdp.uploadBase64ArchiveAttachment(params).then(res=>{
 		                	if(res.data.tips.isOk){ 
 		   			    	  this.fileList.push(res.data.data);
 		   			      	}else{
@@ -1015,7 +878,7 @@
 								this.actAssignee=null;
 							}   
 							if(showNodeInfoDialog){
-								this.nodeInfoVisible=true;
+								this.$refs['nodeInfosSetDialog'].open({nodeInfos:this.nodeInfos})
 							}
 						}
 					}
@@ -1035,12 +898,11 @@
 						oldPlanFinishTime:this.taskInfo.planFinishTime,
 						planFinishTime:this.addForm.planFinishTime
 					}
-					
-					this.refreshCommentList=false
+					 
 					editPlanFinishTime(params).then(res=>{
 						this.addLoading=false
-						if(res.data.tips.isOk){
-							this.refreshCommentList=true;
+						if(res.data.tips.isOk){  
+							this.$refs['commentStepRef'].getComments();
 							this.$notify.success("更新成功"); 
 						}else{
 							this.$notify.error(res.data.tips.msg); 
@@ -1061,23 +923,14 @@
 				})
 				
 			},
-			showSponsorsAndMonitors(){
-				if( (this.monitors==null || this.monitors.length==0 || this.sponsors==null||this.sponsors.length==0) && this.sponsorsAndMonitorsVisible==false ){
-					this.initBaseUserList(true)
-				}else{
-					this.sponsorsAndMonitorsVisible=!this.sponsorsAndMonitorsVisible;
-				} 
-			}
+			 
 			/**end 在上面加自定义方法**/
 			
 		},//end method
 		components: {  
 		    //在下面添加其它组件 'procinst-parames-edit':ProcinstParamesEdit
-		    'form-data-mng-for-flow-form':FormDataMngForFlowForm,
-		    'comment-step':CommentStep,
-			'attachment-upload':AttachmentUpload,
-			'sticky': Sticky,
-			TaskCandidateSet,TagMng,UsersSelect,ProcinstNodeInfoSet,FormDataForFlowNode
+		    FlowForm,
+		    'comment-step':CommentStep,  ProcinstNodeInfoSet
 		},
 		mounted() { 
 			console.log("mountedxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
@@ -1085,7 +938,7 @@
 	      	var date=new Date();
 	      	
 			    if(this.taskInfo){
-					this.previewOnlineUrl="";
+					
 					this.task.taskId=this.taskInfo.taskId
 					this.task.taskName=this.taskInfo.taskName
 					this.task.assigneeName=this.taskInfo.assigneeName 
@@ -1110,8 +963,6 @@
 					this.addForm.mainQx=this.taskInfo.mainQx;
 					this.qxCode= this.addForm.mainQx
 
-
-					//this.initBaseUserList();
 			      	console.log("mountedxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
 					  console.log(this.taskInfo)
 					if(this.taskInfo.assignee==null || this.taskInfo.assignee==''){

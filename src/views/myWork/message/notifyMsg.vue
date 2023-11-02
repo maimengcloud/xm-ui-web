@@ -37,14 +37,7 @@
   </div>
 </template>
 
-<script>  
-	import {
-		getNoticeMsg,goToPage
-	} from '@/api/cpd'
-  
-	import {
-		editSomeFieldsNotifyMsg
-	} from '@/api/mdp/sys/notifyMsg'
+<script>    
 import { mapGetters } from 'vuex'
 export default {
   props:['msgClass'],
@@ -111,7 +104,7 @@ export default {
       }
       params.toUserid=this.userInfo.userid 
       this.load.list=true
-      getNoticeMsg(params).then(res=>{
+      this.$mdp.listNotifyMsg(params).then(res=>{
         this.load.list=false
         this.notifyMsgs=res.data.data;
         this.pageInfo.total=res.data.total
@@ -124,19 +117,21 @@ export default {
      */
     goToPage(item){
       if(item.hadRead!='1'){
-        editSomeFieldsNotifyMsg({ids:[item.id],hadRead:'1'}).then(res=>{
+        this.$mdp.editSomeFieldsNotifyMsg({ids:[item.id],hadRead:'1'}).then(res=>{
           item.hadRead="1"
           this.$store.dispatch("setNoticeMsg",this.notifyMsgs)
         })
       }
-      goToPage(this,item);
+      if(item.url){
+        this.$mdp.openWin(item.url)
+      }
     },
     setAllHadRead(){
       var ids=this.notifyMsgs.filter(k=>k.hadRead!=='1').map(i=>i.id)
       if(ids.length<=0){
         return;
       }
-      editSomeFieldsNotifyMsg({ids:ids,hadRead:'1'}).then(res=>{ 
+      this.$mdp.editSomeFieldsNotifyMsg({ids:ids,hadRead:'1'}).then(res=>{ 
         var tips = res.data.tips
         this.searchNoticeMsg(); 
         this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})

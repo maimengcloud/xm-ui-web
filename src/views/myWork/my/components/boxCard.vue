@@ -16,7 +16,7 @@
                 :use-css-transforms="true"
             >
                 <grid-item
-                    v-for="(item) in layout"
+                    v-for="(item) in layoutCpd"
                     :x="item.x"
                     :y="item.y"
                     :w="item.w"
@@ -24,25 +24,16 @@
                     :i="item.i"
                     :key="item.i">
                     <div class="m_content_card_title">
-                        <span><b>{{item.menuname}}</b><font style="font-size:14px;color: #7D7D7D;opacity: 0.53;">(及时取消关注不常用的，常用的5个排在最前面)</font></span><span v-if="item.menuid=='myFocus'" style="float:right;"><el-button icon="el-icon-refresh" @click="refreshMyFocus">刷新</el-button></span>
-                    </div>
-                    <dsp  source="GZT" v-if="item.menuid == 'dsp'"></dsp>
-                    <wdrw source="GZT" v-if="item.menuid == 'wdrw'"></wdrw>
-                    <wdcp source="GZT" v-if="item.menuid == 'wdcp'"></wdcp>
-                    <wdxm source="GZT" v-if="item.menuid == 'wdxm'"></wdxm>
-                    <my-focus source="GZT" v-if="item.menuid == 'myFocus'" ref="refMyFocus"></my-focus>
+                        <span><b>{{item.menuname}}</b><font style="font-size:14px;color: #7D7D7D;opacity: 0.53;" v-if="item.menuid=='myFocus'" >(及时取消关注不常用的，常用的5个排在最前面)</font></span><span v-if="item.menuid=='myFocus'" style="float:right;"><el-button icon="el-icon-refresh" @click="refreshMyFocus">刷新</el-button></span>
+                    </div> 
+                    <component :is="item.menuid"></component>
                 </grid-item>
             </grid-layout>
         </div>
    </div>
 </template>
 
-<script>
-import dsp from  '@/views/mdp/workflow/ru/task/TaskListAssigneeToMe.vue';
-import wdrw from '@/views/xm/core/xmTask/xmMyTaskCenter.vue';
-import wdcp from '@/views/xm/core/xmProduct/XmProductAllMng.vue';
-import wdxm from '@/views/xm/core/xmProject/XmProjectMng';
-import { userMenuFavoriteList, saveMenuFavoriteList} from '@/api/mdp/sys/menuFavorite'
+<script> 
 
 import myFocus from './MyFocusList';
 import VueGridLayout from 'vue-grid-layout';
@@ -50,10 +41,10 @@ import { mapGetters } from 'vuex'
 
 export default {
     components: {
-        dsp,
-        wdrw,
-        wdcp,
-        wdxm,
+        //dsp,
+        //wdrw,
+        //wdcp,
+        //wdxm,
         myFocus,
         GridLayout: VueGridLayout.GridLayout,
         GridItem: VueGridLayout.GridItem
@@ -61,6 +52,13 @@ export default {
 
     computed: {
         ...mapGetters(['userInfo']), 
+        layoutCpd(){
+            if(this.layout==null | this.layout.length==0){
+                return []
+            }else{
+                return this.layout.filter(k=>this.$mdp.getSupportComponents().some(menuid=>menuid==k.menuid))
+            }
+        }
     },
 
     watch: {
@@ -105,7 +103,7 @@ export default {
             )
         },
         getFMenus(){
-            userMenuFavoriteList({}).then(res=>{
+            this.$mdp.userMenuFavoriteList({}).then(res=>{
                 localStorage.setItem('fMenus',JSON.stringify(res.data.data));
                 this.fMenus=res.data.data;
             }) 

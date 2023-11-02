@@ -27,52 +27,7 @@
 
 					<el-checkbox v-model="qxCodeArr[10]" true-label="1" false-label="0">可委托办理 </el-checkbox> 
 
-				</el-form-item>
-				<el-form-item label="字段查看权限">
-					  <el-radio-group v-model="qxCodeArr[11]"><!-- 11 字段查看权限-->
-						<el-radio label="a1">所有可看</el-radio>
-						<el-radio label="a0">所有不可看</el-radio>
-						<el-radio label="1">部分可看</el-radio>
-					</el-radio-group>
-					<!-- 12 可看字段列表竖线分隔-->
-					  <el-radio-group v-model="qxCodeArr[13]" v-if="qxCodeArr[11]!='a0'"><!-- 13 字段修改权限-->
-						<el-radio v-if="qxCodeArr[11]=='a1'" label="a1">所有可改</el-radio>
-						<el-radio v-if="qxCodeArr[11]=='a1' || qxCodeArr[11]=='1' " label="a0">所有不可改</el-radio>
-						<el-radio v-if="qxCodeArr[11]=='a1' || qxCodeArr[11]=='1' " label="1">部分可改</el-radio>
-					</el-radio-group> 
-					<!-- 14 可更新字段列表竖线分隔 如 f1:1|f2:1|f3:0  冒号后的数字0代办不是必须，1代表必须 不配做代表不做处理-->
-
-					  <el-table v-if="qxCodeArr[11]=='1'"
-						ref="flowFormFields"
-						:data="flowFormFields"
-						tooltip-effect="dark"
-						style="width: 100%"
-						@selection-change="formFieldSelected">
-						<el-table-column
-							type="index"
-							width="40">
-						</el-table-column>
-						<el-table-column
-							prop="fieldTitle"
-							label="字段名"
-							min-width="120">
-							<template slot-scope="scope">{{ scope.row.fieldTitle}}</template>
-						</el-table-column>  
-						<el-table-column
-						prop="qx"
-						label="权限"
-						min-width="350">
-							<template slot-scope="scope">
-								<el-radio-group v-model="scope.row.qx"> 
-									<el-radio label="rw">可读可写（默认）</el-radio> 
-									<el-radio label="nr">不可读</el-radio>
-									<el-radio label="r">只读</el-radio> 
-									<el-radio label="frw">可读可写必填</el-radio> 
-								</el-radio-group> 
-							</template>
-						</el-table-column> 
-					</el-table>
-				</el-form-item>
+				</el-form-item> 
 				<el-form-item label="推送通知">
 					
 					<el-checkbox v-model="qxCodeArr[15]" true-label="1" false-label="0"> 推送任务通知到IM</el-checkbox> 
@@ -85,21 +40,22 @@
 					<el-checkbox v-if="qxType=='mainQx'" v-model="qxCodeArr[18]" true-label="1" false-label="0"> 发起流程时可重设权限</el-checkbox> 
 					<el-checkbox v-if="qxType=='mainQx'" v-model="qxCodeArr[19]" true-label="1" false-label="0"> 控制子节点权限</el-checkbox>  
 				</el-form-item> 
-				
-				<el-form-item label="">
-					
-					<el-button @click.native="confirm">确认</el-button> 
-					<el-button  @click.native="handleCancel"> 取消</el-button> 
-				</el-form-item> 
 			</el-form> 
 		</el-row>
+		
+				
+		<el-row class="footer">
+					
+			<el-button  @click.native="handleCancel"> 关闭</el-button> 
+			<el-button type="primary" @click.native="confirm">确认</el-button> 
+		</el-row> 
 	</section>
 </template>
 
 <script>
-	import util from '@/common/js/util';//全局公共库 
+	import util from '@/components/mdp-ui/js/util';//全局公共库 
 	
-	import qxutil from '@/common/js/qxutil';//全局公共库 
+	import qxutil from './qxutil';//全局公共库 
 	import { mapGetters } from 'vuex'
 	
 	export default { 

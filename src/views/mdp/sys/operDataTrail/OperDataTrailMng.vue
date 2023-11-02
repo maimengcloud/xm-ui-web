@@ -120,7 +120,7 @@
 </template>
 
 <script>
-	import util from '../../../../common/js/util'
+	import util from '@/components/mdp-ui/js/util'
 	import { listOperDataTrail, delOperDataTrail, batchDelOperDataTrail, editOperDataTrail, addOperDataTrail } from '../../../../api/mdp/sys/operDataTrail'; 
 	export default {
 		data() {

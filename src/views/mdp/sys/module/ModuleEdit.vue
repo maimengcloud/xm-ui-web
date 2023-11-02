@@ -17,10 +17,8 @@
 						</el-input>
 					</el-form-item>  
 				</el-form-item> 
-				<el-form-item label="计费模式" prop="billMode"> 
-					<el-select v-model="editForm.billMode">
-						<el-option v-for="(item,index) in dicts['moduleBillMode']" :value="item.id" :label="item.name" :key="index"></el-option>
-					</el-select>
+				<el-form-item label="计费模式" prop="billMode">  
+					<mdp-select show-style="tag" item-code="moduleBillMode" v-model="editForm.billMode"/>  
  				</el-form-item>  
 				<el-form-item label="人均费用" prop="uniFee" v-if="editForm.billMode=='1' ||editForm.billMode=='3'">
 					<el-input v-model="editForm.uniFee" placeholder="人均费用" :maxlength="10">
@@ -58,8 +56,8 @@
 					<br><font color="blue">比如 /mdp/xm/xxx/**  代表前缀为/mdp/xm/xxx 的所有请求都不进行登记. *代表一个字符，**代表多个任意字符包括多级路径</font>
 				</el-form-item> 
 				<el-form-item label="审核状态" prop="bizFlowState">
-					<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'bizFlowState',editForm.bizFlowState)" :key="index" :type="item.className">{{item.name}}</el-tag>
-				</el-form-item>  
+					<mdp-select show-style="tag" item-code="bizFlowState" v-model="scope.row.status" :disabled="true"></mdp-select> 
+ 				</el-form-item>  
 			</el-form>
 		</el-row>
 
@@ -71,9 +69,9 @@
 </template>
 
 <script>
-	import util from '@/common/js/util';//全局公共库
-	import config from "@/common/config"; //全局公共库import
- 	import { initDicts, addModule,editModule } from '@/api/mdp/sys/module';
+	import util from '@/components/mdp-ui/js/util';//全局公共库
+	import config from "@/api/mdp_pub/mdp_config"; //全局公共库import
+ 	import {  addModule,editModule } from '@/api/mdp/sys/module';
 	import { mapGetters } from 'vuex'
 	
 	export default {
@@ -178,7 +176,7 @@
 		},//end method
 		mounted() {
 		    this.$nextTick(() => {
-                initDicts(this);
+                
                 this.initData()
                 this.maxTableHeight = util.calcTableMaxHeight(this.$refs.table.$el)
             });

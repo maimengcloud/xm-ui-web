@@ -6,7 +6,7 @@
 
 <script>
 	 
-	import  ExecutionMng from './ExecutionMng';//
+	import  ExecutionMng from './Index';//
 	
 	export default {
 		name:'ExecutionListMyPartake',

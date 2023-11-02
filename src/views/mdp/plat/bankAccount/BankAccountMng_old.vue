@@ -53,8 +53,8 @@
 </template>
 
 <script>
-	import util from '@/common/js/util';//全局公共库
-	import config from '@/common/config';//全局公共库
+	import util from '@/components/mdp-ui/js/util';//全局公共库
+	import config from '@/api/mdp_pub/mdp_config';//全局公共库
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { listBankAccount, delBankAccount, batchDelBankAccount } from '@/api/mdp/plat/bankAccount';
 	import  BankAccountAdd from './BankAccountAdd';//新增界面

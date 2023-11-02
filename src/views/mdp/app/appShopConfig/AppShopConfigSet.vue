@@ -104,12 +104,11 @@
 </template>
 
 <script>
-	import util from '@/common/js/util';//全局公共库
+	import util from '@/components/mdp-ui/js/util';//全局公共库
 	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询 
 	import { addAppShopConfig,editAppShopConfig,listAppShopConfig } from '@/api/mdp/app/appShopConfig';
 	import { mapGetters } from 'vuex'
 	
-	import BranchSelect from '@/views/mdp/sys/branch/BranchSelect'; //新增界面
 	
 	import selectShop from '@/views/mdp/app/selectShop'; //新增界面
 	
@@ -317,7 +316,7 @@
 		},//end method
 		components: {  
 			//在下面添加其它组件 'app-shop-config-edit':AppShopConfigEdit
-			selectShop,BranchSelect
+			selectShop
 		},
 		mounted() {
 			this.addForm=Object.assign(this.addForm, this.appShopConfig);  

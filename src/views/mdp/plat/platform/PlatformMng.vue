@@ -20,9 +20,8 @@
                           <el-input v-model="editForm.platformTitle" auto-complete="off" style="width: 50%;"></el-input>
                         </el-form-item>
                         <el-form-item label="平台LOGO" prop="logoUrl">
-                          <single-shear-upload :img-width="200" :img-height="200" :show-title="true" v-model="editForm.logoUrl" :branch-id="userInfo.branchId" :deptid="userInfo.deptid" :remark="editForm.name">
-                            <span slot="title">只能上传jpg/png格式文件，文件不能超过50kb</span>
-                          </single-shear-upload>
+                          <mdp-image  v-model="editForm.logoUrl" fit="contain">
+                           </mdp-image>
                         </el-form-item>
                         <el-form-item label="备注" prop="remark">
                           <el-input type="textarea" rows=6 v-model="editForm.remark" auto-complete="off" style="width: 50%;"></el-input>
@@ -277,11 +276,10 @@
 </template>
 
 <script>
-import util from '@/common/js/util';//全局公共库
+import util from '@/components/mdp-ui/js/util';//全局公共库
 import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 import { listPlatform,editPlatform } from '@/api/mdp/plat/platform';
-import { mapGetters } from 'vuex';
-import SingleShearUpload from "@/components/Image/Single/Index";
+import { mapGetters } from 'vuex'; 
 import ExtInfos from "@/components/ExtInfos/Index";
 
 export default {
@@ -383,9 +381,7 @@ export default {
     },
     /**end 在上面加自定义方法**/
   },//end method
-  components: {
-    //在下面添加其它组件 'platform-edit':PlatformEdit
-    "single-shear-upload": SingleShearUpload,
+  components: { 
     ExtInfos
   },
   mounted() {

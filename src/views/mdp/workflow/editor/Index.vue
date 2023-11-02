@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import config from '../../../../common/config';//
+import config from '@/api/mdp_pub/mdp_config';//
 
 	export default {
 		

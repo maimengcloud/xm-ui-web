@@ -61,7 +61,7 @@
 </template>
 
 <script>
-	import util from '@/common/js/util';//全局公共库
+	import util from '@/components/mdp-ui/js/util';//全局公共库
 	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
 	import { addMenuFavorite,editMenuFavorite } from '@/api/mdp/menu/menuFavorite';
 	import { mapGetters } from 'vuex'

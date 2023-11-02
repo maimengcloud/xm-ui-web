@@ -39,7 +39,7 @@
             <img src="../img/tdgl.png" alt="">
             <span>团队管理</span>
           </div>
-           <div class="m_right_menu" @click="gotolink('xm','/xm/core/task/center')">
+           <div class="m_right_menu" @click="gotolink('xm','/xm/core/task/mng')">
             <img src="../img/kfrw.png" alt="">
             <span>开发任务</span>
           </div>
@@ -100,7 +100,7 @@ export default {
         this.$router.push({path:path});
       }else{
         var prefixUrl=window.location.protocol+"//"+window.location.host+"/"+context+"/"+process.env.VERSION+"/#"; //   返回https://mp.csdn.net
-        window.open(prefixUrl+path)
+        this.$mdp.openWin(prefixUrl+path)
         NProgress.done() // if current page is login will not trigger afterEach hook, so manually handle it
       }
 

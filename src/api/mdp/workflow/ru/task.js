@@ -1,8 +1,8 @@
 import axios from '@/utils/request'
 
-import config from '@/common/config'
+import config from '@/api/mdp_pub/mdp_config'
 
-let base=config.getWorkflowBasePath();
+let base=config.getWorkflowContext();
 
 //默认只开放普通查询，所有查询，只要上传	 分页参数 {currentPage:1,pageSize:10,total:0}，后台都会自动按分页查询 其它 api用到再打开，没用到的api请注释掉，
 
@@ -42,26 +42,17 @@ export const addComment = params => { return axios.post(`${base}/mdp/workflow/ru
 
 
 /**
- * 新增候选人/部门/岗位 {branchId:'',taskId:'',procInstId:'',userids:[userid],deptids:[deptid],postids:[postid]}
+ * 新增候选人/部门/岗位/角色 {branchId:'',taskId:'',procInstId:'',hxUserids:'逗号分割的用户列表',hxDeptids:'逗号分割的部门列表',hxPostids:'逗号分割的岗位列表',hxRoleids:'逗号分割的岗位列表'}
  * */
 export const addCandidate = params => { return axios.post(`${base}/mdp/workflow/ru/task/addCandidate`, params); };
 
 /**
- * 删除候选人/部门/岗位 {taskId:'',procInstId:'',userids:[userid],deptids:[deptid],postids:[postid]}
+ * 删除候选人/部门/岗位/角色 {branchId:'',taskId:'',procInstId:'',hxUserids:'逗号分割的用户列表',hxDeptids:'逗号分割的部门列表',hxPostids:'逗号分割的岗位列表',hxRoleids:'逗号分割的岗位列表'}
  * */
 export const delCandidate = params => { return axios.post(`${base}/mdp/workflow/ru/task/delCandidate`, params); };
 
 /**
- * 查询候选个人
+ * 查询候选人/部门/岗位/角色 请求参数 {taskId:'任务编号'}, 返回 data={hxUserids:'逗号分割的用户列表',hxDeptids:'逗号分割的部门列表',hxPostids:'逗号分割的岗位列表',hxRoleids:'逗号分割的岗位列表'}
  * */
-export const listCandidateUsers = params => { return axios.get(`${base}/mdp/workflow/ru/task/listCandidateUsers`, { params: params }); };
-
-/**
- * 查询候选组（实际指部门）
- * */
-export const listCandidateDepts = params => { return axios.get(`${base}/mdp/workflow/ru/task/listCandidateDepts`, { params: params }); };
-
-/**
- * 查询候选岗位
- * */
-export const listCandidatePosts = params => { return axios.get(`${base}/mdp/workflow/ru/task/listCandidatePosts`, { params: params }); }; 
+export const listCandidate = params => { return axios.get(`${base}/mdp/workflow/ru/task/listCandidate`, { params: params }); };
+ 

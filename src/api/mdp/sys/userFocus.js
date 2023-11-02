@@ -1,9 +1,9 @@
 import axios from '@/utils/request'
 
 import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
-import config from '@/common/config'
+import config from '@/api/mdp_pub/mdp_config'
 
-let base = config.getSysBasePath();
+let base = config.getSysContext()
 
 /**-------------------------与后端通讯接口------------------请写在下面-------------------------------------------- */
 /**
@@ -33,15 +33,4 @@ export const editSomeFieldsUserFocus = params => { return axios.post(`${base}/md
 //普通查询 条件之间and关系  
 export const myFocusForIndex = params => {  
     return axios.get(`${base}/mdp/sys/userFocus/myFocusForIndex`, { params: params }); 
-};
-
-/**-------------------------前端mng|add|edit界面公共函数---------------请写在下面----------------------------------------------- */
-//初始化页面上的字典
-export const initDicts = (that) => {
- var itemCodes=['objType'];//在此添加要加载的字典 如['sex','grade','lvl']
- if(itemCodes.length>0){
-    initSimpleDicts('all',itemCodes).then(res=>{
-        Object.assign(that.dicts,res.data.data)
-    });
- }
 };

@@ -75,7 +75,7 @@
 </template>
 
 <script>
-	import util from '@/common/js/util';//全局公共库
+	import util from '@/components/mdp-ui/js/util';//全局公共库
 	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询 
 	import { addAppShopConfig } from '@/api/mdp/app/appShopConfig';
 	import { mapGetters } from 'vuex'

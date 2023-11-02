@@ -1,4 +1,4 @@
-import { constantRouterMap } from '@/router'
+import { asyncRouterMap, constantRouterMap } from '@/router'
 
 /**
  * 通过meta.role判断是否与当前用户权限匹配
@@ -61,10 +61,6 @@ function findRouteByFullPath(router,fullPath){
  * @param roles
  */
 function filterAsyncRouter(asyncRouterMap, roles,menus) { 
-  if(!asyncRouterMap){
-    const accessedRouters=[]
-    return accessedRouters
-  }
   const accessedRouters = asyncRouterMap.filter(route => { 
     if(!route.fullPath){
       route.fullPath=route.path;
@@ -83,6 +79,8 @@ function filterAsyncRouter(asyncRouterMap, roles,menus) {
     }
     return false
   })
+
+  debugger
   return accessedRouters
 }
 function filterAsyncRouterWithParentRoute(proute, roles,menus) {
@@ -139,8 +137,7 @@ const permission = {
   mutations: {
     SET_ROUTERS: (state, routers) => {
       state.addRouters = routers
-      state.routers=routers 
-      
+      state.routers = constantRouterMap.concat(routers)
     },
     SET_ADDED: (state, added) => {
         state.added = added 
@@ -148,13 +145,14 @@ const permission = {
   },
   actions: {
     GenerateRoutes({ commit }, {roles,menus}) {
-      return new Promise(resolve => {    
-        initRouter({children:constantRouterMap})
+      return new Promise(resolve => {  
+        
+        initRouter({children:asyncRouterMap})
         let accessedRouters 
         if (roles.some(role => role.roleid==='superAdmin'||role.roleid==='platformAdmin')) {
-          accessedRouters = constantRouterMap
+          accessedRouters = asyncRouterMap
         } else { 
-          accessedRouters = filterAsyncRouter(constantRouterMap, roles,menus)
+          accessedRouters = filterAsyncRouter(asyncRouterMap, roles,menus)
         }
         commit('SET_ROUTERS', accessedRouters)
         commit('SET_ADDED', true)

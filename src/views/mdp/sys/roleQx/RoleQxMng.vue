@@ -1,18 +1,12 @@
 <template>
 	<section> 
 		<!--编辑界面 角色权限管理--> 
-			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
+			<el-form v-if="role && role.roleid" :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
 				<el-form-item  label="角色名" prop="rolename">
-					<el-tag type="gray">{{role.rolename}}</el-tag> <el-tag type="danger">{{role.remark}}</el-tag>  
+					<el-tag type="gray">{{role.rolename}}</el-tag> <el-tag type="danger" v-if="role.remark">{{role.remark}}</el-tag>  
 				</el-form-item>   
-				 <el-form-item label="数据级别" prop="dataLvl">  
-				 	  <el-select v-model="role.dataLvl" style="width:40%;">  
-					    	<el-option v-for="item in options.dataLvl" :key="item.optionValue" :label="item.optionName" :value="parseInt(item.optionValue)"  :disabled="disabledDeptScopeRadio(item)"></el-option> 
-					   </el-select>  <el-button type="warning" :loading="load.edit"  @click="saveDataLvl">保存数据访问级别</el-button>
-				 </el-form-item>  
-				<el-tabs :tab-position="'left'"   @tab-click="qxTabClick">
-					<el-tab-pane v-for=" (item,index) in menuModules " :categoryId="item.id" :key="index" :label="item.cname" >
-							<div class="edit_dev">
+				<el-form-item  label="权限"> 
+  							<div class="edit_dev">
 								<el-transfer
 								style="text-align: left; display: inline-block;"
 								v-model="dbQxIds"
@@ -26,23 +20,20 @@
 								}"
 								:props="{key:'qxId',label:'qxName'}"
 								@change="handleChange"
-								:data="qxsCmp[item.id]">
+								:data="qxs">
 								</el-transfer>
-							</div>
-					</el-tab-pane> 
-				</el-tabs>
-				<el-form-item>
-					<el-col :span="24" style="padding-top:10px;text-align:left;"> 
-							<el-button @click.native="handleCancel">取消</el-button>  
-							<el-button type="primary" @click.native="editSubmit" :loading="load.edit">提交</el-button>   
-					</el-col> 
-				</el-form-item> 
+							</div> 
+				</el-form-item>
 			</el-form>
+			<el-row slot="footer" class="footer">
+				<el-button @click.native="close">关闭</el-button>   
+				<el-button type="primary" @click.native="editSubmit" :loading="load.edit">提交</el-button>   
+			</el-row>
 	</section>
 </template>
 
 <script>
-	import util from '../../../../common/js/util';//全局公共库
+	import util from '@/components/mdp-ui/js/util';//全局公共库
 	import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { listRoleQx, delRoleQx, batchEditRoleQx, editRoleQx, addRoleQx } from '@/api/mdp/sys/roleQx'; 
 	import { listMenuModule } from '@/api/mdp/menu/menuModule';
@@ -55,38 +46,22 @@
 	    computed: {
 		    ...mapGetters([
 		      'userInfo'
-			]),
-			qxsCmp(){
-				var qxsCmp={};
-				if(this.qxs==null || this.qxs.length==0){
-					return qxsCmp
-				}
-				if(!this.menuModules || this.menuModules.length==0){
-					return qxsCmp
-				}
-				var qxCategory=this.menuModules
-				this.qxs.forEach(qx=>{
-					qxCategory.forEach(c=>{
-						if(c.id==qx.categoryId){
-							if(qxsCmp[c.id]){
-								if(c.id==qx.categoryId){
-									var qxlist=qxsCmp[c.id]
-									qxlist.push(qx)
-								}
-								
-							}else{
-								var qxlist=[qx]
-								qxsCmp[c.id]=qxlist
-							}
-						}
-						
-					})
-					
-				})
-				return qxsCmp
+			]), 
+		},
+		props:{
+			width:{
+				type:String,
+				default:'60%'
+			},
+			visible:{
+				type:Boolean,
+				default:false,
+			},
+			role:{
+				type:Object,
+				default:null,
 			}
 		},
-		props:['role','visible'],
 		watch: {
 	      'visible':function(visible) { 
 	      	if(visible==true){
@@ -118,8 +93,7 @@
 	    },	
 		data() {
 			return {
-				options:{},//下拉选择框的所有静态数据
-				load:{ list: false, edit: false, del: false, add: false },//查询中...
+ 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				editFormRules: { 
 				},
 				//编辑界面 角色权限管理
@@ -138,8 +112,8 @@
 		},//end data
 		methods: {
 			// 取消按钮点击 父组件监听@cancel="editFormVisible=false" 监听
-			handleCancel:function(){
-				this.$emit('cancel');
+			close:function(){
+				this.$emit('close');
 			},
 			//新增提交Role 角色管理 父组件监听@submit="afterEditSubmit"
 			//编辑权限
@@ -164,6 +138,7 @@
 								if(tips.isOk){
 									this.$refs['editForm'].resetFields();
 									this.$emit('submit');//  @submit="afterEditSubmit"
+									this.visible=false;
 								}
 								this.$notify({ message: tips.msg, type: tips.isOk?'success':'error' }); 
 							}).catch(() => {
@@ -176,6 +151,10 @@
 			/**begin 在下面加自定义方法**/
 			//显示设置权限界面
 			getRoleQxs(){ 
+				
+				if( !this.role || !this.role.roleid){
+					return;
+				}
 				this.load.list=true
 				let params={roleid:this.role.roleid};
 				this.roleQxs=[]
@@ -211,7 +190,7 @@
 			},
 			
 			renderFunc(h, option) {
-				return <span>{ option.qxName } - { option.qxId }  </span>;
+				return <span>{option.moduleId} - { option.qxName } - { option.qxId }  </span>;
 			},
 			handleChange(){
 
@@ -236,9 +215,10 @@
 						this.load.edit=false
 						var tips=res.data.tips; 
 						this.$notify({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.visible=false
 					}).catch(() =>this.load.edit=false);
 				});
-			}
+			},
 			/**end 在上面加自定义方法**/
 			
 		},//end method
@@ -247,15 +227,6 @@
 		},
 		mounted() {
 			this.getRoleQxs();
-			
-			let optionsParams=[{categoryId:'all',itemCode:'dataLvl'}];
-			listOption(optionsParams).then(res=>{
-				this.options=res.data.data; 
-			}); 
-			
-			listMenuModule({}).then(res=>{ 
-				this.menuModules=res.data.data
-			})
 			/**在下面写其它函数***/
 			this.load.list=true
 			listQx({}).then(res=>{
@@ -273,12 +244,12 @@
 } 
    .edit_dev >>>.el-transfer-panel__list.is-filterable{
 		width:400px !important;
-		height:450px !important;
+		height:650px !important;
 	}
  
 	.edit_dev >>>.el-transfer-panel{
 		width: 400px !important;
-		height: 450px !important;
+		height: 650px !important;
 	}
 	.edit_dev >>> .el-transfer__buttons{
 		width:100px;  

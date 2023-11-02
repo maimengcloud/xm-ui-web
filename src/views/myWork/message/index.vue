@@ -29,17 +29,13 @@
 </template>
 
 <script>
-import {listArchive} from '@/api/mdp/arc/archive'
-
-import archive from "./archive"
-import prichatIm from "./prichatIm"
-import groupIm from "./groupIm"
-import notifyMsg from "./notifyMsg"
+ 
+ import notifyMsg from "./notifyMsg"
 
 export default {
   
   components:{
-    archive,prichatIm,groupIm,notifyMsg,
+    notifyMsg,
   },
   data() {
     return {

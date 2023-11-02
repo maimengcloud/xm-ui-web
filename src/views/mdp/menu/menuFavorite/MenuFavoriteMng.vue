@@ -9,13 +9,9 @@
 					<el-button v-if="changeIconVisible==false"  @click="changeIconVisible=true">修改图标</el-button>
 					<el-button v-else  @click="changeIconVisible=false" icon="el-icon-back">返回</el-button>
 				</el-row>
-			</div>
-
-			<single-shear-upload :un-show-preview="true" v-show="addExpressEntryIconVisible" ref="iconUpload"   
-					 :deptid="userInfo.deptid" :branch-id="userInfo.branchId" :remark="addExpressEntryIconSingleShear.name" @confirm="handleConfirm" @cancel="canelAddFormVisible">
-						 
-					</single-shear-upload> 
-			
+			</div> 
+			<mdp-image  v-model="addExpressEntryIcon.picUrl" fit="contain" @change2="handleConfirm">
+			</mdp-image>
 			<div v-if="changeIconVisible==true" style="display:flex;flex-wrap:wrap;margin:0 30px;padding-top:10px;">
 				<div class="expressUserArea" v-for="userBeforeMenuFavoriteOne in userBeforeMenuFavoriteArray" :key="userBeforeMenuFavoriteOne.id"
 				 @click="addImage(userBeforeMenuFavoriteOne)">
@@ -57,9 +53,8 @@
 </template>
 
 <script>
-	import util from '@/common/js/util'; //全局公共库
-	import SingleShearUpload from '@/components/Image/Single/Index';
-	import config from '@/common/config';//全局公共库import  
+	import util from '@/components/mdp-ui/js/util'; //全局公共库 
+	import config from '@/api/mdp_pub/mdp_config';//全局公共库import  
 	import { 
 		addMenuFavoriteIconApi,
 		saveMenuFavoritesApi,
@@ -78,7 +73,7 @@
 			return {
 				changeIconVisible:false,
 				currentNeedUpdateExpressEntryObject: '',
-				addExpressEntryIconSingleShear: {
+				addExpressEntryIcon: {
 					id: '',
 					name: '',
 					listPicUrl: '1',
@@ -92,8 +87,7 @@
 					newPicUrl: '',
 					newSortOrder: '1',
 					deptid: ''
-				},
-				addExpressEntryIconVisible: false, //新增brand界面是否显示
+				}, 
 				expressEntryLoading: false,
 				defalutCheckArray: [],
 				treeId: 1,
@@ -279,32 +273,29 @@
 			},
 			 
 			 
-			handleConfirm(image){
-				this.addExpressEntryIconSingleShear.picUrl=image.url
+			handleConfirm(image){ 
 				this.saveExpressEntryImage()
 			},
 			addImage(o) { 
-				
-				this.addExpressEntryIconVisible = true;
+				 
 				this.currentNeedUpdateExpressEntryObject = o;
 				this.$nextTick(()=>{
 					this.$refs.iconUpload.showAdd()
 				})
 			},
 			saveExpressEntryImage() { //保存快捷入口图片
-				if (this.addExpressEntryIconSingleShear.picUrl == null || this.addExpressEntryIconSingleShear.picUrl == '') {
+				if (this.addExpressEntryIcon.picUrl == null || this.addExpressEntryIcon.picUrl == '') {
 					this.$notify.error("请选择图片");
 					return;
 				}
 				let params = {
 					"menuFavorite": this.currentNeedUpdateExpressEntryObject,
-					"iconUrl": this.addExpressEntryIconSingleShear.picUrl
+					"iconUrl": this.addExpressEntryIcon.picUrl
 				};
 				addMenuFavoriteIconApi(params).then((res) => {
 					var tips = res.data.tips;
-					if (res.data.tips.isOk) {
-						this.addExpressEntryIconVisible = false;
-						this.addExpressEntryIconSingleShear.picUrl = '';
+					if (res.data.tips.isOk) { 
+						this.addExpressEntryIcon.picUrl = '';
 						this.$notify({
 							message: tips.msg,
 							type: 'success'
@@ -318,9 +309,8 @@
 					}
 				}) 
 			},
-			canelAddFormVisible() {
-				this.addExpressEntryIconVisible = false;
-				this.addExpressEntryIconSingleShear.picUrl = '';
+			canelAddFormVisible() { 
+				this.addExpressEntryIcon.picUrl = '';
 			},
 			getShippingInfoFromKDNiaoInstanQueryMethod() {
 				let params = {
@@ -332,8 +322,7 @@
 				})
 			}
 		}, //end methods
-		components: { 
-			'single-shear-upload': SingleShearUpload
+		components: {  
 		},
 		computed: {
 			...mapGetters([

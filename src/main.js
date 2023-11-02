@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import Vue from 'vue' 
 
 import 'normalize.css/normalize.css'// A modern alternative to CSS resets
 
@@ -20,31 +20,27 @@ import * as echarts from 'echarts'
 import * as filters from './filters' // global filters
 import Print from 'vue-print-nb'
 import VueQriously from 'vue-qriously'
-Vue.use(VueQriously)
+Vue.use(VueQriously) 
 
+Vue.prototype.$echarts = echarts
+Vue.use(Print); //注册  
 
-import MdpFieldX from '@/components/MdpFieldX/index'
-import MdpDateX from '@/components/MdpDateX/index'
-import MdpDateRange from '@/components/MdpDateRange/index'
-import MdpDateRangeX from '@/components/MdpDateRangeX/index'
-import MdpSelectDict from '@/components/MdpSelectDict/index'
-import MdpSelectDictTag from '@/components/MdpSelectDictTag/index'
-import MdpSelectDictX from '@/components/MdpSelectDictX/index'
-import MdpSelectUserX from '@/components/MdpSelectUserX/index'
-import MyInput from '@/components/MDinput/index'
+//mdp-ui 基础组件
+import MdpComponents from '@/components/mdp-ui/index.js'
+Vue.use(MdpComponents)
+
+//拓展的组件
+import MdpExtComponents from '@/components/mdp-ui-ext/index.js'
+Vue.use(MdpExtComponents) 
+
+// 公共api
+import mdp_pub from "@/api/mdp_pub"; 
+Vue.prototype.$mdp = mdp_pub; 
+
 
 Vue.prototype.$echarts = echarts
 Vue.use(Print); //注册
-Vue.component('mdp-date-range',MdpDateRange) 
-Vue.component('mdp-field-x',MdpFieldX) 
-Vue.component('mdp-select-dict',MdpSelectDict)
-Vue.component('mdp-select-dict-tag',MdpSelectDictTag)
-Vue.component('mdp-select-dict-x',MdpSelectDictX)
-Vue.component('my-input',MyInput)
-Vue.component('mdp-date-x',MdpDateX)
-Vue.component('mdp-date-range-x',MdpDateRangeX)
-Vue.component('mdp-select-user-x',MdpSelectUserX)
- 
+
 import vueToPdf from 'vue-to-pdf';
 Vue.use(vueToPdf);
 

@@ -13,11 +13,11 @@ export default {
 				icon: 'business'
 			},
             children: [
-				{ path: 'branchModuleList', component: _import('mdp/menu/menuModuleBranch/MenuModuleBranchMng'), name: 'MenuModuleBranchMng', meta: { title: '已购模块(平台)',icon: 'component',menu:true  }}, 
+				{ path: 'branch/list', component: _import('mdp/menu/menuModuleBranch/Index'), name: 'MenuModuleBranchMng', meta: { title: '已购模块(平台)',icon: 'component',menu:true  }}, 
 
 				{
-				    path: 'list',
-					component: _import('mdp/mo/moOrder/MoOrderMng'),
+				    path: 'platfrom/list',
+					component: _import('mdp/mo/moOrder/Index'),
 					name: '订单列表(平台)',
 					meta: {
 						title: '订单列表(平台)',
@@ -26,7 +26,7 @@ export default {
 					}
 				},
 				{
-				    path: 'myList',
+				    path: 'my/list',
 					component: _import('mdp/mo/moOrder/MyMoOrderMng'),
 					name: '我的订单',
 					meta: {

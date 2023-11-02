@@ -19,8 +19,8 @@
 				<el-table-column prop="moduleName" label="模块" min-width="80" show-overflow-tooltip  fixed="left"></el-table-column> 
 				<el-table-column prop="status" label="状态" min-width="80" show-overflow-tooltip>
                     <template slot-scope="scope"> 
-                        <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'status',scope.row.status)" :key="index" :type="item.className">{{item.name}}</el-tag>
-                    </template>
+						<mdp-select show-style="tag" item-code="module_status" v-model="scope.row.status" :disabled="true"></mdp-select>
+                     </template>
 				</el-table-column>
 				<el-table-column prop="startTime" label="启用日期" min-width="80" show-overflow-tooltip>
                     <template slot-scope="scope"> 
@@ -86,10 +86,10 @@
 </template>
 
 <script>
-	import util from '@/common/js/util';//全局公共库
-	import config from '@/common/config';//全局公共库 
- 	import { initDicts,listMenuModuleBranch, delMenuModuleBranch, batchDelMenuModuleBranch,editSomeFieldsMenuModuleBranch } from '@/api/mdp/menu/menuModuleBranch';
-	import  MenuModuleBranchEdit from './MenuModuleBranchEdit';//新增修改界面
+	import util from '@/components/mdp-ui/js/util';//全局公共库
+	import config from '@/api/mdp_pub/mdp_config';//全局公共库 
+ 	import { listMenuModuleBranch, delMenuModuleBranch, batchDelMenuModuleBranch,editSomeFieldsMenuModuleBranch } from '@/api/mdp/menu/menuModuleBranch';
+	import  MenuModuleBranchEdit from './Form';//新增修改界面
 	import { mapGetters } from 'vuex'
 	
 	export default {
@@ -308,10 +308,9 @@
 		},//end methods
 		mounted() {
 			this.$nextTick(() => {
-			    initDicts(this);
+			    
 			    this.initData()
-				this.searchMenuModuleBranchs();
-                this.maxTableHeight = util.calcTableMaxHeight(this.$refs.menuModuleBranchTable.$el)
+				this.searchMenuModuleBranchs(); 
 
         	});
 		}

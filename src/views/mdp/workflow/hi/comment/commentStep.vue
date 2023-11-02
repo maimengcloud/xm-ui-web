@@ -41,23 +41,16 @@
 </template>
 
 <script>
-	import util from '../../../../../common/js/util';//全局公共库
+	import util from '@/components/mdp-ui/js/util';//全局公共库
 	//import {getCompanyEmployees, selectCacheOptions,getDefaultValue,getCodeName } from '../../../../../api/common/code';//下拉框数据查询
-	import { addComment,listComment } from '../../../../../api/mdp/workflow/hi/comment';
-	import { listUser } from '@/api/mdp/sys/user';//下拉框数据查询
-	import { listDept } from '@/api/mdp/sys/dept';//下拉框数据查询
+	import { addComment,listComment } from '@/api/mdp/workflow/hi/comment'; 
 	import moment from "moment";
 	export default {
-		props:['refresh','procInstId','task'],
+		props:['procInstId','task'],
 		watch: {
-	      'refresh':function(refresh) {  
-	    	  if(refresh==true){
-	    		  this.comments=[]
-		    	  this.$emit('get-comments',[])
-		      	 this.getComments(); 
-	    	  }
-	    	  
-	      },
+			procInstId(){
+				this.getComments();
+			}
 		},	
 		computed:{
 			screenWidth:function(){
@@ -118,10 +111,9 @@
 				if(!this.procInstId){
 					return;
 				}
-				let params = {procInstId:this.procInstId};
+				let params = {'res.procInstId':this.procInstId};
 				params.pageNum='1';
 				params.pageSize='50'; 
-				params.orderBy='c.time_ asc'
 				listComment(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){ 

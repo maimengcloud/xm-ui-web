@@ -27,7 +27,7 @@
 
 <script> 
 	import {   listMenuTree  } from '@/api/mdp/menu/menuDef'; 
-	import treeTool from '@/common/js/treeTool'; 
+	import treeTool from '@/components/mdp-ui/js/treeTool'; 
 	import { mapGetters } from 'vuex';  
 	import { listMenuModule } from '@/api/mdp/menu/menuModule'; 
 	export default {

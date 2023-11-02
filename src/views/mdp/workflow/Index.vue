@@ -12,7 +12,7 @@
 </template>
 
 <script>
-	import config from '../../../common/config.js'; 
+	import config from '@/api/mdp_pub/mdp_config'; 
 	export default {
 		data() {
 			return {

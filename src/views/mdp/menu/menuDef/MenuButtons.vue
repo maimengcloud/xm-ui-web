@@ -1,42 +1,45 @@
 <template>
 	<section>
-		<el-row class="app-container">
-			<el-button type="primary" v-loading="load.edit" @click="batchSave" :disabled="this.sels.length===0 || load.edit==true">批量保存</el-button> 
-			<el-button type="primary" v-loading="load.edit" @click="batchImport">模板导入</el-button>
-			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0">删除按钮</el-button> 
-			<el-tooltip class="item" effect="light" content="超级管理员/平台管理员/系统管理员可以查询及维护所有菜单，其它人员只能查询修改本角色拥有的菜单" placement="top-start">
-		       <i class="el-icon-question"></i>
-		    </el-tooltip>
+		<el-row>
+			超级管理员/平台管理员/系统管理员可以查询及维护所有菜单，其它人员只能查询修改本角色拥有的菜单
 		</el-row>
-		<el-row class="app-container"> 
-				<!--列表 MenuDef 前端功能菜单表-->
+		<el-row> 
+ 				<!--列表 MenuDef 前端功能菜单表-->
 				<el-table :max-height="tableHeight" :data="menuDefs"  highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 					<el-table-column sortable type="selection" width="40"></el-table-column>
 					<el-table-column sortable type="index" width="40"></el-table-column>
-					<el-table-column sortable prop="id" label="按钮编号" min-width="80" show-overflow-tooltip>
-						<template slot-scope="scope"><el-input v-model="scope.row.id" placeholder="按钮编号" ></el-input></template>
+					<el-table-column sortable prop="id" label="按钮编号" min-width="80" >
+						<template slot-scope="scope"><mdp-input v-model="scope.row.id" placeholder="按钮编号" ></mdp-input></template>
 					</el-table-column>   
-					<el-table-column sortable prop="mname" label="按钮名称" min-width="80" show-overflow-tooltip>
-						<template slot-scope="scope"><el-input v-model="scope.row.mname" placeholder="按钮名称" ></el-input></template>
+					<el-table-column sortable prop="mname" label="按钮名称" min-width="80">
+						<template slot-scope="scope"><mdp-input v-model="scope.row.mname" placeholder="按钮名称" ></mdp-input></template>
 					</el-table-column> 
 					 
-					<el-table-column sortable label="操作" width="280" fixed="right">
+					<el-table-column sortable prop="qxType" label="权限类型" min-width="80">
+						<template slot-scope="scope"><mdp-select item-code="qxType" v-model="scope.row.qxType" placeholder="权限类型" ></mdp-select></template>
+					</el-table-column> 
+					<el-table-column sortable label="操作" width="180" fixed="right">
 						<template slot-scope="scope"> 
-							<el-button size="text" type="danger" @click="handleDel(scope.row,scope.$index)">删除按钮</el-button>
+							<el-button size="text" type="danger" @click="handleDel(scope.row,scope.$index)">删除</el-button>
 						</template>
 					</el-table-column>
 				</el-table>
-					<div class="add-item" @click="addOneButton" style="margin-top:15px" >
+					<div class="add-item" @click="addOneButton" style="margin-top:15px;margin-bottom: 150px;" >
 						+ 添加
 					</div>
-				<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
- 
+  
+		</el-row>
+		
+		<el-row class="footer">
+			<el-button type="primary" v-loading="load.edit" @click="batchSave" :disabled="this.sels.length===0 || load.edit==true">批量保存</el-button> 
+			<el-button type="primary" v-loading="load.edit" @click="batchImport">模板导入</el-button>
+			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0">删除按钮</el-button>  
 		</el-row>
 	</section>
 </template>
 
 <script>
-	import util from '@/common/js/util';//全局公共库 
+	import util from '@/components/mdp-ui/js/util';//全局公共库 
 	//import { listOption } from '@/api/mdp/meta/itemOption';//下拉框数据查询
 	import { listMenuDef, delMenuDef, batchDelMenuDef,batchSaveMenuButton } from '@/api/mdp/menu/menuDef';  
 	import {listQx} from '@/api/mdp/sys/qx'
@@ -87,25 +90,37 @@
 				}, 
 				btnTemplates:[
 					{
-						id:'insert',pid:'',mname:'新增',remark:'新增'
+						id:'addBtn',pid:'',mname:'新增',remark:'新增',qxType:'c',
 					},
 					{
-						id:'query',pid:'',mname:'查询',remark:'查询'
+						id:'searchBtn',pid:'',mname:'查询',remark:'查询',qxType:'r',
 					},
 					{
-						id:'edit',pid:'',mname:'修改',remark:'修改'
+						id:'editBtn',pid:'',mname:'修改',remark:'修改',qxType:'u',
 					},
 					{
-						id:'delete',pid:'',mname:'删除',remark:'删除'
+						id:'delBtn',pid:'',mname:'删除',remark:'删除',qxType:'d',
 					},
 					{
-						id:'batchDelete',pid:'',mname:'批量删除',remark:'批量删除'
+						id:'batchDelBtn',pid:'',mname:'批量删除',remark:'批量删除',qxType:'d',
 					},
 					{
-						id:'export',pid:'',mname:'导出',remark:'导出'
+						id:'exportBtn',pid:'',mname:'导出',remark:'导出',qxType:'r',
 					},
 					{
-						id:'import',pid:'',mname:'导入',remark:'导入'
+						id:'importBtn',pid:'',mname:'导入',remark:'导入',qxType:'c',
+					},
+					{
+						id:'detailBtn',pid:'',mname:'明细',remark:'明细',qxType:'r',
+					},
+					{
+						id:'printBtn',pid:'',mname:'打印',remark:'打印',qxType:'r',
+					},
+					{
+						id:'approveBtn',pid:'',mname:'审核/批准/同意',remark:'审核/批准/同意',qxType:'u',
+					},
+					{
+						id:'rejectBtn',pid:'',mname:'拒绝',remark:'拒绝',qxType:'u',
 					},
 				],
 				tableHeight:500,
@@ -249,10 +264,11 @@
 					this.sels.forEach(i=>{
 						i.pid=this.pmenu.id
 						i.moduleId=this.pmenu.moduleId
+						i.mcate=this.pmenu.mcate
 					})
 					this.load.edit=true;
 					batchSaveMenuButton(this.sels).then((res) => {
-						this.load.del=false;
+						this.load.edit=false;
 						var tips=res.data.tips;
 						if( tips.isOk ){ 
 							this.pageInfo.count=true;
@@ -273,6 +289,7 @@
 					btn.pid=this.pmenu.id
 					btn.remark=btnT.remark
 					btn.isNew=true
+					btn.mcate=this.pmenu.mcate
 					this.menuDefs.push(btn)
 				})
 			}

@@ -12,7 +12,7 @@
 						</div>
                     </div>
                     <div v-for="(o,index) in pps" :key="index" class="list-item">
-                        <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'objType',o.focusType)" :key="index" :type="item.className">{{item.name}}</el-tag>
+                        <mdp-select show-style="tag" item-code="objType" v-model="o.focusType" :disabled="true"></mdp-select>
                         <el-link @click="toBizPage(o)">{{o.bizName }}</el-link>
                         <div class="tool-bar">
                             <span class="u-btn"> 
@@ -35,7 +35,7 @@
 						</div>
                     </div>
                     <div v-for="(o,index) in ims" :key="index" class="list-item">
-                        <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'objType',o.focusType)" :key="index" :type="item.className">{{item.name}}</el-tag>
+                        <mdp-select show-style="tag" item-code="objType" v-model="o.focusType" :disabled="true"></mdp-select>
                         <el-link @click="toBizPage(o)">{{o.bizName }}</el-link>
                         <div class="tool-bar">
                             <span class="u-btn"> 
@@ -56,8 +56,8 @@
 						</div>
                     </div>
                     <div v-for="(o,index) in tbs" :key="index" class="list-item">
-                        <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'objType',o.focusType)" :key="index" :type="item.className">{{item.name}}</el-tag>
-                        <el-link @click="toBizPage(o)"> {{o.bizName }}</el-link>
+                        <mdp-select show-style="tag" item-code="objType" v-model="o.focusType" :disabled="true"></mdp-select>
+                         <el-link @click="toBizPage(o)"> {{o.bizName }}</el-link>
                         <div class="tool-bar">
                             <span class="u-btn"> 
                                 <el-button   type="text" @click="handleDel(o,index)" icon="el-icon-remove-outline" title="取消关注"> 取消关注</el-button>     
@@ -72,11 +72,7 @@
 
 <script>
 
-import util from '@/common/js/util';//全局公共库
-import config from '@/common/config';//全局公共库
-import { initDicts,myFocusForIndex, delUserFocus, batchDelUserFocus,editSomeFieldsUserFocus } from '@/api/mdp/sys/userFocus';
-import { goToPage } from '@/api/cpd';
-import { mapGetters } from 'vuex'
+ import { mapGetters } from 'vuex'
 
 export default {
     name:'userFocusMng',
@@ -117,54 +113,13 @@ export default {
                 orderFields:[],//排序列 如 ['sex','student_id']，必须为数据库字段
                 orderDirs:[]//升序 asc,降序desc 如 性别 升序、学生编号降序 ['asc','desc']
             },
-            load:{ list: false, edit: false, del: false, add: false },//查询中...
-            sels: [],//列表选中数据
-            dicts:{
-                objType:[],
-                //sex: [{id:'1',name:'男'},{id:'2',name:'女'}]
-            },//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
-            addFormVisible: false,//新增userFocus界面是否显示
-            addForm: {
-                userid:'',username:'',bizId:'',focusType:'',pbizId:'',bizName:'',pbizName:'',ftime:'',ubranchId:''
-            },
-
-            editFormVisible: false,//编辑界面是否显示
+            load:{ list: false, edit: false, del: false, add: false },//查询中... 
             editForm: {
                 userid:'',username:'',bizId:'',focusType:'',pbizId:'',bizName:'',pbizName:'',ftime:'',ubranchId:''
-            },
-            maxTableHeight:300,
+            }, 
         }
     },//end data
-    methods: {
-
-        ...util,
-
-        handleSizeChange(pageSize) {
-            this.pageInfo.pageSize=pageSize;
-            this.getUserFocuss();
-        },
-        handleCurrentChange(pageNum) {
-            this.pageInfo.pageNum = pageNum;
-            this.getUserFocuss();
-        },
-        // 表格排序 obj.order=ascending/descending,需转化为 asc/desc ; obj.prop=表格中的排序字段,字段驼峰命名
-        sortChange( obj ){
-            if(obj.order==null){
-                this.pageInfo.orderFields=[];
-                this.pageInfo.orderDirs=[];
-            }else{
-                var dir='asc';
-                if(obj.order=='ascending'){
-                    dir='asc'
-                }else{
-                    dir='desc';
-                }
-
-                this.pageInfo.orderFields=[util.toLine(obj.prop)];
-                this.pageInfo.orderDirs=[dir];
-            }
-            this.getUserFocuss();
-        },
+    methods: { 
         searchUserFocuss:function(){
              this.pageInfo.count=true;
              this.getUserFocuss();
@@ -190,7 +145,7 @@ export default {
             }
 
             this.load.list = true;
-            myFocusForIndex(params).then((res) => {
+            this.$mdp.myFocusForIndex(params).then((res) => {
                 
                 var tips=res.data.tips;
                 if(tips.isOk){
@@ -203,42 +158,18 @@ export default {
                 }
                 this.load.list = false;
             }).catch( err => this.load.list = false );
-        },
-
-        //显示编辑界面 UserFocus 我关注的项目或者任务
-        showEdit: function ( row,index ) {
-            this.editFormVisible = true;
-            this.editForm = Object.assign({}, row);
-        },
-        /**
-         *  that.dicts['focusType']=[{id:'1',name:'项目'},{id:'2',name:'任务'},{id:'3',name:'产品'},{id:'4',name:'需求'},{id:'5',name:'缺陷'},]
-         */
+        }, 
         toBizPage(bizObj){
             bizObj.objType=bizObj.focusType
-            goToPage(this,bizObj) 
-        },
-        //显示新增界面 UserFocus 我关注的项目或者任务
-        showAdd: function () {
-            this.addFormVisible = true;
-            //this.addForm=Object.assign({}, this.editForm);
-        },
-        afterAddSubmit(){
-            this.addFormVisible=false;
-            this.pageInfo.count=true;
-            this.getUserFocuss();
-        },
-        afterEditSubmit(){
-            this.editFormVisible=false;
-        },
-        //选择行userFocus
-        selsChange: function (sels) {
-            this.sels = sels;
-        },
+            if(bizObj.url){
+                this.$mdp.openWin(bizObj.url)
+            } 
+        },   
         //删除userFocus
         handleDel: function (row,index) { 
             this.load.del=true;
             let params = {  userid:row.userid,  bizId:row.bizId,  pbizId:row.pbizId };
-            delUserFocus(params).then((res) => {
+            this.$mdp.delUserFocus(params).then((res) => {
                 this.load.del=false;
                 var tips=res.data.tips;
                 if(tips.isOk){
@@ -247,56 +178,8 @@ export default {
                 this.$notify({ position:'bottom-left', showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
             }).catch( err  => this.load.del=false );
             
-        },
-        //批量删除userFocus
-        batchDel: function () {
-            if(this.sels.length<=0){
-                return;
-            }
-            var params=this.sels.map(i=>{
-                return { userid:i.userid,  bizId:i.bizId,  pbizId:i.pbizId}
-            })
-            this.$confirm('确认删除选中记录吗？', '提示', {
-                type: 'warning'
-            }).then(() => {
-                this.load.del=true;
-                batchDelUserFocus(params).then((res) => {
-                    this.load.del=false;
-                    var tips=res.data.tips;
-                    if( tips.isOk ){
-                        this.searchUserFocuss();
-                    }
-                    this.$notify({ position:'bottom-left',showClose:true, message: tips.msg, type: tips.isOk?'success':'error'});
-                }).catch( err  => this.load.del=false );
-            });
-        },
-      editSomeFields(row,fieldName,$event){
-        let params={};
-        if(this.sels.length>0){
-          if(!this.sels.some(k=> k.userid==row.userid &&  k.bizId==row.bizId &&  k.pbizId==row.pbizId)){
-            this.$notify({position:'bottom-left',showClose:true,message:'请编辑选中的行',type:'warning'})
-            Object.assign(this.editForm,this.editFormBak)
-            return;
-          }
-            params['pkList']=this.sels.map(i=>{ return { userid:i.userid,  bizId:i.bizId,  pbizId:i.pbizId}})
-        }else{
-            params['pkList']=[row].map(i=>{ return { userid:i.userid,  bizId:i.bizId,  pbizId:i.pbizId}})
-        }
-        params[fieldName]=$event
-        var func = editSomeFieldsUserFocus
-        func(params).then(res=>{
-          let tips = res.data.tips;
-          if(tips.isOk){
-            if(this.sels.length>0){
-                this.searchUserFocuss();
-            }
-            this.editFormBak=[...this.editForm]
-          }else{
-            Object.assign(this.editForm,this.editFormBak)
-            this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
-          }
-        }).catch((e)=>Object.assign(this.editForm,this.editFormBak))
-      },
+        }, 
+       
         rowClick: function(row, event, column){
             this.editForm=row
             this.editFormBak={...row};
@@ -309,7 +192,6 @@ export default {
     },//end methods
     mounted() {
         this.$nextTick(() => {
-            initDicts(this);
             this.initData()
             var myFocusList=localStorage.getItem('mdp-sys-user-focus-list')
             
@@ -318,8 +200,7 @@ export default {
             }else{
                 this.searchUserFocuss();
             }
-            
-            //this.maxTableHeight = util.calcTableMaxHeight(this.$refs.userFocusTable.$el)
+             
 
         });
     }

@@ -1,10 +1,6 @@
 import { doLoginByUserloginid, logout, getUserInfo } from '@/api/login'
 import { getToken, setToken, removeToken,getCacheUserInfo,setCacheUserInfo,removeCacheUserInfo} from '@/utils/auth'
 
-import {
-  formatUser
-} from '@/api/mdp/sys/user.js'
-
 const user = {
   state: {
     userInfo: {
@@ -126,7 +122,6 @@ const user = {
               		  }
               	  });
                 }
-                formatUser(userInfo)
                 commit('SET_USER_INFO', userInfo)
                 commit('SET_ROLES', roles)
                 commit('SET_QXS', data.qxs)
@@ -204,8 +199,6 @@ const user = {
               d.branchName=branch.branchName
             }
           })
-          
-          formatUser(userInfo)
           commit('SET_MYBRANCHS',branchs);
           commit('SET_MYDEPTS',depts);
           commit('SET_MYLOCATIONS',locations);
@@ -264,7 +257,6 @@ const user = {
            removeToken()
            removeCacheUserInfo();
            resolve()
-        logout()
       })
     },
 

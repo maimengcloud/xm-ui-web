@@ -1,35 +1,27 @@
 <template>
 	<section>
-		<el-row>
-			<el-button @click="handleCancel" icon="el-icon-back">取消</el-button>
-			<el-button type="primary" @click="confirm" icon="el-icon-finished">确定</el-button>
-		</el-row>
 		<el-row style="padding-top:10px;">  
 			<!--新增界面 ProcinstParames 流程实例参数设置表-->   
 					  <el-table
-						:data="nodeInfoList"
-						border
+						:data="nodeInfoList" 
 						style="width: 100%">
-						<el-table-column
-						fixed
+						<el-table-column 
 						prop="actName"
 						label="节点名称"
 						min-width="100">
 						</el-table-column>
-						<el-table-column
-						fixed
+						<el-table-column 
 						prop="showNextAssignees"
 						label="已配置人员"
 						min-width="250">
 							<template slot-scope="scope">
 								{{showAssigneeTips(scope.row)}} 
-								<el-button round v-if="scope.row.candidate=='1'  && scope.row.allowOverUser!='0'" type="warning" @click.native="showCandidateSelectDialog(scope.row,'')" :loading="listLoading">选候选人</el-button> 
-								<el-button  round v-if="scope.row.candidate!='1' && scope.row.allowOverUser!='0'" type="success" @click.native="showUserSelectDialog(scope.row,'')" :loading="listLoading">选人员</el-button>   
+ 								<el-button round type="warning" @click="$refs['candidateSetDialog'].open(scope.row)" v-if="scope.row.candidate=='1' && scope.row.allowOverUser!='0'" placeholder="选候选人、部门">选候选人、部门</el-button>    
+								<mdp-select-user  v-if="scope.row.candidate!='1' && scope.row.allowOverUser!='0'" placeholder="执行人"></mdp-select-user>   
 								<el-button round v-if="scope.row.toCreater!='1'" type="primary" @click.native="setAssigneeAsStartUser(scope.row)">转发起人</el-button>  
 							</template>
 						</el-table-column>
-						<el-table-column
-						fixed
+						<el-table-column 
 						prop="showNextAssignees"
 						label="手选执行人"
 						width="150">
@@ -48,48 +40,43 @@
 						</el-table-column> 
 						
 						<el-table-column
-						prop="qxCode"
-						fixed="right"
+						prop="qxCode" 
 						label="权限配置"
 						min-width="100">
 							<template slot-scope="scope">  
-								<el-button   type="plain" @click.native="showQxDialog(scope.row)"  >配置权限</el-button>   
+								<el-button   type="plain" @click.native="$refs['qxSetDialog'].open(scope.row)"  >配置权限</el-button>   
 							</template>
 						</el-table-column> 
 					</el-table>  
 			 
-			<el-dialog append-to-body
-				title="配置流程节点权限"
-				:visible.sync="qxVisible"
-				width="60%"> 
-				<act-qx-code-set :formFields="[]" :visible="qxVisible" :qxCode="nodeInfoSeleced ? nodeInfoSeleced.qxCode:''" @cancel="onQxCancel"   @confirm="onQxSelected"></act-qx-code-set> 
-			</el-dialog> 
-			<el-dialog append-to-body
-				title="选择候选人/候选部门/候选岗位"
-				:visible.sync="candidateSelectVisible"
-				width="60%"> 
-				<act-candidate-set :node-info="nodeInfoSeleced"  @confirm="onCandidateSelected"></act-candidate-set> 
-			</el-dialog> 
-			<el-dialog append-to-body
-				title="选择审批员工"
-				:visible.sync="userSelectVisible"
-				width="60%"> 
-				<users-select :select-userids=" (nodeInfoSeleced && nodeInfoSeleced.nodeUsers)?nodeInfoSeleced.nodeUsers.map(i=>i.userid):[]"   @confirm="onUserSelected"></users-select> 
-			</el-dialog>
+			<mdp-dialog ref="qxSetDialog"
+				title="配置流程节点权限"  > 
+				<template v-slot="{visible,data,dialog}">
+					<act-qx-code-set :formFields="[]" :visible="visible" :qxCode="data.qxCode" @cancel="dialog.close()"   @confirm="(qxCode)=>data.qxCode=qxCode"></act-qx-code-set> 
+				</template>
+			</mdp-dialog> 
+			<mdp-dialog ref="candidateSetDialog"
+				title="选择候选人/候选部门/候选岗位"  > 
+				<template v-slot="{visible,data,dialog}">
+					<act-candidate-set :visible="visible" :actAssignee="data" @cance="dialog.close()"  @confirm="(nodeInfo)=>{
+						Object.assign(data,nodeInfo);
+						dialog.close();
+					}" @close="dialog.close()"></act-candidate-set> 
+				</template>
+				
+			</mdp-dialog>  
+		</el-row>
+		
+		<el-row class="footer">
+			<el-button @click="handleCancel" icon="el-icon-back">关闭</el-button>
+			<el-button type="primary" @click="confirm" icon="el-icon-finished">确定</el-button>
 		</el-row>
 	</section>
 </template>
 
 <script>
-	import util from '@/common/js/util';//全局公共库
-	import config from '@/common/config';//全局公共库import 
-	import { listUser,listUserNames } from '@/api/mdp/sys/user';
-	import { listDept } from '@/api/mdp/sys/dept';
-	import { getBpmnActAssignees } from '@/api/mdp/workflow/re/procdefNodeInfo'; 
-	import { getNodeInfos } from '@/api/mdp/workflow/ru/procinstNodeInfo'; 
 	import { mapGetters } from 'vuex'  
-	import UsersSelect from '@/views/mdp/sys/user/UsersSelect';     
-	import ActCandidateSet from '@/views/mdp/workflow/re/procdefParames/ActCandidateSet';  
+ 	import ActCandidateSet from '@/views/mdp/workflow/re/procdefParames/ActCandidateSet';  
 	import ActQxCodeSet from '@/views/mdp/workflow/re/procdefParames/ActQxCodeSet';  
 
 	export default {
@@ -109,14 +96,8 @@
 	    },	
 		data() {
 			return {
-				options:{},//下拉选择框的所有静态数据 
-				listLoading:false, 
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/ 
 				nodeInfoList:[],//id:'',actId:'',actName:'',procDefId:'',assignees:'',isMultiple:'' , 
-				candidateSelectVisible:false, 
-				userSelectVisible:false, 
-				nodeInfoSeleced:null,//选中的nodeInfoList 
-				qxVisible:false, 
 				nodeInfoListOld:[],//用于恢复
 				/**end 在上面加自定义属性**/
 			}//end return
@@ -124,43 +105,10 @@
 		methods: {
 			// 取消按钮点击 父组件监听@cancel="addFormVisible=false" 监听
 			handleCancel:function(){
-				//this.nodeInfoList=JSON.parse(JSON.stringify(this.nodeInfoListOld))
 				this.$emit('cancel');
 			},
 			confirm:function(){
 				this.$emit('confirm',this.nodeInfoList);
-			},
-			onCandidateSelected:function(nodeInfo){
-				this.candidateSelectVisible=false;
-				console.log("nodeInfo-----------"+JSON.stringify(nodeInfo));
-				 
-				this.nodeInfoSeleced.nodeUsers=nodeInfo.nodeUsers;
-				this.nodeInfoSeleced.groupIds=nodeInfo.groupIds 
-				this.nodeInfoSeleced.toCreater='0'
-
-			},
-			onUserSelected:function(users){
-				this.userSelectVisible=false; 
-				this.nodeInfoSeleced.nodeUsers=users  
-				this.nodeInfoSeleced.toCreater='0'
-
-			},   
-			
-			showUserSelectDialog:function(nodeInfoSeleced,index){
-				if(nodeInfoSeleced.allowOverUser=='0'){
-					this.$notify.error("当前节点不允许变更执行人")
-					return;
-				} 
-				this.userSelectVisible=true;
-				this.nodeInfoSeleced=nodeInfoSeleced;
-			},
-			showCandidateSelectDialog:function(nodeInfoSeleced,index){
-				if(nodeInfoSeleced.allowOverUser=='0'){
-					this.$notify.error("当前节点不允许变更执行人")
-					return;
-				} 
-				this.candidateSelectVisible=true;
-				this.nodeInfoSeleced=nodeInfoSeleced;
 			},
 			showAssigneeTips(nodeInfo){
 				var tips=[];
@@ -188,76 +136,26 @@
 					} 
 				}
 				return tips.join(",");
-			},   
-			listBpmnActAssignees(){
-				this.nodeInfoList=[]; 
-				this.listLoading = true;
-				let params = {  };
-				if(this.isStart=='1'){
-					params.procDefId=this.procDefId
-					getBpmnActAssignees(params).then(res=>{
-						var tips=res.data.tips;
-						this.listLoading = false;
-						if(tips.isOk){
-							//this.nodeInfoList=res.data.data
-							this.nodeInfoList=res.data.data; 
-							this.nodeInfoListOld=JSON.parse(JSON.stringify(this.nodeInfoList));
-						}else{
-							this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
-						}
-					});
-				}else{
-					params.procInstId=this.procInstId
-					getNodeInfos(params).then(res=>{
-						var tips=res.data.tips;
-						this.listLoading = false;
-						if(tips.isOk){
-							//this.nodeInfoList=res.data.data
-							this.nodeInfoList=res.data.data; 
-							this.nodeInfoListOld=JSON.parse(JSON.stringify(this.nodeInfoList));
-						}else{
-							this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
-						}
-					});
-				}
-				
-				
-			},
-			/**end 在上面加自定义方法**/
-			 
-			onQxSelected:function(qxCode){
-				this.qxVisible=false;
-				this.nodeInfoSeleced.qxCode=qxCode;
-			},
-			
-			onQxCancel:function(){
-				this.qxVisible=false; 
-			},
-			showQxDialog:function(nodeInfo){
-				this.qxVisible=true;
-				this.nodeInfoSeleced=nodeInfo;
-			},
+			},    
 			setAssigneeAsStartUser(nodeInfoSeleced){
 				if(nodeInfoSeleced.allowOverUser=='0'){
 					this.$notify.error("当前节点不允许变更执行人")
 					return;
 				} 
-				this.nodeInfoSeleced=nodeInfoSeleced
-				this.nodeInfoSeleced.toCreater='1'
-				this.nodeInfoSeleced.candidate='0'
-				this.nodeInfoSeleced.showNextAssignees='0'
+				nodeInfoSeleced.toCreater='1'
+				nodeInfoSeleced.candidate='0'
+				nodeInfoSeleced.showNextAssignees='0'
 				
 			}
 			  
 		},//end method
 		components: {  
 		    //在下面添加其它组件 'procdef-parames-edit':ProcdefParamesEdit    
-			UsersSelect,ActCandidateSet,ActQxCodeSet
+			ActCandidateSet,ActQxCodeSet
 		},
 		mounted() { 
 			var jsonStrData=JSON.stringify(this.nodeInfos);
 			this.nodeInfoList=JSON.parse(jsonStrData)
-			this.nodeInfoListOld=JSON.parse(jsonStrData);
 		}
 	}
 

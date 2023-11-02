@@ -7,14 +7,11 @@
 <script>
 import { mapGetters } from 'vuex'
 import adminDashboard from './admin'
-import editorDashboard from './editor'
-
-
-import taskListAssigneeToMeCalendar from '@/views/mdp/workflow/ru/task/TaskListAssigneeToMeCalendar'
+import editorDashboard from './editor' 
 
 export default {
   name: 'dashboard',
-  components: { adminDashboard, editorDashboard,taskListAssigneeToMeCalendar },
+  components: { adminDashboard, editorDashboard },
   data() {
     return {
       currentRole: 'superAdmin',
@@ -32,7 +29,7 @@ export default {
       this.com='adminDashboard'
     }else{
     	this.currentRole = ''
-    	this.com='taskListAssigneeToMeCalendar'
+    	this.com='editorDashboard'
     }
   }
 }

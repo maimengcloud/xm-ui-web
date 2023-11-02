@@ -1,0 +1,94 @@
+.moduleset {
+    .dialog-title {
+        font-size: 22px;
+        font-weight: bold;
+        color: #7D7D7D;
+        height: 68px;
+        p {
+           line-height: 68px;
+           margin-left: 28px;
+        }
+    }
+    .toolBox {
+        display: flex;
+        flex-direction: column;
+        padding: 0 40px;
+
+        /deep/ .el-input--small .el-input__inner {
+            height: 40px;
+        }
+
+        .selectItem {
+            display: flex;
+            flex-direction: row;
+            height: 70px;
+            .active {
+                color: #409EFF;
+            }
+            .item {
+                display: flex;
+                flex-direction: row;
+                margin-right: 120px;
+                cursor: pointer;
+                margin: 25px 50px 0 20px;
+                img {
+                    width: 45px;
+                    height: 45px;
+                }
+                span {
+                    margin-left: 8px;
+                    font-size: 16px;
+                }
+            }
+        }
+    }
+
+    .nav {
+        height: 400px;
+        overflow: auto;
+        display:flex;
+        flex-wrap:wrap;
+        padding: 0 20px;
+        margin-left: 20px;
+        padding-bottom: 40px;
+        .nav_item {
+            display: flex;
+            height: 210px;
+            flex-direction: column;
+            width: calc((100% / 4) - 20px);
+            margin-right: 20px;
+            // width: 170px;
+            border: 2px solid #EDF0F9;
+            box-shadow: 0px 3px 4px 0px rgba(186, 184, 184, 0.1);
+            border-radius: 8px;
+            align-items: center;
+            position: relative;
+            cursor: pointer;
+            margin-top: 10px;
+            img { 
+                width: 94px;
+                height: 94px;
+                margin: 18px 18px 10px 18px;
+            }
+            
+            span {
+                font-size: 16px;
+                color: #7D7D7D;
+                line-height: 26px;
+                margin-bottom: 4px;
+            }
+
+            .buyAfter {
+                color: #409EFF;
+            } 
+
+            .desc{
+              margin-top: 12px;
+            }
+        }
+        .itemActive {
+            border: 2px solid #90B1F4;
+            box-shadow: 0px 3px 4px 0px rgba(186, 184, 184, 0.1);
+        }
+    }
+}

@@ -78,12 +78,7 @@
       <br/>
       <br/>
       <social-sign />
-    </el-dialog>
-    
-	<!--新增 Branch 管理端机构表（机构下面若干部门）界面-->
-	<el-dialog title="新增机构" :visible.sync="addBranchFormVisible"  width="50%"  :close-on-click-modal="false" append-to-body>
-		<branch-add  :visible="addBranchFormVisible" @cancel="addBranchFormVisible=false" @submit="afterAddBranchSubmit"></branch-add>
-	</el-dialog> 
+    </el-dialog> 
   </div>
 </template>
 
@@ -93,12 +88,11 @@ import { checkPhoneno,resetPasswordByPhoneno,queryByUserloginid } from '@/api/lo
 
 import LangSelect from '@/components/LangSelect';
 import SocialSign from './socialsignin';
-import BranchAdd from './BranchAdd';
 import { mapGetters } from 'vuex'; 
 import md5 from 'js-md5'; 
 
 export default {
-  components: { LangSelect, SocialSign, BranchAdd },
+  components: { LangSelect, SocialSign },
   name: 'login',
   data() { 
     const validatePassword = (rule, value, callback) => { 

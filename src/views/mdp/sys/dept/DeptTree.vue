@@ -43,18 +43,14 @@
 				   ref="deptTree">
 		  </el-tree>
 		</el-col>
-		<el-dialog title="机构选择" :visible.sync="branchVisible"  width="50%" top="20" :close-on-click-modal="false" append-to-body>
-		  <branch-select :visible="branchVisible"  @cancel="branchVisible=false" @row-click="branchRowClick"></branch-select>
-		</el-dialog>
-  
+   
 	  </el-row>
 	</section>
   </template>
   
   <script>
-	  import util from '../../../../common/js/util'
+	  import util from '@/components/mdp-ui/js/util'
 	  import {   listTreeDept  } from '../../../../api/mdp/sys/dept';
-	  import  BranchSelect from '../branch/BranchSelect';//机构选择
 	  import { mapGetters } from 'vuex'
   
 	  export default {
@@ -77,12 +73,8 @@
 			deptid(val){
 				this.$emit('input',val);
 			},
-			branchId(val){
-				this.getDeptTreeData(true);
-			}
 		  },
 		  components: {
-			  'branch-select':BranchSelect
 		  },
 		  computed:{
 			  defaultExpandedKeys(){
@@ -124,7 +116,7 @@
 		  },
 		  methods: {
 			  goDeptMng(){
-				  this.$router.push("/mdp/sys/dept/DeptMng")
+				  this.$router.push("/mdp/sys/dept/index")
 			  },
 			  handleCheckChange(data, checked, indeterminate) {
 				  let checkedKeys=this.$refs.deptTree.getCheckedKeys();
@@ -209,7 +201,7 @@
 				  }
   
 				  translator(parents, children)
-  
+				  
 				  return parents
 			  },
 			  //获取分类树列表
@@ -236,14 +228,14 @@
 					   if(this.showCount==true || this.showCount=='true'){
   
   
-						   return h('span',node.label+'('+data.childrenNum+')') ;
+						   return h('span',node.label+(data.children?'('+data.children.length+')':'')) ;
 					   }else{
-						   return h('span',node.label+'('+data.childrenNum+')') ;
+						   return h('span',node.label) ;
 					   }
   
 				},
 				showBranchSelect: function(){
-					this.branchVisible=true
+					this.$refs['branchSelect'].showSelect()
 				},
 				confirm(){
 				   var nodes= this.$refs.deptTree.getCheckedNodes(false,false)
@@ -254,7 +246,7 @@
 						  this.root=node
 						  this.resolve=resolve
 						  let params = {
-							  levelTypes:['L1']
+							  levelType:'L1'
 						  };
 						  params.branchId=this.branchId
 						  if(this.userInfo.isSuperAdmin==true || this.userInfo.isPlatformAdmin==true){
@@ -282,7 +274,7 @@
 							  this.listLoading = false;
 						  });
 					  }else  {
-						  if(node.data.childrenNum>0 && (!node.data.children||node.data.children.length==0)){
+						  if((!node.data.children||node.data.children.length==0)){
 							  setTimeout(() => {
 								  let params = {
 									  pdeptid:node.data.deptid
@@ -311,7 +303,7 @@
 									  this.listLoading = false;
 								  });
 							  }, 500);
-						  }else if(node.data.childrenNum>0 && (node.data.children&&node.data.children.length>0)){
+						  }else if((node.data.children&&node.data.children.length>0)){
 							  return resolve(node.data.children)
 						  }else {
 							  return resolve([])

@@ -1,9 +1,9 @@
 import axios from '@/utils/request'
 
 import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
-import config from '@/common/config'
+import config from '@/api/mdp_pub/mdp_config'
 
-let base = config.getSysBasePath();
+let base = config.getSysContext()
 
 /**-------------------------与后端通讯接口------------------请写在下面-------------------------------------------- */
 /**
@@ -33,17 +33,3 @@ export const addBranchModule = params => { return axios.post(`${base}/mdp/sys/br
 
 //批量修改某些字段
 export const editSomeFieldsBranchModule = params => { return axios.post(`${base}/mdp/sys/branchModule/editSomeFields`, params); };
-
-
-
-/**-------------------------前端mng|add|edit界面公共函数---------------请写在下面----------------------------------------------- */
-//初始化页面上的字典
-export const initDicts = (that) => {
- that.dicts['status']=[{id:'0',name:'停用'},{id:'1',name:'启用'}]
- var itemCodes=['moduleBillMode',"bizFlowState"];//在此添加要加载的字典 如['sex','grade','lvl']
- if(itemCodes.length>0){
-    initSimpleDicts('all',itemCodes).then(res=>{
-        Object.assign(that.dicts,res.data.data)
-    });
- }
-};

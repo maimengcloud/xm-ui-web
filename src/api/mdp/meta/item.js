@@ -1,8 +1,8 @@
 import axios from '@/utils/request'
 
-import config from '@/common/config'
+import config from '@/api/mdp_pub/mdp_config'
 
-let base = config.getSysBasePath();
+let base = config.getSysContext()
 
 
 /**
@@ -22,7 +22,8 @@ export const getDicts = params => { return axios.get(`${base}/mdp/meta/item/dict
     grade:[{id:'1',name:'等级1'},{id:'2',name:'等级2'}]
 }
 **/
-export const initSimpleDicts=function(categoryId,itemCodes){ 
+export const initSimpleDicts=function(categoryId,itemCodes){
+    
     if(!categoryId){
         categoryId="all"
     }
@@ -60,39 +61,21 @@ export const initSimpleDicts=function(categoryId,itemCodes){
                     var data=res.data.data
                     var dicts=localDicts;
                     data.forEach(dict=>{
-                        if(dict.optionList){
-                            dict.options=JSON.parse(dict.optionList)
+                        if(dict.options){
                             dict.options.forEach(k=>{
                                 var cellValue=k.id
-                                var classNames=['info','primary','success','warning','danger']; 
                                 var colors=['#909399','#409EFF','#67C23A','#E6A23C','#F56C6C','#00ced1','#c71585','#ff8c00','#c7158577','#ffd700'];
                                 var cellValueInt=parseInt(cellValue)
-                                if( isNaN(cellValueInt) ){ 
-                                  if(cellValue instanceof String && cellValue.length>0){
-                                    cellValueInt=cellValue.chartCodeAt(cellValue.length-1)
-                                  }else if(cellValue instanceof Object){
-                                    if(cellValue['userid']){
-                                      cellValueInt=cellValue['userid'].chartCodeAt(cellValue['userid'].length-1)
-                                    }else{
-                                      cellValueInt=0;
-                                    }
-                                    
-                                  }else{
-                                    cellValueInt=0;
-                                  }
+                                if( isNaN(cellValueInt) ){
+                                  cellValueInt=cellValue.charCodeAt(cellValue.length-1)
                                 }
                                 var colorIndex=cellValueInt % 10
                                 if(cellValueInt > 0 && colorIndex==0){
                                   colorIndex=1
                                 }
-                                var typeIndex=cellValueInt % 5
-                                if(cellValueInt > 0 && typeIndex==0){
-                                  typeIndex=1
-                                }
                                 if(!k.color){
                                     k.color=colors[colorIndex]
                                 }
-                                k.className=classNames[typeIndex]
                             })
                         }else{
                         dict.options=[]
@@ -129,8 +112,8 @@ export const initComplexDicts=function(categoryId,itemCodes){
                     var data=res.data.data
                     var dicts={};
                     data.forEach(dict=>{
-                        if(dict.optionList){
-                            dict.options=JSON.parse(dict.optionList)
+                        if(dict.options){
+                            
                         }else{
                         dict.options=[]
                         }

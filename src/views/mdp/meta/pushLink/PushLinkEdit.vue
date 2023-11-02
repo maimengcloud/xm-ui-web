@@ -25,7 +25,7 @@
 </template>
 
 <script>
-	import util from '@/common/js/util';//全局公共库
+	import util from '@/components/mdp-ui/js/util';//全局公共库
 	import { dicts } from '@/api/mdp/meta/item';//字典表
 	import { addPushLink,editPushLink } from '@/api/mdp/meta/pushLink';
 	import { mapGetters } from 'vuex'
@@ -116,28 +116,11 @@
                 }else{
 
                 }
-            },
-            //下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 [{id:'',itemCode:'',itemName:'',itemType:'',values:'',names:'','options':[{id:'1',name:'男'},{id:'2',name:'女'}]}]
-            initDicts(categoryId,itemCodes){
-                dicts({categoryId:categoryId,itemCodes:itemCodes}).then(res=>{
-                    if(res.data.tips.isOk){
-                        var data=res.data.data
-                        data.forEach(dict=>{
-                            if(dict.options){
-                                dict.options=JSON.parse(dict.options)
-                            }else{
-                               dict.options=[]
-                            }
-                            this.dicts[dict.itemCode]=dict
-                        })
-                    }
-                });
-            },
+            }, 
 			/**begin 在下面加自定义方法**/
 
 		},//end method
-		mounted() {
-		    //this.initDicts('all',['sex','gradeLvl']);
+		mounted() { 
 		    if(this.pushLink){
 		        this.editForm=this.pushLink;
 			}

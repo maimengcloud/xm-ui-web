@@ -1,12 +1,12 @@
 <template>
 	<section>
-		<task-mng  :assigneeToMe="true" defaultShowCalendar isClaim></task-mng>
+		<task-mng  :assigneeToMe="true" defaultShowCalendar :isClaim="true"></task-mng>
 	</section>
 </template>
 
 <script>
 	 
-	import  TaskMng from './TaskMng';//
+	import  TaskMng from './Index';//
 	
 	export default {
 		name:'TaskListAssigneeToMeClaim',

@@ -2,23 +2,23 @@
   <el-menu class="navbar" mode="horizontal">
 
     <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
-     
+
     <!--<breadcrumb class="breadcrumb-container"></breadcrumb>-->
-    <top-modules class="modules-container"></top-modules> 
-    
+    <top-modules class="modules-container"></top-modules>
+
     <div class="right-menu">
       <!--
-      <div class="hidden-sm-and-down" style="float:left;display:flex;align-items: center;height:100%;">				
-        <el-tooltip v-if="userInfo.locationName" class="item" effect="dark" :content="userInfo.branchId+' '+userInfo.shopId+' '+userInfo.locationId" placement="top-start">
-				  <el-tag>{{userInfo.branchName}} {{userInfo.locationName}}</el-tag>
+      <div class="hidden-sm-and-down" style="float:left;display:flex;align-items: center;height:100%;">
+        <el-tooltip v-if="workShop.locationName" class="item" effect="dark" :content="workShop.branchId+' '+workShop.shopId+' '+workShop.locationId" placement="top-start">
+				  <el-tag>{{workShop.branchName}} {{workShop.locationName}}</el-tag>
 				</el-tooltip>
-        <el-tooltip v-else class="item" effect="dark" :content="userInfo.branchId+' '+userInfo.deptid" placement="top-start">
-				  <el-tag>{{userInfo.branchName}} {{userInfo.deptName}}</el-tag>
+        <el-tooltip v-else class="item" effect="dark" :content="workShop.branchId+' '+workShop.deptid" placement="top-start">
+				  <el-tag>{{workShop.branchName}} {{workShop.deptName}}</el-tag>
 				</el-tooltip>
-				<el-button @click="showSelectShopMethod" type="primary" v-if="userInfo.isSuperAdmin||userInfo.isPlatFormAdmin">切换商户</el-button>
+				<el-button @click="showSelectShopMethod" type="primary" v-if="workShop.isSuperAdmin||workShop.isPlatFormAdmin">切换商户</el-button>
 			</div>
       -->
-     
+
       <error-log v-if="false" class="errLog-container right-menu-item hidden-sm-and-down"></error-log>
       <screen-full v-if="false" class="screenfull right-menu-item"></screen-full>
       <lang-select v-if="false" class="international right-menu-item hidden-sm-and-down"></lang-select>
@@ -89,12 +89,12 @@
       </el-dropdown> -->
 
 
-      
+
       <!-- <div class="notice">
         <i class="el-icon-bell"></i>
         <span>未读消息(3)</span>
       </div> -->
-      
+
       <div class="notice">
         <notice-msg-bar class="avatar-container hidden-sm-and-down" ></notice-msg-bar>
       </div>
@@ -116,17 +116,16 @@
 <script>
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
-import TopModules from '@/components/TopModules'
 import Hamburger from '@/components/Hamburger'
 import ErrorLog from '@/components/ErrorLog'
 import Screenfull from '@/components/Screenfull'
 import LangSelect from '@/components/LangSelect'
 import ThemePicker from '@/components/ThemePicker'
-import NoticeMsgBar from '@/components/NoticeMsgBar'
-import UserInfo from './UserInfo'
+import TopModules from '../TopModules'
+import NoticeMsgBar from '../NoticeMsgBar'
+import UserInfo from '../UserInfo'
 
 import dayjs from 'dayjs'
-//import selectShopLocationBySysDept from '@/views/mdp/app/selectShopLocationBySysDept/selectShopLocationBySysDept';
 
 export default {
   components: {
@@ -137,14 +136,14 @@ export default {
     LangSelect,
     ThemePicker,
     TopModules,
-    NoticeMsgBar, 
+    NoticeMsgBar,
     UserInfo
   },
   data:function(){
 	return {
 		selectShopVisible: false,
 		postChecked:''
-	}  
+	}
   },
   computed: {
       screenWidth: function() {
@@ -157,7 +156,6 @@ export default {
       'myPosts',
       'myLocations',
       'myShops',
-			'userInfo'
     ]),
     'deptPostsTree':function(){
     	var deptPostsTree=[]
@@ -175,7 +173,7 @@ export default {
  				if(deptPostArray[0].children && deptPostArray[0].children.length>0){
  					if(!deptPostArray[0].children.some(i=>i.postId==post.postId)){
  						deptPostArray[0].children.push(post)
- 					} 
+ 					}
  				}else{
  					deptPostArray[0].children=[]
  					deptPostArray[0].children.push(post)
@@ -202,7 +200,7 @@ export default {
     		if(myLocations!=null && myLocations.length>0){
     			myLocations.forEach(l=>{
     				if(l.shopId==shop.shopId){
-    					
+
     					if(l.locationId==this.userInfo.locationId){
     						l.checked=true
     					}
@@ -210,7 +208,7 @@ export default {
     				}
     			})
     		}
-    	}) 
+    	})
     	return myShops
     },
     getTimeStatus() {
@@ -223,7 +221,7 @@ export default {
       }
       return msg;
     }
-  }, 
+  },
   methods: {
     toggleSideBar(toOpen) {
       this.$store.dispatch('toggleSideBar', toOpen)
@@ -231,23 +229,10 @@ export default {
     logout() {
       this.$store.dispatch('LogOut').then(() => {
         //location.reload()// In order to re-instantiate the vue-router object to avoid bugs
-        //this.$router.replace({path:'/login'}) 
+        //this.$router.replace({path:'/login'})
         location.replace('/'+process.env.CONTEXT+'/'+process.env.VERSION+'/');
       })
     },
-			showSelectShopMethod() {
-			this.selectShopVisible = true;
-		},
-		sureMethod(row) {
-			this.selectShopVisible = false;
-			this.userInfo.shopId=row.shopId;
-			this.userInfo.branchId=row.branchId;
-			this.userInfo.branchName=row.sysBranchName;
-			this.userInfo.locationId=row.id;
-			this.userInfo.deptid=row.deptid;
-			this.userInfo.locationName=row.businessName;
-			this.$store.commit('SET_WORK_SHOP',this.userInfo);
-		},
     jumpToOtherSystem(name) {
       let href = window.location.protocol + "//" + window.location.host + "/" + name + "/" + process.env.VERSION;
       if(name=='im'){
@@ -277,7 +262,7 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>  
+<style rel="stylesheet/scss" lang="scss" scoped>
 @import './iconfont.css';
 .navbar {
   height: 50px;

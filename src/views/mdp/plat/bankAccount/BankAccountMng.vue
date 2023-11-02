@@ -68,8 +68,8 @@
 </template>
 
 <script>
-	import util from '@/common/js/util';//全局公共库
-	import config from '@/common/config';//全局公共库
+	import util from '@/components/mdp-ui/js/util';//全局公共库
+	import config from '@/api/mdp_pub/mdp_config';//全局公共库
 	import { listBankAccount,editBankAccount } from '@/api/mdp/plat/bankAccount';
 	import { mapGetters } from 'vuex'
 

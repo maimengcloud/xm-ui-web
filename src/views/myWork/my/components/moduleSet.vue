@@ -49,8 +49,6 @@ import img3 from '../../img/wdxm.png'
 import img4 from '../../img/wdcp.png'
 import { mapGetters } from 'vuex'
 
-import { userMenuFavoriteList, saveMenuFavoriteList} from '@/api/mdp/sys/menuFavorite'
-
 export default {
     props: ['value'],
     computed: {
@@ -142,7 +140,7 @@ export default {
         },
 
         getUserModules() {
-            userMenuFavoriteList({}).then(res=>{
+            this.$mdp.userMenuFavoriteList({}).then(res=>{
                 localStorage.setItem('fMenus',JSON.stringify(res.data.data));
                 this.fMenus=res.data.data;
             }) 
@@ -155,7 +153,7 @@ export default {
                     saveModules.push(m);
                 }
             }) 
-            saveMenuFavoriteList({data: saveModules, userid: this.userInfo.displayUserid}).then(() => {
+            this.$mdp.saveMenuFavoriteList({data: saveModules, userid: this.userInfo.displayUserid}).then(() => {
                 this.visible = false
                 localStorage.removeItem('fMenus');
                 this.$emit("submit")

@@ -25,16 +25,16 @@ export default {
   },
   // 图片内容服务api路径
   getArcBasePath: function() {
-    return '/arc/arc'
+    return '/arc'
   },
 
   // 图片内容服务api路径
   getFormBasePath: function() {
-    return '/form/form'
+    return '/form'
   },
   // 工作流api路径
   getWorkflowBasePath: function() {
-    return '/workflow/workflow'
+    return '/workflow'
   },
   // 协同办公系统api路径
   getOaBasePath: function() {
@@ -43,7 +43,7 @@ export default {
   // 图片内容首页路径
   getArcIndexPath: function() {
     return '/arc/arc/index.html'
-  }, 
+  },
   // 图片展示或下载路径
   getArcFileUploadBasePath: function() {
     return window.location.protocol + '//' + window.location.host + '/api/' + process.env.VERSION + '/arc/arc'
@@ -83,7 +83,7 @@ export default {
   getCoreBasePath: function(){
     return '/xm/xm'
   },
-  getImBasePath:function(){
+  getImContext:function(){
     return '/im/im'
   },
   getPayBasePath:function() {

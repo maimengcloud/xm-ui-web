@@ -2,9 +2,9 @@ import axiosAuth from '@/utils/request'
 import axios from '@/utils/requestNoAuth'//免登录访问
 
 
-import config from '@/common/config'
+import config from '@/api/mdp_pub/mdp_config'
 
-let base=config.getSmsBasePath();
+let base=config.getSmsContext();
 
 /**
  * 发送短信验证码、验证短信验证码接口

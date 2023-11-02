@@ -1,7 +1,7 @@
 <template>
 	<section>
 		<el-row class="execution-set">
-		<procinst-parames-start-set :procdef="procdef" :visible="flowStartVisible" :params="filters.params"    @cancel="handleCancel" @submit="afterEditSubmit"></procinst-parames-start-set>
+		<procinst-parames-start-set :procdef="procdef" :visible="flowStartVisible" :params="params"    @cancel="handleCancel" @submit="afterEditSubmit"></procinst-parames-start-set>
 		</el-row>
 	</section>
 </template>
@@ -13,11 +13,8 @@
 	export default {
 		name:'ProcinstParamesStartSetRoute',
 		data() {
-			return {
-				filters: {
-					key: '', 
-					params:null,
-				},
+			return { 
+				params:null, 
 				 procdef:{},
 				 flowStartVisible:false,
 				/**begin 自定义属性请在下面加 请加备注**/
@@ -48,7 +45,7 @@
 				this.flowStartVisible=true;
 				 this.procdef=this.$route.params.procdef
 				 if(this.$route.params.params){
-					 this.filters.params=this.$route.params.params
+					 this.params=this.$route.params.params
 				 }
 				 localStorage.setItem(key,JSON.stringify(this.$route.params));
 			}else{
@@ -56,7 +53,7 @@
 				var params=JSON.parse(paramsStr);
 				this.procdef=params.procdef
 				if(params.params){
-					this.filters.params=params.params
+					this.params=params.params
 				} 
 
 			}

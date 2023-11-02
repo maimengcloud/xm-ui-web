@@ -45,11 +45,15 @@ export default {
     MenuDefMng:'菜单管理',
     MenuModuleMng:'菜单分类',
     
+    tpaMng:'第三方管理',
     AppMdpMng: '应用商店',
     AppMdpDefMng : '应用管理',
     AppTpAuthMng : '应用授权',
     AppBizTypeMng : '应用分类',
 		OpenAccount:'开户',
-	UserPostApplyRecord:'用户岗位申请记录'
+	  UserPostApplyRecord:'用户岗位申请记录',
+    userTpaInviteIndex:'邀请管理',
+    userTpaIndex:'第三方用户查询',
+    myInviteUserTpa:'我邀请的用户查询',
   }
 }

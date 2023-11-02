@@ -36,17 +36,11 @@
 				</el-form-item> 
 				
 				<el-form-item label="" v-show="false" prop="headimgurl">
-					<single-shear-upload ref="uploadImg"	
-						:img-width="100"
-						:img-height="100"
-						:show-title="true"
-						v-model="editForm.headimgurl"
-						:branch-id="userInfo.branchId"
-						:deptid="userInfo.deptid"
-						:remark="userInfo.username"
+					<mdp-image ref="uploadImg"	 
+						v-model="editForm.headimgurl" 
 					>
-						<span slot="title">商品高清大图</span>
-					</single-shear-upload>
+						<span slot="placeholder"> 高清大图</span>
+					</mdp-image>
 				</el-form-item>  
 				<el-form-item label="用户名称" prop="username" :rules="[{required:true,message:'用户名称不能为空'}]">
 					<el-input style="width:400px;"  v-model="editForm.username" auto-complete="off"></el-input>
@@ -67,10 +61,9 @@
 </template>
 
 <script>
-	import util from '../../../../common/js/util';//全局公共库
+	import util from '@/components/mdp-ui/js/util';//全局公共库
 	import { editUser,changePassword } from '../../../../api/mdp/sys/user';
-	import { mapGetters } from 'vuex' 
-import SingleShearUpload from "@/components/Image/Single/Index";
+	import { mapGetters } from 'vuex'  
 	
 import md5 from "js-md5";
 
@@ -209,7 +202,6 @@ import md5 from "js-md5";
 			}
 		},
 		components: {  
-			SingleShearUpload
 		},
 		mounted() {
 			this.editForm=Object.assign(this.editForm, this.userInfo);

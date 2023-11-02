@@ -323,12 +323,13 @@ export default {
             if(!indexPath){
                 indexPath="/"
             }
-            if(this.userInfo.isSuperAdmin){ 
-                    this.$router.push({ path: indexPath }); 
+            if(this.userInfo.isSuperAdmin){  
+                    location.replace(indexPath)
             }else if(this.userInfo.isPlatformAdmin){ 
-                this.$router.push({ path: indexPath }); 
-            }else{
-                this.$router.push({ path: indexPath });  
+                
+                location.replace(indexPath)
+            }else{ 
+                location.replace(indexPath)
             }
         },   
         
@@ -339,6 +340,10 @@ export default {
         weixinLogin(){
             var curlDomain=window.location.protocol+"//"+window.location.host; //  
             var mdpRedirectUri=curlDomain+"/"+process.env.CONTEXT+"/"+process.env.VERSION+"/"
+            var tpaContext=this.$mdp.getTpaContext();
+            var domain=this.$mdp.getFixedDomain();
+            var appType=this.$mdp.getWxpubConfig().appType;
+            var scope=this.$mdp.getWxpubConfig().scope
             getTpaState().then(res=>{
                 var tips = res.data.tips;
                 if(tips.isOk){
@@ -347,9 +352,9 @@ export default {
                     var obj = new WxLogin({
                         self_redirect:false,
                         id:"login_container", 
-                        appid: "wx2671d5db8346b6fc", 
-                        scope: "snsapi_login", 
-                        redirect_uri: encodeURIComponent("https://www.maimengcloud.com/api/m1/tpa/login/token?authType=wechat_wxpub&authId=mmxmcloud_wxopen_pc&redirectUri="+mdpRedirectUri),
+                        appid: this.$mdp.getWxpubConfig().appid, 
+                        scope: scope, 
+                        redirect_uri: encodeURIComponent(`${domain}/api/${process.env.VERSION}/${tpaContext}/login/token?authType=wechat_wxpub&appType=${appType}&redirectUri=${mdpRedirectUri}`),
                         state: state,
                         style: "",
                         href: ""

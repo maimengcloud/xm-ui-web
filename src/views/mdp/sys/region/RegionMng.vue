@@ -56,7 +56,7 @@
 </template>
 
 <script>
-	import util from '../../../../common/js/util';//全局公共库
+	import util from '@/components/mdp-ui/js/util';//全局公共库
 	import { listRegion, delRegion, batchDelRegion } from '../../../../api/mdp/sys/region';
 	import  RegionAdd from './RegionAdd';//新增界面
 	import  RegionEdit from './RegionEdit';//修改界面

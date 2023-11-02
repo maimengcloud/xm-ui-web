@@ -1,84 +1,45 @@
 <template>
 	<section>
-		 <el-row class="page-container border padding">
-			<el-col :span="24">
+		 <el-row class="border padding"> 
 			<!--新增界面 ProcdefParames 流程定义参数设置表-->
 			<el-form :model="addForm"   label-width="120px" label-position="left" :rules="addFormRules" ref="addForm" v-loading="listLoading">
 				<el-form-item label="流程标题" prop="mainTitle">
 					<el-input v-model="addForm.mainTitle" auto-complete="off"></el-input>
 				</el-form-item>
 				<el-form-item label="流程标签" prop="tagNames">
-					<font v-if="addForm.tagNames">
-					<el-tag  v-for="tag in (addForm.tagNames.split(','))" :key="tag"
-						:type="'warning'"
-						:disable-transitions="false" >
-						{{tag}}
-					</el-tag>
-					</font>
-						{{addForm.tagNames?'':''}}
-					<el-button   @click.native="tagSelectVisible=true" :loading="addLoading" icon="el-icon-plus">标签</el-button>
-					<el-button  v-if="displayDiagram==false" @click="showDiagram()" icon="el-icon-view">流程图</el-button>
-				</el-form-item>
-				<el-col :span="12">
-					<el-form-item label="流程监控" prop="monitors">
-							<el-col :span="16">
-								<el-select style="width:100%" v-model="monitors" multiple clearable filterable placeholder="请选择人员">
-									<el-option
-									v-for="item in baseUserList"
-									:key="item.userid"
-									:label="item.username"
-									:value="item.userid">
-									<span style="float: left">{{ item.username }}</span>
-									<span style="float: right; color: #8492a6; font-size: 13px">{{ item.shortName }}</span>
-									</el-option>
-								</el-select>
-							</el-col>
-							<el-col :span="8">
-								<el-button   @click.native="monitorsSelectVisible=true" :loading="addLoading" icon="el-icon-more"></el-button>
-							</el-col>
+					<mdp-select-tag placeholder="标签" show-style="tag" multiple split="," v-model="addForm.tagIds" @change2="(tags)=>{
+						if(tags && tags.length>0){
+							addForm.tagNames=tags.map(k=>k.tagName).join(',') 
+						}else{
+							addForm.tagNames=''
+						}
+					}"></mdp-select-tag>
+					<el-button  @click="showDiagram(procdef)" icon="el-icon-view">流程图</el-button>
+				</el-form-item> 
+				<el-form-item label="发布到发起中心" prop="fp">
+					<el-checkbox v-model="addForm.fp" true-label="1" false-label="0">发布到发起中心,可以直接启动流程，无须关联任何其它模块</el-checkbox>
+				</el-form-item> 
 
-					</el-form-item>
-				</el-col>
-				<el-col :span="12">
-					<el-form-item label="流程主办" prop="sponsors">
-							<el-col :span="16">
-								<el-select style="width:100%" v-model="sponsors" multiple  clearable filterable placeholder="请选择人员">
-									<el-option
-									v-for="item in baseUserList"
-									:key="item.userid"
-									:label="item.username"
-									:value="item.userid">
-									<span style="float: left">{{ item.username }}</span>
-									<span style="float: right; color: #8492a6; font-size: 13px">{{ item.shortName }}</span>
-									</el-option>
-								</el-select>
-							</el-col>
-							<el-col :span="8">
-								<el-button   @click.native="sponsorsSelectVisible=true" :loading="addLoading" icon="el-icon-more"></el-button>
-							</el-col>
-					</el-form-item>
-				</el-col>
-				<el-form-item label="归档分类" prop="categoryId">
-					<el-col :span="14"> <category-tree  show-checkbox  :current-key="addForm.categoryId"  v-on:check-change="handleCategoryCheckChange" ></category-tree>
-					</el-col>
-				</el-form-item>
+				<el-form-item label="流程归档" prop="categoryId">
+					<mdp-select-cate show-style="tag" v-model="addForm['categoryId']" width="8em" clearable filterable placeholder="选择归档" />   
+				</el-form-item> 
+
+				<el-form-item label="流程监控" prop="monitors">
+					<mdp-select-user  :multiple="true" v-model="addForm.monitors" split=","></mdp-select-user>
+				</el-form-item> 
+				<el-form-item label="流程主办" prop="sponsors">
+						<mdp-select-user :multiple="true" v-model="addForm.sponsors" split=","></mdp-select-user>
+				</el-form-item> 
 				<el-form-item label="关联表单" prop="isRefForm">
-					<el-col :span="10">
-					   <el-select style="width:100%" v-model="addForm.formId" clearable filterable  placeholder="请选择">
-					    <el-option
-					      v-for="item in formDefs"
-					      :key="item.id"
-					      :label="item.formName"
-					      :value="item.id">
-					    </el-option>
-					  </el-select>
-					</el-col>
-					<el-col :span="10" style="padding-left:22px;">
-						<el-radio v-model="addForm.formShowType" label="form">表单形式展现</el-radio>
-  						<el-radio v-model="addForm.formShowType" label="table">表格形式展现</el-radio>
-					</el-col>
+					<el-row type="flex">
+						<el-checkbox v-model="addForm.isRefForm" :true-label="'1'" :false-label="'0'">关联表单？</el-checkbox> 
+						<span v-if="addForm.isRefForm=='1'">
+							<mdp-select v-model="addForm.formId" :load-fun="listFormDef" :props="{id:'id',name:'formName'}"></mdp-select> 
+							<el-radio v-model="addForm.formShowType" label="form">表单形式展现</el-radio>
+							<el-radio v-model="addForm.formShowType" label="table">表格形式展现</el-radio> 
+						</span>
+					</el-row>
 				</el-form-item>
-				<form-data-mng-for-flow-form v-if="addForm.isRefForm=='1' && addForm.formId!=null && addForm.formId!=''" :formShowType="addForm.formShowType" :companyDepts="companyDepts" :companyEmployees="companyEmployees" :formId="addForm.formId" @formFieldsLoad="onFormFieldsLoad"><div></div></form-data-mng-for-flow-form>
 				<el-form-item  label="审批人设置" prop="assignees">
 					  <el-table
 						:data="nodeInfosSelectOptions"
@@ -97,9 +58,15 @@
 						min-width="250">
 							<template slot-scope="scope">
 								{{showAssigneeTips(scope.row)}}
-								<el-button round v-if="scope.row.candidate=='1'" size="mini" @click.native="showCandidateSelectDialog(scope.row,'')" :loading="addLoading">选候选人</el-button>
-								<el-button round v-if="scope.row.candidate!='1' " size="mini" @click.native="showUserSelectDialog(scope.row,'')" :loading="addLoading">选人员</el-button>
-								<el-button round v-if="scope.row.toCreater!='1'" size="mini" @click.native="setAssigneeAsStartUser(scope.row)">转发起人</el-button>
+								<mdp-select-user v-if="scope.row.candidate!='1'" :placeholder="'负责人'" @change2="users=>{
+									if(!users){
+										scope.row.nodeUsers=[]
+									}else{
+										scope.row.nodeUsers=[{userid:users.userid,username:users.username}]
+									} 
+								}"/> 
+								<el-button round v-if="scope.row.candidate=='1'" size="mini" @click.native="$refs['hxSetDialog'].open({actAssignee:scope.row})" :loading="addLoading">选候选人</el-button>
+ 								<el-button round v-if="scope.row.toCreater!='1'" size="mini" @click.native="setAssigneeAsStartUser(scope.row)">转发起人</el-button>
 							</template>
 						</el-table-column>
 						<el-table-column
@@ -151,31 +118,7 @@
 				<el-form-item  label="流程权限" prop="mainQx">
 					 <el-button @click="showMainQxDialog">点击查看/设置流程权限</el-button>
 				</el-form-item>
-				<el-form-item>
-              <el-button type="primary" @click.native="addOrEditSubmit" :loading="addLoading">提交</el-button>
-							<el-button @click.native="handleCancel">取消</el-button>
-							<el-button @click.native="templateVisible=true" :loading="addLoading">导入模板</el-button>
-							<el-button @click.native="saveAsTemplate" :loading="addLoading">存为模板</el-button>
-				</el-form-item>
-			</el-form>
-			</el-col>
-
-			<el-dialog
-				title="流程图"
-				:visible.sync="displayDiagram"
-				width="80%" append-to-body	>
-				<el-image   :fit="'contain'" :src="diagramUrl">
-					<div slot="error" class="image-slot">
-						<i class="el-icon-picture-outline"></i>
-					</div>
-					<div slot="placeholder" class="image-slot">
-						正在全力加载中。。。。。。。。。。<i class="el-icon-loading"></i>
-					</div>
-				</el-image>
-				<span slot="footer" class="dialog-footer">
-					<el-button type="primary" @click="displayDiagram = false">关闭</el-button>
-				</span>
-			</el-dialog>
+			</el-form>  
 
 			<el-dialog append-to-body
 				title="模板导入"
@@ -194,70 +137,62 @@
 				:visible.sync="qxVisible"
 				width="60%">
 				<act-qx-code-set :formFields="formFields" :visible="qxVisible" :qxCode="actSelected ? actSelected.qxCode:''" @cancel="onQxCancel"   @confirm="onQxSelected"></act-qx-code-set>
-			</el-dialog>
-			<el-dialog append-to-body
-				title="选择监控人"
-				:visible.sync="monitorsSelectVisible"
-				width="60%">
-				<users-select :select-userids="monitors.map(i=>i.userid)"   @confirm="onMonitorsSelected"></users-select>
-			</el-dialog>
-			<el-dialog append-to-body
-				title="设置标签"
-				:visible.sync="tagSelectVisible"
-				width="60%">
-				<tag-mng :tagIds="addForm.tagIds==null?null:addForm.tagIds.split(',')"  :jump="true" @select-confirm="onTagSelected"></tag-mng>
-			</el-dialog>
-			<el-dialog append-to-body
-				title="选择候选人/候选部门/候选岗位"
-				:visible.sync="candidateSelectVisible"
-				width="60%">
-				<act-candidate-set :actAssignee="actSelected"  @confirm="onCandidateSelected"></act-candidate-set>
-			</el-dialog>
-			<el-dialog append-to-body
-				title="选择主办员工"
-				:visible.sync="sponsorsSelectVisible"
-				width="60%">
-				<users-select :select-userids="sponsors.map(i=>i.userid)"   @confirm="onSponsorsSelected"></users-select>
-			</el-dialog>
-			<el-dialog append-to-body
-				title="选择审批员工"
-				:visible.sync="userSelectVisible"
-				width="60%">
-				<users-select :select-userids=" (actSelected && actSelected.nodeUsers)?actSelected.nodeUsers:[]"   @confirm="onUserSelected"></users-select>
-			</el-dialog>
-			<el-dialog append-to-body
+			</el-dialog> 
+			<mdp-dialog ref="hxSetDialog"
+				title="选择候选人/候选部门/候选岗位" >
+				<template v-slot="{visible,data,dialog}">
+					<act-candidate-set :visible="visible" :actAssignee="data.actAssignee"  @confirm="(act)=>{
+						Object.assign(data.actAssignee,act);dialog.close();
+					}" @close="dialog.close()"></act-candidate-set>
+				</template>
+				
+			</mdp-dialog>
+			<mdp-dialog ref="formDialog"
 				title="配置表单"
-				:visible.sync="nodeFormVisible"
 				width="80%">
-				<form-def-for-flow-node :visible="nodeFormVisible" :form-id=" (actSelected && actSelected.formId)?actSelected.formId:''" @cancel="onNodeFormCancel" :form-fields-json="actSelected?actSelected.formFieldsJson:null"  @submit="onFormDefForFlowNodeSubmit"></form-def-for-flow-node>
-			</el-dialog>
+				<template v-slot="{visible,data,dialog}">
+					<form-def-for-flow-node :visible="visible" :form-id=" data.formId " @cancel="dialog.close()" :form-fields-json="data.formFieldsJson"  @submit="(formFieldsJson)=>{data.formFieldsJson=JSON.stringify(formFieldsJson);dialog.close();}"></form-def-for-flow-node>
+				</template>
+			</mdp-dialog>
 		</el-row>
+		
+		<el-row class="footer">
+			<el-button type="primary" @click.native="addOrEditSubmit" :loading="addLoading">提交</el-button>
+			<el-button @click.native="handleCancel">取消</el-button>
+			<el-button @click.native="templateVisible=true" :loading="addLoading">导入模板</el-button>
+			<el-button @click.native="saveAsTemplate" :loading="addLoading">存为模板</el-button>
+		</el-row>
+		<mdp-dialog ref="diagramDialog">
+            <template v-slot="{visible,data,dialog}">
+                <el-image v-if="visible" :fit="'contain'" :src="data.diagramUrl">
+                <div slot="error" class="image-slot">
+                    <i class="el-icon-picture-outline"></i>
+                </div>
+                <div slot="placeholder" class="image-slot">
+                    正在全力加载中。。。。。。。。。。
+                    <i class="el-icon-loading"></i>
+                </div>
+                </el-image>
+            </template>
+          </mdp-dialog>
 	</section>
 </template>
 
 <script>
-	import util from '@/common/js/util';//全局公共库
-	import config from '@/common/config';//全局公共库import
+	import util from '@/components/mdp-ui/js/util';//全局公共库
+	import config from '@/api/mdp_pub/mdp_config';//全局公共库import
 	//import { getCompanyEmployees,getCompanyDepts, selectCacheOptions,getDefaultValue,getCodeName } from '@/api/common/code';//下拉框数据查询
 	import { editProcdefParames,listProcdefParames, addProcdefParames } from '@/api/mdp/workflow/re/procdefParames';
 	import { listProcdefParamesTemplate, addOrUpdateTemplate } from '@/api/mdp/workflow/re/procdefParamesTemplate';
 	import { getBpmnActAssignees } from '@/api/mdp/workflow/re/procdefNodeInfo';
-	import  FormDataMngForFlowForm from '@/views/mdp/form/formData/FormDataMngForFlowForm';//新增界面
-	import { listFormDef } from '@/api/mdp/form/formDef';
-	import  CategoryTree from '@/views/mdp/arc/category/CategoryTree';//修改界面
-	import { listUser,listUserNames } from '@/api/mdp/sys/user';
-	import { listDept } from '@/api/mdp/sys/dept';
-	import Sticky from '@/components/Sticky' // 粘性header组件
-	import { mapGetters } from 'vuex'
-	import AttachmentUpload from '@/views/mdp/arc/archiveAttachment/AttachmentUpload';
-	import VueEditor from '@/components/Tinymce/index';
-	import UsersSelect from '@/views/mdp/sys/user/UsersSelect';
-	import FormDefForFlowNode from '@/views/mdp/form/formDef/FormDefForFlowNode';
+	import { listFormDef } from '@/api/mdp/lcode/formDef'; 
+	import { mapGetters } from 'vuex' 
+	import VueEditor from '@/components/Tinymce/index'; 
+	import FormDefForFlowNode from '@/views/mdp/lcode/formDef/FormDefForFlowNode';
 
 	import ProcdefParamesTemplateMng from '@/views/mdp/workflow/re/ProcdefParamesTemplate/ProcdefParamesTemplateMng';
 
-	import TagMng from '@/views/mdp/arc/tag/TagMng';
-
+ 
 	import ActCandidateSet from '@/views/mdp/workflow/re/procdefParames/ActCandidateSet';
 	import ActQxCodeSet from '@/views/mdp/workflow/re/procdefParames/ActQxCodeSet';
 
@@ -316,34 +251,28 @@
 				},
 				//新增界面数据 流程定义参数设置表
 				addForm: {
-					id:'',isRefForm:'',monitors:'',sponsors:'',formId:'',procDefId:'',userid:'',lastDate:'',mainContext:'',mainTitle:'',categoryId:''
+					id:'',isRefForm:'0',monitors:'',sponsors:'',formId:'',procDefId:'',userid:'',lastDate:'',mainContext:'',mainTitle:'',categoryId:''
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
-				sponsors:[],//
-				monitors:[],//
-				companyEmployees:[],
+ 
 				baseUserList:[],
 				companyDepts:[],
 				formDefs:[],
 				diagramUrl:'',
 				nodeInfos:[],//id:'',actId:'',actName:'',procDefId:'',assignees:'',isMultiple:'' ,
 				nodeInfosSelectOptions:[],//id:'',actId:'',actName:'',procDefId:'',assignees:[],isMultiple:''
-				candidateSelectVisible:false,
-				userSelectVisible:false,
-				actSelected:null,//选中的nodeInfos
-				sponsorsSelectVisible:false,
-				monitorsSelectVisible:false,
-				displayDiagram:false,
+				candidateSelectVisible:false, 
 				tagSelectVisible:false,
 				qxVisible:false,
 				mainQxVisible:false,
 				formFields:[],
 				templateVisible:false,
-				nodeFormVisible:false,
+				nodeFormVisible:false, 
 				/**end 在上面加自定义属性**/
 			}//end return
 		},//end data
 		methods: {
+			listFormDef,
 			// 取消按钮点击 父组件监听@cancel="addFormVisible=false" 监听
 			handleCancel:function(){
 				this.$emit('cancel');
@@ -355,8 +284,6 @@
 						this.$confirm('确认提交吗？', '提示', {}).then(() => {
 							this.addLoading = true;
 							let params = Object.assign({}, this.addForm);
-							params.sponsors=this.sponsors.map(i=>i.userid).join(',');
-							params.monitors=this.monitors.map(i=>i.userid).join(',');
 							if(params.branchId==null || params.branchId==''){
 								params.branchId=this.userInfo.branchId
 							}
@@ -365,6 +292,7 @@
 							}else{
 								params.isRefForm='0'
 							}
+							
 							var nodeInfosNew=new Array();
 							this.nodeInfosSelectOptions.forEach(i=>{
 								let act=Object.assign({},i)
@@ -390,6 +318,7 @@
 									var tips=res.data.tips;
 									this.addLoading = false;
 									this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
+									this.handleCancel();
 								}).catch(e=>this.addLoading=false);
 								return;
 							}
@@ -397,9 +326,9 @@
 								addProcdefParames({procdefParames:params,nodeInfos:nodeInfosNew}).then((res) => {
 									this.addLoading = false;
 									var tips=res.data.tips;
-									if(tips.isOk){
-										this.$refs['addForm'].resetFields();
+									if(tips.isOk){ 
 										this.$emit('submit');//  @submit="afterAddSubmit"
+										this.handleCancel();
 									}
 									this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 								}).catch(() => {
@@ -417,9 +346,9 @@
 								editProcdefParames({changeTags:changeTags,procdefParames:params,nodeInfos:nodeInfosNew}).then((res) => {
 									this.addLoading = false;
 									var tips=res.data.tips;
-									if(tips.isOk){
-										this.$refs['addForm'].resetFields();
+									if(tips.isOk){ 
 										this.$emit('submit');//  @submit="afterAddSubmit"
+										this.handleCancel();
 									}
 									this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 								}).catch(() => {
@@ -442,15 +371,9 @@
 				listProcdefParames(params).then((res) => {
 					var tips=res.data.tips;
 					if(tips.isOk){
-						if(res.data.data.length>0){
-							console.log(res.data);
-							this.addForm=res.data.data[0];
-							this.sponsors=this.addForm.sponsors==null?[]:this.addForm.sponsors.split(',').map(i=>{return {userid:i,username:i}});
-							this.monitors=this.addForm.monitors==null?[]:this.addForm.monitors.split(',').map(i=>{return {userid:i,username:i}});
-						}
-
-						console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxx");
-						console.log(this.nodeInfosSelectOptions);
+						if(res.data.data.length>0){ 
+							this.addForm=res.data.data[0]; 
+						} 
 					}else{
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					}
@@ -468,61 +391,7 @@
 				this.actSelected.groupIds=actAssignee.groupIds
 				this.actSelected.toCreater='0'
 
-			},
-			onUserSelected:function(users){
-				this.userSelectVisible=false;
-				console.log("posts-----------"+JSON.stringify(users));
-				users.forEach(i=>{
-					if(!this.baseUserList.some(k=>k.userid==i.userid)){
-						this.baseUserList.push(i);
-					}
-				})
-				this.actSelected.nodeUsers=users
-				this.actSelected.toCreater='0'
-
-			},
-			onTagSelected:function(tags){
-				this.tagSelectVisible=false;
-				console.log("tags"+JSON.stringify(tags));
-				this.addForm.tagIds=tags.map(t=>t.tagId).join(",");
-				this.addForm.tagNames=tags.map(t=>t.tagName).join(",");
-
-			},
-
-			onMonitorsSelected:function(users){
-				this.monitorsSelectVisible=false;
-				console.log("posts-----------"+JSON.stringify(users));
-				users.forEach(i=>{
-					if(!this.baseUserList.some(k=>k.userid==i.userid)){
-						this.baseUserList.push(i);
-					}
-				})
-				this.monitors=users;
-
-			},
-
-			onSponsorsSelected:function(users){
-				this.sponsorsSelectVisible=false;
-				users.forEach(i=>{
-					if(!this.baseUserList.some(k=>k.userid==i.userid)){
-						this.baseUserList.push(i);
-					}
-				})
-				console.log("posts-----------"+JSON.stringify(users));
-				this.sponsors=users;
-			},
-			showMonitorsSelectDialog(){
-
-			},
-			showSponsorsSelectDialog(){
-
-			},
-
-			showUserSelectDialog:function(actSelected,index){
-				console.log(actSelected);
-				this.userSelectVisible=true;
-				this.actSelected=actSelected;
-			},
+			},  
 			showCandidateSelectDialog:function(actSelected,index){
 				console.log(actSelected);
 				this.candidateSelectVisible=true;
@@ -555,32 +424,18 @@
 				}
 				return tips.join(",");
 			},
-			showDiagram(){
-				this.diagramUrl=config.getBaseDomainUrl()+"/"+process.env.VERSION+config.getWorkflowBasePath()+"/mdp/workflow/re/procdef/diagram/"+this.procdef.id;
-				this.displayDiagram=true;
-			},
-			getFormDefs() {
-				let params = {};
-				params.branchId=this.userInfo.branchId
-				this.listLoading = true;
-				listFormDef(params).then((res) => {
-					var tips=res.data.tips;
-					if(tips.isOk){
-						this.formDefs = res.data.data;
-					}else{
-						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
-					}
-					this.listLoading = false;
-				}).catch(() => {
-					this.listLoading = false;
-					this.$notify({position:'bottom-left',showClose:true,message: '访问错误', type: 'error' });
-				});
-			},
-			handleCategoryCheckChange(data, checked, indeterminate){
-				console.log("555555555555555555555555555555555555555555");
-				this.addForm.categoryId=checked?data.id:'';
-				console.log(this.addForm.categoryId);
-			},
+			showDiagram: function(row) {
+             var diagramUrl =
+                "/" +
+                process.env.BASE_API +
+                "/" +
+                process.env.VERSION +
+                "/" +
+                config.getWorkflowContext() +
+                "/mdp/workflow/re/procdef/diagram/" +
+                row.id;
+            	this.$refs['diagramDialog'].open({diagramUrl:diagramUrl})
+        	}, 
 			listBpmnActAssignees(){
 				let params = {
 					procDefId: this.procdef.id
@@ -601,41 +456,7 @@
 				});
 			},
 			/**end 在上面加自定义方法**/
-
-			initBaseUserList(){
-				var that=this;
-				var sponsors=that.addForm.sponsors.split(',').map(i=>{return {userid:i,username:i}});
-				var monitors=that.addForm.monitors.split(',').map(i=>{return {userid:i,username:i}});
-				var userids=[].concat(sponsors.map(u=>u.userid)).concat(monitors.map(u=>u.userid));
-				var currentUser={userid:this.userInfo.userid,username:this.userInfo.username}
-				that.baseUserList=sponsors.concat(monitors.filter(m=>!sponsors.some(s=>s.userid==m.userid)))
-				that.sponsors=sponsors;
-				that.monitors=monitors;
-				if(!that.baseUserList.some(i=>i.userid==currentUser.userid)){
-						that.baseUserList.push(currentUser);
-				}
-				if(this.baseUserList.filter(i=>i.userid!=currentUser.userid).length<=0){
-					return;
-				}
-				listUserNames({userids:that.baseUserList.map(i=>i.userid),branchId:that.userInfo.branchId}).then(res=>{
-					if(res.data.tips.isOk){
-						that.baseUserList=res.data.data
-						that.baseUserList.forEach(u=>{
-							that.monitors.forEach((m,index)=>{
-								if(m.userid==u.userid){
-									that.$set(that.monitors,index,u)
-								}
-							});
-							that.sponsors.forEach((m,index)=>{
-								if(m.userid==u.userid){
-									that.$set(that.sponsors,index,u)
-								}
-							});
-						})
-					}
-
-				});
-			},
+ 
 			onQxSelected:function(qxCode){
 				this.qxVisible=false;
 				this.actSelected.qxCode=qxCode;
@@ -690,9 +511,17 @@
 			onNodeFormCancel:function(){
 				this.nodeFormVisible=false;
 			},
-			showNodeForm:function(nodeInfo){
-				this.actSelected=nodeInfo
-				this.nodeFormVisible=true
+			showNodeForm:function(nodeInfo){ 
+				if(this.addForm.isRefForm=='1' && this.addForm.formId){
+					nodeInfo.formId=this.addForm.formId
+					this.$refs['formDialog'].open(nodeInfo)
+				}else{
+					this.$notify.error("该流程还未关联表单"); 
+					nodeInfo.formId=''
+					nodeInfo.formFieldsJson=""
+					return;
+				}
+				
 			},
 			setAssigneeAsStartUser(nodeInfo){
 				if(nodeInfo.allowOverUser=='0'){
@@ -708,11 +537,8 @@
 		},//end method
 		components: {
 		    //在下面添加其它组件 'procdef-parames-edit':ProcdefParamesEdit
-		    'form-data-mng-for-flow-form':FormDataMngForFlowForm,
 		    'vue-editor':VueEditor,
-		    'category-tree':CategoryTree,
-			'sticky': Sticky,
-			AttachmentUpload,UsersSelect,ActCandidateSet,TagMng,ActQxCodeSet,ProcdefParamesTemplateMng,FormDefForFlowNode
+			ActCandidateSet,ActQxCodeSet,ProcdefParamesTemplateMng,FormDefForFlowNode
 		},
 		mounted() {
 				this.addForm=Object.assign(this.addForm, this.procdefParames);
@@ -720,8 +546,6 @@
 				this.addForm.mainTitle=this.procdef.name;
 				this.getProcdefParamess();
 				this.listBpmnActAssignees();
-				this.getFormDefs();
-				this.initBaseUserList();
 
 
 

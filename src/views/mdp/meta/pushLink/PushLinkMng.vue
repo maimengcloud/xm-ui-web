@@ -40,8 +40,8 @@
 </template>
 
 <script>
-	import util from '@/common/js/util';//全局公共库
-	import config from '@/common/config';//全局公共库 
+	import util from '@/components/mdp-ui/js/util';//全局公共库
+	import config from '@/api/mdp_pub/mdp_config';//全局公共库 
 	import { dicts } from '@/api/mdp/meta/item';//字典表
 	import { listPushLink, delPushLink, batchDelPushLink } from '@/api/mdp/meta/pushLink';
 	import  PushLinkEdit from './PushLinkEdit';//修改界面
@@ -217,28 +217,11 @@
 			},
             initData: function(){
 
-            },
-			//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 [{id:'',itemCode:'',itemName:'',itemType:'',values:'',names:'','options':[{id:'1',name:'男'},{id:'2',name:'女'}]}]
-            initDicts(categoryId,itemCodes){
-                dicts({categoryId:categoryId,itemCodes:itemCodes}).then(res=>{
-                    if(res.data.tips.isOk){
-                        var data=res.data.data
-                        data.forEach(dict=>{
-                            if(dict.options){
-                                dict.options=JSON.parse(dict.options)
-                            }else{
-                               dict.options=[]
-                            }
-                            this.dicts[dict.itemCode]=dict
-                        })
-                    }
-                });
-            },
+            }, 
 			/**begin 自定义函数请在下面加**/
 			
 		},//end methods
-		mounted() {
-		    //this.initDicts('all',['sex','gradeLvl']);
+		mounted() { 
 			this.$nextTick(() => {
 				this.getPushLinks();
 				if(this.$refs.pushLinkTable){

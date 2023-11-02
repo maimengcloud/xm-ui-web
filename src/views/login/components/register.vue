@@ -74,13 +74,12 @@ import { sendNoAuthSmsCode } from '@/api/sms/sms';
 import { checkPhoneno,checkDisplayUserid,doRegister,queryByUserloginid } from '@/api/login';
 import LangSelect from '@/components/LangSelect';
 import SocialSign from '../socialsignin';
-import BranchAdd from '../BranchAdd';
 import { mapGetters } from 'vuex'; 
 import md5 from 'js-md5';
 
 
 export default {
-  components: { LangSelect, SocialSign, BranchAdd },
+  components: { LangSelect, SocialSign },
   name: 'login',
   data() {
     const validateDisplayUserid = (rule, value, callback) => { 

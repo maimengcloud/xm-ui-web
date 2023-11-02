@@ -6,7 +6,7 @@
 
 <script>
 	 
-	import  ProcinstMng from './ProcinstMng';//
+	import  ProcinstMng from './Index';//
 	
 	export default {
 		name:'ProcinstListMyMonitors',

@@ -1,6 +1,6 @@
 import axios from '@/utils/request'
-import config from '@/common/config'
-let base = config.getSysBasePath();
+import config from '@/api/mdp_pub/mdp_config'
+let base = config.getSysContext()
 
 export const createOrder = params => { return axios.post(`${base}/mdp/mo/moOrder/create`, params) };
 export const calcOrder = params => { return axios.get(`${base}/mdp/mo/moOrder/calcOrder`,  { params: params })};

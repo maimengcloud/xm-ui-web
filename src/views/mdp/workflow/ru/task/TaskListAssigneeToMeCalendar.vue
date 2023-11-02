@@ -6,7 +6,7 @@
 
 <script>
 	 
-	import  TaskMng from './TaskMng';//
+	import  TaskMng from './Index';//
 	
 	export default {
 		name:'TaskListAssigneeToMeCalendar',

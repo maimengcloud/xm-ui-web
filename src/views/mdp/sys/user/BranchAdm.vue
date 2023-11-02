@@ -3,43 +3,56 @@
 		<el-row>
 			 <el-card class="box-card">
 				<el-row slot="header" class="clearfix"> 
-					<el-col :span="18"><strong>机构管理员</strong>  </el-col>   
-					<el-col :span="6">
-						<el-button style="float:right;" type="primary" icon="el-icon-plus" @click="usersSelectVisible=true">添加更多机构管理员</el-button>
-					</el-col>   
-					<el-col :span="24" class="padding-top"> 权限说明：机构管理员具有本机构最高权限</el-col>    
+					<el-col :span="18"><strong>管理员账户管理</strong>  </el-col>    
+					<el-col :span="24" class="padding-top"> 权限说明：管理员具有本机构最高权限,主管理员可以设置子管理员账户</el-col>    
 				</el-row>  
 				<el-row class="avatar-container">   
-						<div :span="4" class="avatar-wrapper" v-for="(item,index) in branchAdms" :key="index">
-							<img v-if=" item.headimgurl " class="user-avatar" :src="item.headimgurl">
-							<img v-else class="user-avatar" src="../../../../assets/image/user_img.gif">
-							<span class="username">  <el-tag :closable="item.userid!=item.branchId" @close="setUsersUnBranchAdm(item)"> {{item.username?item.username:item.userid}}({{item.userid}})</el-tag></span> 
-						</div>     
+						<strong>主管理员：</strong>
+						 
+						<mdp-select-user show-style="tag" :plus-options="[mainBranchAdm]" :value="mainBranchAdm.userid" :disabled="true"/> 
+						<span>主管理员一般账号与机构号一致 登录账号：{{mainBranchAdm.userid}}</span>
+
+				</el-row>
+				<el-row class="avatar-container">   
+					<strong>子管理员：</strong>
+						<mdp-select-user show-style="origin" :plus-options="branchAdmsCpd" :multiple="true" :value="branchAdmsCpd.map(k=>k.userid)" @change2="onUserSelect"/> 
+						 
 				</el-row>
 			</el-card>
 		</el-row>
-		
-		<el-dialog append-to-body title="人员选择" width="70%" top="5vh" :visible.sync="usersSelectVisible">
-			<users-select @confirm="onUsersSelect" ></users-select>
-		</el-dialog>
+		 
 	</section>
 </template>
 
 <script>
-	import util from '../../../../common/js/util';//全局公共库import {
+	import util from '@/components/mdp-ui/js/util';//全局公共库import {
 import {	listUser,setUsersToBranchAdm,setUsersUnBranchAdm,
 	delUser,
 	batchDelUser,
 	resetPasswordByAdmin
 	} from "../../../../api/mdp/sys/user"; 
-	import { mapGetters } from 'vuex'   
-	import UsersSelect from './UsersSelect.vue';
+	import { mapGetters } from 'vuex'    
 	export default {
 
 	    computed: {
 		    ...mapGetters([
 		      'userInfo'
-		    ])
+		    ]),
+			mainBranchAdm(){
+				var main={
+					userid:this.userInfo.branchId,
+					username:this.userInfo.branchName,
+					headimgurl:''
+				}
+				if(this.branchAdms && this.branchAdms.length>0 && this.branchAdms.some(i=>i.userid==this.userInfo.branchId)){
+					return this.branchAdms.find(i=>i.userid==this.userInfo.branchId)
+				}else{
+					return main;
+				}
+			},
+			branchAdmsCpd(){
+				return this.branchAdms.filter(i=>i.userid!=i.branchId)
+			}
 		},
 		props:[ ],
 		watch: { 
@@ -53,7 +66,6 @@ import {	listUser,setUsersToBranchAdm,setUsersUnBranchAdm,
 					unionid:'',displayUserid:'',userid:'',locked:'',startdate:'',nickname:'',username:'',phoneno:'',password:'',salt:'',fingerpassword1:'',fingerpassword2:'',fingerpassword3:'',fingerpassword4:'',pwdtype:'',headimgurl:'',country:'',city:'',province:'',address:'',sex:'',enddate:'',districtId:'',userid:'',userAccount:'',userPwd:'',userName:'',userDesc:'',officePhoneno:'',idCardNo:''
 				}, 
 				branchAdms:[],//机构管理员列表
-				usersSelectVisible:false,
 				/**end 在上面加自定义变量**/
 			}//end return
 		},//end data
@@ -114,20 +126,16 @@ import {	listUser,setUsersToBranchAdm,setUsersUnBranchAdm,
 					this.$notify({ message: tips.msg, type: tips.isOk?'success':'error' }); 
 				});
 			},
-			onUsersSelect(users){
+			onUserSelect(users){ 
 				setUsersToBranchAdm(users.map(i=>i.userid)).then(res=>{
-					var tips = res.data.tips; 
-					if(tips.isOk){
-						users.forEach(i=>i.memType="1")
-						this.getUsers();
-					}
+					var tips = res.data.tips;  
+					this.getUsers(); 
 					this.$notify({ message: tips.msg, type: tips.isOk?'success':'error' }); 
 				});
 			}
 
 		},//end method
-		components: {   
-			UsersSelect
+		components: {    
 		},
 		mounted() { 
 			this.getUsers();

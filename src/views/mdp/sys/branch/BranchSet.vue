@@ -13,28 +13,23 @@
 							</el-col>
 						</el-row>
 						<el-row style="margin-top:30px;">
-							<el-col  :span="4">企业logo </el-col><el-col class="logo" :span="18" @click.native="showUploadHeadimg()">
+							<el-col  :span="4">企业logo </el-col><el-col class="logo" :span="18" @click.native="$refs['imgDialog'].open()">
 								<el-avatar :size="60" :src="branchInterestsDetail.imgUrl"  >
-									<img src="@/assets/image/image_not_found_small.jpg"  @click="showUploadHeadimg()"/>
+									<img src="@/assets/image/image_not_found_small.jpg"  @click="$refs['imgDialog'].open()"/>
 								</el-avatar> 
 							</el-col>
 						</el-row>
 						<el-row>
 							
 						</el-row>
-						<el-row :gutter="5" class="border padding">
+						<el-row :gutter="5" class="border padding" style="margin-top:30px;">
 							<el-col :span="12" class="ver">
 								<p class="ver-title">当前版本</p> 
 								<p class="ver-context">{{branchInterestsDetail.mver!=='1'?'免费版':'企业版'}}</p>
 							</el-col> 
-							<el-col :span="12"> 
-								<div class="avatar-container" @click="goToBranchAdm">
-									<div class="avatar-wrapper">
-										<img v-if=" branchAdm.headimgurl " class="user-avatar" :src="branchAdm.headimgurl">
-										<img v-else class="user-avatar" src="../../../../assets/image/user_img.gif">
-										<span class="username" title="超级机构管理员"> {{branchAdm.username}}</span> 
-									</div>  
-								</div>
+							<el-col :span="12" class="ver" style="cursor:pointer;" @click.native.stop="goToBranchAdm"> 
+								<p class="ver-title">主管理员</p> 
+								<p class="ver-context">{{branchAdm.username}}</p> 
 							</el-col>
 						</el-row>
 					</el-card> 
@@ -75,29 +70,19 @@
 				  <menu-module-branch-complex v-else @product-scope-set="onProductScopeSet"></menu-module-branch-complex>
 			</el-row>
 		 </el-row>
-		<single-shear-upload ref="uploadImg" v-show="false"	
-			:img-width="100"
-			:img-height="100"
-			:show-title="true"
-			v-model="editForm.imgUrl"
-			:branch-id="branchInterestsDetail.branchId"
-			:deptid="userInfo.deptid"
-			:remark="branchInterestsDetail.branchName"
-		>
-			<span slot="title">商品高清大图</span>
-		</single-shear-upload> 
+		<mdp-dialog ref="imgDialog">
+		 	<mdp-select-image @select="onLogoSelect"></mdp-select-image>
+		</mdp-dialog> 
 	</section>
 </template>
 
 <script>
-	import util from '@/common/js/util';//全局公共库
-	import config from "@/common/config"; //全局公共库import
-	
-	import SingleShearUpload from "@/components/Image/Single/Index";
+	import util from '@/components/mdp-ui/js/util';//全局公共库
+	import config from "@/api/mdp_pub/mdp_config"; //全局公共库import
+	 
 
- 	import { initDicts, initUserCountPieChart,initProductCountPieChart,initEndTimePieChart,editSomeFieldsBranch} from '@/api/mdp/sys/branch';
-
- 	import { getBranchInterestsDetail } from '@/api/branch'; 
+ 	import {  initUserCountPieChart,initProductCountPieChart,initEndTimePieChart,editSomeFieldsBranch} from '@/api/mdp/sys/branch';
+ 
 
 	 
  	import { calcBranchModule } from '@/api/mdp/menu/menuModuleBranch';
@@ -112,7 +97,7 @@
 	export default {
 	    name:'branchEdit',
 	    components: {
-			MenuModuleComplex,MenuModuleBranchComplex,SingleShearUpload
+			MenuModuleComplex,MenuModuleBranchComplex
         },
 		computed: {
 		    ...mapGetters([ 'userInfo'  ]),
@@ -121,13 +106,7 @@
 		props:[ ],
 
 		watch: {
-	       'editForm.imgUrl':function(){
-			   var params={ids:[this.branchInterestsDetail.branchId],imgUrl:this.editForm.imgUrl}
-			   editSomeFieldsBranch(params).then(res=>{
-				   var tips = res.data.tips;
-				   this.$notify({ message: tips.msg, type: tips.isOk?"success":"error" });
-			   })
-		   }
+	      
 	    },
 		data() {
 			return {
@@ -178,13 +157,26 @@
 		},//end data
 		methods: {
 
-		    ...util,
+		onLogoSelect:function(imgs){
+			if(imgs==null || imgs.length==0){
+				return;
+			} 
+			var params={$pks:[this.branchInterestsDetail.branchId],imgUrl:imgs[0].url}
+			editSomeFieldsBranch(params).then(res=>{
+				var tips = res.data.tips;
+				this.$notify({ message: tips.msg, type: tips.isOk?"success":"error" });
+				if(tips.isOk){
+					this.branchInterestsDetail.imgUrl=imgs[0].url
+					this.$refs['imgDialog'].close();
+				} 
+			})
+		},
 
 		 goToUserMng(){
-			 this.$router.push("/mdp/sys/user/deptUserMng")
+			 this.$router.push("/mdp/sys/user/index")
 		 },
 		 goToBranchAdm(){
-			 this.$router.push("/mdp/sys/user/branchAdm")
+			 this.$router.push("/mdp/sys/user/adm")
 		 },
 		 goToAddUsers(){
 			  this.$router.push("/my/order/addUsers")
@@ -208,7 +200,7 @@
 			 this.branchAdm.branchId=this.userInfo.branchId
 			 this.branchAdm.branchName=this.userInfo.branchName
 			 this.branchAdm.headimgurl=''
-			 getBranchInterestsDetail({}).then(res=>{
+			 this.$mdp.getBranchInterestsDetail({}).then(res=>{
 				 var tips = res.data.tips;
 				 if(tips.isOk){
 					this.branchInterestsDetail=res.data.data
@@ -245,8 +237,7 @@
 			 initUserCountPieChart(this);
 			 initProductCountPieChart(this);
 			 initEndTimePieChart(this);
-		    this.$nextTick(() => {
-                initDicts(this);
+		    this.$nextTick(() => { 
                 this.initData()
 				this.getMainBranchUser(); 
             });

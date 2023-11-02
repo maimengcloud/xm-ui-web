@@ -2,7 +2,7 @@
 	<div class="set_container">
 		<div class="set_content">
 			<div class="m_msgcard">
-				<el-avatar class="m_avater" :src="editForm.headimgurl" @click.native="showUploadHeadimg">
+				<el-avatar class="m_avater" :src="editForm.headimgurl" @click.native="$refs['imageDialog'].open()">
 					<img src="../../../assets/image/user_img.gif"/> 
 				</el-avatar>
 				<div class="m_msg">
@@ -18,7 +18,7 @@
 				</div>
 			</div>
 			<div class="m_opercard">
-				<div class="m_base"  v-if="showPanel!='bindMainAccount'">
+				<div class="m_base">
 					<h3>基本信息</h3>
 					<el-form class="m_f m_from1" :model="editForm"  label-width="120px" :rules="editFormRules"  ref="editForm">
 						<el-form-item label="用户名称" prop="username" :rules="[{required:true,message:'用户名称不能为空'}]">
@@ -26,52 +26,41 @@
 						</el-form-item> 
 						<el-form-item label="登录账号" prop="displayUserid" :rules="[{required:true,message:'登录账号不能为空'}]">
 							<el-input style="width:400px;" v-model="editForm.displayUserid" auto-complete="off"></el-input>
-						</el-form-item>  
+						</el-form-item>     
+						<el-form-item label="邮箱" prop="email" >
+							{{editForm.email?editForm.email:'暂无'}} 
+						</el-form-item>     
 						<el-form-item label="手机号码" prop="phoneno">
-							<el-input style="width:400px;" v-model="editForm.phoneno" auto-complete="off"></el-input> 
-							<el-button type="text" @click="registerPhoneno" v-if="!userInfo.phoneno">绑定手机</el-button>
-							<el-button type="text" @click="changePhoneno" v-if="userInfo.phoneno">更换手机</el-button>
-						</el-form-item>      
-						<el-form-item label="邮箱" prop="email" :rules="[{required:true,message:'邮箱不能为空'},{validator:validateEmail}]">
-							<el-input style="width:400px;" v-model="editForm.email" auto-complete="off"></el-input> 
-							<el-button type="text" @click="registerEmail" v-if="!userInfo.email">绑定邮箱</el-button>
-							<el-button type="text" @click="changeEmail" v-if="userInfo.email">更换邮箱</el-button>
-						</el-form-item>    
+							{{editForm.phoneno?editForm.phoneno:'暂无'}} 
+						</el-form-item>   
 						<el-form-item> 
 							<el-button type="primary" @click.native="editSubmit" :loading="editLoading">保存</el-button>   
-							<el-button  @click.native="showPanel='bindMainAccount'" :loading="editLoading">绑定主账户</el-button>   
-						</el-form-item> 
+ 						</el-form-item> 
+					</el-form>
+				</div> 
+				<div class="m_setpwd" v-if="userInfo && userInfo.userid">
+					<h3>绑定微信</h3>
+					<el-form :model="scanCodeForm"  label-width="120px"  ref="scanCodeRef" v-loading="load.list">
+						<el-form-item>
+							<div style="text-align:center;">
+								<div>  
+									<div id="login_container"></div> 
+								</div>
+								<p>扫码登录，自动绑定个人微信号，接收重要信息通知(如果已绑定，可以重新绑定)</p>
+							</div>
+						</el-form-item>
 					</el-form>
 				</div>
-				<div class="m_base"  v-if="showPanel==='bindMainAccount'">
-					<h3>绑定主账户</h3>
-					<el-row class="padding"> 				
-						<el-row  class="padding">
-							<font color="blue">主账号指平台统一账户，一般同一个手机号、微信号、邮箱认为是同一个账户</font>
-							<br>
-							<font color="blue">绑定主账户后，可以实现微信、app、公众号、小程序等各个应用账户互通</font>
-						</el-row>    
-						<el-row  class="padding">
-							<vue-qr
-								ref="qrcode"
-								:logoSrc="logoSrc"
-								:text=" currDomainUrl+'/miniapp?page=bindMainAccount&userid='+editForm.userid"
-								:size="200"
-							:loadMake="true"/>
-							<br>
-							<font color="blue">扫描绑定{{editForm.username}}主账号</font>
-						</el-row>
-						<el-row  class="padding">   
-								<el-button  @click.native="showPanel='baseInfo'" :loading="editLoading">返回</el-button>   
-						</el-row> 
-					</el-row>
-				</div>
-				<div class="m_setpwd">
-					<h3>密码设置</h3>
-					<el-form class="m_f m_from1" :model="editForm"  label-width="80px" ref="passwordForm">
+			</div> 
+			<div class="m_opercard">
+				<div class="m_base">
+					<h3>密码设置</h3> 			 
+					<el-form class="m_f m_from1" :model="passwordForm"  label-width="120px" ref="passwordForm">
 						<el-form-item>
 							<el-form-item label="原密码" prop="oldPassword" :rules="[{required:true,message:'原密码不能为空'}]">
 								<el-input style="width:400px;" type="password" v-model="passwordForm.oldPassword" auto-complete="off"></el-input>
+								<div>如果忘记原密码，请先绑定手机，再通过【首页】->【忘记密码】进行密码重置</div>
+
 							</el-form-item>  
 							<el-form-item label="新密码" prop="newPassword" :rules="[{required:true,message:'新密码不能为空'}]">
 								<el-input style="width:400px;" type="password" v-model="passwordForm.newPassword" auto-complete="off"></el-input>
@@ -81,39 +70,64 @@
 							</el-form-item> 
 						</el-form-item>
 					</el-form>
+				</div> 
+			</div>
+			<div class="m_opercard">
+				<div class="m_base" v-if="!userInfo.phoneno">
+					<h3>绑定手机</h3>
+					<el-form class="m_f m_from1" :model="phonenoForm"  label-width="120px" ref="phonenoForm">
+						<el-form-item>
+							<el-form-item label="手机号码" prop="phoneno" :rules="[{required:true,message:'手机号码不能为空'}]">
+								<el-input style="width:400px;"  v-model="phonenoForm.phoneno" auto-complete="off"></el-input>
+							</el-form-item>  
+							<el-form-item label="验证码" prop="smsCode" :rules="[{required:true,message:'短信验证码不能为空'}]">
+								<el-input style="width:400px;"   v-model="phonenoForm.smsCode" auto-complete="off"></el-input>&nbsp;&nbsp;<el-button @click="sendPhonenoSmsCode('userPhoneno')" :disabled="smsCodeTime>0">发送短信验证码{{smsCodeTime>0?'('+smsCodeTime+'秒)':''}}</el-button>
+							</el-form-item> 
+							<el-form-item>
+								<el-button style="margin-left: 80px" type="primary" @click.native="registerPhoneno" :loading="setLoading">提交</el-button>  
+							</el-form-item> 
+						</el-form-item>
+					</el-form>
 				</div>
+				<div class="m_base" v-if="userInfo.phoneno">
+					<h3>更换手机</h3>
+					<el-form class="m_f m_from1" :model="phonenoForm"  label-width="120px" ref="phonenoForm">
+						<el-form-item>
+							<el-form-item label="旧手机号码">
+								<el-input style="width:400px;"  v-model="userInfo.phoneno" auto-complete="off"></el-input>
+							</el-form-item>  
+							<el-form-item label="手机号码" prop="phoneno" :rules="[{required:true,message:'手机号码不能为空'}]">
+								<el-input style="width:400px;"  v-model="phonenoForm.phoneno" auto-complete="off"></el-input>
+							</el-form-item>  
+							<el-form-item label="验证码" prop="smsCode" :rules="[{required:true,message:'短信验证码不能为空'}]">
+								<el-input style="width:400px;" v-model="phonenoForm.smsCode" auto-complete="off"></el-input>&nbsp;&nbsp;<el-button @click="sendPhonenoSmsCode('userPhoneno')" :disabled="smsCodeTime>0">发送短信验证码{{smsCodeTime>0?'('+smsCodeTime+'秒)':''}}</el-button>
+							</el-form-item> 
+							<el-form-item>
+								<el-button style="margin-left: 80px" type="primary" @click.native="changePhoneno" :loading="setLoading">提交</el-button>  
+							</el-form-item> 
+						</el-form-item>
+					</el-form>
+				</div> 
+			</div>
+			<div class="m_opercard">
+				<div class="m_base">
+					<h3 v-if="!userInfo.email">绑定邮箱</h3>
+					<h3 v-else>更换邮箱</h3>
+					<el-form class="m_f m_from1" :model="editForm"  label-width="120px" ref="editForm2"> 
+						<el-form-item label="邮箱" prop="email" :rules="[{required:true,message:'邮箱不能为空'},{validator:validateEmail}]">
+							<el-input style="width:400px;" v-model="editForm.email" auto-complete="off"></el-input> 
+							<el-button type="text" @click="registerEmail" v-if="!userInfo.email">绑定邮箱</el-button>
+							<el-button type="text" @click="changeEmail" v-if="userInfo.email">更换邮箱</el-button>
+						</el-form-item>     
+ 					</el-form>
+				</div> 
 			</div>
 		</div>
-
-		<single-shear-upload ref="uploadImg" v-show="false"	
-			:img-width="100"
-			:img-height="100"
-			:show-title="true"
-			v-model="headimgurl"
-			:branch-id="userInfo.branchId"
-			:deptid="userInfo.deptid"
-			:remark="userInfo.username"
-		>
-			<span slot="title">商品高清大图</span>
-		</single-shear-upload> 
-		
-      <!--新增 Branch 管理端机构表（机构下面若干部门）界面-->
-      <el-dialog
-        title="新增机构"
-        :visible.sync="branchAddVisible"
-        width="50%"
-		
-		  top="20px"
-        :close-on-click-modal="false"
-      >
-        <branch-add 
-		  :branch="{id:userInfo.branchId,branchName:'',admUserid:userInfo.branchId,admUsername:userInfo.username,luserid:userInfo.userid,lusername:userInfo.username}"
-		  op-type="add"
-          :visible="branchAddVisible"
-          @cancel="branchAddVisible=false"
-          @submit="afterAddSubmit"
-        ></branch-add>
-      </el-dialog>
+		<mdp-dialog ref="imageDialog">
+			<template v-slot="{visible,data,dialog}">
+				<mdp-select-image :multiple="false" @select="(imgs)=>{if(imgs)headimgurl=imgs[0].url;dialog.close()}"></mdp-select-image>
+			</template>
+		</mdp-dialog>  
 	  
         
         <el-dialog
@@ -129,6 +143,7 @@
             </el-table-column>
             <el-table-column  label="操作">
 					<template slot-scope="scope"> 
+						<el-button type="primary" @click="setDefaultLoginUser(scope.row)">默认账户</el-button> 
 						<el-button type="primary" @click="toLogin(scope.row)">登录</el-button> 
 					</template>
             </el-table-column>
@@ -138,15 +153,12 @@
 </template>
 
 <script>
-import config from '../../../common/config';
-import { editUser,changePassword,editHeadimgurl } from '@/api/mdp/sys/user';
-import { mapGetters } from 'vuex' 
-import { sendEmail,validEmailCode,queryMyUsers,switchUser } from '@/api/login';
-import SingleShearUpload from "@/components/Image/Single/Index";
-import VueQr from 'vue-qr'	
-import BranchAdd from "@/views/mdp/sys/branch/BranchEdit";
 
-import { getToken, setToken, removeToken,getCacheUserInfo,setCacheUserInfo,removeCacheUserInfo} from '@/utils/auth'
+import { sendSmsCode } from '@/api/sms/sms';
+ import { mapGetters } from 'vuex' 
+import { sendEmail,validEmailCode,queryMyUsers,switchUser,updatePhoneno,setDefaultLoginUser } from '@/api/login'; 
+ 
+import {  setToken,removeCacheUserInfo} from '@/utils/auth'
 import md5 from "js-md5";
 
 	export default {
@@ -161,7 +173,7 @@ import md5 from "js-md5";
 	        this.editForm=data;
 	      },
 		  'headimgurl':function(val){
-			  editHeadimgurl({userid:this.userInfo.userid,headimgurl:val}).then(res=>{
+			this.$mdp.editHeadimgurl({userid:this.userInfo.userid,headimgurl:val}).then(res=>{
 				  var tips = res.data.tips
 				  if(tips.isOk){
 					  this.$notify({ message: "修改头像成功，重新登录起效", type: 'success'}); 
@@ -225,6 +237,7 @@ import md5 from "js-md5";
 				}
 			}; 
 			return {
+				load:{list:false},
 				validateEmail:validateEmail,
 				uploadHeadimgVisible:false,
 				changePasswordVisible:false,
@@ -237,10 +250,7 @@ import md5 from "js-md5";
 					],
 					username: [
 						{ required: true, message: '用户名称必填', trigger: 'blur' }
-					],  
-					email: [ 
-						{ validator:validateEmail, trigger: 'blur' }
-					] 
+					]
 				},
 				//编辑界面数据  User sys_user
 				editForm: {
@@ -249,17 +259,40 @@ import md5 from "js-md5";
 				passwordForm:{
 					newPassword:'',oldPassword:''
 				},
-				
-				branchAddVisible:false,
-				valiCode:'',//验证码
+				phonenoForm:{
+					phoneno:'',smsCode:''
+				},
+ 				valiCode:'',//验证码
 				showPanel:'',//bindMainAccount
 				phonenoUsers:[],
 				phonenoUsersVisible:false,
 				headimgurl:'',
 				currDomainUrl:'',
+				smsCodeTime:0,
+				timeWrap:0,
+				scanCodeForm: {
+					joinUserid:'',sendBranchId:'',sendUserid:'',inviteId:'',sendBranchName:'',sendUsername:'',sendTime:'',inviteState:'',inviteScene:'',inviteType:'',objType:'',joinUsername:''
+				},
 			}
 		},
 		methods: {
+			initScanCode(){
+				if(!this.userInfo || !this.userInfo.userid){
+					return;
+				}
+				this.load.list=true;
+ 				this.$mdp.createInviteId({inviteScene:'2',inviteType:'1',joinUserid:this.userInfo.userid,joinUsername:this.userInfo.username}).then(res=>{
+ 					var tips = res.data.tips
+					 this.load.list=false;
+					if(tips.isOk){
+						this.scanCodeForm=Object.assign({},res.data.data)
+						this.weixinLogin();
+					}else{
+						this.$notify.error(tips.msg);
+					}
+					
+				})
+			},
 			// 取消按钮点击 父组件监听@cancel="editFormVisible=false" 监听
 			handleCancel:function(){
 				this.$emit('cancel');
@@ -271,7 +304,7 @@ import md5 from "js-md5";
 						this.$confirm('确认提交吗？', '提示', {}).then(() => {
 							this.editLoading = true; 
 							let params = Object.assign({}, this.editForm); 
-							editUser(params).then((res) => {
+							this.$mdp.editUser(params).then((res) => {
 								this.editLoading = false; 
 								var tips=res.data.tips;
 								if(tips.isOk){ 
@@ -286,36 +319,50 @@ import md5 from "js-md5";
 				});
 			},
 			changePhoneno(){
-
+				if(!this.phonenoForm.phoneno){
+					this.$notify({ message: "请输入手机号码", type: 'error' }); 
+					return;
+				}
+				updatePhoneno(this.phonenoForm).then(res=>{
+					var tips = res.data.tips;
+					this.$notify({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+				})
 			},
-			doChangePassword(){
-				console.log("修改密码");
+			doChangePassword(){ 
 				this.$refs.passwordForm.validate((valid) => {
 					if (valid) {
 						this.setLoading = true
-						changePassword({oldPassword:md5(this.passwordForm.oldPassword),newPassword:md5(this.passwordForm.newPassword)}).then(res=>{
+						this.$mdp.changePassword({oldPassword:md5(this.passwordForm.oldPassword),newPassword:md5(this.passwordForm.newPassword)}).then(res=>{
 							var tips = res.data.tips;
 							this.$notify({ message: tips.msg, type: tips.isOk?'success':'error' }); 
 						}).finally(r => this.setLoading = false)
+					}else{
+						this.$notify({ message: "新旧密码检验不通过", type: 'error' }); 
 					}
 				})
 			},
 			registerPhoneno(){
-
-			},
-			showUploadHeadimg(){
-				this.$refs.uploadImg.showAdd();
-			},
+				if(!this.phonenoForm.phoneno){
+					this.$notify({ message: "请输入手机号码", type: 'error' }); 
+					return;
+				}
+				updatePhoneno(this.phonenoForm).then(res=>{
+					var tips = res.data.tips;
+					this.$notify({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+				})
+			}, 
 			upgradeToBranchAccount(){
-				//跳转到购买模块页面
-				this.branchAddVisible=true;
-			},
-			toBranchDetail(){
-				//跳转到机构明细页面
-			},
+				var page="/my/order/index"
+ 				if(this.$mdp.getSysContext().indexOf(process.env.CONTEXT)>=0){
+					this.$router.push(page)
+				}else{
+					var curlDomain=window.location.protocol+"//"+window.location.host+this.$mdp.getSysContext()+"/"+process.env.VERSION;  
+					this.$mdp.openWin(curlDomain+page)
+				}
+ 			}, 
 			registerEmail(){
 				if(this.editForm.email){
-					var curlDomain=window.location.protocol+"//"+window.location.host+"/"+process.env.CONTEXT+"/"+process.env.VERSION;  
+					var curlDomain=window.location.protocol+"//"+window.location.host+"/"+this.$mdp.getSysContext()+"/"+process.env.VERSION;  
 					sendEmail({codeScene:'1',codeEmail:this.editForm.email,userType:'staff',callbackUri:curlDomain+'/#/updateUserInfo'}).then(res=>{
 						var tips = res.data.tips;
 						if(tips.isOk){
@@ -325,12 +372,14 @@ import md5 from "js-md5";
 						}
 						
 					})
+				}else{
+					this.$notify({ message: "请输入邮箱号码", type: 'error' }); 
 				}
 			},
 			changeEmail(){
 				if(this.editForm.email){
 					
-					var curlDomain=window.location.protocol+"//"+window.location.host+"/"+process.env.CONTEXT+"/"+process.env.VERSION;  
+					var curlDomain=window.location.protocol+"//"+window.location.host+"/"+this.$mdp.getSysContext()+"/"+process.env.VERSION;  
 					sendEmail({codeScene:'2',codeEmail:this.editForm.email,userType:'staff',callbackUri:curlDomain+'/#/changeEmailStepOne'}).then(res=>{
 						var tips = res.data.tips;
 						if(tips.isOk){
@@ -339,6 +388,8 @@ import md5 from "js-md5";
 							this.$notify({ message: tips.msg, type: tips.isOk?'success':'error' }); 
 						}
 					})
+				}else{ 
+					this.$notify({ message: "请输入邮箱号码", type: 'error' }); 
 				}
 			},
 			validEmailCode(){ 
@@ -361,54 +412,102 @@ import md5 from "js-md5";
 					}
 				})
 			},
+			
+        
+			sendPhonenoSmsCode(scene){
+				if(!this.phonenoForm.phoneno){
+					this.$notify({ message: "请输入手机号码", type: 'error' }); 
+					return;
+				}
+				var params={
+					phoneno:this.phonenoForm.phoneno,
+					scene:scene
+				}
+				sendSmsCode(params).then(res=>{
+					if(res.data.tips.isOk){
+						this.$notify.success("发送成功");
+						this.smsCodeTime=60;
+						if (this.smsCodeTime > 0) { 
+							this.timeWrap = setInterval(() => {
+								this.smsCodeTime -= 1
+							}, 1000)
+						}
+					}else{
+						this.$notify.error(res.data.tips.msg);
+					}
+				})
+			},
+			setDefaultLoginUser(user){
+				setDefaultLoginUser({userid:user.userid})
+			},
 			toLogin(user) {
-				 this.$prompt('请输入密码', '提示', {
-					confirmButtonText: '确定',
-					cancelButtonText: '取消',  
-					}).then(({ value }) => { 
-						 let params={ 
-							password:md5(value),  
-							userloginid:user.userid,
-							authType:'password_display_userid' ,
-							grantType:"password"
-						} 
-						//userloginid, password,grantType,authType,deptid,userid
-						switchUser(params.userloginid,params.password,params.grantType,params.authType,'',params.userloginid).then(res => {
-							this.phonenoUsersVisible=false;
-							if(res.data.tips.isOk==true){  
-								setToken( res.data.data.accessToken.tokenValue)
-								removeCacheUserInfo();
-								this.$store.dispatch('GetUserInfo').then((res2)=>{  
-									this.$router.push({ path: '/' });
-								}).catch(err=>{
- 									 
-								}); 
-							}else{
-								this.$notify.error(res.data.tips.msg);
-							} 
-						}).catch((e) => {
-							 
-						})
-					}).catch(() => {
-						  this.phonenoUsersVisible=false;
-					});  	 
+				 
+				let params={ 
+					password:md5('nopassword'),  
+					userloginid:user.userid,
+					authType:'switch_user_by_token' ,
+					grantType:"password"
+				} 
+				//userloginid, password,grantType,authType,deptid,userid
+				switchUser(params.userloginid,params.password,params.grantType,params.authType,'',params.userloginid).then(res => {
+					this.phonenoUsersVisible=false;
+					if(res.data.tips.isOk==true){  
+						setToken( res.data.data.accessToken.tokenValue)
+						removeCacheUserInfo();
+						this.$store.dispatch('GetUserInfo').then((res2)=>{  
+							this.$router.push({ path: '/' });
+						}).catch(err=>{
+								
+						}); 
+					}else{
+						this.$notify.error(res.data.tips.msg);
+					} 
+				}).catch((e) => {
+						
+				})  
 			},
 			afterAddSubmit(){
 
-			}
+			},
+			weixinLogin(){
+				var curlDomain=window.location.protocol+"//"+window.location.host; //  
+ 				var mdpRedirectUri=	`${curlDomain}/${process.env.CONTEXT}/${process.env.VERSION}/` 
+				var tpaContext=this.$mdp.getTpaContext();
+				var domain=this.$mdp.getFixedDomain();
+				var appType=this.$mdp.getWxpubConfig().appType;
+				var scope=this.$mdp.getWxpubConfig().scope
+				var state=this.scanCodeForm.inviteId
+				var obj = new WxLogin({
+					self_redirect:false,
+					id:"login_container", 
+					appid: this.$mdp.getWxpubConfig().appid, 
+					scope: scope, 
+					redirect_uri: encodeURIComponent(`${domain}/api/${process.env.VERSION}/${tpaContext}/login/token?authType=wechat_wxpub&appType=${appType}&redirectUri=${mdpRedirectUri}`),
+					state: state,
+					style: "",
+					href: ""
+				});  
+			},
 		},
-		components: {  
-			SingleShearUpload,VueQr,BranchAdd
+		components: {   
 		},
 		mounted() { 
+
+
 			this.editForm=Object.assign(this.editForm, this.userInfo); 
 			var valiCode=this.$route.query.valiCode;
-			this.currDomainUrl=config.getBaseDomainUrl()
+			this.currDomainUrl=this.$mdp.getBaseDomainUrl()
 			//var valiCode=util.getQueryStringByName('valiCode'); 
 			if(valiCode){
 				this.valiCode=valiCode;
 				this.validEmailCode();
 			}
+			this.initScanCode();
+
+			var s1 = document.createElement('script');
+			s1.type = 'text/javascript';
+			s1.src = 'https://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js';
+			document.body.appendChild(s1); 
 		}
 	}
 

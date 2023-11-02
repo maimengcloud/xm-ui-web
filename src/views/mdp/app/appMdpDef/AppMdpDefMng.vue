@@ -149,8 +149,8 @@
 </template>
 
 <script>
-import util from "@/common/js/util"; //全局公共库
-import config from "@/common/config"; //全局公共库import
+import util from "@/components/mdp-ui/js/util"; //全局公共库
+import config from "@/api/mdp_pub/mdp_config"; //全局公共库import
 //import Sticky from '@/components/Sticky' // 粘性header组件
 import {
   listAppMdpDef,
@@ -436,7 +436,7 @@ export default {
         !appMdpDef.logoUrl.indexOf("http") == 0 &&
         !appMdpDef.logoUrl.indexOf("www") == 0
       ) {
-        return "/arc/" + appMdpDef.logoUrl;
+        return "/"+this.$mdp.getArcContext()+"/" + appMdpDef.logoUrl;
       }
       return appMdpDef.logoUrl;
     },

@@ -38,10 +38,14 @@ export { Layout }
   }
 **/
 export const constantRouterMap = [
+ 
   { path: '/login', component: _import('login/index'), hidden: true },
   { path: '/404', component: _import('errorPage/404'), hidden: true },
-  { path: '/401', component: _import('errorPage/401'), hidden: true }, 
-  { path: '/menus', component: _import('mdp/menu/menuDef/MenuDefMng'), name: 'MenuDefMng', meta: { title: '菜单管理' ,menu:true},hidden:true}, 
+  { path: '/error', component: _import('errorPage/error'), hidden: true },
+  { path: '/changeEmailStepOne', component: _import('myWork/set/ChangeEmailStepOne'), hidden: true },
+  { path: '/changeEmailStepTwo', component: _import('myWork/set/ChangeEmailStepTwo'), hidden: true },
+  { path: '/invite/code/:inviteId', component: _import('login/InviteScanCode'), name: '邀请扫码',hidden:true},
+ 	{ path: '/invite/success', component: _import('login/InviteSuccess'), name: '扫码成功', meta: { title: 'InviteSuccess' ,menu:false} ,hidden:true},
   {
     path: '',
     component: Layout,
@@ -52,7 +56,7 @@ export const constantRouterMap = [
         path: 'dashboard',
         component: _import('xm/XmOverview'),
         name: '首页',
-        meta: { title: '首页', icon: 'home-page', noCache: true ,roles:["user"]}
+        meta: { title: '首页', icon: 'home-page', noCache: true}
       },
       { path: 'forum', name: 'forum', meta: { title: '论坛',openTab:true,outUrl:'${curlDomain}/#/communityForum' },hidden:true},
       { path: 'im', name: 'im', meta: { title: '即聊',openTab:true,outUrl:'${curlDomain}/im/'+process.env.VERSION+'/' },hidden:true},
@@ -74,29 +78,11 @@ export const constantRouterMap = [
 ]
 
 
-
-function initRouter(proute) {
-  if(proute==null){
-    return;
-  }else{
-    if(!proute.fullPath){
-      if(proute.path){
-        proute.fullPath=proute.path
-      }else{
-        proute.fullPath=""
-      }
-    }
-    if(proute.children && proute.children.length>0){
-      proute.children.forEach(i=>{
-        if(!i.fullPath){
-          i.fullPath=proute.fullPath+"/"+i.path
-          i.fullPath=i.fullPath.replace("//","/")
-        }
-        initRouter(i)
-      })
-    } 
-  } 
-}
+export default new Router({
+  // mode: 'history', // require service support
+  scrollBehavior: () => ({ y: 0 }),
+  routes: constantRouterMap
+}) 
 
 let allRoutes = [] 
 allRoutes=allRoutes.concat(routesMyWork.routes);
@@ -105,18 +91,6 @@ allRoutes=allRoutes.concat(routesDatavXm.routes);
 allRoutes=allRoutes.concat(routesWorkflow.routes).concat(routesForm.routes)
 //allRoutes=allRoutes.concat(routesArc.routes);
 //allRoutes=allRoutes.concat(routesIm.routes);
-//allRoutes=allRoutes.concat(routesOrder.routes);
-
-/**
- * 找到不需要登录的router
- */
-initRouter({children:allRoutes})
-initRouter({children:constantRouterMap}) 
-constantRouterMap.push(...allRoutes)
-
-export default new Router({
-  // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
-  routes: constantRouterMap
-})
+//allRoutes=allRoutes.concat(routesOrder.routes); 
+export const asyncRouterMap = allRoutes
  

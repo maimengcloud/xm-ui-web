@@ -115,8 +115,7 @@
 	</section>
 </template>
 
-<script>
-	import dateUtil from '@/common/js/dateUtil'; //全局公共库
+<script> 
 	import {
 		listOption
 	} from '@/api/mdp/meta/itemOption'; //下拉框数据查询
@@ -251,7 +250,7 @@
 							params.deptid = this.userInfo.deptid
 							params.branchId = this.userInfo.branchId
 							params.cuserid = this.userInfo.userid
-							params.cdate = dateUtil.formatDate(new Date(), 'yyyy-MM-dd HH:mm:ss');
+							params.cdate = this.$mdp.formatDate(new Date(), 'yyyy-MM-dd HH:mm:ss');
 							if (this.location != null) {
 								params.locationId = this.location.id
 								params.locationName = this.location.businessName

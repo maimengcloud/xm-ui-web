@@ -78,7 +78,7 @@ export default {
     }
     var cellValueInt=parseInt(cellValue)
       if( isNaN(cellValueInt) ){
-        cellValueInt=cellValue.chartCodeAt(cellValue.length-1)
+        cellValueInt=cellValue.charCodeAt(cellValue.length-1)
       }
       var colorIndex=cellValueInt % 10
       if(cellValueInt > 0 && colorIndex==0){
@@ -114,10 +114,10 @@ export default {
       if( isNaN(cellValueInt) ){
         
         if(cellValue instanceof String && cellValue.length>0){
-          cellValueInt=cellValue.chartCodeAt(cellValue.length-1)
+          cellValueInt=cellValue.charCodeAt(cellValue.length-1)
         }else if(cellValue instanceof Object){
           if(cellValue['userid']){
-            cellValueInt=cellValue['userid'].chartCodeAt(cellValue['userid'].length-1)
+            cellValueInt=cellValue['userid'].charCodeAt(cellValue['userid'].length-1)
           }else{
             cellValueInt=0;
           }
@@ -142,7 +142,7 @@ export default {
     }
     var cellValueInt=parseInt(cellValue)
       if( isNaN(cellValueInt) ){
-        cellValueInt=cellValue.chartCodeAt(cellValue.length-1)
+        cellValueInt=cellValue.charCodeAt(cellValue.length-1)
       } 
       var typeIndex=cellValueInt % 5
       if(cellValueInt > 0 && typeIndex==0){
@@ -150,37 +150,23 @@ export default {
       }
       return classNames[typeIndex]
   },
-  
-  calcMaxHeight(cssSelector) {     
-    debugger;
-    var table=cssSelector;
-    if(typeof cssSelector == 'string'){
-      table=document.querySelector(cssSelector);
-    }  
-    var innerHeight=window.innerHeight   
-    var top=150; 
-
-    
-    if(table!=null){  
-      var rect=table.getBoundingClientRect()     
-
-      if(rect && rect.top){ 
-        top=rect.top;
-      }  
-    } 
-    var maxTableHeight =innerHeight-top;  
-    return maxTableHeight;
-  }, 
   calcTableMaxHeight(cssSelector) {     
     var table=cssSelector;
     if(typeof cssSelector == 'string'){
       table=document.querySelector(cssSelector);
-    }  
+    } 
     var innerHeight=window.innerHeight  
-    var pageHeight=32 
-    var top=150;
-    var bottomHeight=24
-
+    var defaultInnerHeight=616;  
+    var pageHeight=32/defaultInnerHeight*innerHeight 
+    var top=150/defaultInnerHeight*innerHeight;
+    var bottomHeight=36/defaultInnerHeight*innerHeight
+    if(innerHeight>=916){
+      bottomHeight=20/defaultInnerHeight*innerHeight
+    }else if(innerHeight>=800){
+      bottomHeight=26/defaultInnerHeight*innerHeight
+    }else if(innerHeight>=700){
+      bottomHeight=32/defaultInnerHeight*innerHeight
+    }
     
     if(table!=null){  
       var rect=table.getBoundingClientRect()    

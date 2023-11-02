@@ -18,8 +18,8 @@
                     </template>
 				</el-table-column> 
 				<el-table-column prop="billMode" label="计费模式" min-width="100" show-overflow-tooltip>
-                    <template slot-scope="scope"> 
-                        {{ formatDicts(dicts,'menuModuleBillMode',scope.row.billMode)}}  
+                    <template slot-scope="scope">  
+					  <mdp-select show-style="tag" item-code="moduleBillMode" v-model="scope.row.billMode" :disabled="true"/>  
                     </template>
 				</el-table-column>
 				<el-table-column prop="uniFee" label="人均费用" min-width="120" show-overflow-tooltip>
@@ -37,8 +37,8 @@
 				</el-table-column>  
 				<el-table-column prop="bizFlowState" label="审核状态" min-width="80" show-overflow-tooltip>
                     <template slot-scope="scope"> 
-                       <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'bizFlowState',scope.row.bizFlowState)" :key="index" :type="item.className">{{item.name}}</el-tag>
-                    </template>
+						<mdp-select show-style="tag" item-code="bizFlowState" v-model="scope.row.bizFlowState" :disabled="true"/>  
+                     </template>
 				</el-table-column>  
 			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
@@ -47,16 +47,14 @@
 </template>
 
 <script>
-	import util from '@/common/js/util';//全局公共库
-	import config from '@/common/config';//全局公共库 
- 	import { initDicts,listMenuModule, delMenuModule, batchDelMenuModule,editSomeFieldsMenuModule } from '@/api/mdp/menu/menuModule';
-	import  MenuModuleEdit from './MenuModuleEdit';//新增修改界面
+	import util from '@/components/mdp-ui/js/util';//全局公共库
+	import config from '@/api/mdp_pub/mdp_config';//全局公共库 
+ 	import { listMenuModule, delMenuModule, batchDelMenuModule,editSomeFieldsMenuModule } from '@/api/mdp/menu/menuModule';
 	import { mapGetters } from 'vuex'
 	
 	export default {
 	    name:'menuModuleMng',
 		components: {
-		    MenuModuleEdit,
 		},
 		props:['visible','single'],
 		computed: {
@@ -190,10 +188,9 @@
 		},//end methods
 		mounted() {
 			this.$nextTick(() => {
-			    initDicts(this);
+			    
 			    this.initData()
-				this.searchMenuModules();
-                this.maxTableHeight = util.calcTableMaxHeight(this.$refs.menuModuleTable.$el)
+				this.searchMenuModules(); 
 
         	});
 		}

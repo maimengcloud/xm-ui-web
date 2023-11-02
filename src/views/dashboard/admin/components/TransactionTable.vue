@@ -18,8 +18,7 @@
   </el-table>
 </template>
 
-<script>
-import { fetchList } from '@/api/transaction'
+<script> 
 
 export default {
   data() {

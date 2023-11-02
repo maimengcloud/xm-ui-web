@@ -14,7 +14,7 @@
 					<el-table-column sortable type="index" width="55" show-overflow-tooltip  fixed="left"></el-table-column>
  					<el-table-column prop="moduleName" label="产品" min-width="150" show-overflow-tooltip  fixed="left"> 
 						<template slot-scope="scope">
-							<div class="avatar-container" @click="showEdit(scope.$index,scope.row)">
+							<div class="avatar-container" @click="showEdit(scope.row)">
 								<div class="avatar-wrapper">
 									<img v-if=" scope.row.logoUrl" class="user-avatar" :src="scope.row.logoUrl">
 									<img v-else class="user-avatar" src="../../../../assets/image/user_img.gif">
@@ -25,8 +25,8 @@
 					 </el-table-column> 
 					<el-table-column prop="status" label="状态" min-width="80" show-overflow-tooltip>
 						<template slot-scope="scope"> 
-							<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'status',scope.row.status)" :key="index" :type="item.className">{{item.name}}</el-tag>
-						</template>
+							<mdp-select show-style="tag" item-code="module_status" v-model="scope.row.status" :disabled="true"></mdp-select>
+ 						</template>
 					</el-table-column> 
 					<el-table-column prop="endTime" label="有效期" min-width="120" show-overflow-tooltip>
 						<template slot-scope="scope"> 
@@ -54,27 +54,24 @@
  
 		 
 			<!--编辑 MenuModuleBranch 管理端机构表（机构下面若干部门）界面-->
-			<el-drawer title="编辑" :visible.sync="editFormVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
-				  <menu-module-branch-edit op-type="edit" :menu-module-branch="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></menu-module-branch-edit>
-			</el-drawer>
+			<mdp-dialog ref="editDialog">
+				<template v-slot="{visible,data,dialog}">
+				  <menu-module-branch-edit :sub-op-type="data.subOpType" :form-data="data.formData" :visible="visible" @cancel="dialog.close()" @submit="afterEditSubmit"></menu-module-branch-edit>
+				</template>
 
-			<!--新增 MenuModuleBranch 管理端机构表（机构下面若干部门）界面-->
-			<el-drawer title="新增" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
-				<menu-module-branch-edit op-type="add" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></menu-module-branch-edit>
-			</el-drawer> 
-		
+			</mdp-dialog> 
 		</el-card>
 	</section>
 </template>
 
 <script>
-	import util from '@/common/js/util';//全局公共库
-	import config from '@/common/config';//全局公共库 
- 	import { initDicts,listMenuModuleBranch, delMenuModuleBranch, batchDelMenuModuleBranch,editSomeFieldsMenuModuleBranch } from '@/api/mdp/menu/menuModuleBranch';
-	import  MenuModuleBranchEdit from './MenuModuleBranchEdit';//新增修改界面
+	import util from '@/components/mdp-ui/js/util';//全局公共库
+	import config from '@/api/mdp_pub/mdp_config';//全局公共库 
+ 	import { listMenuModuleBranch, delMenuModuleBranch, batchDelMenuModuleBranch,editSomeFieldsMenuModuleBranch } from '@/api/mdp/menu/menuModuleBranch';
+	import  MenuModuleBranchEdit from './Form';//新增修改界面
 	import { mapGetters } from 'vuex'
 	
-	import {modulesOfIcon} from "@/components/ModulesMenu/modulesOfIcon.js";
+	import {modulesOfIcon} from "../../../layout/ModulesMenu/modulesOfIcon.js";
 
 	export default {
 	    name:'menuModuleBranchMng',
@@ -202,14 +199,12 @@
 			},
 
 			//显示编辑界面 MenuModuleBranch 管理端机构表（机构下面若干部门）
-			showEdit: function ( row,index ) {
-				this.editFormVisible = true;
-				this.editForm = Object.assign({}, row);
+			showEdit: function ( row,index ) { 
+				this.$refs['editDialog'].open({formData:row,subOpType:'detail'})
 			},
 			//显示新增界面 MenuModuleBranch 管理端机构表（机构下面若干部门）
 			showAdd: function () {
-				this.addFormVisible = true;
-				//this.addForm=Object.assign({}, this.editForm);
+				this.$refs['editDialog'].open({formData:this.addForm,subOpType:'add'}) 
 			},
 			afterAddSubmit(){
 				this.addFormVisible=false;
@@ -305,10 +300,9 @@
 		},//end methods
 		mounted() {
 			this.$nextTick(() => {
-			    initDicts(this);
+			    
 			    this.initData()
-				this.searchMenuModuleBranchs();
-                this.maxTableHeight = util.calcTableMaxHeight(this.$refs.menuModuleBranchTable.$el)
+				this.searchMenuModuleBranchs(); 
 
         	});
 		}

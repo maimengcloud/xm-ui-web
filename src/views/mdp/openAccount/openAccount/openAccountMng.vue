@@ -1,7 +1,7 @@
 <template>
 	<div class="container" v-loading="loading">
 		<div class="context">
-			<el-button round class="btn" @click="changeWithoutOrganVisiableMethod">第一步：创建机构</el-button><br />
+			<el-button round class="btn" @click="$refs['branchFormDialog'].open()">第一步：创建机构</el-button><br />
 			<el-button round class="btn" @click="changeShopVisiableMethod">第二步：创建商户</el-button><br />
 			<el-button round class="btn" @click="shopAppShopConfigVisible">第三步：配置费率</el-button><br />
 			<!-- <el-button round style="font-size:26px;color:#ffa81e;border-color:#ffa81e;margin-top:40px;" @click="setOrganPayMessageMethod">第二步：设置机构支付信息</el-button><br /> -->
@@ -9,12 +9,8 @@
 			<el-button round style="font-size:26px;margin-top:40px;color:#ffa81e;border-color:#ffa81e" @click="changeAlreadyOrganVisiableMethod">已经创建机构</el-button>
 		 -->
 		</div>
-
-		<el-drawer title="创建机构" :with-header="false" :visible.sync="withoutOrganVisiable" size="50%">
-			<div style="color:#f40;text-align:center;font-size:25px;">成功创建机构之后，登陆的账号为<span v-if="userInputBranchId!=''">{{userInputBranchId}}</span>,登陆密码为888888</div>
-			<branch-add :branch="addForm" opType="add" :visible="addFormVisible" @submit="afterAddSubmit" :fromPage="fromPage" @cancel="withoutOrganVisiable=false"
-			 @getUserInputBranchId="getUserInputBranchIdMethod"></branch-add>
-		</el-drawer>
+ 
+ 			
 		<el-drawer title="创建成功" :visible.sync="createSuccessDialogVisiable" width="70%">
 			<div style="margin:0 auto;text-align:center;line-height:45px;color: #67c23a;font-size:30px">
 				创建成功：<br />
@@ -52,11 +48,8 @@
 						<el-form-item label="商户介绍" prop="shopRemark">
 							<el-input type="textarea" v-model="createShopForm.shopRemark" placeholder="商户介绍"></el-input>
 						</el-form-item>
-						<el-form-item label="商户LOGO">
-							<single-shear-upload :img-width="200" :img-height="120" :show-title="true" v-model="createShopForm.shopLogo"
-							 :deptid="userInfo.deptid" :branch-id="userInfo.branchId">
-								<span slot="title">选择商户LOGO</span>
-							</single-shear-upload>
+						<el-form-item label="商户LOGO"> 
+							<mdp-image v-model="createShopForm.shopLogo" fit="contain"></mdp-image>
 						</el-form-item> 
 					</el-form>
 				</el-col>
@@ -72,13 +65,15 @@
 		<el-drawer title="配置商户费率" :with-header="false" :visible.sync="appShopConfigVisible" size="70%"   @close="appShopConfigVisible=false">
 			 <app-shop-config-set @submit="appShopConfigVisible=false" @cancel="appShopConfigVisible=false"></app-shop-config-set>
 		</el-drawer> 
+		<mdp-dialog ref="branchFormDialog" >
+			<branch-add @submit="afterAddSubmit"></branch-add> 
+		</mdp-dialog>
 	</div>
 </template>
 
 <script>
-	import util from '@/common/js/util'; //全局公共库
-	import SingleShearUpload from '@/components/Image/Single/Index';
-	import BranchAdd from '@/views/mdp/sys/branch/BranchEdit'; //新增界面
+	import util from '@/components/mdp-ui/js/util'; //全局公共库 
+	import BranchAdd from '@/views/mdp/sys/branch/Form'; //新增界面
 	
 	import AppShopConfigSet from '@/views/mdp/app/appShopConfig/AppShopConfigSet'; //新增界面
 	import DeptTree from '../../sys/dept/DeptTree.vue';
@@ -110,7 +105,7 @@
 
 	import {
 		batchAddDeptPost
-	} from '@/api/mdp/sys/post/deptPost';
+	} from '@/api/mdp/sys/deptPost';
 
 	import {
 		addDept
@@ -118,11 +113,11 @@
 
 	import {
 		batchAddPostRole
-	} from '@/api/mdp/sys/post/postRole';
+	} from '@/api/mdp/sys/postRole';
 
 	import {
 		addPost
-	} from '@/api/mdp/sys/post/post';
+	} from '@/api/mdp/sys/post';
 
 	import {
 		batchEditUserDept
@@ -176,8 +171,7 @@
 			} //end return
 		}, //end data
 		components: {
-			'branch-add': BranchAdd,
-			'single-shear-upload': SingleShearUpload,
+			'branch-add': BranchAdd, 
 			'dept-tree': DeptTree,
 			AppShopConfigSet,
 		},
@@ -284,9 +278,8 @@
 				this.createShopVisiable = true;
 			},
 			//改变没有机构编号的方法
-			changeWithoutOrganVisiableMethod() {
-				this.withoutOrganVisiable = true;
-				this.addFormVisible = true;
+			changeWithoutOrganVisiableMethod() { 
+				this.$refs['branchForm'].open({subOpType:'add',formData:{id:this.userInputBranchId}})
 			},
 			////改变已有机构编号的方法
 			changeAlreadyOrganVisiableMethod() {
@@ -343,8 +336,8 @@
 				this.appShopConfigVisible=true;
 			},
 			//创建机构完之后的方法
-			afterAddSubmit(data) {
-				 
+			afterAddSubmit(data,isOk) {
+				 this.getUserInputBranchIdMethod(res.data.data.id)
 			},
 			createPost(postName, branchId, branchName, roleid, deptId, deptName, userid) {
 				let addPostParams = {

@@ -155,7 +155,7 @@
 </template>
 
 <script>
-	import util from '../../../../common/js/util'
+	import util from '@/components/mdp-ui/js/util'
 	import { listThirdPartyAccount } from '../../../../api/mdp/sys/thirdPartyAccount';
 	import { mapGetters } from 'vuex' 
 	

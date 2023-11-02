@@ -1,5 +1,12 @@
 <template>
 	<section>
+		<el-dialog
+			title="外邀新成员"
+			:visible.sync="visible" 
+			:close-on-click-modal="false"
+			append-to-body
+			:width="width?width:'70%'"
+			> 
 		<el-row>
 			<el-col :span="12"> 
 				<el-form label-position="top" label-width="150">
@@ -15,7 +22,7 @@
 									<img class="img-item" v-else-if="inviteType==='phone'" src="@/assets/image/sys/invite/phone-1.png"/> 
 									<p class="img-text">手机邀请</p>
 								</div>
-								<div class="img-box"  @click="setInviteType('ewCode')">
+								<div class="img-box"  @click="setInviteType('ewCode')" v-loading="load.ewCode">
 									<img class="img-item" v-if="inviteType!=='ewCode'" src="@/assets/image/sys/invite/ew-code-0.png"/> 
 									<img class="img-item" v-else-if="inviteType==='ewCode'" src="@/assets/image/sys/invite/ew-code-1.png"/> 
 									<p class="img-text">二维码邀请</p>
@@ -35,58 +42,60 @@
 						<el-input type="textarea" :rows="6" v-model="addForm.phonenos" placeholder="支持多号码，号码之间用逗号,分割"> 
 						</el-input>
 					</el-form-item>
-					<el-form-item label="二维码" v-if="inviteType==='ewCode'">
-						<div style="text-align:center;">
-							<div class="ew-code">  
-								<vue-qr
-									class="ew-code-img"
-									ref="qrcode"
-									:logoSrc="logoSrc"
-									:text="getEwCodeCallbackUri()"
-									:size="200"
-								:loadMake="true"/>
-								<div class="ew-code-footer"></div>
+					<el-form-item label="二维码"  v-loading="load.ewCode">
+						<div style="text-align:center;" v-show="inviteType==='ewCode'">
+							<div>  
+								<div id="login_container"></div> 
 							</div>
-							<p>微信扫一扫 加入【{{userInfo.branchName}}】</p>
+							<p v-if="joinUsername"> {{joinUsername}}您好，【{{userInfo.branchName}}-{{userInfo.username}}】邀请您扫码登录</p>
+							<p v-else> 【{{userInfo.branchName}}-{{userInfo.username}}】邀请您扫码登录</p>
 						</div>
 					</el-form-item>
 					<el-form-item>
 						<el-col :span="24" > 
 							<el-col :span="4"> 
 								<el-button type="primary" @click.native="addSubmit" :loading="load.add" v-if="inviteType!=='ewCode'">提交</el-button>  
+								<el-button type="primary" @click.native="shareEwCode" :loading="load.add" v-if="inviteType=='ewCode'">分享链接</el-button>  
+
 							</el-col>
 						</el-col> 
 					</el-form-item> 
 				</el-form>
 			</el-col>
 		</el-row>
+		</el-dialog>
 	</section>
 </template>
 
 <script>
-import util from '../../../../common/js/util';//全局公共库
-import { addUser,inviteUsersByEmails,inviteUsersByPhonenos } from '../../../../api/mdp/sys/user';
+import util from '@/components/mdp-ui/js/util';//全局公共库
+import { addUser,inviteUsersByEmails,inviteUsersByPhonenos } from '../../../../api/mdp/sys/user'; 
+import * as UserTpaInviteApi from '@/api/mdp/sys/userTpaInvite';
+
+import Vue from "vue";
+import VueClipboard from "vue-clipboard2";
+VueClipboard.config.autoSetContainer = true; // add this line
+Vue.use(VueClipboard);
 import { mapGetters } from 'vuex'   
 import md5 from 'js-md5';  
 import VueQr from 'vue-qr'	
 import logoSrc from "@/assets/image/logo_cicle.png"
 
 	export default {
-
+		props:{
+			width:{
+				type:String,
+				default:'70%'
+			},
+			
+		},
 	    computed: {
 		    ...mapGetters([
 		      'userInfo'
 		    ]),
 
 		},
-		props:['user','dept'],
-		watch: {
-	      'user':function(data) {
-			  if(data){
-				   Object.assign(this.editForm,data)
-			  }
-	       
-	      },
+		watch: { 
 	    },	
 		data() { 
 			var validatePhoneno = (rule, value, callback) => {
@@ -122,8 +131,8 @@ import logoSrc from "@/assets/image/logo_cicle.png"
 				}
 			}; 
 			return {
-				options:{},//下拉选择框的所有静态数据
-				load:{add: false},
+				load:{add: false,ewCode:false},
+				visible:false,
 				addFormRules: { 
 					 
 				},
@@ -131,19 +140,77 @@ import logoSrc from "@/assets/image/logo_cicle.png"
 				addForm: {
 					phonenos:'',emails:''
 				},
-				/**begin 在下面加自定义变量**/
-				deptTree:{//部门树相关参数设置
-					expandOnClickNode:false, //单击是否展开/收缩
-					indent:8,//缩进
-					refreshTree:false//是否刷新
-				},
-				userDept:null,//{userid,deptid,branchId}
 				inviteType:'email',//email|phone|ewCode
 				logoSrc:logoSrc,
+				joinUserid: '',
+				joinUsername:'',
 				/**end 在上面加自定义变量**/
 			}//end return
 		},//end data
 		methods: {
+			weixinLogin(){ 
+				var curlDomain=window.location.protocol+"//"+window.location.host; //  
+				var mdpRedirectUri=	`${curlDomain}/${process.env.CONTEXT}/${process.env.VERSION}/`
+				var tpaContext=this.$mdp.getTpaContext();
+				var domain=this.$mdp.getFixedDomain();
+				var appType=this.$mdp.getWxpubConfig().appType;
+				var scope=this.$mdp.getWxpubConfig().scope
+				this.load.ewCode=true; 
+				var params={}
+				if(this.joinUserid){
+					params={joinUserid:this.joinUserid,joinUsername:this.joinUsername,inviteScene:'2',inviteType:'1'}
+				}else{
+					params={inviteScene:'3',inviteType:'1'}
+
+				}
+				var appType=this.$mdp.getWxpubConfig().appType
+				UserTpaInviteApi.createInviteId(params).then(res=>{
+					this.load.ewCode=false;
+					var tips = res.data.tips;
+					if(tips.isOk){
+						this.inviteType='ewCode' 
+						this.inviteId=res.data.data.inviteId
+						var state=this.inviteId
+						var obj = new WxLogin({
+							self_redirect:false,
+							id:"login_container", 
+							appid: this.$mdp.getWxpubConfig().appid, 
+							scope: scope, 
+							redirect_uri: encodeURIComponent(`${domain}/api/${process.env.VERSION}/${tpaContext}/login/token?authType=wechat_wxpub&appType=${appType}&redirectUri=${mdpRedirectUri}`),
+							state: state,
+							style: "",
+							href: ""
+						}); 
+					}else{
+						this.$notify.error(tips.msg)
+					}
+				})
+			
+			},
+			show(res){
+				
+				this.visible=true;
+				if(res!=null && res.inviteType){
+					if(res.joinUserid){
+						this.joinUserid=res.joinUserid
+						this.joinUsername=res.joinUsername
+					}else{
+						this.joinUserid=''
+						this.joinUsername=''
+					}
+					if(res.inviteType){
+						this.setInviteType(res.inviteType)
+					}
+					
+				}else{
+					this.joinUserid=''
+					this.joinUsername=''
+					this.setInviteType('email')
+					
+
+				}
+
+			},
 			getEwCodeCallbackUri(){ 
 				//var ewCodeCallbackUri=window.location.protocol+"//"+window.location.host; 
 				var ewCodeCallbackUri=window.location.protocol+"//"+window.location.host;
@@ -151,7 +218,12 @@ import logoSrc from "@/assets/image/logo_cicle.png"
 				return ewCodeCallbackUri;
 			},
 			setInviteType(inviteType){
-				this.inviteType=inviteType
+				if(inviteType=='ewCode'){
+					this.weixinLogin()
+				}else{
+					this.inviteType=inviteType
+				}
+				
 			},
 			clear(){
 
@@ -195,6 +267,25 @@ import logoSrc from "@/assets/image/logo_cicle.png"
 				}).catch(e=>this.load.add=false)
 
 			},
+			shareEwCode(){ 
+				var remark=""
+				if(this.joinUsername){
+					remark=this.userInfo.branchName+'-'+this.userInfo.username+'邀请【'+this.joinUsername+'】微信扫码登录'
+				}else{
+					remark=this.userInfo.branchName+'-'+this.userInfo.username+'邀请您微信扫码登录'
+				}
+ 				const href =
+				window.location.protocol +
+				"//" +
+				window.location.host +
+				"/"+process.env.CONTEXT+"/" +
+				process.env.VERSION +
+				"/#/mdp/tpa/invite/code/"+this.inviteId+'?r='+remark;
+
+				this.$copyText(href).then(e => {
+					this.$message.success("分享链接已复制，您可直接黏贴到微信、浏览器地址栏等")
+				}); 
+			}
 			/**begin 在下面加自定义方法**/
 			/**end 在上面加自定义方法**/
 			
@@ -203,11 +294,12 @@ import logoSrc from "@/assets/image/logo_cicle.png"
 			VueQr
 		},
 		mounted() {
-			this.addForm.deptid=this.userInfo.deptid; 
-			//给下拉列表初始化默认值
-			//this.addForm.xxx=getDefaultValue(this.options.xxx,'1');
+			var s1 = document.createElement('script');
+			s1.type = 'text/javascript';
+			s1.src = 'https://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js';
+			document.body.appendChild(s1);
 			
-			/**在下面写其它函数***/
+			this.addForm.deptid=this.userInfo.deptid; 
 			
 		}//end mounted
 	}

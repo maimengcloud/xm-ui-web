@@ -10,7 +10,7 @@ module.exports = {
     assetsSubDirectory: '',
     assetsPublicPath: '/',
     proxyTable: {
-      
+       /**
     	'/api/m1/oauth2client': {
           target: 'http://localhost:7002',
           changeOrigin: true,
@@ -18,7 +18,7 @@ module.exports = {
             '^/api/m1/oauth2client': ''
           }
     },
-        /**
+       **/
     	'/api/m1/xm': {
             target: 'http://localhost:7067',
             changeOrigin: true,
@@ -26,7 +26,7 @@ module.exports = {
               '^/api/m1/xm': '/xm'
             }
       },
-      
+      /**
     	'/api/m1/arc': {
             target: 'http://localhost:7012',
             changeOrigin: true,

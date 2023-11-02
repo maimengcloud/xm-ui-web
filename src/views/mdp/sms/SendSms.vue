@@ -93,16 +93,11 @@
 </template>
 
 <script>
-	import util from '@/common/js/util'; //全局公共库
+	import util from '@/components/mdp-ui/js/util'; //全局公共库
 	import Sticky from '@/components/Sticky' // 粘性header组件
 	import {
 		mapGetters
-	} from 'vuex';
-	
-	
-	import {
-		listUser
-	} from '@/api/mdp/sys/user';
+	} from 'vuex'; 
 	import {
 		listSmsTemplate
 	} from '@/api/mdp/sms/smsTemplate';
@@ -382,7 +377,7 @@
 				this.mobilesStr = '';
 				if(this.loadPhonenoByUserid==true){
 					let userids=this.smsUserList.map(user=>user.userid);
-					listUser({userids:userids,branchId:this.userInfo.branchId}).then(res=>{
+					this.$mdp.listUser({userids:userids,branchId:this.userInfo.branchId}).then(res=>{
 						if(res.data.tips.isOk){
 							let users=res.data.data;
 							 let phonenoList=users.map(user=>user.phoneno);

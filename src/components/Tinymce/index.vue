@@ -4,24 +4,23 @@
     class="tinymce-container editor-container"
   >
     <textarea :id="tinymceId" class="tinymce-textarea" />
-    <el-dialog
-      title="选择图片"
-      :visible.sync="dialogVisible"
-      top="20px"
-      width="80%"
-      :close-on-click-modal="false"
-      append-to-body
-      modal-append-to-body
+    <mdp-dialog ref="imageDialog"
+      
+      title="选择图片" 
+      width="70%" 
     >
-      <upload-image
-        :multiple="true"
-        :branch-id="userInfo.branchId"
-        :dept-id="userInfo.deptid"
-        :visible="dialogVisible"
-        @cancel="dialogVisible = false"
-        @confirm="handleConfirm"
-      ></upload-image>
-    </el-dialog>
+      <template v-slot="{visible,data,dialog}">
+        <mdp-select-image :visible="visible" 
+           id="editor-dialog" 
+          :multiple="true"
+          :branch-id="userInfo.branchId"
+          :dept-id="userInfo.deptid" 
+          @cancel="dialog.close()"
+          @select="(imgs)=>{dialog.close();handleConfirm(imgs)}"
+        ></mdp-select-image>
+      </template>
+      
+    </mdp-dialog>
     					<el-upload v-show="false" :disabled="uploadOptions.categoryId==''||uploadOptions.categoryId==null" class="upload-demo"  :show-file-list="false" :action="uploadAction"  :on-success="handleSuccess" :before-upload="beforeupload" :data="uploadOptions" multiple>
 						  
 						      <el-button   type="primary" :id="tinymceId+'-uploadImageBtn'" >点击上传</el-button>  
@@ -30,16 +29,14 @@
 </template>
 
 <script>
-import config from "@/common/config"; //全局公共库import
-import UploadImage from "@/components/Image/UploadImage";
-import { uploadBase64,upload  } from '@/api/mdp/arc/image';
+import config from "@/api/mdp_pub/mdp_config"; //全局公共库import
 import { mapGetters } from "vuex";
 import plugins from "./plugins";
 import toolbar from "./toolbar";
 
 export default {
   name: "Tinymce",
-  components: { UploadImage },
+  components: {  },
   props: {
     value: {
       type: String,
@@ -66,7 +63,6 @@ export default {
     var tinymceId="vue-tinymce-" + new Date().getTime() + ((Math.random() * 1000).toFixed(0) + "")
     return {
       uploadAction: config.getArcImagePath()+"/arc/image/upload", 
-      uploadBlogAction: config.getArcImagePath()+"/arc/image/upload/base64", 
       uploadOptions:{branchId:'',categoryId:'uploadImm',fileName:'',remark:'',deptid:''},//当前选择上传图片的类型
       imageList: [],
       dialogVisible: false,
@@ -95,7 +91,8 @@ export default {
       );
     },
     editorHtmlData(val) {
-      this.$emit("input", val);
+      this.$emit("input", val); 
+      this.$emit("change", val);
     },
     language() {
       //this.destroyTinymce();
@@ -120,14 +117,14 @@ export default {
   methods: {
     initTinymce() {  
       const _this = this;
-      window.tinymce.init({ 
+      window.tinymce.init({
         language: _this.language,
         selector: `#${_this.tinymceId}`,
         height: _this.height,
         body_class: "panel-body ",
-        object_resizing: true, 
+        object_resizing: false,
         toolbar: _this.toolbar.length > 0 ? _this.toolbar : toolbar,
-        menubar: false,
+        menubar: _this.menubar,
         plugins: plugins,
         end_container_on_empty_block: true,
         powerpaste_word_import: "clean",
@@ -135,8 +132,7 @@ export default {
         code_dialog_width: 1000,
         advlist_bullet_styles: "square",
         advlist_number_styles: "default",
-        imagetools_cors_hosts: ["www.qingqinkj.com", "codepen.io","www.maimengcloud.com",'http://localhost:8067','http://localhost:8012'],
-        //imagetools_proxy:'localhost:8067',
+        imagetools_cors_hosts: ["www.qingqinkj.com", "codepen.io","www.maimengcloud.com"],
         default_link_target: "_blank",
         link_title: false,
         convert_urls: false,
@@ -158,7 +154,6 @@ export default {
           editor.on("FullscreenStateChanged", (e) => {
             _this.fullscreen = e.state;
           });  
-          /**
           editor.addButton('insertImage', {
             text: "插入图片",
             icon: false,
@@ -166,14 +161,12 @@ export default {
                 document.getElementById(_this.tinymceId+"-uploadImageBtn").click(); 
             },
           });
-          **/
           editor.addButton("imageList", {
             text: "图片库",
             icon: false,
-            onclick: function () {
-              _this.dialogVisible = true;
+            onclick: function () { 
               _this.$nextTick(() => {
-                //document.getElementById("editor-dialog").style.zIndex="100000"
+                _this.$refs['imageDialog'].open({})
               });
             },
           });
@@ -193,25 +186,17 @@ export default {
         //   }, 0);
         //   return img
         // },
-        images_upload_handler(blobInfo, success, failure, progress) {   
+        // images_upload_handler(blobInfo, success, failure, progress) { 
+        //     const formData = new FormData();  
+        //     formData.append('file', blobInfo.blob(), url);
+        //     var params=this.uploadOptions;
+        //     params.storedb="0"
+        //     params.fileData=blobInfo.blob();
+        //     uploadBase64(formData).then((res) => {
+        //        handleConfirm([res.data])
+        //     })
           
-             const formData = new FormData();   
-             formData.append('storedb',false)
-             formData.append('file', blobInfo.blob()); 
-             formData.append("categoryId",_this.uploadOptions.categoryId) 
-             upload(formData).then((res) => {  
-              var tips = res.data.tips;
-              if(tips.isOk){
-                success(res.data.data.url)
-                //success('http://localhost:8067/api/m1/arc/arc/image/uploadImm/IM1675705794917148.png')
-
-              }else{
-                failure(tips.msg)
-              }
-                
-             })
-          
-         },
+        // },
       });
       _this.setContent(_this.value);
     },

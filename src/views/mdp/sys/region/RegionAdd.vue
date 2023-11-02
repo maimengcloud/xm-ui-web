@@ -42,7 +42,7 @@
 </template>
 
 <script>
-	import util from '../../../../common/js/util';//全局公共库
+	import util from '@/components/mdp-ui/js/util';//全局公共库
 	import { addRegion } from '../../../../api/mdp/sys/region';
 	
 	export default {
