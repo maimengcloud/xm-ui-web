@@ -264,33 +264,33 @@
 						</el-table-column>
 						<el-table-column prop="status" label="状态"  min-width="80"  sortable>
 							<template slot-scope="scope">
-										<mdp-select-tag  size="mini"  @visible-change="selectVisible(scope.row,$event)" item-code="menuStatus" v-model="scope.row.status" label="需求状态"   @change="editXmMenuSomeFields(scope.row,'status',$event)">
-										</mdp-select-tag>
+										<mdp-select show-style="tag"  size="mini"  @visible-change="selectVisible(scope.row,$event)" item-code="menuStatus" v-model="scope.row.status" label="需求状态"   @change="editXmMenuSomeFields(scope.row,'status',$event)">
+										</mdp-select>
 							</template>
 						</el-table-column>
 						<el-table-column prop="priority"  label="优先级" width="100" sortable>
 							<template slot-scope="scope">
-										<mdp-select-tag  size="mini" @visible-change="selectVisible(scope.row,$event)" item-code="priority" v-model="scope.row.priority" placeholder="优先级"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'priority',$event)">
-										</mdp-select-tag>
+										<mdp-select show-style="tag"  size="mini" @visible-change="selectVisible(scope.row,$event)" item-code="priority" v-model="scope.row.priority" placeholder="优先级"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'priority',$event)">
+										</mdp-select>
 							</template>
 						</el-table-column>
 						<el-table-column prop="dtype" label="类型" width="100"  sortable v-if="false">
 							<template slot-scope="scope">
-										<mdp-select-tag  size="mini" @visible-change="selectVisible(scope.row,$event)" item-code="demandType" v-model="scope.row.dtype" placeholder="类型"  style="display:block;"  @change="editXmMenuSomeFields(scope.row,'dtype',$event)">
-										</mdp-select-tag>
+										<mdp-select show-style="tag"  size="mini" @visible-change="selectVisible(scope.row,$event)" item-code="demandType" v-model="scope.row.dtype" placeholder="类型"  style="display:block;"  @change="editXmMenuSomeFields(scope.row,'dtype',$event)">
+										</mdp-select>
 							</template>
 						</el-table-column>
 						<el-table-column prop="source"  label="来源" width="100"  :formatter="formaterByDicts"  show-overflow-tooltip sortable  v-if="false">
 							<template slot-scope="scope">
 
-										<mdp-select-tag  size="mini" @visible-change="selectVisible(scope.row,$event)" item-code="demandSource" v-model="scope.row.source" placeholder="来源"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'source',$event)">
-										</mdp-select-tag>
+										<mdp-select show-style="tag"  size="mini" @visible-change="selectVisible(scope.row,$event)" item-code="demandSource" v-model="scope.row.source" placeholder="来源"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'source',$event)">
+										</mdp-select>
 							</template>
 						</el-table-column>
 						<el-table-column prop="dlvl"  label="层次" width="100" sortable>
 							<template slot-scope="scope">
-										<mdp-select-tag  size="mini" @visible-change="selectVisible(scope.row,$event)" item-code="demandLvl"  v-model="scope.row.dlvl" placeholder="层次"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'dlvl',$event)">
-										</mdp-select-tag>
+										<mdp-select show-style="tag"  size="mini" @visible-change="selectVisible(scope.row,$event)" item-code="demandLvl"  v-model="scope.row.dlvl" placeholder="层次"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'dlvl',$event)">
+										</mdp-select>
 							</template>
 						</el-table-column>
 						<el-table-column prop="iterationName" label="迭代" width="150" show-overflow-tooltip sortable>

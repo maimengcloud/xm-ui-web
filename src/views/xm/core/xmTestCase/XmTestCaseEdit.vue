@@ -23,7 +23,7 @@
 						</el-form-item>
 
 						<el-form-item label="测试方式" prop="testType">
-							<mdp-select-tag placeholder="测试方式" clearable item-code="testType" v-model="editForm.testType" effect="dark" @change="editSomeFields(editForm,'testType',$event)"></mdp-select-tag>
+							<mdp-select show-style="tag" placeholder="测试方式" clearable item-code="testType" v-model="editForm.testType" effect="dark" @change="editSomeFields(editForm,'testType',$event)"></mdp-select>
 						</el-form-item>
 						<el-form-item label="版本号" prop="verNum">
 							<el-input v-model="editForm.verNum" placeholder="版本号" :maxlength="50" @change="editSomeFields(editForm,'verNum',$event)"></el-input>
@@ -38,7 +38,7 @@
 						</el-form-item>
 						<el-form-item label="接口地址" prop="url">
 							<div style="display:flex;">
-								<mdp-select-tag label="请求方法" v-model="autoStep.method" :dict="dicts.autoTestMethod" ></mdp-select-tag>
+								<mdp-select show-style="tag" label="请求方法" v-model="autoStep.method" :dict="dicts.autoTestMethod" ></mdp-select>
 									<el-input  v-model="autoStep.url" placeholder="url 如#{baseApi}/user/list,支持通过 #{变量名}引用环境变量"></el-input>
 								<el-button style="margin-left:10px;" type="primary" @click="sendMsgForTestSetting" title="执行用例">发送</el-button>
 							</div>
@@ -99,7 +99,7 @@
 									</div>
 								</el-form-item>
 								<el-form-item label="请求方法">
-									<mdp-select-tag label="请求方法" v-model="autoStep.method" :dict="dicts.autoTestMethod"></mdp-select-tag>
+									<mdp-select show-style="tag" label="请求方法" v-model="autoStep.method" :dict="dicts.autoTestMethod"></mdp-select>
 								</el-form-item>
  								<el-form-item label="查询参数"   class="field">
 									<div class="field-text">

@@ -48,7 +48,7 @@
 				 </el-table-column>
 				<el-table-column prop="bizType" label="报工类型" width="120" show-overflow-tooltip>
 					<template slot-scope="scope">
-						<mdp-select-tag :disabled="true" v-model="scope.row.bizType" item-code="wlBizType"></mdp-select-tag>
+						<mdp-select show-style="tag" :disabled="true" v-model="scope.row.bizType" item-code="wlBizType"></mdp-select>
 					</template>
 				</el-table-column>
 				<el-table-column prop="bizName" label="报工业务" width="120" show-overflow-tooltip>

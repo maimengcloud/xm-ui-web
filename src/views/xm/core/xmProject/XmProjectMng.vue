@@ -238,12 +238,12 @@
 					</el-table-column>
 					<el-table-column prop="status" label="状态" width="100" sortable  fixed="left">
 						<template slot-scope="scope">
-							<mdp-select-tag item-code="projectStatus" :disabled="true" v-model="scope.row.status"></mdp-select-tag>
+							<mdp-select show-style="tag" item-code="projectStatus" :disabled="true" v-model="scope.row.status"></mdp-select>
  						</template>
 					</el-table-column>
 					<el-table-column prop="bizFlowState" label="审批状态" min-width="120" >
 						<template slot-scope="scope">
-							<mdp-select-tag item-code="bizFlowState" :disabled="true" v-model="scope.row.bizFlowState"></mdp-select-tag>
+							<mdp-select show-style="tag" item-code="bizFlowState" :disabled="true" v-model="scope.row.bizFlowState"></mdp-select>
 						</template>
 					</el-table-column>
 					<el-table-column prop="finishRate" label="进度" width="180" sortable>

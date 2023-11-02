@@ -40,18 +40,18 @@
                         </el-table-column>
                         <el-table-column prop="caseStatus" label="用例状态" width="100" show-overflow-tooltip>
                             <template slot-scope="scope">
-                                <mdp-select-tag @visible-change="selectVisible(scope.row,$event)" item-code="testCaseStatus" v-model="scope.row.caseStatus" effect="dark" @change="editSomeFields(scope.row,'caseStatus',$event)" :disabled="true"></mdp-select-tag>
+                                <mdp-select show-style="tag" @visible-change="selectVisible(scope.row,$event)" item-code="testCaseStatus" v-model="scope.row.caseStatus" effect="dark" @change="editSomeFields(scope.row,'caseStatus',$event)" :disabled="true"></mdp-select>
                             </template>
                         </el-table-column>
                         <template v-if="select!==true">
                             <el-table-column prop="testType" label="执行方式" width="120" >
                                 <template slot-scope="scope">
-                                    <mdp-select-tag @visible-change="selectVisible(scope.row,$event)" item-code="testType" v-model="scope.row.testType" @change="editSomeFields(scope.row,'testType',$event)" :disabled="true"></mdp-select-tag>
+                                    <mdp-select show-style="tag" @visible-change="selectVisible(scope.row,$event)" item-code="testType" v-model="scope.row.testType" @change="editSomeFields(scope.row,'testType',$event)" :disabled="true"></mdp-select>
                                 </template>
                             </el-table-column>
                             <el-table-column prop="execStatus" label="执行结果" width="120" show-overflow-tooltip>
                                 <template slot-scope="scope">
-                                    <mdp-select-tag @visible-change="selectVisible(scope.row,$event)" item-code="testStepTcode" v-model="scope.row.execStatus" effect="dark" @change="editSomeFields(scope.row,'execStatus',$event)"></mdp-select-tag>
+                                    <mdp-select show-style="tag" @visible-change="selectVisible(scope.row,$event)" item-code="testStepTcode" v-model="scope.row.execStatus" effect="dark" @change="editSomeFields(scope.row,'execStatus',$event)"></mdp-select>
                                 </template>
                             </el-table-column>
                             <el-table-column prop="execUsername" label="执行人姓名" min-width="120" >
@@ -62,7 +62,7 @@
                             </el-table-column>
                             <el-table-column prop="priority" label="优先级" width="120" >
                                 <template slot-scope="scope">
-                                    <mdp-select-tag @visible-change="selectVisible(scope.row,$event)" item-code="priority" v-model="scope.row.priority" @change="editSomeFields(scope.row,'priority',$event)"></mdp-select-tag>
+                                    <mdp-select show-style="tag" @visible-change="selectVisible(scope.row,$event)" item-code="priority" v-model="scope.row.priority" @change="editSomeFields(scope.row,'priority',$event)"></mdp-select>
                                 </template>
                             </el-table-column>
                             <el-table-column prop="remark" label="执行备注" min-width="150" show-overflow-tooltip>

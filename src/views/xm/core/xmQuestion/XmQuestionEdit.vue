@@ -101,7 +101,7 @@
 												</el-col>
 												<el-col :span="8">
 													<el-form-item label="复现频率" prop="repRate">
-														<mdp-select-tag  item-code="bugRepRate" v-model="editForm.repRate" @change="editXmQuestionSomeFields(editForm,'repRate',$event)"></mdp-select-tag>
+														<mdp-select show-style="tag"  item-code="bugRepRate" v-model="editForm.repRate" @change="editXmQuestionSomeFields(editForm,'repRate',$event)"></mdp-select>
 													</el-form-item>
 
 												</el-col>
@@ -116,26 +116,26 @@
 
 										<el-col :span="8">
 											<el-form-item label="严重程度" prop="bugSeverity">
-												<mdp-select-tag  item-code="bugSeverity" v-model="editForm.bugSeverity" @change="editXmQuestionSomeFields(editForm,'bugSeverity',$event)"></mdp-select-tag>
+												<mdp-select show-style="tag"  item-code="bugSeverity" v-model="editForm.bugSeverity" @change="editXmQuestionSomeFields(editForm,'bugSeverity',$event)"></mdp-select>
 
 											</el-form-item>
 										</el-col>
 										<el-col :span="8">
 											<el-form-item label="原因分析" prop="bugReason">
-												<mdp-select-tag  item-code="bugReason" v-model="editForm.bugReason" @change="editXmQuestionSomeFields(editForm,'bugReason',$event)"></mdp-select-tag>
+												<mdp-select show-style="tag"  item-code="bugReason" v-model="editForm.bugReason" @change="editXmQuestionSomeFields(editForm,'bugReason',$event)"></mdp-select>
 
 											</el-form-item>
 										</el-col>
 
 										<el-col :span="8">
 											<el-form-item label="解决方案" prop="solution">
-												<mdp-select-tag  item-code="bugSolution" v-model="editForm.solution" @change="editXmQuestionSomeFields(editForm,'solution',$event)"></mdp-select-tag>
+												<mdp-select show-style="tag"  item-code="bugSolution" v-model="editForm.solution" @change="editXmQuestionSomeFields(editForm,'solution',$event)"></mdp-select>
 
 											</el-form-item>
 										</el-col>
 										<el-col :span="8">
 													<el-form-item label="缺陷类别" prop="bugType">
-														<mdp-select-tag  item-code="bugType" v-model="editForm.bugType" @change="editXmQuestionSomeFields(editForm,'bugType',$event)"></mdp-select-tag>
+														<mdp-select show-style="tag"  item-code="bugType" v-model="editForm.bugType" @change="editXmQuestionSomeFields(editForm,'bugType',$event)"></mdp-select>
 
 													</el-form-item>
 

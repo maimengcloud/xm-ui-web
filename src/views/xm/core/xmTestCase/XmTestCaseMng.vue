@@ -38,13 +38,13 @@
                         </el-table-column>
                         <el-table-column prop="caseStatus" label="状态" width="100" show-overflow-tooltip>
                             <template slot-scope="scope">
-                                <mdp-select-tag @visible-change="selectVisible(scope.row,$event)" item-code="testCaseStatus" v-model="scope.row.caseStatus" effect="dark" @change="editSomeFields(scope.row,'caseStatus',$event)"></mdp-select-tag>
+                                <mdp-select show-style="tag" @visible-change="selectVisible(scope.row,$event)" item-code="testCaseStatus" v-model="scope.row.caseStatus" effect="dark" @change="editSomeFields(scope.row,'caseStatus',$event)"></mdp-select>
                             </template>
                         </el-table-column>
 
                         <el-table-column prop="testType" label="测试方式" min-width="120" show-overflow-tooltip>
                             <template slot-scope="scope">
-                                <mdp-select-tag @visible-change="selectVisible(scope.row,$event)" item-code="testType" v-model="scope.row.testType" effect="dark" @change="editSomeFields(scope.row,'testType',$event)"></mdp-select-tag>
+                                <mdp-select show-style="tag" @visible-change="selectVisible(scope.row,$event)" item-code="testType" v-model="scope.row.testType" effect="dark" @change="editSomeFields(scope.row,'testType',$event)"></mdp-select>
                             </template>
                         </el-table-column>
                         <el-table-column prop="funcName" label="模块" min-width="150" show-overflow-tooltip>

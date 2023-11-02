@@ -150,26 +150,26 @@
 					</el-table-column>
 					<el-table-column prop="bugStatus" label="状态"  width="100">
 						<template slot-scope="scope">
-										 <mdp-select-tag  @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.bugStatus" placeholder="类型" item-code="bugStatus" style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'bugStatus',$event)">
- 										 </mdp-select-tag>
+										 <mdp-select show-style="tag"  @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.bugStatus" placeholder="类型" item-code="bugStatus" style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'bugStatus',$event)">
+ 										 </mdp-select>
 						</template>
 					</el-table-column>
 					<el-table-column prop="priority" label="优先级"  width="100">
 						<template slot-scope="scope">
-										 <mdp-select-tag @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.priority" placeholder="优先级" item-code="priority"   style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'priority',$event)">
- 										 </mdp-select-tag>
+										 <mdp-select show-style="tag" @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.priority" placeholder="优先级" item-code="priority"   style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'priority',$event)">
+ 										 </mdp-select>
  						</template>
 					</el-table-column>
 					<el-table-column prop="solution" label="解决方案"  width="100">
 						<template slot-scope="scope">
-										 <mdp-select-tag @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.solution" placeholder="类型" item-code="bugSolution"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'solution',$event)">
- 										 </mdp-select-tag>
+										 <mdp-select show-style="tag" @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.solution" placeholder="类型" item-code="bugSolution"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'solution',$event)">
+ 										 </mdp-select>
 						</template>
 					</el-table-column>
 					<el-table-column prop="bugSeverity" label="严重程度"  width="100">
 						<template slot-scope="scope">
-										 <mdp-select-tag @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.bugSeverity" placeholder="类型" item-code="bugSeverity"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'bugSeverity',$event)">
- 										 </mdp-select-tag>
+										 <mdp-select show-style="tag" @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.bugSeverity" placeholder="类型" item-code="bugSeverity"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'bugSeverity',$event)">
+ 										 </mdp-select>
 						</template>
 					</el-table-column>
 					<!--

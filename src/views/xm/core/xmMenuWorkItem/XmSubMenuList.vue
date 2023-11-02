@@ -1,11 +1,11 @@
 <template>
-  <section> 
-    <el-row v-if="parentXmMenu.dclass<'3' && xmMenus.length>0"> 
+  <section>
+    <el-row v-if="parentXmMenu.dclass<'3' && xmMenus.length>0">
       <el-row>
         <el-table :data="xmMenus" :max-height="400"  highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
           <el-table-column type="selection" label="全选"></el-table-column>
-          <el-table-column prop="menuName" label="名称" min-width="350"> 
-              <template slot-scope="scope" > 
+          <el-table-column prop="menuName" label="名称" min-width="350">
+              <template slot-scope="scope" >
                   <div class="cell-box">
  						<div  v-if="scope.row.dclass=='1'" class="icon" style="background-color:  rgb(255, 153, 51);">
 						<i class="el-icon-s-promotion"></i>
@@ -17,26 +17,26 @@
 						<i class="el-icon-document"></i>
 						</div>
  						<el-link @click="showEdit( scope.row,scope.$index)"   title="编辑" >{{scope.row.seqNo}}&nbsp;{{scope.row.menuName}}</el-link>
-  
-  
+
+
                     <div class="cell-bar">
-                           <el-button @click="copyOne(scope.row,scope.$index)" icon="el-icon-document-copy" circle title="复制一行"></el-button> 
+                           <el-button @click="copyOne(scope.row,scope.$index)" icon="el-icon-document-copy" circle title="复制一行"></el-button>
                    </div>
                   </div>
 			  </template>
 		  </el-table-column>
           <el-table-column prop="status" label="状态"  width="100"  sortable>
-								<template slot-scope="scope"> 
-										 <mdp-select-tag  @visible-change="selectVisible(scope.row,$event)" :dict="dicts.menuStatus"  v-model="scope.row.status" placeholder="需求状态"  style="display:block;"  @change="editXmMenuSomeFields(scope.row,'status',$event)">
- 										 </mdp-select-tag> 
+								<template slot-scope="scope">
+										 <mdp-select show-style="tag"  @visible-change="selectVisible(scope.row,$event)" :dict="dicts.menuStatus"  v-model="scope.row.status" placeholder="需求状态"  style="display:block;"  @change="editXmMenuSomeFields(scope.row,'status',$event)">
+ 										 </mdp-select>
 								</template>
 							</el-table-column>
 							<el-table-column prop="priority"  label="优先级" width="100" sortable>
-								<template slot-scope="scope"> 
-										 <mdp-select-tag  @visible-change="selectVisible(scope.row,$event)" :dict="dicts.priority"  v-model="scope.row.priority" placeholder="优先级"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'priority',$event)">
- 										 </mdp-select-tag> 
+								<template slot-scope="scope">
+										 <mdp-select show-style="tag"  @visible-change="selectVisible(scope.row,$event)" :dict="dicts.priority"  v-model="scope.row.priority" placeholder="优先级"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'priority',$event)">
+ 										 </mdp-select>
 								</template>
-							</el-table-column> 
+							</el-table-column>
 							<el-table-column prop="iterationName" label="迭代" width="150" show-overflow-tooltip sortable>
 								<template slot-scope="scope">
 									<div class="cell-text">
@@ -46,7 +46,7 @@
 										 <xm-iteration-select v-if="scope.row.dclass==='3'" style="display:inline;" :auto-select="false"  :product-id="scope.row.productId"    placeholder="迭代"  @row-click="editXmMenuSomeFields(scope.row,'iterationId',$event)"></xm-iteration-select>
 									</span>
 								</template>
-							</el-table-column> 
+							</el-table-column>
 							<el-table-column prop="finishRate" label="进度" width="100" show-overflow-tooltip sortable>
 								<template slot-scope="scope">
 									<div v-if="scope.row.calcType!=='2'">
@@ -54,19 +54,19 @@
 									</div>
 								</template>
 
-							</el-table-column> 
+							</el-table-column>
 							<el-table-column prop="mmUsername" label="跟进人"  width="150" show-overflow-tooltip  sortable>
 								<template slot-scope="scope">
 									 <mdp-select-user-xm @visible-change="selectVisible(scope.row,$event)" userid-key="mmUserid" username-key="mmUsername" :project-id="linkProjectId" v-model="scope.row" @change="editXmMenuSomeFields(scope.row,'mmUserid',$enent)"></mdp-select-user-xm>
 								</template>
 							</el-table-column>
-        </el-table> 
+        </el-table>
       </el-row>
-    </el-row> 
+    </el-row>
     <tag-dialog ref="tagDialog"  :jump="true" @select-confirm="onTagSelected">
-			</tag-dialog> 
+			</tag-dialog>
 
-			
+
       <el-dialog :title="'新增'+calcMenuLabel.label" :visible.sync="addFormVisible" append-to-body modal-append-to-body>
           <el-form :model="addForm" :rules="addFormRules" ref="addForm">
             <el-form-item  prop="menuName">
@@ -77,7 +77,7 @@
 				{{calcMenuLabel.label}}名称
 			</template>
               <el-input v-model="addForm.menuName" autocomplete="off" ></el-input>
-            </el-form-item> 
+            </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button @click="addFormVisible = false">关 闭</el-button>
@@ -95,8 +95,8 @@
 import Vue from "vue";
 import util from "@/common/js/util"; //全局公共库
 import treeTool from "@/common/js/treeTool"; //全局公共库
- import { initSimpleDicts } from '@/api/mdp/meta/item'; //下拉框数据查询 
- 	import { listXmMenuWithState,addXmMenu,editXmMenuSomeFields,batchDelXmMenu } from '@/api/xm/core/xmMenu'; 
+ import { initSimpleDicts } from '@/api/mdp/meta/item'; //下拉框数据查询
+ 	import { listXmMenuWithState,addXmMenu,editXmMenuSomeFields,batchDelXmMenu } from '@/api/xm/core/xmMenu';
 	import  XmMenuWorkload from '@/views/xm/core/components/XmMenuWorkload';//修改界面
  	import  XmGroupDialog from '@/views/xm/core/xmGroup/XmGroupDialog';//修改界面
 	import  XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue';//修改界面
@@ -106,9 +106,9 @@ import treeTool from "@/common/js/treeTool"; //全局公共库
 
 export default {
   computed: {
-    ...mapGetters(["userInfo", "roles"]), 
-    
-			calcMenuLabel(){ 
+    ...mapGetters(["userInfo", "roles"]),
+
+			calcMenuLabel(){
 				var params={label:'工作项',icon:'',color:''};
 				if(this.addForm.dclass==='1'){
 					params={label:'史诗',icon:'el-icon-s-promotion',color:'rgb(255, 153, 51)'};
@@ -116,30 +116,30 @@ export default {
 					params={label:'特性',icon:'el-icon-s-flag',color:'rgb(0, 153, 51)'};
 				}else if(this.addForm.dclass==='3'){
 					params={label:'故事',icon:'el-icon-document',color:' rgb(79, 140, 255)'};
-				} 
+				}
 				return params;
-			},  
+			},
   },
-  props: [ 
+  props: [
     'parentXmMenu','linkProjectId'
   ],
-  watch: { 
+  watch: {
     'parentXmMenu':function(){
       this.initData();
     },
     'xmMenus':function(){
       this.$emit('menus-change',this.xmMenus);
     }
-    
+
   },
-  data() { 
+  data() {
     return{
-      load:{edit:false,list:false,add:false,del:false}, 
-      xmMenus:[], 
+      load:{edit:false,list:false,add:false,del:false},
+      xmMenus:[],
 		//编辑xmMenu界面初始化数据
 		editForm: {
 				menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',ntype:'0',childrenCnt:0,sinceVersion:'',proposerId:'',proposerName:'',dlvl:'0',dtype:'0',priority:'0',source:'1',dclass:'3'
-		}, 
+		},
 	  addForm:{menuName:'',dclass:'3'},
 	  editFormVisible:false,
 	  addFormVisible:false,
@@ -155,7 +155,7 @@ export default {
 
     }
   }, //end data
-  methods: { 
+  methods: {
 	...util,
     selectVisible(row,visible){
       if(visible){
@@ -170,11 +170,11 @@ export default {
 		Object.assign(this.editForm,row)
 	},
 
-	rowClick: function(row, event, column){ 
+	rowClick: function(row, event, column){
         this.editForm=row
 		this.editFormBak=Object.assign({},this.editForm)
       },
-       
+
     getXmMenus(){
       listXmMenuWithState({pmenuId:this.parentXmMenu.menuId}).then(res=>{
         var tips = res.data.tips;
@@ -185,30 +185,30 @@ export default {
         }
       })
     },
-    
+
     showEdit(row,index){
       this.editForm=row
       this.editFormVisible=true
     },
-     
-    initData(){  
-      this.xmMenus=[] 
+
+    initData(){
+      this.xmMenus=[]
       if(!this.parentXmMenu || !this.parentXmMenu.menuId){
         return;
       }
       var dclass=this.parentXmMenu.dclass;
       if(dclass<3){
         this.getXmMenus();
-      } 
-    }, 
-    addXmMenu( ){ 
+      }
+    },
+    addXmMenu( ){
 		this.$refs.addForm.validate().then(valid=>{
        		var menu={...this.parentXmMenu}
              menu.mmUserid=this.userInfo.userid
              menu.mmUsername=this.userInfo.username
              menu.seqNo=this.parentXmMenu.seqNo+"."+(parseInt(this.parentXmMenu.childrenCnt)+1)
              menu.pmenuId=this.parentXmMenu.menuId
-             menu.pmenuName=this.parentXmMenu.menuName  
+             menu.pmenuName=this.parentXmMenu.menuName
              menu.menuId=null;
              menu.menuName=this.addForm.menuName
 			 menu.dclass=this.addForm.dclass
@@ -217,13 +217,13 @@ export default {
 								this.load.edit=false
 								var tips=res.data.tips;
 								if(tips.isOk){
- 									this.$emit('add-submit',res.data.data);//  @submit="afterAddSubmit" 
+ 									this.$emit('add-submit',res.data.data);//  @submit="afterAddSubmit"
                    this.xmMenus.push(res.data.data)
 								}
 								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 							}).catch( err  => this.load.edit=false);
 		});
-    },  
+    },
       showAdd(dclass) {
 		  this.addForm.menuName=this.parentXmMenu.menuName+'---请修改'
 		  if(dclass){
@@ -231,7 +231,7 @@ export default {
 		  }
          this.addFormVisible=true;
     },
-    
+
 			editXmMenuSomeFields(row,fieldName,$event){
 				var params={menuIds:[row.menuId]};
 				if(this.sels.length>0){
@@ -277,19 +277,19 @@ export default {
 						}
 						Object.assign(this.editFormBak,this.editForm)
 					}else{
-						
+
 						Object.assign(this.editForm,this.editFormBak)
 						this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 					}
 				})
 			},
-    
+
 			onTagSelected(tags,option){
 				if(option.action=='editTagIds'){
 					this.editXmMenuSomeFields(option.data,"tagIds",tags)
-				} 
+				}
 
-			}, 
+			},
       //批量删除xmMenu
 			batchDel: function () {
 				if(this.sels.length==0){
@@ -303,24 +303,24 @@ export default {
 					batchDelXmMenu(this.sels).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
-						if( tips.isOk ){ 
-							this.getXmMenus(); 
+						if( tips.isOk ){
+							this.getXmMenus();
 						}
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
 
-			
+
 			copyOne(row,index){
-				
+
 				var params={...row}
-				params.menuId=null; 
+				params.menuId=null;
 				params.status="0"
 				params.menuName=row.menuName+'V'
 				addXmMenu(params).then(res=>{
 					var tips = res.data.tips
-					if(tips.isOk){ 
+					if(tips.isOk){
 						var row2=res.data.data
 						this.xmMenus.splice(index+1,0,row2)
 						this.pageInfo.total=this.pageInfo.total+1
@@ -331,16 +331,16 @@ export default {
 				})
 			}
   }, //end methods
-  components: {  
-		  TagDialog, 
-			XmMenuWorkload,  
+  components: {
+		  TagDialog,
+			XmMenuWorkload,
 			XmIterationSelect,
 			MdpSelectUserXm,
 			'xm-menu-edit':()=>import('../xmMenu/XmMenuEdit')
   },
-  mounted() { 
+  mounted() {
     this.initData();
-    
+
   		initSimpleDicts("all",['menuStatus','demandSource','demandLvl','demandType','priority']).then(res=>{
 				this.dicts=res.data.data;
 			})
@@ -348,16 +348,16 @@ export default {
 };
 </script>
 
-<style lang="less" scoped> 
+<style lang="less" scoped>
     .my-cell-bar{
-    display: none; 
+    display: none;
   }
 
 .el-table__row td:hover{
 	.my-cell-bar{
     width:90%;
     padding-right:0px;
-	display: inline-block;  
+	display: inline-block;
 	}
   .my-cell-text{
     display:none;

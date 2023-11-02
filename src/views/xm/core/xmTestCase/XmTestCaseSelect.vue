@@ -39,13 +39,13 @@
 
                         <el-table-column prop="caseStatus" label="状态" min-width="120" show-overflow-tooltip>
                             <template slot-scope="scope">
-                                <mdp-select-tag item-code="testCaseStatus" v-model="scope.row.caseStatus" effect="dark" :disabled="true"></mdp-select-tag>
+                                <mdp-select show-style="tag" item-code="testCaseStatus" v-model="scope.row.caseStatus" effect="dark" :disabled="true"></mdp-select>
                             </template>
                         </el-table-column>
 
                         <el-table-column prop="testType" label="测试方式" min-width="120" show-overflow-tooltip>
                             <template slot-scope="scope">
-                                <mdp-select-tag item-code="testType" v-model="scope.row.testType" effect="dark" :disabled="true"></mdp-select-tag>
+                                <mdp-select show-style="tag" item-code="testType" v-model="scope.row.testType" effect="dark" :disabled="true"></mdp-select>
                             </template>
                         </el-table-column>
                         <el-table-column prop="caseRemark" label="备注" min-width="120" show-overflow-tooltip>

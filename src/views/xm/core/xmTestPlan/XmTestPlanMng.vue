@@ -43,19 +43,19 @@
 				</el-table-column>
 				<el-table-column prop="status" label="状态" width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
-                        <mdp-select-tag item-code="testPlanStatus" v-model="scope.row.status" effect="dark" @change="editSomeFields(scope.row,'status',$event)"></mdp-select-tag>
+                        <mdp-select show-style="tag" item-code="testPlanStatus" v-model="scope.row.status" effect="dark" @change="editSomeFields(scope.row,'status',$event)"></mdp-select>
                    </template>
 				</el-table-column>
 
 				<el-table-column prop="testType" label="测试方式" width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
-                        <mdp-select-tag item-code="testType" v-model="scope.row.testType" effect="dark" @change="editSomeFields(scope.row,'testType',$event)"></mdp-select-tag>
+                        <mdp-select show-style="tag" item-code="testType" v-model="scope.row.testType" effect="dark" @change="editSomeFields(scope.row,'testType',$event)"></mdp-select>
                    </template>
 				</el-table-column>
 				<el-table-column prop="tcode" label="测试结果" width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
 
-                        <mdp-select-tag item-code="testPlanTcode" v-model="scope.row.tcode" effect="dark" @change="editSomeFields(scope.row,'tcode',$event)"></mdp-select-tag>
+                        <mdp-select show-style="tag" item-code="testPlanTcode" v-model="scope.row.tcode" effect="dark" @change="editSomeFields(scope.row,'tcode',$event)"></mdp-select>
 
                     </template>
 				</el-table-column>

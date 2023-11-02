@@ -1,17 +1,17 @@
 <template>
-    <el-row v-show="parentXmMenu.dclass==='3' && xmTasks.length>0">  
+    <el-row v-show="parentXmMenu.dclass==='3' && xmTasks.length>0">
       <el-row>
         <el-table :data="xmTasks"  :max-height="400" v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
           <el-table-column type="selection" label="全选"></el-table-column>
           <el-table-column prop="name" label="名称" min-width="350">
-                <template slot-scope="scope"> 
+                <template slot-scope="scope">
                   <div class="cell-box">
                        <div class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#1CC7EA'}"><i  style="width:20px;" :class="scope.row.ntype==='1'?'el-icon-time':'el-icon-s-operation'" ></i>
                       </div>
                        <el-link @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑任务" >{{scope.row.sortLevel}}&nbsp;{{scope.row.name}}</el-link>
- 
+
                     <div class="cell-bar">
-                           <el-button @click="copyOne(scope.row,scope.$index)" icon="el-icon-document-copy" circle title="复制一行"></el-button> 
+                           <el-button @click="copyOne(scope.row,scope.$index)" icon="el-icon-document-copy" circle title="复制一行"></el-button>
                    </div>
                   </div>
                  </template>
@@ -20,43 +20,43 @@
                 label="状态"
                 type="taskState"
                 width="100"
-              >  
-								<template slot-scope="scope"> 
-										 <mdp-select-tag  @visible-change="selectVisible(scope.row,$event)" :dict="dicts.taskState"   v-model="scope.row.taskState" placeholder="任务状态"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'taskState',$event)">
- 										 </mdp-select-tag>
+              >
+								<template slot-scope="scope">
+										 <mdp-select show-style="tag"  @visible-change="selectVisible(scope.row,$event)" :dict="dicts.taskState"   v-model="scope.row.taskState" placeholder="任务状态"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'taskState',$event)">
+ 										 </mdp-select>
  								</template>
               </el-table-column>
-					
+
             <el-table-column prop="budgetWorkload" label="工时"  width="100">
-              <template slot-scope="scope">   
+              <template slot-scope="scope">
                     <div class="cell-text">
                       <span title="实际工时 / 预估工时 " >{{scope.row.actWorkload>0?scope.row.actWorkload:0}}&nbsp;/&nbsp;{{scope.row.budgetWorkload>0?scope.row.budgetWorkload:0}}</span>
 
                     </div>
-                    <span class="cell-bar">   
+                    <span class="cell-bar">
                         <el-button @click="workloadRecord(scope.row)">登记工时</el-button>
-                    </span> 
+                    </span>
               </template>
-            </el-table-column> 
+            </el-table-column>
             <el-table-column prop="rate" label="进度"  width="100">
-              <template slot-scope="scope">    
-                  <el-tag 
-                    :type="scope.row.rate >= 100 ? 'success' : 'warning'" 
+              <template slot-scope="scope">
+                  <el-tag
+                    :type="scope.row.rate >= 100 ? 'success' : 'warning'"
                   >
                     {{ (scope.row.rate != null ? scope.row.rate : 0) + "%" }}
-                  </el-tag>  
+                  </el-tag>
               </template>
             </el-table-column>
               <el-table-column
                 label="优先级"
                 type="level"
                 width="100"
-              >  
-								<template slot-scope="scope"> 
-										 <mdp-select-tag  @visible-change="selectVisible(scope.row,$event)"  :dict="dicts.priority"   v-model="scope.row.level" placeholder="优先级"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'level',$event)">
- 										 </mdp-select-tag>
+              >
+								<template slot-scope="scope">
+										 <mdp-select show-style="tag"  @visible-change="selectVisible(scope.row,$event)"  :dict="dicts.priority"   v-model="scope.row.level" placeholder="优先级"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'level',$event)">
+ 										 </mdp-select>
  								</template>
-              </el-table-column> 
+              </el-table-column>
               <el-table-column
                 sortable
                 prop="createUsername"
@@ -64,7 +64,7 @@
                 width="120"
                 show-overflow-tooltip
               >
-								<template slot-scope="scope"> 
+								<template slot-scope="scope">
                   <mdp-select-user-xm @visible-change="selectVisible(scope.row,$event)" userid-key="createUserid" username-key="createUsername" :project-id="scope.row.projectId" v-model="scope.row" @change="editXmTaskSomeFields(scope.row,'creatorUserid',$event)"></mdp-select-user-xm>
 
 								</template>
@@ -76,13 +76,13 @@
                 width="120"
                 show-overflow-tooltip
               >
-								<template slot-scope="scope"> 
+								<template slot-scope="scope">
                   <mdp-select-user-xm @visible-change="selectVisible(scope.row,$event)" userid-key="executorUserid" username-key="executorUsername" :project-id="scope.row.projectId" v-model="scope.row" @change="selectExecUserConfirm(scope.row,'executorUserid',$event)"></mdp-select-user-xm>
 								</template>
               </el-table-column>
-        </el-table> 
+        </el-table>
       </el-row>
-      
+
     <!--编辑 XmTask xm_task界面-->
     <el-dialog
       title="编辑任务"
@@ -97,24 +97,24 @@
         :xm-project="{id:editForm.projectId,name:editForm.projectName}"
         :xm-task="editForm"
         :visible="editFormVisible"
-        @cancel="editFormVisible = false" 
+        @cancel="editFormVisible = false"
         @submit="afterEditSubmit"
         @edit-fields="afterEditSubmit"
-      ></xm-task-edit> 
+      ></xm-task-edit>
       </el-dialog>
       <el-dialog title="新增任务" :visible.sync="addFormVisible" append-to-body modal-append-to-body>
           <el-form :model="addForm" :rules="addFormRules" ref="addForm">
-            <el-form-item label="上级计划" prop="parentTaskname"> 
-              {{addForm.parentTaskname?addForm.parentTaskname:'无上级'}} 
+            <el-form-item label="上级计划" prop="parentTaskname">
+              {{addForm.parentTaskname?addForm.parentTaskname:'无上级'}}
 									<el-button
-										@click="selectParentTaskVisible=true"  
+										@click="selectParentTaskVisible=true"
 										title="选择上级计划"
                     type="text"
-										icon="el-icon-upload2" 
-									> 选择上级计划 </el-button> 
-            </el-form-item> 
+										icon="el-icon-upload2"
+									> 选择上级计划 </el-button>
+            </el-form-item>
             <el-form-item label="任务名称" prop="name">
-              
+
             <template slot="label">
             <div class="icon" style="background-color:  #1CC7EA;">
               <i class="el-icon-s-operation"></i>
@@ -122,42 +122,42 @@
               任务名称
           </template>
               <el-input v-model="addForm.name" autocomplete="off" ></el-input>
-            </el-form-item> 
+            </el-form-item>
           </el-form>
-          <div slot="footer" class="dialog-footer"> 
+          <div slot="footer" class="dialog-footer">
              <el-button  @click="addFormVisible=false">关闭</el-button>
             <el-button type="primary" @click="addXmTask" v-loading="load.edit" :disabled="load.edit">确 定</el-button>
           </div>
       </el-dialog>
-      
-		
+
+
       <el-dialog title="选择新的上级计划" append-to-body :visible.sync="selectParentTaskVisible" width="60%" top="20px">
         <xm-phase-select :sel-project="{id:this.linkProjectId,name:''}"   @select="onSelectedParentTask"></xm-phase-select>
       </el-dialog>
       <xm-workload-record-dialog ref="workloadRecordDialog" @submi="afterWorkloadSubmit" @edit-xm-task-some-fields="onEditXmTaskSomeFields" @submit="onWorkloadSubmit"></xm-workload-record-dialog>
-    </el-row> 
+    </el-row>
 </template>
 
 <script>
 import Vue from "vue";
 import util from "@/common/js/util"; //全局公共库
 import treeTool from "@/common/js/treeTool"; //全局公共库
- import { initSimpleDicts } from '@/api/mdp/meta/item'; //下拉框数据查询 
+ import { initSimpleDicts } from '@/api/mdp/meta/item'; //下拉框数据查询
  	import { listXmTask ,addTask,editXmTaskSomeFields,batchDelXmTask } from '@/api/xm/core/xmTask';
 
 	import  XmGroupDialog from '@/views/xm/core/xmGroup/XmGroupDialog';//修改界面
 	import { mapGetters } from 'vuex'
 import XmWorkloadRecordDialog from '../xmWorkload/XmWorkloadRecordDialog.vue';
 
-	import XmPhaseSelect from "../xmTask/XmPhaseSelect.vue"; 
+	import XmPhaseSelect from "../xmTask/XmPhaseSelect.vue";
 	import { addXmTaskExecuser } from '@/api/xm/core/xmTaskExecuser';
 
 	import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm/index';//修改界面
 export default {
   computed: {
-    ...mapGetters(["userInfo", "roles"]), 
-    
-			calcMenuLabel(){ 
+    ...mapGetters(["userInfo", "roles"]),
+
+			calcMenuLabel(){
 				var params={label:'工作项',icon:'',color:''};
 				if(this.parentXmMenu.dclass==='0'){
 					params={label:'史诗',icon:'el-icon-s-promotion',color:'rgb(255, 153, 51)'};
@@ -165,27 +165,27 @@ export default {
 					params={label:'特性',icon:'el-icon-s-flag',color:'rgb(0, 153, 51)'};
 				}else if(this.parentXmMenu.dclass==='2'){
 					params={label:'故事',icon:'el-icon-document',color:' rgb(79, 140, 255)'};
-				} 
+				}
 				return params;
-			},  
+			},
   },
-  props: [ 
+  props: [
     'parentXmMenu','linkProjectId'
   ],
-  watch: { 
+  watch: {
     'parentXmMenu':function(){
       this.initData();
     },
     'xmTasks':function(){
       this.$emit("tasks-change",this.xmTasks)
     }
-    
+
   },
-  data() { 
+  data() {
     return{
-      load:{edit:false,list:false,add:false,del:false,}, 
+      load:{edit:false,list:false,add:false,del:false,},
       xmTasks:[],
-      
+
       //编辑xmTask界面初始化数据
       editForm: {
         id: "",
@@ -221,13 +221,13 @@ export default {
         actEndTime: "",
         uniInnerPrice:80,uniOutPrice:100,
       },
-      editFormVisible:false, 
+      editFormVisible:false,
       addForm:{name:'',parentTaskid:'',parentTaskname:''},
       addFormRules: {
 					name: [
 						{ required: true, message: '任务名称不能为空', trigger: 'change' },
 						{ min: 2, max: 150, message: '任务名称长度在 2 到 150 个字符', trigger: 'change' },//长度
-					],  
+					],
 				},
       addFormVisible:false,
       sels:[],
@@ -244,7 +244,7 @@ export default {
 
     }
   }, //end data
-  methods: {  
+  methods: {
     selectVisible(row,visible){
       if(visible){
         this.rowClick(row)
@@ -268,24 +268,24 @@ export default {
        this.editForm=row
        this.$refs.workloadRecordDialog.open(row)
      },
-    initData(){  
-      this.xmTasks=[] 
+    initData(){
+      this.xmTasks=[]
       if(!this.parentXmMenu || !this.parentXmMenu.menuId){
         return;
       }
       var dclass=this.parentXmMenu.dclass;
       if(dclass==='3'){
         this.getXmTasks();
-      } 
-    }, 
-    addXmTask(){ 
-      this.$refs.addForm.validate().then(valid=>{ 
+      }
+    },
+    addXmTask(){
+      this.$refs.addForm.validate().then(valid=>{
        var task={...this.addForm,menuId:this.parentXmMenu.menuId,menuName:this.parentXmMenu.menuName,productId:this.parentXmMenu.productId,iterationId:this.parentXmMenu.iterationId,iterationName:this.parentXmMenu.iterationName}
              task.priority='3'
              task.verNum=this.parentXmMenu.sinceVersion;
              task.pverNum=this.parentXmMenu.sinceVersion;
              task.createUserid=this.userInfo.userid
-             task.createUsername=this.userInfo.username 
+             task.createUsername=this.userInfo.username
              task.qtype="1"
              task.ntype="0"
              task.ptype="0"
@@ -298,27 +298,27 @@ export default {
 								var tips=res.data.tips;
 								if(tips.isOk){
  									this.$emit('submit',res.data.data);//  @submit="afterAddSubmit"
-                   this.xmTasks.push(res.data.data) 
+                   this.xmTasks.push(res.data.data)
 								}
 								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 							}).catch( err  => this.load.edit=false);
         })
-    },  
+    },
       showAdd() {
         this.addForm.name=this.parentXmMenu.menuName
         this.addFormVisible=true;
         this.addForm.parentTaskid=''
         this.addForm.parentTaskname=''
     },
-    
+
     showEdit(row,index){
       this.editForm=row
       this.editFormVisible=true
     },
-    
+
     afterEditSubmit(row){
       Object.assign(this.editForm,row)
-    }, 
+    },
 			editXmTaskSomeFields(row,fieldName,$event){
 				var params={ids:[row.id]};
 				if(this.sels.length>0){
@@ -365,17 +365,17 @@ export default {
 							 })
 						}else{
 							  Object.assign(row,params)
-                
+
 						}
             Object.assign(this.editFormBak,this.editForm)
 					}else{
-            
+
             Object.assign(this.editForm,this.editFormBak)
 						this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 					}
 				})
 			},
-      
+
     //批量删除xmTask
     batchDel: function () {
       if(this.sels.length==0){
@@ -390,8 +390,8 @@ export default {
           .then((res) => {
             this.load.del = false;
             var tips = res.data.tips;
-            if (tips.isOk) { 
-							this.getXmTasks() 
+            if (tips.isOk) {
+							this.getXmTasks()
             }
             this.$notify({
               showClose: true,
@@ -403,11 +403,11 @@ export default {
       });
     },
     rowClick: function (row) {
-      this.editForm = row; 
+      this.editForm = row;
 		  this.editFormBak=Object.assign({},this.editForm)
       // this.$emit('row-click',row,);//  @row-click="rowClick"
     },
-    
+
 			formatterPriorityDicts(cellValue){
 				if(!cellValue && cellValue!=='0'){
 					return []
@@ -472,9 +472,9 @@ export default {
       afterEditSubmit(row){
         Object.assign(this.editForm,row)
       },
-      
+
 			onEditXmTaskSomeFields(data){
-        
+
         Object.assign(this.editForm,data)
 				this.$emit('edit-xm-task-some-fields',data);
 			},
@@ -487,16 +487,16 @@ export default {
         this.addForm.parentTaskname=task.name
         this.selectParentTaskVisible=false
       },
-      
+
     //查询时选择责任人
     selectExecUserConfirm(row,fieldName,users) {
- 
+
         var user= users[0];
-        var params={} 
+        var params={}
         params.taskId = row.id;
-        params.projectId=row.projectId 
+        params.projectId=row.projectId
         params.projectName=row.projectName
-        params.taskName=row.name 
+        params.taskName=row.name
         params.quoteStartTime=row.startTime
         params.quoteEndTime=row.endTime
         params.quoteAmount=row.budgetAt
@@ -505,7 +505,7 @@ export default {
         params.username=user.username
         addXmTaskExecuser(params).then(res=>{
           var tips = res.data.tips
-          if(tips.isOk){ 
+          if(tips.isOk){
             row.executorUserid=user.userid
             row.executorUsername=user.username
             row.exeUserids=user.userid
@@ -515,27 +515,27 @@ export default {
             row.executorUsername=this.editFormBak.executorUsername
             this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:'error'})
           }
-        }) 
-      
-    }, 
-      
+        })
+
+    },
+
 			copyOne(row,index){
-				
+
 				var params={...row}
 				params.id=null;
 				params.createUserid=this.userInfo.userid
-				params.createUsername=this.userInfo.username 
+				params.createUsername=this.userInfo.username
         params.executorUserid=null
         params.executorUseranme=null
         params.execUserids=null;
-        params.execUsername=null; 
+        params.execUsername=null;
         params.actWorkload=null;
         params.actAt=null;
-        params.efunds=0 
+        params.efunds=0
 				params.name=row.name+'V'
 				addTask(params).then(res=>{
 					var tips = res.data.tips
-					if(tips.isOk){ 
+					if(tips.isOk){
 						var row2=res.data.data
 						this.xmTasks.splice(index+1,0,row2)
 						this.pageInfo.total=this.pageInfo.total+1
@@ -546,12 +546,12 @@ export default {
 				})
 			}
   }, //end methods
-  components: {  
+  components: {
     XmWorkloadRecordDialog,XmGroupDialog,'xm-task-edit':()=>import('../xmTask/XmTaskEdit'),XmPhaseSelect,MdpSelectUserXm,
   },
-  mounted() { 
+  mounted() {
     this.initData();
-    
+
       initSimpleDicts( "all", ["planType","taskType","priority","xmTaskSettleSchemel","priority","taskState" ]).then((res) => {
         this.dicts = res.data.data;
       });
@@ -561,14 +561,14 @@ export default {
 
 <style lang="less" scoped>
   .my-cell-bar{
-    display: none; 
+    display: none;
   }
 
 .el-table__row td:hover{
 	.my-cell-bar{
     width:90%;
     padding-right:0px;
-		display: inline-block;  
+		display: inline-block;
 	}
   .my-cell-text{
     display:none;

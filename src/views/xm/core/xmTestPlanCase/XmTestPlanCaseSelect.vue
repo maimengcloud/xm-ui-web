@@ -33,13 +33,13 @@
                         </el-table-column>
                         <el-table-column prop="caseStatus" label="用例状态" width="100" show-overflow-tooltip>
                             <template slot-scope="scope">
-                                <mdp-select-tag item-code="testCaseStatus" v-model="scope.row.caseStatus" effect="dark" :disabled="true"></mdp-select-tag>
+                                <mdp-select show-style="tag" item-code="testCaseStatus" v-model="scope.row.caseStatus" effect="dark" :disabled="true"></mdp-select>
                             </template>
                         </el-table-column>
 
                         <el-table-column prop="execStatus" label="执行结果" width="100" show-overflow-tooltip>
                             <template slot-scope="scope">
-                                <mdp-select-tag item-code="testStepTcode" v-model="scope.row.execStatus" effect="dark" :disabled="true"></mdp-select-tag>
+                                <mdp-select show-style="tag" item-code="testStepTcode" v-model="scope.row.execStatus" effect="dark" :disabled="true"></mdp-select>
                             </template>
                         </el-table-column>
                         <el-table-column prop="execUsername" label="执行人姓名" min-width="120" >
@@ -50,7 +50,7 @@
                         </el-table-column>
                         <el-table-column prop="priority" label="优先级" width="120" >
                             <template slot-scope="scope">
-                                <mdp-select-tag item-code="priority" v-model="scope.row.priority" :disabled="true"></mdp-select-tag>
+                                <mdp-select show-style="tag" item-code="priority" v-model="scope.row.priority" :disabled="true"></mdp-select>
                             </template>
                         </el-table-column>
                         <el-table-column  label="操作" width="100" fixed="right">

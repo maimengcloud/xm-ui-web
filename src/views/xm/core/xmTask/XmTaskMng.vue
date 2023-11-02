@@ -392,8 +392,8 @@
                 width="100"
               >
 								<template slot-scope="scope">
-										 <mdp-select-tag size="mini" @visible-change="selectVisible(scope.row,$event)"  item-code="taskState" v-model="scope.row.taskState" placeholder="任务状态"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'taskState',$event)">
- 										 </mdp-select-tag>
+										 <mdp-select show-style="tag" size="mini" @visible-change="selectVisible(scope.row,$event)"  item-code="taskState" v-model="scope.row.taskState" placeholder="任务状态"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'taskState',$event)">
+ 										 </mdp-select>
 								</template>
               </el-table-column>
               <el-table-column sortable prop="rate" label="进度" width="100">
@@ -484,8 +484,8 @@
                 width="100"
               >
 								<template slot-scope="scope">
-										 <mdp-select-tag size="mini" @visible-change="selectVisible(scope.row,$event)" item-code="priority" v-model="scope.row.level" placeholder="优先级"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'level',$event)">
- 										 </mdp-select-tag>
+										 <mdp-select show-style="tag" size="mini" @visible-change="selectVisible(scope.row,$event)" item-code="priority" v-model="scope.row.level" placeholder="优先级"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'level',$event)">
+ 										 </mdp-select>
 
 								</template>
               </el-table-column>

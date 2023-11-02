@@ -26,7 +26,7 @@
 				</el-table-column>
 				<el-table-column prop="status" label="状态" width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
-                        <mdp-select-tag item-code="testPlanStatus" v-model="scope.row.status" effect="dark" :disabled="true"></mdp-select-tag>
+                        <mdp-select show-style="tag" item-code="testPlanStatus" v-model="scope.row.status" effect="dark" :disabled="true"></mdp-select>
                    </template>
 				</el-table-column>
 				<el-table-column prop="stime" label="开始时间"  width="120" show-overflow-tooltip>

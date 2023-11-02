@@ -25,7 +25,7 @@
 							{{editForm.menuName?editForm.menuName:'暂无关联需求'}} <el-button type="text" @click="menuFormVisible=true">查看需求</el-button>
 						</el-form-item>
 						<el-form-item label="测试方式" prop="testType">
-							<mdp-select-tag placeholder="测试方式" clearable item-code="testType" v-model="editForm.testType" effect="dark" @change="editSomeFields(editForm,'testType',$event)" :disabled="true"></mdp-select-tag>
+							<mdp-select show-style="tag" placeholder="测试方式" clearable item-code="testType" v-model="editForm.testType" effect="dark" @change="editSomeFields(editForm,'testType',$event)" :disabled="true"></mdp-select>
 						</el-form-item>
 						<el-form-item label="版本号" prop="verNum">
 							<el-input v-model="editForm.verNum" placeholder="版本号" :maxlength="50" @change="editSomeFields(editForm,'verNum',$event)"></el-input>
@@ -39,7 +39,7 @@
 							</el-row>
 							<el-row v-if="editForm.testType=='1'" class="padding-bottom">
 								<div style="display:flex;">
-									<mdp-select-tag label="请求方法" v-model="autoStep.method" :dict="dicts.autoTestMethod" :disabled="true"></mdp-select-tag>
+									<mdp-select show-style="tag" label="请求方法" v-model="autoStep.method" :dict="dicts.autoTestMethod" :disabled="true"></mdp-select>
 									<span>{{ autoStep.url }}</span>
 									<el-button style="margin-left:10px;" type="primary" @click="sendMsgForTestSetting" title="执行用例">执行用例</el-button>
 
@@ -73,7 +73,7 @@
 									用例状态
 								</el-row>
 								<el-row>
-                                 	 <mdp-select-tag item-code="testCaseStatus" v-model="editForm.caseStatus" :disabled="true"></mdp-select-tag>
+                                 	 <mdp-select show-style="tag" item-code="testCaseStatus" v-model="editForm.caseStatus" :disabled="true"></mdp-select>
 								</el-row>
 							</el-col>
 							<el-col :span="6">
@@ -90,7 +90,7 @@
 									用例类型
 								</el-row>
 								<el-row>
-									<mdp-select-tag  item-code="caseType" v-model="editForm.caseType" :disabled="true" ></mdp-select-tag>
+									<mdp-select show-style="tag"  item-code="caseType" v-model="editForm.caseType" :disabled="true" ></mdp-select>
 
 								</el-row>
 							</el-col>
@@ -100,7 +100,7 @@
 									紧急程度
 								</el-row>
 								<el-row>
-									 <mdp-select-tag item-code="priority" v-model="editForm.cpriority"  :disabled="true"></mdp-select-tag>
+									 <mdp-select show-style="tag" item-code="priority" v-model="editForm.cpriority"  :disabled="true"></mdp-select>
 								</el-row>
 							</el-col>
 						</el-row>

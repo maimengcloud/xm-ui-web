@@ -1,63 +1,63 @@
 <template>
-    <el-row v-show="parentXmMenu.dclass==='3' && xmBugs.length>0">  
+    <el-row v-show="parentXmMenu.dclass==='3' && xmBugs.length>0">
       <el-row>
         <el-table :data="xmBugs" :max-height="400" @selection-change="selsChange" @row-click="rowClick">
           <el-table-column type="selection" label="全选"></el-table-column>
           <el-table-column prop="name" label="名称" min-width="350px">
-              <template slot-scope="scope">  
+              <template slot-scope="scope">
 					<div class="cell-box">
                        <div class="icon" :style="{backgroundColor:  '#F56C6C'}">
 						<i  style="width:20px;" class="el-icon-warning" ></i>
                       </div>
 					  <el-link @click="showEdit( scope.row,scope.$index)"  title="编辑任务">{{scope.row.sortLevel}}&nbsp;{{scope.row.name}}</el-link>
 
- 
- 
+
+
                     <div class="cell-bar">
-                           <el-button @click="copyOne(scope.row,scope.$index)" icon="el-icon-document-copy" circle title="复制一行"></el-button> 
+                           <el-button @click="copyOne(scope.row,scope.$index)" icon="el-icon-document-copy" circle title="复制一行"></el-button>
                    </div>
                   </div>
 			  </template>
-            </el-table-column> 
+            </el-table-column>
 
 					<el-table-column prop="bugStatus" label="状态"  width="100">
-						<template slot-scope="scope">    
-										 <mdp-select-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts.bugStatus"    v-model="scope.row.bugStatus" placeholder="类型"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'bugStatus',$event)">
- 										 </mdp-select-tag>   
+						<template slot-scope="scope">
+										 <mdp-select show-style="tag" @visible-change="selectVisible(scope.row,$event)" :dict="dicts.bugStatus"    v-model="scope.row.bugStatus" placeholder="类型"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'bugStatus',$event)">
+ 										 </mdp-select>
 						</template>
 					</el-table-column>
-					
+
 					<el-table-column prop="budgetWorkload" label="工时"  width="100">
-						<template slot-scope="scope">   
+						<template slot-scope="scope">
 									<div class="cell-text">
 										 {{scope.row.budgetWorkload}}&nbsp;/&nbsp;{{scope.row.actWorkload}}
 									</div>
-									<span class="cell-bar">   
+									<span class="cell-bar">
 										  <el-button @click="workloadRecord('actWorkload',scope.row)">登记工时</el-button>
-									</span> 
+									</span>
 						</template>
 					</el-table-column>
 					<el-table-column prop="priority" label="优先级"  width="100">
-						<template slot-scope="scope">    
-										 <mdp-select-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts.priority"    v-model="scope.row.priority" placeholder="优先级"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'priority',$event)">
- 										 </mdp-select-tag>   
-						</template>
-					</el-table-column> 
-					<el-table-column prop="solution" label="解决方案"  width="100">
-						<template slot-scope="scope">    
-										 <mdp-select-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts.bugSolution"   v-model="scope.row.solution" placeholder="类型"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'solution',$event)">
- 										 </mdp-select-tag>   
+						<template slot-scope="scope">
+										 <mdp-select show-style="tag" @visible-change="selectVisible(scope.row,$event)" :dict="dicts.priority"    v-model="scope.row.priority" placeholder="优先级"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'priority',$event)">
+ 										 </mdp-select>
 						</template>
 					</el-table-column>
-					<el-table-column prop="handlerUsername" label="负责人"  width="100" show-overflow-tooltip> 
-						<template slot-scope="scope">    
+					<el-table-column prop="solution" label="解决方案"  width="100">
+						<template slot-scope="scope">
+										 <mdp-select show-style="tag" @visible-change="selectVisible(scope.row,$event)" :dict="dicts.bugSolution"   v-model="scope.row.solution" placeholder="类型"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'solution',$event)">
+ 										 </mdp-select>
+						</template>
+					</el-table-column>
+					<el-table-column prop="handlerUsername" label="负责人"  width="100" show-overflow-tooltip>
+						<template slot-scope="scope">
 								<mdp-select-user-xm @visible-change="selectVisible(scope.row,$event)" userid-key="handlerUserid" username-key="handlerUsername" :project-id="scope.row.projectId" v-model="scope.row" @change="editXmTaskSomeFields(scope.row,'handlerUserid',$event)"></mdp-select-user-xm>
 
 						</template>
 					</el-table-column>
-        </el-table> 
+        </el-table>
       </el-row>
-      <xm-group-dialog ref="xmGroupDialog" :sel-project=" {id:linkProjectId} " :is-select-single-user="1" @user-confirm="onUserConfirm"></xm-group-dialog> 
+      <xm-group-dialog ref="xmGroupDialog" :sel-project=" {id:linkProjectId} " :is-select-single-user="1" @user-confirm="onUserConfirm"></xm-group-dialog>
 	        <el-dialog :title="'新增缺陷'" :visible.sync="addFormVisible" append-to-body modal-append-to-body>
           <el-form :model="addForm" :rules="addFormRules" ref="addForm">
             <el-form-item  prop="name">
@@ -68,7 +68,7 @@
 					缺陷名称
 			</template>
               <el-input v-model="addForm.name" autocomplete="off" ></el-input>
-            </el-form-item> 
+            </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button @click="addFormVisible = false">关 闭</el-button>
@@ -79,14 +79,14 @@
 		<el-dialog  title="编辑缺陷"   :visible.sync="editFormVisible"   width="90%"  top="20px"  :close-on-click-modal="false" append-to-body>
 				<xm-question-edit :sel-project=" {id:editForm.projectId,name:editForm.projectName} " :xm-question="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit" @edit-fields="afterEditSubmit"></xm-question-edit>
 		</el-dialog>
-    </el-row> 
+    </el-row>
 </template>
 
 <script>
 import Vue from "vue";
 import util from "@/common/js/util"; //全局公共库
 import treeTool from "@/common/js/treeTool"; //全局公共库
- import { initSimpleDicts } from '@/api/mdp/meta/item'; //下拉框数据查询 
+ import { initSimpleDicts } from '@/api/mdp/meta/item'; //下拉框数据查询
  	import { listXmQuestion ,addXmQuestion,batchDelXmQuestion,editXmQuestionSomeFields} from '@/api/xm/core/xmQuestion';
 
 	import XmGroupDialog from '../xmGroup/XmGroupDialog';
@@ -95,9 +95,9 @@ import treeTool from "@/common/js/treeTool"; //全局公共库
 
 export default {
   computed: {
-    ...mapGetters(["userInfo", "roles"]), 
-    
-			calcMenuLabel(){ 
+    ...mapGetters(["userInfo", "roles"]),
+
+			calcMenuLabel(){
 				var params={label:'工作项',icon:'',color:''};
 				if(this.parentXmMenu.dclass==='0'){
 					params={label:'史诗',icon:'el-icon-s-promotion',color:'rgb(255, 153, 51)'};
@@ -105,25 +105,25 @@ export default {
 					params={label:'特性',icon:'el-icon-s-flag',color:'rgb(0, 153, 51)'};
 				}else if(this.parentXmMenu.dclass==='2'){
 					params={label:'故事',icon:'el-icon-document',color:' rgb(79, 140, 255)'};
-				} 
+				}
 				return params;
-			},  
+			},
   },
-  props: [ 
+  props: [
     'parentXmMenu','linkProjectId'
   ],
-  watch: { 
+  watch: {
     'parentXmMenu':function(){
       this.initData();
     },
     'xmBugs':function(){
       this.$emit("bugs-change",this.xmBugs)
     }
-    
+
   },
-  data() { 
+  data() {
     return{
-      load:{edit:false,list:false,add:false,del:false,}, 
+      load:{edit:false,list:false,add:false,del:false,},
       xmBugs:[],
 		editForm: {
 			id:'',name:'',projectId:'',projectName:'',taskId:'',taskName:'',endTime:'',askUserid:'',askUsername:'',handlerUserid:'',handlerUsername:'',priority:'',solution:'',processTime:'',receiptMessage:'',receiptTime:'',description:'',createUserid:'',createUsername:'',createTime:'',bugStatus:'',receiptMessage:'',
@@ -154,7 +154,7 @@ export default {
 
     }
   }, //end data
-  methods: { 
+  methods: {
     ...util,
     selectVisible(row,visible){
       if(visible){
@@ -185,24 +185,24 @@ export default {
      afterEditSubmit(row){
 		Object.assign(this.editForm,row)
 	 },
-    initData(){  
-      this.xmBugs=[] 
+    initData(){
+      this.xmBugs=[]
       if(!this.parentXmMenu || !this.parentXmMenu.menuId){
         return;
       }
       var dclass=this.parentXmMenu.dclass;
       if(dclass==='3'){
         this.getXmBugs();
-      } 
-    }, 
-    addXmBug(){ 
-		this.$refs.addForm.validate().then(res=>{ 
+      }
+    },
+    addXmBug(){
+		this.$refs.addForm.validate().then(res=>{
        var question={menuId:this.parentXmMenu.menuId,menuName:this.parentXmMenu.menuName,productId:this.parentXmMenu.productId,iterationId:this.parentXmMenu.iterationId,iterationName:this.parentXmMenu.iterationName}
              question.priority='3'
              question.verNum=this.parentXmMenu.sinceVersion;
              question.pverNum=this.parentXmMenu.sinceVersion;
              question.askUserid=this.userInfo.userid
-             question.askUsername=this.userInfo.username 
+             question.askUsername=this.userInfo.username
              question.qtype="1"
              question.id=null;
              question.name=this.addForm.name
@@ -213,17 +213,17 @@ export default {
 								this.load.edit=false
 								var tips=res.data.tips;
 								if(tips.isOk){
- 									this.$emit('submit',res.data.data);//  @submit="afterAddSubmit" 
+ 									this.$emit('submit',res.data.data);//  @submit="afterAddSubmit"
                    this.xmBugs.push(res.data.data)
 								}
 								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 							}).catch( err  => this.load.edit=false);
 		})
-    },  
+    },
       showAdd() {
           this.addFormVisible=true;
     },
-    
+
 			batchDel: function () {
 				if(this.sels.length<=0){
 					this.$notify({position:'bottom-left',showClose:true,message:"请选择要删除的缺陷", type: "error"});
@@ -243,9 +243,9 @@ export default {
 					}).catch( err  => this.load.del=false );
 				});
 			},
-      
+
 			editXmQuestionSomeFields(row,fieldName,$event){
-        
+
 				var params={ids:[row.id]};
 				if(this.sels.length>0){
 					if(!this.sels.some(k=>k.id==row.id)){
@@ -255,16 +255,16 @@ export default {
 					params.ids=this.sels.map(i=>i.id)
 				}
 				if(fieldName==='handlerUserid'){
-					if($event){ 	
+					if($event){
 						params[fieldName]=$event[0].userid;
-						params.handlerUsername=$event[0].username 
+						params.handlerUsername=$event[0].username
 					}else{
 						return;
 					}
 				}else if(fieldName==='tagIds'){
-					if($event){ 	
+					if($event){
 						params[fieldName]=$event.map(i=>i.tagId).join(",");
-						params.tagNames=$event.map(i=>i.tagName).join(","); 
+						params.tagNames=$event.map(i=>i.tagName).join(",");
 					}else{
 						return;
 					}
@@ -277,16 +277,16 @@ export default {
 				}else{
 					params[fieldName]=$event
 				}
-				
+
 				editXmQuestionSomeFields(params).then(res=>{
 					var tips = res.data.tips;
-					if(tips.isOk){ 
+					if(tips.isOk){
 						if(this.sels.length>0){
-							 this.sels.forEach(i=>{ 
-								Object.assign(i,params) 
+							 this.sels.forEach(i=>{
+								Object.assign(i,params)
 							 })
-						}else{ 
-							Object.assign(row,params) 
+						}else{
+							Object.assign(row,params)
 						}
 						Object.assign(this.editFormBak,this.editForm)
 					}else{
@@ -295,31 +295,31 @@ export default {
 					}
 				})
 			},
-    
+
 			showEdit(row,index){
 				this.editForm=row
 				this.editFormVisible=true
 			},
-    
+
 			onUserConfirm:function(groupUsers,option){
 				 if(option.action=='editHandlerUserid'){
 					 this.editXmQuestionSomeFields(option.data,"handlerUserid",groupUsers)
 					 return;
-				}  
+				}
  				this.getXmBugs();
 
-			},  
+			},
 			copyOne(row,index){
-				
+
 				var params={...row}
 				params.id=null;
 				params.createUserid=this.userInfo.userid
-				params.createUsername=this.userInfo.username 
+				params.createUsername=this.userInfo.username
 				params.bugStatus="1"
 				params.name=row.name+'V'
 				addXmQuestion(params).then(res=>{
 					var tips = res.data.tips
-					if(tips.isOk){ 
+					if(tips.isOk){
 						var row2=res.data.data
 						this.xmBugs.splice(index+1,0,row2)
 						//this.pageInfo.total=this.pageInfo.total+1
@@ -330,14 +330,14 @@ export default {
 				})
 			}
   }, //end methods
-  components: { 
+  components: {
     XmGroupDialog,'xm-question-edit':()=>import('../xmQuestion/XmQuestionEdit'),MdpSelectUserXm,
   },
-  mounted() { 
+  mounted() {
     this.initData();
-    
+
 				initSimpleDicts('all',['bugSeverity','bugSolution','bugStatus','bugType','priority','bugRepRate']).then(res=>{
-					if(res.data.tips.isOk){ 
+					if(res.data.tips.isOk){
 						this.dicts=res.data.data;
 					}
 				});
@@ -345,16 +345,16 @@ export default {
 };
 </script>
 
-<style lang="less" scoped> 
+<style lang="less" scoped>
     .my-cell-bar{
-    display: none; 
+    display: none;
   }
 
 .el-table__row td:hover{
 	.my-cell-bar{
     width:90%;
     padding-right:0px;
-		display: inline-block;  
+		display: inline-block;
 	}
   .my-cell-text{
     display:none;

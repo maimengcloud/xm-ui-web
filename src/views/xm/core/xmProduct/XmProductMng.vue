@@ -265,7 +265,7 @@
 						</el-table-column>
 						<el-table-column prop="pstatus" label="状态" width="100" sortable :formatter="formatPstatus"  fixed="left">
 							<template slot-scope="scope">
-								<mdp-select-tag placeholder="状态" item-code="xmProductPstatus" v-model="scope.row.pstatus" effect="dark"></mdp-select-tag>
+								<mdp-select show-style="tag" placeholder="状态" item-code="xmProductPstatus" v-model="scope.row.pstatus" effect="dark"></mdp-select>
 							</template>
 						</el-table-column>
 						<el-table-column prop="finishRate" label="进度" width="180" sortable>
