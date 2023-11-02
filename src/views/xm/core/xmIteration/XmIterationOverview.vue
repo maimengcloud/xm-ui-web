@@ -1,6 +1,6 @@
 <template>
   <section>
-    <el-row :style="{overflowX: 'hidden',height:(maxTableHeight-24)+'px'}" ref="table">
+    <el-row  height="100px" v-adaptive="{bottomOffset:30}" ref="table">
       <el-row :gutter="10" style="margin-bottom:10px">
           <el-col :span="8" >
             <el-card class="box-card" style="padding:0px ;height:425px">
