@@ -127,8 +127,8 @@
 
 						<el-row class="padding">
 							<el-col :span="8"> 
-									<mdp-select-dict-x label="状态" v-model="editForm.status" :dict="dicts['menuStatus']" @change="editXmMenuSomeFields(editForm,'status',$event)">
- 									</mdp-select-dict-x> 
+									<mdp-select  show-style="x" label="状态" v-model="editForm.status" :dict="dicts['menuStatus']" @change="editXmMenuSomeFields(editForm,'status',$event)">
+ 									</mdp-select> 
 							</el-col>
 							
 							<el-col :span="8">   

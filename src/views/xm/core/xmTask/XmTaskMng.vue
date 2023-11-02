@@ -34,9 +34,9 @@
               >我放弃的</el-option
             >
           </el-select>
-          <mdp-select-dict class="hidden-md-and-down" placeholder="状态" style="width: 6em;"  clearable :dict="dicts['taskState']" v-model="filters.taskState"/>
+          <mdp-select class="hidden-md-and-down" placeholder="状态" style="width: 6em;"  clearable :dict="dicts['taskState']" v-model="filters.taskState"/>
 
-          <mdp-select-dict class="hidden-md-and-down" placeholder="类型" style="width: 6em;"  clearable :dict="dicts['taskType']" v-model="filters.taskType"/>
+          <mdp-select class="hidden-md-and-down" placeholder="类型" style="width: 6em;"  clearable :dict="dicts['taskType']" v-model="filters.taskType"/>
  
           <el-input
             style="width: 15em;"
@@ -392,8 +392,8 @@
                 width="100"
               >
 								<template slot-scope="scope">
-										 <mdp-select-dict-tag size="mini" @visible-change="selectVisible(scope.row,$event)"  :dict="dicts['taskState']" v-model="scope.row.taskState" placeholder="任务状态"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'taskState',$event)">
- 										 </mdp-select-dict-tag>
+										 <mdp-select-tag size="mini" @visible-change="selectVisible(scope.row,$event)"  :dict="dicts['taskState']" v-model="scope.row.taskState" placeholder="任务状态"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'taskState',$event)">
+ 										 </mdp-select-tag>
 								</template>
               </el-table-column>
               <el-table-column sortable prop="rate" label="进度" width="100">
@@ -484,8 +484,8 @@
                 width="100"
               >
 								<template slot-scope="scope">
-										 <mdp-select-dict-tag size="mini" @visible-change="selectVisible(scope.row,$event)" :dict="dicts['priority']" v-model="scope.row.level" placeholder="优先级"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'level',$event)">
- 										 </mdp-select-dict-tag>
+										 <mdp-select-tag size="mini" @visible-change="selectVisible(scope.row,$event)" :dict="dicts['priority']" v-model="scope.row.level" placeholder="优先级"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'level',$event)">
+ 										 </mdp-select-tag>
 
 								</template>
               </el-table-column>

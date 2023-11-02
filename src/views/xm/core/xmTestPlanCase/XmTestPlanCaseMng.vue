@@ -8,10 +8,10 @@
             <el-col :span="!xmTestCase||!xmTestCase.id?18:24">
                 <el-row>
                     <el-input v-model="filters.key" style="width: 15%;" placeholder="模糊查询"  clearable></el-input>
-                    <mdp-select-dict style="width:15%;" placeholder="用例状态" clearable :dict="dicts['testCaseStatus']" v-model="filters.caseStatus" effect="dark"></mdp-select-dict> 
-                    <mdp-select-dict placeholder="测试方式" style="width:15%;" clearable :dict="dicts['testType']" v-model="filters.testType" effect="dark"></mdp-select-dict> 
+                    <mdp-select style="width:15%;" placeholder="用例状态" clearable :dict="dicts['testCaseStatus']" v-model="filters.caseStatus" effect="dark"></mdp-select> 
+                    <mdp-select placeholder="测试方式" style="width:15%;" clearable :dict="dicts['testType']" v-model="filters.testType" effect="dark"></mdp-select> 
 
-                    <mdp-select-dict style="width:15%;" placeholder="执行结果" clearable :dict="dicts['testStepTcode']" v-model="filters.execStatus" effect="dark"></mdp-select-dict> 
+                    <mdp-select style="width:15%;" placeholder="执行结果" clearable :dict="dicts['testStepTcode']" v-model="filters.execStatus" effect="dark"></mdp-select> 
 
                     <el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestPlanCases" icon="el-icon-search">查询</el-button>
                     <span style="float:right;" v-if="!xmTestCase||!xmTestCase.id">
@@ -40,18 +40,18 @@
                         </el-table-column>	
                         <el-table-column prop="caseStatus" label="用例状态" width="100" show-overflow-tooltip>
                             <template slot-scope="scope"> 
-                                <mdp-select-dict-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts['testCaseStatus']" v-model="scope.row.caseStatus" effect="dark" @change="editSomeFields(scope.row,'caseStatus',$event)" :disabled="true"></mdp-select-dict-tag> 
+                                <mdp-select-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts['testCaseStatus']" v-model="scope.row.caseStatus" effect="dark" @change="editSomeFields(scope.row,'caseStatus',$event)" :disabled="true"></mdp-select-tag> 
                             </template>
                         </el-table-column>  
                         <template v-if="select!==true"> 
                             <el-table-column prop="testType" label="执行方式" width="120" >
                                 <template slot-scope="scope">
-                                    <mdp-select-dict-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts['testType']" v-model="scope.row.testType" @change="editSomeFields(scope.row,'testType',$event)" :disabled="true"></mdp-select-dict-tag>  
+                                    <mdp-select-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts['testType']" v-model="scope.row.testType" @change="editSomeFields(scope.row,'testType',$event)" :disabled="true"></mdp-select-tag>  
                                 </template>
                             </el-table-column>
                             <el-table-column prop="execStatus" label="执行结果" width="120" show-overflow-tooltip>
                                 <template slot-scope="scope"> 
-                                    <mdp-select-dict-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts['testStepTcode']" v-model="scope.row.execStatus" effect="dark" @change="editSomeFields(scope.row,'execStatus',$event)"></mdp-select-dict-tag> 
+                                    <mdp-select-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts['testStepTcode']" v-model="scope.row.execStatus" effect="dark" @change="editSomeFields(scope.row,'execStatus',$event)"></mdp-select-tag> 
                                 </template>
                             </el-table-column>
                             <el-table-column prop="execUsername" label="执行人姓名" min-width="120" >
@@ -62,7 +62,7 @@
                             </el-table-column>
                             <el-table-column prop="priority" label="优先级" width="120" >
                                 <template slot-scope="scope">
-                                    <mdp-select-dict-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts['priority']" v-model="scope.row.priority" @change="editSomeFields(scope.row,'priority',$event)"></mdp-select-dict-tag>  
+                                    <mdp-select-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts['priority']" v-model="scope.row.priority" @change="editSomeFields(scope.row,'priority',$event)"></mdp-select-tag>  
                                 </template>
                             </el-table-column>
                             <el-table-column prop="remark" label="执行备注" min-width="150" show-overflow-tooltip>

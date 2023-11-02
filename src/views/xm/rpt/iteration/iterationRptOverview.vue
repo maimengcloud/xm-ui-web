@@ -48,7 +48,7 @@
 						<mdp-select-user-xm label="负责人" userid-key="adminUserid" username-key="adminUsername" v-model="rawDatas"></mdp-select-user-xm>
 					</el-col> 
 					<el-col :span="8">
-						<mdp-select-dict-x label="状态" :dict="dicts['iterationStatus']" v-model="rawDatas.istatus"></mdp-select-dict-x>
+						<mdp-select  show-style="x" label="状态" :dict="dicts['iterationStatus']" v-model="rawDatas.istatus"></mdp-select>
 					</el-col> 
 				</el-row>     
  		

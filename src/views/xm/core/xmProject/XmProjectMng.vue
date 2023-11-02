@@ -13,7 +13,7 @@
 				<el-option  value="myExecuserStatus1"  label="我执行"></el-option> 
 				<el-option  value="myExecuserStatus7"  label="我放弃"></el-option> 
 			</el-select> 
-			<mdp-select-dict label="项目状态" placeholder="状态" style="width:10em;" :dict="dicts['projectStatus']" v-model="filters.status"></mdp-select-dict> 
+			<mdp-select label="项目状态" placeholder="状态" style="width:10em;" :dict="dicts['projectStatus']" v-model="filters.status"></mdp-select> 
 			
 			<el-input v-model="filters.key" style="width:10em;" placeholder="名称查询" clearable >
 			</el-input>
@@ -238,12 +238,12 @@
 					</el-table-column> 
 					<el-table-column prop="status" label="状态" width="100" sortable  fixed="left"> 
 						<template slot-scope="scope"> 
-							<mdp-select-dict-tag :dict="dicts['projectStatus']" :disabled="true" v-model="scope.row.status"></mdp-select-dict-tag>		
+							<mdp-select-tag :dict="dicts['projectStatus']" :disabled="true" v-model="scope.row.status"></mdp-select-tag>		
  						</template>
 					</el-table-column>   
 					<el-table-column prop="bizFlowState" label="审批状态" min-width="120" >
 						<template slot-scope="scope">
-							<mdp-select-dict-tag :dict="dicts['bizFlowState']" :disabled="true" v-model="scope.row.bizFlowState"></mdp-select-dict-tag>		
+							<mdp-select-tag :dict="dicts['bizFlowState']" :disabled="true" v-model="scope.row.bizFlowState"></mdp-select-tag>		
 						</template>
 					</el-table-column>
 					<el-table-column prop="finishRate" label="进度" width="180" sortable>

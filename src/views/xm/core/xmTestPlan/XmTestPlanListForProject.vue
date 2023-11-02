@@ -28,7 +28,7 @@
 				</el-table-column>  
 				<el-table-column prop="status" label="状态" width="120" show-overflow-tooltip>
 				    <template slot-scope="scope"> 
-                        <mdp-select-dict-tag :dict="dicts['testPlanStatus']" v-model="scope.row.status" effect="dark" :disabled="true"></mdp-select-dict-tag> 
+                        <mdp-select-tag :dict="dicts['testPlanStatus']" v-model="scope.row.status" effect="dark" :disabled="true"></mdp-select-tag> 
                    </template>
 				</el-table-column> 
 				<el-table-column prop="stime" label="开始时间"  width="120" show-overflow-tooltip>

@@ -25,7 +25,7 @@
 							{{editForm.menuName?editForm.menuName:'暂无关联需求'}} <el-button type="text" @click="menuFormVisible=true">查看需求</el-button>
 						</el-form-item>  
 						<el-form-item label="测试方式" prop="testType">
-							<mdp-select-dict-tag placeholder="测试方式" clearable :dict="dicts['testType']" v-model="editForm.testType" effect="dark" @change="editSomeFields(editForm,'testType',$event)" :disabled="true"></mdp-select-dict-tag> 
+							<mdp-select-tag placeholder="测试方式" clearable :dict="dicts['testType']" v-model="editForm.testType" effect="dark" @change="editSomeFields(editForm,'testType',$event)" :disabled="true"></mdp-select-tag> 
 						</el-form-item> 
 						<el-form-item label="版本号" prop="verNum">
 							<el-input v-model="editForm.verNum" placeholder="版本号" :maxlength="50" @change="editSomeFields(editForm,'verNum',$event)"></el-input>
@@ -39,7 +39,7 @@
 							</el-row>
 							<el-row v-if="editForm.testType=='1'" class="padding-bottom">
 								<div style="display:flex;">
-									<mdp-select-dict-tag label="请求方法" v-model="autoStep.method" :dict="dicts.autoTestMethod" :disabled="true"></mdp-select-dict-tag>
+									<mdp-select-tag label="请求方法" v-model="autoStep.method" :dict="dicts.autoTestMethod" :disabled="true"></mdp-select-tag>
 									<span>{{ autoStep.url }}</span>
 									<el-button style="margin-left:10px;" type="primary" @click="sendMsgForTestSetting" title="执行用例">执行用例</el-button>
 
@@ -50,10 +50,10 @@
 									<mdp-select-user-xm label="执行人" userid-key="execUserid" username-key="execUsername" v-model="editForm" @change="editSomeFields(editForm,'execUserid',$event)"></mdp-select-user-xm>
 								</el-col>  
 								<el-col :span="6">  
-									<mdp-select-dict-x label="优先级" :dict="dicts['priority']" v-model="editForm.priority"  @change="editSomeFields(editForm,'priority',$event)"></mdp-select-dict-x>
+									<mdp-select  show-style="x" label="优先级" :dict="dicts['priority']" v-model="editForm.priority"  @change="editSomeFields(editForm,'priority',$event)"></mdp-select>
 								</el-col> 
 								<el-col :span="6">  
-									<mdp-select-dict-x label="执行结果" :dict="dicts['testStepTcode']" v-model="editForm.execStatus" :get-icon="getExecStatusIcon"  @change="editSomeFields(editForm,'execStatus',$event)"></mdp-select-dict-x> 
+									<mdp-select  show-style="x" label="执行结果" :dict="dicts['testStepTcode']" v-model="editForm.execStatus" :get-icon="getExecStatusIcon"  @change="editSomeFields(editForm,'execStatus',$event)"></mdp-select> 
 								</el-col>  
 								<el-col :span="6">  
 									<el-button v-if="opType!='add'" style="margin-top:12px;float:right;" @click="$emit('next')" type="primary">下一条</el-button>  
@@ -73,7 +73,7 @@
 									用例状态
 								</el-row>
 								<el-row>
-                                 	 <mdp-select-dict-tag :dict="dicts['testCaseStatus']" v-model="editForm.caseStatus" :disabled="true"></mdp-select-dict-tag>
+                                 	 <mdp-select-tag :dict="dicts['testCaseStatus']" v-model="editForm.caseStatus" :disabled="true"></mdp-select-tag>
 								</el-row>
 							</el-col>
 							<el-col :span="6">
@@ -90,7 +90,7 @@
 									用例类型
 								</el-row>
 								<el-row>
-									<mdp-select-dict-tag  :dict="dicts['caseType']" v-model="editForm.caseType" :disabled="true" ></mdp-select-dict-tag>
+									<mdp-select-tag  :dict="dicts['caseType']" v-model="editForm.caseType" :disabled="true" ></mdp-select-tag>
 
 								</el-row>
 							</el-col>
@@ -100,7 +100,7 @@
 									紧急程度
 								</el-row>
 								<el-row>
-									 <mdp-select-dict-tag :dict="dicts['priority']" v-model="editForm.cpriority"  :disabled="true"></mdp-select-dict-tag> 
+									 <mdp-select-tag :dict="dicts['priority']" v-model="editForm.cpriority"  :disabled="true"></mdp-select-tag> 
 								</el-row>
 							</el-col>
 						</el-row> 
@@ -164,7 +164,7 @@
 						</el-table> 
 					</el-tab-pane>
 					<el-tab-pane name="13" label="Body"  v-if="editForm.testType=='1'">
-						<mdp-select-dict-x style="margin-bottom:10px;" class="padding" label="参数格式" v-model="autoStep.bodyType" :dict="dicts.autoTestBodyType" :disabled="true"></mdp-select-dict-x>
+						<mdp-select  show-style="x" style="margin-bottom:10px;" class="padding" label="参数格式" v-model="autoStep.bodyType" :dict="dicts.autoTestBodyType" :disabled="true"></mdp-select>
 						<el-input v-if="autoStep.bodyType=='json'" type="textarea" :rows="10" v-model="autoStep.body" readonly></el-input>
 						<el-input v-if="autoStep.bodyType=='xml'" type="textarea" :rows="10" v-model="autoStep.body" readonly></el-input>
 
@@ -218,7 +218,7 @@
 					</el-tab-pane>
 					<el-tab-pane name="16" label="Auth"  v-if="editForm.testType=='1'">
 						
-						<mdp-select-dict-x style="margin-bottom:10px;" class="padding" label="授权方式" v-model="autoStep.authType" :dict="dicts.autoTestAuthType" :disabled="true"></mdp-select-dict-x>
+						<mdp-select  show-style="x" style="margin-bottom:10px;" class="padding" label="授权方式" v-model="autoStep.authType" :dict="dicts.autoTestAuthType" :disabled="true"></mdp-select>
 							
 
 						<el-row v-if="autoStep.authType=='basic-auth'">

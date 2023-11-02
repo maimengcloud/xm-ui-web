@@ -12,8 +12,8 @@
                     
                     <el-checkbox v-if="xmTestPlan && xmTestPlan.id" true-label="1" false-label="" v-model="filters.notJoinPlan" :title="'查询未曾加入计划【'+xmTestPlan.name+'】的测试用例'"> 未加入 </el-checkbox>
                     <el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>
-                    <mdp-select-dict label="状态" style="width:15%;" clearable placeholder="用例状态" :dict="dicts['testCaseStatus']" v-model="filters.caseStatus"></mdp-select-dict> 
-                    <mdp-select-dict placeholder="测试方式" style="width:15%;" clearable  :dict="dicts['testType']" v-model="filters.testType" effect="dark"></mdp-select-dict> 
+                    <mdp-select label="状态" style="width:15%;" clearable placeholder="用例状态" :dict="dicts['testCaseStatus']" v-model="filters.caseStatus"></mdp-select> 
+                    <mdp-select placeholder="测试方式" style="width:15%;" clearable  :dict="dicts['testType']" v-model="filters.testType" effect="dark"></mdp-select> 
 
                     <el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestCases" icon="el-icon-search">查询</el-button>
                     <span style="float:right;">
@@ -39,13 +39,13 @@
                         
                         <el-table-column prop="caseStatus" label="状态" min-width="120" show-overflow-tooltip>
                             <template slot-scope="scope">
-                                <mdp-select-dict-tag :dict="dicts['testCaseStatus']" v-model="scope.row.caseStatus" effect="dark" :disabled="true"></mdp-select-dict-tag>                                         
+                                <mdp-select-tag :dict="dicts['testCaseStatus']" v-model="scope.row.caseStatus" effect="dark" :disabled="true"></mdp-select-tag>                                         
                             </template>
                         </el-table-column> 
                         
                         <el-table-column prop="testType" label="测试方式" min-width="120" show-overflow-tooltip>
                             <template slot-scope="scope">
-                                <mdp-select-dict-tag :dict="dicts['testType']" v-model="scope.row.testType" effect="dark" :disabled="true"></mdp-select-dict-tag>                                         
+                                <mdp-select-tag :dict="dicts['testType']" v-model="scope.row.testType" effect="dark" :disabled="true"></mdp-select-tag>                                         
                             </template>
                         </el-table-column> 
                         <el-table-column prop="caseRemark" label="备注" min-width="120" show-overflow-tooltip>

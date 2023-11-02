@@ -6,7 +6,7 @@
 						<el-option label="我相关的产品" value="compete"></el-option>
 						<el-option label="按产品编号精确查找" value="productId"></el-option>
 					</el-select> 
-					<mdp-select-dict placeholder="状态" :dict="dicts['xmProductPstatus']" v-model="filters.pstatus"></mdp-select-dict>
+					<mdp-select placeholder="状态" :dict="dicts['xmProductPstatus']" v-model="filters.pstatus"></mdp-select>
 					<el-input v-if="filters.queryScope=='productId'" style="width:20%;"  v-model="filters.id"  placeholder="输入产品编号" @keyup.enter.native="searchXmProducts" clearable>
 					</el-input>
 					<el-input v-if="filters.queryScope!='productId'" v-model="filters.key" style="width: 20%;" placeholder="名称查询" clearable>   
@@ -265,7 +265,7 @@
 						</el-table-column>
 						<el-table-column prop="pstatus" label="状态" width="100" sortable :formatter="formatPstatus"  fixed="left"> 
 							<template slot-scope="scope"> 		
-								<mdp-select-dict-tag placeholder="状态" :dict="dicts['xmProductPstatus']" v-model="scope.row.pstatus" effect="dark"></mdp-select-dict-tag> 
+								<mdp-select-tag placeholder="状态" :dict="dicts['xmProductPstatus']" v-model="scope.row.pstatus" effect="dark"></mdp-select-tag> 
 							</template>
 						</el-table-column>
 						<el-table-column prop="finishRate" label="进度" width="180" sortable>

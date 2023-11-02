@@ -36,11 +36,11 @@
 							</el-col>  
 							
 							<el-col :span="8"> 
- 									<mdp-select-dict-x  :label="addForm.ntype=='0'?'任务状态':'计划状态'" :dict="dicts['taskState']" v-model="addForm.taskState" @change="editXmTaskSomeFields(addForm,'taskState',$event)"></mdp-select-dict-x>
+ 									<mdp-select  show-style="x"  :label="addForm.ntype=='0'?'任务状态':'计划状态'" :dict="dicts['taskState']" v-model="addForm.taskState" @change="editXmTaskSomeFields(addForm,'taskState',$event)"></mdp-select>
 							</el-col> 
 							
 							<el-col :span="8"> 
- 									<mdp-select-dict-x label="优先级别" :dict="dicts['priority']" v-model="addForm.level" @change="editXmTaskSomeFields(addForm,'level',$event)"></mdp-select-dict-x>
+ 									<mdp-select  show-style="x" label="优先级别" :dict="dicts['priority']" v-model="addForm.level" @change="editXmTaskSomeFields(addForm,'level',$event)"></mdp-select>
 							</el-col> 
 							
 						</el-row>

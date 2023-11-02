@@ -42,11 +42,11 @@
 						<mdp-select-user-xm label="负责人" userid-key="cuserid" username-key="cusername" v-model="rawDatas"></mdp-select-user-xm>
 					</el-col>
 					<el-col :span="8">
-						<mdp-select-dict-x label="状态" :dict="dicts['testPlanStatus']" v-model="rawDatas.status"></mdp-select-dict-x>
+						<mdp-select  show-style="x" label="状态" :dict="dicts['testPlanStatus']" v-model="rawDatas.status"></mdp-select>
 					</el-col>
 					
 					<el-col :span="8">
-						<mdp-select-dict-x label="测试结果" :dict="dicts['testPlanTcode']" v-model="rawDatas.tcode"></mdp-select-dict-x>
+						<mdp-select  show-style="x" label="测试结果" :dict="dicts['testPlanTcode']" v-model="rawDatas.tcode"></mdp-select>
 					</el-col>
 				</el-row>   
  				<el-form-item label="归属测试库" prop="casedbName">

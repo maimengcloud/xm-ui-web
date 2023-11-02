@@ -23,7 +23,7 @@
 						</el-form-item> 
 
 						<el-form-item label="测试方式" prop="testType">
-							<mdp-select-dict-tag placeholder="测试方式" clearable :dict="dicts['testType']" v-model="editForm.testType" effect="dark" @change="editSomeFields(editForm,'testType',$event)"></mdp-select-dict-tag> 
+							<mdp-select-tag placeholder="测试方式" clearable :dict="dicts['testType']" v-model="editForm.testType" effect="dark" @change="editSomeFields(editForm,'testType',$event)"></mdp-select-tag> 
 						</el-form-item>  
 						<el-form-item label="版本号" prop="verNum">
 							<el-input v-model="editForm.verNum" placeholder="版本号" :maxlength="50" @change="editSomeFields(editForm,'verNum',$event)"></el-input>
@@ -38,7 +38,7 @@
 						</el-form-item>   
 						<el-form-item label="接口地址" prop="url">     
 							<div style="display:flex;">
-								<mdp-select-dict-tag label="请求方法" v-model="autoStep.method" :dict="dicts.autoTestMethod" ></mdp-select-dict-tag>  
+								<mdp-select-tag label="请求方法" v-model="autoStep.method" :dict="dicts.autoTestMethod" ></mdp-select-tag>  
 									<el-input  v-model="autoStep.url" placeholder="url 如#{baseApi}/user/list,支持通过 #{变量名}引用环境变量"></el-input>
 								<el-button style="margin-left:10px;" type="primary" @click="sendMsgForTestSetting" title="执行用例">发送</el-button>
 							</div>
@@ -46,17 +46,17 @@
  						<el-row class="padding">
 								
 								<el-col :span="6">  
-									<mdp-select-dict-x label="状态" :dict="dicts['testCaseStatus']" v-model="editForm.caseStatus"  @change="editSomeFields(editForm,'caseStatus',$event)"></mdp-select-dict-x> 
+									<mdp-select  show-style="x" label="状态" :dict="dicts['testCaseStatus']" v-model="editForm.caseStatus"  @change="editSomeFields(editForm,'caseStatus',$event)"></mdp-select> 
 								</el-col> 
 								<el-col :span="6"> 
 									 <mdp-select-user-xm label="责任人" userid-key="cuserid" username-key="cusername" v-model="editForm" @change="editSomeFields(editForm,'cuserid',$event)" :product-id="editForm.productId"></mdp-select-user-xm>
  
 								</el-col>  
 								<el-col :span="6">  
-									<mdp-select-dict-x label="用例类型" :dict="dicts['caseType']" v-model="editForm.caseType"  @change="editSomeFields(editForm,'caseType',$event)"></mdp-select-dict-x>
+									<mdp-select  show-style="x" label="用例类型" :dict="dicts['caseType']" v-model="editForm.caseType"  @change="editSomeFields(editForm,'caseType',$event)"></mdp-select>
 								</el-col> 
 								<el-col :span="6">  
-									<mdp-select-dict-x label="优先级" :dict="dicts['priority']" v-model="editForm.cpriority"  @change="editSomeFields(editForm,'cpriority',$event)"></mdp-select-dict-x>
+									<mdp-select  show-style="x" label="优先级" :dict="dicts['priority']" v-model="editForm.cpriority"  @change="editSomeFields(editForm,'cpriority',$event)"></mdp-select>
 								</el-col> 
 							</el-row> 
 						<el-tabs v-model="activeTab">
@@ -99,7 +99,7 @@
 									</div>
 								</el-form-item>
 								<el-form-item label="请求方法">
-									<mdp-select-dict-tag label="请求方法" v-model="autoStep.method" :dict="dicts.autoTestMethod"></mdp-select-dict-tag>
+									<mdp-select-tag label="请求方法" v-model="autoStep.method" :dict="dicts.autoTestMethod"></mdp-select-tag>
 								</el-form-item>
  								<el-form-item label="查询参数"   class="field">
 									<div class="field-text">
@@ -145,7 +145,7 @@
 								</el-row>
  							</el-tab-pane>
 							<el-tab-pane name="13" label="Body"  v-if="editForm.testType=='1'">
-								<mdp-select-dict-x style="margin-bottom:10px;" class="padding" label="参数格式" v-model="autoStep.bodyType" :dict="dicts.autoTestBodyType"></mdp-select-dict-x>
+								<mdp-select  show-style="x" style="margin-bottom:10px;" class="padding" label="参数格式" v-model="autoStep.bodyType" :dict="dicts.autoTestBodyType"></mdp-select>
 								<el-input v-if="autoStep.bodyType=='json'" type="textarea" :rows="10" v-model="autoStep.body"></el-input>
 								<el-input v-if="autoStep.bodyType=='xml'" type="textarea" :rows="10" v-model="autoStep.body"></el-input>
 
@@ -259,7 +259,7 @@
  							</el-tab-pane>
 							<el-tab-pane name="16" label="Auth"  v-if="editForm.testType=='1'">
 								
-								<mdp-select-dict-x style="margin-bottom:10px;" class="padding" label="授权方式" v-model="autoStep.authType" :dict="dicts.autoTestAuthType"></mdp-select-dict-x>
+								<mdp-select  show-style="x" style="margin-bottom:10px;" class="padding" label="授权方式" v-model="autoStep.authType" :dict="dicts.autoTestAuthType"></mdp-select>
 								 
 
 								<el-row v-if="autoStep.authType=='basic-auth'">

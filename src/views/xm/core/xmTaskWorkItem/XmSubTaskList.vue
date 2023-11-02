@@ -23,8 +23,8 @@
                 width="100"
               >  
 								<template slot-scope="scope"> 
-										 <mdp-select-dict-tag  :dict="dicts.taskState"   v-model="scope.row.taskState" placeholder="任务状态"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'taskState',$event)">
- 										 </mdp-select-dict-tag>
+										 <mdp-select-tag  :dict="dicts.taskState"   v-model="scope.row.taskState" placeholder="任务状态"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'taskState',$event)">
+ 										 </mdp-select-tag>
  								</template>
               </el-table-column>
 					
@@ -56,8 +56,8 @@
                 width="100"
               >  
 								<template slot-scope="scope"> 
-										 <mdp-select-dict-tag :dict="dicts.priority"   v-model="scope.row.level" placeholder="优先级"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'level',$event)">
- 										 </mdp-select-dict-tag> 
+										 <mdp-select-tag :dict="dicts.priority"   v-model="scope.row.level" placeholder="优先级"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'level',$event)">
+ 										 </mdp-select-tag> 
 								</template>
               </el-table-column> 
               <el-table-column

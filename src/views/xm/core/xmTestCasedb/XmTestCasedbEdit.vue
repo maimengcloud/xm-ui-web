@@ -23,7 +23,7 @@
 					</el-col>
 					<el-col :span="8">
 						 
-						<mdp-select-dict-x label="状态" :dict="dicts['casedbStatus']" v-model="editForm.status"  @change="editSomeFields(editForm,'status',$event)"></mdp-select-dict-x>
+						<mdp-select  show-style="x" label="状态" :dict="dicts['casedbStatus']" v-model="editForm.status"  @change="editSomeFields(editForm,'status',$event)"></mdp-select>
 						 
 					</el-col>
 					

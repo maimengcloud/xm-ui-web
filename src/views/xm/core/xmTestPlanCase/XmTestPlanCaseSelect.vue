@@ -8,8 +8,8 @@
             <el-col :span="(xmTestCase&&xmTestCase.id)?24:18">
                 <el-row>
                     <el-input v-model="filters.key" style="width:20%;" placeholder="模糊查询"  clearable></el-input>
-                     <mdp-select-dict style="width:20%;" placeholder="用例状态" clearable :dict="dicts['testCaseStatus']" v-model="filters.caseStatus" effect="dark"></mdp-select-dict> 
-                    <mdp-select-dict style="width:20%;" placeholder="执行结果" clearable :dict="dicts['testStepTcode']" v-model="filters.execStatus" effect="dark"></mdp-select-dict> 
+                     <mdp-select style="width:20%;" placeholder="用例状态" clearable :dict="dicts['testCaseStatus']" v-model="filters.caseStatus" effect="dark"></mdp-select> 
+                    <mdp-select style="width:20%;" placeholder="执行结果" clearable :dict="dicts['testStepTcode']" v-model="filters.execStatus" effect="dark"></mdp-select> 
 
                     <el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestPlanCases" icon="el-icon-search">查询</el-button> 
                 </el-row>
@@ -33,13 +33,13 @@
                         </el-table-column>	        
                         <el-table-column prop="caseStatus" label="用例状态" width="100" show-overflow-tooltip>
                             <template slot-scope="scope"> 
-                                <mdp-select-dict-tag :dict="dicts['testCaseStatus']" v-model="scope.row.caseStatus" effect="dark" :disabled="true"></mdp-select-dict-tag> 
+                                <mdp-select-tag :dict="dicts['testCaseStatus']" v-model="scope.row.caseStatus" effect="dark" :disabled="true"></mdp-select-tag> 
                             </template>
                         </el-table-column>    
                         
                         <el-table-column prop="execStatus" label="执行结果" width="100" show-overflow-tooltip>
                             <template slot-scope="scope"> 
-                                <mdp-select-dict-tag :dict="dicts['testStepTcode']" v-model="scope.row.execStatus" effect="dark" :disabled="true"></mdp-select-dict-tag> 
+                                <mdp-select-tag :dict="dicts['testStepTcode']" v-model="scope.row.execStatus" effect="dark" :disabled="true"></mdp-select-tag> 
                             </template>
                         </el-table-column>
                         <el-table-column prop="execUsername" label="执行人姓名" min-width="120" >
@@ -50,7 +50,7 @@
                         </el-table-column>
                         <el-table-column prop="priority" label="优先级" width="120" >
                             <template slot-scope="scope">
-                                <mdp-select-dict-tag :dict="dicts['priority']" v-model="scope.row.priority" :disabled="true"></mdp-select-dict-tag>  
+                                <mdp-select-tag :dict="dicts['priority']" v-model="scope.row.priority" :disabled="true"></mdp-select-tag>  
                             </template>
                         </el-table-column>
                         <el-table-column  label="操作" width="100" fixed="right">

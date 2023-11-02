@@ -4,11 +4,11 @@
 				<xm-product-select v-if="!xmProduct&&!xmIteration" style="display:inline;" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" @clear="clearProduct"></xm-product-select>
 			  	<xm-project-select v-if="!selProject" style="display:inline;" ref="xmProjectSelect" :auto-select="false" :link-product-id="xmProduct?xmProduct.id:null" @row-click="onProjectConfirm" @clear="clearProject"></xm-project-select>
 
-				<mdp-select-dict v-model="filters.bugStatus" placeholder="状态" style="width:120px;"  clearable :dict="dicts['bugStatus']"/> 
+				<mdp-select v-model="filters.bugStatus" placeholder="状态" style="width:120px;"  clearable :dict="dicts['bugStatus']"/> 
  
-				<mdp-select-dict class="hidden-md-and-down" v-model="filters.priority" placeholder="优先级"  style="width:120px;"  clearable  :dict="dicts['priority']"/>
+				<mdp-select class="hidden-md-and-down" v-model="filters.priority" placeholder="优先级"  style="width:120px;"  clearable  :dict="dicts['priority']"/>
  
-				<mdp-select-dict class="hidden-md-and-down" v-model="filters.bugSeverity" placeholder="严重程度"  style="width:120px;" clearable  :dict="dicts['bugSeverity']"/>
+				<mdp-select class="hidden-md-and-down" v-model="filters.bugSeverity" placeholder="严重程度"  style="width:120px;" clearable  :dict="dicts['bugSeverity']"/>
  
 				
 				<el-button v-if="!filters.tags||filters.tags.length==0" @click.native="$refs.tagDialog.open()">标签</el-button>
@@ -66,7 +66,7 @@
 									<i class="el-icon-top"></i>
 									优先级
 								</template>								
-								<mdp-select-dict   v-model="filters.priority" placeholder="请选择优先级" clearable  :dict="dicts['priority']"/> 
+								<mdp-select   v-model="filters.priority" placeholder="请选择优先级" clearable  :dict="dicts['priority']"/> 
 
 							</el-descriptions-item>
 							<el-descriptions-item>
@@ -74,7 +74,7 @@
 									<i class="el-icon-document-checked"></i>
 									解决方案
 								</template>
-								<mdp-select-dict  v-model="filters.solution" placeholder="请选择解决方案" clearable  :dict="dicts['bugSolution']"/> 
+								<mdp-select  v-model="filters.solution" placeholder="请选择解决方案" clearable  :dict="dicts['bugSolution']"/> 
 							</el-descriptions-item>
 							<el-descriptions-item>
 								<template slot="label">
@@ -150,26 +150,26 @@
 					</el-table-column>
 					<el-table-column prop="bugStatus" label="状态"  width="100">
 						<template slot-scope="scope">    
-										 <mdp-select-dict-tag  @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.bugStatus" placeholder="类型" :dict="dicts['bugStatus']" style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'bugStatus',$event)">
- 										 </mdp-select-dict-tag>   
+										 <mdp-select-tag  @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.bugStatus" placeholder="类型" :dict="dicts['bugStatus']" style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'bugStatus',$event)">
+ 										 </mdp-select-tag>   
 						</template>
 					</el-table-column>
 					<el-table-column prop="priority" label="优先级"  width="100">
 						<template slot-scope="scope">    
-										 <mdp-select-dict-tag @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.priority" placeholder="优先级" :dict="dicts['priority']"   style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'priority',$event)">
- 										 </mdp-select-dict-tag>  
+										 <mdp-select-tag @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.priority" placeholder="优先级" :dict="dicts['priority']"   style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'priority',$event)">
+ 										 </mdp-select-tag>  
  						</template>
 					</el-table-column> 
 					<el-table-column prop="solution" label="解决方案"  width="100">
 						<template slot-scope="scope">    
-										 <mdp-select-dict-tag @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.solution" placeholder="类型" :dict="dicts['bugSolution']"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'solution',$event)">
- 										 </mdp-select-dict-tag>   
+										 <mdp-select-tag @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.solution" placeholder="类型" :dict="dicts['bugSolution']"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'solution',$event)">
+ 										 </mdp-select-tag>   
 						</template>
 					</el-table-column>
 					<el-table-column prop="bugSeverity" label="严重程度"  width="100">
 						<template slot-scope="scope">    
-										 <mdp-select-dict-tag @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.bugSeverity" placeholder="类型" :dict="dicts['bugSeverity']"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'bugSeverity',$event)">
- 										 </mdp-select-dict-tag>   
+										 <mdp-select-tag @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.bugSeverity" placeholder="类型" :dict="dicts['bugSeverity']"  style="display:block;"  @change="editXmQuestionSomeFields(scope.row,'bugSeverity',$event)">
+ 										 </mdp-select-tag>   
 						</template>
 					</el-table-column>
 					<!--

@@ -36,7 +36,7 @@
 				 </el-table-column> 
 				<el-table-column prop="bizType" label="报工类型" width="120" show-overflow-tooltip>
 					<template slot-scope="scope">
-						<mdp-select-dict-tag :disabled="true" v-model="scope.row.bizType" :dict="dicts['wlBizType']"></mdp-select-dict-tag>
+						<mdp-select-tag :disabled="true" v-model="scope.row.bizType" :dict="dicts['wlBizType']"></mdp-select-tag>
 					</template> 
 				</el-table-column> 
 				<el-table-column prop="bizName" label="报工业务" width="120" show-overflow-tooltip>

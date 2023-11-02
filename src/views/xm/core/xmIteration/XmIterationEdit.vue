@@ -35,7 +35,7 @@
 					</el-col>
 					<el-col :span="12">
 						<el-form-item  prop="istatus" label-width="0px">
-							<mdp-select-dict-x label="状态" :dict="dicts['iterationStatus']" v-model="editForm.istatus" @change="editSomeFields(editForm,'istatus',$event)"></mdp-select-dict-x>
+							<mdp-select  show-style="x" label="状态" :dict="dicts['iterationStatus']" v-model="editForm.istatus" @change="editSomeFields(editForm,'istatus',$event)"></mdp-select>
 							
 						</el-form-item> 
 					</el-col> 

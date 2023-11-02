@@ -54,7 +54,7 @@
 						<mdp-select-user-xm label="助理" userid-key="assUserid" username-key="assUsername" v-model="rawDatas"></mdp-select-user-xm>
 					</el-col>
 					<el-col :span="6">
-						<mdp-select-dict-x label="状态" :dict="dicts['projectStatus']" v-model="rawDatas.status"></mdp-select-dict-x>
+						<mdp-select  show-style="x" label="状态" :dict="dicts['projectStatus']" v-model="rawDatas.status"></mdp-select>
 					</el-col> 
 				</el-row>     
  		

@@ -20,10 +20,10 @@
 							<el-option   value="not-join-curr-iteration"  :label="'未加入迭代【'+filters.iteration.iterationName+'】'"  v-if="filters.iteration && filters.iteration.id"></el-option>  
 							<el-option   value="join-curr-iteration"  :label="'已加入本迭代【'+filters.iteration.iterationName+'】'" v-if="filters.iteration && filters.iteration.id"></el-option>  
 						</el-select>  	    
-					 <mdp-select-dict v-model="filters.priority" placeholder="优先级" class="hidden-md-and-down" clearable style="width: 90px;" :dict="dicts['priority']">
- 					</mdp-select-dict>      
-					<mdp-select-dict  v-model="filters.status" placeholder="需求状态" class="hidden-md-and-down" clearable style="width: 90px;" :dict="dicts['menuStatus']">
- 					</mdp-select-dict> 
+					 <mdp-select v-model="filters.priority" placeholder="优先级" class="hidden-md-and-down" clearable style="width: 90px;" :dict="dicts['priority']">
+ 					</mdp-select>      
+					<mdp-select  v-model="filters.status" placeholder="需求状态" class="hidden-md-and-down" clearable style="width: 90px;" :dict="dicts['menuStatus']">
+ 					</mdp-select> 
 					<el-input v-model="filters.key" style="width: 100px;" placeholder="需求名称查询" clearable> 
 					</el-input> 
 					<el-button  v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search">查询</el-button>

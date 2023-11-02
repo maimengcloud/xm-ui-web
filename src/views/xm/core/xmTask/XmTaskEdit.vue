@@ -155,7 +155,7 @@
 						</el-row>
 						<el-row class="padding"> 
 							<el-col :span="8"> 
- 									<mdp-select-dict-x  :label="editForm.ntype=='0'?'任务状态':'计划状态'" :dict="dicts['taskState']" v-model="editForm.taskState" @change="editXmTaskSomeFields(editForm,'taskState',$event)"></mdp-select-dict-x>
+ 									<mdp-select  show-style="x"  :label="editForm.ntype=='0'?'任务状态':'计划状态'" :dict="dicts['taskState']" v-model="editForm.taskState" @change="editXmTaskSomeFields(editForm,'taskState',$event)"></mdp-select>
 							</el-col> 
 							<el-col :span="8">   
 								<mdp-field-x v-model="editForm.rate" label="进度"> 
