@@ -10,7 +10,7 @@
 		</el-row>
 		<el-row class="padding-top">
 			<!--列表 XmTaskSbillDetail 工时登记表-->
-			<el-table ref="xmTaskSbillDetailTable"  :data="xmTaskSbillDetails" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="xmTaskSbillDetailTable"  :data="xmTaskSbillDetails" v-adaptive="{bottomOffset:30}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="55" show-overflow-tooltip fixed="left"></el-table-column>
 				<el-table-column sortable type="index" width="55" show-overflow-tooltip  fixed="left"></el-table-column>
 				<!--
@@ -18,33 +18,33 @@
 				     <span class="cell-text">  {{scope.row.username}}}  </span>
                      <span class="cell-bar"><el-input style="display:inline;" v-model="scope.row.username" placeholder="" @change="editSomeFields(scope.row,'username',$event)" :maxlength="22"></el-input></span>
 				</el-table-column>
-				--> 
+				-->
 				<el-table-column prop="username" label="姓名" min-width="120" show-overflow-tooltip fixed="left">
-                    <template slot-scope="scope">  
+                    <template slot-scope="scope">
 						<el-link title="查看该人员在当前任务下的所有工时记录"
 						type="primary"
 						style="display: inline"
 						@click="showPopover(scope.row, 'username', '', '')"
 						>{{ scope.row.username }}</el-link
-						> 
+						>
                     </template>
-				</el-table-column> 
+				</el-table-column>
 				<el-table-column prop="taskName" label="任务" min-width="120" show-overflow-tooltip fixed="left">
-                    <template slot-scope="scope">  
-						
+                    <template slot-scope="scope">
+
 						<el-link title="查看该任务下的所有工时记录"
 						type="primary"
 						style="display: inline"
 						@click="showPopover(scope.row, 'taskName', '', '')"
 						>{{ scope.row.taskName }}</el-link
-						> 
+						>
                     </template>
-				</el-table-column> 
-				<el-table-column label="结算信息">    
+				</el-table-column>
+				<el-table-column label="结算信息">
 					<el-table-column  prop="sstatus" label="结算状态" width="120" show-overflow-tooltip  sortable>
 						<template slot-scope="scope">
 							<div class="cell-text">
-								<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'sstatus',scope.row.sstatus)" :key="index" :type="item.className">{{item.name}}</el-tag> 
+								<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'sstatus',scope.row.sstatus)" :key="index" :type="item.className">{{item.name}}</el-tag>
 							</div>
 							<span class="cell-bar">
 								<el-select  v-model="scope.row.sstatus" placeholder="结算状态"  style="display:block;"  @change="editSomeFields(scope.row,'sstatus',$event)">
@@ -54,9 +54,9 @@
 						</template>
 					</el-table-column>
 					<el-table-column prop="sschemel" label="结算方案" min-width="120" show-overflow-tooltip>
-						<template slot-scope="scope"> 
-								<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'xmTaskSettleSchemel',scope.row.sschemel)" :key="index" :type="item.className">{{item.name}}</el-tag> 
-							 
+						<template slot-scope="scope">
+								<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'xmTaskSettleSchemel',scope.row.sschemel)" :key="index" :type="item.className">{{item.name}}</el-tag>
+
 						</template>
 					</el-table-column>
 					<el-table-column prop="uniPrice" label="工时单价" min-width="120" show-overflow-tooltip>
@@ -71,19 +71,19 @@
 								style="display: inline"
 								@click="showPopover(scope.row, 'sworkload', '', '')"
 								>{{ scope.row.workload }} h</el-link
-							> 
+							>
 						</template>
-					</el-table-column> 
+					</el-table-column>
 					<el-table-column prop="samt" label="待结金额" min-width="120" show-overflow-tooltip>
 						<template slot-scope="scope">
-							  ￥ {{scope.row.samt}}元   
+							  ￥ {{scope.row.samt}}元
 						</template>
 					</el-table-column>
 					<el-table-column prop="tactAt" label="已结金额" min-width="120" show-overflow-tooltip>
-						<template slot-scope="scope">  
-							￥ {{scope.row.tactAt}}元   
+						<template slot-scope="scope">
+							￥ {{scope.row.tactAt}}元
  						</template>
-					</el-table-column>  
+					</el-table-column>
 					<el-table-column prop="budgetAt" label="预算金额" min-width="120" show-overflow-tooltip>
 						<template slot-scope="scope">
 							<span> ￥ {{scope.row.budgetAt}}元 </span>
@@ -95,17 +95,17 @@
 						</template>
 					</el-table-column>
 					<el-table-column prop="sfee" label="服务费" min-width="120" show-overflow-tooltip>
-						<template slot-scope="scope">  
-							￥ {{scope.row.sfee}}元   
+						<template slot-scope="scope">
+							￥ {{scope.row.sfee}}元
  						</template>
-					</el-table-column>  
+					</el-table-column>
 					<el-table-column prop="shareFee" label="分享赚费用" min-width="120" show-overflow-tooltip>
-						<template slot-scope="scope">  
-							￥ {{scope.row.sfee}}元   
+						<template slot-scope="scope">
+							￥ {{scope.row.sfee}}元
  						</template>
-					</el-table-column>  
+					</el-table-column>
 					<el-table-column prop="othFee" label="其它费用" min-width="120" show-overflow-tooltip>
-						<template slot-scope="scope"> 
+						<template slot-scope="scope">
 						 	<span class="cell-text">  ￥ {{scope.row.othFee}} 元 </span>
                      		<span class="cell-bar"><el-input style="display:inline;" type="number" v-model="scope.row.othFee" placeholder="" @change="editSomeFields(scope.row,'othFee',$event)"></el-input></span>
 						</template>
@@ -119,14 +119,14 @@
 						<template slot-scope="scope"><span class="cell-text">  {{scope.row.remark}}  </span>
                      		<span class="cell-bar"><el-input type="textarea" style="display:inline;" v-model="scope.row.remark" placeholder="" @change="editSomeFields(scope.row,'remark',$event)"></el-input></span>
  						</template>
-					</el-table-column>  
+					</el-table-column>
 				</el-table-column>
 				<el-table-column label="任务信息">
 					<el-table-column  prop="taskState" label="任务状态" width="120" show-overflow-tooltip  sortable >
-						<template slot-scope="scope"> 
+						<template slot-scope="scope">
 							<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'taskState',scope.row.taskState)" :key="index" :type="item.className">{{item.name}}</el-tag>
 						</template>
-					</el-table-column>   
+					</el-table-column>
 					<el-table-column prop="initWorkload" label="初始工时" min-width="120" show-overflow-tooltip>
 						<template slot-scope="scope">
 							<span> {{scope.row.initWorkload}} </span>
@@ -144,15 +144,15 @@
 								style="display: inline"
 								@click="showPopover(scope.row, 'workload', '', '')"
 								>{{ scope.row.workload }} h</el-link
-							> 
+							>
 						</template>
-					</el-table-column> 
+					</el-table-column>
 					<el-table-column prop="budgetAt" label="预算金额" min-width="120" show-overflow-tooltip>
 						<template slot-scope="scope">
 							<span> ￥  {{scope.row.budgetAt}}元 </span>
 						</template>
 					</el-table-column>
-				</el-table-column> 
+				</el-table-column>
 				<el-table-column label="报价信息">
 				<el-table-column prop="quoteAt" label="报价金额" min-width="120" show-overflow-tooltip>
                     <template slot-scope="scope">
@@ -164,7 +164,7 @@
                         <span> {{scope.row.quoteWorkload}} </span>
                     </template>
 				</el-table-column>
-				
+
 				<el-table-column prop="qendTime" label="结束时间" min-width="120" show-overflow-tooltip>
                     <template slot-scope="scope">
                         <span> {{scope.row.qendTime}} </span>
@@ -185,7 +185,7 @@
                     <template slot-scope="scope">
                         <span> {{scope.row.actStartTime}} </span>
                     </template>
-				</el-table-column> 
+				</el-table-column>
 			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 		</el-row>
@@ -200,7 +200,7 @@
 				<xm-task-sbill-detail-edit op-type="add" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-task-sbill-detail-edit>
 			</el-drawer>
 	    </el-row>
-		
+
 
 		<el-dialog
 		:title="
@@ -218,11 +218,11 @@
 			:sbill-id="popoverConfig.sbillId"
 			:detail-id="popoverConfig.detailId"
 			:wstatus="popoverConfig.wstatus"
-			:sstatus="popoverConfig.sstatus"   
+			:sstatus="popoverConfig.sstatus"
 			:userid="popoverConfig.userid"
 		></xm-workload-simple-list-for-biz-date>
 		</el-dialog>
-		
+
 		<el-dialog
 		:title="
 			popoverPlusConfig.subTitle
@@ -234,10 +234,10 @@
 		@close="searchXmTaskSbillDetails()"
 		>
 		<xm-workload-simple-list-for-biz-date
-			:visible="popoverPlusConfig.workloadDialogVisible" 
-			:project-id="popoverPlusConfig.projectId" 
+			:visible="popoverPlusConfig.workloadDialogVisible"
+			:project-id="popoverPlusConfig.projectId"
 			:wstatus="popoverPlusConfig.wstatus"
-			:sstatus="popoverPlusConfig.sstatus"    
+			:sstatus="popoverPlusConfig.sstatus"
 		></xm-workload-simple-list-for-biz-date>
 		</el-dialog>
 	</section>
@@ -245,12 +245,12 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	import config from '@/common/config';//全局公共库 
+	import config from '@/common/config';//全局公共库
  	import { initDicts,listXmTaskSbillDetail, delXmTaskSbillDetail, batchDelXmTaskSbillDetail,editSomeFieldsXmTaskSbillDetail } from '@/api/xm/core/xmTaskSbillDetail';
 	import  XmTaskSbillDetailEdit from './XmTaskSbillDetailEdit';//新增修改界面
 	import { mapGetters } from 'vuex'
   	import XmWorkloadSimpleListForBizDate from '../xmWorkload/XmWorkloadSimpleListForBizDate';
-	
+
 	export default {
 	    name:'xmTaskSbillDetailMng',
 		components: {
@@ -267,7 +267,7 @@
                     this.initData();
                     this.searchXmTaskSbillDetails()
                 }
-            }, 
+            },
 		},
 		data() {
 			return {
@@ -292,7 +292,7 @@
 				addForm: {
 					userid:'',username:'',ctime:'',taskId:'',bizDate:'',remark:'',id:'',sbillId:'',stime:'',sstatus:'',amt:'',samt:'',workload:'',projectId:'',sworkload:'',bizMonth:'',budgetAt:'',budgetWorkload:'',initWorkload:'',quoteAt:'',quoteWorkload:'',sschemel:'',uniPrice:'',qendTime:'',qstartTime:'',actEndTime:'',actStartTime:''
 				},
-				
+
 				editFormVisible: false,//编辑界面是否显示
 				editForm: {
 					userid:'',username:'',ctime:'',taskId:'',bizDate:'',remark:'',id:'',sbillId:'',stime:'',sstatus:'',amt:'',samt:'',workload:'',projectId:'',sworkload:'',bizMonth:'',budgetAt:'',budgetWorkload:'',initWorkload:'',quoteAt:'',quoteWorkload:'',sschemel:'',uniPrice:'',qendTime:'',qstartTime:'',actEndTime:'',actStartTime:''
@@ -313,7 +313,7 @@
 					workloadDialogVisible:false,
 					wstatus:'1',
 					sstatus:'1',
-					subTitle:'查询项目下的所有【待结算】工时记录', 
+					subTitle:'查询项目下的所有【待结算】工时记录',
 					projectId:'',
 				}
 			}
@@ -322,8 +322,8 @@
 
 		    ...util,
 
-			handleSizeChange(pageSize) { 
-				this.pageInfo.pageSize=pageSize; 
+			handleSizeChange(pageSize) {
+				this.pageInfo.pageSize=pageSize;
 				this.getXmTaskSbillDetails();
 			},
 			handleCurrentChange(pageNum) {
@@ -334,7 +334,7 @@
 			sortChange( obj ){
 				if(obj.order==null){
 					this.pageInfo.orderFields=[];
-					this.pageInfo.orderDirs=[]; 
+					this.pageInfo.orderDirs=[];
 				}else{
 					var dir='asc';
 					if(obj.order=='ascending'){
@@ -342,14 +342,14 @@
 					}else{
 						dir='desc';
 					}
-					 
-					this.pageInfo.orderFields=[util.toLine(obj.prop)]; 
+
+					this.pageInfo.orderFields=[util.toLine(obj.prop)];
 					this.pageInfo.orderDirs=[dir];
 				}
 				this.getXmTaskSbillDetails();
 			},
 			searchXmTaskSbillDetails(){
-				 this.pageInfo.count=true; 
+				 this.pageInfo.count=true;
 				 this.getXmTaskSbillDetails();
 			},
 			//获取列表 XmTaskSbillDetail 工时登记表
@@ -362,9 +362,9 @@
 				};
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
 					let orderBys=[];
-					for(var i=0;i<this.pageInfo.orderFields.length;i++){ 
+					for(var i=0;i<this.pageInfo.orderFields.length;i++){
 						orderBys.push(this.pageInfo.orderFields[i]+" "+this.pageInfo.orderDirs[i])
-					}  
+					}
 					params.orderBy= orderBys.join(",")
 				}
 				if(this.filters.key){
@@ -383,22 +383,22 @@
 
 				if(this.projectId){
 					params.projectId=this.projectId
-				} 
+				}
 
 				if(this.bizMonth){
 					params.bizMonth=this.bizMonth
-				} 
-				 
+				}
+
 				this.load.list = true;
 				listXmTaskSbillDetail(params).then((res) => {
 					var tips=res.data.tips;
-					if(tips.isOk){ 
+					if(tips.isOk){
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false;
 						this.xmTaskSbillDetails = res.data.data;
 					}else{
 						this.$notify({ position:'bottom-left',showClose:true, message: tips.msg, type: 'error' });
-					} 
+					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
 			},
@@ -409,7 +409,7 @@
 				this.editForm = Object.assign({}, row);
 			},
 			//显示新增界面 XmTaskSbillDetail 工时登记表
-			showAdd: function () { 
+			showAdd: function () {
 				this.popoverPlusConfig.workloadDialogVisible=true
 				this.popoverPlusConfig.projectId=this.projectId
 			},
@@ -424,12 +424,12 @@
 			//选择行xmTaskSbillDetail
 			selsChange: function (sels) {
 				this.sels = sels;
-			}, 
+			},
 			//删除xmTaskSbillDetail
-			handleDel: function (row,index) { 
+			handleDel: function (row,index) {
 				this.$confirm('确认删除该记录吗?', '提示', {
 					type: 'warning'
-				}).then(() => { 
+				}).then(() => {
 					this.load.del=true;
 					let params = {  id:row.id };
 					delXmTaskSbillDetail(params).then((res) => {
@@ -452,7 +452,7 @@
 				})
 				this.$confirm('确认删除选中记录吗？', '提示', {
 					type: 'warning'
-				}).then(() => { 
+				}).then(() => {
 					this.load.del=true;
 					batchDelXmTaskSbillDetail(params).then((res) => {
 						this.load.del=false;
@@ -487,23 +487,23 @@
 				if("1"==$event){
 					if(!row.quoteAt){
 						params['samt']=row.budgetAt
-					}else{ 
+					}else{
 						params['samt']=row.quoteAt
 					}
 				}else if("2"==$event){
 					if(!row.quoteAt){
 						params['samt']=row.budgetAt
-					}else{ 
+					}else{
 						params['samt']=row.quoteAt
 					}
 				}else if("3"==$event){
 					if(!row.quoteAt){
 						params['samt']=row.budgetAt
-					}else{ 
+					}else{
 						params['samt']=row.quoteAt
 					}
 				}
-				
+
 			}
             var func = editSomeFieldsXmTaskSbillDetail
             func(params).then(res=>{
@@ -527,7 +527,7 @@
             initData: function(){
 
             },
-			
+
 			showPopover(row, fieldName, wstatus, sstatus) {
 				this.editForm = row;
 				this.popoverConfig={
@@ -542,23 +542,23 @@
 					detailId:'',
 					userid:'',
 				}
-				this.popoverConfig.workloadDialogVisible = true; 
+				this.popoverConfig.workloadDialogVisible = true;
 				this.popoverConfig.wstatus = wstatus;
 				this.popoverConfig.sstatus = sstatus;
 				if(fieldName=='username'){
 					this.popoverConfig.subTitle="查看【"+row.username+"】在任务【"+row.taskName+"】下的所有报工记录"
 					this.popoverConfig.taskId=row.taskId
 					this.popoverConfig.userid=row.userid
-				}else if(fieldName=='taskName'){ 
+				}else if(fieldName=='taskName'){
 					this.popoverConfig.subTitle="查看任务【"+row.taskName+"】下的所有报工记录"
 					this.popoverConfig.taskId=row.taskId
-				}else if(fieldName=='sworkload'||fieldName=='workload'){ 
+				}else if(fieldName=='sworkload'||fieldName=='workload'){
 					this.popoverConfig.subTitle="查看【"+row.username+"】已加入当前任务，当前结算单的待结工时明细"
-					this.popoverConfig.taskId=row.taskId	
-					this.popoverConfig.detailId=row.id 
+					this.popoverConfig.taskId=row.taskId
+					this.popoverConfig.detailId=row.id
 					this.popoverConfig.userid=row.userid
-				} 
-				
+				}
+
 			},
 		},//end methods
 		mounted() {

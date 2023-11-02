@@ -19,7 +19,7 @@
 		</el-row>
 		<el-row  class="page-main" v-if="showType!='simple'">
 			<!--列表 XmProduct 产品表-->
-			<el-table ref="table"  :height="maxTableHeight" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list"  @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table"  v-adaptive="{bottomOffset:30}" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list"  @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 
 				<el-table-column    label="序号" width="60" type="index"  v-if="showType!='simple'">
 				</el-table-column>
@@ -60,7 +60,7 @@
 
 		<el-row  class="page-main" v-else>
 			<!--列表 XmProduct 产品表-->
-			<el-table ref="table"  :height="maxTableHeight" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list"  @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table"  v-adaptive="{bottomOffset:30}" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list"  @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 
 				<el-table-column    label="序号" width="60" type="index">
 				</el-table-column>

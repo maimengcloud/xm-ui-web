@@ -8,7 +8,7 @@
 		</el-row>
 		<el-row class="padding-top">
 			<!--列表 XmIterationState 迭代定义-->
-			<el-table ref="xmIterationStateTable" :data="xmIterationStates" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="xmIterationStateTable" :data="xmIterationStates" v-adaptive="{bottomOffset:30}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="55" show-overflow-tooltip></el-table-column>
 				<el-table-column sortable type="index" width="55" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="distBudgetCost" label="已分配到任务的预算从任务表汇总而来" min-width="80" show-overflow-tooltip></el-table-column>

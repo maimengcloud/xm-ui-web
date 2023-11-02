@@ -2,7 +2,7 @@
 	<section>
 		<el-row>
 			<!--列表 XmQuestionHandle xm_question_handle-->
-			<el-table ref="table" :height="tableHeight" :data="xmQuestionHandles" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" v-adaptive="{bottomOffset:30}" :data="xmQuestionHandles" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 
 				<el-table-column prop="handleStatus" label="bug状态" width="100" >
 					<template slot-scope="scope">

@@ -22,7 +22,7 @@
 				</el-row>
 				<el-row class="page-main">
 						<!--列表 XmTaskTemplate xm_task_template select-confirm-->
-						<el-table ref="table" :load="loadXmTaskLazy" :height="maxTableHeight" :data="xmTaskTemplatesTreeData" row-key="id" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+						<el-table ref="table" :load="loadXmTaskLazy" v-adaptive="{bottomOffset:30}" :data="xmTaskTemplatesTreeData" row-key="id" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 							<el-table-column sortable type="selection" width="40"></el-table-column>
 							<el-table-column prop="name" label="任务名称" min-width="150" >
 								<template slot-scope="scope">

@@ -143,7 +143,7 @@
         <!--列表 XmProduct 产品表-->
         <el-table
           ref="table"
-          :height="maxTableHeight"
+          v-adaptive="{bottomOffset:30}"
           :data="xmProducts"
           :row-class-name="tableRowClassName"
           @sort-change="sortChange"

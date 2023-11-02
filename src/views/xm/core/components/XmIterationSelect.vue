@@ -107,7 +107,7 @@
         </el-row>
       </el-row>
 			<el-row>
-				<el-table ref="table" :height="maxTableHeight" :data="xmIterations" row-key="id"    @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+				<el-table ref="table" v-adaptive="{bottomOffset:30}" :data="xmIterations" row-key="id"    @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  					<el-table-column prop="iterationName" label="迭代" >
 						<template slot-scope="scope">
 							<div class="icon" style="background-color:#409eff"><i class="el-icon-connection" ></i></div>{{scope.row.iterationName}}  <font   :color="calcFinishRate(scope.row)==100?'green':'#FF8C00'">{{calcFinishRate(scope.row)}}%</font>

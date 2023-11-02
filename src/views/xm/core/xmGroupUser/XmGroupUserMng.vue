@@ -9,7 +9,7 @@
 		</el-row>
 		<el-row class="padding-top">
 			<!--列表 XmGroupUser xm_group_user-->
-			<el-table ref="xmGroupUserTable" :data="xmGroupUsers" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="xmGroupUserTable" :data="xmGroupUsers" v-adaptive="{bottomOffset:30}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="55"></el-table-column>
 				<el-table-column sortable type="index" width="55"></el-table-column>
 				<el-table-column prop="pgClass" label="项目编号" min-width="150">

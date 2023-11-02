@@ -15,7 +15,7 @@
                 </el-row>
                 <el-row class="padding-top">
                     <!--列表 XmTestPlanCase 测试计划与用例关系表-->
-                    <el-table ref="xmTestPlanCaseTable" :data="xmTestPlanCases" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+                    <el-table ref="xmTestPlanCaseTable" :data="xmTestPlanCases" v-adaptive="{bottomOffset:30}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
                          <!--
                         <el-table-column sortable prop="username" width="55" show-overflow-tooltip  fixed="left">
                             <span class="cell-text">  {{scope.row.username}}}  </span>

@@ -5,8 +5,8 @@
       :data="usersCpd"
       header-cell-class-name="head-row"
       border
-      :height="tableHeight"
-      style="width: 100%" 
+      v-adaptive="{bottomOffset:30}"
+      style="width: 100%"
     >
       <el-table-column
         :label="'执行人 (' + users.length + ')'"
@@ -25,7 +25,7 @@
         </template>
       </el-table-column>
       <template v-for="(type, tt) in taskStateCpd" style="min-width:200px;">
-        <el-table-column 
+        <el-table-column
           :label="type.label + '(' + type.number + ')'"
           :key="tt"
           width="250"
@@ -66,7 +66,7 @@
                     :data-executor-userid="scope.row.executorUserid"
                     :data-task-id="task.id"
                     :data-task-state="task.taskState"
-                    class="task" 
+                    class="task"
                     v-for="(task, t) in tasks[scope.row.executorUserid][tt]"
                     :key="task.id + t"
                   >
@@ -81,14 +81,14 @@
                         :key="task.id + index"
                         :type="item.className"
                         >{{ item.name }}</el-tag
-                      > 
+                      >
                       <el-tag
                         title="进度"
                         style="border-radius: 30px"
                         :type="task.rate >= 100 ? 'success' : 'warning'"
                       >
                         {{ (task.rate != null ? task.rate : 0) + "%" }}
-                      </el-tag>  
+                      </el-tag>
 				  	        <span class="my-cell-btn"><el-button    type="danger" icon="el-icon-delete" plain @click.stop="handleDel(task,tt)"></el-button></span>
                   </el-row>
                     <el-row>
@@ -101,9 +101,9 @@
                     </span>
                     </el-row>
                      <el-row>
-                       <div class="title">{{ task.name }}</div> 
+                       <div class="title">{{ task.name }}</div>
                      </el-row>
-                   
+
                   </div>
                 </template>
               </transition-group>
@@ -180,7 +180,7 @@
         @select="onSelectedParentTask"
       ></xm-phase-select>
     </el-dialog>
-	
+
 
 	<el-dialog append-to-body title="需求明细"  :visible.sync="menuDetailVisible" width="80%"  top="20px"  :close-on-click-modal="false">
 		<xm-menu-edit :visible="menuDetailVisible"  :reload="true" :xm-menu="{menuId:editForm.menuId,menuName:editForm.menuName}" ></xm-menu-edit>
@@ -554,13 +554,13 @@ export default {
       let taskIndex = this.xmTasks.findIndex((d) => d.id === task.id);
       this.$set(this.xmTasks, taskIndex, task);
     },
-    
+
     onEditSomeFields(params){
       var id=params.ids[0]
       let taskIndex = this.xmTasks.findIndex((d) => d.id === id);
       var task=this.xmTasks[taskIndex]
       Object.assign(task,params )
-      this.$set(this.xmTasks, taskIndex, task); 
+      this.$set(this.xmTasks, taskIndex, task);
     },
     getTaskStateIndex(taskState) {
       return this.taskState.findIndex((i) => i.status == taskState);
@@ -619,7 +619,7 @@ export default {
       this.addForm.verNum = task.verNum;
       this.addForm.pverNum = task.pverNum;
       this.addForm.createUserid = this.userInfo.userid;
-      this.addForm.createUsername = this.userInfo.username; 
+      this.addForm.createUsername = this.userInfo.username;
       this.addForm.startTime=task.startTime
       this.addForm.endTime=task.endTime
       this.addForm.qtype = "1";
@@ -627,7 +627,7 @@ export default {
       this.addForm.ptype = "0";
       this.addFormVisible = true;
     },
-	
+
     //删除xmTask
     handleDel: function (row, index) {
       this.$confirm("确认删除该记录吗?", "提示", {
@@ -639,7 +639,7 @@ export default {
           .then((res) => {
             this.load.del = false;
             var tips = res.data.tips;
-            if (tips.isOk) { 
+            if (tips.isOk) {
 				var index=this.xmTasks.findIndex(k=>k.id==row.id)
 				this.xmTasks.splice(index,1)
              }
@@ -665,7 +665,7 @@ export default {
   height: 100%;
   width: 100%;
   overflow: hidden;
-} 
+}
 
 .draggable {
   display: flex;
@@ -685,10 +685,10 @@ export default {
     }
   }
 }
-.transition-group {   
+.transition-group {
   width: 100%;
   cursor: pointer;
-  .task {  
+  .task {
     border:1px solid white;
   	min-height: 100px;
     background: #fff;
@@ -721,10 +721,10 @@ export default {
    visibility: visible;
 }
 
-.task:hover{ 
+.task:hover{
   border:1px solid blue;
 }
-.title { 
+.title {
     height: 40px;
     overflow: hidden; //超出隐藏
     text-overflow: ellipsis; //溢出用省略号显示
@@ -733,5 +733,5 @@ export default {
     -webkit-line-clamp: 2; //超出两行隐藏
     -webkit-box-orient: vertical; // 从上到下垂直排列子元素
     //（设置伸缩盒子的子元素排列方式）
-} 
+}
 </style>

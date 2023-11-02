@@ -20,7 +20,7 @@
                 </el-row>
                 <el-row class="padding-top">
                     <!--列表 XmTestCase 测试用例-->
-                    <el-table ref="xmTestCaseTable" :data="xmTestCases" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+                    <el-table ref="xmTestCaseTable" :data="xmTestCases" v-adaptive="{bottomOffset:30}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
                         <el-table-column  type="selection" width="55" show-overflow-tooltip fixed="left"></el-table-column>
                          <!--
                         <el-table-column sortable prop="username" width="55" show-overflow-tooltip  fixed="left">

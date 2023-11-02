@@ -9,7 +9,7 @@
 				</div>
 			</el-row>
 			<!--列表 XmFile xm_file-->
-			<el-table ref="table" :height="tableHeight" :data="xmFiles" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" v-adaptive="{bottomOffset:30}" :data="xmFiles" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column sortable type="selection" width="40"></el-table-column>
 				<el-table-column prop="name" label="文档标题" ></el-table-column>
 				<el-table-column prop="createUsername" label="创建人" ></el-table-column>

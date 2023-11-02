@@ -29,7 +29,7 @@
 				</el-select> -->
 				<el-table
 					ref="table"
-					:height="tableHeight"
+					v-adaptive="{bottomOffset:30}"
 					v-if="showType == '人力'"
 					:data="sumXmBudgetLaborsConvert"
 					highlight-current-row
@@ -58,7 +58,7 @@
 
 				<el-table
 					ref="table"
-					:height="tableHeight"
+					v-adaptive="{bottomOffset:30}"
 					v-if="showType == '非人力'"
 					:data="sumXmBudgetNlaborsConvert"
 					highlight-current-row

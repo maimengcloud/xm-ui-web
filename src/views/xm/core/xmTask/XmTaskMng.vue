@@ -354,7 +354,7 @@
               fit
               border
               tooltip-effect="light"
-              :height="tableHeight"
+              v-adaptive="{bottomOffset:30}"
               row-key="id"
 
             >

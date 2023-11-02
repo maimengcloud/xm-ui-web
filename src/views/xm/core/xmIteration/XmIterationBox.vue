@@ -51,7 +51,7 @@
  		</el-row>
 		<el-row class="padding-top">
 			<!--列表 XmIteration 迭代定义-->
-			<el-table ref="table" :height="maxTableHeight" v-if="!gstcVisible" :data="xmIterationTreeData" row-key="id"  default-expand-all :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" v-adaptive="{bottomOffset:30}" v-if="!gstcVisible" :data="xmIterationTreeData" row-key="id"  default-expand-all :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column type="selection" aria-disabled width="55"></el-table-column>
 				<el-table-column prop="iterationName" label="迭代名称" min-width="260">
 					 <template slot-scope="scope">

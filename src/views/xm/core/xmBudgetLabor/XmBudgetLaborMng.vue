@@ -10,7 +10,7 @@
 		</el-row>
 		<el-row class="padding-top">
 			<!--列表 XmBudgetLabor 项目人力成本预算-->
-			<el-table ref="xmBudgetLaborTable" :data="xmBudgetLabors" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="xmBudgetLaborTable" :data="xmBudgetLabors" v-adaptive="{bottomOffset:30}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="55" show-overflow-tooltip fixed="left"></el-table-column>
 				<el-table-column sortable type="index" width="55" show-overflow-tooltip  fixed="left"></el-table-column>
 				<!--
@@ -18,20 +18,20 @@
 				     <span class="cell-text">  {{scope.row.username}}}  </span>
                      <span class="cell-bar"><el-input style="display:inline;" v-model="scope.row.username" placeholder="" @change="editSomeFields(scope.row,'username',$event)" :maxlength="22"></el-input></span>
 				</el-table-column>
-				-->  
+				-->
 				<el-table-column prop="projectId" label="项目编号" min-width="80" show-overflow-tooltip>
                     <template slot-scope="scope">
                          <span> {{scope.row.projectId}} </span>
                     </template>
-				</el-table-column>  
+				</el-table-column>
 				<el-table-column prop="username" label="项目成员" min-width="80" show-overflow-tooltip>
                     <template slot-scope="scope">
                         <span class="cell-text"> {{scope.row.username}} </span>
 						<span class="cell-bar"><el-input style="display:inline;" v-model="scope.row.username" placeholder="" @change="editSomeFields(scope.row,'username',$event)" :maxlength="22"></el-input></span>
                     </template>
-				</el-table-column> 
+				</el-table-column>
 				<el-table-column prop="subjectId" label="预算科目" min-width="80" show-overflow-tooltip>
-                    <template slot-scope="scope"> 
+                    <template slot-scope="scope">
 						<div class="cell-text">
 							{{formatDicts(dicts,'projectSubject',scope.row.subjectId)}}
 						</div>
@@ -41,7 +41,7 @@
 							</el-select>
 						</span>
                     </template>
-				</el-table-column> 
+				</el-table-column>
 				<el-table-column prop="remark" label="用途说明" min-width="80" show-overflow-tooltip>
                     <template slot-scope="scope">
                         <span class="cell-text"> {{scope.row.remark}} </span>
@@ -56,7 +56,7 @@
 				</el-table-column>
 				<el-table-column prop="bizMonth" label="费用月份" min-width="80" show-overflow-tooltip>
                     <template slot-scope="scope">
-                        <span class="cell-text"> {{scope.row.bizMonth}} </span> 
+                        <span class="cell-text"> {{scope.row.bizMonth}} </span>
 						<span class="cell-bar">
 							<el-date-picker
 								@change="editSomeFields(scope.row,'bizMonth',$event)"
@@ -64,10 +64,10 @@
 								type="month"
 								value-format="yyyy-MM"
 								placeholder="选择年月">
-							</el-date-picker> 
+							</el-date-picker>
  						</span>
                     </template>
-				</el-table-column>  
+				</el-table-column>
 				<el-table-column label="操作" width="180" fixed="right">
 					<template scope="scope">
 						<el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit"  plain></el-button>
@@ -93,13 +93,13 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	import config from '@/common/config';//全局公共库 
+	import config from '@/common/config';//全局公共库
  	import { initDicts,listXmBudgetLabor, delXmBudgetLabor, batchDelXmBudgetLabor,editSomeFieldsXmBudgetLabor } from '@/api/xm/core/xmBudgetLabor';
 	import  XmBudgetLaborEdit from './XmBudgetLaborEdit';//新增修改界面
 	import  XmBudgetLaborAdd from './XmBudgetLaborAdd';//新增修改界面
 
 	import { mapGetters } from 'vuex'
-	
+
 	export default {
 	    name:'xmBudgetLaborMng',
 		components: {
@@ -141,7 +141,7 @@
 				addForm: {
 					projectId:'',userid:'',budgetAt:'',id:'',remark:'',username:'',subjectId:'',bizSdate:'',bizEdate:'',bizMonth:'',instId:'',bizFlowState:'',costType:'',subjectName:'',branchId:'',ubranchId:''
 				},
-				
+
 				editFormVisible: false,//编辑界面是否显示
 				editForm: {
 					projectId:'',userid:'',budgetAt:'',id:'',remark:'',username:'',subjectId:'',bizSdate:'',bizEdate:'',bizMonth:'',instId:'',bizFlowState:'',costType:'',subjectName:'',branchId:'',ubranchId:''
@@ -153,8 +153,8 @@
 
 		    ...util,
 
-			handleSizeChange(pageSize) { 
-				this.pageInfo.pageSize=pageSize; 
+			handleSizeChange(pageSize) {
+				this.pageInfo.pageSize=pageSize;
 				this.getXmBudgetLabors();
 			},
 			handleCurrentChange(pageNum) {
@@ -165,7 +165,7 @@
 			sortChange( obj ){
 				if(obj.order==null){
 					this.pageInfo.orderFields=[];
-					this.pageInfo.orderDirs=[]; 
+					this.pageInfo.orderDirs=[];
 				}else{
 					var dir='asc';
 					if(obj.order=='ascending'){
@@ -173,14 +173,14 @@
 					}else{
 						dir='desc';
 					}
-					 
-					this.pageInfo.orderFields=[util.toLine(obj.prop)]; 
+
+					this.pageInfo.orderFields=[util.toLine(obj.prop)];
 					this.pageInfo.orderDirs=[dir];
 				}
 				this.getXmBudgetLabors();
 			},
 			searchXmBudgetLabors(){
-				 this.pageInfo.count=true; 
+				 this.pageInfo.count=true;
 				 this.getXmBudgetLabors();
 			},
 			//获取列表 XmBudgetLabor 项目人力成本预算
@@ -193,9 +193,9 @@
 				};
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
 					let orderBys=[];
-					for(var i=0;i<this.pageInfo.orderFields.length;i++){ 
+					for(var i=0;i<this.pageInfo.orderFields.length;i++){
 						orderBys.push(this.pageInfo.orderFields[i]+" "+this.pageInfo.orderDirs[i])
-					}  
+					}
 					params.orderBy= orderBys.join(",")
 				}
 				if(this.filters.key){
@@ -205,13 +205,13 @@
 				this.load.list = true;
 				listXmBudgetLabor(params).then((res) => {
 					var tips=res.data.tips;
-					if(tips.isOk){ 
+					if(tips.isOk){
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false;
 						this.xmBudgetLabors = res.data.data;
 					}else{
 						this.$notify({ position:'bottom-left',showClose:true, message: tips.msg, type: 'error' });
-					} 
+					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
 			},
@@ -237,12 +237,12 @@
 			//选择行xmBudgetLabor
 			selsChange: function (sels) {
 				this.sels = sels;
-			}, 
+			},
 			//删除xmBudgetLabor
-			handleDel: function (row,index) { 
+			handleDel: function (row,index) {
 				this.$confirm('确认删除该记录吗?', '提示', {
 					type: 'warning'
-				}).then(() => { 
+				}).then(() => {
 					this.load.del=true;
 					let params = {  id:row.id };
 					delXmBudgetLabor(params).then((res) => {
@@ -265,7 +265,7 @@
 				})
 				this.$confirm('确认删除选中记录吗？', '提示', {
 					type: 'warning'
-				}).then(() => { 
+				}).then(() => {
 					this.load.del=true;
 					batchDelXmBudgetLabor(params).then((res) => {
 						this.load.del=false;
@@ -312,7 +312,7 @@
             initData: function(){
 
             },
-			
+
 		},//end methods
 		mounted() {
 			this.$nextTick(() => {

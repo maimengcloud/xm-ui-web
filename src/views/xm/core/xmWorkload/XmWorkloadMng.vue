@@ -47,7 +47,7 @@
 		</el-row>
 		<el-row class="padding-top">
 			<!--列表 XmWorkload 工时登记表-->
-			<el-table ref="xmWorkloadTable" :data="xmWorkloads"  :height="maxTableHeight" @sort-change="sortChange" highlight-current-row
+			<el-table ref="xmWorkloadTable" :data="xmWorkloads"  v-adaptive="{bottomOffset:30}" @sort-change="sortChange" highlight-current-row
                 v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;" :header-cell-style="{'text-align':'center'}"
                 :cell-style="{'text-align':'center'}">
 				<el-table-column  type="selection" width="55" show-overflow-tooltip fixed="left"></el-table-column>

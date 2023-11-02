@@ -1,7 +1,7 @@
 <template>
 	<section class="padding">
 		<el-row>
-			<el-input v-model="filters.key" style="width: 30%;" placeholder="模糊查询"></el-input>           
+			<el-input v-model="filters.key" style="width: 30%;" placeholder="模糊查询"></el-input>
             <el-checkbox v-model="filters.myCreate" true-label="1" false-label="0">我的</el-checkbox>
 
             <mdp-date-range v-model="filters" start-key="startBizDate" style="width:250px;" end-key="endBizDate"></mdp-date-range>
@@ -12,30 +12,30 @@
 		</el-row>
 		<el-row class="padding-top">
 			<!--列表 XmRptData xm_rpt_data-->
-			<el-table ref="xmRptDataTable" :data="xmRptDatas" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-                <el-table-column  type="selection" width="55" show-overflow-tooltip fixed="left"></el-table-column> 
+			<el-table ref="xmRptDataTable" :data="xmRptDatas" v-adaptive="{bottomOffset:30}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+                <el-table-column  type="selection" width="55" show-overflow-tooltip fixed="left"></el-table-column>
                 <el-table-column prop="rptName" label="报告名称" min-width="250" show-overflow-tooltip>
 				    <template slot-scope="scope">
 				        <span> {{scope.row.rptName}} </span>
                     </template>
-				</el-table-column>  
+				</el-table-column>
 				<el-table-column prop="bizDate" label="业务日期" min-width="100" show-overflow-tooltip>
 				    <template slot-scope="scope">
 				        <span> {{scope.row.bizDate}} </span>
                     </template>
-				</el-table-column> 
+				</el-table-column>
 				<el-table-column prop="cusername" label="创建人名称" min-width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
 				        <span> {{scope.row.cusername}} </span>
                     </template>
-				</el-table-column> 
+				</el-table-column>
 				<el-table-column label="操作" width="100" fixed="right">
 				    <template scope="scope">
-                        <el-button type="primary" @click="toRptDetail(scope.row)" icon="el-icon-s-data"  plain>查看</el-button>   
+                        <el-button type="primary" @click="toRptDetail(scope.row)" icon="el-icon-s-data"  plain>查看</el-button>
 				    </template>
 				</el-table-column>
-			</el-table> 
-		</el-row> 
+			</el-table>
+		</el-row>
         <el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 	</section>
 </template>
@@ -49,8 +49,8 @@ import { mapGetters } from 'vuex'
 
 export default {
     name:'xmRptDataList',
-    components: { 
-    }, 
+    components: {
+    },
     computed: {
         ...mapGetters(['userInfo']),
 
@@ -152,8 +152,8 @@ export default {
             if(this.filters.startBizDate){
                 params.startBizDate=this.filters.startBizDate
                 params.endBizDate=this.filters.endBizDate
-            } 
-            
+            }
+
             if(this.filters.myCreate=='1'){
                 params.cuserid=this.userInfo.userid
             }

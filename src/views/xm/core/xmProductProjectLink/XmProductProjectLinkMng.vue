@@ -14,7 +14,7 @@
 		</el-row>
 		<el-row>
 			<!--列表 XmProductProjectLink 产品与项目的关联关系表，一般由产品经理挂接项目到产品上-->
-			<el-table ref="xmProductProjectLink" :data="xmProductProjectLinks" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="xmProductProjectLink" :data="xmProductProjectLinks" v-adaptive="{bottomOffset:30}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  				<el-table-column prop="name" v-if="xmProduct" label="包含的项目名称" min-width="150" >
 					<template scope="scope">
 						<el-link type="primary" @click="goToProject(scope.row,scope.$index)">{{scope.row.name}}</el-link>

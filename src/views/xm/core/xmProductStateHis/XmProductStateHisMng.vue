@@ -8,7 +8,7 @@
 		</el-row>
 		<el-row class="padding-top">
 			<!--列表 XmProductStateHis 功能状态表,无需前端维护，所有数据由汇总统计得出-->
-			<el-table ref="xmProductStateHisTable" :data="xmProductStateHiss" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="xmProductStateHisTable" :data="xmProductStateHiss" v-adaptive="{bottomOffset:30}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="55" show-overflow-tooltip></el-table-column>
 				<el-table-column sortable type="index" width="55" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="planStartTime" label="开始时间" min-width="80" show-overflow-tooltip></el-table-column>

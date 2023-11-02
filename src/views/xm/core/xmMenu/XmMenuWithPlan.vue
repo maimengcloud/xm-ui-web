@@ -14,7 +14,7 @@
 			<el-button  v-if=" batchEditVisible==true "  @click="noBatchEdit" v-loading="load.edit" icon="el-icon-back">返回</el-button>
   		</el-row>
 		<el-row class="page-main" v-show="!batchEditVisible">
-				<el-table ref="table" :height="maxTableHeight" v-if="!gstcVisible" :data="xmMenusTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+				<el-table ref="table" v-adaptive="{bottomOffset:30}" v-if="!gstcVisible" :data="xmMenusTreeData" default-expand-all  row-key="menuId" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 					<el-table-column sortable type="selection" width="40"></el-table-column>
  					<el-table-column prop="menuName" label="需求名称" min-width="150" >
 						<template slot-scope="scope">
@@ -104,7 +104,7 @@
 
 		</el-row>
 		<el-row v-show="batchEditVisible">
-			<el-table  :load="loadMenusLazy" :height="maxTableHeight" :data="xmMenusTreeData"   row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table  :load="loadMenusLazy" v-adaptive="{bottomOffset:30}" :data="xmMenusTreeData"   row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 
  					<el-table-column prop="menuName" label="需求名称" min-width="150" >
 						<template slot-scope="scope">

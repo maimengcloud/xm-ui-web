@@ -9,7 +9,7 @@
 		</el-row>
 		<el-row class="page-main ">
 			<!--列表 XmEnvList xm_env_list-->
-			<el-table ref="table" :height="maxTableHeight" :data="xmEnvLists" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" v-adaptive="{bottomOffset:30}" :data="xmEnvLists" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column sortable type="selection" width="40"></el-table-column>
 				<el-table-column prop="name" label="名称" min-width="80" ></el-table-column>
 				<el-table-column prop="ipAddress" label="内网ip" min-width="80" ></el-table-column>

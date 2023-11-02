@@ -5,8 +5,8 @@
       :data="usersCpd"
       header-cell-class-name="head-row"
       border
-      :height="tableHeight"
-      style="width: 100%" 
+      v-adaptive="{bottomOffset:30}"
+      style="width: 100%"
     >
       <el-table-column
         :label="'负责人 (' + users.length + ')'"
@@ -14,19 +14,19 @@
         width="200"
       >
         <template slot-scope="scope">
-          <div class="menu"> 
+          <div class="menu">
               {{scope.row.mmUsername }}
           </div>
         </template>
       </el-table-column>
       <template v-for="(type, tt) in statusCpd" style="min-width:200px;">
-        <el-table-column 
+        <el-table-column
           :label="type.label + '(' + type.number + ')'"
           :key="tt"
           width="250"
         >
           <template slot-scope="scope">
-            <el-row class="my-cell-bar" 
+            <el-row class="my-cell-bar"
                 :data-mm-userid="scope.row.mmUserid"
                 :data-status="type.status">
               <el-button
@@ -50,7 +50,7 @@
               scrollSensitivity="80"
               scrollSpeed="80"
             >
-              <transition-group 
+              <transition-group
                 class="transition-group"
                 :data-mm-userid="scope.row.mmUserid"
                 :data-status="type.status"
@@ -58,12 +58,12 @@
                 <!-- <template v-if="drag.mmUserid && drag.mmUserid === scope.row.mmUserid && drag.status !== type.status">
 									<div class="drag-to-box">{{type.label}}</div>
 								</template> -->
-                <template v-if="menus && menusCpd[scope.row.mmUserid][tt].length>0">  
+                <template v-if="menus && menusCpd[scope.row.mmUserid][tt].length>0">
                   <div @click.stop="showMenuEdit(menu)"
                     :data-mm-userid="scope.row.mmUserid"
                     :data-menu-id="menu.menuId"
                     :data-status="menu.status"
-                    class="menu" 
+                    class="menu"
                     v-for="(menu, t) in menus[scope.row.mmUserid][tt]"
                     :key="menu.menuId + t"
                   >
@@ -78,14 +78,14 @@
                         :key="menu.menuId + index"
                         :type="item.className"
                         >{{ item.name }}</el-tag
-                      > 
+                      >
                       <el-tag
                         title="进度"
                         style="border-radius: 30px"
                         :type="menu.finishRate >= 100 ? 'success' : 'warning'"
                       >
                         {{ (menu.finishRate != null ? menu.finishRate : 0) + "%" }}
-                      </el-tag>  
+                      </el-tag>
 				  	        <span class="my-cell-btn"><el-button    type="danger" icon="el-icon-delete" plain @click.stop="handleDel(menu,tt)"></el-button></span>
                   </el-row>
                     <el-row>
@@ -98,12 +98,12 @@
                     </span>
                     </el-row>
                      <el-row>
-                       <div class="title">{{ menu.menuName }}</div> 
+                       <div class="title">{{ menu.menuName }}</div>
                      </el-row>
-                   
-                  </div> 
-                </template>  
-              </transition-group> 
+
+                  </div>
+                </template>
+              </transition-group>
             </draggable>
           </template>
         </el-table-column>
@@ -138,16 +138,16 @@
     >
       <el-form :model="addForm" :rules="addFormRules" ref="addForm">
         <el-form-item label="上级" prop="pmenuId">
-          {{ addForm.pmenuId ? addForm.pmenuId : "无上级" }} 
-          					<el-button 
-											@click="pmenuFormVisible=true"  
+          {{ addForm.pmenuId ? addForm.pmenuId : "无上级" }}
+          					<el-button
+											@click="pmenuFormVisible=true"
 											title="查看上级" v-if="addForm.pmenuId"
-											icon="el-icon-upload2"> 查看上级</el-button> 	
-										
+											icon="el-icon-upload2"> 查看上级</el-button>
+
 										<el-button
-											@click="selectParentMenuVisible=true"  
+											@click="selectParentMenuVisible=true"
 											title="更换上级"
-											icon="el-icon-upload2"> 更换上级</el-button> 
+											icon="el-icon-upload2"> 更换上级</el-button>
         </el-form-item>
         <el-form-item label="故事名称" prop="menuName">
           <template slot="label">
@@ -164,8 +164,8 @@
         <el-button @click="addFormVisible = false">关闭</el-button>
         <el-button type="primary" @click="addXmMenu">确 定</el-button>
       </div>
-    </el-dialog> 
-	
+    </el-dialog>
+
 
 	<el-dialog append-to-body title="需求明细"  :visible.sync="menuDetailVisible" width="90%"  top="20px"  :close-on-click-modal="false">
 		<xm-menu-edit :visible="menuDetailVisible" op-type="edit" :xm-menu="editForm" ></xm-menu-edit>
@@ -174,7 +174,7 @@
     <el-dialog title="上级需求详情" :visible.sync="pmenuFormVisible" :with-header="false" width="90%" top="20px"    append-to-body   :close-on-click-modal="false" >
     <xm-menu-edit v-if="pmenuFormVisible" :reload="true" :xm-menu="{menuId:editForm.pmenuId}" :visible="pmenuFormVisible" @cancel="pmenuFormVisible=false"></xm-menu-edit>
   </el-dialog>
-			
+
 		<el-dialog
 		append-to-body
 		title="选择上级需求"
@@ -183,7 +183,7 @@
     top="20px"
 		:close-on-click-modal="false"
 		>
-		<xm-epic-features-select 
+		<xm-epic-features-select
 			@select="onParentMenuSelected"
 			:xm-product="xmProduct"
 		></xm-epic-features-select>
@@ -197,7 +197,7 @@ import draggable from "vuedraggable";
 import { initDicts, editXmMenuSomeFields, addXmMenu,delXmMenu } from "@/api/xm/core/xmMenu";
 import XmMenuEdit from "./XmMenuEdit"; //修改界面
 import XmEpicFeaturesSelect from "../xmMenu/XmEpicFeaturesSelect.vue";
- 
+
 import { mapGetters } from "vuex";
 
 export default {
@@ -207,7 +207,7 @@ export default {
   data() {
     return {
 		load:{add:false,edit:false,list:false,del:false},
-      
+
       editForm: {
 						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',seqNo:'1',mmUserid:'',mmUsername:'',ntype:'0',childrenCnt:0,sinceVersion:'',
 						proposerId:'',proposerName:'',dlvl:'',dtype:'',priority:'',source:'',calcType:'1',actWorkload:0,actAt:0,finishRate:0,ctime:'',dclass:'1',startTime:'',endTime:''
@@ -236,9 +236,9 @@ export default {
         { label: "打开", status: "0", number: 0 },
         { label: "进行中", status: "1", number: 0 },
         { label: "已完工", status: "2", number: 0 },
-        { label: "已关闭", status: "3", number: 0 }, 
+        { label: "已关闭", status: "3", number: 0 },
       ],
-      statusInit: [], 
+      statusInit: [],
       dicts: {
         menuStatus: [],
         demandSource: [],
@@ -275,7 +275,7 @@ export default {
   },
   methods: {
     ...util,
-    onMove(e,e2) { 
+    onMove(e,e2) {
       console.log("onMove--e==", e);
 
       let targetEl = { ...e.dragged.dataset };
@@ -297,7 +297,7 @@ export default {
       console.log("onStart--targetEl==", targetEl);
     },
     onEnd(e) {
-      console.log("onEnd--e==", e); 
+      console.log("onEnd--e==", e);
       this.drag = {};
       // targetEl：拖拽的故事数据; toEl拖拽后的位置.
       let targetEl = { ...e.item.dataset };
@@ -311,7 +311,7 @@ export default {
         //const params = { ...menu, status: toEl.status };
         const params = { menuIds: [menu.menuId], status: toEl.status };
         editXmMenuSomeFields(params).then((res) => {
- 
+
           //this.$emit('submit');
           var tips = res.data.tips;
           if (tips.isOk) {
@@ -412,18 +412,18 @@ export default {
           })
           .catch((err) => (this.load.add = false));
       });
-    }, 
+    },
     showAddMenu(menu, type) {
       this.addForm.menuId = "";
       this.addForm.menuName = menu.menuName+"--请修改";
       this.addForm.productId = menu.productId;
       this.addForm.status = type.status;
       this.addForm.productId = menu.productId;
-      this.addForm.pmenuId = menu.pmenuId; 
+      this.addForm.pmenuId = menu.pmenuId;
       this.addForm.priority = menu.priority;
-      this.addForm.seqNo = menu.seqNo;  
+      this.addForm.seqNo = menu.seqNo;
       this.addForm.mmUserid = menu.mmUserid;
-      this.addForm.mmUsername = menu.mmUsername 
+      this.addForm.mmUsername = menu.mmUsername
       this.addForm.sinceVersion = menu.sinceVersion ;
       this.addForm.funcId = menu.funcId ;
       this.addForm.funcName = menu.funcName ;
@@ -432,7 +432,7 @@ export default {
       this.addForm.dclass=menu.dclass
       this.addFormVisible = true;
     },
-	
+
     //删除xmMenu
     handleDel: function (row, index) {
       this.$confirm("确认删除该记录吗?", "提示", {
@@ -444,7 +444,7 @@ export default {
           .then((res) => {
             this.load.del = false;
             var tips = res.data.tips;
-            if (tips.isOk) { 
+            if (tips.isOk) {
 				var index=this.xmMenus.findIndex(k=>k.menuId==row.menuId)
 				this.xmMenus.splice(index,1)
              }
@@ -462,7 +462,7 @@ export default {
 				if(!menu||!menu.menuId){
 					this.$notify({position:'bottom-left',showClose:true,message:'请先选择一个上级需求',type:'warning'})
 					return;
-				} 
+				}
         this.addForm.pmenuId=menu.menuId
         this.addForm.pmenuName=menu.menuName
         this.addForm.iterationId=menu.iterationId
@@ -476,7 +476,7 @@ export default {
     this.$nextTick(()=>{
       initDicts(this);
     })
-    
+
     this.statusInit = JSON.parse(JSON.stringify(this.status));
     this.initData();
   },
@@ -487,11 +487,11 @@ export default {
   height: 100%;
   width: 100%;
   overflow: hidden;
-} 
+}
 
 .draggable {
   display: flex;
-  flex-wrap: wrap; 
+  flex-wrap: wrap;
   min-height: 100px;
   width: 100%;
 }
@@ -505,12 +505,12 @@ export default {
       height: 100%;
       vertical-align: top;
     }
-  } 
+  }
 }
-.transition-group {   
+.transition-group {
   width: 100%;
   cursor: pointer;
-  .menu {   
+  .menu {
     border:1px solid white;
   	min-height: 100px;
     background: #fff;
@@ -545,10 +545,10 @@ export default {
    visibility: visible;
 }
 
-.menu:hover{ 
+.menu:hover{
   border:1px solid blue;
 }
-.title { 
+.title {
     height: 40px;
     overflow: hidden; //超出隐藏
     text-overflow: ellipsis; //溢出用省略号显示
@@ -557,5 +557,5 @@ export default {
     -webkit-line-clamp: 2; //超出两行隐藏
     -webkit-box-orient: vertical; // 从上到下垂直排列子元素
     //（设置伸缩盒子的子元素排列方式）
-} 
+}
 </style>

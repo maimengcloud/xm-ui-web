@@ -20,7 +20,7 @@
 						default-expand-all
 						:tree-props="{children: 'children' }"
 						row-key="id"
-						 :height="tableHeight"
+						 v-adaptive="{bottomOffset:30}"
 						 ref="table"
 						>
  						<el-table-column v-show="isMultiSelect" sortable width="60" type="selection"></el-table-column>

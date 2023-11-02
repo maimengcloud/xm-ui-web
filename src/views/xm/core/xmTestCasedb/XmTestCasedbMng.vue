@@ -11,7 +11,7 @@
 		</el-row>
 		<el-row  class="padding-top">
 			<!--列表 XmTestCasedb 测试用例库-->
-			<el-table ref="xmTestCasedbTable" :data="xmTestCasedbs" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="xmTestCasedbTable" :data="xmTestCasedbs" v-adaptive="{bottomOffset:30}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="55" show-overflow-tooltip fixed="left"></el-table-column>
 				<el-table-column sortable type="index" width="55" show-overflow-tooltip  fixed="left"></el-table-column>
 				<!--
@@ -24,8 +24,8 @@
 				    <template slot-scope="scope">
 				        <span v-if="select!==true"><el-link @click="goCasedbInfo(scope.row)">{{scope.row.name}} </el-link> </span>
                         <span v-else> {{scope.row.name}}  </span>
-                        <span class="tool-bar"> 
-                            <el-button type="warning" @click="goCasedbInfo(scope.row)" icon="el-icon-s-data"  circle title="视图"></el-button>  
+                        <span class="tool-bar">
+                            <el-button type="warning" @click="goCasedbInfo(scope.row)" icon="el-icon-s-data"  circle title="视图"></el-button>
                          </span>
                     </template>
 				</el-table-column>
@@ -34,10 +34,10 @@
                         <template slot-scope="scope">
                             <span> {{scope.row.productName}} </span>
                         </template>
-                    </el-table-column> 
+                    </el-table-column>
                     <el-table-column prop="cusername" label="创建人" min-width="120" show-overflow-tooltip>
-                        <template slot-scope="scope"> 
-                            <mdp-select-user-xm  userid-key="cuserid" username-key="cusername" v-model="scope.row" :disabled="true"> 
+                        <template slot-scope="scope">
+                            <mdp-select-user-xm  userid-key="cuserid" username-key="cusername" v-model="scope.row" :disabled="true">
                             </mdp-select-user-xm>
                         </template>
                     </el-table-column>
@@ -45,16 +45,16 @@
                         <template slot-scope="scope">
                             <span> {{scope.row.ctime}} </span>
                         </template>
-                    </el-table-column>    
+                    </el-table-column>
                 </template>
-				<template v-else> 
+				<template v-else>
                     <el-table-column label="操作" width="180" fixed="right">
                         <template scope="scope">
-                            <el-button type="primary" @click="$emit('select',scope.row)">选择</el-button> 
+                            <el-button type="primary" @click="$emit('select',scope.row)">选择</el-button>
                         </template>
 				    </el-table-column>
                 </template>
-				
+
 			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 		</el-row>
@@ -303,9 +303,9 @@ export default {
         clearProduct(){
             this.filters.xmProduct=null;
             this.searchXmTestCasedbs();
-        }, 
+        },
         onProductSelected(product){
-            this.filters.xmProduct=product; 
+            this.filters.xmProduct=product;
             this.searchXmTestCasedbs();
         },
         goCasedbInfo(row){
@@ -316,7 +316,7 @@ export default {
                         casedbId:row.id
                     }
                 })
-            }) 
+            })
         }
     },//end methods
     mounted() {

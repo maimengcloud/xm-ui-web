@@ -129,7 +129,7 @@
               fit
               border
               tooltip-effect="light"
-              :height="tableHeight"
+              v-adaptive="{bottomOffset:30}"
               :tree-props="{ children: 'children'  }"
               row-key="id"
               ref="table"

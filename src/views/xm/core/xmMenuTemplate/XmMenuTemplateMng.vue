@@ -13,7 +13,7 @@
 					<el-button    v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenuTemplates">查询</el-button>
 					<el-button type="primary" v-if="isSelectMenu" v-loading="load.del" @click="selectedMenusConfirm" :disabled="this.sels.length===0 || load.del==true">确认选择</el-button>
 				</el-row>
-				<el-table :load="loadMenusLazy" ref="table" :height="maxTableHeight" :data="xmMenuTemplatesTreeData"   row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+				<el-table :load="loadMenusLazy" ref="table" v-adaptive="{bottomOffset:30}" :data="xmMenuTemplatesTreeData"   row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 					<el-table-column sortable type="selection" width="40"></el-table-column>
  					<el-table-column prop="menuName" label="需求名称" min-width="120" >
 						<template slot-scope="scope">

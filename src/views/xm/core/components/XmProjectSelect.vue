@@ -144,7 +144,7 @@
         <!--列表 XmProject 项目表-->
         <el-table
           ref="table"
-          :height="maxTableHeight"
+          v-adaptive="{bottomOffset:30}"
           :data="xmProjects"
           :row-class-name="tableRowClassName"
           @sort-change="sortChange"

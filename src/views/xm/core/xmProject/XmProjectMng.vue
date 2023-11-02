@@ -211,7 +211,7 @@
 				</el-row>
 			</el-row>
 			<el-row class="padding-top">
-				<el-table  ref="table" :height="maxTableHeight" v-cloak v-show="!showType" fit stripe :data="ScreenData" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick" style="width: 100%;" :border="true">
+				<el-table  ref="table" v-adaptive="{bottomOffset:30}" v-cloak v-show="!showType" fit stripe :data="ScreenData" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick" style="width: 100%;" :border="true">
 					<el-row slot="empty">
 							<el-result icon="info" title="信息提示" subTitle="没有查到相关项目，有可能是您暂时还没有项目，有可能是您无权限查询项目。">
 								<template slot="extra">

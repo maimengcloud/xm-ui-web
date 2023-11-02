@@ -23,7 +23,7 @@
 					</el-select>
 				</el-row>
 				<el-table ref="table"
-					:height="maxTableHeight"
+					v-adaptive="{bottomOffset:30}"
 					v-if="showType == '人力'"
 					:data="sumXmCostLaborsConvert"
 					highlight-current-row
