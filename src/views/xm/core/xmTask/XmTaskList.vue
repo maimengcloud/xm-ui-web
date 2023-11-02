@@ -34,7 +34,7 @@
 							fit
 							border
 							row-key="id"
-							 v-adaptive="{bottomOffset:30}"
+							 height="100px" v-adaptive="{bottomOffset:50}"
 							>
 							<el-table-column v-show="isMultiSelect"  sortable width="70" type="selection"></el-table-column>
 							<el-table-column prop="name" label="任务名称"  min-width="260" show-overflow-tooltip>

@@ -10,7 +10,7 @@
 		</el-row>
 		<el-row class="padding-top">
 			<!--列表 XmCostNlabor 项目实际人工成本费用-->
-			<el-table ref="xmCostNlaborTable" :data="xmCostNlabors" v-adaptive="{bottomOffset:30}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="xmCostNlaborTable" :data="xmCostNlabors" height="100px" v-adaptive="{bottomOffset:50}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="55" show-overflow-tooltip fixed="left"></el-table-column>
 				<el-table-column sortable type="index" width="55" show-overflow-tooltip  fixed="left"></el-table-column>
 				<!--

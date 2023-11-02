@@ -144,7 +144,7 @@
         <!--列表 XmProject 项目表-->
         <el-table
           ref="table"
-          v-adaptive="{bottomOffset:30}"
+          height="100px" v-adaptive="{bottomOffset:50}"
           :data="xmProjects"
           :row-class-name="tableRowClassName"
           @sort-change="sortChange"

@@ -8,7 +8,7 @@
 		</el-row>
 		<el-row  v-show="simple!=true" class="page-main">
 			<!--列表 XmProductTemplate 产品表-->
-			<el-table  ref="table" v-adaptive="{bottomOffset:30}" :data="xmProductTemplates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table  ref="table" height="100px" v-adaptive="{bottomOffset:50}" :data="xmProductTemplates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column   sortable type="selection" width="40"></el-table-column>
 				<el-table-column sortable type="index" width="40"></el-table-column>
 				<el-table-column  prop="id" label="产品编号" min-width="80" ></el-table-column>
@@ -29,7 +29,7 @@
 
 		<el-row  v-show="simple==true" >
 			<!--列表 XmProductTemplate 产品表-->
-			<el-table ref="table" v-adaptive="{bottomOffset:30}"  :data="xmProductTemplates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" height="100px" v-adaptive="{bottomOffset:50}"  :data="xmProductTemplates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
   				<el-table-column prop="productName" label="产品名称" min-width="80" ></el-table-column>
 			</el-table>
 			<el-pagination  layout="total,  prev, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>

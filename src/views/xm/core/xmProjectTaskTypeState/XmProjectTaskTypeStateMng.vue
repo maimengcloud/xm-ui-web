@@ -8,7 +8,7 @@
 		</el-row>
 		<el-row class="page-main ">
 			<!--列表 XmProjectTaskTypeState 按任务类型汇总-->
-			<el-table ref="table" v-adaptive="{bottomOffset:30}" :data="xmProjectTaskTypeStates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" height="100px" v-adaptive="{bottomOffset:50}" :data="xmProjectTaskTypeStates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="45"></el-table-column>
 				<el-table-column sortable type="index" width="45"></el-table-column>
 				<el-table-column prop="projectId" label="项目编号" min-width="80" ></el-table-column>

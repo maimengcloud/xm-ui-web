@@ -238,7 +238,7 @@
 				</el-row>
 				<el-row v-show="!showType" class="padding-top">
 					<!--列表 XmProduct 产品表-->
-					<el-table ref="table"  v-adaptive="{bottomOffset:30}" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick" style="width: 100%;" border>
+					<el-table ref="table"  height="100px" v-adaptive="{bottomOffset:50}" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick" style="width: 100%;" border>
 						<el-row slot="empty">
 							<el-result icon="info" title="信息提示" subTitle="没有查到相关产品，有可能是您暂时还没有产品，有可能是您无权限查询产品。">
 								<template slot="extra">

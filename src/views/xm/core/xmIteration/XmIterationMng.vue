@@ -104,7 +104,7 @@
       <!--列表 XmIteration 迭代定义-->
       <el-table
         ref="table"
-        v-adaptive="{bottomOffset:30}"
+        height="100px" v-adaptive="{bottomOffset:50}"
         v-if="!gstcVisible"
         :data="xmIterationTreeData"
         row-key="id"

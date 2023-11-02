@@ -5,7 +5,7 @@
       :data="weeksCpd"
       header-cell-class-name="head-row"
       border
-      v-adaptive="{bottomOffset:30}"
+      height="100px" v-adaptive="{bottomOffset:50}"
       style="width: 100%"
     >
       <el-table-column

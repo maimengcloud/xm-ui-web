@@ -8,7 +8,7 @@
 		</el-row>
 		<el-row class="padding-top">
 			<!--列表 XmProjectState 项目指标日统计表-->
-			<el-table ref="xmProjectStateTable" :data="xmProjectStates" v-adaptive="{bottomOffset:30}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="xmProjectStateTable" :data="xmProjectStates" height="100px" v-adaptive="{bottomOffset:50}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="55" show-overflow-tooltip></el-table-column>
 				<el-table-column sortable type="index" width="55" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="projectId" label="项目编号" min-width="80" show-overflow-tooltip></el-table-column>

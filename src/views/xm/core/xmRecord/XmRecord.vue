@@ -7,7 +7,7 @@
 		</el-row>
 		<el-row class="page-main">
 			<!--列表 XmRecord xm_record-->
-			<el-table ref="table" v-adaptive="{bottomOffset:30}" :data="xmRecords" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" height="100px" v-adaptive="{bottomOffset:50}" :data="xmRecords" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column sortable type="index" width="40"></el-table-column>
 				<el-table-column prop="projectId" label="项目/产品" v-if="!simple" min-width="80" >
 					<template slot-scope="scope">

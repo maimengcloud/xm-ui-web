@@ -132,7 +132,7 @@
 			 </el-row>
 			 <el-row class="padding-top">
 				<!--列表 XmQuestion xm_question-->
-				<el-table  element-loading-text="努力加载中" element-loading-spinner="el-icon-loading"  ref="table" v-adaptive="{bottomOffset:30}" :data="xmQuestions" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+				<el-table  element-loading-text="努力加载中" element-loading-spinner="el-icon-loading"  ref="table" height="100px" v-adaptive="{bottomOffset:50}" :data="xmQuestions" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  					<el-table-column  label="全选" type="selection" min-width="50"  fixed="left"></el-table-column>
 
 					  <el-table-column prop="id" label="缺陷编号" width="120" show-overflow-tooltip fixed="left">

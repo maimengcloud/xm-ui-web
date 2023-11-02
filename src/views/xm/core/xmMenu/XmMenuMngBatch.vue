@@ -6,7 +6,7 @@
 				<el-button      @click="noBatchEdit" icon="el-icon-back">返回</el-button>
 			</el-row>
 			<el-row style="padding-top:12px;">
-				<el-table ref="table" :indent="16" :load="loadXmMenusLazy" v-adaptive="{bottomOffset:30}" :data="xmMenusTreeData" class="drag-table"   row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}"   highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+				<el-table ref="table" :indent="16" :load="loadXmMenusLazy" height="100px" v-adaptive="{bottomOffset:50}" :data="xmMenusTreeData" class="drag-table"   row-key="menuId" :tree-props="{children: 'children', hasChildren: 'childrenCnt'}"   highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 					<el-table-column  type="selection" width="45"></el-table-column>
 					<el-table-column  prop="seqNo"  label="序号" width="200" fixed="left">
 						<template slot-scope="scope">

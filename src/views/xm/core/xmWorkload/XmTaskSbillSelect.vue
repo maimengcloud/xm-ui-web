@@ -8,7 +8,7 @@
 
       <el-row >
         <!--列表 XmTaskSbill 结算表-->
-        <el-table  ref="table" v-adaptive="{bottomOffset:30}" :data="xmTaskSbills" :row-class-name="tableRowClassName" @sort-change="sortChange" :highlight-current-row="true" current-row-key="id" v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+        <el-table  ref="table" height="100px" v-adaptive="{bottomOffset:50}" :data="xmTaskSbills" :row-class-name="tableRowClassName" @sort-change="sortChange" :highlight-current-row="true" current-row-key="id" v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
           <el-table-column prop="name"  label="结算单名称">
             <template slot="header" slot-scope="scope">
               结算单名称

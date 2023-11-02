@@ -83,7 +83,7 @@
 		</el-row>
 		<el-row>
 			<!--列表 XmProduct 产品表-->
-			<el-table  ref="table"  border v-adaptive="{bottomOffset:30}" :data="xmProducts" :row-class-name="tableRowClassName" @sort-change="sortChange" :highlight-current-row="true" current-row-key="id" v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table  ref="table"  border height="100px" v-adaptive="{bottomOffset:50}" :data="xmProducts" :row-class-name="tableRowClassName" @sort-change="sortChange" :highlight-current-row="true" current-row-key="id" v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  				 <el-table-column type="index" width="60">
 				</el-table-column>
 				<el-table-column prop="productName" label="产品名称" min-width="200" sortable>

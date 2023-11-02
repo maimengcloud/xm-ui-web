@@ -8,7 +8,7 @@
 		</el-row>
 		<el-row class="padding-top">
 			<!--列表 XmRptData xm_rpt_data-->
-			<el-table ref="xmRptDataTable" :data="xmRptDatas" v-adaptive="{bottomOffset:30}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="xmRptDataTable" :data="xmRptDatas" height="100px" v-adaptive="{bottomOffset:50}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
                 <el-table-column  type="selection" width="55" show-overflow-tooltip fixed="left"></el-table-column>
                 <el-table-column prop="rptName" label="报告名称" min-width="250" show-overflow-tooltip>
 				    <template slot-scope="scope">

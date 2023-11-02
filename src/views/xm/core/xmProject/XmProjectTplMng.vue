@@ -23,7 +23,7 @@
 			<!--列表 XmProject xm_project-->
 			<el-row  v-loading="load.list">
 
-					<el-table v-adaptive="{bottomOffset:30}" ref="table" v-cloak  stripe :data="ScreenData" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+					<el-table height="100px" v-adaptive="{bottomOffset:50}" ref="table" v-cloak  stripe :data="ScreenData" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  						<el-table-column prop="name" label="项目模板(学习/参考)" min-width="200" >
 							<template slot-scope="scope">
 								<div v-if="isSelect===true">{{scope.row.name}}</div>

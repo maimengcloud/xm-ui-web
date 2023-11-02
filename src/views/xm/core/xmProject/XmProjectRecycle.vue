@@ -6,7 +6,7 @@
 			<el-button @click="searchXmProjects" icon="el-icon-search"></el-button>
 		</el-row>
 		<el-row class="padding-top">
-			 <el-table  ref="table" border v-adaptive="{bottomOffset:30}" v-cloak stripe :data="xmProjects" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			 <el-table  ref="table" border height="100px" v-adaptive="{bottomOffset:50}" v-cloak stripe :data="xmProjects" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 						<el-table-column  type="index" label="序号" width="80" ></el-table-column>
 						<el-table-column prop="id" label="项目编码" min-width="120" ></el-table-column>
 						<el-table-column prop="name" label="标题" min-width="200" >

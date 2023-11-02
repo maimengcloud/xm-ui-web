@@ -16,7 +16,7 @@
 			</div>
 		</el-row>
 		<el-row>
-			<el-table ref="table" v-adaptive="{bottomOffset:30}"  stripe :data="xmProjects"  highlight-current-row v-loading="load.list" border  style="width: 100%;">
+			<el-table ref="table" height="100px" v-adaptive="{bottomOffset:50}"  stripe :data="xmProjects"  highlight-current-row v-loading="load.list" border  style="width: 100%;">
 				<el-table-column  type="index" label="序号" width="55" ></el-table-column>
 				<el-table-column prop="id" label="项目编码" min-width="80" ></el-table-column>
 				<el-table-column prop="name" label="标题名称" min-width="80" ></el-table-column>

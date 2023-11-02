@@ -50,7 +50,7 @@
 		</el-row>
 		<el-row class="padding-top">
 			<!--列表 XmTaskSbill 任务结算表-->
-			<el-table ref="xmTaskSbillTable" :data="xmTaskSbills" v-adaptive="{bottomOffset:30}" @sort-change="sortChange" highlight-current-row v-loading="load.list"
+			<el-table ref="xmTaskSbillTable" :data="xmTaskSbills" height="100px" v-adaptive="{bottomOffset:50}" @sort-change="sortChange" highlight-current-row v-loading="load.list"
                 border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;" :header-cell-style="{'text-align':'center'}"
                 :cell-style="{'text-align':'center'}">
 <!--				<el-table-column  type="selection" width="55" show-overflow-tooltip></el-table-column>-->

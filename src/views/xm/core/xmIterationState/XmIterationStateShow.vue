@@ -6,7 +6,7 @@
   		</el-row>
 		<el-row class="page-main ">
 			<!--列表 XmIterationState 迭代定义-->
-			<el-table ref="table" v-adaptive="{bottomOffset:30}" :data="xmIterationStates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+			<el-table ref="table" height="100px" v-adaptive="{bottomOffset:50}" :data="xmIterationStates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  				<el-table-column sortable type="index" width="45"></el-table-column>
  				<el-table-column prop="iterationName" label="迭代名称" min-width="80" ></el-table-column>
 				<el-table-column prop="finishRate" label="进度" min-width="80">
