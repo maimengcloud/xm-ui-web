@@ -5,32 +5,32 @@
 						<el-option :label="userInfo.branchName+'机构下所有的产品'" value="branchId"></el-option>
 						<el-option label="我相关的产品" value="compete"></el-option>
 						<el-option label="按产品编号精确查找" value="productId"></el-option>
-					</el-select> 
-					<mdp-select placeholder="状态" :dict="dicts['xmProductPstatus']" v-model="filters.pstatus"></mdp-select>
+					</el-select>
+					<mdp-select placeholder="状态" item-code="xmProductPstatus" v-model="filters.pstatus"></mdp-select>
 					<el-input v-if="filters.queryScope=='productId'" style="width:20%;"  v-model="filters.id"  placeholder="输入产品编号" @keyup.enter.native="searchXmProducts" clearable>
 					</el-input>
-					<el-input v-if="filters.queryScope!='productId'" v-model="filters.key" style="width: 20%;" placeholder="名称查询" clearable>   
+					<el-input v-if="filters.queryScope!='productId'" v-model="filters.key" style="width: 20%;" placeholder="名称查询" clearable>
 					</el-input>
 					<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProducts" icon="el-icon-search">查询</el-button>
-					
+
 					<el-popover
 						placement="top-start"
 						title="更多查询条件、操作"
 						width="600"
-						trigger="click" >  
+						trigger="click" >
 							<el-descriptions class="margin-top" size="mini" :column="1" border>
-									<template slot="extra">  
+									<template slot="extra">
 										<el-button type="text" @click="templateVisible=!templateVisible">{{templateVisible?'隐藏模板':'显示模板'}}</el-button>
 										<el-button type="text"  @click="guiderStart(true)" icon="el-icon-help">新手导航</el-button>
- 									</template> 
+ 									</template>
 									<el-descriptions-item>
 										<template slot="label">
 											<i class="el-icon-time"></i>
 											显示方式
-										</template> 										
+										</template>
 										<el-radio  v-model="showType" :label="false">表格</el-radio>
-										<el-radio  v-model="showType" :label="true">卡片</el-radio> 
-									</el-descriptions-item> 
+										<el-radio  v-model="showType" :label="true">卡片</el-radio>
+									</el-descriptions-item>
 									<el-descriptions-item>
 										<template slot="label">
 											<i class="el-icon-document"></i>
@@ -41,21 +41,21 @@
 											<el-option label="我相关的产品" value="compete"></el-option>
 											<el-option label="按产品编号精确查找" value="productId"></el-option>
 										</el-select>
- 									</el-descriptions-item>    
+ 									</el-descriptions-item>
 									<el-descriptions-item v-if="selProject">
 										<template slot="label">
 											<i class="el-icon-document"></i>
 											当前项目
 										</template>
 										<el-tag v-if="selProject">{{selProject?selProject.name:''}}</el-tag>
-									</el-descriptions-item>    
+									</el-descriptions-item>
 									<el-descriptions-item v-if="xmIteration">
 										<template slot="label">
 											<i class="el-icon-document"></i>
 											当前迭代
 										</template>
-										<el-tag v-if="xmIteration">{{xmIteration.iterationName}}</el-tag>									
-									</el-descriptions-item>    
+										<el-tag v-if="xmIteration">{{xmIteration.iterationName}}</el-tag>
+									</el-descriptions-item>
 									<el-descriptions-item>
 										<template slot="label">
 											<i class="el-icon-document"></i>
@@ -63,72 +63,72 @@
 										</template>
 										<el-tag v-if="filters.pmUser" closable @click="selectFiltersPmUser" @close="clearFiltersPmUser()">{{filters.pmUser.username}}</el-tag>
 										<el-button   v-else @click="selectFiltersPmUser()">选责任人</el-button>
-										<el-button    @click="setFiltersPmUserAsMySelf()">我的</el-button>									
-									</el-descriptions-item>  
+										<el-button    @click="setFiltersPmUserAsMySelf()">我的</el-button>
+									</el-descriptions-item>
 									<el-descriptions-item :span="2">
 										<template slot="label">
 											<i class="el-icon-watch-1"></i>
 											创建时间
 										</template>
-										
+
 										<mdp-date-range
 												v-model="filters"
-												type="daterange" 
+												type="daterange"
 												start-key="ctimeStart"
 												end-key="ctimeEnd"
 												unlink-panels
 												range-separator="至"
 												start-placeholder="开始日期"
 												end-placeholder="完成日期"
-												value-format="yyyy-MM-dd HH:mm:ss" 
-												:default-time="['00:00:00', '23:59:59']" 
-												:auto-default="false" 
+												value-format="yyyy-MM-dd HH:mm:ss"
+												:default-time="['00:00:00', '23:59:59']"
+												:auto-default="false"
 												key="planEndTime"
 												></mdp-date-range>
-									</el-descriptions-item> 
+									</el-descriptions-item>
 									<el-descriptions-item>
 										<template slot="label">
 											<i class="el-icon-document"></i>
 											产品编号
-										</template> 										
-										<el-input v-model="filters.id" clearable style="width:100%;"></el-input> 
+										</template>
+										<el-input v-model="filters.id" clearable style="width:100%;"></el-input>
 									</el-descriptions-item>
 									<el-descriptions-item>
 										<template slot="label">
 											<i class="el-icon-document"></i>
 											产品名称
-										</template> 										
-										<el-input v-model="filters.key" clearable style="width:100%;"></el-input> 
+										</template>
+										<el-input v-model="filters.key" clearable style="width:100%;"></el-input>
 									</el-descriptions-item>
-									
+
 									<el-descriptions-item>
-										<el-button type="primary" style="float:right;" @click="searchXmProducts" icon="el-icon-search">查询</el-button> 
+										<el-button type="primary" style="float:right;" @click="searchXmProducts" icon="el-icon-search">查询</el-button>
 									</el-descriptions-item>
-								</el-descriptions> 
+								</el-descriptions>
 						<el-button  slot="reference" icon="el-icon-more" id="guider-two"></el-button>
 					</el-popover>
 					<span style="float:right;">
-					<el-popover  
+					<el-popover
 							placement="top-start"
-							width="450" 
-							trigger="click" > 
-							<el-row> 
+							width="450"
+							trigger="click" >
+							<el-row>
 								<el-row>
 									<el-badge value="都适用">
-									<el-button   @click="showAdd" icon="el-icon-plus">直接添加新产品</el-button> 
+									<el-button   @click="showAdd" icon="el-icon-plus">直接添加新产品</el-button>
 									</el-badge>
-								</el-row>  
+								</el-row>
 								<el-row>
 									<el-badge value="进阶">
-									<el-button type="primary" icon="el-icon-plus" >通过【产品-复制】一键创建新的产品</el-button> 
+									<el-button type="primary" icon="el-icon-plus" >通过【产品-复制】一键创建新的产品</el-button>
 									</el-badge>
-								</el-row> 
+								</el-row>
 								<el-row>
 									<el-badge value="新手">
-									<el-button type="warning" @click="templateVisible=!templateVisible" icon="el-icon-plus">通过【模板-复制】一键创建新的产品</el-button> 
+									<el-button type="warning" @click="templateVisible=!templateVisible" icon="el-icon-plus">通过【模板-复制】一键创建新的产品</el-button>
 									</el-badge>
-								</el-row> 
-							</el-row>   
+								</el-row>
+							</el-row>
  							<el-button type="primary" slot="reference"  icon="el-icon-plus" v-if="!xmIteration" id="guider-one" round>产品</el-button>
 					</el-popover>
 					</span>
@@ -143,16 +143,16 @@
 									<div class="project-name">
 										<el-tag title="产品状态" v-for="(item,index) in formatDictsWithClass(dicts,'xmProductPstatus',p.pstatus)" :key="index" :type="item.className">{{item.name}}</el-tag>
 										{{p.productName}}
-									</div> 
+									</div>
 									<el-popover
 										placement="top-start"
 										title="更多操作"
 										width="200"
 										trigger="hover">
-										<div class="project-id"> 
-											<el-link id="prj-copy-btn" type="primary"  title="通过复制快速创建新产品" @click.stop="onCopyToBtnClick(p)" v-loading="load.add">复制&nbsp;</el-link> 
-											<el-link v-if="menukey=='myFocus'"  type="primary"  @click.stop="focusOrUnfocus(p)" >取消关注</el-link> 
-											<el-link v-else  type="primary"   @click.stop="focusOrUnfocus(p)" >关注</el-link>  
+										<div class="project-id">
+											<el-link id="prj-copy-btn" type="primary"  title="通过复制快速创建新产品" @click.stop="onCopyToBtnClick(p)" v-loading="load.add">复制&nbsp;</el-link>
+											<el-link v-if="menukey=='myFocus'"  type="primary"  @click.stop="focusOrUnfocus(p)" >取消关注</el-link>
+											<el-link v-else  type="primary"   @click.stop="focusOrUnfocus(p)" >关注</el-link>
 											<el-link   type="danger" title="删除项目" @click.stop="handleDel(p)" v-loading="load.del">删除</el-link>
 
 											<!--<el-link id="prj-calc-btn" type="warning" style="font-size:14px;float:right;margin-left:2px;"  title="统计项目的工作量、进度、需求、bugs等数据" @click.stop="loadTasksToXmProjectState(p)" v-loading="load.add">统计</el-link>-->
@@ -160,9 +160,9 @@
 
 										<el-button size="mini" slot="reference" icon="el-icon-setting" circle plain></el-button>
 									</el-popover>
-								</div> 
-									<div class="project-info"> 
-										
+								</div>
+									<div class="project-info">
+
 										<div class="info-task"  title="已完成需求数 / 总需求数 ">
 											<span class="nums">
 												<span class="item-total finish-task">{{p.menuFinishCnt==null?0:p.menuFinishCnt}}</span>
@@ -197,20 +197,20 @@
 											</span>
 											<span class="item-type">缺陷</span>
 										</div>
-									</div> 
-								
+									</div>
+
 								<div class="project-rate">
 									<el-progress :percentage="(p.finishRate==null?0:p.finishRate)"></el-progress>
-									
+
 									<el-tag v-if="getPlanRealProgress(p)>0" type="warning" effect="dark">超前{{ getPlanRealProgress(p) }}%</el-tag>
 									<el-tag v-else-if="getPlanRealProgress(p)<0" type="danger" effect="dark">落后{{ 0-getPlanRealProgress(p) }}%</el-tag>
 									<el-tag v-else-if="getProgress(p)>0" effect="dark" type="success" class="el-icon-check"> </el-tag>
 									<el-tag v-else-if="getProgress(p)==0" effect="dark" type="info">未开始 </el-tag>
 								</div>
-								<div class="project-footer"> 
+								<div class="project-footer">
 									<div class="project-type" title="产品经理">
-											<mdp-select-user-xm v-if="p.pmUserid" :value="p" userid-key="pmUserid" username-key="pmUsername" :disabled="true"></mdp-select-user-xm> 
-											<mdp-select-user-xm v-else-if="p.admUserid" :value="p" userid-key="admUserid" username-key="admUsername" :disabled="true"></mdp-select-user-xm> 
+											<mdp-select-user-xm v-if="p.pmUserid" :value="p" userid-key="pmUserid" username-key="pmUsername" :disabled="true"></mdp-select-user-xm>
+											<mdp-select-user-xm v-else-if="p.admUserid" :value="p" userid-key="admUserid" username-key="admUsername" :disabled="true"></mdp-select-user-xm>
 										</div>
 										<div class="project-period">{{p.startTime?p.startTime.substr(0,10):''}} ~{{p.endTime?p.endTime.substr(0,10):''}}</div>
 									<!--<div class="project-period">{{p.startTime.substr(0,10)}} ~{{p.endTime.substr(0,10)}}</div>-->
@@ -225,10 +225,10 @@
 										<el-row>
 											您可以通过 &nbsp;<el-button   @click="showAdd" icon="el-icon-plus" type="primary" plain>产品</el-button>&nbsp;创建一个新产品
 										</el-row>
-										<el-row> 
+										<el-row>
 											通过&nbsp;<el-button @click="templateVisible=true" type="primary" plain style="margin-bottom:5px;">公共模板</el-button>&nbsp;体验产品的过程。<br/>
 										</el-row>
-										<el-row> 
+										<el-row>
 											通过&nbsp;<el-button @click="templateVisible=true" type="primary" plain style="margin-bottom:5px;">拷贝模板</el-button>&nbsp;快速创建新产品。<br/>
 										</el-row>
 									</el-row>
@@ -239,37 +239,37 @@
 				<el-row v-show="!showType" class="padding-top">
 					<!--列表 XmProduct 产品表-->
 					<el-table ref="table"  :height="maxTableHeight" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick" style="width: 100%;" border>
-						<el-row slot="empty">  
+						<el-row slot="empty">
 							<el-result icon="info" title="信息提示" subTitle="没有查到相关产品，有可能是您暂时还没有产品，有可能是您无权限查询产品。">
 								<template slot="extra">
 									<el-row>
 										<el-row>
 											您可以通过 &nbsp;<el-button   @click="showAdd" icon="el-icon-plus" type="primary" plain>产品</el-button>&nbsp;创建一个新产品
 										</el-row>
-										<el-row> 
+										<el-row>
 											通过&nbsp;<el-button @click="templateVisible=true" type="primary" plain style="margin-bottom:5px;">公共模板</el-button>&nbsp;体验产品的过程。<br/>
 										</el-row>
-										<el-row> 
+										<el-row>
 											通过&nbsp;<el-button @click="templateVisible=true" type="primary" plain style="margin-bottom:5px;">拷贝模板</el-button>&nbsp;快速创建新产品。<br/>
 										</el-row>
 									</el-row>
 								</template>
-							</el-result> 
-						</el-row> 
+							</el-result>
+						</el-row>
 						<el-table-column prop="productName" label="产品名称" min-width="250" sortable  fixed="left">
 							<template slot-scope="scope" >
 								<el-link id="guider-three" type="primary" @click="intoInfo(scope.row)">{{scope.row.productName}}</el-link>
 							</template>
-						</el-table-column> 
-						<el-table-column prop="id" label="产品编码" min-width="150" sortable fixed="left"  show-overflow-tooltip> 
 						</el-table-column>
-						<el-table-column prop="pstatus" label="状态" width="100" sortable :formatter="formatPstatus"  fixed="left"> 
-							<template slot-scope="scope"> 		
-								<mdp-select-tag placeholder="状态" :dict="dicts['xmProductPstatus']" v-model="scope.row.pstatus" effect="dark"></mdp-select-tag> 
+						<el-table-column prop="id" label="产品编码" min-width="150" sortable fixed="left"  show-overflow-tooltip>
+						</el-table-column>
+						<el-table-column prop="pstatus" label="状态" width="100" sortable :formatter="formatPstatus"  fixed="left">
+							<template slot-scope="scope">
+								<mdp-select-tag placeholder="状态" item-code="xmProductPstatus" v-model="scope.row.pstatus" effect="dark"></mdp-select-tag>
 							</template>
 						</el-table-column>
 						<el-table-column prop="finishRate" label="进度" width="180" sortable>
-							<template slot-scope="scope"> 
+							<template slot-scope="scope">
 								<div style="display:flex;">
  									<div style="width:3em;">{{ getProgress(scope.row)  }}%</div>
 									 <el-button plain circle id="guider-four" type="text" icon="el-icon-video-play" @click.stop="loadTasksToXmProductState( scope.row)"></el-button>
@@ -283,51 +283,51 @@
  							</template>
 						</el-table-column>
 						<el-table-column prop="pmUsername" label="产品经理" width="150" sortable show-overflow-tooltip>
-							<template slot-scope="scope"> 	
+							<template slot-scope="scope">
 								<mdp-select-user-xm v-model="scope.row" userid-key="pmUserid" username-key="pmUsername" :disabled="true"></mdp-select-user-xm>
 							</template>
 						</el-table-column>
-						
+
 						<el-table-column prop="menuCnt" label="需求数" width="120" sortable show-overflow-tooltip>
-							<template slot-scope="scope"> 						
+							<template slot-scope="scope">
 								<span title=" 已完成 / 总需求数">{{scope.row.menuCnt>0?scope.row.menuFinishCnt+'&nbsp;/&nbsp;'+scope.row.menuCnt:''}}</span>
 							</template>
 						</el-table-column>
-						
+
 						<el-table-column prop="projectCnt" label="项目数" width="120" sortable show-overflow-tooltip>
-							<template slot-scope="scope"> 						
+							<template slot-scope="scope">
 								<span title="实际发生的关联项目数">{{scope.row.projectCnt>0? scope.row.projectCnt:''}}</span>
 							</template>
-						</el-table-column> 
+						</el-table-column>
 						<el-table-column prop="iterationCnt" label="迭代数" width="120" sortable show-overflow-tooltip>
-							<template slot-scope="scope"> 						
+							<template slot-scope="scope">
 								<span title="实际发生的关联迭代数">{{scope.row.iterationCnt>0? scope.row.iterationCnt:''}}</span>
 							</template>
 						</el-table-column>
 						<el-table-column prop="taskCnt" label="任务数" width="120" sortable show-overflow-tooltip>
-							<template slot-scope="scope"> 						
+							<template slot-scope="scope">
 								<span title=" 已完成 / 总任务数">{{scope.row.taskCnt>0?scope.row.taskFinishCnt+'&nbsp;/&nbsp;'+scope.row.taskCnt:''}}</span>
 							</template>
 						</el-table-column>
-						
+
 						<el-table-column prop="bugCnt" label="缺陷数" width="120" sortable show-overflow-tooltip>
-							<template slot-scope="scope"> 						
+							<template slot-scope="scope">
 								<span title=" 已关闭 / 总缺陷数 ">{{scope.row.bugCnt>0?scope.row.closedBugs+'&nbsp;/&nbsp;'+scope.row.bugCnt:''}}</span>
 							</template>
 						</el-table-column>
 						<el-table-column prop="budgetWorkload" label="预计工时" width="100"  show-overflow-tooltip sortable></el-table-column>
 						<el-table-column prop="actWorkload" label="实际工时" width="100"  show-overflow-tooltip sortable></el-table-column>
- 						
+
 						<el-table-column  label="操作" width="150" fixed="right">
 							<template slot-scope="scope">
-											<el-button v-if="menukey=='myFocus'"  type="primary" @click.stop="focusOrUnfocus(scope.row)" >取消关注</el-button> 
-											<el-button v-else  type="text" @click.stop="focusOrUnfocus(scope.row)" >关注</el-button>  
+											<el-button v-if="menukey=='myFocus'"  type="primary" @click.stop="focusOrUnfocus(scope.row)" >取消关注</el-button>
+											<el-button v-else  type="text" @click.stop="focusOrUnfocus(scope.row)" >关注</el-button>
 											<el-button id="guider-five" type="text"  title="通过复制创建新的产品" @click="onCopyToBtnClick(scope.row)" :disabled="load.add" v-loading="load.add">复制</el-button>
- 											<el-button  type="text" v-loading="load.del" @click="handleDel(scope.row)" :disabled="load.del==true" icon="el-icon-delete">删除</el-button> 
+ 											<el-button  type="text" v-loading="load.del" @click="handleDel(scope.row)" :disabled="load.del==true" icon="el-icon-delete">删除</el-button>
 							</template>
 						</el-table-column>
 					</el-table>
-					
+
 					</el-row>
 					</el-row>
 					<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[12,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
@@ -357,23 +357,23 @@
 					</el-drawer>
 					<el-drawer title="选择项目" :visible.sync="projectVisible" size="60%" append-to-body>
 						<xm-project-list  @select="onProjectSelected"></xm-project-list>
-					</el-drawer> 
+					</el-drawer>
 					<el-drawer title="迭代报告" :visible.sync="iterationSelectVisible" fullscreen  append-to-body  :close-on-click-modal="false">
 						<xm-iteration-select @row-click="onXmIterationSelect"></xm-iteration-select>
-					</el-drawer> 
+					</el-drawer>
 					<el-dialog
 						title="通过复制创建新的模板或者新的产品"
 						:visible.sync="copyToVisible"
-						width="500" > 
+						width="500" >
 						<el-form>
 						<el-form-item label="产品名称">
-							<el-input v-model="xmProductCopy.productName" placeholder="新的产品名称"></el-input> 
+							<el-input v-model="xmProductCopy.productName" placeholder="新的产品名称"></el-input>
 						</el-form-item>
-						<el-form-item  label="产品代号"> 
-							<el-input v-model="xmProductCopy.code"  placeholder="新的产品代号"> 
+						<el-form-item  label="产品代号">
+							<el-input v-model="xmProductCopy.code"  placeholder="新的产品代号">
 							<template slot="append">
 								<el-button type="text" @click="createProductCode">自动生成</el-button>
-							</template></el-input> 
+							</template></el-input>
 							<font color="blue" style="font-size:10px;">产品代号为合同上的产品代号，甲乙方共享；产品内部编号为&nbsp;代号-四位随机码</font>
 						</el-form-item>
 						<el-form-item  label="目标">
@@ -381,10 +381,10 @@
 							<el-radio v-model="xmProductCopy.isTpl" label="0">复制为新的产品</el-radio>
 						</el-form-item>
 						<el-form-item label="附加任务">
-							<el-checkbox v-model="xmProductCopy.copyMenu" true-label="1" false-label="0">拷贝需求列表</el-checkbox>   
-							<el-checkbox v-model="xmProductCopy.copyPhase" true-label="1" false-label="0">拷贝计划</el-checkbox>  
-							<el-checkbox v-model="xmProductCopy.copyGroup" true-label="1" false-label="0">拷贝组织架构</el-checkbox>  
-							<el-checkbox v-model="xmProductCopy.copyGroupUser" true-label="1" false-label="0">拷贝产品组成员</el-checkbox>  
+							<el-checkbox v-model="xmProductCopy.copyMenu" true-label="1" false-label="0">拷贝需求列表</el-checkbox>
+							<el-checkbox v-model="xmProductCopy.copyPhase" true-label="1" false-label="0">拷贝计划</el-checkbox>
+							<el-checkbox v-model="xmProductCopy.copyGroup" true-label="1" false-label="0">拷贝组织架构</el-checkbox>
+							<el-checkbox v-model="xmProductCopy.copyGroupUser" true-label="1" false-label="0">拷贝产品组成员</el-checkbox>
 						</el-form-item>
 						</el-form>
 						<span slot="footer" class="dialog-footer">
@@ -392,7 +392,7 @@
 							<el-button type="primary" @click="onCopyToConfirm" :disabled="load.add" v-loading="load.add">确 定</el-button>
 						</span>
 					</el-dialog>
-		
+
 		<el-dialog :visible.sync="templateVisible" append-to-body width="60%" top="20px">
 			<xm-product-tpl-mng @copy="searchXmProducts" :show-type="'simple'" ref="xmProductTplMngRef"></xm-product-tpl-mng>
 		</el-dialog>
@@ -413,9 +413,9 @@
 	import  XmIterationMng from '@/views/xm/core/components/XmIterationSelect';//修改界面
 	import  XmProductStateMng from '../xmProductState/XmProductStateMng';//修改界面
 
-	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
+	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
 	import XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue';
-	import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'; 
+	import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue';
 	import { addUserFocus , delUserFocus } from '@/api/mdp/sys/userFocus';
 	import MdpSelectUserXm from "@/views/xm/core/components/MdpSelectUserXm/index";
 
@@ -466,13 +466,13 @@
 
 				addFormVisible: false,//新增xmProduct界面是否显示
 				//新增xmProduct界面初始化数据
-				
+
 				addForm: {
 					id:'',productName:'',branchId:'',remark:'',version:'',pmUserid:'',pmUsername:'',ctime:'',deptid:'',pstatus:'',startTime:'',endTime:'',deptName:'',admUserid:'',admUsername:'',assUserid:'',assUsername:'',bizProcInstId:'',bizFlowState:'',isTpl:'',baselineId:'',baseTime:'',code:'',pbudgetWorkload:'',pbudgetAmount:'',pmenuBudgetWorkload:'',pmenuBudgetAmount:'',budgetCtrl:'',phaseBudgetCtrl:'',phaseActCtrl:'',locked:'',del:'',ltime:''
 				},
 
 				editFormVisible: false,//编辑界面是否显示
-				//编辑xmProduct界面初始化数据 
+				//编辑xmProduct界面初始化数据
 				editForm: {
 					id:'',productName:'',branchId:'',remark:'',version:'',pmUserid:'',pmUsername:'',ctime:'',deptid:'',pstatus:'',startTime:'',endTime:'',deptName:'',admUserid:'',admUsername:'',assUserid:'',assUsername:'',bizProcInstId:'',bizFlowState:'',isTpl:'',baselineId:'',baseTime:'',code:'',pbudgetWorkload:'',pbudgetAmount:'',pmenuBudgetWorkload:'',pmenuBudgetAmount:'',budgetCtrl:'',phaseBudgetCtrl:'',phaseActCtrl:'',locked:'',del:'',ltime:''
 				},
@@ -480,7 +480,7 @@
 				iterationSelectVisible:false,
 				productStateVisible:false,
 				selectFiltersPmUserVisible:false,
-				maxTableHeight:300,  
+				maxTableHeight:300,
 				projectVisible:false,
 				productSelectVisible:false,
 				showType:true,
@@ -488,7 +488,7 @@
 					id:'',productName:'',code:'',isTpl:'',copyMenu:'1',copyPhase:'1',copyGroup:'1',copyGroupUser:'0'
 				},
 				copyToVisible:false,
-				templateVisible:false, 
+				templateVisible:false,
 				menukey:'',
 				/**end 自定义属性请在上面加 请加备注**/
 			}
@@ -566,9 +566,9 @@
 				if(this.filters.queryScope=="branchId"){
 					params.branchId=this.userInfo.branchId
 				}
-				 
+
 				params.ctimeStart=this.filters.ctimeStart
-				params.ctimeEnd=this.filters.ctimeEnd 
+				params.ctimeEnd=this.filters.ctimeEnd
 				if(this.xmIteration){
 					 params.iterationId=this.xmIteration.id
 				}
@@ -590,14 +590,14 @@
 					if(tips.isOk){
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false;
-						this.xmProducts = res.data.data; 
+						this.xmProducts = res.data.data;
 					}else{
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					}
 					if(callBack){
 						this.$nextTick(()=>{
 							callBack();
-						}) 
+						})
 					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
@@ -609,7 +609,7 @@
 				this.editForm = Object.assign({}, row);
 			},
 			//显示新增界面 XmProduct 产品表
-			showAdd: function () { 
+			showAdd: function () {
 				this.addFormVisible = true;
 				//this.addForm=Object.assign({}, this.editForm);
 			},
@@ -631,16 +631,16 @@
 			intoInfo(row) {
 				this.editForm = row;
 				store.dispatch("setXmProduct",row).then(res=>{
-					this.$router.push({ name:'productOverview', query: {productId:row.id} }) 
-				}) 
+					this.$router.push({ name:'productOverview', query: {productId:row.id} })
+				})
 				//this.showInfo = true;
 			},
 			//选择行xmProduct
 			selsChange: function (sels) {
 				this.sels = sels;
-			}, 
-			
-			handleDel: function (row,index) {  
+			},
+
+			handleDel: function (row,index) {
 				this.$prompt('将同步删除计划、组织、需求等，慎重起见，请输入产品代号:'+row.code, '提示', {
 					confirmButtonText: '确定',
 					cancelButtonText: '取消',
@@ -658,14 +658,14 @@
 							this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 						}).catch( err  => this.load.del=false );
 					 }else{
-						 this.$notify({position:'bottom-left',showClose:true,message: "产品代号不正确", type: 'error' }); 
+						 this.$notify({position:'bottom-left',showClose:true,message: "产品代号不正确", type: 'error' });
 					 }
-				}).catch(() => { 
-					return;    
-				}); 	
+				}).catch(() => {
+					return;
+				});
 			},
 			//批量删除xmProduct
-			batchDel: function () { 
+			batchDel: function () {
 				var mmSels=this.sels.filter(i=>i.pmUserid!=this.userInfo.userid)
 				if(mmSels.length>0){
 					this.$notify({position:'bottom-left',showClose:true,message: "只能删除你负责的产品", type: 'error'});
@@ -706,7 +706,7 @@
 			},
 			/**begin 自定义函数请在下面加**/
 			clearFiltersPmUser:function(){
-				 this.filters.pmUser=null; 
+				 this.filters.pmUser=null;
 			},
 			selectFiltersPmUser(){
 				this.selectFiltersPmUserVisible=true;
@@ -717,10 +717,10 @@
 				 }else{
 					 this.filters.pmUser=null;
 				 }
-				 this.selectFiltersPmUserVisible=false; 
+				 this.selectFiltersPmUserVisible=false;
 			},
 			setFiltersPmUserAsMySelf(){
-				this.filters.pmUser=this.userInfo; 
+				this.filters.pmUser=this.userInfo;
 			},
 			onProjectSelected(projects){
 
@@ -759,20 +759,20 @@
 					})
 				})
 			},
-			
+
 			onCopyToBtnClick(row){
 				this.xmProductCopy.id=row.id;
 				this.xmProductCopy.productName=row.productName+"(复制)";
-				this.xmProductCopy.isTpl=row.isTpl; 
+				this.xmProductCopy.isTpl=row.isTpl;
 				this.copyToVisible=true;
 			},
-			onCopyToConfirm(){ 
+			onCopyToConfirm(){
 				if(!this.xmProductCopy.code){
 					this.$notify({position:'bottom-left',showClose:true,message: '产品代号不能为空', type: 'error' });
 					return;
 				}
 				this.load.add=true;
-				copyTo(this.xmProductCopy).then(res=>{ 
+				copyTo(this.xmProductCopy).then(res=>{
 					this.load.add=false;
 					var tips = res.data.tips;
 					if(tips.isOk){
@@ -794,38 +794,38 @@
 				}else{
 					return cellValue;
 				}
-			}, 
+			},
 			createProductCode(){
 				createProductCode({}).then(res=>{
 					var tips=res.data.tips;
 					if(tips.isOk){
 						this.xmProductCopy.code=res.data.data
 					}
-					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
+					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 				})
 			},
 			/**end 自定义函数请在上面加**/
 			guiderStart(forceDisplayWhileClosed) { // 初始化引导页
-				Guider.startByName('xmProductMng',forceDisplayWhileClosed); 
+				Guider.startByName('xmProductMng',forceDisplayWhileClosed);
 			},
-			
+
 			focusOrUnfocus:function(row){
 				if(this.menukey=="myFocus"){
 					delUserFocus({pbizId:row.id,bizId:row.id}).then(res=>{
 						var tips=res.data.tips;
 						if(tips.isOk){
-							this.getXmProjects(); 
-						} 
-						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
+							this.getXmProjects();
+						}
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 					})
 				}else{
 					addUserFocus({pbizId:row.id,focusType:'3',bizId:row.id,bizName:row.productName}).then(res=>{
 						var tips=res.data.tips;
-						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 					})
 				}
 			},
-			
+
 			getProgress(p){
 				var planRate=0;
 				if(!p.estimateWorkload||!p.budgetWorkload){
@@ -850,30 +850,30 @@
 		    'xm-product-edit':XmProductEdit,
 			XmIterationMng,
 			XmProductStateMng,
-			UsersSelect, 
+			UsersSelect,
 			XmIterationSelect,
 			XmProductSelect,
-			XmProductTplMng, 
+			XmProductTplMng,
 			MdpSelectUserXm,
 		    //在下面添加其它组件
 		},
 		mounted() {
-			
+
 			initSimpleDicts('all',['xmProductPstatus'] ).then(res=>{
-				if(res.data.tips.isOk){ 
-					this.dicts['xmProductPstatus']=res.data.data.xmProductPstatus   
+				if(res.data.tips.isOk){
+					this.dicts['xmProductPstatus']=res.data.data.xmProductPstatus
 				}
 			});
-			this.$nextTick(() => { 
-				this.maxTableHeight = this.source == 'GZT' ? this.maxTableHeight : util.calcTableMaxHeight(this.$refs.table1.$el); 
-				this.getXmProducts(this.guiderStart);  
+			this.$nextTick(() => {
+				this.maxTableHeight = this.source == 'GZT' ? this.maxTableHeight : util.calcTableMaxHeight(this.$refs.table1.$el);
+				this.getXmProducts(this.guiderStart);
         	});
 		},
 	}
 
 </script>
 
-<style lang="scss" scoped> 
+<style lang="scss" scoped>
 
 
 .more-label-font{
@@ -892,7 +892,7 @@
 .project-card{
 	cursor: pointer;
 	font-size: 12px;
-	color: #999;  
+	color: #999;
 	padding: 10px;
 }
 .project-card:hover{
@@ -931,7 +931,7 @@
 	font-size: 18px;
 	color: #666;
 }
-.info-task{  
+.info-task{
 	span{
 		display: flex;
 		justify-content:center;

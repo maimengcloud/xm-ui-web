@@ -1,37 +1,37 @@
 <template>
-	<section class="padding"> 
+	<section class="padding">
 		<el-row  ref="table">
-		<!--编辑界面 XmTestCasedb 测试用例库--> 
+		<!--编辑界面 XmTestCasedb 测试用例库-->
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef" label-position="left">
-			
+
 
 				<el-form-item label="归属产品" prop="productName">
 					<span v-if="opType=='add'">
 					 	<xm-product-select v-if="!xmProduct" style="display:inline;" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" @clear="clearProduct"></xm-product-select>
 						<div v-else>{{editForm.productName}}</div>
-					</span> 
+					</span>
  					<div v-else>{{editForm.productName}}</div>
-				</el-form-item>  
+				</el-form-item>
 				<el-form-item label="用例库名称" prop="name">
 					<my-input v-model="editForm.name" placeholder="用例库名称" :maxlength="255" @change="editSomeFields(editForm,'name',$event)"></my-input>
-				</el-form-item>  
+				</el-form-item>
 				<el-row class="padding">
 					<el-col :span="8">
 						<el-form-item prop="cuserid" label-width="0px">
 							<mdp-select-user-xm label="负责人" userid-key="cuserid" username-key="cusername" v-model="editForm" @change="editSomeFields(editForm,'cuserid',$event)" :product-id="editForm.productId" :project-id="selProject?selProject.id:null"></mdp-select-user-xm>
-						</el-form-item>  
+						</el-form-item>
 					</el-col>
 					<el-col :span="8">
-						 
-						<mdp-select  show-style="x" label="状态" :dict="dicts['casedbStatus']" v-model="editForm.status"  @change="editSomeFields(editForm,'status',$event)"></mdp-select>
-						 
+
+						<mdp-select  show-style="x" label="状态" item-code="casedbStatus" v-model="editForm.status"  @change="editSomeFields(editForm,'status',$event)"></mdp-select>
+
 					</el-col>
-					
+
 					<el-col :span="8">
-					 
+
 						<mdp-date-x label="创建日期" v-model="editForm.ctime"  @change="editSomeFields(editForm,'ctime',$event)"></mdp-date-x>
 					</el-col>
-				</el-row>    
+				</el-row>
 			</el-form>
 		</el-row>
 
@@ -48,7 +48,7 @@
 
  	import { initDicts, addXmTestCasedb,editXmTestCasedb,editSomeFieldsXmTestCasedb } from '@/api/xm/core/xmTestCasedb';
 	import { mapGetters } from 'vuex'
-	
+
 import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修改界面
 import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//修改界面
 
@@ -70,11 +70,11 @@ import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//修�
 	        }
 
 	      },
-	      'visible':function(visible) { 
+	      'visible':function(visible) {
 	      	if(visible==true){
  	      		this.initData()
 	      	}
-	      } 
+	      }
 	    },
 		data() {
 			return {
@@ -112,7 +112,7 @@ import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//修�
 			saveSubmit: function () {
 				this.$refs.editFormRef.validate((valid) => {
 					if (valid) {
-						this.$confirm('确认提交吗？', '提示', {}).then(() => { 
+						this.$confirm('确认提交吗？', '提示', {}).then(() => {
 							this.load.edit=true
 							let params = Object.assign({}, this.editForm);
 							var func=addXmTestCasedb
@@ -167,7 +167,7 @@ import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//修�
 				}else{
 					params[fieldName]=$event
 				}
-                
+
                 var func = editSomeFieldsXmTestCasedb
                 func(params).then(res=>{
                   let tips = res.data.tips;
@@ -180,12 +180,12 @@ import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//修�
                 }).catch((e)=>Object.assign(this.editForm,this.editFormBak))
             },
 
-			clearProduct(){  
-				
+			clearProduct(){
+
 				this.editForm.productId=''
 				this.editForm.productName=''
-			}, 
-			onProductSelected(product){  
+			},
+			onProductSelected(product){
 				this.editForm.productId=product.id
 				this.editForm.productName=product.productName
 				this.editForm.name=this.editForm.productName+"-测试库-V1.0"

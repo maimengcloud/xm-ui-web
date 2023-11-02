@@ -1,23 +1,23 @@
 <template>
 	<section>
         <el-row :gutter="10">
-            
+
             <el-col :span="6">
-                <xm-func-select v-if="xmTestCasedb && xmTestCasedb.productId" class="padding-right padding-left" :xm-product="{id:xmTestCasedb.productId,productName:xmTestCasedb.productName}" @row-click="onXmFuncRowClick"> 
+                <xm-func-select v-if="xmTestCasedb && xmTestCasedb.productId" class="padding-right padding-left" :xm-product="{id:xmTestCasedb.productId,productName:xmTestCasedb.productName}" @row-click="onXmFuncRowClick">
                 </xm-func-select>
             </el-col>
             <el-col :span="18">
-        
+
                 <el-row>
-                    
+
                     <el-checkbox v-if="xmTestPlan && xmTestPlan.id" true-label="1" false-label="" v-model="filters.notJoinPlan" :title="'查询未曾加入计划【'+xmTestPlan.name+'】的测试用例'"> 未加入 </el-checkbox>
                     <el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>
-                    <mdp-select label="状态" style="width:15%;" clearable placeholder="用例状态" :dict="dicts['testCaseStatus']" v-model="filters.caseStatus"></mdp-select> 
-                    <mdp-select placeholder="测试方式" style="width:15%;" clearable  :dict="dicts['testType']" v-model="filters.testType" effect="dark"></mdp-select> 
+                    <mdp-select label="状态" style="width:15%;" clearable placeholder="用例状态" item-code="testCaseStatus" v-model="filters.caseStatus"></mdp-select>
+                    <mdp-select placeholder="测试方式" style="width:15%;" clearable  item-code="testType" v-model="filters.testType" effect="dark"></mdp-select>
 
                     <el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestCases" icon="el-icon-search">查询</el-button>
                     <span style="float:right;">
-                        
+
                         <el-button type="primary" v-loading="load.edit" @click="selectConfirm" :disabled="this.sels.length===0 || load.edit==true" icon="el-icon-finished">确认选择</el-button>
                     </span>
                 </el-row>
@@ -36,23 +36,23 @@
                                 <span>  {{scope.row.caseName}}  </span>
                             </template>
                         </el-table-column>
-                        
+
                         <el-table-column prop="caseStatus" label="状态" min-width="120" show-overflow-tooltip>
                             <template slot-scope="scope">
-                                <mdp-select-tag :dict="dicts['testCaseStatus']" v-model="scope.row.caseStatus" effect="dark" :disabled="true"></mdp-select-tag>                                         
+                                <mdp-select-tag item-code="testCaseStatus" v-model="scope.row.caseStatus" effect="dark" :disabled="true"></mdp-select-tag>
                             </template>
-                        </el-table-column> 
-                        
+                        </el-table-column>
+
                         <el-table-column prop="testType" label="测试方式" min-width="120" show-overflow-tooltip>
                             <template slot-scope="scope">
-                                <mdp-select-tag :dict="dicts['testType']" v-model="scope.row.testType" effect="dark" :disabled="true"></mdp-select-tag>                                         
+                                <mdp-select-tag item-code="testType" v-model="scope.row.testType" effect="dark" :disabled="true"></mdp-select-tag>
                             </template>
-                        </el-table-column> 
+                        </el-table-column>
                         <el-table-column prop="caseRemark" label="备注" min-width="120" show-overflow-tooltip>
                             <template slot-scope="scope">
                                 <span> {{scope.row.caseRemark}} </span>
                             </template>
-                        </el-table-column>   
+                        </el-table-column>
                         <el-table-column prop="moduleName" label="模块名称" min-width="120" show-overflow-tooltip>
                             <template slot-scope="scope">
                                 <span> {{scope.row.moduleName}} </span>
@@ -62,7 +62,7 @@
                             <template slot-scope="scope">
                                 <span> {{scope.row.cusername}} </span>
                             </template>
-                        </el-table-column> 
+                        </el-table-column>
                     </el-table>
                     <el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
                 </el-row>
@@ -328,7 +328,7 @@ export default {
         selectConfirm(){
             this.$emit('select',this.sels)
         },
-        
+
         onXmFuncRowClick(row){
             this.filters.xmFunc=row
             this.searchXmTestCases();

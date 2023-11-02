@@ -1,8 +1,8 @@
 <template>
-	<section  class="padding"> 
+	<section  class="padding">
 		<el-row ref="table">
-		<!--编辑界面 XmTestPlan 测试计划--> 
-			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef" label-position="left"> 
+		<!--编辑界面 XmTestPlan 测试计划-->
+			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef" label-position="left">
 				 <el-form-item prop="name" label-width="0px">
 				  <el-row class="padding-bottom">
 					<my-input v-model="editForm.name" placeholder="计划名称" :maxlength="255" @change="editSomeFields(editForm,'name',$event)"></my-input>
@@ -16,36 +16,36 @@
 						<mdp-select-user-xm label="负责人" userid-key="cuserid" username-key="cusername" v-model="editForm" :project-id="editForm.projectId" :product-id="editForm.productId" @change="editSomeFields(editForm,'cuserid',$event)"></mdp-select-user-xm>
 					</el-col>
 					<el-col :span="6">
-						<mdp-select  show-style="x" label="状态" :dict="dicts['testPlanStatus']" v-model="editForm.status"  @change="editSomeFields(editForm,'status',$event)"></mdp-select>
+						<mdp-select  show-style="x" label="状态" item-code="testPlanStatus" v-model="editForm.status"  @change="editSomeFields(editForm,'status',$event)"></mdp-select>
 					</el-col>
-					
+
 					<el-col :span="6">
-						<mdp-select  show-style="x" label="测试方式" :dict="dicts['testType']" v-model="editForm.testType"  @change="editSomeFields(editForm,'testType',$event)"></mdp-select>
+						<mdp-select  show-style="x" label="测试方式" item-code="testType" v-model="editForm.testType"  @change="editSomeFields(editForm,'testType',$event)"></mdp-select>
 					</el-col>
 					<el-col :span="6">
-						<mdp-select  show-style="x" label="测试结果" :dict="dicts['testPlanTcode']" v-model="editForm.tcode"  @change="editSomeFields(editForm,'tcode',$event)"></mdp-select>
+						<mdp-select  show-style="x" label="测试结果" item-code="testPlanTcode" v-model="editForm.tcode"  @change="editSomeFields(editForm,'tcode',$event)"></mdp-select>
 					</el-col>
-				</el-row>   
-				
+				</el-row>
+
 				<el-form-item label="归属测试库" prop="casedbName" class="padding-top">
 					{{editForm.casedbName}}
-				</el-form-item>  
+				</el-form-item>
 				<el-form-item label="归属项目" prop="projectId" >
-					 
+
 					 <span v-if="opType=='add'">
 						  <xm-project-select v-if="!selProject || !selProject.id" ref="xmProjectSelect" :link-product-id="xmTestCasedb? xmTestCasedb.productId:null"  @row-click="onPorjectConfirm" :auto-select="false">
-							 
+
 						 </xm-project-select>
-					 </span> 
+					 </span>
 					  <div v-else>{{editForm.projectName}}</div>
-				 </el-form-item>  
+				 </el-form-item>
 				<el-form-item label="归属产品" prop="productName">
 					{{editForm.productName}}
-				</el-form-item>  
-				 
+				</el-form-item>
+
 				<el-form-item label="起止时间" prop="stime">
 					<mdp-date-range :auto-default="false" placeholder="选择日期" v-model="editForm" start-key="stime" end-key="etime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" @change="editSomeFields(editForm,'stime',editForm)"></mdp-date-range>
-				</el-form-item>   
+				</el-form-item>
 			</el-form>
 		</el-row>
 
@@ -64,7 +64,7 @@
  	import { initDicts, addXmTestPlan,editXmTestPlan,editSomeFieldsXmTestPlan } from '@/api/xm/core/xmTestPlan';
 	import { mapGetters } from 'vuex'
 	import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';
-	
+
 import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修改界面
 	export default {
 	    name:'xmTestPlanEdit',
@@ -84,11 +84,11 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 	        }
 
 	      },
-	      'visible':function(visible) { 
+	      'visible':function(visible) {
 	      	if(visible==true){
  	      		this.initData()
 	      	}
-	      } 
+	      }
 	    },
 		data() {
 			return {
@@ -106,7 +106,7 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 						{ min: 2, max: 50, message: '长度在 2 到 50 个字符', trigger: 'change' },//长度
 					],
 					projectId: [
-						{ required: true, message: '项目不能为空', trigger: 'change' }, 
+						{ required: true, message: '项目不能为空', trigger: 'change' },
 					],
 				},
 				editForm: {
@@ -131,7 +131,7 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 			saveSubmit: function () {
 				this.$refs.editFormRef.validate((valid) => {
 					if (valid) {
-						this.$confirm('确认提交吗？', '提示', {}).then(() => { 
+						this.$confirm('确认提交吗？', '提示', {}).then(() => {
 							this.load.edit=true
 							let params = Object.assign({}, this.editForm);
 							var func=addXmTestPlan
@@ -164,7 +164,7 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 
                 if(this.opType=='edit'){
 
-                }else{ 
+                }else{
 					if(this.$refs['xmProjectSelect']) this.$refs['xmProjectSelect'].clearSelect()
                 }
                 this.editFormBak={...this.editForm}
@@ -176,7 +176,7 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
                 }
                 let params={};
                 params['ids']=[row].map(i=>i.id)
-                
+
 				if(fieldName=='stime'){
 					params[fieldName]=$event.stime
 					params.etime=$event.etime

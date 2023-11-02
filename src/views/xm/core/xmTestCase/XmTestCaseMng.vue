@@ -2,15 +2,15 @@
 	<section>
         <el-row :gutter="10">
             <el-col :span="6">
-                <xm-func-select v-if="xmProductCpd"  :xm-product="xmProductCpd" @row-click="onXmFuncRowClick"> 
+                <xm-func-select v-if="xmProductCpd"  :xm-product="xmProductCpd" @row-click="onXmFuncRowClick">
                 </xm-func-select>
             </el-col>
             <el-col :span="18">
                 <el-row>
                     <el-input v-model="filters.key" style="width: 20%;" placeholder="名称 按回车" @keyup.enter.native="searchXmTestCases" clearable></el-input>
-                    
-                    <mdp-select placeholder="用例状态" style="width:15%;" clearable :dict="dicts['testCaseStatus']" v-model="filters.caseStatus" effect="dark"></mdp-select> 
-                    <mdp-select placeholder="测试方式" style="width:15%;" clearable :dict="dicts['testType']" v-model="filters.testType" effect="dark"></mdp-select> 
+
+                    <mdp-select placeholder="用例状态" style="width:15%;" clearable item-code="testCaseStatus" v-model="filters.caseStatus" effect="dark"></mdp-select>
+                    <mdp-select placeholder="测试方式" style="width:15%;" clearable item-code="testType" v-model="filters.testType" effect="dark"></mdp-select>
 
                     <el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestCases" icon="el-icon-search">查询</el-button>
                     <span style="float:right;">
@@ -32,45 +32,45 @@
                             <template slot-scope="scope">
                                 <span> <el-link  @click="showEdit( scope.row,scope.$index)">{{scope.row.caseName}} </el-link></span>
                                 <span class="tool-bar">
-                                     <el-button @click="copyOne(scope.row,scope.$index)" icon="el-icon-document-copy" circle title="复制一行"></el-button> 
+                                     <el-button @click="copyOne(scope.row,scope.$index)" icon="el-icon-document-copy" circle title="复制一行"></el-button>
                                 </span>
                             </template>
-                        </el-table-column>  
+                        </el-table-column>
                         <el-table-column prop="caseStatus" label="状态" width="100" show-overflow-tooltip>
-                            <template slot-scope="scope"> 
-                                <mdp-select-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts['testCaseStatus']" v-model="scope.row.caseStatus" effect="dark" @change="editSomeFields(scope.row,'caseStatus',$event)"></mdp-select-tag> 
+                            <template slot-scope="scope">
+                                <mdp-select-tag @visible-change="selectVisible(scope.row,$event)" item-code="testCaseStatus" v-model="scope.row.caseStatus" effect="dark" @change="editSomeFields(scope.row,'caseStatus',$event)"></mdp-select-tag>
                             </template>
-                        </el-table-column>   
-                        
+                        </el-table-column>
+
                         <el-table-column prop="testType" label="测试方式" min-width="120" show-overflow-tooltip>
                             <template slot-scope="scope">
-                                <mdp-select-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts['testType']" v-model="scope.row.testType" effect="dark" @change="editSomeFields(scope.row,'testType',$event)"></mdp-select-tag> 
+                                <mdp-select-tag @visible-change="selectVisible(scope.row,$event)" item-code="testType" v-model="scope.row.testType" effect="dark" @change="editSomeFields(scope.row,'testType',$event)"></mdp-select-tag>
                             </template>
-                        </el-table-column>    
+                        </el-table-column>
                         <el-table-column prop="funcName" label="模块" min-width="150" show-overflow-tooltip>
                             <template slot-scope="scope">
                                 <span> {{scope.row.funcName}} </span>
                             </template>
-                        </el-table-column>      
+                        </el-table-column>
                         <el-table-column prop="verNum" label="版本号" min-width="80" show-overflow-tooltip>
                             <template slot-scope="scope">
                                 <span> {{scope.row.verNum}} </span>
                             </template>
-                        </el-table-column>      
+                        </el-table-column>
                         <el-table-column prop="cusername" label="负责人姓名" min-width="120" show-overflow-tooltip>
-                            <template slot-scope="scope"> 
-                                <mdp-select-user-xm @visible-change="selectVisible(scope.row,$event)"  userid-key="cuserid" username-key="cusername" :product-id="xmProductCpd?xmProductCpd.id:null" v-model="scope.row"  @change="editSomeFields(scope.row,'cuserid',$event)"> 
+                            <template slot-scope="scope">
+                                <mdp-select-user-xm @visible-change="selectVisible(scope.row,$event)"  userid-key="cuserid" username-key="cusername" :product-id="xmProductCpd?xmProductCpd.id:null" v-model="scope.row"  @change="editSomeFields(scope.row,'cuserid',$event)">
                                 </mdp-select-user-xm>
                             </template>
-                        </el-table-column>   
+                        </el-table-column>
 
                     </el-table>
                     <el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
                 </el-row>
-            
+
             </el-col>
         </el-row>
-                
+
 		<el-row>
 			<!--编辑 XmTestCase 测试用例界面-->
 			<el-dialog title="编辑测试用例" :visible.sync="editFormVisible" fullscreen width="90%" top="20px"  append-to-body   :close-on-click-modal="false">
@@ -109,7 +109,7 @@ export default {
             }
             if(this.xmTestCasedb && this.xmTestCasedb.id){
                 return {id:this.xmTestCasedb.productId,productName:this.xmTestCasedb.productName}
-            } 
+            }
             if(this.xmMenu && this.xmMenu.id){
                 return {id:this.xmMenu.productId,productName:this.xmMenu.productName}
             }
@@ -210,12 +210,12 @@ export default {
             }
             if(this.filters.key){
                 params.key=this.filters.key
-            } 
+            }
 
             if(this.filters.caseStatus){
                 params.caseStatus=this.filters.caseStatus
             }
-            
+
             if(this.filters.testType){
                 params.testType=this.filters.testType
             }
@@ -229,7 +229,7 @@ export default {
             if(this.xmProduct && this.xmProduct.id){
                 params.productId=this.xmProduct.id
             }
-            
+
             if(this.xmMenu && this.xmMenu.menuId){
                 params.menuId=this.xmMenu.menuId
             }
@@ -332,7 +332,7 @@ export default {
         }else{
             params[fieldName]=$event
         }
-        
+
         var func = editSomeFieldsXmTestCase
         func(params).then(res=>{
           let tips = res.data.tips;
@@ -353,11 +353,11 @@ export default {
             this.$emit('row-click',row, event, column);//  @row-click="rowClick"
         },
         initData: function(){
-            
+
             if(this.scene){
                 this.filters.caseStatus='1'
-            } 
-            this.filters.xmProduct=this.xmProduct 
+            }
+            this.filters.xmProduct=this.xmProduct
         },
         onXmFuncRowClick(row){
             this.filters.xmFunc=row
@@ -368,7 +368,7 @@ export default {
             this.editFormBak={...this.editForm}
         },
         copyOne(row,index){
-            
+
             var params={...row}
             params.cuserid=this.userInfo.userid
             params.cusername=this.userInfo.username
@@ -377,7 +377,7 @@ export default {
             params.caseName=row.caseName+'V'
             addXmTestCase(params).then(res=>{
                 var tips = res.data.tips
-                if(tips.isOk){ 
+                if(tips.isOk){
                     var row2=res.data.data
                     this.xmTestCases.splice(index+1,0,row2)
                     this.pageInfo.total=this.pageInfo.total+1

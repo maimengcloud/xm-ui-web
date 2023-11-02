@@ -1,62 +1,62 @@
 <template>
-	<section class="padding border"> 
+	<section class="padding border">
 		<el-row>
-			<!--新增界面 XmIteration 迭代定义--> 
-			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm" label-position="left">  
+			<!--新增界面 XmIteration 迭代定义-->
+			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm" label-position="left">
 
 				<el-form-item label="迭代名称" prop="iterationName">
 					<el-input v-model="editForm.iterationName" placeholder="迭代名称 选择上线日期后会自动生成名字"  @change="editSomeFields(editForm,'iterationName',$event)"></el-input>
 						<el-row class="label-font-color" v-if="opType!=='add'"> <span >迭代编号：{{editForm.id}}  </span><el-divider direction="vertical"></el-divider>归属产品：{{editForm.productName?editForm.productName:editForm.productId}}
 					</el-row>
-				</el-form-item> 
+				</el-form-item>
 				<el-form-item label="归属产品" prop="seqNo" v-if="opType==='add'">
 					<xm-product-select v-if=" (!xmProduct||!xmProduct.id)" ref="xmProductSelect" :auto-select="true" :link-project-id="selProject?selProject.id:null"   @row-click="onProductRowClick" @clear="onProductClearSelect"></xm-product-select>
 					{{ xmProduct && xmProduct.id?xmProduct.productName||xmProduct.id:''}}
-				</el-form-item> 
+				</el-form-item>
 				<el-row>
-					 
-					<el-col :span="12"> 
+
+					<el-col :span="12">
 						<el-form-item prop="onlineTime" label-width="0px">
 							<mdp-date-x label="上线时间"  type="date" placeholder="选择日期" v-model="editForm.onlineTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" @change="editSomeFields(editForm,'onlineTime',$event)"></mdp-date-x>
-						</el-form-item>   
+						</el-form-item>
 					</el-col>
-					<el-col :span="12"> 
-				
+					<el-col :span="12">
+
 						<el-form-item prop="startTime"  label-width="0px">
 							<mdp-date-range-x label="起止时间" :auto-default="false" start-key="startTime" end-key="endTime" v-model="editForm" placeholder="选择日期"   value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" @change="editSomeFields(editForm,'startTime',$event)"></mdp-date-range-x>
-						</el-form-item>  
+						</el-form-item>
 					</el-col>
-				</el-row>   
+				</el-row>
 				<el-row>
-					<el-col :span="12"> 
+					<el-col :span="12">
 						<el-form-item prop="adminUserid" label-width="0px">
 							<mdp-select-user-xm label="负责人姓名" v-model="editForm" userid-key="adminUserid" username-key="adminUsername"  @change="editSomeFields(editForm,'adminUserid',$event)"></mdp-select-user-xm>
-						</el-form-item>   
+						</el-form-item>
 					</el-col>
 					<el-col :span="12">
 						<el-form-item  prop="istatus" label-width="0px">
-							<mdp-select  show-style="x" label="状态" :dict="dicts['iterationStatus']" v-model="editForm.istatus" @change="editSomeFields(editForm,'istatus',$event)"></mdp-select>
-							
-						</el-form-item> 
-					</el-col> 
-				</el-row>   
+							<mdp-select  show-style="x" label="状态" item-code="iterationStatus" v-model="editForm.istatus" @change="editSomeFields(editForm,'istatus',$event)"></mdp-select>
+
+						</el-form-item>
+					</el-col>
+				</el-row>
 			</el-form>
 			<el-row v-if="opType=='add'" style="float:right;">
 				<el-button type="primary" @click="addSubmit">保存</el-button>
 			</el-row>
-		</el-row> 
+		</el-row>
 	</section>
 </template>
 
 <script>
-	import util from '@/common/js/util';//全局公共库 
+	import util from '@/common/js/util';//全局公共库
 	import { initDicts,addXmIteration,editSomeFieldsXmIteration } from '@/api/xm/core/xmIteration';
-	import { mapGetters } from 'vuex'	
- 
+	import { mapGetters } from 'vuex'
+
 	import MdpSelectUserXm from "@/views/xm/core/components/MdpSelectUserXm";
 	import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'
-	
-	export default { 
+
+	export default {
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -73,7 +73,7 @@
 						return 1;
 					}
 				}
-			} 
+			}
 		},
 		props:['xmIteration','visible','opType','xmProduct','selProject'],
 		watch: {
@@ -82,9 +82,9 @@
 					 this.initData();
 				},
 				deep:true,
-			}, 
-	      'visible':function(visible) { 
-	      	if(visible==true){ 
+			},
+	      'visible':function(visible) {
+	      	if(visible==true){
 				this.initData();
 	      	}
 	      },
@@ -104,7 +104,7 @@
 			  if(!date){
 				  return;
 			  }
-			  
+
 			  if(this.opType!=='add'){
 				return;
 			  }
@@ -115,22 +115,22 @@
 	    },
 		data() {
 			return {
-				dicts:{iterationStatus:[]},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
+				dicts:{iterationStatus:[]},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
 				load:{ list: false, add: false, del: false, edit: false },//查询中...
-				editFormRules: { 
+				editFormRules: {
 					iterationName: [
 						{ required: true, message: '迭代名称不能为空', trigger: 'change' },
 						{ min:10,max:250, message: '名称长度在10-250个字符', trigger: 'change' }
-					], 
+					],
 					startTime: [
-						{ required: true, message: '开始时间不能为空', trigger: 'change' }, 
-					], 
+						{ required: true, message: '开始时间不能为空', trigger: 'change' },
+					],
 					endTime: [
-						{ required: true, message: '结束时间不能为空', trigger: 'change' }, 
-					], 
+						{ required: true, message: '结束时间不能为空', trigger: 'change' },
+					],
 					onlineTime: [
-						{ required: true, message: '上线时间不能为空', trigger: 'change' }, 
-					], 
+						{ required: true, message: '上线时间不能为空', trigger: 'change' },
+					],
 				},
 				//新增界面数据 迭代定义,
 				editForm: {
@@ -149,33 +149,33 @@
 			handleCancel:function(){
 				this.$refs['editForm'].resetFields();
 				this.$emit('cancel');
-			}, 
+			},
 			/**begin 在下面加自定义方法,记得补上面的一个逗号**/
-			
-			onUserSelected: function(users) {   
+
+			onUserSelected: function(users) {
 				if(users.length>1){
 					this.$notify.error("只能选一个人");
 					return;
 				}
-				var user=users[0] 
+				var user=users[0]
 				this.editSomeFields(this.editForm,'adminUserid',user)
 				this.userSelectVisible = false;
-			},	
+			},
 
-           editSomeFields(row,fieldName,$event){ 
+           editSomeFields(row,fieldName,$event){
 				if(this.opType==='add'){
 					return;
-				} 
+				}
 				this.$refs.editForm.validate((vali)=>{
 					if(!vali){
-						this.$notify({position:'bottom-left',showClose:true,message:"表单检查不通过，请修改后提交", type: 'error' }); 
+						this.$notify({position:'bottom-left',showClose:true,message:"表单检查不通过，请修改后提交", type: 'error' });
 						return;
 					}else{
 
 						let params={};
 						params['ids']=[row].map(i=>i.id)
 						if(fieldName=='adminUserid'){
-							params['adminUserid']=$event[0].userid 
+							params['adminUserid']=$event[0].userid
 							params['adminUsername']=$event[0].username
 						}else if(fieldName=='startTime'){
 							params['startTime']=row.startTime
@@ -183,7 +183,7 @@
 						}else{
 							params[fieldName]=$event
 						}
-						
+
 						var func = editSomeFieldsXmIteration
 						func(params).then(res=>{
 						let tips = res.data.tips;
@@ -198,68 +198,68 @@
 						}).catch((e)=>Object.assign(this.editForm,this.editFormBak))
 
 					}
-				});   
-                
+				});
+
             },
-			initData(){ 
-				this.editForm=Object.assign(this.editForm, this.xmIteration);   
+			initData(){
+				this.editForm=Object.assign(this.editForm, this.xmIteration);
 				if(this.opType==='add'){
 					this.editForm.cuserid=this.userInfo.userid
 					this.editForm.cusername=this.userInfo.username
 					this.editForm.adminUserid=this.userInfo.userid
 					this.editForm.adminUsername=this.userInfo.username;
-					if(this.xmProduct && this.xmProduct.id){ 
+					if(this.xmProduct && this.xmProduct.id){
 						this.editForm.productId=this.xmProduct.id
 						this.editForm.productName=this.xmProduct.productName;
-					} 
-				} 
+					}
+				}
 				this.editFormBak={...this.editForm}
 			},
 			onProductRowClick(product){
 				this.editForm.productId=product.id
-				this.editForm.productName=product.productName 
-			}, 
-			onProductClearSelect(){ 
+				this.editForm.productName=product.productName
+			},
+			onProductClearSelect(){
 				this.editForm.productId=''
-				this.editForm.productName='' 
+				this.editForm.productName=''
 			},
 						//新增提交XmIteration 迭代定义 父组件监听@submit="afterAddSubmit"
-			addSubmit: function () {  
+			addSubmit: function () {
 				this.$refs.editForm.validate((valid) => {
-					if (valid) {  
-						var params={...this.editForm} 
-						this.$confirm('确认提交迭代吗？', '提示', {}).then(() => { 
-							this.load.add=true 
+					if (valid) {
+						var params={...this.editForm}
+						this.$confirm('确认提交迭代吗？', '提示', {}).then(() => {
+							this.load.add=true
 							addXmIteration(params).then((res) => {
 								this.load.add=false
 								var tips=res.data.tips;
-								if(tips.isOk){ 
+								if(tips.isOk){
 									this.$emit('submit',res.data.data);//  @submit="afterAddSubmit"
 								}
-								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
+								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 							}).catch( err  => this.load.add=false);
 						});
 					}else{
-						this.$notify({position:'bottom-left',showClose:true,message: "表单验证不通过", type: 'error' }); 
+						this.$notify({position:'bottom-left',showClose:true,message: "表单验证不通过", type: 'error' });
 					}
 				});
 			},
 			/**end 在上面加自定义方法**/
-			
+
 		},//end method
-		components: {  
+		components: {
 			//在下面添加其它组件 'xm-iteration-edit':XmIterationEdit
 			MdpSelectUserXm,XmProductSelect,
 		},
-		mounted() { 
+		mounted() {
 			this.$nextTick(()=>{
 				initDicts(this)
 				this.initData()
-				
+
 			})
-			
+
 			/**在下面写其它函数***/
-			
+
 		}//end mounted
 	}
 

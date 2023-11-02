@@ -27,15 +27,15 @@
 
 				<el-table-column prop="bizType" label="报工类型" width="120" show-overflow-tooltip>
 					<template slot-scope="scope">
-						<mdp-select-tag :disabled="true" v-model="scope.row.bizType" :dict="dicts['wlBizType']"></mdp-select-tag>
-					</template> 
-				</el-table-column> 
+						<mdp-select-tag :disabled="true" v-model="scope.row.bizType" item-code="wlBizType"></mdp-select-tag>
+					</template>
+				</el-table-column>
 				<el-table-column prop="bizName" label="报工业务" width="120" show-overflow-tooltip>
 					<template slot-scope="scope">
 						<el-link @click="openDialog(scope.row)">{{scope.row.bizName}}</el-link>
 					</template>
-				</el-table-column> 
-				<el-table-column prop="remark" label="报工备注" width="120" show-overflow-tooltip></el-table-column>  
+				</el-table-column>
+				<el-table-column prop="remark" label="报工备注" width="120" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="ttype" label="任务类型" min-width="80" show-overflow-tooltip :formatter="formatterOption"></el-table-column>
 
 			</el-table>
@@ -47,23 +47,23 @@
 			<el-dialog :title="'【'+editForm.name+'】新增工时'" :visible.sync="addFormVisible"  width="60%" top="20px"  append-to-body  :close-on-click-modal="false">
 				<xm-workload-edit op-type="add" :biz-type="bizType" :xm-task="xmTask" :xm-menu="xmMenu" :xm-test-case="xmTestCase" :xm-test-plan-case="xmTestPlanCase" :xm-question="xmQuestion" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-workload-edit>
 			</el-dialog>
-			
+
 		<el-dialog title="任务明细" :visible.sync="taskDetailVisible" width="90%" top="20px" append-to-body>
 			<xm-task-detail :visible="taskDetailVisible" :xm-task="{id:editForm.taskId,name:editForm.bizName}" :reload="true"></xm-task-detail>
 		</el-dialog>
-		
+
 		<el-dialog title="缺陷明细" :visible.sync="bugDetailVisible" width="90%" top="20px" append-to-body>
 			<xm-question-detail :visible="bugDetailVisible" :xm-question="{id:editForm.bugId,name:editForm.bizName}" :reload="true"></xm-question-detail>
 		</el-dialog>
-		
+
 		<el-dialog title="测试用例明细" :visible.sync="caseDetailVisible" width="90%" top="20px" append-to-body>
 			<xm-test-case-detail :visible="caseDetailVisible" :xm-test-case="{id:editForm.caseId,name:editForm.bizName}" :reload="true"></xm-test-case-detail>
 		</el-dialog>
-		
+
 		<el-dialog title="执行用例明细" :visible.sync="planCaseDetailVisible" width="90%" top="20px" append-to-body>
 			<xm-test-plan-case-detail :visible="planCaseDetailVisible" :xm-plan-test-case="{planId:editForm.planId,caseId:editForm.caseId,name:editForm.bizName}" :reload="true"></xm-test-plan-case-detail>
 		</el-dialog>
-		
+
 		<el-dialog title="需求明细" :visible.sync="menuDetailVisible" width="90%" top="20px" append-to-body>
 			<xm-menu-detail :visible="menuDetailVisible" :xm-menu="{id:editForm.menuId,name:editForm.bizName}" :reload="true"></xm-menu-detail>
 		</el-dialog>
@@ -87,7 +87,7 @@
 	    name:'xmWorkloadMng',
 		components: {
 		    XmWorkloadEdit,
-			
+
 			"xm-task-detail":()=>import("../xmTask/XmTaskDetail"),
 			"xm-question-detail":()=>import("../xmQuestion/XmQuestionDetail"),
 			"xm-test-case-detail":()=>import("../xmTestCase/XmTestCaseDetail"),
@@ -108,9 +108,9 @@
 					params.actWorkload=this.xmTask.actWorkload
 					params.ntype=this.xmTask.ntype
 					params.name=this.xmTask.name
-				} 
+				}
 				if( this.xmMenu && this.xmMenu.menuId){
-					params.menuId=this.xmMenu.menuId 
+					params.menuId=this.xmMenu.menuId
 					params.initWorkload=this.xmMenu.initWorkload
 					params.budgetWorkload=this.xmMenu.budgetWorkload
 					params.actWorkload=this.xmMenu.actWorkload
@@ -118,14 +118,14 @@
 					params.dclass=this.xmMenu.dclass
 					params.name=this.xmMenu.name
 					params.menuName=this.xmMenu.menuName
-				} 
+				}
 				if( this.xmQuestion && this.xmQuestion.id){
 					params.id=this.xmQuestion.id
 					params.initWorkload=this.xmQuestion.initWorkload
 					params.budgetWorkload=this.xmQuestion.budgetWorkload
 					params.actWorkload=this.xmQuestion.actWorkload
 					params.name=this.xmQuestion.name
-				} 
+				}
 				if( this.xmTestCase && this.xmTestCase.id){
 					params.id=this.xmTestCase.id
 					params.initWorkload=this.xmTestCase.initWorkload
@@ -133,29 +133,29 @@
 					params.actWorkload=this.xmTestCase.actWorkload
 					params.name=this.xmTestCase.caseName
 					params.caseName=this.xmTestCase.caseName
-				} 
+				}
 				if( this.xmTestPlanCase && this.xmTestPlanCase.planId){
-					params.planId=this.xmTestPlanCase.planId 
+					params.planId=this.xmTestPlanCase.planId
 					params.caseId=this.xmTestPlanCase.caseId
 					params.initWorkload=this.xmTestPlanCase.initWorkload
 					params.budgetWorkload=this.xmTestPlanCase.budgetWorkload
 					params.actWorkload=this.xmTestPlanCase.actWorkload
 					params.name=this.xmTestPlanCase.caseName
 					params.caseName=this.xmTestPlanCase.caseName
-				} 
+				}
 				return params
 			}
 
 		},
-		watch:{ 
+		watch:{
             visible(val){
-                if(val==true){  
+                if(val==true){
                     this.searchXmWorkloads()
                 }
             },
 			val:{
-				handler(){ 
-					this.initData();  
+				handler(){
+					this.initData();
 				},
 				deep:true,
 			}
@@ -191,12 +191,12 @@
 				},
 				maxTableHeight:300,
 
-				
+
 				taskDetailVisible:false,
 				bugDetailVisible:false,
 				caseDetailVisible:false,
 				planCaseDetailVisible:false,
-				menuDetailVisible:false, 
+				menuDetailVisible:false,
 
 				userWorkloadDayListVisible:false,
 			}
@@ -270,23 +270,23 @@
 				}
 				if(this.filters.key){
 					params.key=this.filters.key
-				} 
+				}
 				if( this.xmTask && this.xmTask.id){
 					params.taskId=this.xmTask.id
-				} 
+				}
 				if( this.xmMenu && this.xmMenu.menuId){
 					params.menuId=this.xmMenu.menuId
-				} 
+				}
 				if( this.xmQuestion && this.xmQuestion.id){
 					params.bugId=this.xmQuestion.id
-				} 
+				}
 				if( this.xmTestCase && this.xmTestCase.id){
 					params.caseId=this.xmTestCase.id
-				} 
+				}
 				if( this.xmTestPlanCase && this.xmTestPlanCase.planId){
 					params.planId=this.xmTestPlanCase.planId
 					params.caseId=this.xmTestPlanCase.caseId
-				}  
+				}
 				if(this.bizType!=='all'&&!params.planId&&!params.caseId&&!params.caseId &&!params.bugId&&!params.taskId&&!params.menuId){
 					return;
 				}
@@ -393,11 +393,11 @@
 				}else if(this.bizType=='5'){
 					this.menuDetailVisible=true
 				}
-			}, 
+			},
 			queryUserWorkload(row){
 				this.editForm=row
 				this.userWorkloadDayListVisible=true;
-			}, 
+			},
 			openDialog(row){
 				this.editForm=row
 				if(row.bizType=='1'){
@@ -411,7 +411,7 @@
 				}else if(this.bizType=='5'){
 					this.menuDetailVisible=true
 				}
-			}, 
+			},
 
 		},//end methods
 		mounted() {

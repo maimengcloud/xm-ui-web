@@ -1,5 +1,5 @@
 <template>
-	<section  class="padding"> 
+	<section  class="padding">
 		<el-row :class="{'row-box':true,'cfg':isRptCfg}">
 			<div class="rpt-title">{{ rawDatas.name }}</div>
 			<el-input class="input" v-model="rawDatas.name" placeholder="计划名称"/>
@@ -7,78 +7,78 @@
 		<el-row :class="{'row-box':true,'cfg':isRptCfg}">
 			<div class="title">{{ title?title:'报告概览' }}</div>
 			<el-input class="input" v-model="title" placeholder="报告概览"/>
-		</el-row>  
+		</el-row>
 		<el-row ref="table">
 			<el-row class="box">
 				<el-col :span="6" class="box-red">
-					<div class="box-info">  
+					<div class="box-info">
 							<div class="num">{{rawDatas.totalCases?rawDatas.totalCases:'0'}}个</div>
-							<div class="label">用例数</div>   
+							<div class="label">用例数</div>
 					</div>
 				</el-col>
 				<el-col :span="6" class="box-blue">
-					<div class="box-info">  
+					<div class="box-info">
 							<div class="num">{{caseFuGaiLv}}%</div>
-							<div class="label">用例覆盖率</div>   
+							<div class="label">用例覆盖率</div>
 					</div>
 				</el-col>
 				<el-col :span="6" class="box-green">
-					<div class="box-info">  
+					<div class="box-info">
 							<div class="num">{{caseTongGuoLv}}%</div>
-							<div class="label">用例通过率</div>   
+							<div class="label">用例通过率</div>
 					</div>
 				</el-col>
 				<el-col :span="6" class="box-orange">
-					<div class="box-info">  
+					<div class="box-info">
 							<div class="num">{{rawDatas.bugCnt?rawDatas.bugCnt:0}}个</div>
-							<div class="label">缺陷数</div>   
+							<div class="label">缺陷数</div>
 					</div>
 				</el-col>
 			</el-row>
-		<!--编辑界面 XmTestPlan 测试计划--> 
-			<el-form :model="rawDatas"  label-width="120px" :rules="rawDatasRules" ref="rawDatasRef" label-position="left">  
+		<!--编辑界面 XmTestPlan 测试计划-->
+			<el-form :model="rawDatas"  label-width="120px" :rules="rawDatasRules" ref="rawDatasRef" label-position="left">
 				<el-row class="padding">
 					<el-col :span="8">
 						<mdp-select-user-xm label="负责人" userid-key="cuserid" username-key="cusername" v-model="rawDatas"></mdp-select-user-xm>
 					</el-col>
 					<el-col :span="8">
-						<mdp-select  show-style="x" label="状态" :dict="dicts['testPlanStatus']" v-model="rawDatas.status"></mdp-select>
+						<mdp-select  show-style="x" label="状态" item-code="testPlanStatus" v-model="rawDatas.status"></mdp-select>
 					</el-col>
-					
+
 					<el-col :span="8">
-						<mdp-select  show-style="x" label="测试结果" :dict="dicts['testPlanTcode']" v-model="rawDatas.tcode"></mdp-select>
+						<mdp-select  show-style="x" label="测试结果" item-code="testPlanTcode" v-model="rawDatas.tcode"></mdp-select>
 					</el-col>
-				</el-row>   
+				</el-row>
  				<el-form-item label="归属测试库" prop="casedbName">
 					{{rawDatas.casedbName}}
-				</el-form-item>  
+				</el-form-item>
 				<el-form-item label="归属项目" prop="projectId">
-					 
+
 					<span v-if="opType=='add'">
 					 	<xm-project-select v-if="!selProject || !selProject.id" ref="xmProjectSelect" :link-product-id="xmTestCasedb? xmTestCasedb.productId:null"  @row-click="onPorjectConfirm" :auto-select="false">
 							<span slot="title">选择项目</span>
 						</xm-project-select>
 						<div v-else>{{rawDatas.projectName}}</div>
-					</span> 
+					</span>
  					<div v-else>{{rawDatas.projectName}}</div>
-				</el-form-item>  
+				</el-form-item>
 				<el-form-item label="归属产品" prop="productName">
 					{{rawDatas.productName}}
-				</el-form-item>  
-				 
+				</el-form-item>
+
 				<el-form-item label="起止时间" prop="stime">
 					<mdp-date-range :auto-default="false" placeholder="选择日期" v-model="rawDatas" start-key="stime" end-key="etime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" ></mdp-date-range>
-				</el-form-item>   
+				</el-form-item>
 			</el-form>
 		</el-row>
 		<el-row class="padding-bottom">
 			<span>报告总结</span>
 		</el-row>
-		<el-row> 
+		<el-row>
 			<el-input  type="textarea" :rows="8" v-model="rawDatas.summaryRemark"></el-input>
 		</el-row>
 		<el-row v-if="rawDatas.summaryRemark!==rawDatasBak.summaryRemark" >
-			<span style="float:right;"> 
+			<span style="float:right;">
             <el-button type="primary" @click.native="editSomeFields(rawDatas,'summaryRemark',rawDatas.summaryRemark)">提交</el-button>
 			</span>
 		</el-row>
@@ -91,7 +91,7 @@
  	import { initDicts, addXmTestPlan,editXmTestPlan,editSomeFieldsXmTestPlan } from '@/api/xm/core/xmTestPlan';
 	import { mapGetters } from 'vuex'
 	import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';
-	
+
 import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修改界面
 	export default {
 	    name:'xmTestPlanEdit',
@@ -135,11 +135,11 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 	        }
 
 	      },
-	      'visible':function(visible) { 
+	      'visible':function(visible) {
 	      	if(visible==true){
  	      		this.initData()
 	      	}
-	      } 
+	      }
 	    },
 		data() {
 			return {
@@ -153,12 +153,12 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 
 				},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
 				rawDatasRules: {
-					 
+
 				},
 				rawDatas: {
 					id:'',name:'',casedbId:'',casedbName:'',projectId:'',projectName:'',cuserid:'',cusername:'',ctime:'',stime:'',etime:'',status:'',tcode:'',totalCases:'',okCases:'',errCases:'',igCases:'',blCases:'',productId:'',productName:'',flowState:'',summaryRemark:''
 				},
-				
+
 				rawDatasBak: {
 					id:'',name:'',casedbId:'',casedbName:'',projectId:'',projectName:'',cuserid:'',cusername:'',ctime:'',stime:'',etime:'',status:'',tcode:'',totalCases:'',okCases:'',errCases:'',igCases:'',blCases:'',productId:'',productName:'',flowState:'',summaryRemark:''
 				},
@@ -179,7 +179,7 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 			saveSubmit: function () {
 				this.$refs.rawDatasRef.validate((valid) => {
 					if (valid) {
-						this.$confirm('确认提交吗？', '提示', {}).then(() => { 
+						this.$confirm('确认提交吗？', '提示', {}).then(() => {
 							this.load.edit=true
 							let params = Object.assign({}, this.rawDatas);
 							var func=addXmTestPlan
@@ -203,10 +203,10 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 					}
 				});
 			},
-			initData: function(){ 
+			initData: function(){
 			    if(this.xmTestPlan){
                     this.rawDatas = Object.assign({},this.xmTestPlan);
-                } 
+                }
 				if(this.rptDatas){
 					this.rawDatas=Object.assign({},this.rptDatas)
 				}
@@ -219,7 +219,7 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
                 }
                 let params={};
                 params['ids']=[row].map(i=>i.id)
-                
+
 				if(fieldName=='stime'){
 					params[fieldName]=$event.stime
 					params.etime=$event.etime
@@ -234,7 +234,7 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
                   let tips = res.data.tips;
                   if(tips.isOk){
                     this.rawDatasBak=[...this.rawDatas]
-					this.$emit('edit-fields',params) 
+					this.$emit('edit-fields',params)
                   }else{
                     Object.assign(this.rawDatas,this.rawDatasBak)
                     this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
@@ -245,9 +245,9 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 				this.rawDatas.projectId=row.id
 				this.rawDatas.projectName=row.name
 				this.rawDatas.name=this.rawDatas.projectName+'-测试计划-V1.0'
-			}, 
+			},
 			sizeAutoChange(){
-				
+
 			}
 		},//end method
 		mounted() {
@@ -261,6 +261,6 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 
 </script>
 
-<style lang="scss" scoped>  
+<style lang="scss" scoped>
 @import url('../index/overview.scss');
 </style>

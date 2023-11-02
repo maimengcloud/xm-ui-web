@@ -1,11 +1,11 @@
 <template>
-	<section> 
+	<section>
 				<el-row>
 					<xm-product-select ref="xmProductSelect1" style="display:inline;" v-if="(!xmProduct||!xmProduct.id)&&(!xmIteration||!xmIteration.id)"   :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClearSelect"></xm-product-select>
 
-					<mdp-select v-model="filters.priority" placeholder="优先级"  clearable style="width: 6em;" :dict="dicts['priority']">
+					<mdp-select v-model="filters.priority" placeholder="优先级"  clearable style="width: 6em;" item-code="priority">
 					</mdp-select>
-					<mdp-select v-model="filters.status" placeholder="状态" clearable style="width: 6em;" :dict="dicts['menuStatus']">
+					<mdp-select v-model="filters.status" placeholder="状态" clearable style="width: 6em;" item-code="menuStatus">
 					</mdp-select>
 					<el-input v-model="filters.key" style="max-width: 15em;" placeholder="需求名称查询" clearable>
 					</el-input>
@@ -17,65 +17,65 @@
 						width="800"
 						v-model="moreVisible"
 						trigger="manual" >
-						
-						<el-row  style="float:right;margin-top:-40px">  
-								<el-button 
+
+						<el-row  style="float:right;margin-top:-40px">
+								<el-button
 								icon="el-icon-close"
 								@click="moreVisible=false"
 								type="text"
 								>关闭</el-button
-								> 
-						</el-row> 
+								>
+						</el-row>
 						<el-descriptions class="margin-top" size="mini" :column="2" border>
-							<template slot="extra">  
-									<el-button @click="showParentMenu" icon="el-icon-top" title="更换上级">更换上级</el-button> 
+							<template slot="extra">
+									<el-button @click="showParentMenu" icon="el-icon-top" title="更换上级">更换上级</el-button>
 									<el-button    @click="handleExport" icon="el-icon-download">导出</el-button>
 									<el-button     @click="loadTasksToXmMenuState" icon="el-icon-s-marketing">汇总进度</el-button>
 									<el-button  type="danger" @click="batchDel" icon="el-icon-delete" title="删除">删除</el-button>
  							</template>
-							
+
 							 <el-descriptions-item>
 								<template slot="label">
 									<i class="el-icon-s-grid"></i>
 									显示方式
-								</template> 										
+								</template>
 								<el-radio v-model="displayType" label="agileUser">故事看板</el-radio>
-								<el-radio v-model="displayType" label="table">列表</el-radio>  							
+								<el-radio v-model="displayType" label="table">列表</el-radio>
 							</el-descriptions-item>
 							<el-descriptions-item>
 								<template slot="label">
 									<i class="el-icon-user"></i>
 									责任人
 								</template>
-								<mdp-select-user-xm style="max-width:180px;" label="选择责任人" v-model="filters.mmUser" :clearable="true"></mdp-select-user-xm> 
-							</el-descriptions-item> 
+								<mdp-select-user-xm style="max-width:180px;" label="选择责任人" v-model="filters.mmUser" :clearable="true"></mdp-select-user-xm>
+							</el-descriptions-item>
 							<el-descriptions-item>
 								<template slot="label">
 									<i class="el-icon-key"></i>
 									需求编号
-								</template> 										
-								<el-input v-model="filters.menuId" placeholder="需求编号查询" clearable></el-input> 
+								</template>
+								<el-input v-model="filters.menuId" placeholder="需求编号查询" clearable></el-input>
 							</el-descriptions-item>
 							<el-descriptions-item>
 								<template slot="label">
 									<i class="el-icon-document"></i>
 									归属模块
-								</template> 										
+								</template>
 								<span v-if="filters.func">{{ filters.func.name }}&nbsp;</span><el-button type="text" v-if="filters.func" @click="filters.func=null" icon="el-icon-close"></el-button><el-button @click="funcVisible=true" type="text">选择模块</el-button>
 							</el-descriptions-item>
 							<el-descriptions-item>
 								<template slot="label">
 									<i class="el-icon-connection"></i>
 									归属迭代
-								</template> 		 
+								</template>
 								<xm-iteration-select v-if="!xmIteration || !xmIteration.id" style="display:inline;" :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="selProject?selProject.id:null"   placeholder="迭代"  @row-click="onIterationSelected" @clear="onIterationClearSelect">
-										</xm-iteration-select> 							
+										</xm-iteration-select>
 							</el-descriptions-item>
 							<el-descriptions-item>
 								<template slot="label">
 									<i class="el-icon-connection"></i>
 									迭代情况
-								</template> 										
+								</template>
 								<el-select   v-model="filters.iterationFilterType" placeholder="加入过迭代？" clearable   >
 											<el-option   value="not-join-any-iteration"  label="未加入过迭代"></el-option>
 											<el-option   value="join-any-iteration"  label="已加入过迭代"></el-option>
@@ -87,7 +87,7 @@
 								<template slot="label">
 									<i class="el-icon-time"></i>
 									任务情况
-								</template> 										
+								</template>
 
 								<el-select  v-model="filters.taskFilterType" placeholder="已分配任务的需求？" clearable >
 											<el-option   value="not-join-any-project"  label="未分配过任务的需求"></el-option>
@@ -109,7 +109,7 @@
 								<template slot="label">
 									<i class="el-icon-document"></i>
 									需求来源
-								</template> 										
+								</template>
 
 								<el-select  v-model="filters.source" placeholder="需求来源"  clearable >
 											<el-option v-for="i in this.dicts.demandSource" :label="i.name" :key="i.id" :value="i.id"></el-option>
@@ -123,7 +123,7 @@
 										<el-select  v-model="filters.dlvl" placeholder="需求层次"  clearable >
 											<el-option v-for="i in this.dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
 										</el-select>
-							</el-descriptions-item>   
+							</el-descriptions-item>
 							<el-descriptions-item :span="2">
 								<template slot="label">
 									<i class="el-icon-watch"></i>
@@ -131,15 +131,15 @@
 								</template>
 								<mdp-date-range
 									v-model="filters"
-									type="daterange" 
+									type="daterange"
 									start-key="planStartTimeStart"
 									end-key="planStartTimeEnd"
 									unlink-panels
 									range-separator="至"
 									start-placeholder="开始日期"
 									end-placeholder="完成日期"
-									value-format="yyyy-MM-dd HH:mm:ss" 
-									:default-time="['00:00:00', '23:59:59']" 
+									value-format="yyyy-MM-dd HH:mm:ss"
+									:default-time="['00:00:00', '23:59:59']"
 									:auto-default="false"
 									key="planStartTime"
 								></mdp-date-range>
@@ -149,30 +149,30 @@
 									<i class="el-icon-watch-1"></i>
 									结束时间
 								</template>
-								
+
 								<mdp-date-range
 										v-model="filters"
-										type="daterange" 
+										type="daterange"
 										start-key="planEndTimeStart"
 										end-key="planEndTimeEnd"
 										unlink-panels
 										range-separator="至"
 										start-placeholder="开始日期"
 										end-placeholder="完成日期"
-										value-format="yyyy-MM-dd HH:mm:ss" 
-										:default-time="['00:00:00', '23:59:59']" 
-										:auto-default="false" 
+										value-format="yyyy-MM-dd HH:mm:ss"
+										:default-time="['00:00:00', '23:59:59']"
+										:auto-default="false"
 										key="planEndTime"
 										></mdp-date-range>
 							</el-descriptions-item>
 
 							<el-descriptions-item :span="2">
-								<el-button type="primary" style="float:right;" @click="searchXmMenus" icon="el-icon-search">查询</el-button> 
+								<el-button type="primary" style="float:right;" @click="searchXmMenus" icon="el-icon-search">查询</el-button>
 
 							</el-descriptions-item>
 
 						</el-descriptions>
-							 
+
 							<el-button  slot="reference" icon="el-icon-more" @click="moreVisible=!moreVisible"></el-button>
 					</el-popover>
 					<span style="float:right;">
@@ -188,7 +188,7 @@
 								</div>
 								<el-button   @click="showAdd('1')">新建史诗</el-button>
 							</el-row>
-							
+
 							<el-row>
 								<div  class="icon" style="background-color:  rgb(0, 153, 51);">
 								<i class="el-icon-s-flag"></i>
@@ -203,7 +203,7 @@
 								</div>
 								<el-button   @click="showAdd('3')"  >新建用户故事</el-button>
 							</el-row>
-							
+
 
 							<el-row>
 								<el-button  @click="showImportFromMenuTemplate()" icon="el-icon-upload2">由模板快速导入需求</el-button>
@@ -218,8 +218,8 @@
 					<xm-table-config class="hidden-lg-and-down" ref="tableConfig" style="display:inline;" :table="$refs.table"></xm-table-config>
 
 					</span>
-					</el-row> 
-					<el-row v-if="displayType=='table'" class="padding-top">  
+					</el-row>
+					<el-row v-if="displayType=='table'" class="padding-top">
 					<el-table  element-loading-text="努力加载中" element-loading-spinner="el-icon-loading" :cell-style="cellStyleCalc" :expand-row-keys="expandRowKeysCpd" :header-cell-style="cellStyleCalc"    stripe fit border ref="table" :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId"  @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
 						<el-table-column sortable type="selection" width="40"></el-table-column>
 
@@ -236,8 +236,8 @@
 								<i class="el-icon-document"  style="width:20px;"></i>
 								</div>
 								<el-link  @click="showEdit( scope.row,scope.$index)">{{scope.row.seqNo}} &nbsp; {{scope.row.menuName}} </el-link>
-								<div class="tool-bar"> 
-                                      	<el-button @click="copyOne(scope.row,scope.$index)" icon="el-icon-document-copy" circle title="复制一行"></el-button> 
+								<div class="tool-bar">
+                                      	<el-button @click="copyOne(scope.row,scope.$index)" icon="el-icon-document-copy" circle title="复制一行"></el-button>
  								</div>
 							</div>
 							</template>
@@ -246,50 +246,50 @@
 						</el-table-column>
 						<template>
 						<el-table-column prop="mmUsername" label="跟进人"  min-width="100" show-overflow-tooltip  sortable>
-							<template slot-scope="scope"> 
+							<template slot-scope="scope">
 								<mdp-select-user-xm size="mini" @visible-change="selectVisible(scope.row,$event)" :value="scope.row" userid-key="mmUserid" username-key="mmUsername" :project-id="scope.row.projectId" @change="editXmMenuSomeFields(scope.row,'mmUserid',$event)"></mdp-select-user-xm>
 							</template>
 						</el-table-column>
 						<el-table-column prop="productId" label="产品" width="100" show-overflow-tooltip sortable>
 						</el-table-column>
-						
+
 						<el-table-column prop="finishRate" label="进度" width="100" show-overflow-tooltip sortable>
 							<template slot-scope="scope">
-								<span  
-									:style="{borderRadius: '30px',color:scope.row.finishRate >= 100 ? 'green' : 'blue'}" 
+								<span
+									:style="{borderRadius: '30px',color:scope.row.finishRate >= 100 ? 'green' : 'blue'}"
 								>
 									{{ (scope.row.finishRate != null ? scope.row.finishRate : 0) + "%" }}
-								</span>  
+								</span>
 							</template>
 						</el-table-column>
 						<el-table-column prop="status" label="状态"  min-width="80"  sortable>
-							<template slot-scope="scope"> 
-										<mdp-select-tag  size="mini"  @visible-change="selectVisible(scope.row,$event)" :dict="dicts['menuStatus']" v-model="scope.row.status" label="需求状态"   @change="editXmMenuSomeFields(scope.row,'status',$event)">
-										</mdp-select-tag> 
+							<template slot-scope="scope">
+										<mdp-select-tag  size="mini"  @visible-change="selectVisible(scope.row,$event)" item-code="menuStatus" v-model="scope.row.status" label="需求状态"   @change="editXmMenuSomeFields(scope.row,'status',$event)">
+										</mdp-select-tag>
 							</template>
 						</el-table-column>
 						<el-table-column prop="priority"  label="优先级" width="100" sortable>
-							<template slot-scope="scope"> 
-										<mdp-select-tag  size="mini" @visible-change="selectVisible(scope.row,$event)" :dict="dicts['priority']" v-model="scope.row.priority" placeholder="优先级"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'priority',$event)">
+							<template slot-scope="scope">
+										<mdp-select-tag  size="mini" @visible-change="selectVisible(scope.row,$event)" item-code="priority" v-model="scope.row.priority" placeholder="优先级"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'priority',$event)">
 										</mdp-select-tag>
 							</template>
 						</el-table-column>
 						<el-table-column prop="dtype" label="类型" width="100"  sortable v-if="false">
-							<template slot-scope="scope"> 
-										<mdp-select-tag  size="mini" @visible-change="selectVisible(scope.row,$event)" :dict="dicts['demandType']" v-model="scope.row.dtype" placeholder="类型"  style="display:block;"  @change="editXmMenuSomeFields(scope.row,'dtype',$event)">
+							<template slot-scope="scope">
+										<mdp-select-tag  size="mini" @visible-change="selectVisible(scope.row,$event)" item-code="demandType" v-model="scope.row.dtype" placeholder="类型"  style="display:block;"  @change="editXmMenuSomeFields(scope.row,'dtype',$event)">
 										</mdp-select-tag>
 							</template>
 						</el-table-column>
 						<el-table-column prop="source"  label="来源" width="100"  :formatter="formaterByDicts"  show-overflow-tooltip sortable  v-if="false">
 							<template slot-scope="scope">
-									
-										<mdp-select-tag  size="mini" @visible-change="selectVisible(scope.row,$event)" :dict="dicts['demandSource']" v-model="scope.row.source" placeholder="来源"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'source',$event)">
+
+										<mdp-select-tag  size="mini" @visible-change="selectVisible(scope.row,$event)" item-code="demandSource" v-model="scope.row.source" placeholder="来源"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'source',$event)">
 										</mdp-select-tag>
 							</template>
 						</el-table-column>
 						<el-table-column prop="dlvl"  label="层次" width="100" sortable>
-							<template slot-scope="scope"> 
-										<mdp-select-tag  size="mini" @visible-change="selectVisible(scope.row,$event)" :dict="dicts['demandLvl']"  v-model="scope.row.dlvl" placeholder="层次"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'dlvl',$event)">
+							<template slot-scope="scope">
+										<mdp-select-tag  size="mini" @visible-change="selectVisible(scope.row,$event)" item-code="demandLvl"  v-model="scope.row.dlvl" placeholder="层次"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'dlvl',$event)">
 										</mdp-select-tag>
 							</template>
 						</el-table-column>
@@ -312,12 +312,12 @@
 									<div>{{scope.row.taskFinishCnt}}/{{scope.row.taskCnt}}</div>
 							</template>
 						</el-table-column>
-						
+
 						<el-table-column prop="budgetWorkload" label="工时"  min-width="100" show-overflow-tooltip sortable>
-							<template slot-scope="scope"> 
+							<template slot-scope="scope">
 								<span title="实际工时 / 预算工时 或者 (剩余工时+实际工时)">{{scope.row.actWorkload}} &nbsp;/ &nbsp;{{scope.row.budgetWorkload}}h </span>
-							</template> 
-						</el-table-column> 
+							</template>
+						</el-table-column>
 						<el-table-column prop="bugCnt" label="缺陷"  min-width="100" show-overflow-tooltip sortable>
 
 							<template slot="header">
@@ -339,15 +339,15 @@
 							</template>
 						</el-table-column>
 						</template>
-					</el-table>  
-				</el-row> 
+					</el-table>
+				</el-row>
 				<el-row v-else-if="displayType=='agileUser'" class="padding-top">
 					<xm-menu-agile-kanban-user :xm-menus="xmMenus" :xm-product="xmProduct" ref="table" :table-height="maxTableHeight"></xm-menu-agile-kanban-user>
 
-				</el-row> 
+				</el-row>
 				<el-row>
 					<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
-				</el-row>  
+				</el-row>
 				<!--编辑 XmMenu xm_project_menu界面-->
 				<el-dialog title="编辑故事" :visible.sync="editFormVisible" :with-header="false" fullscreen width="90%" top="20px"    append-to-body   :close-on-click-modal="false" >
 					<xm-menu-edit :xm-menu="editForm" :sel-project="selProject" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit" @add-sub-menu="onAddSubMenu" @edit-fields="onEditSomeFields"></xm-menu-edit>
@@ -377,8 +377,8 @@
 					:with-header="false"
 					size="80%">
 					<xm-task-mng :sel-project="selProject"   :menu-id="editForm.menuId" :menu-name="editForm.menuName"></xm-task-mng>
-				</el-drawer>   
-		
+				</el-drawer>
+
  			<tag-dialog ref="tagDialog" :tagIds="filters.tags?filters.tags.map(i=>i.tagId):[]" :jump="true" @select-confirm="onTagSelected">
 			</tag-dialog>
  			<xm-group-dialog ref="xmGroupDialog" :isSelectSingleUser="true" :sel-project="selProject" :xm-product="xmProductCpd" @user-confirm="onGroupUserSelect">
@@ -390,12 +390,12 @@
 			size="60%"
 			:close-on-click-modal="false"
 			>
-			<xm-epic-features-select 
+			<xm-epic-features-select
 				@select="onParentMenuSelected"
 				:xm-product="filters.product"
 			></xm-epic-features-select>
 		</el-drawer>
-		
+
 		<el-dialog append-to-body title="模块选择"  :visible.sync="funcVisible" size="40%" top="20px"  :close-on-click-modal="false">
 			<xm-func-select :show-select="true" class="padding-left padding-right" v-if="funcVisible"  @select="onFuncSelected" :xm-product="xmProductCpd"></xm-func-select>
 		</el-dialog>
@@ -414,7 +414,7 @@
 	import {   batchDelXmIterationMenu,batchAddXmIterationMenu } from '@/api/xm/core/xmIterationMenu';
 
 	import  XmMenuAdd from './XmMenuAdd';//新增界面
-	import  XmMenuEdit from './XmMenuEdit';//修改界面 
+	import  XmMenuEdit from './XmMenuEdit';//修改界面
 	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//新增界面
 	import  XmMenuTemplateMng from '../xmMenuTemplate/XmMenuTemplateMng';//新增界面
 	import XmMenuRichDetail from './XmMenuRichDetail';
@@ -444,7 +444,7 @@
 		      'userInfo','roles'
 			]),
 
-      		xmMenusTreeData() { 
+      		xmMenusTreeData() {
 				 return this.xmMenus;
 			},
 			toSearchCpd(){
@@ -455,12 +455,12 @@
 				}else{
 					key.iterationId=''
 				}
-				if(this.xmProduct&&this.xmProduct.id){  
+				if(this.xmProduct&&this.xmProduct.id){
 					key.productId=this.xmProduct.id
 				}else{
 					key.productId=''
 				}
-				if(this.selProject&&this.selProject.id){ 
+				if(this.selProject&&this.selProject.id){
 					key.projectId=this.selProject.id
 				}else{
 					key.projectId=''
@@ -488,11 +488,11 @@
 		watch:{
 			xmIteration:function(){
 				this.filters.iterationFilterType="join-curr-iteration"
-				this.filters.iteration=this.xmIteration 
+				this.filters.iteration=this.xmIteration
 			},
 			xmProduct:function(){
-					this.filters.product=this.xmProduct 
-			}, 
+					this.filters.product=this.xmProduct
+			},
 			toSearchCpd:function(){
 				this.searchXmMenus();
 			}
@@ -519,7 +519,7 @@
 					source:'',
 					dclasss:['3'],
 					menuId:'',//需求编号
-					productId:'',//产品编号 
+					productId:'',//产品编号
 					planStartTimeStart:'',
 					planStartTimeEnd:'',
 					planEndTimeStart:'',
@@ -554,8 +554,8 @@
 				//编辑xmMenu界面初始化数据
 				editForm: {
 					startTime:'',menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'0',online:'0',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',seqNo:'',mmUserid:'',mmUsername:'',ctime:'',ntype:'0',sinceVersion:'',childrenCnt:'0',ltime:'',tagIds:'',tagNames:'',pidPaths:'',lvl:'0',isTpl:'0',phaseId:'',iterationId:'',source:'1',proposerId:'',proposerName:'',dlvl:'0',dtype:'0',priority:'0',dclass:'',iterationName:'',endTime:'',funcId:'',funcName:'',comments:'',ups:'0',reads:'0'
-				}, 
-				menuTemplateVisible:false, 
+				},
+				menuTemplateVisible:false,
 				valueChangeRows:[],
 				 menuDetailVisible:false,
 				selectTaskVisible:false,
@@ -624,17 +624,17 @@
 					params.key="%"+this.filters.key+"%"
 				}
 				if (this.filters.planStartTimeStart) {
-					params.planStartTimeStart = this.filters.planStartTimeStart 
+					params.planStartTimeStart = this.filters.planStartTimeStart
 				}
-				
+
 				if (this.filters.planStartTimeEnd) {
-					params.planStartTimeEnd = this.filters.planStartTimeEnd 
+					params.planStartTimeEnd = this.filters.planStartTimeEnd
 				}
 				if (this.filters.planEndTimeStart) {
-					params.planEndTimeStart = this.filters.planEndTimeStart 
+					params.planEndTimeStart = this.filters.planEndTimeStart
 				}
 				if (this.filters.planEndTimeEnd) {
-					params.planEndTimeEnd = this.filters.planEndTimeEnd 
+					params.planEndTimeEnd = this.filters.planEndTimeEnd
 				}
 
 				if(this.filters.mmUser){
@@ -724,7 +724,7 @@
 
       			this.maps.set(tree.menuId, { tree, treeNode, resolve }) //储存数据
 					var params={pmenuId:tree.menuId}
-					params=this.getParams(params); 
+					params=this.getParams(params);
 					this.load.list = true;
 					var func=listXmMenuWithState
 					if(this.selProject&&this.selProject.id){
@@ -760,7 +760,7 @@
 				if( this.filters.product  && this.filters.product.id){
 					params.productId=this.filters.product.id
 				}
-				params=this.getParams(params); 
+				params=this.getParams(params);
 				let callback= (res)=>{
 					var tips=res.data.tips;
 					if(tips.isOk){
@@ -786,21 +786,21 @@
 				this.editFormVisible = true;
 			},
 			//显示新增界面 XmMenu xm_project_menu
-			showAdd: function (dclass) {  
+			showAdd: function (dclass) {
 				this.addForm={...this.addFormInit}
-				if(this.filters.product && this.filters.product.id){ 
+				if(this.filters.product && this.filters.product.id){
 					this.addForm.productId=this.filters.product.id
 					this.addForm.productName=this.filters.product.productName
-					this.addForm.dclass=dclass 
+					this.addForm.dclass=dclass
 				}
-				if(this.filters.iteration && this.filters.iteration.id){ 
-					 
-					this.addForm.productId=this.filters.iteration.productId 
+				if(this.filters.iteration && this.filters.iteration.id){
+
+					this.addForm.productId=this.filters.iteration.productId
 					this.addForm.iterationId=this.filters.iteration.id
 					this.addForm.iterationName=this.filters.iteration.iterationName
 					this.addForm.dclass=dclass
-					
-				} 
+
+				}
 				if(!this.addForm.productId){
 					this.$refs.xmProductSelect1.productVisible=true;
 					this.$refs.xmProductSelect1.searchXmProducts();
@@ -812,9 +812,9 @@
 				//this.addForm=Object.assign({}, this.editForm);
 			},
 			showSubAdd:function(row){
-				
+
 				this.addForm={...this.addFormInit}
-				this.editForm=row 
+				this.editForm=row
 				this.expandRowKeysCpd.push(row.pmenuId);
 				this.addForm.productId=row.productId
 				if(this.filters.product && row.productId==this.filters.product.id){
@@ -833,15 +833,15 @@
 			showProdcutAdd:function(){
 				this.$refs.xmProductMng.showAdd();
 			},
-			afterAddSubmit(row){ 
-				this.pageInfo.count=true; 
-				this.xmMenus.push(row); 
+			afterAddSubmit(row){
+				this.pageInfo.count=true;
+				this.xmMenus.push(row);
 				if(this.parentMenu){
 					this.parentMenu.childrenCnt=this.parentMenu.childrenCnt?this.parentMenu.childrenCnt+1:1;
-				}  
+				}
 			},
 			afterEditSubmit(row){
-				this.editFormVisible=false; 
+				this.editFormVisible=false;
 			},
 			//选择行xmMenu
 			selsChange: function (sels) {
@@ -860,10 +860,10 @@
 				this.getXmMenus()
 			},
 			onIterationSelected:function(iteration){
-				this.filters.iteration=iteration 
+				this.filters.iteration=iteration
 			},
 			onIterationClearSelect:function(){
-				this.filters.iteration=null 
+				this.filters.iteration=null
 			},
 			//删除xmMenu
 			handleDel: function (row,index) {
@@ -876,7 +876,7 @@
 						this.load.del=false;
 						var tips=res.data.tips;
 						if(tips.isOk){
-							this.pageInfo.count=true; 
+							this.pageInfo.count=true;
  							this.getXmMenus();
 
 						}
@@ -1016,7 +1016,7 @@
 					this.load.add=false
 					var tips =res.data.tips
 					if(tips.isOk){
-						this.getXmMenus() 
+						this.getXmMenus()
 					}else{
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					}
@@ -1058,12 +1058,12 @@
 			},
 
 			loadTasksToXmMenuState: function () {
-				
+
 				if(!this.filters.product ){
 					if(!this.filters.iteration){
 						this.$notify.warning("请先选择产品或者迭代");
 						return;
-					} 
+					}
 				}
 				this.load.edit=true;
 				let params = { productId: ''};
@@ -1072,7 +1072,7 @@
 				}else{
 					params = { productId: this.filters.product.id };
 				}
-				
+
 				loadTasksToXmMenuState(params).then((res) => {
 					this.load.edit=false;
 					var tips=res.data.tips;
@@ -1086,7 +1086,7 @@
 			},
 			onGroupUserSelect(users,option){
 				 this.editXmMenuSomeFields(option.data,"mmUserid",users);
-			}, 
+			},
 			toSelectProduct(){
 				this.productVisible=true;
 			},
@@ -1139,7 +1139,7 @@
 				batchChangeParentMenu(params).then(res=>{
 					var tips = res.data.tips;
 					if(tips.isOk){
-						this.searchXmMenus(); 
+						this.searchXmMenus();
 					}
 					this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 				})
@@ -1263,7 +1263,7 @@
 							  Object.assign(row,params)
 						}
 						Object.assign(this.editFormBak,row)
-					}else{ 
+					}else{
 						Object.assign(row,this.editFormBak)
 						this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 					}
@@ -1342,24 +1342,24 @@
 			onEditSomeFields(params){
 				Object.assign(this.editForm,params)
 			},
-			onAddSubMenu(row){ 
-			},
-			
-			onFuncSelected(row){ 
-				this.filters.func=row
-				this.funcVisible=false; 
+			onAddSubMenu(row){
 			},
 
-			
+			onFuncSelected(row){
+				this.filters.func=row
+				this.funcVisible=false;
+			},
+
+
 			copyOne(row,index){
-				
+
 				var params={...row}
-				params.menuId=null; 
+				params.menuId=null;
 				params.status="0"
 				params.menuName=row.menuName+'V'
 				addXmMenu(params).then(res=>{
 					var tips = res.data.tips
-					if(tips.isOk){ 
+					if(tips.isOk){
 						var row2=res.data.data
 						this.xmMenus.splice(index+1,0,row2)
 						this.pageInfo.total=this.pageInfo.total+1
@@ -1379,7 +1379,7 @@
 			XmTaskList,
 			XmTaskMng,
 			XmTaskListForMenu,
-			UsersSelect, 
+			UsersSelect,
 		    TagDialog,
 			XmEpicFeaturesSelect,
 			XmMenuWorkload,
@@ -1393,7 +1393,7 @@
 		},
 		mounted() {
   			initSimpleDicts("all",['menuStatus','demandSource','demandLvl','demandType','priority','dclass']).then(res=>{
-				  Object.assign(this.dicts,res.data.data) 
+				  Object.assign(this.dicts,res.data.data)
 			})
 			this.filters.product=this.xmProduct
 			if(this.xmProduct && this.xmProduct.id){
@@ -1414,7 +1414,7 @@
 </script>
 
 <style lang="scss" scoped>
- 
+
 .align-right{
 	float: right;
 }

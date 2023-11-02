@@ -1,5 +1,5 @@
 <template>
-	<section> 
+	<section>
 		<el-row class="padding-top">
 			<!--列表 XmWorkload 工时登记表-->
 			<el-descriptions :column="3"  border>
@@ -12,7 +12,7 @@
 				<el-descriptions-item label="工时进度">
 					 <el-tag type="warning">{{xmTask.budgetWorkload>0?Math.round(xmTask.actWorkload/xmTask.budgetWorkload*100):0}}%&nbsp;</el-tag>
 				</el-descriptions-item>
- 			</el-descriptions> 
+ 			</el-descriptions>
 			<el-table ref="xmWorkloadTable" :max-height="maxTableHeight" :data="xmWorkloads"   @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="55" show-overflow-tooltip></el-table-column>
  				<el-table-column prop="username" label="姓名" width="120" show-overflow-tooltip>
@@ -48,15 +48,15 @@
 				 </el-table-column>
 				<el-table-column prop="bizType" label="报工类型" width="120" show-overflow-tooltip>
 					<template slot-scope="scope">
-						<mdp-select-tag :disabled="true" v-model="scope.row.bizType" :dict="dicts['wlBizType']"></mdp-select-tag>
-					</template> 
-				</el-table-column> 
+						<mdp-select-tag :disabled="true" v-model="scope.row.bizType" item-code="wlBizType"></mdp-select-tag>
+					</template>
+				</el-table-column>
 				<el-table-column prop="bizName" label="报工业务" width="120" show-overflow-tooltip>
 					<template slot-scope="scope">
 						<el-link @click="openDialog(scope.row)">{{scope.row.bizName}}</el-link>
 					</template>
-				</el-table-column> 
-				<el-table-column prop="remark" label="报工备注" width="120" show-overflow-tooltip></el-table-column>  
+				</el-table-column>
+				<el-table-column prop="remark" label="报工备注" width="120" show-overflow-tooltip></el-table-column>
 
 			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
@@ -68,23 +68,23 @@
 				<xm-workload-edit op-type="add" :xm-task="xmTask" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-workload-edit>
 			</el-dialog>
 
-			
+
 			<el-dialog title="任务明细" :visible.sync="taskDetailVisible" width="90%" top="20px" append-to-body>
 				<xm-task-detail :visible="taskDetailVisible" :xm-task="{id:editForm.taskId,name:editForm.bizName}" :reload="true"></xm-task-detail>
 			</el-dialog>
-			
+
 			<el-dialog title="缺陷明细" :visible.sync="bugDetailVisible" width="90%" top="20px" append-to-body>
 				<xm-question-detail :visible="bugDetailVisible" :xm-question="{id:editForm.bugId,name:editForm.bizName}" :reload="true"></xm-question-detail>
 			</el-dialog>
-			
+
 			<el-dialog title="测试用例明细" :visible.sync="caseDetailVisible" width="90%" top="20px" append-to-body>
 				<xm-test-case-detail :visible="caseDetailVisible" :xm-test-case="{id:editForm.caseId,name:editForm.bizName}" :reload="true"></xm-test-case-detail>
 			</el-dialog>
-			
+
 			<el-dialog title="执行用例明细" :visible.sync="planCaseDetailVisible" width="90%" top="20px" append-to-body>
 				<xm-test-plan-case-detail :visible="planCaseDetailVisible" :xm-plan-test-case="{planId:editForm.planId,caseId:editForm.caseId,name:editForm.bizName}" :reload="true"></xm-test-plan-case-detail>
 			</el-dialog>
-			
+
 			<el-dialog title="需求明细" :visible.sync="menuDetailVisible" width="90%" top="20px" append-to-body>
 				<xm-menu-detail :visible="menuDetailVisible" :xm-menu="{id:editForm.menuId,name:editForm.bizName}" :reload="true"></xm-menu-detail>
 			</el-dialog>
@@ -107,7 +107,7 @@
 	export default {
 	    name:'xmWorkloadSimpleList',
 		components: {
-		    XmWorkloadEdit, 
+		    XmWorkloadEdit,
 			"xm-task-detail":()=>import("../xmTask/XmTaskDetail"),
 			"xm-question-detail":()=>import("../xmQuestion/XmQuestionDetail"),
 			"xm-test-case-detail":()=>import("../xmTestCase/XmTestCaseDetail"),
@@ -121,7 +121,7 @@
 
 		},
 		watch:{
-			'xmTask.id':function(){ 
+			'xmTask.id':function(){
 				this.initData();
                 this.searchXmWorkloads()
 			},
@@ -170,7 +170,7 @@
 		},//end data
 		methods: {
 			...util,
-			editXmWorkloadSomeFields(row,fieldName,$event){  
+			editXmWorkloadSomeFields(row,fieldName,$event){
 				let params={
 				ids:[row.id],
 				};
@@ -179,20 +179,20 @@
 					this.$notify({position:'bottom-left',showClose:true,message:'存在不同项目的工时单，请重新选择',type:'warning'})
 					return;
 				}
-				params.ids=this.sels.map(i=>i.id); 
+				params.ids=this.sels.map(i=>i.id);
 				}else{
-				params.ids = [row.id]; 
+				params.ids = [row.id];
 				params[fieldName]=$event
 				}
 				var func = editXmWorkloadSomeFields
 				if(fieldName==='sbillId'){
 				func = editWorkloadToSbill
 				params.sbillId=$event.id
-				}else{ 
+				}else{
 				params[fieldName]=$event
 				}
 				func(params).then(res=>{
-				let tips = res.data.tips; 
+				let tips = res.data.tips;
 				this.getXmWorkloads();
 				if(tips.isOk){
 					this.$emit("edit-some-fields",params)
@@ -200,7 +200,7 @@
 					this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 				}
 				})
-			},  
+			},
 			handleSizeChange(pageSize) {
 				this.pageInfo.pageSize=pageSize;
 				this.getXmWorkloads();
@@ -354,7 +354,7 @@
 			},
             initData: function(){
 
-            }, 
+            },
 			openDialog(row){
 				this.editForm=row
 				if(row.bizType=='1'){
@@ -368,16 +368,16 @@
 				}else if(this.bizType=='5'){
 					this.menuDetailVisible=true
 				}
-			}, 
+			},
 			queryUserWorkload(row){
 				this.editForm=row
 				this.userWorkloadDayListVisible=true;
 			}
 		},//end methods
 		mounted() {
-			this.$nextTick(() => { 
+			this.$nextTick(() => {
 				initDicts(this);
-				if(this.visible==true){ 
+				if(this.visible==true){
 					this.initData()
 					this.searchXmWorkloads();
 				}
@@ -391,6 +391,6 @@
 
 <style scoped>
 	.label {
-		font-family: 黑体; 
+		font-family: 黑体;
 	}
 </style>

@@ -1,179 +1,179 @@
 <template>
-	<section>  
+	<section>
 		<el-row :gutter="20" >
 			<el-col v-if="editForm.crowd==='1' && editForm.taskOut=='1'" :span="4" class="border padding">
 				 <h3 class="padding-bottom">
 					<div    class="big-icon" :style="{backgroundColor:   editForm.ntype==='0'?'#409EFF':'#E6A23C'}">
 						<i :class="  editForm.ntype==='0'?'el-icon-s-operation':'el-icon-time' " ></i>
-					</div>  
+					</div>
 					众包{{editForm.ntype=='1'?'计划':'任务'}}
-				</h3> 
+				</h3>
 				<el-steps :active="calcTaskStep" align-center  finish-status="success" process-status="process" direction="vertical">
-					<el-step v-for="(item,index) in dicts.bidStep" :title="item.name" :description="item.name" :key="index"> 
+					<el-step v-for="(item,index) in dicts.bidStep" :title="item.name" :description="item.name" :key="index">
 						<span slot="description">
 								<span v-if="item.id=='0'"><!--草稿-->
-								</span> 
+								</span>
 								<span v-else-if="item.id=='1'"> <!--需求-->
 								<el-button class="step-btn"  type="primary"   @click="activateTabPaneName='6'" plain>预算管理</el-button>
-								<el-button class="step-btn" type="danger" icon="el-icon-d-caret"  v-if="editForm.bidStep=='0'" @click="editXmTaskSomeFields(editForm,'bidStep','1')" plain>去发布</el-button> 
+								<el-button class="step-btn" type="danger" icon="el-icon-d-caret"  v-if="editForm.bidStep=='0'" @click="editXmTaskSomeFields(editForm,'bidStep','1')" plain>去发布</el-button>
 								<span v-else-if="editForm.bidStep>='1'">
-									<el-button class="step-btn" type="danger" icon="el-icon-d-caret"  v-if="editForm.bidStep=='1'" @click="editXmTaskSomeFields(editForm,'bidStep','0')" plain>去取消发布</el-button> 
-									<el-button class="step-btn" type="warning"  v-if="editForm.bidStep>='1'" @click="activateTabPaneName='82'" plain>参加推广活动</el-button> 
-								</span> 
+									<el-button class="step-btn" type="danger" icon="el-icon-d-caret"  v-if="editForm.bidStep=='1'" @click="editXmTaskSomeFields(editForm,'bidStep','0')" plain>去取消发布</el-button>
+									<el-button class="step-btn" type="warning"  v-if="editForm.bidStep>='1'" @click="activateTabPaneName='82'" plain>参加推广活动</el-button>
+								</span>
 
 								</span>
 								<span v-else-if="item.id=='2'"> <!--投标中-->
-								<el-button class="step-btn" type="primary"  v-if="editForm.bidStep=='1'" @click="activateTabPaneName='42'" plain>去投标</el-button> 
-								<el-button class="step-btn" type="primary"  v-else-if="editForm.bidStep>'1'" @click="activateTabPaneName='42'" plain>投标人管理</el-button>  
+								<el-button class="step-btn" type="primary"  v-if="editForm.bidStep=='1'" @click="activateTabPaneName='42'" plain>去投标</el-button>
+								<el-button class="step-btn" type="primary"  v-else-if="editForm.bidStep>'1'" @click="activateTabPaneName='42'" plain>投标人管理</el-button>
 								</span>
 								<span v-else-if="item.id=='3'"> <!--选标-->
 								<el-button class="step-btn" type="primary"  v-if="editForm.bidStep=='2'" @click="activateTabPaneName='42'" plain>去选标</el-button>
-								<el-button class="step-btn" type="primary"  v-else-if="editForm.bidStep>'2'" @click="activateTabPaneName='42'" plain>中标人管理</el-button> 
+								<el-button class="step-btn" type="primary"  v-else-if="editForm.bidStep>'2'" @click="activateTabPaneName='42'" plain>中标人管理</el-button>
 								</span>
 								<span v-else-if="item.id=='4'"> <!--拓管资金-->
 								<el-button class="step-btn"  type="primary"  v-if="(editForm.bidStep=='4'||editForm.bidStep=='3') && (editForm.estate=='0'||editForm.estate==''||editForm.estate=='1')" @click="activateTabPaneName='8'" plain>去托管佣金￥：{{needPayEfundsAt}}</el-button>
 								<el-button class="step-btn"  type="primary"  v-if=" (editForm.estate>'1')" @click="activateTabPaneName='8'" plain>已托管佣金￥：{{editForm.efunds}}</el-button>
-								 
+
 								</span>
 								<span v-else-if="item.id=='5'"> <!--工作中-->
 									<span v-if="editForm.bidStep==item.id">
 										<el-button class="step-btn"  type="primary"  v-if="editForm.bidStep>'1'" @click="activateTabPaneName='5'" plain>报工、报进度</el-button>
 										<el-button class="step-btn" type="danger" icon="el-icon-d-caret"  v-if="(editForm.bidStep=='4'||editForm.bidStep=='3') && (editForm.estate>='2')" @click="editXmTaskSomeFields(editForm,'bidStep','5')" plain>开始工作</el-button>
-										
+
 										<el-button class="step-btn" type="danger" icon="el-icon-d-caret"  v-if=" (editForm.taskState=='1'||editForm.taskState=='0')" @click="editXmTaskSomeFields(editForm,'taskState','2')" plain>设为已完工、待验收</el-button>
 								 	</span>
  								</span>
 								<span v-else-if="item.id=='6'"> <!--付款完成-->
 									<span v-if="editForm.bidStep==item.id">
 										<span v-if="editForm.taskState=='2'">
-											<el-button class="step-btn" type="danger" icon="el-icon-d-caret"   @click="editXmTaskSomeFields(editForm,'taskState','3')" plain>设为验收成功</el-button> 
-											<el-button class="step-btn" type="danger" icon="el-icon-d-caret"  @click="editXmTaskSomeFields(editForm,'taskState','1')" plain>设为验收不成功</el-button> 
-										</span> 
-									
-										<el-button class="step-btn"  type="primary" v-if="editForm.taskState=='3'"   @click="editXmTaskSomeFields(editForm,'taskState','4')" plain>设为已结算</el-button> 
+											<el-button class="step-btn" type="danger" icon="el-icon-d-caret"   @click="editXmTaskSomeFields(editForm,'taskState','3')" plain>设为验收成功</el-button>
+											<el-button class="step-btn" type="danger" icon="el-icon-d-caret"  @click="editXmTaskSomeFields(editForm,'taskState','1')" plain>设为验收不成功</el-button>
+										</span>
+
+										<el-button class="step-btn"  type="primary" v-if="editForm.taskState=='3'"   @click="editXmTaskSomeFields(editForm,'taskState','4')" plain>设为已结算</el-button>
 											<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'taskState',editForm.taskState)" :key="index" :type="item.className">{{item.name}}</el-tag>
-										<el-button class="step-btn" type="primary"  v-if=" editForm.taskState=='4'" plain @click="editXmTaskSomeFields(editForm,'taskState','9')">设为已关闭</el-button> 
+										<el-button class="step-btn" type="primary"  v-if=" editForm.taskState=='4'" plain @click="editXmTaskSomeFields(editForm,'taskState','9')">设为已关闭</el-button>
 									</span>
 								</span>
 						</span>
-					</el-step> 
-				</el-steps> 
+					</el-step>
+				</el-steps>
 			</el-col>
 			<el-col v-if="editForm.crowd!='1' ||  editForm.taskOut!='1'" :span="4" class="border padding">
 				<h3 class="padding-bottom">
 				<div    class="big-icon" :style="{backgroundColor:   editForm.ntype==='0'?'#409EFF':'#E6A23C'}">
 					<i :class="  editForm.ntype==='0'?'el-icon-s-operation':'el-icon-time' " ></i>
-				</div>  
+				</div>
 				普通{{editForm.ntype=='1'?'计划':'任务'}}
-			</h3> 
+			</h3>
 				<el-steps :active="calcTaskStep" align-center   finish-status="success" process-status="process" direction="vertical">
-					<el-step v-for="(item,index) in dicts.taskState" :title="item.name" :description="item.name" :key="index"> 
+					<el-step v-for="(item,index) in dicts.taskState" :title="item.name" :description="item.name" :key="index">
 						<span slot="description">
 								<span v-if="item.id=='0'"><!--待领取-->
 									<el-button class="step-btn"  type="primary"   @click="activateTabPaneName='6'" plain>预算管理</el-button>
-									<el-button class="step-btn" type="primary"  v-if="editForm.ntype=='0' && !editForm.executorUserid" @click="activateTabPaneName='42'" plain>去指派执行人</el-button> 
-									<el-button class="step-btn" type="primary"  v-if="editForm.ntype=='0' && editForm.executorUserid" @click="activateTabPaneName='42'" plain>执行人管理</el-button>  
-								<el-button class="step-btn" type="danger" icon="el-icon-d-caret"  v-if="editForm.taskState=='0'" @click="editXmTaskSomeFields(editForm,'taskState','1')" plain>设为执行中</el-button> 
-								</span> 
+									<el-button class="step-btn" type="primary"  v-if="editForm.ntype=='0' && !editForm.executorUserid" @click="activateTabPaneName='42'" plain>去指派执行人</el-button>
+									<el-button class="step-btn" type="primary"  v-if="editForm.ntype=='0' && editForm.executorUserid" @click="activateTabPaneName='42'" plain>执行人管理</el-button>
+								<el-button class="step-btn" type="danger" icon="el-icon-d-caret"  v-if="editForm.taskState=='0'" @click="editXmTaskSomeFields(editForm,'taskState','1')" plain>设为执行中</el-button>
+								</span>
 								<span v-else-if="item.id=='1'"> <!--已领取执行中-->
 								<el-button class="step-btn"  type="primary"  v-if="editForm.ntype=='1'" @click="activateTabPaneName='4'" plain>子工作项管理</el-button>
 								<el-button class="step-btn"  type="primary"  v-if="editForm.ntype=='0'" @click="activateTabPaneName='41'" plain>缺陷跟踪</el-button>
 								<el-button class="step-btn"  type="primary"  v-if="editForm.ntype=='0'" @click="activateTabPaneName='5'" plain>报工、报进度</el-button>
-								<el-button class="step-btn" type="danger" icon="el-icon-d-caret"  v-if="editForm.taskState=='1'" @click="editXmTaskSomeFields(editForm,'taskState','2')" plain>设为已完工、待验收</el-button> 
-								  
+								<el-button class="step-btn" type="danger" icon="el-icon-d-caret"  v-if="editForm.taskState=='1'" @click="editXmTaskSomeFields(editForm,'taskState','2')" plain>设为已完工、待验收</el-button>
+
 
 								</span>
 								<span v-else-if="item.id=='2'"> <!--已完工-->
-									<el-button class="step-btn" type="danger" icon="el-icon-d-caret"  v-if="  editForm.taskState=='2'" @click="editXmTaskSomeFields(editForm,'taskState','3')" plain>设为已验收、待结算</el-button> 
-									<el-button class="step-btn" type="danger" icon="el-icon-d-caret"  v-if=" editForm.taskState=='2'" @click="editXmTaskSomeFields(editForm,'taskState','1')" plain>设为验收不过，待执行</el-button> 
+									<el-button class="step-btn" type="danger" icon="el-icon-d-caret"  v-if="  editForm.taskState=='2'" @click="editXmTaskSomeFields(editForm,'taskState','3')" plain>设为已验收、待结算</el-button>
+									<el-button class="step-btn" type="danger" icon="el-icon-d-caret"  v-if=" editForm.taskState=='2'" @click="editXmTaskSomeFields(editForm,'taskState','1')" plain>设为验收不过，待执行</el-button>
  								</span>
 								<span v-else-if="item.id=='3'"> <!--已验收-->
-								
-								<el-button class="step-btn" type="danger" icon="el-icon-d-caret"  v-if=" editForm.taskState=='3'" @click="editXmTaskSomeFields(editForm,'taskState','4')" plain>设为已结算</el-button> 
+
+								<el-button class="step-btn" type="danger" icon="el-icon-d-caret"  v-if=" editForm.taskState=='3'" @click="editXmTaskSomeFields(editForm,'taskState','4')" plain>设为已结算</el-button>
  								</span>
 								<span v-else-if="item.id=='4'"> <!--已结算-->
-								
-								<el-button class="step-btn" type="danger" icon="el-icon-d-caret"  v-if=" editForm.taskState=='4'" @click="editXmTaskSomeFields(editForm,'taskState','9')" plain>设为已关闭</el-button> 
+
+								<el-button class="step-btn" type="danger" icon="el-icon-d-caret"  v-if=" editForm.taskState=='4'" @click="editXmTaskSomeFields(editForm,'taskState','9')" plain>设为已关闭</el-button>
 								</span>
 								<span v-else-if="item.id=='9'"> <!--已关闭-->
 								</span>
 						</span>
-					</el-step> 
-				</el-steps> 
+					</el-step>
+				</el-steps>
 
 			</el-col>
 			<el-col :span="20">
-			<!--新增界面 XmTask xm_task--> 
-			<el-form :model="editForm"  label-width="120px" label-position="left" :rules="editFormRules" ref="editForm">  
- 
-						<el-form-item  prop="name" > 
-							<template slot="label"> 
+			<!--新增界面 XmTask xm_task-->
+			<el-form :model="editForm"  label-width="120px" label-position="left" :rules="editFormRules" ref="editForm">
+
+						<el-form-item  prop="name" >
+							<template slot="label">
 							<div    class="big-icon" :style="{backgroundColor:   editForm.ntype==='0'?'#409EFF':'#E6A23C'}">
 								<i :class="  editForm.ntype==='0'?'el-icon-s-operation':'el-icon-time' " ></i>
-							</div>  
+							</div>
 							{{editForm.ntype==='0'?' 任务名称':' 计划名称'}}
 							</template>
-								<el-input v-model="editForm.name" placeholder="名称" @change="editXmTaskSomeFields(editForm,'name',$event)"></el-input>   
-							<el-row class="label-font-color"> 
+								<el-input v-model="editForm.name" placeholder="名称" @change="editXmTaskSomeFields(editForm,'name',$event)"></el-input>
+							<el-row class="label-font-color">
 									<span>任务编号：{{editForm.id}}</span><el-divider direction="vertical"></el-divider>
  									<span>归属项目：{{editForm.projectName?editForm.projectName:''}}{{editForm.projectId?'('+editForm.projectId+')':''}}  </span><el-divider direction="vertical"></el-divider>
- 									<span v-if="editForm.productId">归属产品：{{editForm.productId?editForm.productId:''}}  </span> 
-									 <el-divider direction="vertical"></el-divider> 
+ 									<span v-if="editForm.productId">归属产品：{{editForm.productId?editForm.productId:''}}  </span>
+									 <el-divider direction="vertical"></el-divider>
 										<el-button type="text" icon="el-icon-share" @click="copyLink">分享</el-button>
 							</el-row>
-						</el-form-item>  
-						
-						
-						<el-row class="padding-left padding-right"> 
-							<el-col :span="8"> 
+						</el-form-item>
+
+
+						<el-row class="padding-left padding-right">
+							<el-col :span="8">
 								<mdp-field-x v-model="editForm.parentTaskname" label="上级计划" icon="el-icon-time" color="#E6A23C">
-									<div slot="oper"> 
-										<el-button  
-											@click="selectParentPlanVisible=true"  
+									<div slot="oper">
+										<el-button
+											@click="selectParentPlanVisible=true"
 											title="更换任务的上级，实现任务搬家功能"
-											icon="el-icon-upload2" 
-										> 选择新的上级</el-button> 
-										
+											icon="el-icon-upload2"
+										> 选择新的上级</el-button>
+
 										<el-button  v-if="editForm.parentTaskid"
-											@click="parentPlanVisible=true"  
+											@click="parentPlanVisible=true"
 											title="查看上级计划明细"
-											icon="el-icon-upload2" 
-										> 查看上级计划</el-button> 
+											icon="el-icon-upload2"
+										> 查看上级计划</el-button>
 									</div>
-								</mdp-field-x> 
-							</el-col> 
-							<el-col :span="8">  
-									<mdp-select-user-xm  label="负责人" v-model="editForm" userid-key="createUserid" username-key="createUsername" :project-id="xmProjectCpd?xmProjectCpd.id:null" :product-id="xmProductCpd?xmProductCpd.id:null" @change="editXmTaskSomeFields(editForm,'createUserid',$event)"></mdp-select-user-xm> 
- 							</el-col>   
-							<el-col :span="8" v-if="editForm.ntype=='0'">  
+								</mdp-field-x>
+							</el-col>
+							<el-col :span="8">
+									<mdp-select-user-xm  label="负责人" v-model="editForm" userid-key="createUserid" username-key="createUsername" :project-id="xmProjectCpd?xmProjectCpd.id:null" :product-id="xmProductCpd?xmProductCpd.id:null" @change="editXmTaskSomeFields(editForm,'createUserid',$event)"></mdp-select-user-xm>
+ 							</el-col>
+							<el-col :span="8" v-if="editForm.ntype=='0'">
 									<mdp-select-user-xm v-if="editForm.crowd=='1'"  label="执行人" v-model="editForm"  userid-key="executorUserid" username-key="executorUsername" >
 										<el-button slot="oper" @click="activateTabPaneName='42'">去管理竞标人</el-button>
-									</mdp-select-user-xm> 
-									<mdp-select-user-xm v-if="editForm.crowd!='1'" label="执行人" v-model="editForm" userid-key="executorUserid" username-key="executorUsername" :project-id="xmProjectCpd?xmProjectCpd.id:null" :product-id="xmProductCpd?xmProductCpd.id:null" @change="editXmTaskSomeFields(editForm,'executorUserid',$event)"></mdp-select-user-xm> 
- 							</el-col>  
-							
+									</mdp-select-user-xm>
+									<mdp-select-user-xm v-if="editForm.crowd!='1'" label="执行人" v-model="editForm" userid-key="executorUserid" username-key="executorUsername" :project-id="xmProjectCpd?xmProjectCpd.id:null" :product-id="xmProductCpd?xmProductCpd.id:null" @change="editXmTaskSomeFields(editForm,'executorUserid',$event)"></mdp-select-user-xm>
+ 							</el-col>
+
 						</el-row>
-						<el-row class="padding"> 
-							<el-col :span="8"> 
- 									<mdp-select  show-style="x"  :label="editForm.ntype=='0'?'任务状态':'计划状态'" :dict="dicts['taskState']" v-model="editForm.taskState" @change="editXmTaskSomeFields(editForm,'taskState',$event)"></mdp-select>
-							</el-col> 
-							<el-col :span="8">   
-								<mdp-field-x v-model="editForm.rate" label="进度"> 
+						<el-row class="padding">
+							<el-col :span="8">
+ 									<mdp-select  show-style="x"  :label="editForm.ntype=='0'?'任务状态':'计划状态'" item-code="taskState" v-model="editForm.taskState" @change="editXmTaskSomeFields(editForm,'taskState',$event)"></mdp-select>
+							</el-col>
+							<el-col :span="8">
+								<mdp-field-x v-model="editForm.rate" label="进度">
 									<div slot="value" style="min-width:150px;"><el-progress  :percentage="editForm.rate?editForm.rate:0"></el-progress></div>
 									<el-button slot="oper" @click="activateTabPaneName='5'" type="primary">去填写工时</el-button>
-								</mdp-field-x>  
-							</el-col> 
-							
-							
-							<el-col :span="8">  
+								</mdp-field-x>
+							</el-col>
+
+
+							<el-col :span="8">
 										<mdp-date-range-x
 											:style-obj="{maxWidth:'100%'}"
 											v-model="editForm"
 											start-key="startTime"
 											end-key="endTime"
-											@change="onBudgetDateRangerChange" 
+											@change="onBudgetDateRangerChange"
 											type="daterange"
-											:auto-default="false" 
+											:auto-default="false"
 											unlink-panels
 											range-separator="-"
 											start-placeholder="开始日期"
@@ -181,115 +181,115 @@
 											value-format="yyyy-MM-dd HH:mm:ss"
 											:default-time="['00:00:00','23:59:59']"
 											:picker-options="pickerOptions"
-										></mdp-date-range-x>  
-							</el-col> 
+										></mdp-date-range-x>
+							</el-col>
 
-							
+
 						</el-row>
 					<el-tabs v-model="activateTabPaneName" >
-					
-						<el-tab-pane label="概述" name="2">  
-							<el-form-item   prop="description" label-width="0px">  
-								<el-input type="textarea" :autosize="{ minRows: 12, maxRows: 20}" v-model="editForm.description" placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划"  @change="editXmTaskSomeFields(editForm,'description',$event)"></el-input> 
-							</el-form-item> 
+
+						<el-tab-pane label="概述" name="2">
+							<el-form-item   prop="description" label-width="0px">
+								<el-input type="textarea" :autosize="{ minRows: 12, maxRows: 20}" v-model="editForm.description" placeholder="什么人？做什么事？，为什么？如： 作为招聘专员，我需要统计员工半年在职/离职人数，以便我能够制定招聘计划"  @change="editXmTaskSomeFields(editForm,'description',$event)"></el-input>
+							</el-form-item>
 						</el-tab-pane>
-						<el-tab-pane label="基础信息" name="1"> 	
-						<el-row>  
+						<el-tab-pane label="基础信息" name="1">
+						<el-row>
 							<el-col :span="10">
-								<el-form-item  label="" prop="milestone">  
+								<el-form-item  label="" prop="milestone">
 									<el-checkbox v-model="editForm.milestone" true-label="1" false-label="0" @change="editXmTaskSomeFields(editForm,'milestone',$event)">里程碑</el-checkbox>
-								</el-form-item> 
-							</el-col> 
-							<el-col :span="14"> 
-								<el-form-item prop="skill" label=""  v-if="editForm.ntype!='1'"  label-width="0"> 
-									<el-tag class="fs-ft" style="margin-right:10px" v-for="(item,i) in taskSkills" :key="i">{{item.taskSkillName}}</el-tag>
-									<el-button   type="text" @click.stop="showSkill()" icon="el-icon-plus">技能要求</el-button>
-								</el-form-item> 
-							</el-col>  
-						</el-row> 
-						<el-row> 
-							
-							<el-col :span="12">
-								<el-form-item label="排序序号" prop="sortLevel" >   
-									<el-input  v-model="editForm.sortLevel" style="max-width:90%;" @change="editXmTaskSomeFields(editForm,'sortLevel',$event)"  placeholder="如1.0或者1.2.3等" title="序号，如1.0、1.1.1或者1，2，3等" ></el-input> 
-								</el-form-item>  
-							</el-col>
-							<el-col :span="12">
-								<el-form-item  label="优先级别" prop="level">  
-									<el-select v-model="editForm.level" @change="editXmTaskSomeFields(editForm,'level',$event)">
-											<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option> 
-									</el-select>    
-								</el-form-item>  
-							</el-col>
-							<el-col :span="12"  prop="planType"> 
-								<el-form-item label="工期类型"> 
-								<el-select v-model=" editForm.planType" @change="editXmTaskSomeFields(editForm,'planType',$event)">
-									<el-option v-for="i in this.dicts.planType" :label="i.name" :key="i.id" :value="i.id"></el-option>
-								</el-select> 
 								</el-form-item>
 							</el-col>
-						</el-row> 
-						
+							<el-col :span="14">
+								<el-form-item prop="skill" label=""  v-if="editForm.ntype!='1'"  label-width="0">
+									<el-tag class="fs-ft" style="margin-right:10px" v-for="(item,i) in taskSkills" :key="i">{{item.taskSkillName}}</el-tag>
+									<el-button   type="text" @click.stop="showSkill()" icon="el-icon-plus">技能要求</el-button>
+								</el-form-item>
+							</el-col>
+						</el-row>
 						<el-row>
-							<el-col :span="12"> 
-								<el-form-item :label="editForm.ntype=='0'?'任务前置':'计划前置'"> 
-									<el-tag v-if="editForm.preTaskid"  @close="clearPreTask" closable >{{editForm.preTaskname}}</el-tag>
-									<el-button  type="text"  @click.stop="selectTaskVisible=true"  >选前置</el-button> 
-								</el-form-item>  
-							</el-col>  
+
 							<el-col :span="12">
-								<el-form-item  :label="editForm.ntype=='0'?'任务类型':'计划类型'" prop="taskType">   
+								<el-form-item label="排序序号" prop="sortLevel" >
+									<el-input  v-model="editForm.sortLevel" style="max-width:90%;" @change="editXmTaskSomeFields(editForm,'sortLevel',$event)"  placeholder="如1.0或者1.2.3等" title="序号，如1.0、1.1.1或者1，2，3等" ></el-input>
+								</el-form-item>
+							</el-col>
+							<el-col :span="12">
+								<el-form-item  label="优先级别" prop="level">
+									<el-select v-model="editForm.level" @change="editXmTaskSomeFields(editForm,'level',$event)">
+											<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option>
+									</el-select>
+								</el-form-item>
+							</el-col>
+							<el-col :span="12"  prop="planType">
+								<el-form-item label="工期类型">
+								<el-select v-model=" editForm.planType" @change="editXmTaskSomeFields(editForm,'planType',$event)">
+									<el-option v-for="i in this.dicts.planType" :label="i.name" :key="i.id" :value="i.id"></el-option>
+								</el-select>
+								</el-form-item>
+							</el-col>
+						</el-row>
+
+						<el-row>
+							<el-col :span="12">
+								<el-form-item :label="editForm.ntype=='0'?'任务前置':'计划前置'">
+									<el-tag v-if="editForm.preTaskid"  @close="clearPreTask" closable >{{editForm.preTaskname}}</el-tag>
+									<el-button  type="text"  @click.stop="selectTaskVisible=true"  >选前置</el-button>
+								</el-form-item>
+							</el-col>
+							<el-col :span="12">
+								<el-form-item  :label="editForm.ntype=='0'?'任务类型':'计划类型'" prop="taskType">
 									<el-select v-model="editForm.taskType" @change="editXmTaskSomeFields(editForm,'taskType',$event)">
 										<el-option v-for="i in this.dicts.taskType" :label="i.name" :key="i.id" :value="i.id"></el-option>
-									</el-select>  
-								</el-form-item>   
+									</el-select>
+								</el-form-item>
 							</el-col>
-						</el-row>  
-					</el-tab-pane>
-					
-					<el-tab-pane label="需求" name="3" v-if="editForm.ntype!='1'">  
-						
-						<el-row>
-							<el-col :span="12"> 
-								<el-form-item  label="归属产品" prop="productId"> 
-									 {{editForm.productId}}
-								</el-form-item>  
-							</el-col>
-							<el-col :span="12"> 
-								<el-form-item  label="用户故事" prop="menuId" id="menuInfo" v-if="editForm.ntype!='1'"> 
-									{{editForm.menuName?editForm.menuName:(editForm.menuId?editForm.menuId:'')}} &nbsp;&nbsp;&nbsp; <el-link  @click="menuVisible=true" type="primary">{{editForm.menuName?'更改':'设置'}}</el-link>&nbsp;&nbsp;&nbsp;
-									<el-link v-if="editForm.menuId" @click="toMenu" type="primary">查看需求</el-link>
-								</el-form-item> 
-							</el-col> 
 						</el-row>
 					</el-tab-pane>
-					
-					<el-tab-pane :label="'工时( '+(editForm.actWorkload?editForm.actWorkload:0)+' / '+(editForm.budgetWorkload?editForm.budgetWorkload:0)+' h )'" name="5"> 
+
+					<el-tab-pane label="需求" name="3" v-if="editForm.ntype!='1'">
+
+						<el-row>
+							<el-col :span="12">
+								<el-form-item  label="归属产品" prop="productId">
+									 {{editForm.productId}}
+								</el-form-item>
+							</el-col>
+							<el-col :span="12">
+								<el-form-item  label="用户故事" prop="menuId" id="menuInfo" v-if="editForm.ntype!='1'">
+									{{editForm.menuName?editForm.menuName:(editForm.menuId?editForm.menuId:'')}} &nbsp;&nbsp;&nbsp; <el-link  @click="menuVisible=true" type="primary">{{editForm.menuName?'更改':'设置'}}</el-link>&nbsp;&nbsp;&nbsp;
+									<el-link v-if="editForm.menuId" @click="toMenu" type="primary">查看需求</el-link>
+								</el-form-item>
+							</el-col>
+						</el-row>
+					</el-tab-pane>
+
+					<el-tab-pane :label="'工时( '+(editForm.actWorkload?editForm.actWorkload:0)+' / '+(editForm.budgetWorkload?editForm.budgetWorkload:0)+' h )'" name="5">
 						 <xm-workload-record v-if="activateTabPaneName=='5'" biz-type="1" :xm-task="editForm" ></xm-workload-record>
 					</el-tab-pane>
-					<el-tab-pane label="预算金额" name="6"> 
+					<el-tab-pane label="预算金额" name="6">
 						<el-form-item label="自研工时单价" prop="uniInnerPrice">
 							 <el-input type="number" style="width:150px;"   v-model="editForm.uniInnerPrice" :precision="2" :step="10" :min="0" placeholder="自研工时单价" @change="editXmTaskSomeFields(editForm,'uniInnerPrice',$event)"></el-input  >   元/h
-							 
-						</el-form-item> 
-						<el-form-item label="外包、众包单价" prop="uniOutPrice"> 
+
+						</el-form-item>
+						<el-form-item label="外包、众包单价" prop="uniOutPrice">
 								 <el-input type="number" style="width:150px;"   v-model="editForm.uniOutPrice" :precision="2" :step="10" :min="0" placeholder="外发工时单价" @change="editXmTaskSomeFields(editForm,'uniOutPrice',$event)"></el-input  >   元/h
-						 
-						</el-form-item> 
+
+						</el-form-item>
 						<el-form-item label="预估金额" prop="budgetAt">
-						 	<el-input type="number" style="width:150px;"    v-model="editForm.budgetAt" :precision="2" :step="100" :min="0" placeholder="预算金额" @change="editXmTaskSomeFields(editForm,'budgetAt',$event)"></el-input  >   元 
-						</el-form-item> 
+						 	<el-input type="number" style="width:150px;"    v-model="editForm.budgetAt" :precision="2" :step="100" :min="0" placeholder="预算金额" @change="editXmTaskSomeFields(editForm,'budgetAt',$event)"></el-input  >   元
+						</el-form-item>
 
 					</el-tab-pane>
-					<el-tab-pane :label="'子工作项('+subWorkitemCpd+')'" name="4" v-if="editForm.ntype==='1'">  
+					<el-tab-pane :label="'子工作项('+subWorkitemCpd+')'" name="4" v-if="editForm.ntype==='1'">
 							 <xm-sub-work-item v-if="activateTabPaneName=='4'" :parent-xm-task="editForm"  @sub-work-item-num="setSubWorkItemNum" @add-sub-task="onAddSubTask"></xm-sub-work-item>
 					</el-tab-pane>
-					<el-tab-pane label="缺陷" name="41" v-if="editForm.ntype!='1'">  
+					<el-tab-pane label="缺陷" name="41" v-if="editForm.ntype!='1'">
 						<xm-question-mng v-if="activateTabPaneName=='41' && editForm.menuId" :xm-product="editForm.productId?{id:editForm.productId,productName:editForm.productName}:null" :xm-menu="editForm.menuId?{menuId:editForm.menuId,menuName:editForm.menuName}:null" :sel-project="xmProject"></xm-question-mng>
 						<div v-else-if="activateTabPaneName=='41'">缺陷由用户故事关联得出，请先关联用户故事. <el-button @click.stop="activateTabPaneName='3'">去关联</el-button></div>
 					</el-tab-pane>
-					
-					<el-tab-pane label="执行人" name="42" v-if="editForm.ntype!='1'"> 
+
+					<el-tab-pane label="执行人" name="42" v-if="editForm.ntype!='1'">
 						<xm-task-execuser-for-task v-if="activateTabPaneName=='42'" :xm-task="editForm" @after-add-submit="afterAddExecSubmit" @after-edit-submit="afterEditExecSubmit" @after-delete-submit="afterEditExecSubmit"></xm-task-execuser-for-task>
 					</el-tab-pane>
 					<el-tab-pane label="结算信息" name="7" v-if="editForm.ntype!='1'">
@@ -303,73 +303,73 @@
 						</el-form-item>
 					</el-tab-pane>
 					<el-tab-pane label="众包、互联网访问" name="8" v-if="editForm.ntype!='1'">
-						
+
 						<p v-if="!toPayEfundsVisible &&  activateTabPaneName=='8'">
-					 	<el-form-item> 
-							 <el-checkbox v-model="editForm.taskOut" true-label="1" false-label="0" id="taskOut" @change="editXmTaskSomeFields(editForm,'taskOut',$event)">外购</el-checkbox>   
- 						 
-							 <el-checkbox v-model="editForm.crowd"  v-if="editForm.taskOut==='1'" true-label="1" false-label="0" id="crowd" @change="editXmTaskSomeFields(editForm,'crowd',$event)">开通众包</el-checkbox>   
-						 
-							<el-checkbox v-model="editForm.toTaskCenter" v-if="editForm.taskOut==='1'" true-label="1" false-label="0" id="toTaskCenter" @change="editXmTaskSomeFields(editForm,'toTaskCenter',$event)">发布到互联网任务大厅</el-checkbox> 
+					 	<el-form-item>
+							 <el-checkbox v-model="editForm.taskOut" true-label="1" false-label="0" id="taskOut" @change="editXmTaskSomeFields(editForm,'taskOut',$event)">外购</el-checkbox>
+
+							 <el-checkbox v-model="editForm.crowd"  v-if="editForm.taskOut==='1'" true-label="1" false-label="0" id="crowd" @change="editXmTaskSomeFields(editForm,'crowd',$event)">开通众包</el-checkbox>
+
+							<el-checkbox v-model="editForm.toTaskCenter" v-if="editForm.taskOut==='1'" true-label="1" false-label="0" id="toTaskCenter" @change="editXmTaskSomeFields(editForm,'toTaskCenter',$event)">发布到互联网任务大厅</el-checkbox>
 						</el-form-item>
 						<el-row>
-							<el-col :span="12"> 
-								<el-form-item label="交易模式" prop="tranMode"  v-if="editForm.crowd==='1'"> 
+							<el-col :span="12">
+								<el-form-item label="交易模式" prop="tranMode"  v-if="editForm.crowd==='1'">
 									<el-select v-model="editForm.tranMode" @change="editXmTaskSomeFields(editForm,'tranMode',$event)">
 										<el-option v-for="(item,index) in dicts['tranMode']" :key="index" :value="item.id" :label="item.name"></el-option>
 									</el-select>
-								</el-form-item> 
+								</el-form-item>
 							</el-col>
-							<el-col :span="12"> 
-								<el-form-item label="最低能力等级" prop="capaLvls"  v-if="editForm.crowd==='1'"> 
+							<el-col :span="12">
+								<el-form-item label="最低能力等级" prop="capaLvls"  v-if="editForm.crowd==='1'">
 									<el-select v-model="editForm.capaLvls" @change="editXmTaskSomeFields(editForm,'capaLvls',$event)">
 										<el-option v-for="(item,index) in dicts['capaLvl']" :key="index" :value="item.id" :label="item.name"></el-option>
 									</el-select>
-								</el-form-item> 
+								</el-form-item>
 							</el-col>
 						</el-row>
 						<el-row>
-							<el-col :span="12"> 
-								<el-form-item label="服务保障" prop="supRequires"  v-if="editForm.crowd==='1'"> 
+							<el-col :span="12">
+								<el-form-item label="服务保障" prop="supRequires"  v-if="editForm.crowd==='1'">
 									<el-select v-model="supRequires" @change="editXmTaskSomeFields(editForm,'supRequires',$event)" multiple>
 										<el-option v-for="(item,index) in dicts['supRequire']" :key="index" :value="item.id" :label="item.name"></el-option>
 									</el-select>
-								</el-form-item> 
+								</el-form-item>
 							</el-col>
-							<el-col :span="12"> 
-								<el-form-item label="最低会员等级" prop="interestLvls"  v-if="editForm.crowd==='1'"> 
+							<el-col :span="12">
+								<el-form-item label="最低会员等级" prop="interestLvls"  v-if="editForm.crowd==='1'">
 									<el-select v-model="editForm.interestLvls" @change="editXmTaskSomeFields(editForm,'interestLvls',$event)">
 										<el-option v-for="(item,index) in dicts['memInterestLvl']" :key="index" :value="item.id" :label="item.name"></el-option>
 									</el-select>
-								</el-form-item> 
+								</el-form-item>
 							</el-col>
-							
+
 						</el-row>
 						<el-row>
-							<el-col :span="12"> 
-								<el-form-item label="地区限制" prop="regionType"  v-if="editForm.crowd==='1'"> 
+							<el-col :span="12">
+								<el-form-item label="地区限制" prop="regionType"  v-if="editForm.crowd==='1'">
 									<el-select v-model="editForm.regionType" @change="editXmTaskSomeFields(editForm,'regionType',$event)" >
 										<el-option v-for="(item,index) in dicts['regionType']" :key="index" :value="item.id" :label="item.name"></el-option>
 									</el-select>
-								</el-form-item> 
+								</el-form-item>
 							</el-col>
-							<el-col :span="12"> 
-								<el-form-item label="城市名称" prop="cityName"  v-if="editForm.crowd==='1'"> 
-									
+							<el-col :span="12">
+								<el-form-item label="城市名称" prop="cityName"  v-if="editForm.crowd==='1'">
+
 									 <v-region :value="{province:editForm.provinceId,city:editForm.cityId,area:editForm.areaId,town:''}" @change="editXmTaskSomeFields(editForm,'cityId',$event)"></v-region>
-								</el-form-item> 
+								</el-form-item>
 							</el-col>
-							
+
 						</el-row>
-						
+
 						<el-row v-if="editForm.crowd==='1'">
-							<el-col :span="18"> 
+							<el-col :span="18">
 								<el-row>
 									<el-col :span="6">
 										<el-form-item label="托管资金" prop="estate"  v-if="editForm.taskOut==='1'">
 											<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'estate',editForm.estate)" :key="index" :type="item.className">{{item.name}}</el-tag>
 											<span v-if="editForm.efunds>0 && (editForm.estate=='2'||editForm.estate=='3')">{{editForm.efunds}}元</span>
-										</el-form-item> 
+										</el-form-item>
 									</el-col>
 									<el-col :span="6">
 										<el-form-item label="预算佣金" prop="budgetAt" v-if="editForm.taskOut==='1'">
@@ -381,46 +381,46 @@
 											 {{editForm.quoteFinalAt}}元
 										</el-form-item>
 									</el-col>
-								</el-row> 
+								</el-row>
 							</el-col>
-							<el-col :span="6" v-if="editForm.bidStep=='4'">  
+							<el-col :span="6" v-if="editForm.bidStep=='4'">
 								<strong> 合计待付款￥:</strong>&nbsp;&nbsp;<font style="font-size:48px;color:red;"> {{needPayEfundsAt}}&nbsp;</font>元
 								 <br/>
-								 <el-button class="padding" @click="toPayEfundsVisible=true" type="primary">去付款</el-button> 
-							</el-col> 
-						</el-row>  
+								 <el-button class="padding" @click="toPayEfundsVisible=true" type="primary">去付款</el-button>
+							</el-col>
+						</el-row>
 						</p>
 						 <to-pay v-else-if="toPayEfundsVisible &&  activateTabPaneName=='8'" :biz-type="'1'" :task-id="editForm.id" :visible="toPayEfundsVisible" @cancel="toPayEfundsVisible=false" @pay-success="onTaskPaySuccess"></to-pay>
 					</el-tab-pane>
-					
-					<el-tab-pane label="营销推广" name="82" v-if="editForm.ntype!='1'"> 
+
+					<el-tab-pane label="营销推广" name="82" v-if="editForm.ntype!='1'">
 						<el-row>
 							<el-col :span="6">
 								<el-form-item label="浏览人次" prop="browseUsers">
 									 {{editForm.browseUsers}}
-								</el-form-item> 
+								</el-form-item>
 							</el-col>
 							<el-col :span="6">
 								 <el-form-item label="浏览数" prop="browseTimes">
 									 {{editForm.browseTimes}}
-								</el-form-item> 
+								</el-form-item>
 							</el-col>
 							<el-col :span="6">
 								 <el-form-item label="候选人数" prop="execUsers">
 									 {{editForm.execUsers}}
-								</el-form-item> 
+								</el-form-item>
 							</el-col>
-						</el-row>  
-						<p v-if="!toPayMarketVisible &&  activateTabPaneName=='82'">  
-						
+						</el-row>
+						<p v-if="!toPayMarketVisible &&  activateTabPaneName=='82'">
+
 						<el-row v-if="editForm.crowd==='1'">
-							<el-col :span="18">  
+							<el-col :span="18">
 								<el-row>
 									<el-col :span="6">
 										<el-form-item label="分享赚" prop="oshare"  v-if="editForm.taskOut==='1'">
-											<el-checkbox v-model="editForm.oshare" v-if="editForm.oshare!='2'" true-label="1" false-label="0" id="oshare" @change="editXmTaskSomeFields(editForm,'oshare',$event)">分享赚</el-checkbox>  
+											<el-checkbox v-model="editForm.oshare" v-if="editForm.oshare!='2'" true-label="1" false-label="0" id="oshare" @change="editXmTaskSomeFields(editForm,'oshare',$event)">分享赚</el-checkbox>
 											<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'marketState',editForm.oshare)" :key="index" :type="item.className">{{item.name}}</el-tag>
-										</el-form-item> 
+										</el-form-item>
 									</el-col>
 									<el-col :span="18">
 										<el-form-item label="分享佣金" prop="shareFee" v-if="editForm.oshare==='1' && editForm.taskOut==='1'">
@@ -428,13 +428,13 @@
 											<font color="blue">一般建议为任务佣金的1%-5%</font>
 										</el-form-item>
 									</el-col>
-								</el-row> 
+								</el-row>
 								<el-row>
 									<el-col :span="6">
 										<el-form-item label="热门" prop="hot"  v-if="editForm.taskOut==='1'">
-										 	<el-checkbox v-model="editForm.hot" v-if="editForm.hot!='2'" true-label="1" false-label="0" id="hot" @change="editXmTaskSomeFields(editForm,'hot',$event)">热门</el-checkbox>  
+										 	<el-checkbox v-model="editForm.hot" v-if="editForm.hot!='2'" true-label="1" false-label="0" id="hot" @change="editXmTaskSomeFields(editForm,'hot',$event)">热门</el-checkbox>
 											<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'marketState',editForm.hot)" :key="index" :type="item.className">{{item.name}}</el-tag>
-										</el-form-item> 
+										</el-form-item>
 									</el-col>
 									<el-col :span="18">
 										<el-form-item label="热门费用" prop="hotFee" v-if="editForm.hot==='1' && editForm.taskOut==='1'">
@@ -445,9 +445,9 @@
 								<el-row>
 									<el-col :span="6">
 										<el-form-item label="置顶" prop="top"  v-if="editForm.taskOut==='1'">
-											<el-checkbox v-model="editForm.top" v-if="editForm.top!='2'" true-label="1" false-label="0" id="hot" @change="editXmTaskSomeFields(editForm,'top',$event)">置顶</el-checkbox>  
+											<el-checkbox v-model="editForm.top" v-if="editForm.top!='2'" true-label="1" false-label="0" id="hot" @change="editXmTaskSomeFields(editForm,'top',$event)">置顶</el-checkbox>
 											<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'marketState',editForm.top)" :key="index" :type="item.className">{{item.name}}</el-tag>
-										</el-form-item> 
+										</el-form-item>
 									</el-col>
 									<el-col :span="18">
 										<el-form-item label="置顶费用" prop="topFee" v-if="editForm.top==='1' && editForm.taskOut==='1'">
@@ -458,9 +458,9 @@
 								<el-row>
 									<el-col :span="6">
 										<el-form-item label="加急" prop="urgent"  v-if="editForm.taskOut==='1'">
-											<el-checkbox v-model="editForm.urgent" v-if="editForm.urgent!='2'" true-label="1" false-label="0" id="urgent" @change="editXmTaskSomeFields(editForm,'urgent',$event)">加急</el-checkbox>  
+											<el-checkbox v-model="editForm.urgent" v-if="editForm.urgent!='2'" true-label="1" false-label="0" id="urgent" @change="editXmTaskSomeFields(editForm,'urgent',$event)">加急</el-checkbox>
 											<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'marketState',editForm.urgent)" :key="index" :type="item.className">{{item.name}}</el-tag>
-										</el-form-item> 
+										</el-form-item>
 									</el-col>
 									<el-col :span="18">
 										<el-form-item label="加急费用" prop="urgentFee" v-if="editForm.urgent==='1' && editForm.taskOut==='1'">
@@ -471,9 +471,9 @@
 								<el-row>
 									<el-col :span="6">
 										<el-form-item label="客服包办" prop="crmSup"  v-if="editForm.taskOut==='1'">
-											<el-checkbox v-model="editForm.crmSup" v-if="editForm.crmSup!='2'" true-label="1" false-label="0" id="hot" @change="editXmTaskSomeFields(editForm,'crmSup',$event)">客服包办</el-checkbox>  
+											<el-checkbox v-model="editForm.crmSup" v-if="editForm.crmSup!='2'" true-label="1" false-label="0" id="hot" @change="editXmTaskSomeFields(editForm,'crmSup',$event)">客服包办</el-checkbox>
 											<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'marketState',editForm.crmSup)" :key="index" :type="item.className">{{item.name}}</el-tag>
-										</el-form-item> 
+										</el-form-item>
 									</el-col>
 									<el-col :span="18">
 										<el-form-item label="客服包办费用" prop="crmSupFee" v-if="editForm.crmSup==='1' && editForm.taskOut==='1'">
@@ -482,29 +482,29 @@
 									</el-col>
 								</el-row>
 							</el-col>
-							<el-col :span="6" v-if="needPayMarketAt.total>0">  
+							<el-col :span="6" v-if="needPayMarketAt.total>0">
 								<strong> 合计待付款￥:</strong>&nbsp;&nbsp;<font style="font-size:48px;color:red;"> {{needPayMarketAt.total}}&nbsp;</font>元
 								 <br/>
-								 <el-button class="padding" @click="toPayMarketVisible=true" type="primary">去付款</el-button> 
-							</el-col> 
-						</el-row>  
+								 <el-button class="padding" @click="toPayMarketVisible=true" type="primary">去付款</el-button>
+							</el-col>
+						</el-row>
 						</p>
 						 <to-pay v-else-if=" toPayMarketVisible &&  activateTabPaneName=='82'" :task-id="editForm.id" :visible="toPayMarketVisible" :biz-type="'2'" @cancel="toPayMarketVisible=false" @pay-success="onTaskPaySuccess"></to-pay>
 					</el-tab-pane>
-					<el-tab-pane label="关注" name="91"> 
+					<el-tab-pane label="关注" name="91">
 						<xm-my-do-focus v-if="activateTabPaneName=='91'" :biz-id="editForm.id" :pbiz-id="editForm.projectId" :biz-name="editForm.name" focus-type="2"></xm-my-do-focus>
 					</el-tab-pane>
 					<el-tab-pane label="日志" name="9">
 						 <xm-record v-if="activateTabPaneName=='9'"  :biz-id="editForm.id" :obj-type="'task'"></xm-record>
 					</el-tab-pane>
-				</el-tabs>   
+				</el-tabs>
 			</el-form>
 			</el-col>
-		</el-row> 
+		</el-row>
 
 		<!-- <el-drawer append-to-body :title="'技能要求'" :visible.sync="skillVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
 			<xm-skill-mng :visible="skillVisible" :task-id="editForm.id" @cancel="skillVisible=false" @getSkill="getSkill"></xm-skill-mng>
-		</el-drawer> -->  
+		</el-drawer> -->
 		<el-drawer append-to-body title="新增技能"  :visible.sync="skillVisible" size="60%"    :close-on-click-modal="false">
 			<skill-mng v-if="skillVisible" :task-skills="taskSkills" :jump="true" @select-confirm="onTaskSkillsSelected"></skill-mng>
 		</el-drawer>
@@ -512,21 +512,21 @@
 		<el-drawer append-to-body title="需求选择"  :visible.sync="menuVisible" size="90%"   :close-on-click-modal="false">
 			<xm-menu-select v-if="menuVisible" :is-select-menu="true" checkScope="3"  @selected="onMenuSelected" :xm-product="xmProductCpd" :sel-project="xmProjectCpd" :xm-iteration="xmIteration"></xm-menu-select>
 		</el-drawer>
-		
+
 		<el-drawer title="选中任务"  :visible.sync="selectTaskVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
 			<xm-task-list v-if="selectTaskVisible" :ptype="editForm.ptype" :xm-product="xmProductCpd" :sel-project="xmProjectCpd"   @task-selected="onSelectedTask"></xm-task-list>
-		</el-drawer> 	
-		 
+		</el-drawer>
+
 
 		<el-dialog append-to-body title="需求明细"  :visible.sync="menuDetailVisible" width="80%"  top="20px"  :close-on-click-modal="false">
 			<xm-menu-edit v-if="menuDetailVisible" :visible="menuDetailVisible"  :reload="true" :xm-menu="{menuId:editForm.menuId,menuName:editForm.menuName}" ></xm-menu-edit>
 		</el-dialog>
-			
+
 		<el-drawer append-to-body title="标签"  :visible.sync="tagSelectVisible" size="60%">
 			<tag-mng v-if="tagSelectVisible" :tagIds="editForm.tagIds?editForm.tagIds.split(','):[]" :jump="true" @select-confirm="onTagSelected">
 			</tag-mng>
 		</el-drawer>
-		
+
 		<el-drawer title="选择新的上级计划" append-to-body :visible.sync="selectParentPlanVisible" size="60%">
 		<xm-phase-select v-if="selectParentPlanVisible" :sel-project="xmProjectCpd"   @select="onSelectedParentTask"></xm-phase-select>
 		</el-drawer>
@@ -534,7 +534,7 @@
 		<!--编辑 XmTask xm_task界面-->
 		<el-dialog
 			title="上级任务明细"
-			:visible.sync="parentPlanVisible" 
+			:visible.sync="parentPlanVisible"
 			fullscreen
 			append-to-body
 			:close-on-click-modal="false"
@@ -544,15 +544,15 @@
 				:xm-task="{id:editForm.parentTaskid,name:editForm.parentTaskname}"
 				:visible="parentPlanVisible"
 				:reload="true"
-				@cancel="parentPlanVisible = false" 
+				@cancel="parentPlanVisible = false"
 			></xm-task-edit>
 		</el-dialog>
 	</section>
 </template>
 
-<script> 
+<script>
 
-	import util from '@/common/js/util';//全局公共库 
+	import util from '@/common/js/util';//全局公共库
 	import {initDicts,editXmTask,setTaskCreateUser,editXmTaskSomeFields,batchChangeParentTask,listXmTask } from '@/api/xm/core/xmTask';
 	import {addXmRecordVisit } from '@/api/xm/core/xmRecordVisit';
 	import { mapGetters } from 'vuex';
@@ -565,7 +565,7 @@
 	import XmExecuserMng from '../xmTaskExecuser/XmTaskExecuserForTask';
 	import XmMenuRichDetail from '../xmMenu/XmMenuRichDetail';
 	import TagMng from "@/views/mdp/arc/tag/TagMng";
-	import XmRecord from '../xmRecord/XmRecord' 
+	import XmRecord from '../xmRecord/XmRecord'
 	import MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm'
 	import XmSubWorkItem from "@/views/xm/core/xmTaskWorkItem/XmSubWorkItem";
 	import xmQuestionMng from "@/views/xm/core/xmQuestion/XmQuestionMng";
@@ -573,39 +573,39 @@
 	import XmMenuEdit from '../xmMenu/XmMenuEdit.vue';
 	import XmMyDoFocus from '@/views/myWork/my/components/DoFocus';
 	import XmTaskExecuserForTask from '../xmTaskExecuser/XmTaskExecuserForTask.vue';
-	import XmPhaseSelect from "./XmPhaseSelect.vue"; 
-	import ToPay from "../xmTaskOrder/ToPay.vue"; 
-	import { initSysDicts } from '../../../../api/xm/core/xmTask'; 
+	import XmPhaseSelect from "./XmPhaseSelect.vue";
+	import ToPay from "../xmTaskOrder/ToPay.vue";
+	import { initSysDicts } from '../../../../api/xm/core/xmTask';
 	import { RegionGroup  } from 'v-region'
 
 
-	export default { 
+	export default {
 		name:'xmTaskEdit',
 		computed: {
 			...mapGetters([
 				'userInfo','roles'
-			]),   
+			]),
 			calcTaskStep(){
 				if(  this.editForm.crowd=='1' && this.editForm.taskOut=='1'){
 					return this.dicts['bidStep'].findIndex(i=>i.id==this.editForm.bidStep)+1;
 				}else{
 					return this.dicts['taskState'].findIndex(i=>i.id==this.editForm.taskState)+1;
 				}
-				
+
 			},
 			needPayEfundsAt(){
-				var toPayAt=0; 
+				var toPayAt=0;
 				if((this.editForm.estate=='1'||this.editForm.estate=='0'||this.editForm.estate=='') && this.editForm.crowd==='1' && this.editForm.bidStep<='4'){
 					toPayAt=toPayAt+parseFloat(this.editForm.efunds||this.editForm.quoteFinalAt||this.editForm.budgetAt)
 				}
 				return toPayAt;
 			},
-			
+
 			needPayMarketAt(){
-				
+
 				var toPayAtObj={total:0,topFee:0,hotFee:0,urgentFee:0,crmSup:0,shareFee:0}
 				var toPayAt=0;
-				var extInfos=this.doInitMarket(this.dicts.crowd_task_market)  
+				var extInfos=this.doInitMarket(this.dicts.crowd_task_market)
 				Object.assign(toPayAtObj,extInfos)
 				if(this.editForm.oshare=='1'){
 					toPayAt=toPayAt+parseFloat(this.editForm.shareFee||0)
@@ -621,37 +621,37 @@
 				}
 				if(this.editForm.crmSup=='1'){
 					toPayAt=toPayAt+parseFloat(extInfos.crmSupFee||0)
-				} 
+				}
 				toPayAtObj.total=toPayAt;
 				return toPayAtObj;
 			},
-			
+
 			subWorkitemCpd(){
 				if(this.subWorkItemNum>0){
 					return this.subWorkItemNum
 				}else{
-					if(this.editForm.ntype=='1'){ 
+					if(this.editForm.ntype=='1'){
 						return this.editForm.childrenCnt
 					}else{
 						return this.subWorkItemNum
 					}
-					
-				} 
+
+				}
 			},
 			xmProjectCpd(){
 				if(this.xmProject && this.xmProject.id){
 					return this.xmProject
-				} 
+				}
 				if(this.xmTask.projectId){
 					return {id:this.xmTask.projectId,name:this.xmTask.projectName}
 				}
 				return null;
 			},
-			
+
 			xmProductCpd(){
 				if(this.xmTask && this.xmTask.id && this.xmTask.productId){
 					return {id:this.xmTask.productId,productName:this.xmTask.productName}
-				} 
+				}
 				if(this.xmIteration && this.xmIteration.id){
 					return {id:this.xmIteration.productId,productName:this.xmIteration.productName}
 				}
@@ -661,23 +661,23 @@
 		},
 		props:['xmTask','visible','xmProject','xmIteration'],
 		watch: {
-			'xmTask':function( xmTask ) {  
+			'xmTask':function( xmTask ) {
 			},
-			'visible':function(visible) { 
+			'visible':function(visible) {
 				this.fileVisible = visible;
-				if(visible==true){ 
+				if(visible==true){
 					this.subWorkItemNum=0
-					this.editForm=Object.assign(this.editForm, this.xmTask);      
+					this.editForm=Object.assign(this.editForm, this.xmTask);
 					this.editFormBak=Object.assign({},this.editForm)
 					this.setSkills()
 					this.activateTabPaneName="2"
-					this.supRequires=this.editForm.supRequires?this.editForm.supRequires.split(","):[] 
-					this.doAddXmRecordVisit() 
+					this.supRequires=this.editForm.supRequires?this.editForm.supRequires.split(","):[]
+					this.doAddXmRecordVisit()
 					//从新打开页面时某些数据需要重新加载，可以在这里添加
 				}
-			},  
+			},
 		},
-		data() { 
+		data() {
 			const beginDate = new Date();
 			const endDate = new Date();
 			endDate.setTime(beginDate.getTime() + 3600 * 1000 * 24 * 7 * 4);
@@ -692,7 +692,7 @@
 					marketState:[],
 					crowd_task_market:{},
 					taskState:[],
-				},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
+				},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				editFormRules: {
 					name: [
@@ -700,18 +700,18 @@
 						{ min: 2, max: 150, message: '长度在 2 到 150 个字符', trigger: 'change' },//长度
 
 					],
-					description: [ 
-						{ max: 1000, message: '长度在 0 到 1000 个字符', trigger: 'change' },//长度 
+					description: [
+						{ max: 1000, message: '长度在 0 到 1000 个字符', trigger: 'change' },//长度
 					],
 					taskState: [
 						{ required: true, message: '请选择任务状态', trigger: 'change' }
-					],  
+					],
 					// execuser:[{
 					// 	validator: validateExec, trigger: 'blur'
 					// }],
 				},
 				//新增界面数据 xm_task
-				
+
 				editForm: {
 					id:'',name:'',parentTaskid:'',parentTaskname:'',projectId:'',projectName:'',level:'',sortLevel:'',executorUserid:'',executorUsername:'',preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',rate:0,budgetAt:0,budgetWorkload:0,actAt:0,actWorkload:0,taskState:'0',taskType:'4',taskClass:'',toTaskCenter:'0',actStartTime:'',actEndTime:'',bizProcInstId:'',bizFlowState:'',phaseId:'',phaseName:'',taskSkillNames:'',exeUsernames:'',taskSkillIds:'',exeUserids:'',taskOut:'0',planType:'w2',settleSchemel:'1',menuId:'',menuName:'',productId:'',cbranchId:'',cdeptid:'',tagIds:'',tagNames:'',ntype:'0',childrenCnt:0,ltime:'',pidPaths:'',lvl:'',isTpl:'',keyPath:'',uniInnerPrice:80,uniOutPrice:100,calcType:'',ptype:'',wtype:'',bctrl:'',initWorkload:'',shareFee:'',oshare:'',crowd:'',browseUsers:'',execUsers:'',cityId:'',cityName:'',regionType:'',browseTimes:'',capaLvls:'',tranMode:'',supRequires:'',hot:'0',top:'0',urgent:'0',crmSup:'0',bidStep:'0',interestLvls:'',filePaths:'',estate:'0',efunds:0,etoPlatTime:'',etoDevTime:'',ebackTime:'',topStime:'',topEtime:'',hotStime:'',hotEtime:'',urgentStime:'',urgentEtime:'',urgentFee:0,topFee:0,hotFee:0
 				},
@@ -720,12 +720,12 @@
 				menuDetailVisible:false,
 				skillVisible: false,
 				taskSkills: [],
-				selectTaskVisible:false, 
+				selectTaskVisible:false,
 				pickerOptions:  util.getPickerOptions('datarange'),
 				tagSelectVisible:false,
 				subWorkItemNum:0,
 				activateTabPaneName:'2',
-				selectParentPlanVisible:false, 
+				selectParentPlanVisible:false,
 				supRequires:[],
 				toPayEfundsVisible:false,
 				toPayMarketVisible:false,
@@ -733,7 +733,7 @@
 				 /**end 在上面加自定义属性**/
 			}//end return
 		},//end data
-		methods: {  
+		methods: {
 			...util,
 			setSubWorkItemNum(val){
 				this.subWorkItemNum=val;
@@ -743,11 +743,11 @@
  				this.$emit('cancel');
 			},
 			//新增提交XmTask xm_task 父组件监听@submit="afterAddSubmit"
-			editSubmit: function () { 
+			editSubmit: function () {
 				this.$refs.editForm.validate((valid) => {
 					if (valid) {
-						this.$confirm('确认提交吗？', '提示', {}).then(() => { 
-							let params = Object.assign({}, this.editForm);   
+						this.$confirm('确认提交吗？', '提示', {}).then(() => {
+							let params = Object.assign({}, this.editForm);
 							editXmTask(params).then((res) => {
 								this.load.edit=false
 								var tips=res.data.tips;
@@ -755,15 +755,15 @@
 									//this.$refs['editForm'].resetFields();
 									this.$emit('submit',res.data.data);//  @submit="aftereditSubmit"
 								}
-								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
+								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 							}).catch( err  => this.load.edit=false);
 						});
 					}else{
-						this.$notify({position:'bottom-left',showClose:true,message: "表单验证不通过，请修改后提交", type: 'error' }); 
+						this.$notify({position:'bottom-left',showClose:true,message: "表单验证不通过，请修改后提交", type: 'error' });
 					}
 				});
-			}, 
-			doInitMarket(data){  
+			},
+			doInitMarket(data){
 				if(!data){
 					return {};
 				}
@@ -775,7 +775,7 @@
 					})
 
 				}
-				return extInfos; 
+				return extInfos;
 			},
 			formatDate: function(time) {
 				const date = new Date(time);
@@ -784,9 +784,9 @@
 				return date.getFullYear()+"-"+(m < 10 ? "0"+m : m)+"-"+ (d < 10 ? "0"+d : d) + " 00:00:00";
 			},
 			/**begin 在下面加自定义方法,记得补上面的一个逗号**/
- 
 
-			showSkill(){  
+
+			showSkill(){
 				this.skillVisible = true;
 			},
 			onMenuSelected:function(menu){
@@ -799,7 +799,7 @@
 			},
 			onTaskSkillsSelected(skills) {
 				let taskSkill = [];
-				skills.forEach(i=>{ 
+				skills.forEach(i=>{
 					let obj = {
 						taskId: this.editForm.id,
 						taskSkillId: i.skillId,
@@ -818,10 +818,10 @@
 						this.editForm.taskSkillNames = skills.map(s=>s.skillName).join(",")
 						this.editFormBak={...this.editForm}
 					}
-					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
+					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 				}).catch( err  => this.load.add=false);
-			}, 
-			
+			},
+
 			getWeekday(first, last) {
 				//计算工作日方法：遍历这两个日期区间的每一个日期，获取他的getDay()
 
@@ -846,15 +846,15 @@
 				}
 			},
 
-			onBudgetDateRangerChange(){ 
+			onBudgetDateRangerChange(){
 				this.editXmTaskSomeFields(this.editForm,'dateRange',{startTime:this.editForm.startTime,endTime:this.editForm.endTime});
-			},  
+			},
 			onSelectedTask(task){
 				this.selectTaskVisible=false;
-				if(task){  
+				if(task){
 					this.editForm.preTaskid=task.id
 					this.editForm.preTaskname=task.name
-					
+
 					this.editXmTaskSomeFields(this.editForm,'preTaskid',task);
 				}
 			},
@@ -862,12 +862,12 @@
 					this.editForm.preTaskid=''
 					this.editForm.preTaskname=''
 			},
-			goAnchor :function(id){  
+			goAnchor :function(id){
        			document.querySelector("#"+id).scrollIntoView(true);
     		},
 			setSkills(){
 				if(this.editForm.taskSkillIds && this.editForm.taskSkillNames){
-					var skillNames=this.editForm.taskSkillNames.split(","); 
+					var skillNames=this.editForm.taskSkillNames.split(",");
 					this.taskSkills=this.editForm.taskSkillIds.split(",").map((item,index)=>{
 						return {
 							taskId:this.editForm.id,
@@ -876,59 +876,59 @@
 						}
 					})
 				}
-			},  
-			/**end 在上面加自定义方法**/ 
-			
+			},
+			/**end 在上面加自定义方法**/
+
 			toMenu(){
 				this.menuDetailVisible=true
 			},
-			
-			afterAddExecSubmit(execForm){ 
-				
+
+			afterAddExecSubmit(execForm){
+
 				this.$emit("after-add-submit",execForm);
 			},
-			afterEditExecSubmit(execForm){  
-				
+			afterEditExecSubmit(execForm){
+
 				listXmTask({ids:[this.editForm.id]}).then(res=>{
 						Object.assign(this.editForm,res.data.data[0])
-						this.editFormBak={...this.editForm}  
+						this.editFormBak={...this.editForm}
 						this.$emit("after-edit-submit",execForm);
-					}) 
-				
-			},     
+					})
+
+			},
 			onTagSelected(tags) {
-				this.tagSelectVisible = false; 
-				if(tags && tags.length>0){ 
+				this.tagSelectVisible = false;
+				if(tags && tags.length>0){
 					this.editForm.tagIds=tags.map(i=>i.tagId).join(",")
 					this.editForm.tagNames=tags.map(i=>i.tagName).join(",")
 				}else{
 					this.editForm.tagIds=""
 					this.editForm.tagNames=""
 				}
-				
+
 				this.editXmTaskSomeFields(this.editForm,'tagIds',tags );
 			},
 			onAddSubTask(val){
 
 			},
-			
+
 			editXmTaskSomeFields(row,fieldName,$event){
-				
+
 				var that=this;
 				var func=(params)=>{
 					editXmTaskSomeFields(params).then(res=>{
 						var tips = res.data.tips;
 						if(tips.isOk){
 							this.$emit('edit-fields',params)
-							Object.assign(row,params) 
+							Object.assign(row,params)
 							this.editFormBak=Object.assign({},row)
-						}else{   
+						}else{
 							Object.assign(this.editForm,this.editFormBak)
 							this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 						}
 					})
 				}
-				var params={ids:[row.id]}; 
+				var params={ids:[row.id]};
 				if(fieldName==='menuId'){
 					if($event){
 						params[fieldName]=$event.menuId;
@@ -955,18 +955,18 @@
 				}else if(fieldName==='dateRange'){
 					params.startTime=$event.startTime
 					params.endTime=$event.endTime
-				}else if(fieldName==='shareFee'){  
+				}else if(fieldName==='shareFee'){
 					params.shareFee=$event
 				}else if(fieldName==='supRequires'){
-					params.supRequires=$event.join(",") 
-				}else if(fieldName==='cityId'){  
+					params.supRequires=$event.join(",")
+				}else if(fieldName==='cityId'){
 					if($event.area){
 						params.provinceId=$event.province.key
 						params.provinceName=$event.province.value
 						params.cityId=$event.city.key
 						params.cityName=$event.city.value
 						params.areaId=$event.area.key
-						params.areaName=$event.area.value 
+						params.areaName=$event.area.value
 					}else if($event.city){
 						params.provinceId=$event.province.key
 						params.provinceName=$event.province.value
@@ -983,24 +983,24 @@
 						params.areaName='-'
 					}else{
 						 return;
-					} 
-						
-					
+					}
+
+
 				}else{
 					params[fieldName]=$event
 				}
-				
-				
+
+
 				if(fieldName=='description'){
 					this.$refs.editForm.validateField('description',err=>{
-						if(err){ 
+						if(err){
 							this.$notify({position:'bottom-left',showClose:true,message: err,type: 'error'})
 							return;
 						}else{
 							func(params)
 						}
 					})
-				}else if(fieldName=='name'){  
+				}else if(fieldName=='name'){
 					this.$refs.editForm.validateField('name',err=>{
 						if(err){
 							this.$notify({position:'bottom-left',showClose:true,message: err,type: 'error'})
@@ -1025,12 +1025,12 @@
 				}).then(() => {
 					batchChangeParentTask(params).then(res=>{
 					var tips = res.data.tips;
-					if(tips.isOk){ 
+					if(tips.isOk){
 						this.editForm.parentTaskid=task.id
-						this.editForm.parentTaskname=task.name  
+						this.editForm.parentTaskname=task.name
 						this.editFormBak=Object.assign({},this.editForm)
 						this.$emit('edit-fields',this.editForm)
-						
+
 					}
 					this.$notify({
 						showClose: true,
@@ -1042,8 +1042,8 @@
 			},
 			doAddXmRecordVisit(){
 				addXmRecordVisit({bizId:this.editForm.id,objType:'2',pbizId:this.editForm.projectId})
-			}, 
-			onTaskPaySuccess(orderId){ 
+			},
+			onTaskPaySuccess(orderId){
 				listXmTask({ids:[this.editForm.id]}).then(res=>{
 					Object.assign(this.editForm,res.data.data[0])
 					this.editFormBak={...this.editForm}
@@ -1051,48 +1051,48 @@
 					this.toPayEfundsVisible=false;
 					this.toPayMarketVisible=false;
 				})
-				
+
 			},
 			getRateColor(rate){
 				return "#F56C6C"
-			}, 
-			
+			},
+
 			copyLink(){
 				var curlDomain=window.location.protocol+"//"+window.location.host; //   返回https://mp.csdn.net
 				var link=curlDomain+"/"+process.env.CONTEXT+"/"+process.env.VERSION+"/#/xm/core/task/detail?id="+this.editForm.id
 				this.$copyText(link).then(e => {
 					this.$notify({position:'bottom-left',showClose:true,message:"拷贝链接成功，您可以黏贴到任何地方",type:'success'})
 				});
-			}, 
+			},
 		},//end method
-		components: { 
+		components: {
  			xmSkillMng,
 			skillMng,xmMenuSelect,XmTaskList,XmExecuserMng,XmMenuRichDetail,TagMng,XmSubWorkItem,XmWorkloadRecord,XmMenuEdit,
 			XmRecord,xmQuestionMng,XmMyDoFocus,XmTaskExecuserForTask,XmPhaseSelect,ToPay,MdpSelectUserXm,'xm-task-edit':()=>import("./XmTaskDetail"),
-			'xm-workload-record':()=>import("../xmWorkload/XmWorkloadRecord"), 
+			'xm-workload-record':()=>import("../xmWorkload/XmWorkloadRecord"),
 			"v-region":RegionGroup ,
 			//在下面添加其它组件 'xm-task-edit':XmTaskEdit
 		},
-		mounted() { 
+		mounted() {
 			this.$nextTick(()=>{
-				initDicts(this); 
-				this.editForm=Object.assign(this.editForm, this.xmTask);    
-				this.editFormBak=Object.assign({},this.editForm) 
+				initDicts(this);
+				this.editForm=Object.assign(this.editForm, this.xmTask);
+				this.editFormBak=Object.assign({},this.editForm)
 				this.supRequires=this.editForm.supRequires?this.editForm.supRequires.split(","):[]
 				this.setSkills();
 				this.doAddXmRecordVisit()
 				initSysDicts(this)
 			})
-			
+
 			/**在下面写其它函数***/
-			
+
 		}//end mounted
 	}
 
 </script>
 
-<style scoped> 
- 
+<style scoped>
+
 
 .step-btn{
 	margin-left:0px;margin-bottom: 5px;

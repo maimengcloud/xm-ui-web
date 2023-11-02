@@ -1,9 +1,9 @@
 <template>
-	<section> 
-		<el-row class="padding-top"> 
+	<section>
+		<el-row class="padding-top">
 			<el-table ref="xmWorkloadTable" :max-height="maxTableHeight" :data="xmWorkloads"   @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="55" show-overflow-tooltip></el-table-column>
- 				<el-table-column prop="username" label="姓名" width="120" show-overflow-tooltip> 
+ 				<el-table-column prop="username" label="姓名" width="120" show-overflow-tooltip>
 					<template slot-scope="scope">
 						<el-link @click="queryUserWorkload(scope.row)">{{scope.row.username}}</el-link>
 					</template>
@@ -33,54 +33,54 @@
 							</el-select>
 						</span>
 					 </template>
-				 </el-table-column> 
+				 </el-table-column>
 				<el-table-column prop="bizType" label="报工类型" width="120" show-overflow-tooltip>
 					<template slot-scope="scope">
-						<mdp-select-tag :disabled="true" v-model="scope.row.bizType" :dict="dicts['wlBizType']"></mdp-select-tag>
-					</template> 
-				</el-table-column> 
+						<mdp-select-tag :disabled="true" v-model="scope.row.bizType" item-code="wlBizType"></mdp-select-tag>
+					</template>
+				</el-table-column>
 				<el-table-column prop="bizName" label="报工业务" width="120" show-overflow-tooltip>
 					<template slot-scope="scope">
 						<el-link @click="openDialog(scope.row)">{{scope.row.bizName}}</el-link>
 					</template>
-				</el-table-column> 
-				<el-table-column prop="remark" label="报工备注" width="120" show-overflow-tooltip></el-table-column>  
+				</el-table-column>
+				<el-table-column prop="remark" label="报工备注" width="120" show-overflow-tooltip></el-table-column>
  				<el-table-column fixed="right" label="操作" min-width="120">
 					<template slot-scope="scope">
                				<xm-task-sbill-select style="display:inline;"  :auto-select="false"  :project-id="scope.row.projectId"    placeholder="结算"  @row-click="batchJoinToSbill(scope.row,$event)">
 								<span slot="title">{{scope.row.sbillId?'结算单:'+scope.row.sbillId:'选择结算单'}}</span>
-							</xm-task-sbill-select> 
+							</xm-task-sbill-select>
  					</template>
 				</el-table-column>
-				
+
 
 			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
-		</el-row> 
+		</el-row>
 		<el-dialog title="任务明细" :visible.sync="taskDetailVisible" width="90%" top="20px" append-to-body>
 			<xm-task-detail :visible="taskDetailVisible" :xm-task="{id:editForm.taskId,name:editForm.bizName}" :reload="true"></xm-task-detail>
 		</el-dialog>
-		
+
 		<el-dialog title="缺陷明细" :visible.sync="bugDetailVisible" width="90%" top="20px" append-to-body>
 			<xm-question-detail :visible="bugDetailVisible" :xm-question="{id:editForm.bugId,name:editForm.bizName}" :reload="true"></xm-question-detail>
 		</el-dialog>
-		
+
 		<el-dialog title="测试用例明细" :visible.sync="caseDetailVisible" width="90%" top="20px" append-to-body>
 			<xm-test-case-detail :visible="caseDetailVisible" :xm-test-case="{id:editForm.caseId,name:editForm.bizName}" :reload="true"></xm-test-case-detail>
 		</el-dialog>
-		
+
 		<el-dialog title="执行用例明细" :visible.sync="planCaseDetailVisible" width="90%" top="20px" append-to-body>
 			<xm-test-plan-case-detail :visible="planCaseDetailVisible" :xm-plan-test-case="{planId:editForm.planId,caseId:editForm.caseId,name:editForm.bizName}" :reload="true"></xm-test-plan-case-detail>
 		</el-dialog>
-		
+
 		<el-dialog title="需求明细" :visible.sync="menuDetailVisible" width="90%" top="20px" append-to-body>
 			<xm-menu-detail :visible="menuDetailVisible" :xm-menu="{id:editForm.menuId,name:editForm.bizName}" :reload="true"></xm-menu-detail>
 		</el-dialog>
-		
+
 		<el-dialog :title="'【'+editForm.username+'】在项目【'+editForm.projectId+'】的工时记录情况'" :visible.sync="userWorkloadDayListVisible" width="90%" top="20px" append-to-body>
 			<workload-set-day-list :xm-project="{id:editForm.projectId}" :user="{userid:editForm.userid,username:editForm.username}"></workload-set-day-list>
 		</el-dialog>
-			
+
 	</section>
 </template>
 
@@ -91,7 +91,7 @@
 	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
 	import { listXmWorkload, delXmWorkload, batchDelXmWorkload,editXmWorkloadSomeFields,initDicts } from '@/api/xm/core/xmWorkload';
 	import { mapGetters } from 'vuex'
-	
+
   import XmTaskSbillSelect from "./XmTaskSbillSelect";
 
 	export default {
@@ -156,14 +156,14 @@
 				bugDetailVisible:false,
 				caseDetailVisible:false,
 				planCaseDetailVisible:false,
-				menuDetailVisible:false, 
+				menuDetailVisible:false,
 
 				userWorkloadDayListVisible:false,
 			}
 		},//end data
 		methods: {
 			...util,
-			editXmWorkloadSomeFields(row,fieldName,$event){  
+			editXmWorkloadSomeFields(row,fieldName,$event){
 				let params={
 				ids:[row.id],
 				};
@@ -172,20 +172,20 @@
 					this.$notify({position:'bottom-left',showClose:true,message:'存在不同项目的工时单，请重新选择',type:'warning'})
 					return;
 				}
-				params.ids=this.sels.map(i=>i.id); 
+				params.ids=this.sels.map(i=>i.id);
 				}else{
-				params.ids = [row.id]; 
+				params.ids = [row.id];
 				params[fieldName]=$event
 				}
 				var func = editXmWorkloadSomeFields
 				if(fieldName==='sbillId'){
 				func = editWorkloadToSbill
 				params.sbillId=$event.id
-				}else{ 
+				}else{
 				params[fieldName]=$event
 				}
 				func(params).then(res=>{
-				let tips = res.data.tips; 
+				let tips = res.data.tips;
 				this.getXmWorkloads();
 				if(tips.isOk){
 					this.$emit("edit-some-fields",params)
@@ -193,7 +193,7 @@
 					this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 				}
 				})
-			},  
+			},
 			handleSizeChange(pageSize) {
 				this.pageInfo.pageSize=pageSize;
 				this.getXmWorkloads();
@@ -241,12 +241,12 @@
 				}
 				if(this.filters.key){
 					params.key=this.filters.key
-				} 
+				}
 
 				if(this.projectId){
 					params.projectId=this.projectId
 				}
-				
+
 				if(this.taskId){
 					params.taskId=this.taskId
 				}
@@ -264,7 +264,7 @@
 				if(this.bizMonth){
 					params.bizMonth=this.bizMonth
 				}
-				
+
 				if(this.bizDate){
 					params.bizDate=this.bizDate
 				}
@@ -272,7 +272,7 @@
 				if(this.detailId){
 					params.detailId=this.detailId
 				}
-				
+
 				if(this.sbillId){
 					params.sbillId=this.sbillId
 				}
@@ -384,8 +384,8 @@
 					this.$notify({position:'bottom-left',showClose:true,message:'存在不同项目的工时单，请重新选择',type:'warning'})
 					return;
 				}
-				params.workloadIds=this.sels.map(i=>i.id); 
-				}  
+				params.workloadIds=this.sels.map(i=>i.id);
+				}
 				this.load.edit=true;
 				batchJoinToSbill(params).then((res) => {
 					this.load.edit=false;
@@ -395,7 +395,7 @@
 						this.getXmWorkloads();
 					}
 					this.$notify({position:'bottom-left',showClose:true, message: tips.msg, type: tips.isOk?'success':'error'});
-				}).catch( err  => this.load.edit=false ); 
+				}).catch( err  => this.load.edit=false );
 			},
 			openDialog(row){
 				this.editForm=row
@@ -410,18 +410,18 @@
 				}else if(this.bizType=='5'){
 					this.menuDetailVisible=true
 				}
-			}, 
+			},
 			queryUserWorkload(row){
-				this.editForm=row 
+				this.editForm=row
 				this.userWorkloadDayListVisible=true;
 			}
 
 		},//end methods
 		mounted() {
-			this.$nextTick(() => { 
-				initDicts(this); 
-				this.initData() 
-				this.searchXmWorkloads(); 
+			this.$nextTick(() => {
+				initDicts(this);
+				this.initData()
+				this.searchXmWorkloads();
                 this.maxTableHeight = util.calcTableMaxHeight(this.$refs.xmWorkloadTable.$el)
 
         	});
@@ -432,6 +432,6 @@
 
 <style scoped>
 	.label {
-		font-family: 黑体; 
+		font-family: 黑体;
 	}
 </style>

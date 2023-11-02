@@ -1,17 +1,17 @@
 <template>
 	<section>
-        <el-row :gutter="10"> 
+        <el-row :gutter="10">
             <el-col :span="6" v-if="!xmTestCase||!xmTestCase.id">
-                <xm-func-select  :xm-product="xmProductCpd" @row-click="onXmFuncRowClick"> 
+                <xm-func-select  :xm-product="xmProductCpd" @row-click="onXmFuncRowClick">
                 </xm-func-select>
             </el-col>
             <el-col :span="(xmTestCase&&xmTestCase.id)?24:18">
                 <el-row>
                     <el-input v-model="filters.key" style="width:20%;" placeholder="模糊查询"  clearable></el-input>
-                     <mdp-select style="width:20%;" placeholder="用例状态" clearable :dict="dicts['testCaseStatus']" v-model="filters.caseStatus" effect="dark"></mdp-select> 
-                    <mdp-select style="width:20%;" placeholder="执行结果" clearable :dict="dicts['testStepTcode']" v-model="filters.execStatus" effect="dark"></mdp-select> 
+                     <mdp-select style="width:20%;" placeholder="用例状态" clearable item-code="testCaseStatus" v-model="filters.caseStatus" effect="dark"></mdp-select>
+                    <mdp-select style="width:20%;" placeholder="执行结果" clearable item-code="testStepTcode" v-model="filters.execStatus" effect="dark"></mdp-select>
 
-                    <el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestPlanCases" icon="el-icon-search">查询</el-button> 
+                    <el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestPlanCases" icon="el-icon-search">查询</el-button>
                 </el-row>
                 <el-row class="padding-top">
                     <!--列表 XmTestPlanCase 测试计划与用例关系表-->
@@ -21,48 +21,48 @@
                             <span class="cell-text">  {{scope.row.username}}}  </span>
                             <span class="cell-bar"><el-input style="display:inline;" v-model="scope.row.username" placeholder="" @change="editSomeFields(scope.row,'username',$event)" :maxlength="22"></el-input></span>
                         </el-table-column>
-                        -->       
-                        
-              
-                        <el-table-column prop="caseName" label="用例名称" min-width="250"> 
-                            <template slot-scope="scope"> 
+                        -->
+
+
+                        <el-table-column prop="caseName" label="用例名称" min-width="250">
+                            <template slot-scope="scope">
                                 <span :title="'归属测试计划'+scope.row.planId">{{ scope.row.caseName }}</span>
                              </template>
-                        </el-table-column>	
-                        <el-table-column prop="planId" label="测试计划" width="150" sortable> 
-                        </el-table-column>	        
+                        </el-table-column>
+                        <el-table-column prop="planId" label="测试计划" width="150" sortable>
+                        </el-table-column>
                         <el-table-column prop="caseStatus" label="用例状态" width="100" show-overflow-tooltip>
-                            <template slot-scope="scope"> 
-                                <mdp-select-tag :dict="dicts['testCaseStatus']" v-model="scope.row.caseStatus" effect="dark" :disabled="true"></mdp-select-tag> 
+                            <template slot-scope="scope">
+                                <mdp-select-tag item-code="testCaseStatus" v-model="scope.row.caseStatus" effect="dark" :disabled="true"></mdp-select-tag>
                             </template>
-                        </el-table-column>    
-                        
+                        </el-table-column>
+
                         <el-table-column prop="execStatus" label="执行结果" width="100" show-overflow-tooltip>
-                            <template slot-scope="scope"> 
-                                <mdp-select-tag :dict="dicts['testStepTcode']" v-model="scope.row.execStatus" effect="dark" :disabled="true"></mdp-select-tag> 
+                            <template slot-scope="scope">
+                                <mdp-select-tag item-code="testStepTcode" v-model="scope.row.execStatus" effect="dark" :disabled="true"></mdp-select-tag>
                             </template>
                         </el-table-column>
                         <el-table-column prop="execUsername" label="执行人姓名" min-width="120" >
-                            <template slot-scope="scope">  
-                                <mdp-select-user-xm  userid-key="execUserid" username-key="execUsername" v-model="scope.row" :disabled="true"> 
+                            <template slot-scope="scope">
+                                <mdp-select-user-xm  userid-key="execUserid" username-key="execUsername" v-model="scope.row" :disabled="true">
                                 </mdp-select-user-xm>
                             </template>
                         </el-table-column>
                         <el-table-column prop="priority" label="优先级" width="120" >
                             <template slot-scope="scope">
-                                <mdp-select-tag :dict="dicts['priority']" v-model="scope.row.priority" :disabled="true"></mdp-select-tag>  
+                                <mdp-select-tag item-code="priority" v-model="scope.row.priority" :disabled="true"></mdp-select-tag>
                             </template>
                         </el-table-column>
                         <el-table-column  label="操作" width="100" fixed="right">
                             <template slot-scope="scope">
                                 <el-button type="primary" @click="$emit('select',scope.row)">选择</el-button>
                             </template>
-                        </el-table-column>   
+                        </el-table-column>
                     </el-table>
                     <el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
                 </el-row>
             </el-col>
-        </el-row> 
+        </el-row>
 	</section>
 </template>
 
@@ -83,7 +83,7 @@ export default {
     props:['visible','xmTestPlan','xmTestCasedb','xmTestCase','xmProduct','select','xmProject'],
     computed: {
         ...mapGetters(['userInfo']),
-        xmProductCpd(){ 
+        xmProductCpd(){
             if(this.xmProduct&& this.xmProduct.id){
                 return this.xmProduct
             }
@@ -206,7 +206,7 @@ export default {
             if(this.xmTestCasedb && this.xmTestCasedb.id){
                 params.casedbId=this.xmTestCasedb.id
             }
-            
+
             if(this.xmTestCase && this.xmTestCase.id){
                 params.caseId=this.xmTestCase.id
             }
@@ -237,12 +237,12 @@ export default {
             }).catch( err => this.load.list = false );
         },
 
-         
+
         //选择行xmTestPlanCase
         selsChange: function (sels) {
             this.sels = sels;
         },
-         
+
         rowClick: function(row, event, column){
             this.editForm=row
             this.editFormBak={...row};
@@ -250,12 +250,12 @@ export default {
         },
         initData: function(){
 
-        }, 
+        },
         onXmFuncRowClick(row){
             this.filters.xmFunc=row
             this.searchXmTestPlanCases();
         },
-          
+
     },//end methods
     mounted() {
         this.$nextTick(() => {

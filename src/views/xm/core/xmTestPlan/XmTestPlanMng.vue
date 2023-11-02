@@ -2,10 +2,10 @@
 	<section>
 		<el-row>
 			<el-input v-model="filters.key" style="width: 15%;" placeholder="模糊查询"  clearable></el-input>
-            <mdp-select style="width:15%;" clearable placeholder="状态" :dict="dicts['testPlanStatus']" v-model="filters.status" effect="dark"></mdp-select> 
+            <mdp-select style="width:15%;" clearable placeholder="状态" item-code="testPlanStatus" v-model="filters.status" effect="dark"></mdp-select>
 
-            <mdp-select style="width:15%;" clearable placeholder="结果" :dict="dicts['testPlanTcode']" v-model="filters.tcode" effect="dark" ></mdp-select> 
-            <mdp-select placeholder="测试方式" style="width:15%;" clearable :dict="dicts['testType']" v-model="filters.testType" effect="dark"></mdp-select> 
+            <mdp-select style="width:15%;" clearable placeholder="结果" item-code="testPlanTcode" v-model="filters.tcode" effect="dark" ></mdp-select>
+            <mdp-select placeholder="测试方式" style="width:15%;" clearable item-code="testType" v-model="filters.testType" effect="dark"></mdp-select>
 
 			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestPlans" icon="el-icon-search">查询</el-button>
 			<span style="float:right;">
@@ -26,56 +26,56 @@
  				<el-table-column prop="name" label="计划名称" min-width="250">
 				    <template slot-scope="scope">
 				        <span> <el-link type="primary" @click="goToTestPlanCase(scope.row)"> {{scope.row.name}}</el-link> </span>
-                        <span  class="tool-bar"> 
-                         <el-button  @click="showEdit(scope.row)" icon="el-icon-edit"  circle title="编辑"></el-button> 
+                        <span  class="tool-bar">
+                         <el-button  @click="showEdit(scope.row)" icon="el-icon-edit"  circle title="编辑"></el-button>
                          </span>
                     </template>
-				</el-table-column>  
-                <el-table-column prop="projectName" label="项目" min-width="120"> 
-				</el-table-column> 
+				</el-table-column>
+                <el-table-column prop="projectName" label="项目" min-width="120">
+				</el-table-column>
                 <el-table-column prop="cusername" label="负责人" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope"> 
-                        <mdp-select-user-xm  userid-key="cuserid" username-key="cusername" v-model="scope.row" :disabled="true"> 
+				    <template slot-scope="scope">
+                        <mdp-select-user-xm  userid-key="cuserid" username-key="cusername" v-model="scope.row" :disabled="true">
                                     </mdp-select-user-xm>
                     </template>
-				</el-table-column> 
-                <el-table-column prop="totalCases" label="用例数" width="120" show-overflow-tooltip> 
-				</el-table-column> 
+				</el-table-column>
+                <el-table-column prop="totalCases" label="用例数" width="120" show-overflow-tooltip>
+				</el-table-column>
 				<el-table-column prop="status" label="状态" width="120" show-overflow-tooltip>
-				    <template slot-scope="scope"> 
-                        <mdp-select-tag :dict="dicts['testPlanStatus']" v-model="scope.row.status" effect="dark" @change="editSomeFields(scope.row,'status',$event)"></mdp-select-tag> 
+				    <template slot-scope="scope">
+                        <mdp-select-tag item-code="testPlanStatus" v-model="scope.row.status" effect="dark" @change="editSomeFields(scope.row,'status',$event)"></mdp-select-tag>
                    </template>
 				</el-table-column>
-                
+
 				<el-table-column prop="testType" label="测试方式" width="120" show-overflow-tooltip>
-				    <template slot-scope="scope"> 
-                        <mdp-select-tag :dict="dicts['testType']" v-model="scope.row.testType" effect="dark" @change="editSomeFields(scope.row,'testType',$event)"></mdp-select-tag> 
+				    <template slot-scope="scope">
+                        <mdp-select-tag item-code="testType" v-model="scope.row.testType" effect="dark" @change="editSomeFields(scope.row,'testType',$event)"></mdp-select-tag>
                    </template>
 				</el-table-column>
 				<el-table-column prop="tcode" label="测试结果" width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
-                        
-                        <mdp-select-tag :dict="dicts['testPlanTcode']" v-model="scope.row.tcode" effect="dark" @change="editSomeFields(scope.row,'tcode',$event)"></mdp-select-tag> 
-                          
+
+                        <mdp-select-tag item-code="testPlanTcode" v-model="scope.row.tcode" effect="dark" @change="editSomeFields(scope.row,'tcode',$event)"></mdp-select-tag>
+
                     </template>
-				</el-table-column> 
+				</el-table-column>
 				<el-table-column prop="totalCases" label="进度" min-width="120" show-overflow-tooltip>
-				    <template slot-scope="scope"> 
+				    <template slot-scope="scope">
                         <el-tooltip :open-delay="300" :content="'总用例数:'+scope.row.totalCases+'   成功:'+scope.row.okCases +'  失败:'+scope.row.errCases+'  忽略:'+scope.row.igCases+'  阻塞:'+scope.row.blCases">
                             <el-progress   :stroke-width="22" :text-inside="true"  :status="scope.row.totalCases>0 && scope.row.errCases<=0 ?'success':'exception'" :percentage="scope.row.totalCases>0?parseInt((parseInt(scope.row.okCases)+parseInt(scope.row.igCases)+parseInt(scope.row.errCases)+parseInt(scope.row.blCases))*100/parseInt(scope.row.totalCases)):0"></el-progress>
-                        </el-tooltip>  
+                        </el-tooltip>
                      </template>
-				</el-table-column> 
+				</el-table-column>
 				<el-table-column prop="totalCases" label="统计" width="80" show-overflow-tooltip>
-				    <template slot-scope="scope">  
+				    <template slot-scope="scope">
                         <el-tooltip content="点击统计进度"
-                            ><el-button 
+                            ><el-button
                             icon="el-icon-video-play"
                             @click.stop="calcXmTestPlan(scope.row)"
                             ></el-button
-                        ></el-tooltip> 
+                        ></el-tooltip>
                      </template>
-				</el-table-column>    
+				</el-table-column>
 				<el-table-column prop="stime" label="开始时间"  width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
 				        <span> {{scope.row.stime}} </span>
@@ -85,7 +85,7 @@
 				    <template slot-scope="scope">
 				        <span> {{scope.row.etime}} </span>
                     </template>
-				</el-table-column> 
+				</el-table-column>
 			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 		</el-row>
@@ -348,7 +348,7 @@ export default {
         initData: function(){
 
         },
-        goToTestPlanCase(row){  
+        goToTestPlanCase(row){
 			var key="xm-test-plan-info-"+row.id
             sessionStorage.setItem(key,JSON.stringify(row))
             this.$router.push({
@@ -360,7 +360,7 @@ export default {
             })
         },
         calcXmTestPlan(row){
-            calcXmTestPlan({id:row.id}).then(res=>{ 
+            calcXmTestPlan({id:row.id}).then(res=>{
                 var tips=res.data.tips
                 this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
                 if(tips.isOk){

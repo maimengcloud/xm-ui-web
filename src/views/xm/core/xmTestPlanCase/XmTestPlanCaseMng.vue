@@ -1,21 +1,21 @@
 <template>
 	<section>
-        <el-row :gutter="10"> 
+        <el-row :gutter="10">
             <el-col :span="6" v-if="!xmTestCase||!xmTestCase.id">
-                <xm-func-select v-if="xmProductCpd && xmProductCpd.id" :xm-product="xmProductCpd" @row-click="onXmFuncRowClick"> 
+                <xm-func-select v-if="xmProductCpd && xmProductCpd.id" :xm-product="xmProductCpd" @row-click="onXmFuncRowClick">
                 </xm-func-select>
             </el-col>
             <el-col :span="!xmTestCase||!xmTestCase.id?18:24">
                 <el-row>
                     <el-input v-model="filters.key" style="width: 15%;" placeholder="模糊查询"  clearable></el-input>
-                    <mdp-select style="width:15%;" placeholder="用例状态" clearable :dict="dicts['testCaseStatus']" v-model="filters.caseStatus" effect="dark"></mdp-select> 
-                    <mdp-select placeholder="测试方式" style="width:15%;" clearable :dict="dicts['testType']" v-model="filters.testType" effect="dark"></mdp-select> 
+                    <mdp-select style="width:15%;" placeholder="用例状态" clearable item-code="testCaseStatus" v-model="filters.caseStatus" effect="dark"></mdp-select>
+                    <mdp-select placeholder="测试方式" style="width:15%;" clearable item-code="testType" v-model="filters.testType" effect="dark"></mdp-select>
 
-                    <mdp-select style="width:15%;" placeholder="执行结果" clearable :dict="dicts['testStepTcode']" v-model="filters.execStatus" effect="dark"></mdp-select> 
+                    <mdp-select style="width:15%;" placeholder="执行结果" clearable item-code="testStepTcode" v-model="filters.execStatus" effect="dark"></mdp-select>
 
                     <el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestPlanCases" icon="el-icon-search">查询</el-button>
                     <span style="float:right;" v-if="!xmTestCase||!xmTestCase.id">
-                        <el-button type="primary" @click="batchExec" icon="el-icon-video-play">批量执行</el-button> 
+                        <el-button type="primary" @click="batchExec" icon="el-icon-video-play">批量执行</el-button>
                         <el-button type="primary" @click="showAdd" icon="el-icon-plus">将用例纳入计划</el-button>
                         <el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button>
                     </span>
@@ -29,55 +29,55 @@
                             <span class="cell-text">  {{scope.row.username}}}  </span>
                             <span class="cell-bar"><el-input style="display:inline;" v-model="scope.row.username" placeholder="" @change="editSomeFields(scope.row,'username',$event)" :maxlength="22"></el-input></span>
                         </el-table-column>
-                        -->                         
+                        -->
                         <el-table-column prop="caseName" label="用例名称" min-width="250">
                             <template slot-scope="scope">
                                 <span> <el-link @click="showEdit( scope.row,scope.$index)">{{scope.row.caseName}} </el-link></span>
                                 <span class="tool-bar">
-                                    <el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" circle ></el-button> 
+                                    <el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit" circle ></el-button>
                                 </span>
                             </template>
-                        </el-table-column>	
+                        </el-table-column>
                         <el-table-column prop="caseStatus" label="用例状态" width="100" show-overflow-tooltip>
-                            <template slot-scope="scope"> 
-                                <mdp-select-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts['testCaseStatus']" v-model="scope.row.caseStatus" effect="dark" @change="editSomeFields(scope.row,'caseStatus',$event)" :disabled="true"></mdp-select-tag> 
+                            <template slot-scope="scope">
+                                <mdp-select-tag @visible-change="selectVisible(scope.row,$event)" item-code="testCaseStatus" v-model="scope.row.caseStatus" effect="dark" @change="editSomeFields(scope.row,'caseStatus',$event)" :disabled="true"></mdp-select-tag>
                             </template>
-                        </el-table-column>  
-                        <template v-if="select!==true"> 
+                        </el-table-column>
+                        <template v-if="select!==true">
                             <el-table-column prop="testType" label="执行方式" width="120" >
                                 <template slot-scope="scope">
-                                    <mdp-select-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts['testType']" v-model="scope.row.testType" @change="editSomeFields(scope.row,'testType',$event)" :disabled="true"></mdp-select-tag>  
+                                    <mdp-select-tag @visible-change="selectVisible(scope.row,$event)" item-code="testType" v-model="scope.row.testType" @change="editSomeFields(scope.row,'testType',$event)" :disabled="true"></mdp-select-tag>
                                 </template>
                             </el-table-column>
                             <el-table-column prop="execStatus" label="执行结果" width="120" show-overflow-tooltip>
-                                <template slot-scope="scope"> 
-                                    <mdp-select-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts['testStepTcode']" v-model="scope.row.execStatus" effect="dark" @change="editSomeFields(scope.row,'execStatus',$event)"></mdp-select-tag> 
+                                <template slot-scope="scope">
+                                    <mdp-select-tag @visible-change="selectVisible(scope.row,$event)" item-code="testStepTcode" v-model="scope.row.execStatus" effect="dark" @change="editSomeFields(scope.row,'execStatus',$event)"></mdp-select-tag>
                                 </template>
                             </el-table-column>
                             <el-table-column prop="execUsername" label="执行人姓名" min-width="120" >
-                                <template slot-scope="scope">  
-                                    <mdp-select-user-xm @visible-change="selectVisible(scope.row,$event)" :product-id="xmProductCpd?xmProductCpd.id:null" :project-id="xmProject?xmProject.id:null"  userid-key="execUserid" username-key="execUsername" v-model="scope.row"  @change="editSomeFields(scope.row,'execUserid',$event)"> 
+                                <template slot-scope="scope">
+                                    <mdp-select-user-xm @visible-change="selectVisible(scope.row,$event)" :product-id="xmProductCpd?xmProductCpd.id:null" :project-id="xmProject?xmProject.id:null"  userid-key="execUserid" username-key="execUsername" v-model="scope.row"  @change="editSomeFields(scope.row,'execUserid',$event)">
                                     </mdp-select-user-xm>
                                 </template>
                             </el-table-column>
                             <el-table-column prop="priority" label="优先级" width="120" >
                                 <template slot-scope="scope">
-                                    <mdp-select-tag @visible-change="selectVisible(scope.row,$event)" :dict="dicts['priority']" v-model="scope.row.priority" @change="editSomeFields(scope.row,'priority',$event)"></mdp-select-tag>  
+                                    <mdp-select-tag @visible-change="selectVisible(scope.row,$event)" item-code="priority" v-model="scope.row.priority" @change="editSomeFields(scope.row,'priority',$event)"></mdp-select-tag>
                                 </template>
                             </el-table-column>
                             <el-table-column prop="remark" label="执行备注" min-width="150" show-overflow-tooltip>
                                 <template slot-scope="scope">
                                     <span> {{scope.row.remark}} </span>
                                 </template>
-                            </el-table-column>  
-                        </template>  
-                         <template v-if="select==true"> 
-                         
+                            </el-table-column>
+                        </template>
+                         <template v-if="select==true">
+
                             <el-table-column  label="操作" min-width="150">
                                 <template slot-scope="scope">
                                     <el-button type="primary" @click="$emit('select',scope.row)">选择</el-button>
                                 </template>
-                            </el-table-column>  
+                            </el-table-column>
                          </template>
                     </el-table>
                     <el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
@@ -95,10 +95,10 @@
 			    <xm-test-case-select :xm-test-plan="xmTestPlan" :xm-test-casedb="xmTestCasedb" :visible="addFormVisible" @cancel="addFormVisible=false" @select="onXmTestCaseSelect"></xm-test-case-select>
 			</el-dialog>
 
-            
+
 			<el-dialog title="批量执行自动化测试用例" :visible.sync="doBatchExecVisible"  width="600" top="20px" append-to-body  :close-on-click-modal="false">
                 <el-result v-if="load.doBatch" icon="warning" title="警告提示" :subTitle="'正在批量执行测试用例，请勿关闭窗口,当前进度【'+batchProgress+'%】'">
-                     
+
                 </el-result>
                 <el-result v-if="!load.doBatch" icon="success" title="执行完毕" :subTitle="'成功用例【'+okCasesNum+'】,失败【'+errCasesNum+'】,忽略【'+igCasesNum+'】'">
                     <template slot="extra">
@@ -116,13 +116,13 @@ import util from '@/common/js/util';//全局公共库
 import config from '@/common/config';//全局公共库
 import { initDicts,listXmTestPlanCase, delXmTestPlanCase, batchDelXmTestPlanCase,editSomeFieldsXmTestPlanCase,importFromTestCase } from '@/api/xm/core/xmTestPlanCase';
 import  XmTestPlanCaseEdit from './XmTestPlanCaseEdit';//新增修改界面
-import  XmTestCaseSelect from '../xmTestCase/XmTestCaseSelect';//新增修改界面 
+import  XmTestCaseSelect from '../xmTestCase/XmTestCaseSelect';//新增修改界面
 import  XmFuncSelect from '../xmFunc/XmFuncSelect';//新增修改界面
 import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修改界面
 import {autoStepToAxios,initEnvVars} from '@/api/xm/core/XmTestAutoStep.js';//全局公共库
 
 import { mapGetters } from 'vuex'
-import axios from 'axios'//免登录访问 
+import axios from 'axios'//免登录访问
 
 export default {
     name:'xmTestPlanCaseMng',
@@ -132,7 +132,7 @@ export default {
     props:['visible','xmTestPlan','xmTestCasedb','xmTestCase','xmProduct','xmProject','select'],
     computed: {
         ...mapGetters(['userInfo']),
-        xmProductCpd(){ 
+        xmProductCpd(){
             if(this.xmProduct&& this.xmProduct.id){
                 return this.xmProduct
             }
@@ -262,7 +262,7 @@ export default {
             if(this.xmTestCasedb && this.xmTestCasedb.id){
                 params.casedbId=this.xmTestCasedb.id
             }
-            
+
             if(this.xmTestCase && this.xmTestCase.id){
                 params.caseId=this.xmTestCase.id
             }
@@ -369,7 +369,7 @@ export default {
         }else{
             params[fieldName]=$event
         }
-       
+
         var func = editSomeFieldsXmTestPlanCase
         func(params).then(res=>{
           let tips = res.data.tips;
@@ -389,12 +389,12 @@ export default {
         this.searchXmTestPlanCases();
       },
       editSomeFieldsForExec(sels,fieldName,$event){
-        let params={}; 
+        let params={};
         params['pkList']=sels.map(i=>{ return { caseId:i.caseId,  planId:i.planId}})
-        params[fieldName]=$event  
+        params[fieldName]=$event
         var func = editSomeFieldsXmTestPlanCase
-        func(params).then(res=>{ 
-           
+        func(params).then(res=>{
+
         }).catch((e)=>{})
       },
         selectVisible(row,visible){
@@ -418,7 +418,7 @@ export default {
             }
             if(cases.some(k=>k.testType!=this.xmTestPlan.testType)){
                 if(this.xmTestPlan.testType=='1'){
-                    this.$notify({position:'bottom-left',showClose:true,message:"当前计划为自动化测试计划，请选择自动测试的用例加入",type:'error'}) 
+                    this.$notify({position:'bottom-left',showClose:true,message:"当前计划为自动化测试计划，请选择自动测试的用例加入",type:'error'})
                     return;
                 }
             }
@@ -429,16 +429,16 @@ export default {
         } ,
         batchExec(){
             if(this.sels.length==0){
-                this.$notify({ position:'bottom-left',showClose:true, message:'测试用例为0条，无须执行', type: 'error' }); 
+                this.$notify({ position:'bottom-left',showClose:true, message:'测试用例为0条，无须执行', type: 'error' });
                 return;
             }
             if(this.sels.length>100){
-                this.$notify({ position:'bottom-left',showClose:true, message:'一次批量执行测试用例不能超过'+(100)+'条', type: 'error' }); 
+                this.$notify({ position:'bottom-left',showClose:true, message:'一次批量执行测试用例不能超过'+(100)+'条', type: 'error' });
                 return;
             }
             this.doBatchExec(this.sels)
         },
-        async doBatchExec(planCases){   
+        async doBatchExec(planCases){
             this.doBatchExecVisible=true;
             this.load.doBatch=true;
             var igCases=planCases.filter(k=> !k.autoStep || k.testType!='1')
@@ -447,7 +447,7 @@ export default {
             }
             this.igCasesNum=igCases.length;
             this.batchProgress=Math.round(igCases.length/planCases.length)
-            var cases=planCases.filter(k=>k.autoStep && k.testType=='1') 
+            var cases=planCases.filter(k=>k.autoStep && k.testType=='1')
             var execAll=[]
             var env=initEnvVars(this.xmTestCasedb?this.xmTestCasedb.envJson:null,this.xmTestPlan ?this.xmTestPlan.envJson:null);
             for( let k of cases ){
@@ -455,13 +455,13 @@ export default {
                  execAll.push(data)
                  this.batchProgress=Math.round((igCases.length+execAll.length)/planCases.length)
 
-            } 
+            }
             var okCases=execAll.filter(k=>k.execStatus=='2')
             this.okCasesNum=okCases.length
             if(okCases.length>0){
                this.editSomeFieldsForExec(okCases,"execStatus",'2')
             }
-            
+
             var errCases=execAll.filter(k=>k.execStatus=='4')
             this.errCasesNum=errCases.length;
             if(errCases.length>0){
@@ -469,40 +469,40 @@ export default {
             }
             this.load.doBatch=false;
          },
-        sendMsgForTestSetting:function(planCase,env){ 
+        sendMsgForTestSetting:function(planCase,env){
              return new Promise((resolve,reject)=>{
                 var autoStepObj=JSON.parse(planCase.autoStep)
                 if(!autoStepObj.url){
-                    planCase.execStatus='1'  
+                    planCase.execStatus='1'
                     resolve(planCase)
                 }else{
-                    var axiosObj=autoStepToAxios(autoStepObj,env) 
+                    var axiosObj=autoStepToAxios(autoStepObj,env)
                     //axiosObj.headers['Access-Control-Allow-Origin']='*'
                     //axios.defaults.withCredentials = true // 若跨域请求需要带 cookie 身份识别
                     //axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
-                    axios(axiosObj).then(res=>{ 
+                    axios(axiosObj).then(res=>{
                         if(autoStepObj.expectResult){
                             var func=new Function('res','env',autoStepObj.expectResult)
-                            var result=func(res,env) 
+                            var result=func(res,env)
                             planCase.execStatus=result==true?"2":"4"
                         }else{
                             planCase.execStatus=res.status==200?"2":"4"
 
                         }
                         resolve(planCase)
-                    }).catch(res=>{ 
+                    }).catch(res=>{
                         var func=new Function('res','env',autoStepObj.expectResult)
                         var result=func(res,env)
                         if(result==true){
                             planCase.execStatus="2"
-                        }else{ 
+                        }else{
                             planCase.execStatus="4"
                         }
                         resolve(planCase)
                     })
                 }
              })
-             
+
 
         },
         onXmFuncRowClick(row){
@@ -511,10 +511,10 @@ export default {
         },
         onEditFields(row){
             Object.assign(this.editForm,row)
-            this.editFormBak={...this.editForm}  
+            this.editFormBak={...this.editForm}
         },
-        nextEdit(){  
-            var index=this.xmTestPlanCases.findIndex(k=>k.caseId==this.editForm.caseId) 
+        nextEdit(){
+            var index=this.xmTestPlanCases.findIndex(k=>k.caseId==this.editForm.caseId)
             if(index==this.xmTestPlanCases.length-1){
                 this.editFormVisible=false;
                 this.$notify({position:'bottom-left',showClose:true,message:"已是最后一条数据",type:'error'})
@@ -522,7 +522,7 @@ export default {
             }
             this.editForm=this.xmTestPlanCases[index+1]
             this.$refs.xmTestPlanCaseTable.setCurrentRow(this.editForm)
-            this.editFormBak={...this.editForm} 
+            this.editFormBak={...this.editForm}
         }
     },//end methods
     mounted() {

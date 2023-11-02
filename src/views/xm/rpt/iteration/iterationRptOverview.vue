@@ -1,5 +1,5 @@
 <template>
-	<section> 
+	<section>
 		<el-row :class="{'row-box':true,'cfg':isRptCfg}">
 			<div class="rpt-title">{{ rawDatas.iterationName }}</div>
 			<el-input class="input" v-model="rawDatas.iterationName" placeholder="报告名称"/>
@@ -7,66 +7,66 @@
 		<el-row :class="{'row-box':true,'cfg':isRptCfg}">
 			<div class="title">{{ title?title:'报告概览' }}</div>
 			<el-input class="input" v-model="title" placeholder="报告概览"/>
-		</el-row> 
+		</el-row>
 		<el-row  class="padding">
 		<el-row class="padding-top padding-left padding-right">
 			<span>数据汇总</span>
-		</el-row>	
+		</el-row>
 		<el-row ref="table">
 			<el-row class="box padding" >
 				<el-col :span="6" class="box-red">
-					<div class="box-info">  
+					<div class="box-info">
 							<div class="num">{{rawDatas.taskCnt?rawDatas.taskCnt:'0'}}个</div>
-							<div class="label">总任务数</div>   
+							<div class="label">总任务数</div>
 					</div>
 				</el-col>
 				<el-col :span="6" class="box-blue">
-					<div class="box-info">  
+					<div class="box-info">
 							<div class="num">{{rawDatas.menuCnt?rawDatas.menuCnt:'0'}}个</div>
-							<div class="label">需求数</div>   
+							<div class="label">需求数</div>
 					</div>
 				</el-col>
 				<el-col :span="6" class="box-green">
-					<div class="box-info">  
+					<div class="box-info">
 							<div class="num">{{rawDatas.testCases?rawDatas.testCases:'0'}}个</div>
-							<div class="label">测试用例数</div>   
+							<div class="label">测试用例数</div>
 					</div>
 				</el-col>
 				<el-col :span="6" class="box-orange">
-					<div class="box-info">  
+					<div class="box-info">
 							<div class="num">{{rawDatas.bugCnt?rawDatas.bugCnt:0}}个</div>
-							<div class="label">缺陷数</div>   
+							<div class="label">缺陷数</div>
 					</div>
 				</el-col>
-			</el-row> 
+			</el-row>
 			</el-row>
 			<el-row class="padding-top padding-left padding-right">
 				<span>责任人</span>
 			</el-row>
-				<el-row class="padding">		 
+				<el-row class="padding">
 					<el-col :span="8">
 						<mdp-select-user-xm label="负责人" userid-key="adminUserid" username-key="adminUsername" v-model="rawDatas"></mdp-select-user-xm>
-					</el-col> 
+					</el-col>
 					<el-col :span="8">
-						<mdp-select  show-style="x" label="状态" :dict="dicts['iterationStatus']" v-model="rawDatas.istatus"></mdp-select>
-					</el-col> 
-				</el-row>     
- 		
+						<mdp-select  show-style="x" label="状态" item-code="iterationStatus" v-model="rawDatas.istatus"></mdp-select>
+					</el-col>
+				</el-row>
+
 		 <el-row class="padding-top padding-left padding-right">
 				<span>起始时间</span>
 		</el-row>
-		<el-row class="padding">							 
+		<el-row class="padding">
 			<mdp-date-range :auto-default="false" placeholder="选择日期" v-model="rawDatas" start-key="startTime" end-key="endTime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" ></mdp-date-range>
-		</el-row>      
+		</el-row>
 		<el-row class="padding-top padding-left padding-right">
 			<span>报告总结</span>
 		</el-row>
-		<el-row> 
-			<el-row class="padding">	
+		<el-row>
+			<el-row class="padding">
 			<el-input  type="textarea" :rows="8" v-model="remark"></el-input>
 			</el-row>
-		</el-row> 
-		</el-row> 
+		</el-row>
+		</el-row>
 	</section>
 </template>
 
@@ -76,7 +76,7 @@
  	import { initDicts } from '@/api/xm/core/xmIteration';
 	import { mapGetters } from 'vuex'
 	import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';
-	
+
 import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修改界面
 	export default {
 	    name:'iterationRptOverview',
@@ -84,7 +84,7 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 			XmProjectSelect,MdpSelectUserXm,
         },
 		computed: {
-		    ...mapGetters([ 'userInfo'  ]), 
+		    ...mapGetters([ 'userInfo'  ]),
 
 		},
 		props:['xmIteration','rptDatas','isRptCfg'],
@@ -96,11 +96,11 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 	        }
 
 	      },
-	      'visible':function(visible) { 
+	      'visible':function(visible) {
 	      	if(visible==true){
  	      		this.initData()
 	      	}
-	      } 
+	      }
 	    },
 		data() {
 			return {
@@ -109,33 +109,33 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 			    currOpType:'add',//add/edit
  				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				dicts:{
-					iterationStatus:[], 
+					iterationStatus:[],
 
 				},//下拉选择框的所有静态数据 params={categoryId:'all',itemCodes:['sex']} 返回结果 {sex: [{id:'1',name:'男'},{id:'2',name:'女'}]}
 				rawDatasRules: {
-					 
+
 				},
 				rawDatas: {
 					id:'',name:'',casedbId:'',casedbName:'',iterationId:'',iterationName:'',cuserid:'',cusername:'',ctime:'',stime:'',etime:'',status:'',tcode:'',taskCnt:'',okCases:'',errCases:'',igCases:'',blCases:'',iterationId:'',iterationName:'',flowState:'',summaryRemark:''
-				}, 
+				},
                 maxTableHeight:300,
 				summaryRemarkEditVisible:false,
 			}//end return
 		},//end data
 		methods: {
 
-		    ...util, 
-			initData: function(){ 
+		    ...util,
+			initData: function(){
 			    if(this.xmIteration){
                     this.rawDatas = Object.assign({},this.xmIteration);
-                } 
+                }
 				if(this.rptDatas){
 					this.rawDatas=Object.assign({},this.rptDatas)
 				}
                 this.rawDatasBak={...this.rawDatas}
-            }, 
+            },
 			sizeAutoChange(){
-				
+
 			}
 		},//end method
 		mounted() {
@@ -149,6 +149,6 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 
 </script>
 
-<style lang="scss" scoped>  
+<style lang="scss" scoped>
 @import '../index/overview.scss';
 </style>

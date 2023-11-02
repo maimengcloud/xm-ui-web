@@ -2,17 +2,17 @@
   <section>
     <el-row>
       <el-col
-        :span="24" 
+        :span="24"
         :class="{ 'flex-box': displayType == 'agil' }"
       >
         <el-row>
            <xm-project-select style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="isTaskCenter?false:true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
-          
- 
+
+
           <el-select
             v-model="selkey"
             placeholder="场景"
-            clearable 
+            clearable
             style="width: 8em;"
           >
             <el-option class="showall" value="" label="全部场景"
@@ -34,10 +34,10 @@
               >我放弃的</el-option
             >
           </el-select>
-          <mdp-select class="hidden-md-and-down" placeholder="状态" style="width: 6em;"  clearable :dict="dicts['taskState']" v-model="filters.taskState"/>
+          <mdp-select class="hidden-md-and-down" placeholder="状态" style="width: 6em;"  clearable item-code="taskState" v-model="filters.taskState"/>
 
-          <mdp-select class="hidden-md-and-down" placeholder="类型" style="width: 6em;"  clearable :dict="dicts['taskType']" v-model="filters.taskType"/>
- 
+          <mdp-select class="hidden-md-and-down" placeholder="类型" style="width: 6em;"  clearable item-code="taskType" v-model="filters.taskType"/>
+
           <el-input
             style="width: 15em;"
             v-model="filters.key" clearable
@@ -58,41 +58,41 @@
             trigger="manual"
             v-model="moreVisible"
           >
-							<el-row style="margin-top:-40px;"> 
+							<el-row style="margin-top:-40px;">
 									<el-button  style="float:right;"
 									icon="el-icon-close"
 									@click="moreVisible=false"
 									type="text"
 									>关闭</el-button
-									> 
-							</el-row> 
+									>
+							</el-row>
               <el-descriptions class="margin-top"  :column="2" size="mini" border>
 
               <el-descriptions-item :span="2">
-                <template slot="label">显示方式</template>   
+                <template slot="label">显示方式</template>
                 <span class="more-label-font">
                     <el-radio v-model="displayType" label="grant" >甘特图</el-radio>
                     <el-radio v-model="displayType" label="agile">故事分组</el-radio>
-                    <el-radio v-model="displayType" label="agileUser">执行人分组</el-radio> 
+                    <el-radio v-model="displayType" label="agileUser">执行人分组</el-radio>
                     <el-radio v-model="displayType" label="agileWeek">按周分组</el-radio>
-                    <el-radio v-model="displayType" label="table">列表</el-radio> 
+                    <el-radio v-model="displayType" label="table">列表</el-radio>
                 </span>
-              </el-descriptions-item> 
-              <el-descriptions-item> 
-                  <template slot="label">责任人</template> 
-                  <mdp-select-user-xm label="选择责任人" v-model="filters.createUser" :clearable="true"></mdp-select-user-xm>  
-                </el-descriptions-item>  
-                <el-descriptions-item>
-                  <template slot="label">执行人</template> 
-                  <mdp-select-user-xm label="选择执行人" v-model="filters.executor" :clearable="true"></mdp-select-user-xm>  
               </el-descriptions-item>
-              <el-descriptions-item>  
+              <el-descriptions-item>
+                  <template slot="label">责任人</template>
+                  <mdp-select-user-xm label="选择责任人" v-model="filters.createUser" :clearable="true"></mdp-select-user-xm>
+                </el-descriptions-item>
+                <el-descriptions-item>
+                  <template slot="label">执行人</template>
+                  <mdp-select-user-xm label="选择执行人" v-model="filters.executor" :clearable="true"></mdp-select-user-xm>
+              </el-descriptions-item>
+              <el-descriptions-item>
                 <template slot="label">产品</template>
                 <xm-product-select :auto-select="false" :link-project-id="filters.selProject && filters.selProject.id?filters.selProject.id:null" @row-click="onProductSelected" @clear="onProductClearSelect"></xm-product-select>
 
-              </el-descriptions-item>  
+              </el-descriptions-item>
               <el-descriptions-item>
-                  
+
                 <template slot="label">需求</template>
                 <font v-if="filters.menus && filters.menus.length > 0">
                   <el-tag
@@ -105,9 +105,9 @@
                 </font>
                 <el-button v-else @click="showMenuStory" type="plian" icon="el-icon-search"
                   >选需求</el-button
-                > 
+                >
               </el-descriptions-item>
-              <el-descriptions-item> 
+              <el-descriptions-item>
                   <template slot="label">技能</template>
                 <el-button
                   v-if="!filters.skillTags || filters.skillTags.length == 0"
@@ -124,7 +124,7 @@
                   @close="skillTagClear(skill)"
                   >{{ skill.skillName }}</el-tag
                 >
-                </el-descriptions-item>  
+                </el-descriptions-item>
                 <el-descriptions-item>
                     <template slot="label">标签</template>
                   <el-button
@@ -140,9 +140,9 @@
                     >{{ filters.tags[0].tagName.substr(0, 5) }}等({{
                       filters.tags.length
                     }})个</el-tag
-                  > 
+                  >
               </el-descriptions-item>
-              <el-descriptions-item>  
+              <el-descriptions-item>
                   <template slot="label">众包任务</template>
 
                   <el-checkbox  class="more-label-font"
@@ -150,93 +150,93 @@
                     true-label="1"
                     false-label=""
                     >只查众包</el-checkbox
-                  > 
-              </el-descriptions-item> 
-              
-              <el-descriptions-item> 
+                  >
+              </el-descriptions-item>
+
+              <el-descriptions-item>
                   <template slot="label">最后变动日期</template>
                   <mdp-date-range
                     v-model="filters"
-                    type="daterange" 
+                    type="daterange"
                     start-key="ltimeStart"
-                    end-key="ltimeEnd"  
+                    end-key="ltimeEnd"
                     unlink-panels
                     range-separator="至"
                     start-placeholder="开始日期"
                     end-placeholder="完成日期"
-                    value-format="yyyy-MM-dd HH:mm:ss" 
-                    :default-time="['00:00:00', '23:59:59']" 
+                    value-format="yyyy-MM-dd HH:mm:ss"
+                    :default-time="['00:00:00', '23:59:59']"
                     :auto-default="false"
                     key="ltime"
-                  ></mdp-date-range> 
-              </el-descriptions-item> 
-              <el-descriptions-item> 
+                  ></mdp-date-range>
+              </el-descriptions-item>
+              <el-descriptions-item>
                   <template slot="label">计划开始时间</template>
                   <mdp-date-range
                     v-model="filters"
-                    type="daterange" 
+                    type="daterange"
                     start-key="planStartTimeStart"
                     end-key="planStartTimeEnd"
                     unlink-panels
                     range-separator="至"
                     start-placeholder="开始日期"
                     end-placeholder="完成日期"
-                    value-format="yyyy-MM-dd HH:mm:ss" 
-                    :default-time="['00:00:00', '23:59:59']" 
+                    value-format="yyyy-MM-dd HH:mm:ss"
+                    :default-time="['00:00:00', '23:59:59']"
                     :auto-default="false"
                     key="planStartTime"
                   ></mdp-date-range>
-              </el-descriptions-item>  
+              </el-descriptions-item>
               <el-descriptions-item>
                   <template slot="label">实际开始时间</template>
                 <mdp-date-range
                   v-model="filters"
-                  type="daterange" 
+                  type="daterange"
                   start-key="actStartTimeStart"
                   end-key="actStartTimeEnd"
                   unlink-panels
                   range-separator="至"
                   start-placeholder="开始日期"
                   end-placeholder="完成日期"
-                  value-format="yyyy-MM-dd HH:mm:ss" 
-                  :default-time="['00:00:00', '23:59:59']" 
+                  value-format="yyyy-MM-dd HH:mm:ss"
+                  :default-time="['00:00:00', '23:59:59']"
                   :auto-default="false"
-                ></mdp-date-range> 
-              </el-descriptions-item> 
-              <el-descriptions-item> 
+                ></mdp-date-range>
+              </el-descriptions-item>
+              <el-descriptions-item>
                   <template slot="label">计划结束时间</template>
                 <mdp-date-range
                   v-model="filters"
-                  type="daterange" 
+                  type="daterange"
                   start-key="planEndTimeStart"
                   end-key="planEndTimeEnd"
                   unlink-panels
                   range-separator="至"
                   start-placeholder="开始日期"
                   end-placeholder="完成日期"
-                  value-format="yyyy-MM-dd HH:mm:ss" 
-                  :default-time="['00:00:00', '23:59:59']" 
-                  :auto-default="false" 
+                  value-format="yyyy-MM-dd HH:mm:ss"
+                  :default-time="['00:00:00', '23:59:59']"
+                  :auto-default="false"
                   key="planEndTime"
-                ></mdp-date-range> 
-                
-              </el-descriptions-item>  
+                ></mdp-date-range>
+
+              </el-descriptions-item>
               <el-descriptions-item>
                   <template slot="label">实际结束时间</template>
                 <mdp-date-range
                   v-model="filters"
-                  type="daterange" 
+                  type="daterange"
                   start-key="actEndTimeStart"
                   end-key="actEndTimeEnd"
                   unlink-panels
                   range-separator="至"
                   start-placeholder="开始日期"
                   end-placeholder="完成日期"
-                  value-format="yyyy-MM-dd HH:mm:ss" 
-                  :default-time="['00:00:00', '23:59:59']" 
+                  value-format="yyyy-MM-dd HH:mm:ss"
+                  :default-time="['00:00:00', '23:59:59']"
                   :auto-default="false"
-                ></mdp-date-range> 
-              </el-descriptions-item>  
+                ></mdp-date-range>
+              </el-descriptions-item>
               <el-descriptions-item>
                 <el-button style="float:right;"
                   type="primary"
@@ -245,7 +245,7 @@
                   >查询</el-button
                 >
               </el-descriptions-item>
-            </el-descriptions> 
+            </el-descriptions>
             <el-button   slot="reference" @click="moreVisible=!moreVisible">更多</el-button>
           </el-popover>
           <span style="float:right;">
@@ -325,15 +325,15 @@
               :xmTasks="xmTasks"
               @submit="afterEditSubmit"
             ></xm-task-agile-kanban>
-            
+
             <xm-task-agile-kanban-user
               :tableHeight="tableHeight"
               v-else-if="displayType == 'agileUser'"
               :xmTasks="xmTasks"
               @submit="afterEditSubmit"
             ></xm-task-agile-kanban-user>
-            
-            
+
+
             <xm-task-agile-kanban-week
               :tableHeight="tableHeight"
               v-else-if="displayType == 'agileWeek'"
@@ -356,7 +356,7 @@
               tooltip-effect="light"
               :height="tableHeight"
               row-key="id"
-              
+
             >
               <el-table-column
                 label="全选"
@@ -367,7 +367,7 @@
               </el-table-column>
               <el-table-column
                 sortable
-                prop="name" 
+                prop="name"
                 fixed="left"
                 label="任务名称"
                 min-width="400"
@@ -376,11 +376,11 @@
                   <div style="display:flex; flex-wrap:nowrap;">
                   <div    class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#409EFF'}">
 									  <i :class="scope.row.ntype==='1'?'el-icon-time':'el-icon-s-operation'" style="width:20px;"></i>
-                  </div> 
+                  </div>
                     <el-link @click="showEdit(scope.row)">{{ scope.row.sortLevel }}&nbsp;  {{ scope.row.name }}</el-link>
-                 
+
                      <span class="tool-bar">
-                        <el-button @click="copyOne(scope.row,scope.$index)" icon="el-icon-document-copy" circle title="复制一行"></el-button> 
+                        <el-button @click="copyOne(scope.row,scope.$index)" icon="el-icon-document-copy" circle title="复制一行"></el-button>
 									    </span>
                 </div>
                 </template>
@@ -392,7 +392,7 @@
                 width="100"
               >
 								<template slot-scope="scope">
-										 <mdp-select-tag size="mini" @visible-change="selectVisible(scope.row,$event)"  :dict="dicts['taskState']" v-model="scope.row.taskState" placeholder="任务状态"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'taskState',$event)">
+										 <mdp-select-tag size="mini" @visible-change="selectVisible(scope.row,$event)"  item-code="taskState" v-model="scope.row.taskState" placeholder="任务状态"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'taskState',$event)">
  										 </mdp-select-tag>
 								</template>
               </el-table-column>
@@ -429,7 +429,7 @@
                 width="120"
                 show-overflow-tooltip
               >
-								<template slot-scope="scope"> 
+								<template slot-scope="scope">
                     <mdp-select-user-xm size="mini" v-model="scope.row" userid-key="createUserid" @visible-change="selectVisible(scope.row,$event)" username-key="createUsername" :project-id="scope.row.projectId" @change="editXmTaskSomeFields(scope.row,'createUserid',$event)"></mdp-select-user-xm>
  								</template>
               </el-table-column>
@@ -440,7 +440,7 @@
                 width="120"
                 show-overflow-tooltip
               >
-								<template slot-scope="scope"> 
+								<template slot-scope="scope">
                     <mdp-select-user-xm size="mini" :key="scope.row.id" v-model="scope.row" userid-key="executorUserid" @visible-change="selectVisible(scope.row,$event)" username-key="executorUsername" :project-id="scope.row.projectId" @change="editXmTaskSomeFields(scope.row,'executorUserid',$event)"></mdp-select-user-xm>
  								</template>
               </el-table-column>
@@ -459,7 +459,7 @@
                   >
                   <span title="实际工时 / 预算工时 或者 (剩余工时+实际工时)">{{scope.row.actWorkload}} &nbsp;/ &nbsp;{{scope.row.rworkload?parseInt(scope.row.actWorkload)+parseInt(scope.row.rworkload):scope.row.budgetWorkload}}h </span>
                   </el-link>
-                  	
+
                 </template>
               </el-table-column>
               <el-table-column sortable prop="productId" label="产品" width="100" show-overflow-tooltip>
@@ -484,7 +484,7 @@
                 width="100"
               >
 								<template slot-scope="scope">
-										 <mdp-select-tag size="mini" @visible-change="selectVisible(scope.row,$event)" :dict="dicts['priority']" v-model="scope.row.level" placeholder="优先级"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'level',$event)">
+										 <mdp-select-tag size="mini" @visible-change="selectVisible(scope.row,$event)" item-code="priority" v-model="scope.row.level" placeholder="优先级"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'level',$event)">
  										 </mdp-select-tag>
 
 								</template>
@@ -533,7 +533,7 @@
             :useRealTime="true"
           ></xm-gantt>
         </el-row>
-        
+
         <el-pagination v-if="displayType != 'grant'"
               ref="pagination"
               layout="total, sizes, prev, pager, next"
@@ -557,11 +557,11 @@
         <el-row style="font-size: 12px; overflow-x: hidden">
           <div class="task-header extra">
             <div class="title" v-if="sels.length==0">
-              {{ editForm.name }}   
-            </div>  
+              {{ editForm.name }}
+            </div>
             <div class="title" v-if="sels.length>0">
               {{ editForm.name }} <font color="red">等{{sels.length}}个任务</font>
-            </div>  
+            </div>
           </div>
 
           <div class="exector extra">
@@ -569,14 +569,14 @@
             <mdp-date-range
               v-model="editForm"
               start-key="startTime"
-              end-key="endTime" 
-              type="daterange" 
+              end-key="endTime"
+              type="daterange"
               unlink-panels
               range-separator="至"
               start-placeholder="计划开始日期"
               end-placeholder="计划完成日期"
               value-format="yyyy-MM-dd HH:mm:ss"
-              :default-time="['00:00:00', '23:59:59']" 
+              :default-time="['00:00:00', '23:59:59']"
               @change="editTime(editForm,'startTime')"
               :auto-default="false"
             ></mdp-date-range>
@@ -587,17 +587,17 @@
             <mdp-date-range
               v-model="editForm"
               start-key="actStartTime"
-              end-key="actEndTime" 
-              type="daterange" 
+              end-key="actEndTime"
+              type="daterange"
               unlink-panels
               range-separator="至"
               start-placeholder="实际开始日期"
               end-placeholder="实际完成日期"
               value-format="yyyy-MM-dd HH:mm:ss"
-              :default-time="['00:00:00', '23:59:59']" 
+              :default-time="['00:00:00', '23:59:59']"
               @change="editTime(editForm,'actStartTime')"
               :auto-default="false"
-            ></mdp-date-range> 
+            ></mdp-date-range>
           </div>
         </el-row>
       </el-row>
@@ -639,7 +639,7 @@
         @cancel="taskWorkloadVisible=false"
         @submit="onTaskWorkloadSubmit"
       ></xm-workload-edit>
-    </el-dialog> 
+    </el-dialog>
 
     <el-drawer
       v-if="taskWorkloadInitVisible == true"
@@ -650,18 +650,18 @@
       <el-form class="padding" ref="workloadInit" :model="editForm" label-position="top" label-width="80px" size="mini">
         <el-form-item label="更新范围">
           <div v-if="sels.length==0">
-            {{ editForm.name }}   
-          </div>  
+            {{ editForm.name }}
+          </div>
           <div v-if="sels.length>0">
             {{ editForm.name }} <font color="red">等{{sels.length}}个任务</font>
-          </div>  
-        </el-form-item> 
+          </div>
+        </el-form-item>
         <el-form-item label="预估工时(小时)">
           <el-input style="width:50%;" v-model="editForm.budgetWorkload" @change="editXmTaskSomeFields(editForm,'budgetWorkload',$event)">
           </el-input>
-        </el-form-item> 
+        </el-form-item>
       </el-form>
-       
+
     </el-drawer>
     <!-- 新增 XmTask xm_task界面-->
     <el-dialog
@@ -868,7 +868,7 @@ import xmSkillMng from "../xmTaskSkill/XmTaskSkillMng";
 import skillMng from "@/views/xm/core/skill/skillMng";
 import { batchAddSkill } from "@/api/xm/core/xmTaskSkill";
 import { sn } from "@/common/js/sequence";
-import xmTaskTemplateMng from "../xmTaskTemplate/XmTaskTemplateMng"; 
+import xmTaskTemplateMng from "../xmTaskTemplate/XmTaskTemplateMng";
 import xmMenuSelect from "../xmMenu/XmMenuSelect";
 
 import { addUserFocus, delUserFocus } from "@/api/mdp/sys/userFocus";
@@ -924,22 +924,22 @@ export default {
     tasksTreeData() {
       return this.xmTasks;
     },
-   
+
     toSearchCpd(){
       var key={iterationId:'',projectId:'',productId:'',parentTaskid:''};
       if(this.xmIteration&&this.xmIteration.id){
         key.iterationId=this.xmIteration.id
         key.productId=this.xmIteration.productId
       }else{
-        key.iterationId='' 
+        key.iterationId=''
       }
-      if(this.xmProduct&&this.xmProduct.id){  
+      if(this.xmProduct&&this.xmProduct.id){
         key.productId=this.xmProduct.id
       }else{
         key.productId=''
       }
 
-      if(this.selProject&&this.selProject.id){ 
+      if(this.selProject&&this.selProject.id){
         key.projectId=this.selProject.id
       }else{
         key.projectId=''
@@ -948,7 +948,7 @@ export default {
         key.parentTaskid=this.parentTask.id
         key.projectId=this.parentTask.projectId
       }else{
-        key.parentTaskid='' 
+        key.parentTaskid=''
       }
       return key.iterationId+key.projectId+key.productId+key.parentTaskid
     }
@@ -972,7 +972,7 @@ export default {
       this.filters.selProject = this.selProject;
       this.changeSelKey("");
     },
-    menuId: function (menuId) { 
+    menuId: function (menuId) {
     },
     timeVisible: function (timeVisible) {
       if (timeVisible == false) {
@@ -980,14 +980,14 @@ export default {
       }
     },
     xmProduct: function () {
-      this.filters.product = this.xmProduct; 
+      this.filters.product = this.xmProduct;
     },
-    xmIteration: function () { 
+    xmIteration: function () {
     },
-    parentTask:function(){ 
+    parentTask:function(){
     },
-    
-    toSearchCpd:function(){ 
+
+    toSearchCpd:function(){
       this.searchXmTasks();
     }
   },
@@ -1024,7 +1024,7 @@ export default {
         total: 0, //服务器端收到0时，会自动计算总记录数，如果上传>0的不自动计算。
         pageSize: 20, //每页数据
         count:true, //是否需要重新计算总记录数
-        pageNum: 1, //当前页码、从1开始计算 
+        pageNum: 1, //当前页码、从1开始计算
         orderFields: ['cast(sort_level as signed)','menu_id',"start_time"], //排序列 如 ['sex','student_id']，必须为数据库字段
         orderDirs: ["asc","asc","desc"], //升序 asc,降序desc 如 性别 升序、学生编号降序 ['asc','desc']
       },
@@ -1071,12 +1071,12 @@ export default {
       taskTemplateVisible: false,
       projectInfoVisible: false,
       menuVisible: false,
-      menuDetailVisible: false, 
+      menuDetailVisible: false,
       displayType: "table",
       menuStory: false, //需求查询
       showSkillSearchVisible: false, //按技能查询
       tableHeight: 300,
-      productSelectVisible: false,  
+      productSelectVisible: false,
 
       budgetDateRanger: [],
       actDateRanger: [],
@@ -1126,7 +1126,7 @@ export default {
     },
     changeShowInfo() {
       this.projectInfoVisible = false;
-    }, 
+    },
     clearFiltersMenu(menu) {
       this.filters.menus = this.filters.menus.filter(
         (i) => i.menuId != menu.menuId
@@ -1438,7 +1438,7 @@ export default {
       this.addForm.ntype=ntype;
       this.addFormVisible = true;
     },
-    afterAddSubmit(row) { 
+    afterAddSubmit(row) {
       this.pageInfo.count = true;
       this.xmTasks.push(row)
         //this.getXmTasks()
@@ -1516,7 +1516,7 @@ export default {
           .catch((err) => (this.load.del = false));
       });
     },
-    rowClick: function (row) { 
+    rowClick: function (row) {
       this.editForm = row;
       this.editFormBak=Object.assign({},row)
       // this.$emit('row-click',row,);//  @row-click="rowClick"
@@ -1848,7 +1848,7 @@ export default {
       }else if(option.action==='executorUserid'){
         var user= groupUsers[0];
         var params={}
-        var row=option.data; 
+        var row=option.data;
         params.taskId = row.id;
         params.projectId=row.projectId
         params.projectName=row.projectName
@@ -1859,7 +1859,7 @@ export default {
         params.quoteWorkload=row.budgetWorkload
         params.userid=user.userid
         params.username=user.username
-        if(this.sels.length>0){ 
+        if(this.sels.length>0){
           this.editXmTaskSomeFields(row,"executorUserid",params)
         }else{
           addTaskExecuser(params).then(res=>{
@@ -1875,11 +1875,11 @@ export default {
             }
           })
         }
-       
-      } 
+
+      }
 
     },
-     
+
     formatExeUsernames(row) {
 
       var exeUsernames = row.exeUsernames;
@@ -1927,10 +1927,10 @@ export default {
         params.actStartTime=row.actStartTime
         params.actEndTime=row.actEndTime
       }
-      this.editXmTaskSomeFields( row,fieldName,params) 
+      this.editXmTaskSomeFields( row,fieldName,params)
     },
     clearFiltersTag(){
-       this.filters.tags=[] 
+       this.filters.tags=[]
     },
     onTagSelected(tags,option){
 				if(option && option.action=='editTagIds'){
@@ -1940,44 +1940,44 @@ export default {
 						this.filters.tags=[]
 					}else{
 						this.filters.tags=JSON.parse(JSON.stringify(tags))
-					} 
+					}
 				}
 
 			},
     getParams(params) {
 
       if (this.filters.planStartTimeStart) {
-        params.planStartTimeStart = this.filters.planStartTimeStart 
+        params.planStartTimeStart = this.filters.planStartTimeStart
       }
-      
+
       if (this.filters.planStartTimeEnd) {
-        params.planStartTimeEnd = this.filters.planStartTimeEnd 
+        params.planStartTimeEnd = this.filters.planStartTimeEnd
       }
        if (this.filters.planEndTimeStart) {
-        params.planEndTimeStart = this.filters.planEndTimeStart 
+        params.planEndTimeStart = this.filters.planEndTimeStart
       }
        if (this.filters.planEndTimeEnd) {
-        params.planEndTimeEnd = this.filters.planEndTimeEnd 
+        params.planEndTimeEnd = this.filters.planEndTimeEnd
       }
 
        if (this.filters.actStartTimeStart) {
-        params.actStartTimeStart = this.filters.actStartTimeStart 
+        params.actStartTimeStart = this.filters.actStartTimeStart
       }
-      
+
       if (this.filters.actStartTimeEnd) {
-        params.actStartTimeEnd = this.filters.actStartTimeEnd 
+        params.actStartTimeEnd = this.filters.actStartTimeEnd
       }
        if (this.filters.actEndTimeStart) {
-        params.actEndTimeStart = this.filters.actEndTimeStart 
+        params.actEndTimeStart = this.filters.actEndTimeStart
       }
        if (this.filters.actEndTimeEnd) {
-        params.actEndTimeEnd = this.filters.actEndTimeEnd 
+        params.actEndTimeEnd = this.filters.actEndTimeEnd
       }
        if (this.filters.ltimeStart) {
-        params.ltimeStart = this.filters.ltimeStart 
+        params.ltimeStart = this.filters.ltimeStart
       }
        if (this.filters.ltimeEnd) {
-        params.ltimeEnd = this.filters.ltimeEnd 
+        params.ltimeEnd = this.filters.ltimeEnd
       }
 
 
@@ -2102,10 +2102,10 @@ export default {
 				}else if(fieldName==='workload'){
 					params={...params,...$event}
 				}else if(fieldName==='executorUserid'){
-          if(row.out=='1'||row.crowd=='1'){  
+          if(row.out=='1'||row.crowd=='1'){
             this.$nextTick(()=>{
               Object.assign(this.editForm,this.editFormBak)
-            }) 
+            })
 						this.$notify({position:'bottom-left',showClose:true,message:'外包任务不允许直接设置执行人，请到执行人管理中选择',type:'error'})
             return;
           }
@@ -2201,33 +2201,33 @@ export default {
         this.taskWorkloadInitVisible=false;
         this.searchXmTasks();
       },
-      
+
       showWorkload(row){
         this.editForm=row
         this.taskWorkloadVisible=true;
       },
-      
-			setInitWorkload(row){ 
+
+			setInitWorkload(row){
         this.editForm=row
         this.taskWorkloadInitVisible=true;
       },
 			copyOne(row,index){
-				
+
 				var params={...row}
 				params.id=null;
 				params.createUserid=this.userInfo.userid
-				params.createUsername=this.userInfo.username 
+				params.createUsername=this.userInfo.username
         params.executorUserid=null
         params.executorUseranme=null
         params.execUserids=null;
-        params.execUsername=null; 
+        params.execUsername=null;
         params.actWorkload=null;
         params.actAt=null;
-        params.efunds=0 
+        params.efunds=0
 				params.name=row.name+'V'
 				addTask(params).then(res=>{
 					var tips = res.data.tips
-					if(tips.isOk){ 
+					if(tips.isOk){
 						var row2=res.data.data
 						this.xmTasks.splice(index+1,0,row2)
 						this.pageInfo.total=this.pageInfo.total+1
@@ -2249,7 +2249,7 @@ export default {
     xmSkillMng,
     skillMng,
     xmTaskTemplateMng,
-    XmProjectSelect, 
+    XmProjectSelect,
     xmMenuSelect,
     XmMenuRichDetail,
     XmGantt,
@@ -2315,8 +2315,8 @@ export default {
   font-size: 16px;
   overflow-x: auto;
   overflow-y: hidden;
-} 
- 
+}
+
 
 >>> .el-date-editor--daterange.el-input, .el-date-editor--daterange.el-input__inner, .el-date-editor--timerange.el-input, .el-date-editor--timerange.el-input__inner {
      width: 250px;

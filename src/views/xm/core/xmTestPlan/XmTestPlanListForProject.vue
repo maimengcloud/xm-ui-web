@@ -1,10 +1,10 @@
 <template>
-    
+
 	<section class="padding" ref="xmTestPlanTable">
  		<el-row>
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"  clearable></el-input>
 			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestPlans" icon="el-icon-search">查询</el-button>
- 
+
 		</el-row>
 		<el-row class="padding-top">
 			<!--列表 XmTestPlan 测试计划-->
@@ -18,19 +18,19 @@
 				-->
  				<el-table-column prop="name" label="计划名称" min-width="250">
 				    <template slot-scope="scope">
-				        <el-link @click="select(scope.row)">  {{scope.row.name}} </el-link> 
+				        <el-link @click="select(scope.row)">  {{scope.row.name}} </el-link>
                     </template>
-				</el-table-column>  
+				</el-table-column>
  				<el-table-column prop="projectName" label="项目" min-width="150">
 				    <template slot-scope="scope">
-				        <span>  {{scope.row.projectName}} </span> 
+				        <span>  {{scope.row.projectName}} </span>
                     </template>
-				</el-table-column>  
+				</el-table-column>
 				<el-table-column prop="status" label="状态" width="120" show-overflow-tooltip>
-				    <template slot-scope="scope"> 
-                        <mdp-select-tag :dict="dicts['testPlanStatus']" v-model="scope.row.status" effect="dark" :disabled="true"></mdp-select-tag> 
+				    <template slot-scope="scope">
+                        <mdp-select-tag item-code="testPlanStatus" v-model="scope.row.status" effect="dark" :disabled="true"></mdp-select-tag>
                    </template>
-				</el-table-column> 
+				</el-table-column>
 				<el-table-column prop="stime" label="开始时间"  width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
 				        <span> {{scope.row.stime}} </span>
@@ -40,14 +40,14 @@
 				    <template slot-scope="scope">
 				        <span> {{scope.row.etime}} </span>
                     </template>
-				</el-table-column> 
+				</el-table-column>
 				<el-table-column  label="操作"  width="120" fixed="right">
 				    <template slot-scope="scope">
 				        <el-button type="primary" @click="select(scope.row)">选择</el-button>
                     </template>
-				</el-table-column> 
+				</el-table-column>
 			</el-table>
-		</el-row> 
+		</el-row>
 		<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 
  	</section>
@@ -57,12 +57,12 @@
 
 import util from '@/common/js/util';//全局公共库
 import config from '@/common/config';//全局公共库
-import { initDicts,listXmTestPlan } from '@/api/xm/core/xmTestPlan'; 
+import { initDicts,listXmTestPlan } from '@/api/xm/core/xmTestPlan';
  import { mapGetters } from 'vuex'
 
 export default {
     name:'xmTestPlanSelect',
-    components: { 
+    components: {
     },
     props:[],
     computed: {
@@ -182,12 +182,12 @@ export default {
             }).catch( err => this.load.list = false );
         },
 
-        
+
         //选择行xmTestPlan
         selsChange: function (sels) {
             this.sels = sels;
         },
-        
+
         rowClick: function(row, event, column){
             this.editForm=row
             this.editFormBak={...row};
@@ -196,11 +196,11 @@ export default {
         initData: function(){
 
         },
-         
+
         open(){
             this.visible=true
         },
-        select(row){ 
+        select(row){
 			var key="xm-test-plan-info-"+row.id
             sessionStorage.setItem(key,JSON.stringify(row))
             this.$router.push({
