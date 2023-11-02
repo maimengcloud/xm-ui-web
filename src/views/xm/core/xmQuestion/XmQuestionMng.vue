@@ -245,7 +245,7 @@
 
 	import config from '@/common/config';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
-	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
+
 	import { listXmQuestion,addXmQuestion,delXmQuestion, batchDelXmQuestion, editStatus ,editXmQuestionSomeFields} from '@/api/xm/core/xmQuestion';
 	import  XmQuestionAdd from './XmQuestionEdit';//新增界面
 	import  XmQuestionEdit from './XmQuestionEdit';//修改界面

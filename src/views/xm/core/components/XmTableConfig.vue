@@ -1,27 +1,27 @@
-<template> 
- <section>  
-	<el-popover 
+<template>
+ <section>
+	<el-popover
 			placement="bottom"
 			width="500"
 			v-model="formVisible"
-			trigger="manual" >  <el-form :model="editForm"  label-width="100px"  ref="editForm">   
+			trigger="manual" >  <el-form :model="editForm"  label-width="100px"  ref="editForm">
 					<el-form-item :label="item.label" :prop="item.property" v-for="(item,index) in columnsConfig" :key="index">
 						<el-checkbox v-model="item.isShow" @change="onCheckboxChange(item,$event)">是否显示</el-checkbox>
-					</el-form-item>   
+					</el-form-item>
 					<el-form-item label="" class="padding">
 						<el-button   type="text" @click="cancel">关闭</el-button>
 						<el-button :disabled="editForm.calcType!=='2' && editForm.ntype==='1'" type="primary" @click="submit">确认</el-button>
-					</el-form-item> 
-				</el-form> 
-				<el-button title="点击修改表格配置" @click="showConfig"  slot="reference" icon="el-icon-setting"><font style="font-size:14px;"></font></el-button> 
-		</el-popover> 
+					</el-form-item>
+				</el-form>
+				<el-button title="点击修改表格配置" @click="showConfig"  slot="reference" icon="el-icon-setting"><font style="font-size:14px;"></font></el-button>
+		</el-popover>
  </section>
 </template>
 
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import config from '@/common/config';//全局公共库
-	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询  
+
 
 	import { mapGetters } from 'vuex'
 
@@ -29,14 +29,14 @@
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
-			]), 
+			]),
 		},
 		props:['table'],
-		watch:{ 
-			 
+		watch:{
+
 		},
-		data() { 
-			return {  
+		data() {
+			return {
 				 columnsConfig:[],
 				 editForm:{},
 				 formVisible:false,
@@ -47,7 +47,7 @@
 				this.formVisible=false;
 				this.$emit("cancel")
 			},
-			 submit(){ 
+			 submit(){
 				 this.$emit("submit");
 				 this.formVisible=false;
 			 },
@@ -67,32 +67,32 @@
 								id:column.columnConfig.id,
 							}
 						}
-						
-					}); 
+
+					});
 					this.columnsConfig=columns
 					this.formVisible=true;
 				}
 			 },
 			 onCheckboxChange(column,newVal){
- 				var doc=this.table.$el; 
+ 				var doc=this.table.$el;
 				var eles=doc.querySelectorAll("."+column.id);
-				eles.forEach(i=>{ 
+				eles.forEach(i=>{
 					i.style.display=newVal?"":"none";
 				})
 				this.table.doLayout();
 			 }
-			 
+
 		},//end methods
-		components: { 
+		components: {
 		    //在下面添加其它组件
 		},
-		mounted() {  
-			
-		 
+		mounted() {
+
+
 		}
 	}
 
 </script>
 
-<style   lang="scss" scoped> 
+<style   lang="scss" scoped>
 </style>

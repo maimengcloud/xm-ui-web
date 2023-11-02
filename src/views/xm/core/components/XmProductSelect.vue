@@ -26,13 +26,13 @@
           v-model="moreVisible"
           trigger="manual"
         >
-        
+
               <el-button type="text" style="float:right;margin-top:-40px;" @click="moreVisible = false" icon="el-icon-close"
                 >关闭</el-button>
           <el-row>
-            
+
 						<el-divider></el-divider>
-            
+
             <el-row>
               <font class="more-label-font"> 产品经理: </font>
               <mdp-select-user-xm label="选择产品经理" v-model="filters" userid-key="pmUserid" username-key="pmUsername" :project-id="linkProjectId" :clearable="true"></mdp-select-user-xm>
@@ -43,7 +43,7 @@
                 v-model="filters.id"
                 style="width: 200px;"
                 placeholder="输入产品编号"
-                 clearable 
+                 clearable
               >
               </el-input>
             </el-row>
@@ -57,7 +57,7 @@
               >
               </el-input>
             </el-row>
-            
+
 
             <el-row>
               <font class="more-label-font">创建时间:</font>
@@ -82,7 +82,7 @@
           </el-row>
           <el-button
             type="text"
-            slot="reference" 
+            slot="reference"
             @click="moreVisible = !moreVisible" icon="el-icon-search"
             >更多条件</el-button
           >
@@ -175,38 +175,38 @@
           style="float: right"
         ></el-pagination>
       </el-row>
-      <div slot="reference" @click="referenceClick"> 
-        <slot name="reference" v-bind:product="editForm"> 
-        
+      <div slot="reference" @click="referenceClick">
+        <slot name="reference" v-bind:product="editForm">
+
               <div class="title">
               <slot name="title" v-bind:product="editForm">
                 <el-link
-                  title="产品，点击选择、清除选择" 
-                  type="primary" 
+                  title="产品，点击选择、清除选择"
+                  type="primary"
                   v-loading="load.list"
-                  icon="el-icon-s-opportunity" 
+                  icon="el-icon-s-opportunity"
               >
               <div class="res-text hidden-md-and-down">
               {{
                 editForm && editForm.id ? editForm.productName : "选择产品"
-              }} 
+              }}
               </div>
-              
+
               <div class="res-text hidden-lg-and-up">
               {{
                 editForm && editForm.id ? editForm.productName : "选择产品"
-              }} 
+              }}
               </div>
-              </el-link> 
+              </el-link>
               <el-button  type="text" size="mini" title="取消选中状态" circle plain v-if="editForm&&editForm.id" icon="el-icon-circle-close" @click.stop="clearSelect"></el-button>&nbsp;
             </slot>
               </div>
-            
-      
+
+
         </slot>
         </div>
     </el-popover>
-	
+
         <el-dialog append-to-body :visible.sync="addProductVisible" width="70%">
           <xm-product-add op-type="add"
             :sel-project="{ id: linkProjectId, name: '' }"
@@ -221,9 +221,9 @@
 <script>
 import util from "@/common/js/util"; //全局公共库
 //import Sticky from '@/components/Sticky' // 粘性header组件
-//import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
+
 import { listXmProductWithState } from "@/api/xm/core/xmProduct";
-import { mapGetters } from "vuex"; 
+import { mapGetters } from "vuex";
 import MdpSelectUserXm from "@/views/xm/core/components/MdpSelectUserXm/index";
 import XmProductAdd from "../xmProduct/XmProductEdit.vue";
 const map = new Map();
@@ -249,7 +249,7 @@ export default {
     return {
       filters: {
         key: "",
-        id: "", //产品编号 
+        id: "", //产品编号
         pmUserid:'',
         pmUsername:'',
       },
@@ -365,14 +365,14 @@ export default {
           if (tips.isOk) {
             this.pageInfo.total = res.data.total;
             this.pageInfo.count = false;
-            this.xmProducts = res.data.data; 
+            this.xmProducts = res.data.data;
 
             var key=""
 						if(this.iterationId){
-							key='xm-product-select-list-it-'+this.iterationId 
+							key='xm-product-select-list-it-'+this.iterationId
 							sessionStorage.setItem(key,JSON.stringify(this.xmProducts))
 						}else if(this.linkProjectId){
-							key='xm-product-select-list-prj-'+this.linkProjectId  
+							key='xm-product-select-list-prj-'+this.linkProjectId
 							sessionStorage.setItem(key,JSON.stringify(this.xmProducts))
 						}
 
@@ -421,7 +421,7 @@ export default {
       this.$emit("selected", row);
       this.productVisible = false;
       this.moreVisible = false;
-    }, 
+    },
 
     tableRowClassName({ row, rowIndex }) {
       if (row && this.editForm && row.id == this.editForm.id) {
@@ -449,14 +449,14 @@ export default {
     initData() {
       var key=""
       if(this.iterationId){
-        key='xm-product-select-list-it-'+this.iterationId 
+        key='xm-product-select-list-it-'+this.iterationId
       }else if(this.linkProjectId){
-        key='xm-product-select-list-prj-'+this.linkProjectId 
+        key='xm-product-select-list-prj-'+this.linkProjectId
       }
 
       if(key){
         var xmProductStr=sessionStorage.getItem(key);
-        if(xmProductStr && xmProductStr!='null' && xmProductStr!='undefined'){  
+        if(xmProductStr && xmProductStr!='null' && xmProductStr!='undefined'){
           this.xmProducts = JSON.parse(xmProductStr);
           if (this.productVisible == false) {
             if (this.autoSelect !== false && this.xmProducts.length > 0) {
@@ -467,7 +467,7 @@ export default {
           }
         } else {
           this.searchXmProducts();
-        } 
+        }
       } else {
         this.searchXmProducts();
       }
@@ -508,7 +508,7 @@ export default {
       this.addProductVisible = false;
     },
   }, //end methods
-  components: { 
+  components: {
     MdpSelectUserXm,
     XmProductAdd,
     //在下面添加其它组件
@@ -524,15 +524,15 @@ export default {
   },
 };
 </script>
-<style scoped> 
+<style scoped>
 .align-right {
   float: right;
 }
-.title { 
+.title {
   height: 32px;
   line-height: 32px;
   text-align: left;
-  float: left; 
+  float: left;
   min-width: 100px;
   cursor: pointer;
 }

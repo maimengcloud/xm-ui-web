@@ -201,7 +201,7 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
+
 	import { addXmQuestion,editXmQuestionSomeFields } from '@/api/xm/core/xmQuestion';
 	import { mapGetters } from 'vuex';
 	import AttachmentUpload from "@/views/mdp/arc/archiveAttachment/AttachmentUpload"; //上传组件

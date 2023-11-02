@@ -1,49 +1,49 @@
 <template>
-	<section>  
+	<section>
 		<el-popover
 			placement="bottom"
 			width="400"
 			v-model="iterationVisible"
-			trigger="manual" >  
+			trigger="manual" >
 			<el-row>
 				<el-button
 				type="text"
 				icon="el-icon-refresh"
 				@click="refreshSelect"
 				title="重新从后台刷新数据回来"
-				>刷新</el-button> 
- 				
+				>刷新</el-button>
+
 				<el-button
 					@click="addIterationVisible = true"
 					icon="el-icon-plus"
 					type="text"
 					>创建迭代</el-button>&nbsp;&nbsp;
-				<el-popover 
+				<el-popover
 					placement="top-start"
 					title="更多条件、操作"
 					v-model="moreVisible"
 					width="500"
 					trigger="manual" >
 					<el-button  type="text" style="float:right;margin-top:-40px;"  @click="moreVisible=false" icon="el-icon-close">关闭</el-button>
-					
-					<el-divider></el-divider> 
-					
-            
+
+					<el-divider></el-divider>
+
+
 						<el-row>
 							<font class="more-label-font"> 迭代管理员: </font>
 							<mdp-select-user-xm label="选择迭代管理员" v-model="filters" userid-key="adminUserid" username-key="adminUsername" :project-id="linkProjectId" :clearable="true"></mdp-select-user-xm>
 						</el-row>
-						<el-row> 
-							<font class="more-label-font">迭代编号:</font><el-input  v-model="filters.id"  style="width:200px;"  placeholder="输入迭代编号" clearable>  
-							</el-input> 
+						<el-row>
+							<font class="more-label-font">迭代编号:</font><el-input  v-model="filters.id"  style="width:200px;"  placeholder="输入迭代编号" clearable>
+							</el-input>
 						</el-row>
 						<el-row>
 								<font class="more-label-font">迭代名称:</font><el-input  v-model="filters.key" style="width:200px;" placeholder="模糊查询" clearable></el-input>
-						</el-row> 
-						
+						</el-row>
+
 						<el-row>
 							<font class="more-label-font">上线时间:</font>
-							<el-date-picker 
+							<el-date-picker
 								v-model="dateRangerOnline"
 								type="daterange"
 								align="right"
@@ -56,12 +56,12 @@
 								:picker-options="pickerOptions"
 							></el-date-picker>
 						</el-row>
-						<el-row> 
+						<el-row>
 							<el-button style="float:right;" type="primary" icon="el-icon-search" @click="searchXmIterations">查询</el-button>
-						</el-row>  
+						</el-row>
 					<el-button type="text" slot="reference" @click="moreVisible=!moreVisible"  icon="el-icon-search">更多条件</el-button>
 				</el-popover>
-				<el-button type="text" @click="close" style="float:right;" icon="el-icon-close">关闭</el-button> 
+				<el-button type="text" @click="close" style="float:right;" icon="el-icon-close">关闭</el-button>
 			</el-row>
 			<el-row
         v-if="load.list == false && (!xmIterations || xmIterations.length == 0)"
@@ -108,13 +108,13 @@
       </el-row>
 			<el-row>
 				<el-table ref="table" :height="maxTableHeight" :data="xmIterations" row-key="id"    @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
- 					<el-table-column prop="iterationName" label="迭代" > 
-						<template slot-scope="scope"> 
+ 					<el-table-column prop="iterationName" label="迭代" >
+						<template slot-scope="scope">
 							<div class="icon" style="background-color:#409eff"><i class="el-icon-connection" ></i></div>{{scope.row.iterationName}}  <font   :color="calcFinishRate(scope.row)==100?'green':'#FF8C00'">{{calcFinishRate(scope.row)}}%</font>
 							<el-button type="text" size="mini" circle plain v-if="editForm&&editForm.id==scope.row.id" @click.stop="clearSelectIteration()" title="取消选中状态" icon="el-icon-circle-close"></el-button>
 
 						</template>
-					</el-table-column> 
+					</el-table-column>
 				</el-table>
 				<el-pagination  layout="total, prev,  next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 
@@ -123,17 +123,17 @@
 				<slot name="reference" v-bind:iteration="editForm">
 					<div class="title">
 						<slot name="title"  v-bind:iteration="editForm">
-							<el-link title="点击选中迭代"   type="primary"  icon="el-icon-connection"> 
+							<el-link title="点击选中迭代"   type="primary"  icon="el-icon-connection">
 								<div class="res-text hidden-md-and-down">
 									{{
 										editForm&&editForm.id?editForm.iterationName:'选择迭代'
-									}} 
+									}}
 									</div>
-									
+
 									<div class="res-text hidden-lg-and-up">
 									{{
 										editForm&&editForm.id?editForm.iterationName:'选择迭代'
-									}} 
+									}}
 									</div>
 							</el-link>
 							 <el-button type="text" size="mini" title="取消选中状态" circle plain  v-if="editForm&&editForm.id" icon="el-icon-circle-close" @click.stop="clearSelectIteration"></el-button>&nbsp;
@@ -141,9 +141,9 @@
 					</div>
 				</slot>
 			</div>
-		</el-popover> 
-		
-	
+		</el-popover>
+
+
         <el-dialog append-to-body :visible.sync="addIterationVisible" width="70%">
           <xm-iteration-add op-type="add"
             :xm-product="productId?{ id: productId, name: '' }:null"
@@ -159,11 +159,11 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import config from '@/common/config';//全局公共库
-	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
+
 	import { listXmIteration,listXmIterationWithState, delXmIteration, batchDelXmIteration } from '@/api/xm/core/xmIteration';
 	import {  loadTasksToXmIterationState } from '@/api/xm/core/xmIterationState';
-  
-	import { mapGetters } from 'vuex' 
+
+	import { mapGetters } from 'vuex'
 
 	import MdpSelectUserXm from "@/views/xm/core/components/MdpSelectUserXm/index";
 	import XmIterationAdd from "../xmIteration/XmIterationEdit.vue";
@@ -172,10 +172,10 @@
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
-			]), 
+			]),
 		},
 		props:['clearable', 'productId', 'linkProjectId','autoSelect'],
-		watch:{ 
+		watch:{
 			productId:function(){
 				this.initData();
 			},
@@ -186,8 +186,8 @@
 		data() {
 			const beginDate = new Date();
 			const endDate = new Date();
-			beginDate.setTime(beginDate.getTime() - 3600 * 1000 * 24 * 7 * 4 * 12 ); 
-			endDate.setTime(endDate.getTime() + 3600 * 1000 * 24 * 7 * 4 * 12 ); 
+			beginDate.setTime(beginDate.getTime() - 3600 * 1000 * 24 * 7 * 4 * 12 );
+			endDate.setTime(endDate.getTime() + 3600 * 1000 * 24 * 7 * 4 * 12 );
 			return {
 				filters: {
 					key: '',
@@ -196,8 +196,8 @@
 					adminUserid:'',
 					adminUsername:'',
 				},
-				pickerOptions:  util.getPickerOptions('datarange'), 
-				dateRangerOnline: [ 
+				pickerOptions:  util.getPickerOptions('datarange'),
+				dateRangerOnline: [
 				],//上线时间选择范围
 				xmIterations: [],//查询结果
 				pageInfo:{//分页数据
@@ -217,17 +217,17 @@
  				//新增xmIteration界面初始化数据
 				addForm: {
 					id:'',branchId:'',iterationName:'',startTime:'',endTime:'',onlineTime:'',pid:'',adminUserid:'',adminUsername:'',ctime:'',budgetCost:'',budgetWorkload:'',distBudgetCost:'',distBudgetWorkload:'',actCost:'',actWorkload:'',actStaffNum:'',seqNo:'',
-				}, 
+				},
 				//编辑xmIteration界面初始化数据
 				editForm: {
 					id:'',branchId:'',iterationName:'',startTime:'',endTime:'',onlineTime:'',pid:'',adminUserid:'',adminUsername:'',ctime:'',budgetCost:'',budgetWorkload:'',distBudgetCost:'',distBudgetWorkload:'',actCost:'',actWorkload:'',actStaffNum:'',seqNo:'',
-				}, 
+				},
 
 				editFormInit: {
 					id:'',branchId:'',iterationName:'',startTime:'',endTime:'',onlineTime:'',pid:'',adminUserid:'',adminUsername:'',ctime:'',budgetCost:'',budgetWorkload:'',distBudgetCost:'',distBudgetWorkload:'',actCost:'',actWorkload:'',actStaffNum:'',seqNo:'',
 				},
-				/**begin 自定义属性请在下面加 请加备注**/ 
-				maxTableHeight:300, 
+				/**begin 自定义属性请在下面加 请加备注**/
+				maxTableHeight:300,
 				iterationVisible:false,
 				moreVisible:false,
 				hadInit:false,
@@ -257,19 +257,19 @@
 					this.pageInfo.orderDirs=[dir];
 				}
 				this.getXmIterations();
-			}, 
+			},
 			searchXmIterations(){
 				 this.pageInfo.count=true;
-				 this.getXmIterations(); 
+				 this.getXmIterations();
 			},
 			//获取列表 XmIteration 迭代定义
-			getXmIterations() { 
+			getXmIterations() {
 				let params = {
 					pageSize: this.pageInfo.pageSize,
 					pageNum: this.pageInfo.pageNum,
 					total: this.pageInfo.total,
 					count:this.pageInfo.count
-				}; 
+				};
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
 					let orderBys=[];
 					for(var i=0;i<this.pageInfo.orderFields.length;i++){
@@ -282,17 +282,17 @@
 				}
 				if(this.productId){
 					params.productId=this.productId
-				} 
-				 
+				}
+
 				if(this.linkProjectId){
 					params.linkProjectId=this.linkProjectId
-				} 
+				}
 				if(this.filters.adminUserid){
 					params.adminUserid=this.filters.adminUserid
 				}
 				if(this.dateRangerOnline && this.dateRangerOnline.length==2){
-					params.onlineTimeStart=this.dateRangerOnline[0] 
-					params.onlineTimeEnd=this.dateRangerOnline[1] 
+					params.onlineTimeStart=this.dateRangerOnline[0]
+					params.onlineTimeEnd=this.dateRangerOnline[1]
 				}
 				this.load.list = true;
 				listXmIterationWithState(params).then((res) => {
@@ -303,19 +303,19 @@
 						this.xmIterations = res.data.data;
 						var key=""
 						if(this.productId){
-							key='xm-iteration-select-list-prd-'+this.productId 
+							key='xm-iteration-select-list-prd-'+this.productId
 							sessionStorage.setItem(key,JSON.stringify(this.xmIterations))
 						}else if(this.linkProjectId){
-							key='xm-iteration-select-list-prj-'+this.linkProjectId  
+							key='xm-iteration-select-list-prj-'+this.linkProjectId
 							sessionStorage.setItem(key,JSON.stringify(this.xmIterations))
 						}
- 
-						if(this.autoSelect===true&&this.xmIterations.length>0){ 
-							if(this.autoSelect!==false&&this.xmIterations.length>0 && this.iterationVisible==false){ 
-								var row=this.xmIterations[0]; 
-								this.$refs.table.setCurrentRow(row); 
+
+						if(this.autoSelect===true&&this.xmIterations.length>0){
+							if(this.autoSelect!==false&&this.xmIterations.length>0 && this.iterationVisible==false){
+								var row=this.xmIterations[0];
+								this.$refs.table.setCurrentRow(row);
 								this.rowClick(row)
-							} 
+							}
 						}else{
 							if(this.xmIterations.length==0 && this.moreVisible==false){
 								if(this.editForm && this.editForm.id){
@@ -329,21 +329,21 @@
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
 			},
- 
+
 			//选择行xmIteration
 			selsChange: function (sels) {
 				this.sels = sels;
-			},  
-			rowClick: function(row, event, column){ 
+			},
+			rowClick: function(row, event, column){
 				var oldId=this.editForm&&this.editForm.id?this.editForm.id:null
 				this.editForm=row
 				this.iterationVisible=false;
 				this.moreVisible=false;
 				if(oldId!=this.editForm.id){
 					this.$emit("change",row)
-				} 
+				}
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
-			}, 
+			},
 			/**end 自定义函数请在上面加**/
 			calcFinishRate(row){
 				if(row.finishRate){
@@ -355,22 +355,22 @@
 			close(){
 				this.iterationVisible=false;
 				this.$emit("close")
-			}, 
+			},
 			initData(){
 				var key=""
 				if(this.productId){
-					key='xm-iteration-select-list-prd-'+this.productId 
+					key='xm-iteration-select-list-prd-'+this.productId
 				}else if(this.linkProjectId){
-					key='xm-iteration-select-list-prj-'+this.linkProjectId 
+					key='xm-iteration-select-list-prj-'+this.linkProjectId
 				}
-				
+
 				if(key){
 					var xmIterationStr=sessionStorage.getItem(key);
-					if(xmIterationStr && xmIterationStr!='null' && xmIterationStr!='undefined'){ 
+					if(xmIterationStr && xmIterationStr!='null' && xmIterationStr!='undefined'){
 						this.xmIterations=JSON.parse(xmIterationStr);
-						if(this.autoSelect!==false&&this.xmIterations.length>0 && this.iterationVisible==false){ 
-							var row=this.xmIterations[0]; 
-							this.$refs.table.setCurrentRow(row); 
+						if(this.autoSelect!==false&&this.xmIterations.length>0 && this.iterationVisible==false){
+							var row=this.xmIterations[0];
+							this.$refs.table.setCurrentRow(row);
 							this.rowClick(row)
 						}else{
 							this.clearSelectIteration()
@@ -382,11 +382,11 @@
 					this.searchXmIterations();
 				}
 			},
-			
+
 
 			clearSelectIteration(){
 				var oldId=this.editForm.id
-				this.editForm=this.editFormInit 
+				this.editForm=this.editFormInit
 				this.$refs.table.setCurrentRow();
 				if(oldId!=this.editForm.id){
 					this.$emit("change",null)
@@ -394,7 +394,7 @@
 				this.iterationVisible=false;
 				this.moreVisible=false;
 				this.$emit('clear',null );//  @row-click="rowClick"
-			}, 
+			},
 			refreshSelect() {
 				this.searchXmIterations();
 				this.moreVisible = false;
@@ -408,14 +408,14 @@
 			},
 			reloadOne(){
 				listXmIterationWithState({id:this.editForm.id}).then((res) => {
-					var tips = res.data.tips; 
+					var tips = res.data.tips;
 					if(tips.isOk && res.data.data && res.data.data.length>0){
 						Object.assign(this.editForm,res.data.data[0])
 						this.rowClick(this.editForm)
 					}
 				})
 			},
-			
+
 			afterAddSubmit(row) {
 				this.xmIterations.push(row);
 				if (this.productId) {
@@ -433,43 +433,43 @@
 					this.rowClick(row);
 				}
 				this.addIterationVisible = false;
-			}, 
+			},
 		},//end methods
-		components: { 
+		components: {
 			MdpSelectUserXm,
 			XmIterationAdd,
 		    //在下面添加其它组件
 		},
 		mounted() {
-			this.$nextTick(() => {  
-				 
-			this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
+			this.$nextTick(() => {
+
+			this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);
 
 			if(this.autoSelect!==false){
 					this.initData();
 					this.hadInit=true;
 				}
         	});
-           
+
 		}
 	}
 
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
- 
+
   .font-class{
 	  color: rgba(116, 85, 85, 0.493);
   }
-  
+
 .align-right{
-	float: right; 
+	float: right;
 }
 .title {
 	height: 32px;
 	line-height: 32px;
 	text-align: left;
-	float: left; 
+	float: left;
 	min-width: 100px;
   	cursor: pointer;
 }

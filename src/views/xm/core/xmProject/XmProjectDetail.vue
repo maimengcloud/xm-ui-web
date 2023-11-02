@@ -1,7 +1,7 @@
 <template>
 	<section>
-		<el-row class="xm-detail" v-loading.lock="load.edit || load.list"> 
-			<xm-project-edit :sel-project="selProject" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit" @edit-fields="onEditFields" ref="projectEdit"></xm-project-edit> 
+		<el-row class="xm-detail" v-loading.lock="load.edit || load.list">
+			<xm-project-edit :sel-project="selProject" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit" @edit-fields="onEditFields" ref="projectEdit"></xm-project-edit>
 		</el-row>
 	</section>
 </template>
@@ -9,17 +9,17 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
-	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
+
 	import { mapGetters } from 'vuex'
 	import { listXmProject } from '@/api/xm/core/xmProject';
 	import  XmProjectEdit from './XmProjectEdit';//修改界面
 
-	export default { 
+	export default {
 		props: ["selProject"],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
-				]), 
+				]),
 		},
 		data() {
 			return {
@@ -28,23 +28,23 @@
 				editFormVisible:true,
 			}
 		},//end data
-		methods: { 
+		methods: {
 			//显示新增界面 XmProject xm_project
-			afterEditSubmit(params){ 
+			afterEditSubmit(params){
 				this.editFormVisible=true;
 				this.$emit("submit",params);
 			},
-			onEditFields(row){ 
+			onEditFields(row){
 				Object.assign(this.selProject,row)
 				this.$emit("edit-fields",row);
 			}
 			/**end 自定义函数请在上面加**/
 		},//end methods
-		components: { 
+		components: {
 			//在下面添加其它组件
 			XmProjectEdit,
 		},
-		mounted() {   
+		mounted() {
 		}
 	}
 

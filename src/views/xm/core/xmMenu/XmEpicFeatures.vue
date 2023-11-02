@@ -1,11 +1,11 @@
 <template>
-	<section> 
-		<el-row v-show="!batchVisible">  
+	<section>
+		<el-row v-show="!batchVisible">
 				<div style="display:flex;justify-content: space-between;">
 				<xm-product-select v-if=" !xmProduct || !xmProduct.id" ref="xmProductSelect1" style="display:inline;"  :auto-select="true" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" @clear="onProductClearSelect" ></xm-product-select>
-				<el-input v-else v-model="filters.key"  placeholder="名称模糊查询"  clearable></el-input>  
-				<span style="display:flex;"> 
- 					<el-popover 
+				<el-input v-else v-model="filters.key"  placeholder="名称模糊查询"  clearable></el-input>
+				<span style="display:flex;">
+ 					<el-popover
 						style="margin-left:5px;"
 						placement="top-start"
 						width="250"
@@ -38,9 +38,9 @@
 							</el-row>
 						</el-row>
 						<el-button type="primary" v-if="!disabledMng" circle plain  slot="reference" icon="el-icon-plus"></el-button>
-					</el-popover> 
-					<el-popover  
-					
+					</el-popover>
+					<el-popover
+
 						style="margin-left:5px;"
 						placement="top-start"
 						title="更多操作"
@@ -48,72 +48,72 @@
 						trigger="manual"
 						v-model="moreVisible"
 					>
-						<el-row>  
+						<el-row>
 								<el-button  style="float:right;margin-top:-40px;"
 								icon="el-icon-close"
 								@click="moreVisible=false"
 								type="text"
 								>关闭</el-button
-								> 
-						</el-row>  
+								>
+						</el-row>
 						<el-divider></el-divider>
-						<el-row> 
-						
-							<el-button type="primary"  @click="showParentMenu" icon="el-icon-top" title="更换上级">更换上级</el-button> 
-							<el-button type="danger" 
+						<el-row>
+
+							<el-button type="primary"  @click="showParentMenu" icon="el-icon-top" title="更换上级">更换上级</el-button>
+							<el-button type="danger"
 								@click="batchDel"
 								v-loading="load.del"
 								icon="el-icon-delete"
 								title="批量删除" v-if="!disabledMng"
 								>批量删除</el-button
 							>
-							<el-button          @click="loadTasksToXmMenuState" icon="el-icon-s-marketing" title="汇总进度">汇总进度</el-button> 
+							<el-button          @click="loadTasksToXmMenuState" icon="el-icon-s-marketing" title="汇总进度">汇总进度</el-button>
 						</el-row>
 						<el-divider></el-divider>
 
-						<el-row> 
-							<el-button    type="primary"      @click="searchXmMenus" icon="el-icon-search" title="查询" style="float:right;">查询</el-button> 
-						</el-row>  
+						<el-row>
+							<el-button    type="primary"      @click="searchXmMenus" icon="el-icon-search" title="查询" style="float:right;">查询</el-button>
+						</el-row>
 						<el-button slot="reference" @click="moreVisible=!moreVisible" icon="el-icon-more" circle plain></el-button>
-					</el-popover>   
+					</el-popover>
 					</span>
  				</div>
-			</el-row> 
-			<el-row  v-show="batchVisible"> 
+			</el-row>
+			<el-row  v-show="batchVisible">
 				<div style="display:flex;">
-				<el-input v-if=" xmProduct  && xmProduct.id" v-model="filters.key"  placeholder="名称模糊查询"  clearable></el-input>  
+				<el-input v-if=" xmProduct  && xmProduct.id" v-model="filters.key"  placeholder="名称模糊查询"  clearable></el-input>
 
-				<el-button type="danger" 
+				<el-button type="danger"
 					style="margin-left:5px;"
 					@click="batchDel"
 					v-loading="load.del"
 					icon="el-icon-delete"
 					title="批量删除" v-if="!disabledMng"
 					>删除</el-button>
-				<el-button type="primary"  @click="showParentMenu" icon="el-icon-top" title="更换上级">更换上级</el-button> 
+				<el-button type="primary"  @click="showParentMenu" icon="el-icon-top" title="更换上级">更换上级</el-button>
 			</div>
 			</el-row>
 		<el-row class="padding-top">
 			<el-table ref="table" :row-style="{height:'46px'}" :cell-style="cellStyleCalc" :expand-row-keys="expandRowKeysCpd" :header-cell-style="cellStyleCalc"    stripe fit border  :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick"
 				element-loading-text="努力加载中"
-				element-loading-spinner="el-icon-loading" 
+				element-loading-spinner="el-icon-loading"
 			>
 				<template v-if="batchVisible">
-					<el-table-column sortable type="selection" width="40"></el-table-column> 
+					<el-table-column sortable type="selection" width="40"></el-table-column>
 				</template>
-				
-				<el-table-column prop="menuName" label="史诗特性" min-width="150" > 
+
+				<el-table-column prop="menuName" label="史诗特性" min-width="150" >
 					<template slot="header" slot-scope="scope">
-						<div style="display:flex;"> 
-							<div style="width:40%;text-align: left;line-height: 32px;" title="史诗特性名称">史诗、特性 
-							</div> 
+						<div style="display:flex;">
+							<div style="width:40%;text-align: left;line-height: 32px;" title="史诗特性名称">史诗、特性
+							</div>
 							<div style="line-height: 32px;display:flex;justify-content: right;width:60%;">
 								<el-checkbox v-if="!disabledMng" title="您可以批量删除、批量更换上级等操作" v-model="batchVisible"><span style="color:#C0C4CC;">批量</span></el-checkbox>
-								<el-input size="mini" v-if=" !xmProduct || !xmProduct.id" v-model="filters.key"   placeholder="名称模糊查询"  clearable></el-input>  
+								<el-input size="mini" v-if=" !xmProduct || !xmProduct.id" v-model="filters.key"   placeholder="名称模糊查询"  clearable></el-input>
 							</div>
 						</div>
 					</template>
-					<template slot-scope="scope">  
+					<template slot-scope="scope">
 						<div  v-if="scope.row.dclass=='1'" class="icon hidden-md-and-down" style="background-color:  rgb(255, 153, 51);">
 						<i class="el-icon-s-promotion"></i>
 						</div>
@@ -127,26 +127,26 @@
 						<span style="font-size:14px;">{{scope.row.menuName}} </span>
 							<el-popover class="hidden-bar" v-if="!disabledMng"  @click.stop
 								placement="top"
-								width="100"  
+								width="100"
 								:open-delay=500
-								trigger="hover"> 
+								trigger="hover">
 								<el-button type="primary" style="margin-left:0px;margin-bottom: 10px;"  v-if=" scope.row.dclass==='1' "  @click.stop="showSubAdd( scope.row,scope.$index)" icon="el-icon-plus" title="新建特性"  > 新建特性 </el-button>
 
-								<el-button style="margin-left:0px;margin-bottom: 10px;"   @click.stop="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑"   >修改 </el-button>     
+								<el-button style="margin-left:0px;margin-bottom: 10px;"   @click.stop="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑"   >修改 </el-button>
 
  								<el-button type="text" slot="reference" icon="el-icon-setting" size="mini" circle plain></el-button>
-							</el-popover>  		
+							</el-popover>
 						 <el-button type="text" size="mini" circle plain v-if="editForm&&editForm.menuId==scope.row.menuId" @click.stop="unselectRow()" title="取消选中状态" icon="el-icon-circle-close"></el-button>
 
 						<el-tag style="float:right;" class="hidden-md-and-down" v-for="(item,index) in formatDictsWithClass(dicts,'menuStatus',scope.row.status)" :key="index" :type="item.className">{{item.name}}</el-tag>
 						<span
-							:style="{borderRadius: '30px',color:scope.row.finishRate >= 100 ? 'green' : 'blue',float:'right'}" 
+							:style="{borderRadius: '30px',color:scope.row.finishRate >= 100 ? 'green' : 'blue',float:'right'}"
 						>
 							{{ (scope.row.finishRate != null ? scope.row.finishRate : 0) + "%" }}
-						</span>   
-					</template> 
-				</el-table-column> 
-			</el-table>  
+						</span>
+					</template>
+				</el-table-column>
+			</el-table>
 		</el-row>
 		<el-row>
 			<el-pagination  layout="total, sizes, prev,  next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
@@ -162,7 +162,7 @@
 		</el-dialog>
 		<el-drawer title="需求模板" :visible.sync="menuTemplateVisible"   size="80%"  append-to-body   :close-on-click-modal="false">
 			<xm-menu-template-mng  :is-select-menu="true"  :visible="menuTemplateVisible" @cancel="menuTemplateVisible=false" @selected-menus="onSelectedMenuTemplates"></xm-menu-template-mng>
-		</el-drawer>      
+		</el-drawer>
 	<el-dialog append-to-body width="60%" top="20px" :visible.sync="parentMenuVisible">
 		<xm-epic-features-select v-if="parentMenuVisible" :xm-product="xmProduct?xmProduct:filters.product" @select="onParentMenuSelected"></xm-epic-features-select>
 	</el-dialog>
@@ -173,7 +173,7 @@
 	import util from '@/common/js/util';//全局公共库
 	import treeTool from '@/common/js/treeTool';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
-	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
+
 	import { listXmMenu, delXmMenu, batchDelXmMenu,batchAddXmMenu,batchEditXmMenu,listXmMenuWithState,listXmMenuWithPlan,batchChangeParentMenu,editXmMenuSomeFields } from '@/api/xm/core/xmMenu';
 	import { batchRelTasksWithMenu } from '@/api/xm/core/xmTask';
 	import { loadTasksToXmMenuState} from '@/api/xm/core/xmMenuState';
@@ -186,7 +186,7 @@
 	import  XmMenuTemplateMng from '../xmMenuTemplate/XmMenuTemplateMng';//新增界面
        	import  XmGroupDialog from '@/views/xm/core/xmGroup/XmGroupDialog';//修改界面
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
- 
+
   	import TagDialog from "@/views/mdp/arc/tag/TagDialog";
   	import XmEpicFeaturesSelect from "@/views/xm/core/xmMenu/XmEpicFeaturesSelect";
 
@@ -214,16 +214,16 @@
 			xmProduct:function(){
 					this.filters.product=this.xmProduct
 					this.loadDatasFirstCache();
-			}, 
+			},
     	},
-		data() { 
+		data() {
 			return {
 				batchVisible:false,
 				columnsConfig:[/**{label:'',property:'',isShow:true} */],
 				filters: {
 					key: '',
-					product:null, 
-					dclasss:['1','2'], 
+					product:null,
+					dclasss:['1','2'],
 					productId:'',//产品编号
 				},
 				xmMenus: [],//查询结果
@@ -257,9 +257,9 @@
 						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',ntype:'0',childrenCnt:0,sinceVersion:'',proposerId:'',proposerName:'',dlvl:'0',dtype:'0',priority:'0',source:'1'
 				},
 				parentMenu:null,
-				menuTemplateVisible:false,       
-				maxTableHeight:300,    
-				parentMenuVisible:false,  
+				menuTemplateVisible:false,
+				maxTableHeight:300,
+				parentMenuVisible:false,
  				/**begin 自定义属性请在下面加 请加备注**/
 				expandRowKeysCpd:[],
 				moreVisible:false,
@@ -268,7 +268,7 @@
 		},//end data
 		methods: {
 			...util,
-			 
+
 			handleSizeChange(pageSize) {
 				this.pageInfo.pageSize=pageSize;
 				this.getXmMenus();
@@ -295,17 +295,17 @@
 				 this.pageInfo.count=true;
 				 this.getXmMenus();
 			},
-			getParams(params){ 
-				 
+			getParams(params){
+
 				if(this.filters.product){
 					params.productId=this.filters.product.id
 				}
-				  
+
 				if(this.filters.dclasss){
 					params.dclasss=this.filters.dclasss
 				}
 				return params;
-			}, 
+			},
 			//获取列表 XmMenu xm_project_menu
 			getXmMenus() {
 				let params = {
@@ -322,7 +322,7 @@
 					}
 					params.orderBy= orderBys.join(",")
 				}
-				params=this.getParams(params); 
+				params=this.getParams(params);
 				if(!params.productId){
 					return;
 				}
@@ -345,16 +345,16 @@
 			//显示编辑界面 XmMenu xm_project_menu
 			showEdit: function ( row,index ) {
 				this.$refs.table.setCurrentRow(row)
-				if(this.editForm && row.menuId!=this.editForm.menuId){ 
-					this.$refs.table.setCurrentRow(row); 
-					this.$emit("row-click",row) 
+				if(this.editForm && row.menuId!=this.editForm.menuId){
+					this.$refs.table.setCurrentRow(row);
+					this.$emit("row-click",row)
 				}
 				this.editForm =row
 				this.editFormVisible = true;
 			},
 			//显示新增界面 XmMenu xm_project_menu
-			showAdd: function (dclass) { 
-				Object.assign(this.addForm,this.addFormInit) 
+			showAdd: function (dclass) {
+				Object.assign(this.addForm,this.addFormInit)
 				if(this.filters.product && this.filters.product.id){
 					this.parentMenu=null;
 					this.addForm.productId=this.filters.product.id
@@ -379,15 +379,15 @@
 			},
 			showSubAdd:function(row){
 				this.$refs.table.setCurrentRow(row)
-				if(this.editForm && row.menuId!=this.editForm.menuId){ 
-					this.$refs.table.setCurrentRow(row); 
-					this.$emit("row-click",row) 
+				if(this.editForm && row.menuId!=this.editForm.menuId){
+					this.$refs.table.setCurrentRow(row);
+					this.$emit("row-click",row)
 				}
 				this.addForm={...this.addFormInit}
 				this.editForm=row
 				this.parentMenu=row
 				this.expandRowKeysCpd.push(row.pmenuId);
-				this.addForm.productId=row.productId 
+				this.addForm.productId=row.productId
 
 				if(this.filters.product && row.productId==this.filters.product.id){
 					this.addForm.productName=this.filters.product.productName
@@ -402,15 +402,15 @@
 				}
 				this.addForm.dclass=(parseInt(row.dclass)+1)+"";
 				this.addFormVisible=true
-			},  
-			afterEditSubmit(row){ 
+			},
+			afterEditSubmit(row){
 				this.editFormVisible=false;
 				var data=this.xmMenus.find(k=>k.menuId==row.menuId)
 				if(data){
 					Object.assign(data,row)
 					this.setDatasToCache(this.xmMenus)
 				}
-				//this.getXmMenus(); 
+				//this.getXmMenus();
 			},
 			afterAddSubmit(row){
 				this.xmMenus.push(row)
@@ -421,18 +421,18 @@
 				this.sels = sels;
 			},
 			onProductSelected:function(product){
-				this.filters.product=product 
+				this.filters.product=product
 				this.xmMenus=[]
 				this.getXmMenus()
 				this.$emit('product-selected',product)
 			},
 			onProductClearSelect:function(){
-				this.filters.product=null 
+				this.filters.product=null
 				this.xmMenus=[]
 				this.pageInfo.total=0;
-				//this.getXmMenus() 
+				//this.getXmMenus()
 				this.$emit('product-clear')
-			},  
+			},
 			//批量删除xmMenu
 			batchDel: function () {
 				if(!this.batchVisible){
@@ -452,7 +452,7 @@
 						var tips=res.data.tips;
 						if( tips.isOk ){
 							this.pageInfo.count=true;
-							this.getXmMenus(); 
+							this.getXmMenus();
 						}
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
@@ -462,14 +462,14 @@
 				this.$refs.table.clearSelection()
 				this.editForm=null;
 				this.$emit('row-click',null)
-				this.$refs.table.setCurrentRow(); 
+				this.$refs.table.setCurrentRow();
 			},
 			rowClick: function(row, event, column){
-				if(this.editForm && row.menuId===this.editForm.menuId){ 
+				if(this.editForm && row.menuId===this.editForm.menuId){
 					return;
-				}  
+				}
 				this.editForm=row
-				this.editFormBak=Object.assign({},row) 
+				this.editFormBak=Object.assign({},row)
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
       },
       handleExport() {
@@ -577,20 +577,20 @@
 					this.load.add=false
 					var tips =res.data.tips
 					if(tips.isOk){
-						this.getXmMenus() 
+						this.getXmMenus()
 					}else{
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					}
 				}).catch( err  => this.load.add=false );
-			}, 
- 
+			},
+
 			loadTasksToXmMenuState: function () {
-				
+
 				if(!this.filters.product ){
 					if(!this.filters.iteration){
 						this.$notify.warning("请先选择产品或者迭代");
 						return;
-					} 
+					}
 				}
 				this.load.edit=true;
 				let params = { productId: ''};
@@ -599,7 +599,7 @@
 				}else{
 					params = { productId: this.filters.product.id };
 				}
-				
+
 				loadTasksToXmMenuState(params).then((res) => {
 					this.load.edit=false;
 					var tips=res.data.tips;
@@ -610,9 +610,9 @@
 					}
 					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 				}).catch( err  => this.load.edit=false );
-			},       
+			},
 			showParentMenu(){
-				
+
 				if(!this.batchVisible){
 					this.$notify.warning("请先开启【批量】操作模式")
 					return;
@@ -634,7 +634,7 @@
 
 			},
 			onParentMenuSelected(menu){
-				
+
 
 				if(!menu||!menu.menuId){
 					this.$notify({position:'bottom-left',showClose:true,message:'请先选择一个上级需求',type:'warning'})
@@ -644,7 +644,7 @@
 					this.$notify({position:'bottom-left',showClose:true,message:menu.menuName+'是特性，不能作为上级，请选择史诗作为上级',type:'warning'})
 					return;
 				}
-				
+
 				this.parentMenuVisible=false;
 				var params={
 					menuIds:this.sels.map(i=>i.menuId),
@@ -654,11 +654,11 @@
 					var tips = res.data.tips;
 					if(tips.isOk){
 						this.searchXmMenus();
-						var rows=[...this.sels,{menuId:'',pmenuId:menu.menuId}] 
+						var rows=[...this.sels,{menuId:'',pmenuId:menu.menuId}]
 					}
 					this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 				})
-			},   
+			},
 			calcMenuLabel(dclass){
 				var params={label:'工作项',icon:'',color:''};
 				if(dclass==='1'){
@@ -669,8 +669,8 @@
 					params={label:'用户故事',icon:'el-icon-document',color:' rgb(79, 140, 255)'};
 				}
 				return params;
-			}, 
-			 
+			},
+
 			cellStyleCalc({row, column, rowIndex, columnIndex}){
 				if(this.$refs.tableConfig && this.$refs.tableConfig.columnsConfig.length>0){
 					if(this.$refs.tableConfig.columnsConfig.some(i=>i.property==column.property&&i.isShow==false)){
@@ -681,21 +681,21 @@
 				}else{
 					return "";
 				}
-			}, 
+			},
 			onEditSomeFields(params){
 				Object.assign(this.editForm,params)
 				var data=this.xmMenus.find(k=>k.menuId==this.editForm.menuId)
-				if(data){ 
+				if(data){
 					var dataRaw=JSON.parse(JSON.stringify(params))
-					dataRaw.children=null; 
-					Object.assign(data,dataRaw) 
+					dataRaw.children=null;
+					Object.assign(data,dataRaw)
 					this.setDatasToCache(this.xmMenus)
 				}
 			},
 			onAddSubMenu(row){
  			},
 			loadDatasFirstCache(){
-				 
+
 				if(!this.filters.product || !this.filters.product.id){
 					return;
 				}
@@ -707,10 +707,10 @@
 				}else{
 					this.getXmMenus();
 				}
-				
+
 			},
 			setDatasToCache(datas){
-				
+
 				if(!this.filters.product || !this.filters.product.id){
 					return;
 				}
@@ -720,19 +720,19 @@
 				}else{
 					sessionStorage.setItem(key,JSON.stringify(datas))
 				}
-				
+
 			},
 			copyOne(row,index){
-				
+
 				var params={...row}
 				params.id=null;
 				params.createUserid=this.userInfo.userid
-				params.createUsername=this.userInfo.username 
+				params.createUsername=this.userInfo.username
 				params.bugStatus="1"
 				params.name=row.name+'V'
 				addXmQuestion(params).then(res=>{
 					var tips = res.data.tips
-					if(tips.isOk){ 
+					if(tips.isOk){
 						var row2=res.data.data
 						this.xmQuestions.splice(index+1,0,row2)
 						this.pageInfo.total=this.pageInfo.total+1
@@ -747,33 +747,30 @@
 		    'xm-menu-add':XmMenuAdd,
 			'xm-menu-edit':XmMenuEdit,
 			XmProductSelect,
-			XmMenuTemplateMng,   
-			UsersSelect, 
-		    TagDialog,   
+			XmMenuTemplateMng,
+			UsersSelect,
+		    TagDialog,
 			XmGroupDialog, XmEpicFeaturesSelect,
 		    //在下面添加其它组件
 		},
 		mounted() {
-  			initSimpleDicts("all",['menuStatus','demandSource','demandLvl','demandType','priority','dclass']).then(res=>{
-				  Object.assign(this.dicts,res.data.data) 
-			})
-			this.filters.product=this.xmProduct  
+			this.filters.product=this.xmProduct
 			this.$nextTick(() => {
 				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);
 				this.loadDatasFirstCache();
           });
-		}, 
+		},
 	}
 
 </script>
 
 <style lang="scss" scoped>
- 
+
 .align-right{
 	float: right;
 }
-.tool-bar.hidden-md-and-down{  
-  margin-right:8em; 
+.tool-bar.hidden-md-and-down{
+  margin-right:8em;
 }
 table tr:hover{
 	 cursor: pointer!important;

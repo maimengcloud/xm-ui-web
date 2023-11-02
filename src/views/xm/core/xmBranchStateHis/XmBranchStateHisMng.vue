@@ -97,12 +97,12 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	import config from '@/common/config';//全局公共库 
-	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
+	import config from '@/common/config';//全局公共库
+
 	import { listXmBranchStateHis, delXmBranchStateHis, batchDelXmBranchStateHis } from '@/api/xm/core/xmBranchStateHis';
 	import  XmBranchStateHisEdit from './XmBranchStateHisEdit';//新增修改界面
 	import { mapGetters } from 'vuex'
-	
+
 	export default {
 	    name:'xmBranchStateHisMng',
 		components: {
@@ -144,7 +144,7 @@
 				addForm: {
 					bizDate:'',totalFileCnt:'',totalBugCnt:'',totalTaskCnt:'',totalBudgetNouserAmount:'',totalStaffCnt:'',calcTime:'',calcStatus:'',totalCostNouserAmount:'',totalClosedBugCnt:'',totalResolvedBugCnt:'',totalCompleteTaskCnt:'',totalPhaseCnt:'',totalCompletePhaseCnt:'',totalNeedPayAmount:'',totalFinishPayAmount:'',totalNeedColAmount:'',totalFinishColAmount:'',totalCostUserAmount:'',totalBudgetIuserAmount:'',totalPlanWorkload:'',totalRiskCnt:'',totalCompleteRiskCnt:'',branchId:'',branchName:'',totalBudgetOuserAmount:'',totalCompleteWorkload:'',totalCostIuserAmount:'',totalCostOuserAmount:'',finishRate:'',totalActiveBugCnt:'',totalConfirmedBugCnt:'',projectStatus:'',totalActWorkload:'',totalActOutWorkload:'',totalActInnerWorkload:'',totalTaskBudgetCostAt:'',totalTaskOutCnt:'',totalNeedPayCnt:'',totalFinishPayCnt:'',totalFinishPayUserCnt:'',totalNeedPayUserCnt:'',totalPlanIuserWorkload:'',totalPlanOuserWorkload:'',testCases:'',execCases:'',designCases:'',finishCases:'',iterationCnt:'',productCnt:'',menuCnt:'',projectCnt:'',productBudgetWorkload:'',productActWorkload:'',estimateWorkload:'',execTaskCnt:'',toStartTaskCnt:'',execMenuCnt:'',toStartMenuCnt:'',minStartTime:'',maxEndTime:''
 				},
-				
+
 				editFormVisible: false,//编辑界面是否显示
 				editForm: {
 					bizDate:'',totalFileCnt:'',totalBugCnt:'',totalTaskCnt:'',totalBudgetNouserAmount:'',totalStaffCnt:'',calcTime:'',calcStatus:'',totalCostNouserAmount:'',totalClosedBugCnt:'',totalResolvedBugCnt:'',totalCompleteTaskCnt:'',totalPhaseCnt:'',totalCompletePhaseCnt:'',totalNeedPayAmount:'',totalFinishPayAmount:'',totalNeedColAmount:'',totalFinishColAmount:'',totalCostUserAmount:'',totalBudgetIuserAmount:'',totalPlanWorkload:'',totalRiskCnt:'',totalCompleteRiskCnt:'',branchId:'',branchName:'',totalBudgetOuserAmount:'',totalCompleteWorkload:'',totalCostIuserAmount:'',totalCostOuserAmount:'',finishRate:'',totalActiveBugCnt:'',totalConfirmedBugCnt:'',projectStatus:'',totalActWorkload:'',totalActOutWorkload:'',totalActInnerWorkload:'',totalTaskBudgetCostAt:'',totalTaskOutCnt:'',totalNeedPayCnt:'',totalFinishPayCnt:'',totalFinishPayUserCnt:'',totalNeedPayUserCnt:'',totalPlanIuserWorkload:'',totalPlanOuserWorkload:'',testCases:'',execCases:'',designCases:'',finishCases:'',iterationCnt:'',productCnt:'',menuCnt:'',projectCnt:'',productBudgetWorkload:'',productActWorkload:'',estimateWorkload:'',execTaskCnt:'',toStartTaskCnt:'',execMenuCnt:'',toStartMenuCnt:'',minStartTime:'',maxEndTime:''
@@ -152,9 +152,9 @@
 				maxTableHeight:300,
 			}
 		},//end data
-		methods: { 
-			handleSizeChange(pageSize) { 
-				this.pageInfo.pageSize=pageSize; 
+		methods: {
+			handleSizeChange(pageSize) {
+				this.pageInfo.pageSize=pageSize;
 				this.getXmBranchStateHiss();
 			},
 			handleCurrentChange(pageNum) {
@@ -165,7 +165,7 @@
 			sortChange( obj ){
 				if(obj.order==null){
 					this.pageInfo.orderFields=[];
-					this.pageInfo.orderDirs=[]; 
+					this.pageInfo.orderDirs=[];
 				}else{
 					var dir='asc';
 					if(obj.order=='ascending'){
@@ -173,14 +173,14 @@
 					}else{
 						dir='desc';
 					}
-					 
-					this.pageInfo.orderFields=[util.toLine(obj.prop)]; 
+
+					this.pageInfo.orderFields=[util.toLine(obj.prop)];
 					this.pageInfo.orderDirs=[dir];
 				}
 				this.getXmBranchStateHiss();
 			},
 			searchXmBranchStateHiss(){
-				 this.pageInfo.count=true; 
+				 this.pageInfo.count=true;
 				 this.getXmBranchStateHiss();
 			},
 			//获取列表 XmBranchStateHis 机构内所有项目指标汇总
@@ -193,9 +193,9 @@
 				};
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
 					let orderBys=[];
-					for(var i=0;i<this.pageInfo.orderFields.length;i++){ 
+					for(var i=0;i<this.pageInfo.orderFields.length;i++){
 						orderBys.push(this.pageInfo.orderFields[i]+" "+this.pageInfo.orderDirs[i])
-					}  
+					}
 					params.orderBy= orderBys.join(",")
 				}
 				if(this.filters.key){
@@ -205,13 +205,13 @@
 				this.load.list = true;
 				listXmBranchStateHis(params).then((res) => {
 					var tips=res.data.tips;
-					if(tips.isOk){ 
+					if(tips.isOk){
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false;
 						this.xmBranchStateHiss = res.data.data;
 					}else{
 						this.$notify({position:'bottom-left',showClose:true, message: tips.msg, type: 'error' });
-					} 
+					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
 			},
@@ -237,18 +237,18 @@
 			//选择行xmBranchStateHis
 			selsChange: function (sels) {
 				this.sels = sels;
-			}, 
+			},
 			//删除xmBranchStateHis
-			handleDel: function (row,index) { 
+			handleDel: function (row,index) {
 				this.$confirm('确认删除该记录吗?', '提示', {
 					type: 'warning'
-				}).then(() => { 
+				}).then(() => {
 					this.load.del=true;
 					let params = {  bizDate:row.bizDate,  branchId:row.branchId };
 					delXmBranchStateHis(params).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
-						if(tips.isOk){ 
+						if(tips.isOk){
 							this.pageInfo.count=true;
 							this.getXmBranchStateHiss();
 						}
@@ -266,14 +266,14 @@
 				})
 				this.$confirm('确认删除选中记录吗？', '提示', {
 					type: 'warning'
-				}).then(() => { 
+				}).then(() => {
 					this.load.del=true;
 					batchDelXmBranchStateHis(params).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
-						if( tips.isOk ){ 
+						if( tips.isOk ){
 							this.pageInfo.count=true;
-							this.getXmBranchStateHiss(); 
+							this.getXmBranchStateHiss();
 						}
 						this.$notify({position:'bottom-left',showClose:true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
@@ -286,7 +286,7 @@
             initData: function(){
 
             },
-			
+
 		},//end methods
 		mounted() {
 			this.$nextTick(() => {

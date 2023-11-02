@@ -3,31 +3,31 @@
 	    <el-row class="page-header">
 	    </el-row>
 		<el-row class="page-main">
-		<!--编辑界面 XmGroup xm_group--> 
-			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef">   
+		<!--编辑界面 XmGroup xm_group-->
+			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef">
 				<el-form-item label="小组名称" prop="groupName">
 					<el-input v-model="editForm.groupName" placeholder="团队名称">
 						<template v-if="currOpType=='edit'" slot="append">{{editForm.lvl}}级</template>
-					</el-input>  
-				</el-form-item>   
-				<el-form-item label="负责人" prop="leaderUsername"> 
+					</el-input>
+				</el-form-item>
+				<el-form-item label="负责人" prop="leaderUsername">
 					<el-form-item label="组长" prop="leaderUsername">
 						<el-input v-model="editForm.leaderUsername" placeholder="组长人姓名" @click.native="showUserSelect('leader')"></el-input>
-					</el-form-item> 
+					</el-form-item>
 					<el-form-item label="副组长" prop="assUsername">
 						<el-input v-model="editForm.assUsername" placeholder="副组长姓名" @click.native="showUserSelect('ass')"></el-input>
 						<font color="blue">如果没用副组长可以设置为项目助理、小组助理等，具有组长同等权限</font>
-					</el-form-item>  
-				</el-form-item>     
-				<el-form-item label="企业协作" prop="isCrow"> 
+					</el-form-item>
+				</el-form-item>
+				<el-form-item label="企业协作" prop="isCrow">
 					<el-form-item label="" prop="isCrow">
 						<el-checkbox v-model="editForm.isCrow" true-label="1" false-label="0">是否属于协作公司</el-checkbox>
-					</el-form-item> 
+					</el-form-item>
 					<el-form-item label="协作公司" prop="crowBranchName" v-if="editForm.isCrow">
 						<el-input v-model="editForm.crowBranchName" placeholder="协作公司名称" @click.native="branchVisible=true"></el-input>
 						<font color="blue">如果该团队属于某协作公司，请选择协作公司。</font>
-					</el-form-item>  
-				</el-form-item>      
+					</el-form-item>
+				</el-form-item>
 			</el-form>
 		</el-row>
 
@@ -35,26 +35,26 @@
 		    <el-button @click.native="handleCancel">取消</el-button>
             <el-button v-loading="load.edit" type="primary" @click.native="saveSubmit" :disabled="load.edit==true">提交</el-button>
 		</el-row>
-		
+
 			<el-drawer append-to-body title="选择员工" :visible.sync="userSelectVisible" size="60%">
 				<users-select isSingleUser=true   @confirm="onUserSelected" ref="usersSelect"></users-select>
 			</el-drawer>
-			
+
 		<el-drawer title="机构选择" :visible.sync="branchVisible"  size="50%" top="20" :close-on-click-modal="false" append-to-body>
 			<branch-select :visible="branchVisible"  @cancel="branchVisible=false" @row-click="branchRowClick"></branch-select>
 		</el-drawer>
 	</section>
-</template> 
+</template>
 
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import config from "@/common/config"; //全局公共库import
-	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
+
 	import { addXmGroup,editXmGroup } from '@/api/xm/core/xmGroup';
 	import { mapGetters } from 'vuex'
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
 	import  BranchSelect from '@/views/mdp/sys/branch/BranchSelect';//机构选择
-	
+
 	export default {
 	    name:'xmGroupEdit',
 	    components: {
@@ -73,11 +73,11 @@
 	        }
 
 	      },
-	      'visible':function(visible) { 
+	      'visible':function(visible) {
 	      	if(visible==true){
  	      		this.initData()
 	      	}
-	      } 
+	      }
 	    },
 		data() {
 			return {
@@ -92,7 +92,7 @@
 				editForm: {
 					id:'',groupName:'',projectId:'',pgTypeId:'',pgTypeName:'',leaderUserid:'',leaderUsername:'',ctime:'',ltime:'',productId:'',branchId:'',pgClass:'',pgroupId:'',lvl:'',pidPaths:'',isTpl:'',assUserid:'',assUsername:'',childrenCnt:'',userCnt:'',qxCode:'',calcWorkload:'',ntype:'',crowBranchId:'',crowBranchName:'',isCrow:''
 				},
-				
+
 				userType:"leader",
 				userSelectVisible:false,
 				branchVisible:false,
@@ -109,7 +109,7 @@
 			saveSubmit: function () {
 				this.$refs.editFormRef.validate((valid) => {
 					if (valid) {
-						this.$confirm('确认提交吗？', '提示', {}).then(() => { 
+						this.$confirm('确认提交吗？', '提示', {}).then(() => {
 							this.load.edit=true
 							let params = Object.assign({}, this.editForm);
 							var func=addXmGroup
@@ -155,29 +155,29 @@
 				this.userType=userType
 				this.userSelectVisible=true;
 			},
-			
+
 			//选择接收人
-			onUserSelected: function(groupUsers) {  
+			onUserSelected: function(groupUsers) {
 				this.userSelectVisible = false;
 				if(groupUsers==null||groupUsers.length==0){
 					return;
 				}
 				var user=groupUsers[0]
-				
-				if(this.userType=='leader'){ 
+
+				if(this.userType=='leader'){
 					this.editForm.leaderUserid=user.userid
 					this.editForm.leaderUsername=user.username
-				}else{ 
+				}else{
 					this.editForm.assUserid=user.userid
 					this.editForm.assUsername=user.username
 				}
-				
-			}, 
+
+			},
 			branchRowClick: function(row, event, column){
 				this.branchVisible=false
 				this.editForm.crowBranchId=row.id
 				this.editForm.crowBranchName=row.branchName
-			}, 
+			},
 
 		},//end method
 		mounted() {

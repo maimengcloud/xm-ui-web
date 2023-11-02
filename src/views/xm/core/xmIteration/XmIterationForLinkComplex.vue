@@ -1,19 +1,19 @@
 <template>
 	<section>
-		<el-row> 
+		<el-row>
 			<el-col :xl="4" :lg="4" :md="5" :sm="5" :xs="5" class="padding">
 				<div class="border">
 				 <el-row >
  						<xm-iteration-select  ref="xmIterationSelect" :auto-select="false" :link-project-id="projectInfo?projectInfo.id:null" :product-id="xmProduct?xmProduct.id:null"  @row-click="onIterationRowClick" @clear="onIterationClearSelect">
 							<template v-slot:title="{iteration}">
-								<h4 href="#"><div style="max-width:15vw;" class="res-text hidden-md-and-down"><i style="font-size:16px;" class="el-icon-sort"></i> {{iteration&&iteration.id?iteration.iterationName:'请选择一个迭代'}}</div></h4> 
-								<h4 href="#"><div style="max-width:19vw;" class="res-text hidden-lg-and-up"><i style="font-size:16px;" class="el-icon-sort"></i> {{iteration&&iteration.id?iteration.iterationName:'请选择一个迭代'}}</div></h4> 
+								<h4 href="#"><div style="max-width:15vw;" class="res-text hidden-md-and-down"><i style="font-size:16px;" class="el-icon-sort"></i> {{iteration&&iteration.id?iteration.iterationName:'请选择一个迭代'}}</div></h4>
+								<h4 href="#"><div style="max-width:19vw;" class="res-text hidden-lg-and-up"><i style="font-size:16px;" class="el-icon-sort"></i> {{iteration&&iteration.id?iteration.iterationName:'请选择一个迭代'}}</div></h4>
 							</template>
 						</xm-iteration-select>
-						 
-  				 </el-row> 
-				<el-row ref="pageBody" :style="{ maxHeight: maxTableHeight + 'px', overflowY: 'hidden' }"> 
- 								<el-steps v-if="xmIteration&&xmIteration.id" 
+
+  				 </el-row>
+				<el-row ref="pageBody" :style="{ maxHeight: maxTableHeight + 'px', overflowY: 'hidden' }">
+ 								<el-steps v-if="xmIteration&&xmIteration.id"
 								:active="calcIterationStatusStep"
 								finish-status="success"
 								direction="vertical"
@@ -30,20 +30,20 @@
 										<el-button
 											class="step-btn"
 											type="warning"
-											
+
 											plain
 											@click="showPanel = 'menus'"
 											>需求管理</el-button
-										> 
+										>
 										<el-button
 											class="step-btn"
 											type="warning"
-											
+
 											plain
 											@click="showIterationMenu"
 											>配置需求范围</el-button
-										>  
-										
+										>
+
 										<el-popconfirm @confirm="editSomeFields(xmIteration, 'istatus', '1')" title="将迭代状态改为评审中?">
 											<el-button slot="reference" class="step-btn" type="danger" icon="el-icon-d-caret"  plain>开启需求评审</el-button>
 										</el-popconfirm>
@@ -52,47 +52,47 @@
 										<el-button
 											class="step-btn"
 											type="warning"
-											
+
 											plain
 											@click="showPanel = 'menus'"
 											>需求管理</el-button
-										> 
+										>
 										<el-button
 											class="step-btn"
 											type="warning"
-											
+
 											plain
 											@click="showIterationMenu"
 											>需求范围</el-button
-										> 
+										>
 										</span>
 									</el-row>
 									<el-row v-else-if="i.id == '1'"
 										><!--需求评审-->
-										<span v-if="xmIteration.istatus == i.id"> 
+										<span v-if="xmIteration.istatus == i.id">
 										<el-button
 											class="step-btn"
 											type="warning"
-											
+
 											plain
 											@click="showIterationMenu"
 											>确认需求范围</el-button
-										> 
+										>
 										<el-button
 											class="step-btn"
 											type="warning"
-											
+
 											plain
 											@click="showPanel='bugs'"
 											>缺陷登记</el-button
-										> 
-										
+										>
+
 										<el-popconfirm @confirm="editSomeFields(xmIteration, 'istatus', '2')" title="将迭代状态改为计划中?">
 											<el-button slot="reference" class="step-btn" type="danger" icon="el-icon-d-caret"  plain>进入计划会</el-button>
 										</el-popconfirm>
 										</span>
 										<span v-if="xmIteration.istatus != i.id">
-										
+
 										</span>
 									</el-row>
 									<el-row v-else-if="i.id == '2'"
@@ -101,7 +101,7 @@
 										<el-button
 											class="step-btn"
 											type="warning"
-											
+
 											plain
 											@click="showIterationDetail"
 											>迭代计划</el-button
@@ -109,12 +109,12 @@
 										<el-button
 											class="step-btn"
 											type="warning"
-											
+
 											plain
 											@click="showPanel = 'tasks'"
 											>任务管理</el-button
-										>  
-										
+										>
+
 										<el-popconfirm @confirm="editSomeFields(xmIteration, 'istatus', '3')" title="将迭代状态改为研发中?">
 											<el-button slot="reference" class="step-btn" type="danger" icon="el-icon-d-caret"  plain>设为研发中</el-button>
 										</el-popconfirm>
@@ -123,7 +123,7 @@
 										<el-button
 											class="step-btn"
 											type="warning"
-											
+
 											plain
 											@click="showIterationDetail"
 											>迭代计划</el-button
@@ -131,116 +131,116 @@
 										<el-button
 											class="step-btn"
 											type="warning"
-											
+
 											plain
 											@click="showPanel = 'tasks'"
 											>任务管理</el-button
-										> 
+										>
 										</span>
 									</el-row>
 									<el-row v-else-if="i.id == '3'"
 										><!--研发中-->
-										<span v-if="xmIteration.istatus == i.id"> 
+										<span v-if="xmIteration.istatus == i.id">
 										<el-button
 											class="step-btn"
 											type="warning"
-											
+
 											plain
 											@click="showPanel = 'tasks'"
 											>任务管理</el-button
-										>  
+										>
 										<el-button
 											class="step-btn"
 											type="warning"
-											
+
 											plain
 											@click="showPanel = '效能'"
 											>效能分析</el-button
-										>  
+										>
 										<el-popconfirm @confirm="editSomeFields(xmIteration, 'istatus', '4')" title="将迭代状态改为测试中?">
 											<el-button slot="reference" class="step-btn" type="danger" icon="el-icon-d-caret"  plain>设为测试中</el-button>
 										</el-popconfirm>
 										</span>
-										<span v-if="xmIteration.istatus != i.id"> 
+										<span v-if="xmIteration.istatus != i.id">
 										<el-button
 											class="step-btn"
 											type="warning"
-											
+
 											plain
 											@click="showPanel = '效能'"
 											>效能分析</el-button
-										> 
+										>
 										</span>
 									</el-row>
 									<el-row v-else-if="i.id == '4'"
 										><!--测试中-->
-										<span v-if="xmIteration.istatus == i.id"> 
+										<span v-if="xmIteration.istatus == i.id">
 											<el-button
 												class="step-btn"
 												type="warning"
-												
+
 												plain
 												@click="showPanel = 'bugs'"
 												>缺陷管理</el-button
-											>   
+											>
 											<el-popconfirm @confirm="editSomeFields(xmIteration, 'istatus', '5')" title="将迭代状态改为待上线?">
 												<el-button slot="reference" class="step-btn" type="danger" icon="el-icon-d-caret"  plain>设为待上线</el-button>
 											</el-popconfirm>
 										</span>
-										
+
 										<span v-if="xmIteration.istatus != i.id">
 											<el-button
 												class="step-btn"
 												type="warning"
-												
+
 												plain
 												@click="showPanel = 'bugs'"
 												>缺陷管理</el-button
-											>   
+											>
 										</span>
 									</el-row>
 									<el-row v-else-if="i.id == '5'"
 										><!--上线中-->
-										<span v-if="xmIteration.istatus == i.id"> 
+										<span v-if="xmIteration.istatus == i.id">
 											<el-popconfirm @confirm="editSomeFields(xmIteration, 'istatus', '6')" title="将迭代状态改为已完成?">
 												<el-button slot="reference" class="step-btn" type="danger" icon="el-icon-d-caret"  plain>设为已完成</el-button>
 											</el-popconfirm>
 										</span>
 										<span v-if="xmIteration.istatus != i.id">
-										
+
 										</span>
 									</el-row>
 									<el-row v-else-if="i.id == '6'"
 										><!--已完成-->
-										<span v-if="xmIteration.istatus == i.id"> 
+										<span v-if="xmIteration.istatus == i.id">
 											<el-popconfirm @confirm="editSomeFields(xmIteration, 'istatus', '7')" title="将迭代状态改为已关闭?">
 												<el-button slot="reference" class="step-btn" type="danger" icon="el-icon-d-caret"  plain>设为已关闭</el-button>
 											</el-popconfirm>
 										</span>
-										<span v-if="xmIteration.istatus != i.id"> 
-										
+										<span v-if="xmIteration.istatus != i.id">
+
 										</span>
 									</el-row>
 									<el-row v-else-if="i.id == '7'"
 										><!--已关闭-->
-										<span v-if="xmIteration.istatus == i.id"> 
+										<span v-if="xmIteration.istatus == i.id">
 										<el-popconfirm @confirm="editSomeFields(xmIteration, 'istatus', '0')" title="将迭代状态改为已打开?">
 												<el-button slot="reference" class="step-btn" type="danger" icon="el-icon-d-caret"  plain>重新打开</el-button>
 											</el-popconfirm>
-										</span> 
-									</el-row>  
+										</span>
+									</el-row>
 									</el-row>
 								</el-step>
-								</el-steps> 
-						</el-row>	
-					</div>		 
+								</el-steps>
+						</el-row>
+					</div>
 			</el-col>
 			<el-col :xl="20" :lg="20" :md="19" :sm="19" :xs="19">
-				<el-tabs :value="showPanel" @tab-click="tabClick" v-if="xmIteration && xmIteration.id">  
-					<el-tab-pane label="迭代概览"  name="iterationOverview" > 
-						 
+				<el-tabs :value="showPanel" @tab-click="tabClick" v-if="xmIteration && xmIteration.id">
+					<el-tab-pane label="迭代概览"  name="iterationOverview" >
+
 						<xm-iteration-overview v-if="xmIteration && showPanel=='iterationOverview'"  :xm-iteration="xmIteration" :sel-project="projectInfo"></xm-iteration-overview>
-				 
+
 					</el-tab-pane>
 					<el-tab-pane label="执行统计"  name="iterationCalc" >
 						  <div v-if="showPanel=='iterationCalc'">
@@ -250,15 +250,15 @@
 								<font color="blue" style="font-size:10px;">将从项目任务中汇总进度、预算工作量、实际工作量、预算金额、实际金额、缺陷数、需求数等数据到迭代统计表;
 								<br/>
 								<strong>注意：</strong>该统计实时统计迭代涉及到的各方面数据，执行量较大，一般更改了任务进度数据、重新调整了需求范围，需要迭代的实时数据的情况下，再手动执行。
-								
+
 								</font>
-							</el-row> 
+							</el-row>
 						</div>
 					</el-tab-pane>
-					
+
 					<el-tab-pane label="迭代详情" name="detail">
 						<xm-iteration-edit v-if="showPanel=='detail'" :xm-iteration="xmIteration" @edit-fields="onEditFields" :xm-product="xmProductCpd"></xm-iteration-edit>
-					</el-tab-pane> 
+					</el-tab-pane>
 					<el-tab-pane label="需求列表" name="menus">
 						<xm-menu-mng v-if="xmIteration && showPanel=='menus'" :xm-product="xmProductCpd"  :xm-iteration="xmIteration" :sel-project="projectInfo"></xm-menu-mng>
 					</el-tab-pane>
@@ -267,13 +267,13 @@
 					</el-tab-pane>
 					<el-tab-pane label="任务列表" name="tasks">
 						<xm-task-mng v-if="xmIteration && showPanel=='tasks'" :xm-product="xmProductCpd" :xm-iteration="xmIteration" :sel-project="projectInfo"></xm-task-mng>
-					</el-tab-pane>  
+					</el-tab-pane>
 					<el-tab-pane label="缺陷列表" name="bugs">
 						<xm-question-mng v-if="xmIteration && showPanel=='bugs'" :xm-product="xmProductCpd" :xm-iteration="xmIteration" :sel-project="projectInfo"></xm-question-mng>
-					</el-tab-pane> 
-					<el-tab-pane label="效能分析" name="效能"> 
+					</el-tab-pane>
+					<el-tab-pane label="效能分析" name="效能">
 						<xm-rpt v-if="xmIteration && showPanel=='效能'" :xm-project="projectInfo" :xm-iteration="xmIteration" :xm-product="xmProductCpd" category="迭代级"></xm-rpt>
- 					</el-tab-pane> 
+ 					</el-tab-pane>
 				</el-tabs>
 				<el-row>
 
@@ -282,17 +282,17 @@
 			</el-col>
 
 		</el-row>
-		
-		<el-dialog  width="60%" top="20px" :visible.sync="iterationAddVisible" append-to-body>  
+
+		<el-dialog  width="60%" top="20px" :visible.sync="iterationAddVisible" append-to-body>
 					<xm-iteration-add op-type="add"  :xm-product="xmProduct" :sel-project="projectInfo" :visible="iterationAddVisible" @cancel="iterationAddVisible=false" @submit="afterIterationAddSubmit"></xm-iteration-add>
- 		</el-dialog> 
+ 		</el-dialog>
 	</section>
 </template>
 
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import config from '@/common/config';//全局公共库
-	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
+
 	import { delXmIterationLink } from '@/api/xm/core/xmIterationLink';
 
  	import XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue'
@@ -305,7 +305,7 @@
 	import XmQuestionMng from '../xmQuestion/XmQuestionMng.vue';
 	import XmIterationOverview from "./XmIterationOverview";
 
-	import XmIterationEdit from './XmIterationEdit.vue'; 
+	import XmIterationEdit from './XmIterationEdit.vue';
 	import  XmIterationAdd from './XmIterationEdit';//新增界面
 	import XmRpt from "@/views/xm/rpt/index";
 
@@ -353,18 +353,18 @@
 				dicts:{iterationStatus:[]},
 				load:{calcIteration:false},
 				xmIteration:null,
-				showPanel:'iterationOverview',//menus,tasks,bugs,iterationStateShow 
+				showPanel:'iterationOverview',//menus,tasks,bugs,iterationStateShow
 				iterationAddVisible:false,
 				maxTableHeight:700,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
 		methods: {
-			loadTasksToXmIterationState(){ 
+			loadTasksToXmIterationState(){
 				this.load.calcIteration=true;
 				loadTasksToXmIterationState({id:this.xmIteration.id}).then(res=>{
 					this.load.calcIteration=false;
-					var tips =res.data.tips; 
+					var tips =res.data.tips;
 					if(this.$refs['xmIterationSelect']){
 						this.$refs['xmIterationSelect'].reloadOne();
 					}
@@ -374,9 +374,9 @@
 
 			/**end 自定义函数请在上面加**/
 			onIterationRowClick(iteration){
-				
+
 				this.$nextTick(()=>{
-					this.xmIteration=iteration 
+					this.xmIteration=iteration
 				})
 			},
 
@@ -388,11 +388,11 @@
 				this.$refs.xmIterationSelect.rowClick(iteration);
 				this.iterationAddVisible=false;
 			},
-			tabClick(tab){  
-				this.showPanel=tab.name 
-			}, 
+			tabClick(tab){
+				this.showPanel=tab.name
+			},
 
-			editSomeFields(row,fieldName,$event){ 
+			editSomeFields(row,fieldName,$event){
 				let params={};
 				params['ids']=[row].map(i=>i.id)
 				params[fieldName]=$event
@@ -402,7 +402,7 @@
 					if(tips.isOk){
 					Object.assign(row,params)
 					this.$emit('edit-fields',params)
-					}else{ 
+					}else{
 						this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
 					}
 				}).catch((e)=>Object.assign(this.editForm,this.editFormBak))
@@ -429,20 +429,20 @@
 			XmQuestionMng,
 			XmProjectForLink,
 			XmIterationAdd,
-			XmIterationEdit, 
+			XmIterationEdit,
 			XmIterationMenuMng,
 			XmRpt,
 
 		},
-		mounted() { 
-			
-			
+		mounted() {
+
+
 			this.$nextTick(() => {
 				debugger;
 				initDicts(this)
 				//this.maxTableHeight = util.calcTableMaxHeight(this.$refs.pageBody.$el);
-				
-				
+
+
 				});
 
 			}

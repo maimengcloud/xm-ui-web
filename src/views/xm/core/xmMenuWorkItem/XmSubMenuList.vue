@@ -95,7 +95,7 @@
 import Vue from "vue";
 import util from "@/common/js/util"; //全局公共库
 import treeTool from "@/common/js/treeTool"; //全局公共库
- import { initSimpleDicts } from '@/api/mdp/meta/item'; //下拉框数据查询
+
  	import { listXmMenuWithState,addXmMenu,editXmMenuSomeFields,batchDelXmMenu } from '@/api/xm/core/xmMenu';
 	import  XmMenuWorkload from '@/views/xm/core/components/XmMenuWorkload';//修改界面
  	import  XmGroupDialog from '@/views/xm/core/xmGroup/XmGroupDialog';//修改界面

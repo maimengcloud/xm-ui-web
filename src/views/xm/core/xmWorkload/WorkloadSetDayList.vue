@@ -55,7 +55,7 @@
       <el-table
         ref="xmWorkloadTable"
         :data="xmProjectWorkloadSetDays"
-        
+
         highlight-current-row
         v-loading="load.list"
         @row-click="rowClick"
@@ -245,7 +245,7 @@
 <script>
 import util from "@/common/js/util"; //全局公共库
 import seq from '@/common/js/sequence';//全局公共库
-import { initSimpleDicts } from "@/api/mdp/meta/item"; //下拉框数据查询
+
 import { mapGetters } from "vuex";
 
 import XmProjectSelect from "@/views/xm/core/components/XmProjectSelect"; //新增界面
@@ -338,7 +338,7 @@ export default {
         toConfirmWorkload: "待确认",
         hadConfirmWorkload: "已确认",
 		    notNeedSetWorkload:'无需结算',
-        toSetSworkload: "待结算", 
+        toSetSworkload: "待结算",
         hadAgreeSworkload: "已审核待结算",
         hadCommitSworkload: "已提交待审核",
         hadSetSworkload: "已结算",

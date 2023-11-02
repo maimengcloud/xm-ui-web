@@ -1,9 +1,9 @@
 <template>
   <section class="padding">
     <el-row>
-       <font>共{{subWorkItemNum}}个子工作项</font> 
-      <span style="float:right;"> 
-      <el-button v-if="parentXmTask.ntype==='1'" icon="el-icon-plus" @click="showAdd('1')"> 
+       <font>共{{subWorkItemNum}}个子工作项</font>
+      <span style="float:right;">
+      <el-button v-if="parentXmTask.ntype==='1'" icon="el-icon-plus" @click="showAdd('1')">
         <div class="icon" style="background-color:  #E6A23C;">
             <i class="el-icon-time"></i>
           </div>
@@ -14,11 +14,11 @@
         <div class="icon" style="background-color: #409EFF;">
             <i class="el-icon-s-operation"></i>
           </div>
-        添加任务</el-button> 
-         <el-button type="danger" plain icon="el-icon-delete" @click="doDelete"> 
-         </el-button> 
+        添加任务</el-button>
+         <el-button type="danger" plain icon="el-icon-delete" @click="doDelete">
+         </el-button>
       </span>
-    </el-row> 
+    </el-row>
         <xm-sub-task-list  ref="taskList"  :parent-xm-task="parentXmTask" @tasks-change="onTasksChange" @workload-submit="onWorkloadSubmit"></xm-sub-task-list>
    </section>
 </template>
@@ -27,10 +27,10 @@
 import Vue from "vue";
 import util from "@/common/js/util"; //全局公共库
 import treeTool from "@/common/js/treeTool"; //全局公共库
- import { initSimpleDicts } from '@/api/mdp/meta/item'; //下拉框数据查询
+
 
 	import { mapGetters } from 'vuex'
-   import XmSubTaskList from './XmSubTaskList.vue' 
+   import XmSubTaskList from './XmSubTaskList.vue'
 
 export default {
   computed: {
@@ -42,7 +42,7 @@ export default {
 					params={label:'计划',icon:'el-icon-time',color:'#E6A23C'};
 				}else if(this.parentXmTask.ntype==='1'){
 					params={label:'任务',icon:'el-icon-s-operation',color:'#409EFF'};
-				} 
+				}
 				return params;
 			},
       subWorkItemNum(){
@@ -63,17 +63,17 @@ export default {
   data() {
     return{
       load:{edit:false,list:false,add:false},
-      xmTasks:[],  
+      xmTasks:[],
 
     }
   }, //end data
   methods: {
     initData(){
-      this.xmTasks=[]  
+      this.xmTasks=[]
     },
-      showAdd(ntype) { 
-          this.$refs.taskList.showAdd(ntype); 
-    },  
+      showAdd(ntype) {
+          this.$refs.taskList.showAdd(ntype);
+    },
     onTasksChange(tasks){
       this.xmTasks=tasks
     },
@@ -81,12 +81,12 @@ export default {
       this.$emit('workload-submit',xmTask)
     },
     doDelete(){
-      this.$refs.taskList.batchDel(); 
+      this.$refs.taskList.batchDel();
     }
     /**end 自定义函数请在上面加**/
   }, //end methods
   components: {
-     XmSubTaskList 
+     XmSubTaskList
   },
   mounted() {
     this.initData();

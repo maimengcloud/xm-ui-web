@@ -1,92 +1,92 @@
 <template>
 	<section class="padding">
 		<el-row>
-			<!--新增界面 XmEnvList xm_env_list--> 
-			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm" label-position="left">  
+			<!--新增界面 XmEnvList xm_env_list-->
+			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm" label-position="left">
 				<el-form-item label="名称" prop="name">
 					<el-input v-model="addForm.name" placeholder="名称" ></el-input>
 					<el-row class="label-font-color"> <span v-if="addForm.projectName">归属项目：{{ addForm.projectName}} <el-divider direction="vertical"></el-divider></span>
-					 
+
 						 <xm-project-select style="display:inline;" v-if="!xmProject||!xmProject.id" :auto-select="false"   :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClear" >
 							<div slot="title">选择项目</div>
 						</xm-project-select>
 					</el-row>
-				</el-form-item> 
-				
+				</el-form-item>
+
 				<el-form-item label="访问链接" prop="accessUrl">
 					<el-input v-model="addForm.accessUrl" placeholder="访问链接" ></el-input>
-				</el-form-item>  
+				</el-form-item>
 				<el-row>
-					<el-col :span="8"> 
+					<el-col :span="8">
 						<el-form-item label="访问用户编号" prop="accessUserid">
 							<el-input v-model="addForm.accessUserid" placeholder="访问用户编号" style="width:99%;"></el-input>
-						</el-form-item> 
+						</el-form-item>
 					</el-col>
 					<el-col :span="8">
 						<el-form-item label="访问密码" prop="accessPassword">
 							<el-input v-model="addForm.accessPassword" placeholder="访问密码" show-password style="width:99%;"></el-input>
-						</el-form-item>  
+						</el-form-item>
 					</el-col>
-				</el-row> 
+				</el-row>
 				<el-row>
-					<el-col :span="8"> 
+					<el-col :span="8">
 						<el-form-item label="内网ip地址" prop="ipAddress">
 							<el-input v-model="addForm.ipAddress" style="width:99%;" placeholder="内网ip地址" ></el-input>
-						</el-form-item> 
+						</el-form-item>
 					</el-col>
 					<el-col :span="8">
 						<el-form-item label=" 访问端口" prop="port">
 							<el-input type="number" min="0"  v-model="addForm.port" placeholder="内网访问端口" style="width:99%;"></el-input>
-						</el-form-item> 
+						</el-form-item>
 					</el-col>
-				</el-row> 
+				</el-row>
 				<el-row>
-					<el-col :span="8"> 
+					<el-col :span="8">
 						<el-form-item label="外网ip地址" prop="webIpAddress">
 							<el-input v-model="addForm.webIpAddress" placeholder="外网ip地址" style="width:99%;"></el-input>
-						</el-form-item> 
+						</el-form-item>
 					</el-col>
 					<el-col :span="8">
 						<el-form-item label="外网端口" prop="webPort">
 							<el-input type="number" min="0"  v-model="addForm.webPort" placeholder="外网端口" style="width:99%;"></el-input>
-						</el-form-item>  
+						</el-form-item>
 					</el-col>
-				</el-row>  
-				
+				</el-row>
+
 				<el-row>
-					<el-col :span="8"> 
-							<el-form-item label="状态" prop="envState"> 
+					<el-col :span="8">
+							<el-form-item label="状态" prop="envState">
 								<el-select v-model="addForm.envState">
 									<el-option  value="0" label="不可用"></el-option>
 									<el-option  value="1" label="已启用"></el-option>
 									<el-option  value="2" label="已过期"></el-option>
 								</el-select>
-							</el-form-item>   
+							</el-form-item>
 					</el-col>
 					<el-col :span="8">
-						<el-form-item label="浏览权限" prop="readQx"> 
+						<el-form-item label="浏览权限" prop="readQx">
 							<el-select v-model="addForm.readQx">
 								<el-option v-for="(item,index) in dicts['readQx']" :key="index" :value="item.id" :label="item.name"></el-option>
 							</el-select>
-						</el-form-item>  
+						</el-form-item>
 					</el-col>
 					<el-col :span="8">
-					<el-form-item label="修改权限" prop="writeQx"> 
+					<el-form-item label="修改权限" prop="writeQx">
 						<el-select v-model="addForm.writeQx">
 							<el-option v-for="(item,index) in dicts['writeQx']" :key="index" :value="item.id" :label="item.name"></el-option>
 						</el-select>
-					</el-form-item> 
+					</el-form-item>
 				</el-col>
 				</el-row>
 				<el-form-item label="备注说明" prop="remark">
 					<el-input type="textarea" rows="4" v-model="addForm.remark" placeholder="备注说明" ></el-input>
-				</el-form-item> 
+				</el-form-item>
 				<el-form-item>
-					<el-col :span="24" :offset="8"> 
-						<el-button @click.native="handleCancel">取消</el-button>  
-						<el-button v-loading="load.add" type="primary" @click.native="addSubmit" :disabled="load.add==true">提交</el-button>  
+					<el-col :span="24" :offset="8">
+						<el-button @click.native="handleCancel">取消</el-button>
+						<el-button v-loading="load.add" type="primary" @click.native="addSubmit" :disabled="load.add==true">提交</el-button>
 					</el-col>
-				</el-form-item> 
+				</el-form-item>
 			</el-form>
 		</el-row>
 	</section>
@@ -94,12 +94,12 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	//import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询 
+
 	import { initDicts,addXmEnvList } from '@/api/xm/core/xmEnvList';
 	import XmProjectSelect from "@/views/xm/core/components/XmProjectSelect";
 	import { mapGetters } from 'vuex'
-	
-	export default { 
+
+	export default {
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -115,7 +115,7 @@
 				this.initData();
 	      		//从新打开页面时某些数据需要重新加载，可以在这里添加
 	      	}
-	      } 
+	      }
 	    },
 		data() {
 			var validateStart = (rule, value, callback) => {
@@ -142,9 +142,9 @@
 			};
 
 			return {
-				dicts:{readQx:[],wrightQx:[]},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
+				dicts:{readQx:[],wrightQx:[]},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
-				addFormRules: { 
+				addFormRules: {
 					envState: [
 						{ required: true, message: '状态不能为空', trigger: 'change' }
 					],
@@ -157,7 +157,7 @@
 					id:'',name:'',remark:'',ipAddress:'',port:'',branchId:'',accessUserid:'',accessPassword:'',effect:'',accessUrl:'',supplier:'',webIpAddress:'',webPort:'',otherRemark:'',createUserid:'',createUsername:'',createTime:'',envState:'1',startTime:'',endTime:'',feeAmount:'',feeRule:'',readQx:'9',writeQx:'9',projectId:'',projectName:''
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
-				
+
 				envStatusList: [
 					{
 						label: "不可用",
@@ -184,27 +184,27 @@
 			},
 			//新增提交XmEnvList xm_env_list 父组件监听@submit="afterAddSubmit"
 			addSubmit: function () {
-				
+
 				this.$refs.addForm.validate((valid) => {
 					if (valid) {
-						
-						this.$confirm('确认提交吗？', '提示', {}).then(() => { 
+
+						this.$confirm('确认提交吗？', '提示', {}).then(() => {
 							this.load.add=true
-							let params = Object.assign({}, this.addForm);  
+							let params = Object.assign({}, this.addForm);
 							addXmEnvList(params).then((res) => {
 								this.load.add=false
 								var tips=res.data.tips;
 								if(tips.isOk){
  									this.$emit('submit');//  @submit="afterAddSubmit"
 								}
-								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
+								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 							}).catch( err  => this.load.add=false);
 						});
 					}
 				});
 			},
 			/**begin 在下面加自定义方法,记得补上面的一个逗号**/
-			
+
 			matchIP(val) {
 				let ip = /25[6-9]|[3-9][0-9]{2}/;
 				console.log(val);
@@ -232,19 +232,19 @@
 				}
 			}
 			/**end 在上面加自定义方法**/
-			
+
 		},//end method
-		components: {  
+		components: {
 			XmProjectSelect,
 		    //在下面添加其它组件 'xm-env-list-edit':XmEnvListEdit
 		},
 		mounted() {
-			this.addForm=Object.assign(this.addForm, this.xmEnvList);  
+			this.addForm=Object.assign(this.addForm, this.xmEnvList);
 			this.initData();
 			initDicts(this)
-			
+
 			/**在下面写其它函数***/
-			
+
 		}//end mounted
 	}
 

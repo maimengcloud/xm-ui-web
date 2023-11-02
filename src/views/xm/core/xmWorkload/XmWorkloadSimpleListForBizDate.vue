@@ -88,7 +88,7 @@
 	import util from '@/common/js/util';//全局公共库
 	import config from '@/common/config';//全局公共库
   	import {batchJoinToSbill} from "@/api/xm/core/xmTaskSbill";
-	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
+
 	import { listXmWorkload, delXmWorkload, batchDelXmWorkload,editXmWorkloadSomeFields,initDicts } from '@/api/xm/core/xmWorkload';
 	import { mapGetters } from 'vuex'
 

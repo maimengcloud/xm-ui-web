@@ -1,11 +1,11 @@
 <template>
 	<section class="page-container  padding border">
-		<el-row> 
+		<el-row>
 			<div class="project-info" v-loading.lock="load.list || load.edit">
 				<div class="info-type">
 					<el-radio-group v-model="infotype" size="medium">
 						<el-radio-button label="任务"></el-radio-button>
- 					</el-radio-group> 
+ 					</el-radio-group>
 				</div>
 				<div class="info-detail">
 					<xm-task-template-mng v-if="infotype=='任务'" :sel-project-template="selProjectTemplate" ></xm-task-template-mng>
@@ -18,67 +18,67 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
-	//import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
-	import { listXmProjectTemplate,editStatus , delXmProjectTemplate, batchDelXmProjectTemplate } from '@/api/xm/core/xmProject'; 
+
+	import { listXmProjectTemplate,editStatus , delXmProjectTemplate, batchDelXmProjectTemplate } from '@/api/xm/core/xmProject';
 	import { mapGetters } from 'vuex';
-	import xmTaskTemplateMng from '../xmTaskTemplate/XmTaskTemplateMng'; 
-	import xmProjectTemplateEdit from './XmProjectTemplateEdit'; 
- 
-	export default { 
+	import xmTaskTemplateMng from '../xmTaskTemplate/XmTaskTemplateMng';
+	import xmProjectTemplateEdit from './XmProjectTemplateEdit';
+
+	export default {
 		props: ["selProjectTemplate"],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
-				]), 
-		}, 
+				]),
+		},
 		watch:{
 			selProjectTemplate:function(selProjectTemplate){
 				var oldInfotype=this.infotype
-				
+
 				this.$nextTick(()=>{
 					this.infotype=''
 					this.infotype=oldInfotype
 				})
-			
+
 			}
 		},
 		data() {
-			return { 
+			return {
 				infotype:"任务",
 				load:{list:false,edit:false}
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
-		methods: { 
-			 
+		methods: {
+
 			afterEditSubmit:function(project){
 				this.$emit("submit",project)
 			},
-			toArchive:function(){ 
+			toArchive:function(){
 					this.$router.push({
 						path: "/mdp/arc/mate/archive/ArchiveMng"
-					});  
+					});
 			},
-			toIm:function(){  
+			toIm:function(){
 					this.$router.push({
 						path: "/mdp/im/messages/messageChat"
-					}); 
+					});
 			},
-			toHelpMe:function(){   
+			toHelpMe:function(){
 				this.$refs.xmQuestion.showAdd();
 			}
-			
+
 		},//end methods
-		components: { 
+		components: {
 			xmTaskTemplateMng,
-			xmPhaseTemplateMng,  
-			xmProjectTemplateEdit, 
+			xmPhaseTemplateMng,
+			xmProjectTemplateEdit,
 			//在下面添加其它组件
 		},
-		mounted() { 
+		mounted() {
 			this.$nextTick(() => {
-			 
-      }); 
+
+      });
 		}
 	}
 </script>

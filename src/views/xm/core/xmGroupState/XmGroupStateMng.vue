@@ -53,7 +53,7 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import config from '@/common/config';//全局公共库
-	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
+
 	import { listXmGroupState, delXmGroupState, batchDelXmGroupState,loadTasksToXmGroupState } from '@/api/xm/core/xmGroupState';
 	import { mapGetters } from 'vuex'
 import XmGroupStateOverview from './XmGroupStateOverview.vue';
@@ -160,11 +160,11 @@ import XmGroupStateOverview from './XmGroupStateOverview.vue';
 				if(this.selProject){
 					params.projectId=this.selProject.id
 				}
-				
+
 				if(this.xmProduct){
 					params.productId=this.xmProduct.id
 				}
-				
+
 				if(this.xmGroup){
 					params.groupId=this.xmGroup.id
 				}
@@ -268,8 +268,8 @@ XmGroupStateOverview
 		mounted() {
 			this.$nextTick(() => {
 
-				
-				
+
+
 				this.tableHeight =  util.calcTableMaxHeight(".el-table");
 				this.getXmGroupStates();
         	});

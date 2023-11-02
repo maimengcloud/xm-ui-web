@@ -1,6 +1,6 @@
 <template>
   <section>
-    <el-row :style="{overflowX: 'hidden',height:(maxTableHeight-24)+'px'}" ref="table"> 
+    <el-row :style="{overflowX: 'hidden',height:(maxTableHeight-24)+'px'}" ref="table">
       <el-row :gutter="10" style="margin-bottom:10px">
           <el-col :span="8" >
             <el-card class="box-card" style="padding:0px ;height:425px">
@@ -11,7 +11,7 @@
                   placement="bottom"
                   title="标题"
                   width="200"
-                  trigger="click" > 
+                  trigger="click" >
 
                   <el-row>
                     <el-button type="primary" @click="loadTasksToXmProductState" v-loading="load.calcProduct">计算产品汇总数据</el-button>
@@ -26,12 +26,12 @@
 
                   <el-button slot="reference" style="float:right;" icon="el-icon-video-play" type="text">统计</el-button>
                 </el-popover>
-               
+
               </div>
               <el-row style="margin-bottom:10px">
                 <el-row>
-                  <span>产品负责人</span>&nbsp;<span><b>{{pmUsername}}</b></span> 
-                 </el-row> 
+                  <span>产品负责人</span>&nbsp;<span><b>{{pmUsername}}</b></span>
+                 </el-row>
               </el-row>
               <el-row style="margin-bottom:10px">
                 <el-col :span="8">
@@ -91,7 +91,7 @@
                     <div class="title"> 需求数： {{this.xmProduct.menuCnt||0}}</div>
                   </div>
                 </div>
-              </el-row> 
+              </el-row>
               <el-row style="margin-bottom:10px">
                 <div class="item">
                   <div class="icon2" style="background-color:  rgb(204, 204, 204);">
@@ -101,7 +101,7 @@
                     <div class="progress-item">
                       <el-progress :percentage="realProgress">
                       </el-progress>
-                      
+
                       <el-tag v-if="planProgress>realProgress" type="danger" effect="dark">整体进度 落后{{ planProgress-realProgress }}%</el-tag>
                           <el-tag v-else-if="planProgress<realProgress" type="warning" effect="dark">整体进度 超前{{ realProgress-planProgress }}%</el-tag>
                           <el-tag v-else effect="dark" type="success">整体进度 理想</el-tag>
@@ -122,7 +122,7 @@
                 <div id="planTotalCostPie" :style="{width: '100%', height: '320px'}"></div>
               </div>
             </el-card>
-          </el-col>  
+          </el-col>
 
           <el-col :span="8" >
             <el-card class="box-card" style="height:425px">
@@ -170,7 +170,7 @@
                         </div>
                         <div style="text-align:center;font-size:5px;" title="已登记的工时">已完成工时</div>
                       </div>
-                    </el-col> 
+                    </el-col>
                   </div>
                 </el-row>
                 <el-row  >
@@ -226,7 +226,7 @@
               </div>
             </el-card>
           </el-col>
-        </el-row> 
+        </el-row>
         <el-row :gutter="10" style="margin-bottom:10px">
           <el-col :span="8" >
             <el-card class="box-card" style="height:425px">
@@ -248,7 +248,7 @@
               </div>
             </el-card>
           </el-col>
-          
+
           <el-col :span="8" >
             <el-card class="box-card" style="padding:0px ;height:425px">
               <div slot="header" class="clearfix">
@@ -259,7 +259,7 @@
               </div>
             </el-card>
           </el-col>
-          
+
         </el-row>
         <el-row :gutter="10" style="margin-bottom:10px">
           <el-col :span="8" >
@@ -272,7 +272,7 @@
               </div>
             </el-card>
           </el-col>
-          
+
           <el-col :span="8" >
             <el-card class="box-card" style="height:425px">
               <div slot="header" class="clearfix">
@@ -291,9 +291,9 @@
 <script>
 import util from "@/common/js/util"; // 全局公共库
 import { mapGetters } from "vuex";
-import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询 
-	import { listXmProductWithState} from '@/api/xm/core/xmProduct'; 
-import { loadTasksToXmMenuState} from '@/api/xm/core/xmMenuState'; 
+
+	import { listXmProductWithState} from '@/api/xm/core/xmProduct';
+import { loadTasksToXmMenuState} from '@/api/xm/core/xmMenuState';
   import {  loadTasksToXmProductState} from '@/api/xm/core/xmProductState';
   import store from '@/store'
 export default {
@@ -307,7 +307,7 @@ export default {
     },
     totalTask: function() {
       return this.xmProduct.taskCnt;
-    }, 
+    },
     taskStartTime: function (){
       return this.xmProduct.startTime?this.xmProduct.startTime.substring(0,10):'';
     },
@@ -324,9 +324,9 @@ export default {
       return Math.round(this.xmProduct.actWorkload/this.xmProduct.budgetWorkload*100);
     },
     deviation:function (){
-      
+
         return  this.xmProduct.actWorkload-this.xmProduct.estimateWorkload
-       
+
     },
     deviationRate:function (){
       return Math.round(this.deviation/this.xmProduct.estimateWorkload*100);
@@ -352,7 +352,7 @@ export default {
     },
     xmProductStateCpd(){
       return this.xmProduct
-    }, 
+    },
 
   },
 
@@ -454,19 +454,19 @@ export default {
       // 绘制图表
       allChart.setOption(option);
     },
-    
+
     drawMenuPie() {
       let taskChart = this.$echarts.init(document.getElementById("menuChart"));
-      let option = {  
-						title: { 
+      let option = {
+						title: {
 							left: 'center'
-						}, 
+						},
 						tooltip: {
 							trigger: 'item',
-							
-						}, 
+
+						},
 						calculable: true,
-						
+
 						legend:{
               show:true,
 							bottom: 'bottom',
@@ -487,7 +487,7 @@ export default {
 							height: 30,
 							fontSize: 14
 							}
-						}, 
+						},
 
 						series: [
 							{
@@ -504,29 +504,29 @@ export default {
 							},
 
 							label: {
-								show: true, 
+								show: true,
 								formatter:'{b}: {c}  ({d}%)'
 							},
 							}
-						] 
+						]
       };
 
       // 绘制图表
       taskChart.setOption(option);
     },
-    
+
     drawTestCasePie() {
       let taskChart = this.$echarts.init(document.getElementById("testCasePieChart"));
-      let option = {  
-						title: { 
+      let option = {
+						title: {
 							left: 'center'
-						}, 
+						},
 						tooltip: {
 							trigger: 'item',
-							
-						}, 
+
+						},
 						calculable: true,
-						
+
 						legend:{
               show:true,
 							bottom: 'bottom',
@@ -547,7 +547,7 @@ export default {
 							height: 30,
 							fontSize: 14
 							}
-						}, 
+						},
 
 						series: [
 							{
@@ -564,11 +564,11 @@ export default {
 							},
 
 							label: {
-								show: true, 
+								show: true,
 								formatter:'{b}: {c}  ({d}%)'
 							},
 							}
-						] 
+						]
       };
 
       // 绘制图表
@@ -576,15 +576,15 @@ export default {
     },
     drawTask() {
       let taskChart = this.$echarts.init(document.getElementById("taskChart"));
-      let option = {  
-						title: { 
+      let option = {
+						title: {
 							left: 'center'
-						}, 
+						},
 						tooltip: {
 							trigger: 'item',
-							
-						}, 
-						calculable: true, 
+
+						},
+						calculable: true,
 
             grid: {
               left: '3%',
@@ -609,7 +609,7 @@ export default {
                 }
               },
 							type: 'bar',
-              center:['50%','40%'],  
+              center:['50%','40%'],
 
 							data:[
                 {name:'未开始',value:this.xmProduct.taskUnstartCnt,
@@ -642,9 +642,9 @@ export default {
                   normal:{
                     color: '#EE6666'
                   }
-                }}],  
+                }}],
 							}
-						] 
+						]
       };
 
       // 绘制图表
@@ -653,14 +653,14 @@ export default {
     drawPieBug() {
       let bugPieChart = this.$echarts.init(document.getElementById("bugPieChart"));
       let option = {
-        title: { 
+        title: {
 							left: 'center'
-						}, 
+						},
         tooltip: {
           trigger: 'item',
           formatter: '{b} : {c} ({d}%)'
         },
-        legend: {   
+        legend: {
           show:true,
 					bottom: 'bottom',
           data:['已激活','已确认','已解决','已关闭']
@@ -680,15 +680,15 @@ export default {
           height: 30,
           fontSize: 14
           }
-        }, 
+        },
         series: [
           {
 
             type: 'pie',
             center:['50%','40%'],
             radius: ['35%','60%'],
-            label:{ 
-								show: true, 
+            label:{
+								show: true,
 								formatter:'{b}: {c}  ({d}%)'
             },
             data: [
@@ -720,7 +720,7 @@ export default {
                   }
                 },
                 name: '已关闭'},
-            ], 
+            ],
           }
         ]
       };
@@ -821,7 +821,7 @@ export default {
           height: 30,
           fontSize: 14
           }
-        }, 
+        },
         series: [
           {
             type: 'pie',
@@ -841,7 +841,7 @@ export default {
                 margin:10
               }
             },
-            
+
             data: [
               {value: this.xmProduct.budgetIuserWorkload,
                 itemStyle: {
@@ -889,7 +889,7 @@ export default {
         yAxis: {
           type: 'value'
         },
-        series: [{  
+        series: [{
             label: {
               normal:{
                 show: true,
@@ -897,7 +897,7 @@ export default {
                 color:'#000000',
               }
             },
-          
+
           data: [
             {
                 value: this.xmProduct.projectCnt,
@@ -914,10 +914,10 @@ export default {
                     color: '#FAC858'
                   }
                 }
-              },  
-        
+              },
+
         ],
-          type: 'bar', 
+          type: 'bar',
         }]
       };
 
@@ -925,45 +925,45 @@ export default {
       iterationAndProduct.setOption(option);
     },
 
-    
+
     loadTasksToXmProductState(){
         var row=this.xmProduct;
         var params={productId:row.id}
         this.load.calcProject=true;
       loadTasksToXmProductState(params).then((res1) => {
-          this.load.calcProject=false; 
+          this.load.calcProject=false;
           this.load.list=true;
           listXmProductWithState({id:row.id}).then(res=>{
             this.load.list=false;
             var tips = res.data.tips;
             if(tips.isOk){
-              var xmProduct=res.data.data[0]  
+              var xmProduct=res.data.data[0]
               if(this.xmProduct && this.xmProduct.id){
                 store.dispatch('setXmProduct',xmProduct)
-              } 
+              }
               Object.assign(this.xmProduct,xmProduct)
               this.$emit("edit-fields",xmProduct);
             }
             this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
           })
-          
-        }).catch( err  => this.load.calcProject=false ); 
+
+        }).catch( err  => this.load.calcProject=false );
     },
     loadTasksToXmMenuState(){
         var row=this.xmProduct;
         var params={productId:row.id}
       loadTasksToXmMenuState(params).then((res) => {
           this.load.calcProject=false;
-          var tips=res.data.tips; 
+          var tips=res.data.tips;
           this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
-        }).catch( err  => this.load.calcProject=false ); 
+        }).catch( err  => this.load.calcProject=false );
     },
   },
 
-  mounted() { 
+  mounted() {
 
-     
-			
+
+
 			initSimpleDicts('all',['xmProductPstatus']).then(res=>{
 				this.dicts=res.data.data;
 			})
@@ -976,7 +976,7 @@ export default {
     this.drawWorkload();
     this.drawIterationProduct();
     this.$nextTick(()=>{
-      this.maxTableHeight=util.calcMaxHeight(this.$refs.table.$el) 
+      this.maxTableHeight=util.calcMaxHeight(this.$refs.table.$el)
     })
   },
 
@@ -1003,18 +1003,18 @@ export default {
 }
 
 .icon1 {
-  color: #fff; 
+  color: #fff;
   border-radius: 15px;
-  text-align: center; 
+  text-align: center;
   font-size: 20px;
   display: inline-block;
   margin-right: 5px;
 }
 
 .icon2 {
-  color: #000000;  
+  color: #000000;
   border-radius: 15px;
-  text-align: center; 
+  text-align: center;
   font-size: 20px;
   display: inline-block;
   margin-right: 5px;
@@ -1088,4 +1088,4 @@ export default {
   justify-content: flex-start;
 }
 </style>
- 
+

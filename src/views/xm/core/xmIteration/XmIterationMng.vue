@@ -17,7 +17,7 @@
         placeholder="输入迭代编号"
         @keyup.enter.native="searchXmProducts"
       >
-      </el-input> 
+      </el-input>
       <el-input v-model="filters.key" style="width: 15%" placeholder="模糊查询">
       </el-input>
       <el-button
@@ -28,70 +28,70 @@
         icon="el-icon-search"
       ></el-button>
       <el-popover placement="top-start" title="更多条件、操作" width="500" trigger="manual" v-model="moreVisible">
-        
-      <el-row  style="float:right;margin-top:-40px">  
-          <el-button 
+
+      <el-row  style="float:right;margin-top:-40px">
+          <el-button
           icon="el-icon-close"
           @click="moreVisible=false"
           type="text"
           >关闭</el-button
-          > 
-      </el-row> 
-      <el-descriptions class="margin-top" size="mini" :column="1" border>    
+          >
+      </el-row>
+      <el-descriptions class="margin-top" size="mini" :column="1" border>
 									<el-descriptions-item v-if="xmProduct">
 										<template slot="label">
 											<i class="el-icon-document"></i>
 											当前产品
 										</template>
-										<el-tag v-if="xmProduct">{{xmProduct.productName}}</el-tag>									
-									</el-descriptions-item>    
+										<el-tag v-if="xmProduct">{{xmProduct.productName}}</el-tag>
+									</el-descriptions-item>
 									<el-descriptions-item v-if="selProject">
 										<template slot="label">
 											<i class="el-icon-document"></i>
 											当前项目
 										</template>
 										<el-tag v-if="selProject">{{selProject?selProject.name:''}}</el-tag>
-									</el-descriptions-item>     
+									</el-descriptions-item>
 									<el-descriptions-item :span="2">
 										<template slot="label">
 											<i class="el-icon-watch-1"></i>
 											创建时间
 										</template>
-										
+
 										<mdp-date-range
 												v-model="filters"
-												type="daterange" 
+												type="daterange"
 												start-key="onlineTimeStart"
 												end-key="onlineTimeEnd"
 												unlink-panels
 												range-separator="至"
 												start-placeholder="开始日期"
 												end-placeholder="完成日期"
-												value-format="yyyy-MM-dd HH:mm:ss" 
-												:default-time="['00:00:00', '23:59:59']" 
-												:auto-default="false" 
+												value-format="yyyy-MM-dd HH:mm:ss"
+												:default-time="['00:00:00', '23:59:59']"
+												:auto-default="false"
 												key="planEndTime"
 												></mdp-date-range>
-									</el-descriptions-item> 
+									</el-descriptions-item>
 									<el-descriptions-item>
 										<template slot="label">
 											<i class="el-icon-document"></i>
 											迭代编号
-										</template> 										
-										<el-input v-model="filters.id" clearable></el-input> 
+										</template>
+										<el-input v-model="filters.id" clearable></el-input>
 									</el-descriptions-item>
 									<el-descriptions-item>
 										<template slot="label">
 											<i class="el-icon-document"></i>
 											迭代名称
-										</template> 										
-										<el-input v-model="filters.key" clearable ></el-input> 
+										</template>
+										<el-input v-model="filters.key" clearable ></el-input>
 									</el-descriptions-item>
-									
+
 									<el-descriptions-item>
-										<el-button type="primary" style="float:right;" @click="searchXmIterations" icon="el-icon-search">查询</el-button> 
+										<el-button type="primary" style="float:right;" @click="searchXmIterations" icon="el-icon-search">查询</el-button>
 									</el-descriptions-item>
-								</el-descriptions>  
+								</el-descriptions>
         <el-button slot="reference" icon="el-icon-more" @click="moreVisible=true"></el-button>
       </el-popover>
       <span style="float: right">
@@ -142,7 +142,7 @@
                   plain
                   icon="el-icon-video-play"
                   @click.stop="loadTasksToXmIterationState(scope.row)"
-                ></el-button> 
+                ></el-button>
           </template>
         </el-table-column>
         <el-table-column  sortable
@@ -273,7 +273,7 @@
           :visible="iterationStateVisible"
           @cancel="iterationStateVisible = false"
         ></xm-iteration-state-mng>
-      </el-drawer> 
+      </el-drawer>
     </el-row>
   </section>
 </template>
@@ -281,14 +281,14 @@
 <script>
 import util from "@/common/js/util"; //全局公共库
 import config from "@/common/config"; //全局公共库
-import { initSimpleDicts } from "@/api/mdp/meta/item"; //下拉框数据查询
+
 import {
   listXmIteration,
   listXmIterationWithState,
   delXmIteration,
-  batchDelXmIteration, 
+  batchDelXmIteration,
 } from "@/api/xm/core/xmIteration";
-import { 
+import {
   loadTasksToXmIterationState,
 } from "@/api/xm/core/xmIterationState";
 import {
@@ -532,12 +532,12 @@ export default {
         if (this.filters.queryScope == "branchId") {
           params.branchId = this.userInfo.branchId;
         }
-      } 
+      }
       if(this.filters.onlineTimeStart && this.filters.onlineTimeEnd){
         params.onlineTimeStart = this.filters.onlineTimeStart;
-        params.onlineTimeEnd =  this.filters.onlineTimeEnd; 
-      } 
-       
+        params.onlineTimeEnd =  this.filters.onlineTimeEnd;
+      }
+
       this.load.list = true;
       listXmIterationWithState(params)
         .then((res) => {
@@ -565,13 +565,13 @@ export default {
       this.editForm = Object.assign({}, row);
     },
     //显示新增界面 XmIteration 迭代定义
-    showAdd: function () { 
+    showAdd: function () {
       this.parentIteration = null;
-      this.addFormVisible = true; 
+      this.addFormVisible = true;
     },
     showSubAdd: function (row) {
       this.parentIteration = row;
-      this.addFormVisible = true; 
+      this.addFormVisible = true;
     },
     afterAddSubmit(xmIteration) {
       this.addFormVisible = false;
@@ -589,10 +589,10 @@ export default {
         this.$router.push({
           path:'/xm/core/iteration/overview',
           query:{
-            iterationId:row.id 
+            iterationId:row.id
           }
         })
-      })  
+      })
     },
     //选择行xmIteration
     selsChange: function (sels) {
@@ -707,7 +707,7 @@ export default {
       } else {
         return cellValue;
       }
-    },  
+    },
     focusOrUnfocus: function (row) {
       if (this.menukey == "myFocus") {
         delUserFocus({
@@ -745,11 +745,11 @@ export default {
       }
     },
 	onProductSelected(row){
-		this.filters.xmProduct=row 
+		this.filters.xmProduct=row
 	},
 	onProductClearSelect(){
-		this.filters.xmProduct=null; 
-	} 
+		this.filters.xmProduct=null;
+	}
   }, //end methods
   components: {
     "xm-iteration-add": XmIterationAdd,

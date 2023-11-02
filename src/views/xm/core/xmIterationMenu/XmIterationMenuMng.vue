@@ -36,17 +36,17 @@
 										<i class="el-icon-document"></i>
 									</div>
 										 <el-link @click="showEdit( scope.row,scope.$index)" >{{scope.row.seqNo}}
-										&nbsp;&nbsp;{{scope.row.menuName}}</el-link>  
+										&nbsp;&nbsp;{{scope.row.menuName}}</el-link>
 									</div>
 									</template>
-								</el-table-column> 
+								</el-table-column>
 								<el-table-column prop="finishRate" label="进度" width="100" show-overflow-tooltip sortable>
 									<template slot-scope="scope">
-										<span  
-											:style="{borderRadius: '30px',color:scope.row.finishRate >= 100 ? 'green' : 'blue'}" 
+										<span
+											:style="{borderRadius: '30px',color:scope.row.finishRate >= 100 ? 'green' : 'blue'}"
 										>
 											{{ (scope.row.finishRate != null ? scope.row.finishRate : 0) + "%" }}
-										</span>  
+										</span>
 									</template>
 								</el-table-column>
 								<el-table-column label="操作" width="100" fixed="right">
@@ -57,11 +57,11 @@
 							</el-table>
 							<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 						</el-row>
-					</el-col> 
+					</el-col>
 				</el-row>
 			</el-col>
 		</el-row>
-		
+
 		  <el-dialog :visible.sync="menuVisible" width="80%" top="20px" append-to-body title="选择用户故事加入迭代">
 			  <xm-menu-select ref="menusSelect" style="margin-top:-30px;" iterationFilterType="not-join-curr-iteration" checkScope="3" :xm-product="xmIteration?{id:xmIteration.productId}:null" :xm-iteration="xmIteration" :visible="menuVisible" :is-select-menu="true" :multi="true"   @menus-selected="onSelectedMenus" ></xm-menu-select>
 		  </el-dialog>
@@ -76,7 +76,7 @@
 	import util from '@/common/js/util';//全局公共库
 	import treeTool from '@/common/js/treeTool';//全局公共库
 	import config from '@/common/config';//全局公共库
-	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
+
 	import { listXmIterationMenu, delXmIterationMenu, batchDelXmIterationMenu,batchAddXmIterationMenu } from '@/api/xm/core/xmIterationMenu';
 	import  XmIterationMng from '@/views/xm/core/components/XmIterationSelect';//修改界面
 	import { mapGetters } from 'vuex'
@@ -91,7 +91,7 @@
 		      'userInfo','roles'
 		    ]),
 
-      		xmIterationMenusTreeData() { 
+      		xmIterationMenusTreeData() {
 				 return this.xmIterationMenus;
 			},
 		},
@@ -148,7 +148,7 @@
 					this.filters.parentMenu=null
 				}
 				this.searchXmIterationMenus();
-				
+
 			},
 			handleSizeChange(pageSize) {
 				this.pageInfo.pageSize=pageSize;
@@ -250,7 +250,7 @@
 						this.load.del=false;
 						var tips=res.data.tips;
 						if(tips.isOk){
-							this.pageInfo.count=true; 
+							this.pageInfo.count=true;
 							this.getXmIterationMenus();
 						}
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
@@ -273,7 +273,7 @@
 					batchDelXmIterationMenu(params).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
-						if( tips.isOk ){ 
+						if( tips.isOk ){
 							this.pageInfo.count=true;
 							this.getXmIterationMenus();
 						}
@@ -298,7 +298,7 @@
 					this.menuVisible=false
 					var tips = res.data.tips
 					if(tips.isOk){
-						this.getXmIterationMenus() 
+						this.getXmIterationMenus()
 					}
 					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 				})

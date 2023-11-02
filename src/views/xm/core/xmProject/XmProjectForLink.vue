@@ -1,49 +1,49 @@
 <template>
 	<section class="padding-left padding-right">
 		<el-row>
-			
-			 <el-input v-model="filters.key" style="width:30%;" placeholder="请输入关键字进行查找项目" v-if="!xmIteration && !xmProduct"> 
+
+			 <el-input v-model="filters.key" style="width:30%;" placeholder="请输入关键字进行查找项目" v-if="!xmIteration && !xmProduct">
 			</el-input>
 			<el-button @click="searchXmProjects" icon="el-icon-search" v-if="!xmIteration && !xmProduct"></el-button>
 			<div style="text-align:right;padding-right:40px;">
 				<xm-project-select v-if="xmProduct && xmProduct.id" @row-click="onXmProjectSelect" :auto-select="false" :link-product-id="xmProduct.id">
 					<el-link type="primary" slot="title">添加更多项目到产品中</el-link>
 				</xm-project-select>
-				
+
 				<xm-project-select v-if="xmIteration && xmIteration.id"  @row-click="onXmProjectSelect" :auto-select="false" :link-iteration-id="xmIteration.id">
 					<el-link type="primary" slot="title">添加更多项目到产品中</el-link>
 				</xm-project-select>
 			</div>
 		</el-row>
-		<el-row>   
+		<el-row>
 			<el-table ref="table" :height="tableHeight"  stripe :data="xmProjects"  highlight-current-row v-loading="load.list" border  style="width: 100%;">
 				<el-table-column  type="index" label="序号" width="55" ></el-table-column>
 				<el-table-column prop="id" label="项目编码" min-width="80" ></el-table-column>
-				<el-table-column prop="name" label="标题名称" min-width="80" ></el-table-column> 
+				<el-table-column prop="name" label="标题名称" min-width="80" ></el-table-column>
 				<el-table-column prop="seq" label="顺序" min-width="80" >
-					<template slot-scope="scope">  
+					<template slot-scope="scope">
 				     <span class="cell-text">  {{scope.row.seq}}  </span>
                      <span class="cell-bar"><el-input style="display:inline;" v-model="scope.row.username" placeholder="" @change="editSomeFields(scope.row,'seq',$event)" :maxlength="22"></el-input></span>
 						</template>
-					</el-table-column>  
+					</el-table-column>
 				<el-table-column label="操作" width="245" fixed="right">
-					<template slot-scope="scope">  
+					<template slot-scope="scope">
 							<el-button-group>
-								<el-button   type="primary" @click.stop="goToProject(scope.row)" >项目视图</el-button>  
-								<el-button v-if="!xmIteration"  type="primary" @click.stop="doDelXmProductProjectLink(scope.row)" >移出产品</el-button>  
-							</el-button-group> 
+								<el-button   type="primary" @click.stop="goToProject(scope.row)" >项目视图</el-button>
+								<el-button v-if="!xmIteration"  type="primary" @click.stop="doDelXmProductProjectLink(scope.row)" >移出产品</el-button>
+							</el-button-group>
 							<!-- <el-button style="width:100%;" slot="reference" class="see-more" type="text" icon="el-icon-more"></el-button>
 						</el-popover> -->
 					</template>
 				</el-table-column>
 			</el-table>
-			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
-		</el-row> 
-		
+			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
+		</el-row>
+
 		<el-drawer title="选择项目" :visible.sync="xmProjectListVisible" size="60%" append-to-body>
 			<xm-project-list  @project-confirm="onXmProjectSelect"></xm-project-list>
-		</el-drawer> 
-	</section> 
+		</el-drawer>
+	</section>
 
 </template>
 
@@ -52,20 +52,20 @@
 	import util from '@/common/js/util';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	import config from "@/common/config"; //全局公共库
-	//import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
-	import { listXmProject,  } from '@/api/xm/core/xmProject';  
-	import { mapGetters } from 'vuex' 
+
+	import { listXmProject,  } from '@/api/xm/core/xmProject';
+	import { mapGetters } from 'vuex'
  	import { delXmProductProjectLink, addXmProductProjectLink,batchDelXmProductProjectLink,editSomeFieldsXmProductProjectLink } from '@/api/xm/core/xmProductProjectLink';
 	import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue';
     import store from '@/store'
 
 
-	export default {   
+	export default {
 		computed: {
 			...mapGetters([
 				'userInfo','roles','xmProduct','xmIteration'
-			]), 
-		}, 
+			]),
+		},
 		watch:{
 			xmProduct:function(){
 				this.getXmProjects();
@@ -90,14 +90,14 @@
 				},
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				sels: [],//列表选中数据
-				dicts:{},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
-				
+				dicts:{},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
+
 				addFormVisible: false,//新增xmProject界面是否显示
 				//新增xmProject界面初始化数据
 				addForm: {
 					id:'',code:'',name:'',xmType:'',startTime:'',endTime:'',urgent:'',priority:'',description:'',createUserid:'',createUsername:'',createTime:'',assess:'',assessRemarks:'',status:'',branchId:'',planTotalCost:'',bizProcInstId:'',bizFlowState:'',planNouserAt:'',planIuserAt:'',planOuserAt:'',locked:'',baseTime:'',baseRemark:'',baselineId:'',planWorkload:'',totalReceivables:'',budgetMarginRate:'',contractAmt:'',planIuserPrice:'',budgetOuserPrice:'',planOuserCnt:'',planIuserCnt:'',planWorkingHours:''
 				},
-				
+
 				editFormVisible: false,//编辑界面是否显示
 				tableHeight:300,
 				//编辑xmProject界面初始化数据
@@ -105,13 +105,13 @@
 					id:'',code:'',name:'',xmType:'',startTime:'',endTime:'',urgent:'',priority:'',description:'',createUserid:'',createUsername:'',createTime:'',assess:'',assessRemarks:'',status:'',branchId:'',planTotalCost:'',bizProcInstId:'',bizFlowState:'',planNouserAt:'',planIuserAt:'',planOuserAt:'',locked:'',baseTime:'',baseRemark:'',baselineId:'',planWorkload:'',totalReceivables:'',budgetMarginRate:'',contractAmt:'',planIuserPrice:'',budgetOuserPrice:'',planOuserCnt:'',planIuserCnt:'',planWorkingHours:''
 				},
 				xmProjectListVisible:false,
- 
+
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
 		methods: {
-			handleSizeChange(pageSize) { 
-				this.pageInfo.pageSize=pageSize; 
+			handleSizeChange(pageSize) {
+				this.pageInfo.pageSize=pageSize;
 				this.getXmProjects();
 			},
 			handleCurrentChange(pageNum) {
@@ -133,7 +133,7 @@
 				this.getXmProjects();
 			},
 			searchXmProjects(){
-				 this.pageInfo.count=true; 
+				 this.pageInfo.count=true;
 				 this.getXmProjects();
 			},
 			//获取列表 XmProject xm_project
@@ -144,11 +144,11 @@
 					total: this.pageInfo.total,
 					count:this.pageInfo.count,
 				};
-				
+
 				if(this.xmProduct){
 					params.linkProductId=this.xmProduct.id
 				}
-				
+
 				if(this.xmIteration){
 					params.linkIterationId=this.xmIteration.id
 				}
@@ -158,32 +158,32 @@
 				if( !params.linkIterationId && !params.linkProductId){
 					return;
 				}
-				this.load.list = true; 
+				this.load.list = true;
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
 					let orderBys=[];
-					for(var i=0;i<this.pageInfo.orderFields.length;i++){ 
+					for(var i=0;i<this.pageInfo.orderFields.length;i++){
 						orderBys.push(this.pageInfo.orderFields[i]+" "+this.pageInfo.orderDirs[i])
-					}  
+					}
 					params.orderBy= orderBys.join(",")
-				} 
+				}
 				params.branchId = this.userInfo.branchId;
 				listXmProject(params).then((res) => {
 					var tips=res.data.tips;
-					if(tips.isOk){ 
+					if(tips.isOk){
 						console.log(res.data);
 						this.pageInfo.total = res.data.total;
-						this.pageInfo.count=false; 
+						this.pageInfo.count=false;
 						this.xmProjects = res.data.data;
 					}else{
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
-					} 
+					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
-			}, 
+			},
 			goToProject(row){
 				store.dispatch("setProjectInfo",row).then(res=>{
 					this.$router.push({path:'/xm/core/project/overview',query:{projectId:row.id}})
-				}) 
+				})
 			},
 			selectProject:function(row){
 				this.editForm=row
@@ -206,7 +206,7 @@
 				})
 			},
 			doDelXmProductProjectLink(row){
-				
+
 			var xmProduct=this.xmProduct;
 			var selProject=row;
 			this.$confirm('确认将项目【'+selProject.projectName+'】从产品【'+xmProduct.productName+'】移出吗？移出后，项目试图中将看不到该产品信息', '提示', {
@@ -221,9 +221,9 @@
 					}
 				});
 			})
-				
+
 			},
-			
+
           editSomeFields(row,fieldName,$event){
             let params={};
             if(this.sels.length>0){
@@ -252,19 +252,19 @@
             }).catch((e)=>Object.assign(this.editForm,this.editFormBak))
           },
 			/**end 自定义函数请在上面加**/
-			
+
 		},//end methods
 		components: {
-XmProjectSelect  
-			 
+XmProjectSelect
+
 		    //在下面添加其它组件
 		},
-		mounted() { 
-			this.$nextTick(() => { 
-				this.tableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
+		mounted() {
+			this.$nextTick(() => {
+				this.tableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);
 				this.showInfo = false;
 				this.getXmProjects();
-      }); 
+      });
 		}
 	}
 

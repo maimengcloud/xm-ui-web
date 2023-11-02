@@ -1,8 +1,8 @@
 <template>
 	<section class="page-container border padding">
 		<el-row>
- 			<el-input v-model="filters.groupNameKey" style="width:15%;" clearable placeholder="小组名称查询"></el-input> 
-			<el-input v-model="filters.mngUsernamekey" style="width:15%;" clearable placeholder="组长、副组长名称查询"></el-input> 
+ 			<el-input v-model="filters.groupNameKey" style="width:15%;" clearable placeholder="小组名称查询"></el-input>
+			<el-input v-model="filters.mngUsernamekey" style="width:15%;" clearable placeholder="组长、副组长名称查询"></el-input>
 			<el-input v-model="filters.groupUsernameKey" style="width:15%;" clearable placeholder="组员名称查询"></el-input>
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" @click="searchXmGroupUsers" icon="el-icon-search">查询</el-button>
  			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button>
@@ -11,28 +11,28 @@
 			<!--列表 XmGroupUser xm_group_user-->
 			<el-table ref="xmGroupUserTable" :data="xmGroupUsers" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="55"></el-table-column>
-				<el-table-column sortable type="index" width="55"></el-table-column> 
+				<el-table-column sortable type="index" width="55"></el-table-column>
 				<el-table-column prop="pgClass" label="项目编号" min-width="150">
-					<template slot-scope="scope"> 
-						 {{ scope.row.projectId}} 
+					<template slot-scope="scope">
+						 {{ scope.row.projectId}}
 					</template>
-				</el-table-column>   
+				</el-table-column>
 				<el-table-column prop="groupName" label="组名" min-width="150" show-overflow-tooltip></el-table-column>
  				<el-table-column prop="username" label="成员姓名" min-width="150" show-overflow-tooltip ></el-table-column>
  				<el-table-column prop="userid" label="成员编号" min-width="150" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="obranchId" label="归属机构" min-width="150" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="joinTime" label="加入时间" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="outTime" label="离队时间" min-width="80" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="status" label="状态" min-width="80" show-overflow-tooltip> 
-					<template slot-scope="scope">  {{scope.row.status=='0'?'已退出':'已加入'}} 
+				<el-table-column prop="status" label="状态" min-width="80" show-overflow-tooltip>
+					<template slot-scope="scope">  {{scope.row.status=='0'?'已退出':'已加入'}}
 					</template>
 				</el-table-column>
- 				<el-table-column prop="isPri" label="是否私人" min-width="80" show-overflow-tooltip> 
-					<template slot-scope="scope">  {{scope.row.isPri=='1'?'是':'否'}} 
+ 				<el-table-column prop="isPri" label="是否私人" min-width="80" show-overflow-tooltip>
+					<template slot-scope="scope">  {{scope.row.isPri=='1'?'是':'否'}}
 					</template>
 				 </el-table-column>
 				<el-table-column prop="seqNo" label="排序号" min-width="80" show-overflow-tooltip></el-table-column>
-				<el-table-column label="操作" width="180" fixed="right"> 
+				<el-table-column label="操作" width="180" fixed="right">
 					<template scope="scope">
 						<el-button type="primary" @click="showEdit( scope.row,scope.$index)" icon="el-icon-edit"></el-button>
 						<el-button type="danger" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete"></el-button>
@@ -57,12 +57,12 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	import config from '@/common/config';//全局公共库 
-	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
+	import config from '@/common/config';//全局公共库
+
 	import { listXmGroupUser, delXmGroupUser, batchDelXmGroupUser } from '@/api/xm/core/xmGroupUser';
 	import  XmGroupUserEdit from './XmGroupUserEdit';//新增修改界面
 	import { mapGetters } from 'vuex'
-	
+
 	export default {
 	    name:'xmGroupUserMng',
 		components: {
@@ -107,7 +107,7 @@
 				addForm: {
 					joinTime:'',groupId:'',userid:'',username:'',outTime:'',status:'',obranchId:'',isPri:'',seqNo:'',projectId:'',productId:'',pgClass:'',obranchName:''
 				},
-				
+
 				editFormVisible: false,//编辑界面是否显示
 				editForm: {
 					joinTime:'',groupId:'',userid:'',username:'',outTime:'',status:'',obranchId:'',isPri:'',seqNo:'',projectId:'',productId:'',pgClass:'',obranchName:''
@@ -115,9 +115,9 @@
 				maxTableHeight:300,
 			}
 		},//end data
-		methods: { 
-			handleSizeChange(pageSize) { 
-				this.pageInfo.pageSize=pageSize; 
+		methods: {
+			handleSizeChange(pageSize) {
+				this.pageInfo.pageSize=pageSize;
 				this.getXmGroupUsers();
 			},
 			handleCurrentChange(pageNum) {
@@ -128,7 +128,7 @@
 			sortChange( obj ){
 				if(obj.order==null){
 					this.pageInfo.orderFields=[];
-					this.pageInfo.orderDirs=[]; 
+					this.pageInfo.orderDirs=[];
 				}else{
 					var dir='asc';
 					if(obj.order=='ascending'){
@@ -136,14 +136,14 @@
 					}else{
 						dir='desc';
 					}
-					 
-					this.pageInfo.orderFields=[util.toLine(obj.prop)]; 
+
+					this.pageInfo.orderFields=[util.toLine(obj.prop)];
 					this.pageInfo.orderDirs=[dir];
 				}
 				this.getXmGroupUsers();
 			},
 			searchXmGroupUsers(){
-				 this.pageInfo.count=true; 
+				 this.pageInfo.count=true;
 				 this.getXmGroupUsers();
 			},
 			//获取列表 XmGroupUser xm_group_user
@@ -156,9 +156,9 @@
 				};
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
 					let orderBys=[];
-					for(var i=0;i<this.pageInfo.orderFields.length;i++){ 
+					for(var i=0;i<this.pageInfo.orderFields.length;i++){
 						orderBys.push(this.pageInfo.orderFields[i]+" "+this.pageInfo.orderDirs[i])
-					}  
+					}
 					params.orderBy= orderBys.join(",")
 				}
 				if(this.filters.key){
@@ -181,13 +181,13 @@
 				this.load.list = true;
 				listXmGroupUser(params).then((res) => {
 					var tips=res.data.tips;
-					if(tips.isOk){ 
+					if(tips.isOk){
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false;
 						this.xmGroupUsers = res.data.data;
 					}else{
 						this.$notify({position:'bottom-left',showClose:true, message: tips.msg, type: 'error' });
-					} 
+					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
 			},
@@ -213,18 +213,18 @@
 			//选择行xmGroupUser
 			selsChange: function (sels) {
 				this.sels = sels;
-			}, 
+			},
 			//删除xmGroupUser
-			handleDel: function (row,index) { 
+			handleDel: function (row,index) {
 				this.$confirm('确认删除该记录吗?', '提示', {
 					type: 'warning'
-				}).then(() => { 
+				}).then(() => {
 					this.load.del=true;
 					let params = { userid:row.userid,groupId: row.groupId };
 					delXmGroupUser(params).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
-						if(tips.isOk){ 
+						if(tips.isOk){
 							this.pageInfo.count=true;
 							this.getXmGroupUsers();
 						}
@@ -234,37 +234,37 @@
 			},
 			//批量删除xmGroupUser
 			batchDel: function () {
-				
+
 				this.$confirm('确认删除选中记录吗？', '提示', {
 					type: 'warning'
-				}).then(() => { 
+				}).then(() => {
 					this.load.del=true;
 					batchDelXmGroupUser(this.sels).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
-						if( tips.isOk ){ 
+						if( tips.isOk ){
 							this.pageInfo.count=true;
-							this.getXmGroupUsers(); 
+							this.getXmGroupUsers();
 						}
 						this.$notify({position:'bottom-left',showClose:true, message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
-			rowClick: function(row, event, column){ 
+			rowClick: function(row, event, column){
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
 			},
             initData: function(){
 
             },
-			
+
 		},//end methods
 		mounted() {
 			this.$nextTick(() => {
 			    //initSimpleDicts('all',['sex','gradeLvl']).then(res=>this.dicts=res.data.data);
 			    this.initData()
 				this.searchXmGroupUsers();
-                
-                
+
+
                 this.maxTableHeight = util.calcTableMaxHeight('.el-table');
 
         	});

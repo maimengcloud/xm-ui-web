@@ -4,56 +4,56 @@
 			<el-input v-model="filters.key" style="width: 10em;" placeholder="任务名称" clearable></el-input>
 			<el-input v-model="filters.taskId" style="width:10em;;" placeholder="任务编号" clearable></el-input>
 			<el-input v-model="filters.projectId" style="width: 10em;;" placeholder="项目编号" clearable></el-input>
- 			<el-input v-model="filters.execUserBranchId" style="width: 10em;;" placeholder="用户公司编号" clearable></el-input> 
- 			<el-input v-model="filters.branchId" style="width: 10em;;" placeholder="项目公司编号" clearable></el-input> 
+ 			<el-input v-model="filters.execUserBranchId" style="width: 10em;;" placeholder="用户公司编号" clearable></el-input>
+ 			<el-input v-model="filters.branchId" style="width: 10em;;" placeholder="项目公司编号" clearable></el-input>
  			<el-select v-model="filters.status" style="width:6em;"  placeholder="候选状态" clearable>
 				 <el-option v-for="(item,index) in dicts.projectTaskExecuserStatus" :value="item.id" :label="item.name" :key="index"></el-option>
 			 </el-select>
  			<el-select v-model="filters.taskState" style="width:6em;"  placeholder="任务状态" clearable>
 				 <el-option v-for="(item,index) in dicts.taskState" :value="item.id" :label="item.name" :key="index"></el-option>
 			 </el-select>
-			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmTaskExecusers">查询</el-button> 
+			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmTaskExecusers">查询</el-button>
 			<!-- <el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button>  -->
 		</el-row>
 		<el-row class="padding-top">
 			<!--列表 XmTaskExecuser xm_task_execuser-->
 			<el-table ref="table" :height="tableHeight" :data="xmTaskExecusers" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-				 <el-table-column  label="序号" type="index" width="60"  fixed="left"> 
-				</el-table-column>  
-					 <el-table-column prop="username" label="用户姓名"  width="150" sortable  show-overflow-tooltip fixed="left">  
+				 <el-table-column  label="序号" type="index" width="60"  fixed="left">
+				</el-table-column>
+					 <el-table-column prop="username" label="用户姓名"  width="150" sortable  show-overflow-tooltip fixed="left">
 						 <template slot-scope="scope">
 							<mdp-select-user-xm :key="scope.row.id" v-model="scope.row" userid-key="userid" username-key="username" :project-id="scope.row.projectId" :disabled="true"></mdp-select-user-xm>
-						 </template> 
-					</el-table-column>    
-					<el-table-column prop="execUserBranchId" label="用户归属公司" width="150" sortable  show-overflow-tooltip fixed="left"> 
-					</el-table-column>   
-					<el-table-column prop="status" label="候选状态"  width="100" sortable fixed="left"> 
+						 </template>
+					</el-table-column>
+					<el-table-column prop="execUserBranchId" label="用户归属公司" width="150" sortable  show-overflow-tooltip fixed="left">
+					</el-table-column>
+					<el-table-column prop="status" label="候选状态"  width="100" sortable fixed="left">
 						<template slot-scope="scope">
 						<el-popover trigger="hover"
 							width="500" >
 							<el-row>
-  									<!--结算状态0未结算1已部分结算2无需结算4已申请结算5结算失败6已全部结算--> 
+  									<!--结算状态0未结算1已部分结算2无需结算4已申请结算5结算失败6已全部结算-->
 									<el-button type="primary" v-if="scope.row.status=='7' " @click="becomeCandidate(scope.row)">成为候选人</el-button>
 									<el-button type="danger" v-if="scope.row.status=='7' " @click="handleDel(scope.row)">删除</el-button>
 									<el-button type="warning" v-if="scope.row.status=='0'"  @click="showQuotePrice(scope.row)">修改报价信息</el-button>
 									<el-button type="primary" v-if="scope.row.status=='0'"   @click="execute(scope.row)">成为执行人</el-button>
-									<el-button type="primary" v-if="scope.row.status=='1' " @click="showWorkload(scope.row)">填报工时进度</el-button> 
-									<el-button type="warning" v-if="scope.row.status!='7' " @click="leave(scope.row)">离开任务</el-button> 
+									<el-button type="primary" v-if="scope.row.status=='1' " @click="showWorkload(scope.row)">填报工时进度</el-button>
+									<el-button type="warning" v-if="scope.row.status!='7' " @click="leave(scope.row)">离开任务</el-button>
 									<br><font color="blue">{{formatToDoByStatus(scope.row)}}</font>
 							</el-row>
 								<font slot="reference">
 										<el-link type="primary" v-if="scope.row.status=='0'">候选中</el-link>
-										<el-link type="success" v-else-if="scope.row.status=='1'">执行中 </el-link> 
+										<el-link type="success" v-else-if="scope.row.status=='1'">执行中 </el-link>
 										<el-link type="info" v-else-if="scope.row.status=='7'">已放弃  </el-link>
-										<el-link type="danger" v-else-if="scope.row.status=='8'">黑名单 </el-link> 
+										<el-link type="danger" v-else-if="scope.row.status=='8'">黑名单 </el-link>
 								</font>
 
 						</el-popover>
 						</template>
-					</el-table-column>  
-					
-					<el-table-column prop="taskName" label="任务名称" width="150" sortable  show-overflow-tooltip fixed="left"> 
-					</el-table-column>  
+					</el-table-column>
+
+					<el-table-column prop="taskName" label="任务名称" width="150" sortable  show-overflow-tooltip fixed="left">
+					</el-table-column>
 					<el-table-column sortable prop="rate" label="进度" width="100">
 						<template slot-scope="scope">
 						<el-link :disabled="scope.row.ntype=='1'"
@@ -65,38 +65,38 @@
 						</el-link>
 						</template>
 					</el-table-column>
-					<el-table-column prop="taskName" label="任务状态" width="100" sortable  show-overflow-tooltip > 
-						<template slot-scope="scope"> 
+					<el-table-column prop="taskName" label="任务状态" width="100" sortable  show-overflow-tooltip >
+						<template slot-scope="scope">
 							<el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in formatterTaskStateDicts(scope.row.taskState)" :key="index">{{item.name}}</el-button>
 						</template>
-					</el-table-column> 
-					<el-table-column prop="projectId" label="项目编号" width="100" sortable show-overflow-tooltip> 
-					</el-table-column>   
-					<el-table-column prop="startTime" label="加入时间"  width="150" sortable> 
-					</el-table-column>  
-					<el-table-column prop="endTime" label="离开时间"  width="150" sortable> 
-					</el-table-column> 
-					<el-table-column prop="skillRemark" label="技能" min-width="150" sortable  show-overflow-tooltip> 
-					</el-table-column>  
-					<el-table-column prop="remarks" label="备注" min-width="150" sortable  show-overflow-tooltip> 
-					</el-table-column>   
-					
-					 <el-table-column prop="createTime" label="报价时间" width="150" sortable> 
-					</el-table-column>  
-					 <el-table-column prop="quoteWorkload" label="报价工时" width="100" sortable>  
+					</el-table-column>
+					<el-table-column prop="projectId" label="项目编号" width="100" sortable show-overflow-tooltip>
+					</el-table-column>
+					<el-table-column prop="startTime" label="加入时间"  width="150" sortable>
+					</el-table-column>
+					<el-table-column prop="endTime" label="离开时间"  width="150" sortable>
+					</el-table-column>
+					<el-table-column prop="skillRemark" label="技能" min-width="150" sortable  show-overflow-tooltip>
+					</el-table-column>
+					<el-table-column prop="remarks" label="备注" min-width="150" sortable  show-overflow-tooltip>
+					</el-table-column>
+
+					 <el-table-column prop="createTime" label="报价时间" width="150" sortable>
+					</el-table-column>
+					 <el-table-column prop="quoteWorkload" label="报价工时" width="100" sortable>
 						<template slot-scope="scope">
 							{{scope.row.quoteWorkload?scope.row.quoteWorkload:'-'}}h
 						</template>
-					</el-table-column>  
-					<el-table-column prop="quotePrice" label="报价金额" width="100" sortable> 
-						
+					</el-table-column>
+					<el-table-column prop="quotePrice" label="报价金额" width="100" sortable>
+
 						<template slot-scope="scope">
 							￥{{scope.row.quotePrice?scope.row.quotePrice:'-'}}元
 						</template>
-					</el-table-column>    
+					</el-table-column>
 			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
- 
+
 			<el-drawer append-to-body title="报价" :visible.sync="quotePriceVisible" size="60%" :close-on-click-modal="false">
 				<el-form :model="quotePriceForm" label-width="100px" ref="quotePriceForm">
 					<el-form-item label="候选人名称">
@@ -148,7 +148,7 @@
 			<!--新增 XmTaskExecuser xm_task_execuser界面-->
 			<el-drawer append-to-body title="新增任务执行人" :visible.sync="addFormVisible"  size="50%"  :close-on-click-modal="false">
 				<xm-task-execuser-add :exec-user-list="xmTaskExecusers" :xm-task="xmTask" :execuser-add-type="execuserAddType"  :xm-task-execuser="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-task-execuser-add>
-			</el-drawer> 
+			</el-drawer>
 			<el-dialog
 				:title="'【'+xmTask.name+'】登记工时'"
 				:visible.sync="taskWorkloadVisible"
@@ -157,9 +157,9 @@
 				append-to-body
 				:close-on-click-modal="false"
 				>
-				<xm-workload-edit 
+				<xm-workload-edit
 					:xm-task="xmTask"
-					:visible="taskWorkloadVisible" 
+					:visible="taskWorkloadVisible"
 					op-type="add"
 					@cancel="taskWorkloadVisible=false"
 					@submit="onTaskWorkloadSubmit"
@@ -174,10 +174,10 @@
 	import config from "@/common/config"; //全局公共库
 
 	//import Sticky from '@/components/Sticky' // 粘性header组件
-	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
+
 	import { listXmTaskExecuserWithTask,editXmTaskExecuser,leaveTask,beExecutor,settleExec, delXmTaskExecuser, batchDelXmTaskExecuser,quotePrice,becomeCandidate,toTest,testSuccess,testFail } from '@/api/xm/core/xmTaskExecuser';
 	import  XmTaskExecuserAdd from './XmTaskExecuserAdd';//新增界面
-	import  XmTaskExecuserEdit from './XmTaskExecuserEdit';//修改界面 
+	import  XmTaskExecuserEdit from './XmTaskExecuserEdit';//修改界面
 	import { mapGetters } from 'vuex'
 	import html2canvas from 'html2canvas'
 	import { uploadBase64 } from '@/api/mdp/arc/image';
@@ -210,7 +210,7 @@
 					key: '',
 					execUserBranchId:'',
 					taskId:'',
-					projectId:'', 
+					projectId:'',
 					status:'',
 					taskState:'',
 					branchId:'',
@@ -260,7 +260,7 @@
 				pickerOptions:  util.getPickerOptions('datarange'),
 				tableHeight:300,
 				taskWorkloadVisible:false,
-				 
+
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
@@ -308,11 +308,11 @@
 				}
 				if(this.filters.key!==""){
 					 params.key=this.filters.key
-				} 
+				}
 				if(this.isMy=='1'){
 					params.isMy='1'
 				}
-				this.load.list = true; 
+				this.load.list = true;
 				if(this.isMy=='1'){
 					params.userid=this.userInfo.userid
 				}
@@ -325,7 +325,7 @@
 				if(this.filters.execUserBranchId){
 					params.execUserBranchId=this.filters.execUserBranchId
 				}
-				
+
 				if(this.filters.taskState){
 					params.taskState=this.filters.taskState
 				}
@@ -786,10 +786,10 @@
 					msg="申请成为执行人";
 				}else if(  status=='1' && (row.taskState=='2' || row.taskState=='3'|| row.taskState=='4' )){
 					msg="查看结算清单";
-				} 
+				}
 				return msg;
 			},
-			
+
 			formatterTaskStateDicts: function(cellValue){
 				if(!cellValue && cellValue!=='0'){
 					return []
@@ -821,8 +821,8 @@
 			onTaskWorkloadSubmit(){
 				this.searchXmTaskExecusers();
 			},
-			
-			showWorkload(row){ 
+
+			showWorkload(row){
 				this.taskWorkloadVisible=true;
 			}
 			/**end 自定义函数请在上面加**/
@@ -834,14 +834,14 @@
 		    //在下面添加其它组件
 		},
 		mounted() {
-			this.$nextTick(() => { 
+			this.$nextTick(() => {
 				this.tableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);
 				this.getXmTaskExecusers();
 				});
 
 			initSimpleDicts('all',['projectTaskExecuserStatus','projectTaskSettleStatus','taskState']).then(res=>{
 				this.dicts=res.data.data;
-			})  
+			})
 		}
 	}
 

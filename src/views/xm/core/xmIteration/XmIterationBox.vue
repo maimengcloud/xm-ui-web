@@ -7,7 +7,7 @@
 				class="hidden-md-and-down"
 				:default-time="['00:00:00','23:59:59']" :picker-options="pickerOptions">
 			</el-date-picker>
-				<el-input v-model="filters.key" style="width: 15%;" placeholder="模糊查询"> 
+				<el-input v-model="filters.key" style="width: 15%;" placeholder="模糊查询">
 				</el-input>
 				<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmIterations" icon="el-icon-search"></el-button>
 			<el-popover
@@ -23,7 +23,7 @@
 					</el-col>
 					<el-col v-if="filters.queryScope!='iterationId'" :span="24"  style="padding-top:5px;">
 						<font class="more-label-font">上线时间:</font>
-						<el-date-picker 
+						<el-date-picker
 							v-model="dateRangerOnline"
 							type="daterange"
 							align="right"
@@ -45,7 +45,7 @@
 				</el-row>
  				<el-button  slot="reference" icon="el-icon-more"></el-button>
 			</el-popover>
-			<span style="float:right;"> 
+			<span style="float:right;">
 				<el-button type="primary" @click="showAdd" icon="el-icon-plus" round>迭代计划</el-button>
 			</span>
  		</el-row>
@@ -59,7 +59,7 @@
 					 </template>
 				</el-table-column>
 				<el-table-column prop="finishRate" label="总进度" min-width="80" >
-					<template slot-scope="scope"> 
+					<template slot-scope="scope">
 						<font  ><el-tag :type="scope.row.finishRate>=100?'success':'warning'">{{scope.row.finishRate}}%</el-tag>
 
  						<el-tooltip content="点击统计进度，由任务汇总"><el-button  type="text" icon="el-icon-video-play" @click.stop="loadTasksToXmIterationState( scope.row)"></el-button></el-tooltip>
@@ -75,9 +75,9 @@
 				<el-table-column prop="actWorkload" label="实际工作量" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column label="操作" width="150" fixed="right">
 					<template slot-scope="scope">
-						
-						<el-button v-if="menukey=='myFocus'"  type="primary" @click.stop="focusOrUnfocus(scope.row)" >取消关注</el-button> 
-						<el-button v-else  type="text" @click.stop="focusOrUnfocus(scope.row)" >关注</el-button>  
+
+						<el-button v-if="menukey=='myFocus'"  type="primary" @click.stop="focusOrUnfocus(scope.row)" >取消关注</el-button>
+						<el-button v-else  type="text" @click.stop="focusOrUnfocus(scope.row)" >关注</el-button>
  						<el-button type="danger" @click="handleDel(scope.row,scope.$index)" icon="el-icon-delete"></el-button>
 					</template>
 				</el-table-column>
@@ -110,7 +110,7 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import config from '@/common/config';//全局公共库
-	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
+
 	import { listXmIteration,listXmIterationWithState, delXmIteration, batchDelXmIteration } from '@/api/xm/core/xmIteration';
 	import {  loadTasksToXmIterationState } from '@/api/xm/core/xmIterationState';
 	import { addXmIterationLink,delXmIterationLink } from '@/api/xm/core/xmIterationLink';
@@ -160,7 +160,7 @@ import XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue'
 				},
 				pickerOptions:  util.getPickerOptions('datarange'),
 				dateRanger: [ ],//创建时间选择范围
-				dateRangerOnline: [ 
+				dateRangerOnline: [
 				],//上线时间选择范围
 				xmIterations: [],//查询结果
 				pageInfo:{//分页数据
@@ -245,7 +245,7 @@ import XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue'
 					pageNum: this.pageInfo.pageNum,
 					total: this.pageInfo.total,
 					count:this.pageInfo.count
-				}; 
+				};
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
 					let orderBys=[];
 					for(var i=0;i<this.pageInfo.orderFields.length;i++){
@@ -280,7 +280,7 @@ import XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue'
 					}
 
 				}
-				
+
 				if(this.filters.queryScope!="iterationId" && this.dateRangerOnline && this.dateRangerOnline.length==2){
 					params.onlineTimeStart=this.dateRangerOnline[0]
 					params.onlineTimeEnd=this.dateRangerOnline[1]
@@ -334,8 +334,8 @@ import XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue'
 
 			//进入info界面
 			intoInfo(row) {
-				this.editForm = row; 
-				localStorage.setItem("xm-iteration-info-route",JSON.stringify(row)) 
+				this.editForm = row;
+				localStorage.setItem("xm-iteration-info-route",JSON.stringify(row))
 				this.$router.push({ name:'XmIterationInfoRoute', query: {id:row.id} })
 				//this.showInfo = true;
 			},
@@ -389,7 +389,7 @@ import XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue'
 			rowClick: function(row, event, column){
 				this.editForm=row
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
-			}, 
+			},
 
 			clearSelectIteration(){
 				this.editForm=this.editFormInit
@@ -461,14 +461,14 @@ import XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue'
 					delUserFocus({pbizId:row.productId,focusType:'6',bizId:row.id,bizName:row.iterationName}).then(res=>{
 						var tips=res.data.tips;
 						if(tips.isOk){
-							this.getXmIterations(); 
-						} 
-						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
+							this.getXmIterations();
+						}
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 					})
 				}else{
 					addUserFocus({pbizId:row.productId,focusType:'6',bizId:row.id,bizName:row.iterationName}).then(res=>{
 						var tips=res.data.tips;
-						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 					})
 				}
 			},
@@ -482,7 +482,7 @@ import XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue'
 		},
 		mounted() {
 			this.$nextTick(() => {
-				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
+				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);
 				this.getXmIterations();
         	});
           // console.log(this.dateRanger,this.dateRangerOnline);

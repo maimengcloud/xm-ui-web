@@ -1,14 +1,14 @@
 <template>
-  <section> 
-        <el-row class="padding-bottom">   
+  <section>
+        <el-row class="padding-bottom">
           <div style="display:flex;justify-content: space-between;">
              <xm-project-select style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="isTaskCenter?false:true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
            <el-input v-else v-model="filters.key" placeholder="名称模糊查询" clearable></el-input>
-           <el-button style="margin-left:10px;" icon="el-icon-search" @click="searchXmTasks()">查询</el-button> 
-          </div> 
+           <el-button style="margin-left:10px;" icon="el-icon-search" @click="searchXmTasks()">查询</el-button>
+          </div>
         </el-row>
 
-             <el-table class="task-table padding-top" 
+             <el-table class="task-table padding-top"
              element-loading-text="努力加载中" element-loading-spinner="el-icon-loading"
               :data="tasksTreeData"
               @sort-change="sortChange"
@@ -24,22 +24,22 @@
               :height="tableHeight"
               :tree-props="{ children: 'children'  }"
               row-key="id"
-              ref="table" 
-            > 
-              <el-table-column 
+              ref="table"
+            >
+              <el-table-column
                 prop="name"
                 class-name="title"
                 fixed="left"
                 label="计划名称"
                 min-width="300" show-overflow-tooltip
               >
-              
-              
-              <template slot="header" slot-scope="scope"> 
+
+
+              <template slot="header" slot-scope="scope">
 									<div style="display:flex;">
-										<div style="width:50%;text-align: left;line-height: 32px;">计划名称</div> 
+										<div style="width:50%;text-align: left;line-height: 32px;">计划名称</div>
                      <div style="line-height: 32px;width:50%;display: flex;justify-content: right;">
-                       <el-input v-if="!selProject||!selProject.id"  v-model="filters.key" size="mini" style="margin-left:5px;"  placeholder="名称模糊查询"  clearable></el-input>  
+                       <el-input v-if="!selProject||!selProject.id"  v-model="filters.key" size="mini" style="margin-left:5px;"  placeholder="名称模糊查询"  clearable></el-input>
                     </div>
 
                   </div>
@@ -47,39 +47,39 @@
                 <template slot-scope="scope">
                   <div    class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#409EFF'}">
 									<i :class="scope.row.ntype==='1'?'el-icon-time':'el-icon-s-operation'" ></i>
-									</div>  
+									</div>
                   <span>
                     {{ scope.row.sortLevel }}&nbsp;  {{ scope.row.name }}
-                    </span> 
+                    </span>
                  </template>
               </el-table-column>
-              
+
               <el-table-column
                 label="状态"
                 type="taskState"
                 width="100"
-              >  
+              >
 								<template slot-scope="scope">
 									<div>
 										<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'taskState',scope.row.taskState)" :key="index" :type="item.className">{{item.name}}</el-tag>
-									</div> 
+									</div>
 								</template>
-              </el-table-column> 
-              
+              </el-table-column>
+
               <el-table-column
-                label="操作" 
+                label="操作"
                 width="100"
                 align="right"
-              >  
+              >
 								<template slot-scope="scope">
 									<div>
-										 <el-button      @click="$emit('select', scope.row,scope.$index)"   title="选择" type="primary">选择 </el-button>     
-									</div> 
+										 <el-button      @click="$emit('select', scope.row,scope.$index)"   title="选择" type="primary">选择 </el-button>
+									</div>
 								</template>
-              </el-table-column> 
+              </el-table-column>
 
-              
-            </el-table> 
+
+            </el-table>
             <el-row>
             <el-pagination
               ref="pagination"
@@ -91,8 +91,8 @@
               :page-size="pageInfo.pageSize"
               :total="pageInfo.total"
               style="float: right; margin-top: 10px;"
-            ></el-pagination>   
-          </el-row> 
+            ></el-pagination>
+          </el-row>
   </section>
 </template>
 
@@ -101,26 +101,26 @@ import Vue from "vue";
 import util from "@/common/js/util"; //全局公共库
 import treeTool from "@/common/js/treeTool"; //全局公共库
 //import Sticky from '@/components/Sticky' // 粘性header组件
-import { initSimpleDicts } from '@/api/mdp/meta/item'; //下拉框数据查询
+
 import {
-  
+
   initDicts,
   getTask,
-  listXmTask, 
+  listXmTask,
   calcProgress,
   calcProjectProgress,
-} from "@/api/xm/core/xmTask"; 
- import { mapGetters } from "vuex";    
-import { sn } from "@/common/js/sequence"; 
-import XmProjectSelect from "@/views/xm/core/components/XmProjectSelect"; 
+} from "@/api/xm/core/xmTask";
+ import { mapGetters } from "vuex";
+import { sn } from "@/common/js/sequence";
+import XmProjectSelect from "@/views/xm/core/components/XmProjectSelect";
 
-  
+
  	import  XmGroupDialog from '@/views/xm/core/xmGroup/XmGroupDialog';//修改界面
-  
- 
+
+
 export default {
   computed: {
-    ...mapGetters(["userInfo", "roles"]),  
+    ...mapGetters(["userInfo", "roles"]),
     tasksTreeData() {
       let xmTasks = JSON.parse(JSON.stringify(this.xmTasks || []));
       if(this.filters.key){
@@ -136,19 +136,19 @@ export default {
         key.iterationId=this.xmIteration.id
         key.productId=this.xmIteration.productId
       }else{
-        key.iterationId='' 
+        key.iterationId=''
       }
-      if(this.xmProduct&&this.xmProduct.id){  
+      if(this.xmProduct&&this.xmProduct.id){
         key.productId=this.xmProduct.id
       }else{
         key.productId=''
       }
 
-      if(this.selProject&&this.selProject.id){ 
+      if(this.selProject&&this.selProject.id){
         key.projectId=this.selProject.id
       }else{
         key.projectId=''
-      } 
+      }
       return key.iterationId+key.projectId+key.productId+key.parentTaskid
     }
   },
@@ -159,17 +159,17 @@ export default {
     selProject: function (oval, val) {
       this.filters.selProject = this.selProject;
       this.changeSelKey("");
-    }, 
+    },
     xmProduct: function () {
-      this.filters.product = this.xmProduct; 
+      this.filters.product = this.xmProduct;
     },
-    xmIteration: function () { 
+    xmIteration: function () {
     },
-    toSearchCpd:function(){ 
+    toSearchCpd:function(){
       this.loadDatasFromCache();
     }
   },
-  data() { 
+  data() {
     return {
       filters: {
         key: "",
@@ -279,11 +279,11 @@ export default {
         actStartTime: "",
         actEndTime: "",
         uniInnerPrice:80,uniOutPrice:100,
-      },    
-      tableHeight: 300,       
+      },
+      tableHeight: 300,
     };
   }, //end data
-  methods: { 
+  methods: {
      ...util,
     handleSizeChange(pageSize) {
       this.pageInfo.pageSize = pageSize;
@@ -292,7 +292,7 @@ export default {
     handleCurrentChange(pageNum) {
       this.pageInfo.pageNum = pageNum;
       this.getXmTasks();
-    },    
+    },
     // 表格排序 obj.order=ascending/descending,需转化为 asc/desc ; obj.prop=表格中的排序字段,字段驼峰命名
     sortChange(obj) {
       if (obj.order == null) {
@@ -336,7 +336,7 @@ export default {
         }
         params.orderBy = orderBys.join(",");
       }
-      params=this.getParams(params) 
+      params=this.getParams(params)
 
       getTask(params)
         .then((res) => {
@@ -365,7 +365,7 @@ export default {
         })
         .catch((err) => (this.load.list = false));
     },
-     
+
     //选择行xmTask
     selsChange: function (sels) {
       this.sels = sels;
@@ -373,38 +373,38 @@ export default {
     unselectRow(){
        this.editForm=null;
         this.$emit('row-click',null)
-        this.$refs.table.setCurrentRow(); 
+        this.$refs.table.setCurrentRow();
         return;
     },
-    rowClick: function (row) {  
-      this.editForm = row; 
+    rowClick: function (row) {
+      this.editForm = row;
       this.editFormBak=Object.assign({},row)
       this.$emit('row-click',row,);//  @row-click="rowClick"
-    }, 
-     
+    },
+
     onProjectRowClick: function (project) {
-      this.filters.selProject = project; 
+      this.filters.selProject = project;
       this.$emit("project-row-click",project)
       this.searchXmTasks();
     },
     onProjectClear(){
-      this.filters.selProject=null; 
+      this.filters.selProject=null;
       this.xmTasks=[]
       this.searchXmTasks();
     },
-     
-    getParams(params) { 
+
+    getParams(params) {
       if(this.filters.taskState){
         params.taskState=this.filters.taskState
       }
       if (this.filters.selProject) {
         params.projectId = this.filters.selProject.id;
-      } 
- 
+      }
+
       params.ntype='1'
       return params;
-    }, 
-     
+    },
+
     initData(){
       if (this.selProject) {
         this.filters.selProject = this.selProject;
@@ -413,10 +413,10 @@ export default {
         this.filters.product = this.xmProduct;
       }
     },
-     
-      
+
+
     loadDatasFirstCache(){
-        
+
         if(!this.filters.selProject || !this.filters.selProject.id){
           return;
         }
@@ -428,10 +428,10 @@ export default {
         }else{
           this.getXmTasks()
         }
-        
+
       },
       setDatasToCache(datas){
-        
+
         if(!this.filters.selProject || !this.filters.selProject.id){
           return;
         }
@@ -441,12 +441,12 @@ export default {
         }else{
           sessionStorage.setItem(key,JSON.stringify(datas))
         }
-        
+
       }
   }, //end methods
-  components: { 
-    XmProjectSelect,      
-    XmGroupDialog, 
+  components: {
+    XmProjectSelect,
+    XmGroupDialog,
     //在下面添加其它组件
   },
   mounted() {
@@ -455,14 +455,14 @@ export default {
       initDicts(this)
       if(this.isTaskCenter ||(this.selProject && this.selProject.id)){
         this.getXmTasks();
-      } 
+      }
       this.tableHeight = this.source == 'GZT' ? this.tableHeight : util.calcTableMaxHeight(this.$refs.table.$el)-40;
- 
+
     });
   },
 };
 </script>
 
-<style scoped> 
-  
+<style scoped>
+
 </style>

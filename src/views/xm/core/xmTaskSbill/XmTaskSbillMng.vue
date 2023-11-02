@@ -55,7 +55,7 @@
                 :cell-style="{'text-align':'center'}">
 <!--				<el-table-column  type="selection" width="55" show-overflow-tooltip></el-table-column>-->
 				<el-table-column label="序号" type="index" min-width="55"  fixed="left"></el-table-column>
-				<el-table-column prop="id" label="结算单编号" width="120" show-overflow-tooltip fixed="left"> 
+				<el-table-column prop="id" label="结算单编号" width="120" show-overflow-tooltip fixed="left">
         </el-table-column>
 				<el-table-column prop="title" label="结算单标题" width="180" show-overflow-tooltip fixed="left">
           <template slot-scope="scope">
@@ -96,7 +96,7 @@
             <el-tag type="danger" v-else-if="scope.row.status=='3'">已付款</el-tag>
             <el-tag type="info" v-else-if="scope.row.status=='4'">已完成</el-tag>
           </template>
-        </el-table-column> 
+        </el-table-column>
 				<el-table-column prop="ctime" label="提交时间" width="120" show-overflow-tooltip>
           <template slot-scope="scope">
             {{ scope.row.ctime.substr(0, 10) }}
@@ -129,7 +129,7 @@
 			<!--新增 XmTaskSbill 任务结算表界面-->
 			<el-drawer title="新增任务结算单" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
 				<xm-task-sbill-edit op-type="add" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-task-sbill-edit>
-			</el-drawer> 
+			</el-drawer>
       <el-drawer title="选择员工" :visible.sync="selectFiltersPmUserVisible" size="60%" append-to-body>
         <users-select  @confirm="onFiltersPmUserSelected" ref="usersSelect"></users-select>
       </el-drawer>
@@ -140,10 +140,10 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import config from '@/common/config';//全局公共库
-	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
+
 	import { listXmTaskSbill, delXmTaskSbill, batchDelXmTaskSbill } from '@/api/xm/core/xmTaskSbill';
 	import  XmTaskSbillEdit from './XmTaskSbillEdit';//新增修改界面
-	import { mapGetters } from 'vuex' 
+	import { mapGetters } from 'vuex'
   import {editXmTaskSbill} from "../../../../api/xm/core/xmTaskSbill";
   import dateUtil from "../../../../common/js/dateUtil";
   import {editXmWorkload} from "../../../../api/xm/core/xmWorkload";
@@ -152,7 +152,7 @@
 
 	export default {
 		components: {
-      XmTaskSbillEdit, 
+      XmTaskSbillEdit,
       UsersSelect,
       XmProjectSelect,
 		},
@@ -505,7 +505,7 @@
           //restUrl:"http://localhost:8067/api/m1/xm/xm/xm/core/xmTaskSbill/processApprova",
           extVars:extVars,
           flowVars:{
-            subscribeTaskEvent:'PROCESS_STARTED,PROCESS_COMPLETED,PROCESS_CANCELLED', 
+            subscribeTaskEvent:'PROCESS_STARTED,PROCESS_COMPLETED,PROCESS_CANCELLED',
             branchId:this.userInfo.branchId,
             sbillId:row.id
           },

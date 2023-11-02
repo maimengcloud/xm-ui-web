@@ -7,9 +7,9 @@
 					<el-radio-button label="预算统计"></el-radio-button>
 				</el-radio-group>
 				<span style="margin-left:10px;font-size:14px;">项目总预算：</span> <el-tag type="success">{{projectInfoBudget.planTotalCost}}</el-tag>
-				<span style="margin-left:10px;font-size:14px;">非人力总预算：</span><el-tag>{{projectInfoBudget.planNouserAt}}</el-tag> 
-				<span style="margin-left:10px;font-size:14px;">内部人力总预算：</span><el-tag>{{projectInfoBudget.planIuserAt}}</el-tag> 
-				<span style="margin-left:10px;font-size:14px;">外购人力总预算：</span><el-tag>{{projectInfoBudget.planOuserAt}}</el-tag> 
+				<span style="margin-left:10px;font-size:14px;">非人力总预算：</span><el-tag>{{projectInfoBudget.planNouserAt}}</el-tag>
+				<span style="margin-left:10px;font-size:14px;">内部人力总预算：</span><el-tag>{{projectInfoBudget.planIuserAt}}</el-tag>
+				<span style="margin-left:10px;font-size:14px;">外购人力总预算：</span><el-tag>{{projectInfoBudget.planOuserAt}}</el-tag>
 			</div>
 			<div class="title-bar">
 				<el-radio-group v-model="showType" size="medium">
@@ -27,7 +27,7 @@
 						:value="item">
 					</el-option>
 				</el-select> -->
-				<el-table 
+				<el-table
 					ref="table"
 					:height="tableHeight"
 					v-if="showType == '人力'"
@@ -38,29 +38,29 @@
 					<el-table-column prop="subjectId" label="科目" min-width="100" >
 						<template slot-scope="scope">
 							<a    style="text-decoration:underline;margin-right:5px;"  @click="showCostUserDetails(scope.row,'subjectId','queryBySubjectId')">{{scope.row.subjectId}}</a>
-						</template>  
+						</template>
 					</el-table-column>
 					<el-table-column prop="username" label="姓名" min-width="100" >
 						<template slot-scope="scope">
 							<a    style="text-decoration:underline;margin-right:5px;"  @click="showCostUserDetails(scope.row,'username','queryByUsername')">{{scope.row.username}}</a>
-						</template> 
+						</template>
 
 					</el-table-column>
 					<!-- <el-table-column  min-width="100" ></el-table-column> -->
-					<el-table-column :prop="month" v-for="month in selYearMonths" :key="month" :label="month" width="100">  
+					<el-table-column :prop="month" v-for="month in selYearMonths" :key="month" :label="month" width="100">
 						<template slot-scope="scope">
 							<a    style="text-decoration:underline;margin-right:5px;"  @click="showCostUserDetails(scope.row,month,'queryByBizzMonth')">{{scope.row[month]}}</a>
-						</template> 
+						</template>
 					</el-table-column>
-					<el-table-column prop="monthsSum" label="合计" min-width="80"> 
-					</el-table-column> 
+					<el-table-column prop="monthsSum" label="合计" min-width="80">
+					</el-table-column>
 				</el-table>
 
 				<el-table
 					ref="table"
 					:height="tableHeight"
 					v-if="showType == '非人力'"
-					:data="sumXmBudgetNlaborsConvert" 
+					:data="sumXmBudgetNlaborsConvert"
 					highlight-current-row
 					v-loading="load.list"
 					border
@@ -68,22 +68,22 @@
 					<el-table-column prop="subjectId" label="科目" min-width="100" >
 						<template slot-scope="scope">
 							<a    style="text-decoration:underline;margin-right:5px;"  @click="showCostNouserDetails(scope.row,'subjectId','queryBySubjectId')">{{scope.row.subjectId}}</a>
-						</template>  
+						</template>
 					</el-table-column>
 					<el-table-column prop="username" label="姓名" min-width="100" >
 						<template slot-scope="scope">
 							<a    style="text-decoration:underline;margin-right:5px;"  @click="showCostNouserDetails(scope.row,'username','queryByUsername')">{{scope.row.username}}</a>
-						</template> 
+						</template>
 
 					</el-table-column>
 					<!-- <el-table-column  min-width="100" ></el-table-column> -->
-					<el-table-column :prop="month" v-for="month in selYearMonths" :key="month" :label="month" width="100">  
+					<el-table-column :prop="month" v-for="month in selYearMonths" :key="month" :label="month" width="100">
 						<template slot-scope="scope">
 							<a    style="text-decoration:underline;margin-right:5px;"  @click="showCostNouserDetails(scope.row,month,'queryByBizzMonth')">{{scope.row[month]}}</a>
-						</template> 
+						</template>
 					</el-table-column>
-					<el-table-column prop="monthsSum" label="合计" min-width="80"> 
-					</el-table-column> 
+					<el-table-column prop="monthsSum" label="合计" min-width="80">
+					</el-table-column>
 				</el-table>
 			</div>
 
@@ -93,10 +93,10 @@
 			</div>
 			<el-drawer title="查看人力预算明细" :visible.sync="xmBudgetLaborVisible"  fullscreen  append-to-body   :close-on-click-modal="false">
 				<xm-budget-labor :xm-budget-labor="xmBudgetLabor" :visible="xmBudgetLaborVisible" :field-name="fieldName" :query-type="queryType" :sel-project="projectInfo"></xm-budget-labor>
-			</el-drawer> 
+			</el-drawer>
 			<el-drawer title="查看非人力预算明细" :visible.sync="xmBudgetNlaborVisible"  fullscreen  append-to-body   :close-on-click-modal="false">
 				<xm-budget-nlabor :xm-budget-nlabor="xmBudgetNlabor" :visible="xmBudgetNlaborVisible" :field-name="fieldName" :query-type="queryType" :sel-project="projectInfo"></xm-budget-nlabor>
-			</el-drawer> 
+			</el-drawer>
 		</el-row>
 	</section>
 </template>
@@ -104,15 +104,15 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
-	//import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
+
 	import { mapGetters } from 'vuex';
 	import { editBudget } from '@/api/xm/core/xmProject';
 	import { listSumXmBudgetLabor } from '@/api/xm/core/xmBudgetLabor';
 	import { listSumXmBudgetNlabor } from '@/api/xm/core/xmBudgetNlabor';
 	import xmBudgetLabor from '../xmBudgetLabor/XmBudgetLaborMng';
-	import xmBudgetNlabor from '../xmBudgetNlabor/XmBudgetNlaborMng'; 
+	import xmBudgetNlabor from '../xmBudgetNlabor/XmBudgetNlaborMng';
 
-	export default {  
+	export default {
 		computed: {
 			...mapGetters([
 				'userInfo','roles','projectInfo'
@@ -122,7 +122,7 @@
 				var yearMonths=[selYear+'-01',selYear+'-02',selYear+'-03',selYear+'-04',selYear+'-05',selYear+'-06',selYear+'-07',selYear+'-08',selYear+'-09',selYear+'-10',selYear+'-11',selYear+'-12']
 				return yearMonths;
 			},
-			sumXmBudgetLaborsConvert:function(){ 
+			sumXmBudgetLaborsConvert:function(){
 				var map={};
 				var secMap={};
 				this.sumXmBudgetLabors.forEach(i=>{
@@ -149,7 +149,7 @@
 				}
 				return list;
 			},
-			sumXmBudgetNlaborsConvert:function(){ 
+			sumXmBudgetNlaborsConvert:function(){
 				var map={};
 				var secMap={};
 				this.sumXmBudgetNlabors.forEach(i=>{
@@ -175,7 +175,7 @@
 					list.push(row);
 				}
 				return list;
-			} 
+			}
 		},
 		watch: {
 			'showType': function(val) {
@@ -197,7 +197,7 @@
 				},
 				screenData: [],//查询结果
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
-				
+
 				/**begin 自定义属性请在下面加 请加备注**/
 				subjects: [],
 				costShow: "预算统计",
@@ -212,35 +212,35 @@
 				queryType:'',
 				xmBudgetLaborVisible:false,
 				sumXmBudgetNlabors:[],
-				xmBudgetNlabor:null, 
+				xmBudgetNlabor:null,
 				xmBudgetNlaborVisible:false,
 				tableHeight:300,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
 		methods: {
-			 
+
 			rowClick: function(row, event, column){
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
 			},
- 
+
 			listSumXmBudgetLabor:function(){
 				var parmas={
-					projectId:this.projectInfo.id, 
+					projectId:this.projectInfo.id,
 				}
 				listSumXmBudgetLabor(parmas).then(res=>{
 					this.sumXmBudgetLabors=res.data.data;
 				})
-			},  
- 
+			},
+
 			listSumXmBudgetNlabor:function(){
 				var parmas={
-					projectId:this.projectInfo.id, 
+					projectId:this.projectInfo.id,
 				}
 				listSumXmBudgetNlabor(parmas).then(res=>{
 					this.sumXmBudgetNlabors=res.data.data;
 				})
-			}, 
+			},
 			showCostUserDetails:function(row,fieldName,queryType){
 				this.xmBudgetLabor=row
 				this.fileName=fieldName
@@ -259,9 +259,9 @@
 			// },
 			updateBudget() {
 				if(this.projectInfo.planTotalCost==undefined){
-					this.$notify({position:'bottom-left',showClose:true,message:"不允许修改", type:  'success'}); 
+					this.$notify({position:'bottom-left',showClose:true,message:"不允许修改", type:  'success'});
 					return;
-				}  
+				}
 				var planTotalCost=this.getFloatValue(this.projectInfoBudget.planTotalCost)
 				var planIuserAt=this.getFloatValue(this.projectInfoBudget.planIuserAt)
 				var planOuserAt=this.getFloatValue(this.projectInfoBudget.planOuserAt)
@@ -269,33 +269,33 @@
 				this.projectInfoBudget.planTotalCost=planIuserAt+planOuserAt+planNouserAt
 				this.$confirm('确定修改项目总预算吗?', '提示', {
 					type: 'warning'
-				}).then(() => { 
+				}).then(() => {
 					this.load.edit = true;
 					let params = this.projectInfoBudget
 					editBudget(params).then((res) => {
 						var tips=res.data.tips;
 						if(tips.isOk){
 							this.projectInfo.planTotalCost=this.projectInfoBudget.planTotalCost
-							this.projectInfo.planIuserAt=this.projectInfoBudget.planIuserAt 
-							this.projectInfo.planOuserAt=this.projectInfoBudget.planOuserAt 
-							this.projectInfo.planNouserAt=this.projectInfoBudget.planNouserAt 
+							this.projectInfo.planIuserAt=this.projectInfoBudget.planIuserAt
+							this.projectInfo.planOuserAt=this.projectInfoBudget.planOuserAt
+							this.projectInfo.planNouserAt=this.projectInfoBudget.planNouserAt
 						}else{
 							this.projectInfoBudget=Object.assign({},this.projectInfo)
-						}	
-						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
+						}
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 						this.load.edit = false;
 					}).catch( err => this.load.edut = false );
 				}).catch(() => {
 					this.projectInfoBudget=Object.assign({},this.projectInfo)
 				});
 			},
-			
+
 			getFloatValue(value,digit){
 				if(value==null ||  value=='' || value==undefined){
 					value=0;
 				}
 				return parseFloat(value);
-			}, 
+			},
 			/**end 自定义函数请在上面加**/
 		},//end methods
 		components: {
@@ -303,11 +303,11 @@
 			xmBudgetNlabor,
 				//在下面添加其它组件
 		},
-		mounted() { 
+		mounted() {
 			this.showType = "人力";
-			this.$nextTick(() => {   
-				this.tableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
-			}); 
+			this.$nextTick(() => {
+				this.tableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);
+			});
 			  this.projectInfoBudget=Object.assign({},this.projectInfo);
 		}
 	}

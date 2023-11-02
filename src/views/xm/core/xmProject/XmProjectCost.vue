@@ -5,7 +5,7 @@
 				<el-radio-group v-model="costShow" size="medium">
 					<el-radio-button label="支出清单"></el-radio-button>
 					<el-radio-button label="支出统计"></el-radio-button>
-				</el-radio-group> 
+				</el-radio-group>
 			</div>
 			<div class="title-bar">
 				<el-radio-group v-model="showType" size="medium">
@@ -16,11 +16,11 @@
 			<div v-if="costShow == '支出统计'">
 				<el-row>
 					<el-date-picker style="padding:10px;width:120px;" v-model="selYear" value-format="yyyy" type="year" placeholder="统计年份" :clearable="false"></el-date-picker>
-					<el-select  v-model="rptType" placeholder="统计类型"> 
+					<el-select  v-model="rptType" placeholder="统计类型">
 						<el-option  label="统计本企业每月支出金额" value="1"> </el-option>
 						<el-option  label="统计项目每月支出金额" value="2"> </el-option>
 						<el-option  label="统计项目成员每月支出金额" value="3"> </el-option>
-					</el-select> 
+					</el-select>
 				</el-row>
 				<el-table ref="table"
 					:height="maxTableHeight"
@@ -28,38 +28,38 @@
 					:data="sumXmCostLaborsConvert"
 					highlight-current-row
 					v-loading="load.list"
-					border> 
+					border>
 					<el-table-column prop="username" label="成员姓名" min-width="100" v-if="rptType==='3'">
 						<template slot-scope="scope">
 							<a    style="text-decoration:underline;margin-right:5px;"  @click="showXmCostLaborDetails(scope.row,'username','queryByBizUserid')">{{scope.row.username}}</a>
-						</template> 
+						</template>
 
 					</el-table-column>
 					<el-table-column prop="projectId" label="项目编号" min-width="100" v-if="rptType==='2'">
 						<template slot-scope="scope">
 							<a    style="text-decoration:underline;margin-right:5px;"  @click="showXmCostLaborDetails(scope.row,'projectId','queryByProjectId')">{{scope.row.projectId}}</a>
-						</template> 
+						</template>
 
 					</el-table-column>
 					<el-table-column prop="branchId" label="企业编号" min-width="100" v-if="rptType==='1'">
 						<template slot-scope="scope">
 							<a    style="text-decoration:underline;margin-right:5px;"  @click="showXmCostLaborDetails(scope.row,'branchId','queryByBranchId')">{{scope.row.branchId}}</a>
-						</template> 
+						</template>
 
 					</el-table-column>
 					<!-- <el-table-column  min-width="100" ></el-table-column> -->
-					<el-table-column :prop="month" v-for="month in selYearMonths" :key="month" :label="month" width="100">  
+					<el-table-column :prop="month" v-for="month in selYearMonths" :key="month" :label="month" width="100">
 						<template slot-scope="scope">
 							<a    style="text-decoration:underline;margin-right:5px;"  @click="showXmCostLaborDetails(scope.row,month,'queryByBizMonth')">￥{{scope.row[month]}}</a>
-						</template> 
+						</template>
 					</el-table-column>
-					<el-table-column prop="monthsSum" label="合计" min-width="80"> 
-					</el-table-column> 
+					<el-table-column prop="monthsSum" label="合计" min-width="80">
+					</el-table-column>
 				</el-table>
 
 				<el-table
 					v-if="showType == '非人力'"
-					:data="sumXmCostNlaborsConvert" 
+					:data="sumXmCostNlaborsConvert"
 					highlight-current-row
 					v-loading="load.list"
 					border
@@ -67,22 +67,22 @@
 					<el-table-column prop="subjectId" label="科目" min-width="100" >
 						<template slot-scope="scope">
 							<a    style="text-decoration:underline;margin-right:5px;"  @click="showXmCostNlaborDetails(scope.row,'subjectId','queryBySubjectId')">{{scope.row.subjectId}}</a>
-						</template>  
+						</template>
 					</el-table-column>
 					<el-table-column prop="username" label="姓名" min-width="100" >
 						<template slot-scope="scope">
 							<a    style="text-decoration:underline;margin-right:5px;"  @click="showXmCostNlaborDetails(scope.row,'username','queryByBizUserid')">{{scope.row.username}}</a>
-						</template> 
+						</template>
 
 					</el-table-column>
 					<!-- <el-table-column  min-width="100" ></el-table-column> -->
-					<el-table-column :prop="month" v-for="month in selYearMonths" :key="month" :label="month" width="100">  
+					<el-table-column :prop="month" v-for="month in selYearMonths" :key="month" :label="month" width="100">
 						<template slot-scope="scope">
 							<a    style="text-decoration:underline;margin-right:5px;"  @click="showXmCostNlaborDetails(scope.row,month,'queryByBizMonth')">￥{{scope.row[month]}}</a>
-						</template> 
+						</template>
 					</el-table-column>
-					<el-table-column prop="monthsSum" label="合计" min-width="80"> 
-					</el-table-column> 
+					<el-table-column prop="monthsSum" label="合计" min-width="80">
+					</el-table-column>
 				</el-table>
 			</div>
 
@@ -92,10 +92,10 @@
 			</div>
 			<el-drawer title="查看人力支出明细" :visible.sync="xmCostLaborVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
 				<xm-cost-labor v-if="xmCostLabor" :biz-month="queryType==='queryByBizMonth'?fieldName:null" :visible="xmCostLaborVisible" :userid="xmCostLabor.userid" :branch-id=" xmCostLabor.branchId " :project-id=" xmCostLabor.projectId "></xm-cost-labor>
-			</el-drawer> 
+			</el-drawer>
 			<el-drawer title="查看非人力支出明细" :visible.sync="xmCostNlaborVisible"  size="60%"   append-to-body   :close-on-click-modal="false">
 				<xm-cost-nlabor :xm-cost-nlabor="xmCostNlabor" :visible="xmCostNlaborVisible" :field-name="fieldName" :query-type="queryType" :sel-project="projectInfo"></xm-cost-nlabor>
-			</el-drawer> 
+			</el-drawer>
 		</el-row>
 	</section>
 </template>
@@ -103,14 +103,14 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
-	//import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
+
 	import { mapGetters } from 'vuex';
 	import { listSumSamtGroupByUseridBizMonth,listSumSamtGroupByBranchIdBizMonth,listSumSamtGroupByProjectIdBizMonth } from '@/api/xm/core/xmTaskSbillDetail';
 	import { listSumXmCostNlabor } from '@/api/xm/core/xmCostNlabor';
 	import xmCostLabor from '../xmTaskSbillDetail/XmTaskSbillDetailMng';
-	import xmCostNlabor from '../xmCostNlabor/XmCostNlaborMng'; 
+	import xmCostNlabor from '../xmCostNlabor/XmCostNlaborMng';
 
-	export default {  
+	export default {
 		computed: {
 			...mapGetters([
 				'laborInfo','roles','projectInfo'
@@ -120,7 +120,7 @@
 				var yearMonths=[selYear+'-01',selYear+'-02',selYear+'-03',selYear+'-04',selYear+'-05',selYear+'-06',selYear+'-07',selYear+'-08',selYear+'-09',selYear+'-10',selYear+'-11',selYear+'-12']
 				return yearMonths;
 			},
-			sumXmCostLaborsConvert:function(){ 
+			sumXmCostLaborsConvert:function(){
 				var map={};
 				var secMap={};
 				this.sumXmCostLabors.forEach(i=>{
@@ -147,7 +147,7 @@
 				}
 				return list;
 			},
-			sumXmCostNlaborsConvert:function(){ 
+			sumXmCostNlaborsConvert:function(){
 				var map={};
 				var secMap={};
 				this.sumXmCostNlabors.forEach(i=>{
@@ -173,7 +173,7 @@
 					list.push(row);
 				}
 				return list;
-			} 
+			}
 		},
 		watch: {
 			'showType': function(val) {
@@ -185,7 +185,7 @@
 				}
 			},
 			'projectInfo': function(projectInfo){
-				
+
 			},
 			'selYear':function(){
 				this.listSumSamt();
@@ -201,21 +201,21 @@
 				},
 				screenData: [],//查询结果
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
-				
+
 				/**begin 自定义属性请在下面加 请加备注**/
 				subjects: [],
 				costShow: "支出统计",
 				selYear: ""+new Date().getFullYear(),
 				showType: "",
 				xmCostLabor: [],
-				xmCostNlabor: [], 
+				xmCostNlabor: [],
 				sumXmCostLabors:[],
 				xmCostLabor:null,
 				fieldName:'',
 				queryType:'',
 				xmCostLaborVisible:false,
 				sumXmCostNlabors:[],
-				xmCostNlabor:null, 
+				xmCostNlabor:null,
 				xmCostNlaborVisible:false,
 				maxTableHeight:300,
 				rptType:'1',//统计类型
@@ -223,14 +223,14 @@
 			}
 		},//end data
 		methods: {
-			 
+
 			rowClick: function(row, event, column){
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
 			},
- 
+
 			listSumSamt:function(){
 				var params={
-					bizYear:this.selYear, 
+					bizYear:this.selYear,
 				}
 				if(this.projectInfo){
 					params.projectId=this.projectInfo.id
@@ -247,21 +247,21 @@
 					if(res.data.tips.isOk){
 						this.sumXmCostLabors=res.data.data;
 					}
-					
+
 				})
-			},  
- 
+			},
+
 			listSumXmCostNlabor:function(){
 				var parmas={
-					projectId:this.projectInfo.id, 
+					projectId:this.projectInfo.id,
 				}
 				listSumXmCostNlabor(parmas).then(res=>{
 					if(res.data.tips.isOk){
 						this.sumXmCostNlabors=res.data.data;
 					}
-					
+
 				})
-			}, 
+			},
 			showXmCostLaborDetails:function(row,fieldName,queryType){
 				this.xmCostLabor=row
 				this.fieldName=fieldName
@@ -273,7 +273,7 @@
 				this.fieldName=fieldName
 				this.queryType=queryType
 				this.xmCostNlaborVisible=true;
-			}, 
+			},
 			/**end 自定义函数请在上面加**/
 		},//end methods
 		components: {
@@ -281,12 +281,12 @@
 			xmCostNlabor,
 				//在下面添加其它组件
 		},
-		mounted() { 
+		mounted() {
 			this.showType = "人力";
-				this.$nextTick(() => {  
-				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
-			  }); 
-			   
+				this.$nextTick(() => {
+				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);
+			  });
+
 		}
 	}
 

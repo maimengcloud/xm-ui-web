@@ -1,20 +1,20 @@
 <template>
 	<section class="page-container  padding border">
 		<el-row>
-			<!--新增界面 XmTaskTemplate xm_task--> 
-			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm"> 
+			<!--新增界面 XmTaskTemplate xm_task-->
+			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">
 				<el-form-item label="任务名称" prop="name">
 					<el-input v-model="addForm.name" placeholder="任务名称" ></el-input>
 				</el-form-item>
 				<el-form-item label="排序号" prop="sortLevel">
 					<el-input v-model="addForm.sortLevel" placeholder="排序级别，值越小越靠前" ></el-input>
 				</el-form-item>
-				<el-form-item  label="计划类型" prop="planType"> 
+				<el-form-item  label="计划类型" prop="planType">
 					<el-select v-model=" addForm.planType">
 						<el-option v-for="i in this.dicts.planType" :label="i.name" :key="i.id" :value="i.id"></el-option>
 					</el-select>
 				</el-form-item>
-				<el-form-item  label="任务类型" prop="taskType"> 
+				<el-form-item  label="任务类型" prop="taskType">
 					<el-select v-model=" addForm.taskType">
 						<el-option v-for="i in this.dicts.taskType" :label="i.name" :key="i.id" :value="i.id"></el-option>
 					</el-select>
@@ -33,24 +33,24 @@
 							:value="item">
 						</el-option>
 					</el-select>
-				</el-form-item> 
+				</el-form-item>
 				<el-form-item label="任务级别" prop="level">
 					<el-radio-group v-model="addForm.level">
-						<el-radio v-for="i in levelList" :label="i.key" :key="i.key">{{i.value}}</el-radio> 
-					</el-radio-group> 
-				</el-form-item> 
+						<el-radio v-for="i in levelList" :label="i.key" :key="i.key">{{i.value}}</el-radio>
+					</el-radio-group>
+				</el-form-item>
 				<el-form-item label="里程碑" prop="milestone">
 					<el-checkbox v-model="addForm.milestone" :true-label="1" :false-label="0">标记为里程碑</el-checkbox>
-				</el-form-item> 
+				</el-form-item>
 				<el-form-item label="任务描述" prop="description">
 					<el-input type="textarea" :row="3" v-model="addForm.description" placeholder="任务描述" ></el-input>
-				</el-form-item> 
+				</el-form-item>
 				<el-form-item label="预算工时" prop="budgetWorkload">
 					<el-input  type="number" min="0" v-model="addForm.budgetWorkload" placeholder="预算工时" ></el-input>
-				</el-form-item> 
+				</el-form-item>
 				<el-form-item label="预算金额" prop="budgetCost">
 					<el-input type="number" min="0" v-model="addForm.budgetCost" placeholder="预算金额" ></el-input>
-				</el-form-item> 
+				</el-form-item>
 				<el-form-item label="任务状态" prop="taskState">
 					<el-radio-group v-model="addForm.taskState">
 						<el-radio label="0">待领取</el-radio>
@@ -58,33 +58,33 @@
 						<el-radio label="2">已完工</el-radio>
 						<el-radio label="3">已结算</el-radio>
 					</el-radio-group>
-				</el-form-item> 
+				</el-form-item>
 				<el-form-item label="是否外包" prop="taskOut">
 					<el-radio-group v-model="addForm.taskOut">
 						<el-radio label="0">不可外包</el-radio>
 						<el-radio label="1">可外包</el-radio>
 					</el-radio-group>
-				</el-form-item> 
+				</el-form-item>
 				<el-form-item label="是否结算" prop="taskClass">
 					<el-radio-group v-model="addForm.taskClass">
 						<el-radio label="0">不需结算</el-radio>
 						<el-radio label="1">需结算</el-radio>
 					</el-radio-group>
-				</el-form-item> 
+				</el-form-item>
 				<el-form-item label="发布到任务大厅" prop="toTaskCenter">
 					<el-radio-group v-model="addForm.toTaskCenter">
 						<el-radio label="0">否</el-radio>
 						<el-radio label="1">是</el-radio>
 					</el-radio-group>
-				</el-form-item> 
+				</el-form-item>
 				<el-form-item>
-					<el-col :span="24" :offset="8"> 
-						<el-button @click.native="handleCancel">取消</el-button>  
-						<el-button v-loading="load.add" type="primary" @click.native="addSubmit" :disabled="load.add==true">提交</el-button>  
+					<el-col :span="24" :offset="8">
+						<el-button @click.native="handleCancel">取消</el-button>
+						<el-button v-loading="load.add" type="primary" @click.native="addSubmit" :disabled="load.add==true">提交</el-button>
 					</el-col>
-				</el-form-item> 
+				</el-form-item>
 			</el-form>
-		</el-row> 
+		</el-row>
 
 		<!-- <el-drawer append-to-body :title="'技能要求'" :visible.sync="skillVisible"  size="80%"  append-to-body   :close-on-click-modal="false">
 			<xm-skill-mng :visible="skillVisible" :task-id="addForm.id" @cancel="skillVisible=false" @getSkill="getSkill"></xm-skill-mng>
@@ -99,7 +99,7 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询 
+
 	import {addXmTaskTemplate } from '@/api/xm/core/xmTaskTemplate';
 	import { mapGetters } from 'vuex';
 	import AttachmentUpload from "@/views/mdp/arc/archiveAttachment/AttachmentUpload"; //上传组件
@@ -107,8 +107,8 @@
 	import xmSkillMng from '../xmTaskSkill/XmTaskSkillMng';
 	import skillMng from "@/views/xm/core/skill/skillMng";
 	import {batchAddSkill } from '@/api/xm/core/xmTaskSkill';
-	
-	export default { 
+
+	export default {
 		computed: {
 			...mapGetters([
 				'userInfo','roles'
@@ -129,13 +129,13 @@
 			//获取项目任务，作为前置任务列表
 			preTaskList() {
 				return []
-			}, 
+			},
 		},
 		props:['xmTaskTemplate','visible','parentTaskTemplate','xmPhaseTemplate'],
 		watch: {
-			'xmTaskTemplate':function(  xmTaskTemplate ) {  
+			'xmTaskTemplate':function(  xmTaskTemplate ) {
 			},
-			'visible':function(visible) { 
+			'visible':function(visible) {
 				this.fileVisible = visible;
 				if(visible==true){
 					this.addForm = this.xmTaskTemplate;
@@ -150,17 +150,17 @@
 			},
 			parentTaskTemplate:function(parentTaskTemplate){
 				if(this.parentTaskTemplate){
-					this.addForm=Object.assign(this.addForm, this.parentTaskTemplate); 
+					this.addForm=Object.assign(this.addForm, this.parentTaskTemplate);
 					this.addForm.id=sn();
 				}
 			}
 		},
-		data() { 
-			return { 
-				dicts:{ 
+		data() {
+			return {
+				dicts:{
 					planType:[],
 					taskType:[],
-				},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
+				},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				addFormRules: {
 					name: [
@@ -177,10 +177,10 @@
 					],
 					toTaskCenter: [
 						{ required: true, message: '请选择是否发布', trigger: 'blur' }
-					],   
+					],
 					sortLevel: [
 						{ required: true, message: '排序号不能为空', trigger: 'blur' }
-					],   
+					],
 					// execuser:[{
 					// 	validator: validateExec, trigger: 'blur'
 					// }],
@@ -191,15 +191,15 @@
 				},
 				/**begin 在下面加自定义属性,记得补上面的一个逗号**/
 				preTask:{},
-				fileVisible: false, 
+				fileVisible: false,
 
 				skillVisible: false,
-				taskSkills: [], 
+				taskSkills: [],
 				/**end 在上面加自定义属性**/
 			}//end return
 		},//end data
 		methods: {
-			 
+
 			changePreTask(val){
 				this.addForm.preTaskid = val.id;
 				this.addForm.preTaskname = val.name;
@@ -214,14 +214,14 @@
 				this.$refs.addForm.validate((valid) => {
 					if (valid) {
 						this.$confirm('确认提交吗？', '提示', {}).then(() => {
-							let params = Object.assign({}, this.addForm); 
+							let params = Object.assign({}, this.addForm);
 							if(this.taskSkills){
 								params.taskSkillNames=this.taskSkills.map(i=>i.skillName).join(",")
 								params.taskSkillIds=this.taskSkills.map(i=>i.skillId).join(",")
 							}
 							if(this.parentTaskTemplate){
 								params.parentTaskid=this.parentTaskTemplate.id
-								params.parentTaskname=this.parentTaskTemplate.name 
+								params.parentTaskname=this.parentTaskTemplate.name
 							}else {
 								if(this.xmPhaseTemplate){
 									params.phaseId=this.xmPhaseTemplate.id
@@ -237,10 +237,10 @@
 								this.load.add=false
 								var tips=res.data.tips;
 								if(tips.isOk){
-									 
+
 									this.$emit('submit');//  @submit="afterAddSubmit"
 								}
-								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
+								this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 							}).catch( err  => this.load.add=false);
 						});
 					}
@@ -262,20 +262,20 @@
 					this.addForm.attachment = list;
 					console.log(list);
 				}
-			}, 
+			},
 			/**begin 在下面加自定义方法,记得补上面的一个逗号**/
 
-			handleAdd() { 
+			handleAdd() {
 			},
 
-			showSkill(){  
+			showSkill(){
 				this.skillVisible = true;
 			},
 
-			onTaskSkillsSelected(skills) { 
+			onTaskSkillsSelected(skills) {
 				this.taskSkills = skills;
 				this.skillVisible=false;
-			}, 
+			},
 			formatDate: function(time) {
 				const date = new Date(time);
 				const m = date.getMonth()+1;
@@ -283,9 +283,9 @@
 				return date.getFullYear()+"-"+(m < 10 ? "0"+m : m)+"-"+ (d < 10 ? "0"+d : d) + " 00:00:00";
 			},
 			/**end 在上面加自定义方法**/
-			
+
 		},//end method
-		components: { 
+		components: {
 			'upload': AttachmentUpload,
 			xmSkillMng,
 			skillMng,
@@ -295,14 +295,14 @@
 			console.log("taskAdd_mount");
 			this.fileVisible = this.visible;
 			if(this.parentTaskTemplate){
-				this.addForm=Object.assign(this.addForm, this.parentTaskTemplate); 
+				this.addForm=Object.assign(this.addForm, this.parentTaskTemplate);
 			}
 			this.addForm.id = sn();
 			initSimpleDicts('all',['planType','taskType']).then(res=>{
 				this.dicts=res.data.data;
 			})
 			/**在下面写其它函数***/
-			
+
 		}//end mounted
 	}
 

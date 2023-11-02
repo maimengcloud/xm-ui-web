@@ -1,21 +1,21 @@
 <template>
 	<section class="page-container padding border">
 		<el-row>
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="项目模板名称查询"></el-input>  
+			<el-input v-model="filters.key" style="width: 20%;" placeholder="项目模板名称查询"></el-input>
 			<el-select v-model="filters.xmType" @change="searchXmProjectTemplates">
 				<el-option v-for="i in this.dicts.projectType" :label="i.name" :key="i.id" :value="i.id"></el-option>
 			</el-select>
-			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectTemplates">查询</el-button> 
+			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectTemplates">查询</el-button>
   		</el-row>
-		<el-row class="page-main"> 
+		<el-row class="page-main">
 			<!--列表 XmProjectTemplate xm_project_template-->
 			<el-table ref="table" :height="maxTableHeight" :data="xmProjectTemplates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="45"></el-table-column>
 				<el-table-column sortable type="index" width="45"></el-table-column>
-  				<el-table-column prop="name" label="项目名称" min-width="150" ></el-table-column> 
+  				<el-table-column prop="name" label="项目名称" min-width="150" ></el-table-column>
  				<el-table-column prop="tcusername" label="创建人" min-width="80" ></el-table-column>
-				<el-table-column prop="xmType" label="项目类型" min-width="80" :formatter="formatXmType"></el-table-column>  
- 				<el-table-column prop="planWorkload" label="总工作量" min-width="80" ></el-table-column> 
+				<el-table-column prop="xmType" label="项目类型" min-width="80" :formatter="formatXmType"></el-table-column>
+ 				<el-table-column prop="planWorkload" label="总工作量" min-width="80" ></el-table-column>
 				<el-table-column prop="taxRate" label="税率" min-width="80" >
 					<template slot-scope="scope">
 						{{scope.row.taxRate}}%
@@ -26,22 +26,22 @@
 					<template slot-scope="scope">
 						{{scope.row.budgetMarginRate}}%
 					</template>
-				</el-table-column> 
+				</el-table-column>
  				<el-table-column  label="预算(元)" min-width="80" >
  				<el-table-column prop="planTotalCost" label="总预算" min-width="80" ></el-table-column>
  				<el-table-column prop="planNouserAt" label="非人力" min-width="80" ></el-table-column>
 				<el-table-column prop="planIuserAt" label="内部" min-width="80" ></el-table-column>
-				<el-table-column prop="planOuserAt" label="外购" min-width="80" ></el-table-column> 
+				<el-table-column prop="planOuserAt" label="外购" min-width="80" ></el-table-column>
 				</el-table-column>
 				<el-table-column prop="description" label="项目描述" min-width="80" show-overflow-tooltip ></el-table-column>
 				<el-table-column label="操作" width="160" fixed="right">
-					<template slot-scope="scope"> 
+					<template slot-scope="scope">
  						<el-button type="primary" @click="selectedProject(scope.row,scope.$index)">选中</el-button>
 					</template>
 				</el-table-column>
-			</el-table> 
+			</el-table>
 		</el-row>
-		<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
+		<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 	</section>
 </template>
 
@@ -49,12 +49,12 @@
 	import Vue from 'vue'
 
 	import util from '@/common/js/util';//全局公共库
-	import config from '@/common/config';//全局公共库 
-	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
+	import config from '@/common/config';//全局公共库
+
 	import { listXmProject  } from '@/api/xm/core/xmProject';
  	import { mapGetters } from 'vuex'
- 	 
-	export default { 
+
+	export default {
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -80,14 +80,14 @@
 				dicts:{
 					//sex:[],
 					projectType:[],
-				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
-				
+				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
+
 				addFormVisible: false,//新增xmProjectTemplate界面是否显示
 				//新增xmProjectTemplate界面初始化数据
 				addForm: {
 					id:'',code:'',name:'',xmType:'',startTime:'',endTime:'',urgent:'',priority:'',description:'',createUserid:'',createUsername:'',createTime:'',assess:'',assessRemarks:'',status:'',branchId:'',planTotalCost:'',bizProcInstId:'',bizFlowState:'',planNouserAt:'',planIuserAt:'',planOuserAt:'',locked:'',baseTime:'',baseRemark:'',baselineId:'',planWorkload:'',totalReceivables:'',budgetMarginRate:'',contractAmt:'',planIuserPrice:'',planOuserPrice:'',planOuserCnt:'',planIuserCnt:'',planWorkingHours:'',taxRate:'',planIuserWorkload:'',planOuserWorkload:'',productId:'',productName:'',templateId:'',tcuserid:'',tcusername:'',tremark:'',tctime:'',tcbranchId:'',shareScope:''
 				},
-				
+
 				editFormVisible: false,//编辑界面是否显示
 				//编辑xmProjectTemplate界面初始化数据
 				editForm: {
@@ -96,13 +96,13 @@
 				projectTemplateInfoVisible:false,
 				maxTableHeight:300,
 				/**begin 自定义属性请在下面加 请加备注**/
-					
+
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
-		methods: { 
-			handleSizeChange(pageSize) { 
-				this.pageInfo.pageSize=pageSize; 
+		methods: {
+			handleSizeChange(pageSize) {
+				this.pageInfo.pageSize=pageSize;
 				this.getXmProjectTemplates();
 			},
 			handleCurrentChange(pageNum) {
@@ -124,7 +124,7 @@
 				this.getXmProjectTemplates();
 			},
 			searchXmProjectTemplates(){
-				 this.pageInfo.count=true; 
+				 this.pageInfo.count=true;
 				 this.getXmProjectTemplates();
 			},
 			//获取列表 XmProjectTemplate xm_project_template
@@ -137,25 +137,25 @@
 				};
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
 					let orderBys=[];
-					for(var i=0;i<this.pageInfo.orderFields.length;i++){ 
+					for(var i=0;i<this.pageInfo.orderFields.length;i++){
 						orderBys.push(this.pageInfo.orderFields[i]+" "+this.pageInfo.orderDirs[i])
-					}  
+					}
 					params.orderBy= orderBys.join(",")
 				}
 				if(this.filters.xmType){
 					params.xmType=this.filters.xmType
-				} 
+				}
 				params.isTpl="1"
 				this.load.list = true;
 				listXmProject(params).then((res) => {
 					var tips=res.data.tips;
-					if(tips.isOk){ 
+					if(tips.isOk){
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false;
 						this.xmProjectTemplates = res.data.data;
 					}else{
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
-					} 
+					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
 			},
@@ -181,16 +181,16 @@
 			//选择行xmProjectTemplate
 			selsChange: function (sels) {
 				this.sels = sels;
-			},  
+			},
 			rowClick: function(row, event, column){
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
 			},
 			selectedProject(row){
 				this.editForm=row
 				this.$emit("selected",row)
-			}, 
+			},
 			/**begin 自定义函数请在下面加**/
-			
+
 			formatXmType(row,column,cellValue){
 				if(this.dicts.projectType){
 					var xmType=this.dicts.projectType.find(i=>i.id==cellValue)
@@ -199,31 +199,31 @@
 					}else{
 						return cellValue;
 					}
-				}else{	
+				}else{
 					return cellValue;
 				}
 			}
-				
+
 			/**end 自定义函数请在上面加**/
-			
+
 		},//end methods
-		components: {  
+		components: {
  		    //在下面添加其它组件
 		},
-		mounted() { 
-			this.$nextTick(() => { 
+		mounted() {
+			this.$nextTick(() => {
                 this.maxTableHeight = util.calcTableMaxHeight(this.$refs.table.$el);
 				this.getXmProjectTemplates();
 				initSimpleDicts( 'all' ['projectType'] ).then(res=>{
-					if(res.data.tips.isOk){ 
+					if(res.data.tips.isOk){
 						this.dicts['projectType']=res.data.data.projectType
 					}
-				}); 
-			}); 
-			
+				});
+			});
+
         	/** 举例，
     		initSimpleDicts( "all",["sex","grade"] ).then(res=>{
-				if(res.data.tips.isOk){ 
+				if(res.data.tips.isOk){
  					this.dicts=res.data.data
 				}
 			});

@@ -1,20 +1,20 @@
 <template>
-	<section> 
-		<el-row> 
-			
+	<section>
+		<el-row>
+
 			<div style="display:flex;">
-			<xm-product-select ref="xmProductSelect1" style="display:inline;" v-if="!xmProduct || !xmProduct.id"   :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClearSelect"></xm-product-select> 
-				
+			<xm-product-select ref="xmProductSelect1" style="display:inline;" v-if="!xmProduct || !xmProduct.id"   :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClearSelect"></xm-product-select>
+
 			<el-input v-else v-model="filters.key" placeholder="名称模糊查询"  clearable></el-input>
-			<el-button style="margin-left:5px;" icon="el-icon-search" @click="searchXmMenus()">查询</el-button> 
-			<el-button style="margin-left:5px;" v-if="showSelect!==false && multi===true" type="primary" @click="selectConfirm()">确认选择</el-button> 
+			<el-button style="margin-left:5px;" icon="el-icon-search" @click="searchXmMenus()">查询</el-button>
+			<el-button style="margin-left:5px;" v-if="showSelect!==false && multi===true" type="primary" @click="selectConfirm()">确认选择</el-button>
 			</div>
 		</el-row>
 		<el-row class="padding-top">
 			<el-table element-loading-text="努力加载中" :row-style="{height:'46px'}" element-loading-spinner="el-icon-loading"    stripe fit border ref="table" :height="maxTableHeight" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick">
 				<template v-if="showSelect!==false && multi===true">
-					<el-table-column   label="" type="selection"  width="60"  >  
-					</el-table-column> 
+					<el-table-column   label="" type="selection"  width="60"  >
+					</el-table-column>
 				</template>
 				<el-table-column prop="menuName" label="史诗、特性名称" min-width="150" >
 					<template slot="header">史诗、特性
@@ -30,27 +30,27 @@
 						<div v-if="scope.row.dclass=='3'" class="icon" style="background-color:  rgb(79, 140, 255);">
 						<i class="el-icon-document"></i>
 						</div>
-						<span class="hidden-md-and-down">{{scope.row.seqNo}} &nbsp;</span><span>{{scope.row.menuName}} </span> 
- 
+						<span class="hidden-md-and-down">{{scope.row.seqNo}} &nbsp;</span><span>{{scope.row.menuName}} </span>
+
 						<span  style="float:right;"
-							:style="{borderRadius: '30px',color:scope.row.finishRate >= 100 ? 'green' : 'blue'}" 
+							:style="{borderRadius: '30px',color:scope.row.finishRate >= 100 ? 'green' : 'blue'}"
 						>
 							{{ (scope.row.finishRate != null ? scope.row.finishRate : 0) + "%" }}
-						</span> 
-					</template> 
-				</el-table-column>  
-				<template v-if="showSelect!==false && multi!==true">
-				<el-table-column   label="操作"  width="100"  
-                align="right" > 
-					<template slot-scope="scope"> 
-						<el-button      @click="select( scope.row,scope.$index)"   title="选择" type="primary"> 选择</el-button>     
+						</span>
 					</template>
-				</el-table-column> 
+				</el-table-column>
+				<template v-if="showSelect!==false && multi!==true">
+				<el-table-column   label="操作"  width="100"
+                align="right" >
+					<template slot-scope="scope">
+						<el-button      @click="select( scope.row,scope.$index)"   title="选择" type="primary"> 选择</el-button>
+					</template>
+				</el-table-column>
 				</template>
-			</el-table>  
+			</el-table>
 			<el-pagination  layout="total, sizes, prev,  next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 
-		</el-row>   
+		</el-row>
 
 	</section>
 </template>
@@ -59,9 +59,9 @@
 	import util from '@/common/js/util';//全局公共库
 	import treeTool from '@/common/js/treeTool';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
-	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
+
 	import { listXmMenu, delXmMenu, batchDelXmMenu,batchAddXmMenu,batchEditXmMenu,listXmMenuWithState,listXmMenuWithPlan,batchChangeParentMenu,editXmMenuSomeFields } from '@/api/xm/core/xmMenu';
-  	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//新增界面 
+  	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//新增界面
 
 	import {sn} from '@/common/js/sequence'
 
@@ -75,14 +75,14 @@
 			]),
 
       		xmMenusTreeData() {
-				let xmMenus = JSON.parse(JSON.stringify(this.xmMenus || [])); 
+				let xmMenus = JSON.parse(JSON.stringify(this.xmMenus || []));
 				if(this.filters.key){
 					xmMenus=xmMenus.filter(k=>k.menuName.indexOf(this.filters.key)>=0)
 				}
 				let xmMenusTreeData = treeTool.translateDataToTree(xmMenus,"pmenuId","menuId");
 				 return xmMenusTreeData;
-			}, 
-			toSearchCpd(){ 
+			},
+			toSearchCpd(){
 				var key={iterationId:'',projectId:'',productId:''};
 				if(this.xmIteration&&this.xmIteration.id){
 					key.iterationId=this.xmIteration.id
@@ -90,31 +90,31 @@
 				}else{
 					key.iterationId=''
 				}
-				if(this.xmProduct&&this.xmProduct.id){  
+				if(this.xmProduct&&this.xmProduct.id){
 					key.productId=this.xmProduct.id
 				}else{
 					key.productId=''
 				}
-				if(this.selProject&&this.selProject.id){ 
+				if(this.selProject&&this.selProject.id){
 					key.projectId=this.selProject.id
 				}else{
 					key.projectId=''
-				} 
+				}
 				return key.iterationId+key.projectId+key.productId
 			}
 		},
 		watch:{
-			 
+
 			xmProduct:function(){
-				this.filters.product=this.xmProduct 
+				this.filters.product=this.xmProduct
 			},
-			selProject:function(){ 
+			selProject:function(){
 			},
 			toSearchCpd:function(){
 				this.loadDatasFirstCache();
 			}
     	},
-		data() { 
+		data() {
 			return {
 				columnsConfig:[/**{label:'',property:'',isShow:true} */],
 				filters: {
@@ -161,16 +161,16 @@
 					],
 					dclass:[],
 				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
- 
- 
+
+
  				//编辑xmMenu界面初始化数据
 				editForm: {
 						menuId:'',menuName:'',pmenuId:'',productId:'',remark:'',status:'',online:'',demandUrl:'',codeUrl:'',designUrl:'',docUrl:'',helpUrl:'',operDocUrl:'',ntype:'0',childrenCnt:0,sinceVersion:'',proposerId:'',proposerName:'',dlvl:'0',dtype:'0',priority:'0',source:'1'
 				},
-				parentMenu:null, 
-				maxTableHeight:300, 
-				productVisible:false, 
-				parentMenuVisible:false, 
+				parentMenu:null,
+				maxTableHeight:300,
+				productVisible:false,
+				parentMenuVisible:false,
 			}
 		},//end data
 		methods: {
@@ -205,17 +205,17 @@
 				 //this.pageInfo.count=true;
 				 this.getXmMenus();
 			},
-			getParams(params){ 
-				 
+			getParams(params){
+
 				if(this.filters.product){
 					params.productId=this.filters.product.id
 				}
-				 
+
 				if(this.filters.dclasss){
 					params.dclasss=this.filters.dclasss
-				} 
+				}
 				return params;
-			}, 
+			},
 			//获取列表 XmMenu xm_project_menu
 			getXmMenus() {
 				let params = {
@@ -224,8 +224,8 @@
 					total: this.pageInfo.total,
 					count:this.pageInfo.count
 				};
- 
-				params=this.getParams(params); 
+
+				params=this.getParams(params);
 				if(!params.productId){
 					return;
 				}
@@ -247,22 +247,22 @@
 				}else{
 					listXmMenuWithPlan(params).then( callback ).catch( err => this.load.list = false );
 				}
-			}, 
+			},
 			//选择行xmMenu
 			selsChange: function (sels) {
 				this.sels = sels;
 			},
 			onProductSelected:function(product){
-				this.filters.product=product 
-				this.xmMenus=[] 
+				this.filters.product=product
+				this.xmMenus=[]
 				this.loadDatasFirstCache();
 				this.$emit("product-select",product)
 			},
 			onProductClearSelect:function(){
-				this.filters.product=null 
-				this.xmMenus=[] 
+				this.filters.product=null
+				this.xmMenus=[]
 				this.$emit("product-select",null)
-			},  
+			},
 			select(row){
 				this.$emit("select",row)
 			},
@@ -278,21 +278,21 @@
 				return params;
 			},
 
-			rowClick: function(row, event, column){ 
-				this.editForm=row 
+			rowClick: function(row, event, column){
+				this.editForm=row
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
       		},
 			selectConfirm(){
 				this.$emit('menus-selected',this.sels)
 			},
-			
+
 			unselectRow(){
 				this.editForm=null;
 				this.$emit('row-click',null)
-				this.$refs.table.setCurrentRow(); 
+				this.$refs.table.setCurrentRow();
 			},
 			loadDatasFirstCache(){
-				 
+
 				 if(!this.filters.product || !this.filters.product.id){
 					 return;
 				 }
@@ -304,10 +304,10 @@
 				 }else{
 					 this.getXmMenus();
 				 }
-				 
+
 			 },
 			 setDatasToCache(datas){
-				 
+
 				 if(!this.filters.product || !this.filters.product.id){
 					 return;
 				 }
@@ -317,22 +317,19 @@
 				 }else{
 					 sessionStorage.setItem(key,JSON.stringify(datas))
 				 }
-				 
+
 			 }
 		},//end methods
-		components: { 
-			XmProductSelect, 
+		components: {
+			XmProductSelect,
 		    //在下面添加其它组件
 		},
 		mounted() {
-  			initSimpleDicts("all",['menuStatus','demandSource','demandLvl','demandType','priority','dclass']).then(res=>{
-				  Object.assign(this.dicts,res.data.data) 
-			})
-			this.filters.product=this.xmProduct 
+			this.filters.product=this.xmProduct
 			this.$nextTick(() => {
-				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el)-40; 
-				this.loadDatasFirstCache(); 
-				
+				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el)-40;
+				this.loadDatasFirstCache();
+
           });
 		}
 	}

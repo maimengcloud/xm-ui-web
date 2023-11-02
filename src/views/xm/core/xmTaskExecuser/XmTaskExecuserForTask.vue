@@ -28,14 +28,14 @@
 							<el-form-item label="备注说明">
 								<span>{{ props.row.remarks }}</span>
 							</el-form-item>
-							<el-form-item  label="操作">  
-								<!--结算状态0未结算1已部分结算2无需结算4已申请结算5结算失败6已全部结算--> 
+							<el-form-item  label="操作">
+								<!--结算状态0未结算1已部分结算2无需结算4已申请结算5结算失败6已全部结算-->
 								<el-button type="primary" v-if="props.row.status=='7' " @click="becomeCandidate(props.row)">成为候选人</el-button>
 								<el-button type="danger" v-if="props.row.status=='7' " @click="handleDel(props.row)">删除</el-button>
 								<el-button type="warning" v-if="props.row.status=='0'"  @click="showQuotePrice(props.row)">修改报价信息</el-button>
 								<el-button type="primary" v-if="props.row.status=='0'"   @click="execute(props.row)">成为执行人</el-button>
 								<el-button type="warning" v-if="props.row.status!='7' " @click="leave(props.row)">离开任务</el-button>
- 
+
 							</el-form-item>
 						</el-form>
 					</template>
@@ -44,35 +44,35 @@
 						 <template slot-scope="scope">
 							<mdp-select-user-xm :key="scope.row.id" v-model="scope.row" userid-key="userid" username-key="username" :project-id="scope.row.projectId" :disabled="true"></mdp-select-user-xm>
 						 </template>
-				</el-table-column> 
-				
+				</el-table-column>
+
 				<el-table-column prop="quoteStartTime" label="报价工期" min-width="150" >
-					<template slot-scope="scope"> 
+					<template slot-scope="scope">
 						{{scope.row.quoteStartTime }}~{{scope.row.quoteEndTime}}
 					</template>
-				</el-table-column> 
-				
+				</el-table-column>
+
 				<el-table-column prop="status" label="状态" width="100" >
-					<template slot-scope="scope"> 
+					<template slot-scope="scope">
 						 <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'projectTaskExecuserStatus',scope.row.status)" :key="index" :type="item.className">{{item.name}}</el-tag>
 					</template>
-				</el-table-column> 
-				
+				</el-table-column>
+
 				<el-table-column  label="操作"   width="350" >
-					<template slot-scope="scope"> 
+					<template slot-scope="scope">
 							<el-row>
-  									<!--结算状态0未结算1已部分结算2无需结算4已申请结算5结算失败6已全部结算--> 
+  									<!--结算状态0未结算1已部分结算2无需结算4已申请结算5结算失败6已全部结算-->
 									<el-button type="text" v-if="scope.row.status=='7' " @click="becomeCandidate(scope.row)">成为候选人</el-button>
 									<el-button type="text" v-if="scope.row.status=='7' " @click="handleDel(scope.row)">删除</el-button>
 									<el-button type="text" v-if="scope.row.status=='0'"  @click="showQuotePrice(scope.row)">修改报价</el-button>
 									<el-button type="text" v-if="scope.row.status=='0'"   @click="execute(scope.row)">成为执行人</el-button>
-									<el-button type="text" v-if="scope.row.status!='7' " @click="leave(scope.row)">离开任务</el-button> 
+									<el-button type="text" v-if="scope.row.status!='7' " @click="leave(scope.row)">离开任务</el-button>
 							</el-row>
 					</template>
-				</el-table-column> 
+				</el-table-column>
 			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
- 
+
 			<el-drawer append-to-body title="报价" :visible.sync="quotePriceVisible" size="60%" :close-on-click-modal="false">
 				<el-form :model="quotePriceForm" label-width="100px" ref="quotePriceForm">
 					<el-form-item label="候选人名称">
@@ -126,7 +126,7 @@
 			<!--新增 XmTaskExecuser xm_task_execuser界面-->
 			<el-drawer append-to-body title="新增任务执行人" :visible.sync="addFormVisible"  size="50%"  :close-on-click-modal="false">
 				<xm-task-execuser-add :exec-user-list="xmTaskExecusers" :xm-task="xmTask" :execuser-add-type="execuserAddType"  :xm-task-execuser="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-task-execuser-add>
-			</el-drawer> 
+			</el-drawer>
 		</el-row>
 	</section>
 </template>
@@ -136,10 +136,10 @@
 	import config from "@/common/config"; //全局公共库
 
 	//import Sticky from '@/components/Sticky' // 粘性header组件
-	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
+
 	import { listXmTaskExecuser,editXmTaskExecuser,leaveTask,beExecutor,settleExec, delXmTaskExecuser, batchDelXmTaskExecuser,quotePrice,becomeCandidate,toTest,testSuccess,testFail } from '@/api/xm/core/xmTaskExecuser';
 	import  XmTaskExecuserAdd from './XmTaskExecuserAdd';//新增界面
-	import  XmTaskExecuserEdit from './XmTaskExecuserEdit';//修改界面 
+	import  XmTaskExecuserEdit from './XmTaskExecuserEdit';//修改界面
 	import { mapGetters } from 'vuex'
 	import html2canvas from 'html2canvas'
 	import { uploadBase64 } from '@/api/mdp/arc/image';
@@ -738,12 +738,12 @@
 		},//end methods
 		components: {
 		    'xm-task-execuser-add':XmTaskExecuserAdd,
-		    'xm-task-execuser-edit':XmTaskExecuserEdit, 
+		    'xm-task-execuser-edit':XmTaskExecuserEdit,
 			MdpSelectUserXm,
 		    //在下面添加其它组件
 		},
 		mounted() {
-			this.$nextTick(() => { 
+			this.$nextTick(() => {
 				this.tableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);
 				this.getXmTaskExecusers();
 				});

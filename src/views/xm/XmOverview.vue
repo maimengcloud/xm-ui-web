@@ -60,7 +60,7 @@
                   <el-button slot="reference" circle plain style="float:right;" icon="el-icon-video-play" type="text"></el-button>
                 </el-popover>
 
-              </div> 
+              </div>
               <el-row style="margin-bottom:20px">
                 <el-col :span="8">
                   <div class="item">
@@ -319,7 +319,7 @@
 <script>
 import util from "@/common/js/util"; // 全局公共库
 import { mapGetters } from "vuex";
-import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
+
 	import { listXmBranchState} from '@/api/xm/core/xmBranchState';
 import { loadTasksToXmMenuState} from '@/api/xm/core/xmMenuState';
   import {  loadProjectStateToXmBranchState} from '@/api/xm/core/xmBranchState';
@@ -1037,9 +1037,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
- 
+
 .icon1 {
-  color: #fff; 
+  color: #fff;
   border-radius: 15px;
   text-align: center;
   font-size: 20px;
@@ -1048,7 +1048,7 @@ export default {
 }
 
 .icon2 {
-  color: #000000; 
+  color: #000000;
   border-radius: 15px;
   text-align: center;
   font-size: 20px;

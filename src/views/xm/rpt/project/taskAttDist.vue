@@ -80,7 +80,7 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
+
 	import { mapGetters } from 'vuex'
 
 	import { getXmTaskAttDist } from '@/api/xm/core/xmTask';

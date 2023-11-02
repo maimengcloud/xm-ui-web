@@ -1,15 +1,15 @@
 <template>
 	<section>
-		<el-row> 
+		<el-row>
 			<div style="float:right;padding-right:40px;">
 				<xm-product-select @row-click="onProductSelect" :autoSelect="false" v-if="selProject && selProject.id">
 					<el-link type="primary" slot="title">选择更多产品加入项目</el-link>
-				</xm-product-select>  
+				</xm-product-select>
  				<xm-project-select :autoSelect="false" @row-click="onProjectSelect" v-if="xmProduct && xmProduct.id">
 					 <el-link type="primary" slot="title">
 						 选择更多项目加入产品
 					 </el-link>
-				</xm-project-select> 
+				</xm-project-select>
  			</div>
 		</el-row>
 		<el-row>
@@ -21,19 +21,19 @@
 					</template>
 				</el-table-column>
 				<el-table-column prop="productName" v-if="selProject" label="包含的产品名称" min-width="150" >
-					<template scope="scope"> 
+					<template scope="scope">
 						<el-link type="primary" @click="goToProduct(scope.row,scope.$index)">{{scope.row.productName}}</el-link>
 					</template>
 				</el-table-column>
 				<el-table-column prop="seq" label="顺序" min-width="80" sortable>
 					<template scope="scope">
-				       {{scope.row.seq}}   
+				       {{scope.row.seq}}
                      <span class="cell-bar"><el-input style="display:inline;" title="0-999之间，数值越小越靠前" v-model="scope.row.seq" placeholder="" @change="editSomeFields(scope.row,'seq',$event)" :maxlength="22"></el-input></span>
 					</template>
-				</el-table-column>  
-				<el-table-column prop="ctime" label="加入时间" min-width="80" ></el-table-column> 
+				</el-table-column>
+				<el-table-column prop="ctime" label="加入时间" min-width="80" ></el-table-column>
 				<el-table-column prop="cusername" label="操作者" min-width="80" ></el-table-column>
- 				<el-table-column label="操作" width="250" fixed="right"> 
+ 				<el-table-column label="操作" width="250" fixed="right">
 					<template scope="scope">
 						<el-button v-if="xmProduct && xmProduct.id" type="primary" @click="goToProject(scope.row,scope.$index)" icon="el-icon-search" >进入项目</el-button>
 						<el-button v-if="selProject && selProject.id" type="primary" @click="goToProduct(scope.row,scope.$index)" icon="el-icon-search" >进入产品</el-button>
@@ -42,24 +42,24 @@
 					</template>
 				</el-table-column>
 			</el-table>
-			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
-		 
-		</el-row>  
+			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
+
+		</el-row>
 	</section>
 </template>
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	import config from '@/common/config';//全局公共库 
-	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
+	import config from '@/common/config';//全局公共库
+
 	import { listXmProductProjectLink,addXmProductProjectLink, delXmProductProjectLink, batchDelXmProductProjectLink,editSomeFieldsXmProductProjectLink } from '@/api/xm/core/xmProductProjectLink';
 	import  XmProductProjectLinkAdd from './XmProductProjectLinkAdd';//新增界面
 	import  XmProductProjectLinkEdit from './XmProductProjectLinkEdit';//修改界面
 	import { mapGetters } from 'vuex'
 import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue'
 import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue'
-	
-	export default { 
+
+	export default {
 		props:['selProject','xmProduct'],
 		computed: {
 		    ...mapGetters([
@@ -92,14 +92,14 @@ import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue'
 				sels: [],//列表选中数据
 				dicts:{
 					//sex:[],
-				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
-				
+				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
+
 				addFormVisible: false,//新增xmProductProjectLink界面是否显示
 				//新增xmProductProjectLink界面初始化数据
 				addForm: {
 					projectId:'',productId:'',ctime:'',cuserid:'',cusername:'',linkStatus:''
 				},
-				
+
 				editFormVisible: false,//编辑界面是否显示
 				//编辑xmProductProjectLink界面初始化数据
 				editForm: {
@@ -108,9 +108,9 @@ import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue'
 				maxTableHeight:300,
  			}
 		},//end data
-		methods: { 
-			handleSizeChange(pageSize) { 
-				this.pageInfo.pageSize=pageSize; 
+		methods: {
+			handleSizeChange(pageSize) {
+				this.pageInfo.pageSize=pageSize;
 				this.getXmProductProjectLinks();
 			},
 			handleCurrentChange(pageNum) {
@@ -121,7 +121,7 @@ import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue'
 			sortChange( obj ){
 				if(obj.order==null){
 					this.pageInfo.orderFields=[];
-					this.pageInfo.orderDirs=[]; 
+					this.pageInfo.orderDirs=[];
 				}else{
 					var dir='asc';
 					if(obj.order=='ascending'){
@@ -129,14 +129,14 @@ import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue'
 					}else{
 						dir='desc';
 					}
-					 
-					this.pageInfo.orderFields=[util.toLine(obj.prop)]; 
+
+					this.pageInfo.orderFields=[util.toLine(obj.prop)];
 					this.pageInfo.orderDirs=[dir];
 				}
 				this.getXmProductProjectLinks();
 			},
 			searchXmProductProjectLinks(){
-				 this.pageInfo.count=true; 
+				 this.pageInfo.count=true;
 				 this.getXmProductProjectLinks();
 			},
 			//获取列表 XmProductProjectLink 产品与项目的关联关系表，一般由产品经理挂接项目到产品上
@@ -149,9 +149,9 @@ import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue'
 				};
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
 					let orderBys=[];
-					for(var i=0;i<this.pageInfo.orderFields.length;i++){ 
+					for(var i=0;i<this.pageInfo.orderFields.length;i++){
 						orderBys.push(this.pageInfo.orderFields[i]+" "+this.pageInfo.orderDirs[i])
-					}  
+					}
 					params.orderBy= orderBys.join(",")
 				}
 				if(this.filters.key){
@@ -166,13 +166,13 @@ import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue'
 				this.load.list = true;
 				listXmProductProjectLink(params).then((res) => {
 					var tips=res.data.tips;
-					if(tips.isOk){ 
+					if(tips.isOk){
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false;
 						this.xmProductProjectLinks = res.data.data;
 					}else{
 						this.$notify({ message: tips.msg, type: 'error' });
-					} 
+					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
 			},
@@ -198,38 +198,38 @@ import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue'
 			//选择行xmProductProjectLink
 			selsChange: function (sels) {
 				this.sels = sels;
-			}, 
+			},
 			//删除xmProductProjectLink
-			handleDel: function (row,index) { 
+			handleDel: function (row,index) {
 				this.$confirm('确认删除该记录吗?', '提示', {
 					type: 'warning'
-				}).then(() => { 
+				}).then(() => {
 					this.load.del=true;
 					let params = { projectId: row.projectId,productId:row.productId };
 					delXmProductProjectLink(params).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
-						if(tips.isOk){ 
+						if(tips.isOk){
 							this.pageInfo.count=true;
 							this.getXmProductProjectLinks();
 						}
-						this.$notify({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$notify({ message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err  => this.load.del=false );
 				});
 			},
 			//批量删除xmProductProjectLink
 			batchDel: function () {
-				
+
 				this.$confirm('确认删除选中记录吗？', '提示', {
 					type: 'warning'
-				}).then(() => { 
+				}).then(() => {
 					this.load.del=true;
 					batchDelXmProductProjectLink(this.sels).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
-						if( tips.isOk ){ 
+						if( tips.isOk ){
 							this.pageInfo.count=true;
-							this.getXmProductProjectLinks(); 
+							this.getXmProductProjectLinks();
 						}
 						this.$notify({ message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
@@ -239,21 +239,21 @@ import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue'
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
 			},
 			/**begin 自定义函数请在下面加**/
-			
+
 			/**begin 自定义函数请在下面加**/
 			onProductSelect(product){
 				this.$confirm('确认建立与产品【'+product.productName+'】的关联关系吗？', '提示', {
 					type: 'warning'
-				}).then(() => { 
+				}).then(() => {
 					this.load.add=true;
 					this.addForm.projectId=this.selProject.id;
 					this.addForm.productId= product.id;
 					addXmProductProjectLink(this.addForm).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
-						if( tips.isOk ){ 
+						if( tips.isOk ){
 							this.pageInfo.count=true;
-							this.getXmProductProjectLinks(); 
+							this.getXmProductProjectLinks();
 						}
 						this.$notify({ message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
@@ -262,22 +262,22 @@ import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue'
 			onProjectSelect(project){
 				this.$confirm('确认建立与项目【'+project.name+'】的关联关系吗？', '提示', {
 					type: 'warning'
-				}).then(() => { 
+				}).then(() => {
 					this.load.del=true;
 					this.addForm.projectId=project.id;
 					this.addForm.productId=this.xmProduct.id;
 					addXmProductProjectLink(this.addForm).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
-						if( tips.isOk ){ 
+						if( tips.isOk ){
 							this.pageInfo.count=true;
-							this.getXmProductProjectLinks(); 
+							this.getXmProductProjectLinks();
 						}
 						this.$notify({ message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
-			
+
           editSomeFields(row,fieldName,$event){
             let params={};
             if(this.sels.length>0){
@@ -294,38 +294,38 @@ import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue'
             var func = editSomeFieldsXmProductProjectLink
             func(params).then(res=>{
               let tips = res.data.tips;
-              if(tips.isOk){ 
-                this.getXmProductProjectLinks();  
+              if(tips.isOk){
+                this.getXmProductProjectLinks();
               }else{
                 Object.assign(this.editForm,this.editFormBak)
                 this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
               }
             }).catch((e)=>Object.assign(this.editForm,this.editFormBak))
           },
-			
+
 			goToProject(row){
 				this.$router.push({path:'/xm/core/project/overview',query:{projectId:row.projectId}})
-			},	
+			},
 			goToProduct(row){
 				this.$router.push({path:'/xm/core/product/overview',query:{productId:row.productId}})
-			},	
+			},
 			/**end 自定义函数请在上面加**/
-			
+
 		},//end methods
-		components: { 
+		components: {
 		    'xm-product-project-link-add':XmProductProjectLinkAdd,
 		    'xm-product-project-link-edit':XmProductProjectLinkEdit,
 			XmProductSelect,
 			XmProjectSelect,
 		},
-		mounted() { 
+		mounted() {
 			this.$nextTick(() => {
-				this.getXmProductProjectLinks(); 
+				this.getXmProductProjectLinks();
                 this.maxTableHeight =  util.calcTableMaxHeight(".el-table")
-        	}); 
+        	});
         	/** 举例，
     		initSimpleDicts( "all",["sex","grade"] ).then(res=>{
-				if(res.data.tips.isOk){ 
+				if(res.data.tips.isOk){
  					this.dicts=res.data.data
 				}
 			});

@@ -1,12 +1,12 @@
 <template>
 	<section class="page-container  padding border">
 		<el-row>
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
+			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmBranchTaskTypeStates">查询</el-button>
 			<el-button type="primary" @click="showAdd">+按机构编号任务类型汇总</el-button>
-			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button> 
+			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button>
 		</el-row>
-		<el-row class="page-main "> 
+		<el-row class="page-main ">
 			<!--列表 XmBranchTaskTypeState 按机构编号任务类型汇总-->
 			<el-table :data="xmBranchTaskTypeStates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="45"></el-table-column>
@@ -38,31 +38,31 @@
 					</template>
 				</el-table-column>
 			</el-table>
-			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
-		
+			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
+
 			<!--编辑 XmBranchTaskTypeState 按机构编号任务类型汇总界面-->
 			<el-drawer title="编辑按机构编号任务类型汇总" :visible.sync="editFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
 				  <xm-branch-task-type-state-edit :xm-branch-task-type-state="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-branch-task-type-state-edit>
 			</el-drawer>
-	
+
 			<!--新增 XmBranchTaskTypeState 按机构编号任务类型汇总界面-->
 			<el-drawer title="新增按机构编号任务类型汇总" :visible.sync="addFormVisible"  size="50%"  append-to-body  :close-on-click-modal="false">
 				<xm-branch-task-type-state-add :xm-branch-task-type-state="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-branch-task-type-state-add>
-			</el-drawer> 
+			</el-drawer>
 		</el-row>
 	</section>
 </template>
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	import config from '@/common/config';//全局公共库 
-	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
+	import config from '@/common/config';//全局公共库
+
 	import { listXmBranchTaskTypeState, delXmBranchTaskTypeState, batchDelXmBranchTaskTypeState } from '@/api/xm/core/xmBranchTaskTypeState';
 	import  XmBranchTaskTypeStateAdd from './XmBranchTaskTypeStateAdd';//新增界面
 	import  XmBranchTaskTypeStateEdit from './XmBranchTaskTypeStateEdit';//修改界面
 	import { mapGetters } from 'vuex'
-	
-	export default { 
+
+	export default {
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -86,27 +86,27 @@
 				sels: [],//列表选中数据
 				dicts:{
 					//sex:[],
-				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
-				
+				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
+
 				addFormVisible: false,//新增xmBranchTaskTypeState界面是否显示
 				//新增xmBranchTaskTypeState界面初始化数据
 				addForm: {
 					taskType:'',planWorkload:'',planAmount:'',actWorkload:'',actAmount:'',branchId:'',bizDate:'',calcTime:'',planOuserAt:'',planIuserAt:'',actOuserAt:'',actIuserAt:'',planOuserWorkload:'',planIuserWorkload:'',actOuserWorkload:'',actIuserWorkload:'',planNouserAt:'',actNouserAt:'',id:'',branchName:''
 				},
-				
+
 				editFormVisible: false,//编辑界面是否显示
 				//编辑xmBranchTaskTypeState界面初始化数据
 				editForm: {
 					taskType:'',planWorkload:'',planAmount:'',actWorkload:'',actAmount:'',branchId:'',bizDate:'',calcTime:'',planOuserAt:'',planIuserAt:'',actOuserAt:'',actIuserAt:'',planOuserWorkload:'',planIuserWorkload:'',actOuserWorkload:'',actIuserWorkload:'',planNouserAt:'',actNouserAt:'',id:'',branchName:''
 				}
 				/**begin 自定义属性请在下面加 请加备注**/
-					
+
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
-		methods: { 
-			handleSizeChange(pageSize) { 
-				this.pageInfo.pageSize=pageSize; 
+		methods: {
+			handleSizeChange(pageSize) {
+				this.pageInfo.pageSize=pageSize;
 				this.getXmBranchTaskTypeStates();
 			},
 			handleCurrentChange(pageNum) {
@@ -128,7 +128,7 @@
 				this.getXmBranchTaskTypeStates();
 			},
 			searchXmBranchTaskTypeStates(){
-				 this.pageInfo.count=true; 
+				 this.pageInfo.count=true;
 				 this.getXmBranchTaskTypeStates();
 			},
 			//获取列表 XmBranchTaskTypeState 按机构编号任务类型汇总
@@ -141,9 +141,9 @@
 				};
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
 					let orderBys=[];
-					for(var i=0;i<this.pageInfo.orderFields.length;i++){ 
+					for(var i=0;i<this.pageInfo.orderFields.length;i++){
 						orderBys.push(this.pageInfo.orderFields[i]+" "+this.pageInfo.orderDirs[i])
-					}  
+					}
 					params.orderBy= orderBys.join(",")
 				}
 				if(this.filters.key!==""){
@@ -154,13 +154,13 @@
 				this.load.list = true;
 				listXmBranchTaskTypeState(params).then((res) => {
 					var tips=res.data.tips;
-					if(tips.isOk){ 
+					if(tips.isOk){
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false;
 						this.xmBranchTaskTypeStates = res.data.data;
 					}else{
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
-					} 
+					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
 			},
@@ -186,38 +186,38 @@
 			//选择行xmBranchTaskTypeState
 			selsChange: function (sels) {
 				this.sels = sels;
-			}, 
+			},
 			//删除xmBranchTaskTypeState
-			handleDel: function (row,index) { 
+			handleDel: function (row,index) {
 				this.$confirm('确认删除该记录吗?', '提示', {
 					type: 'warning'
-				}).then(() => { 
+				}).then(() => {
 					this.load.del=true;
 					let params = { id: row.id };
 					delXmBranchTaskTypeState(params).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
-						if(tips.isOk){ 
+						if(tips.isOk){
 							this.pageInfo.count=true;
 							this.getXmBranchTaskTypeStates();
 						}
-						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err  => this.load.del=false );
 				});
 			},
 			//批量删除xmBranchTaskTypeState
 			batchDel: function () {
-				
+
 				this.$confirm('确认删除选中记录吗？', '提示', {
 					type: 'warning'
-				}).then(() => { 
+				}).then(() => {
 					this.load.del=true;
 					batchDelXmBranchTaskTypeState(this.sels).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
-						if( tips.isOk ){ 
+						if( tips.isOk ){
 							this.pageInfo.count=true;
-							this.getXmBranchTaskTypeStates(); 
+							this.getXmBranchTaskTypeStates();
 						}
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
@@ -227,23 +227,23 @@
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
 			},
 			/**begin 自定义函数请在下面加**/
-			
-				
+
+
 			/**end 自定义函数请在上面加**/
-			
+
 		},//end methods
-		components: { 
+		components: {
 		    'xm-branch-task-type-state-add':XmBranchTaskTypeStateAdd,
-		    'xm-branch-task-type-state-edit':XmBranchTaskTypeStateEdit, 
+		    'xm-branch-task-type-state-edit':XmBranchTaskTypeStateEdit,
 		    //在下面添加其它组件
 		},
-		mounted() { 
+		mounted() {
 			this.$nextTick(() => {
 				this.getXmBranchTaskTypeStates();
-        	}); 
+        	});
         	/** 举例，
     		initSimpleDicts( "all",["sex","grade"] ).then(res=>{
-				if(res.data.tips.isOk){ 
+				if(res.data.tips.isOk){
  					this.dicts=res.data.data
 				}
 			});

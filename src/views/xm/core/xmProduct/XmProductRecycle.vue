@@ -1,5 +1,5 @@
 <template>
-	<section class="padding">  
+	<section class="padding">
 		<el-row class="padding-bottom">
 			<el-select   v-model="filters.queryScope"    placeholder="产品查询范围">
 				<el-option :label="userInfo.branchName+'机构下所有的产品'" value="branchId"></el-option>
@@ -8,7 +8,7 @@
 			</el-select>
 			<el-input v-if="filters.queryScope=='productId'" style="width:20%;"  v-model="filters.id"  placeholder="输入产品编号" @keyup.enter.native="searchXmProducts">
 			</el-input>
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="名称查询" clearable>   
+			<el-input v-model="filters.key" style="width: 20%;" placeholder="名称查询" clearable>
 			</el-input>
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProducts" icon="el-icon-search">查询</el-button>
  			<el-popover
@@ -75,26 +75,26 @@
 						</font>
 					</el-col>
 					<el-col  :span="24"  style="padding-top:10px;">
-						<el-button type="primary"  @click="searchXmProducts" >查询</el-button> 
+						<el-button type="primary"  @click="searchXmProducts" >查询</el-button>
 					</el-col>
 				</el-row>
 				<el-button  slot="reference"   icon="el-icon-more"></el-button>
 			</el-popover>
 		</el-row>
-		<el-row> 
+		<el-row>
 			<!--列表 XmProduct 产品表-->
 			<el-table  ref="table"  border :height="maxTableHeight" :data="xmProducts" :row-class-name="tableRowClassName" @sort-change="sortChange" :highlight-current-row="true" current-row-key="id" v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
- 				 <el-table-column type="index" width="60"> 
+ 				 <el-table-column type="index" width="60">
 				</el-table-column>
 				<el-table-column prop="productName" label="产品名称" min-width="200" sortable>
 					<template slot-scope="scope">
 						<el-link type="primary" @click="intoInfo(scope.row)">{{scope.row.productName}}</el-link>
 					</template>
 				</el-table-column>
-				<el-table-column prop="pstatus" label="状态" width="100" sortable :formatter="formatPstatus"> 
+				<el-table-column prop="pstatus" label="状态" width="100" sortable :formatter="formatPstatus">
 				</el-table-column>
 				<el-table-column prop="finishRate" label="进度" width="100" sortable>
-					<template slot-scope="scope"> 
+					<template slot-scope="scope">
 						<font  ><el-tag :type="scope.row.finishRate>=100?'success':'warning'">{{scope.row.finishRate}}%</el-tag>
 
 						<el-tooltip content="点击统计进度，由任务汇总"><el-button  type="text" icon="el-icon-video-play" @click.stop="loadTasksToXmProductState( scope.row)"></el-button></el-tooltip>
@@ -103,24 +103,24 @@
 					</template>
 				</el-table-column>
 				<el-table-column prop="pmUsername" label="产品经理" width="120" sortable show-overflow-tooltip>
-					<template slot-scope="scope"> 						
-						<el-tag v-if="scope.row.pmUsername">{{scope.row.pmUsername}}</el-tag> 
+					<template slot-scope="scope">
+						<el-tag v-if="scope.row.pmUsername">{{scope.row.pmUsername}}</el-tag>
 					</template>
 				</el-table-column>
-				
+
 				<el-table-column label="工作量(人时)" width="200">
 					<el-table-column prop="budgetWorkload" label="预计" width="100"  show-overflow-tooltip sortable></el-table-column>
 					<el-table-column prop="actWorkload" label="实际" width="100"  show-overflow-tooltip sortable></el-table-column>
 				</el-table-column>
 				<el-table-column   label="操作" width="120" fixed="right"  >
-					<template slot-scope="scope"> 
-						<el-button type="primary" @click="unDel( scope.row,scope.$index)">撤销删除</el-button> 
+					<template slot-scope="scope">
+						<el-button type="primary" @click="unDel( scope.row,scope.$index)">撤销删除</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
-			<el-pagination  layout="total, prev, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>  
-		</el-row> 
-			
+			<el-pagination  layout="total, prev, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
+		</el-row>
+
 			<el-drawer title="选择员工" :visible.sync="selectFiltersPmUserVisible" size="60%" append-to-body>
 				<users-select  @confirm="onFiltersPmUserSelected" ref="usersSelect"></users-select>
 			</el-drawer>
@@ -130,14 +130,14 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
-	//import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
-	import { listXmProductWithState,unDelXmProduct } from '@/api/xm/core/xmProduct';  
-	import { mapGetters } from 'vuex' 
-	import UsersSelect from "@/views/mdp/sys/user/UsersSelect"; 
-	import { loadTasksToXmProductState } from '@/api/xm/core/xmProductState'; 
 
-	
-	export default { 
+	import { listXmProductWithState,unDelXmProduct } from '@/api/xm/core/xmProduct';
+	import { mapGetters } from 'vuex'
+	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
+	import { loadTasksToXmProductState } from '@/api/xm/core/xmProductState';
+
+
+	export default {
 		props:['isSelectProduct','selProject','xmIteration'],
 		computed: {
 		    ...mapGetters([
@@ -148,7 +148,7 @@
 			xmIteration(){
 				this.getXmProducts();
 			},
-			
+
 			selProject(){
 				this.getXmProducts();
 			}
@@ -175,14 +175,14 @@
 				},
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				sels: [],//列表选中数据
-				dicts:{},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
-				
+				dicts:{},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
+
 				addFormVisible: false,//新增xmProduct界面是否显示
 				//新增xmProduct界面初始化数据
 				addForm: {
 					id:'',productName:'',branchId:'',remark:''
 				},
-				
+
 				editFormVisible: false,//编辑界面是否显示
 				//编辑xmProduct界面初始化数据
 				editForm: {
@@ -192,17 +192,17 @@
 				productStateVisible:false,
 				selectFiltersPmUserVisible:false,
 				maxTableHeight:300,
-				dateRanger: [ ],  
+				dateRanger: [ ],
 				pickerOptions:  util.getPickerOptions('datarange'),
-				
+
 				/**begin 自定义属性请在下面加 请加备注**/
-					
+
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
-		methods: { 
-			handleSizeChange(pageSize) { 
-				this.pageInfo.pageSize=pageSize; 
+		methods: {
+			handleSizeChange(pageSize) {
+				this.pageInfo.pageSize=pageSize;
 				this.getXmProducts();
 			},
 			handleCurrentChange(pageNum) {
@@ -224,9 +224,9 @@
 				this.getXmProducts();
 			},
 			searchXmProducts(){
-				 this.pageInfo.count=true; 
+				 this.pageInfo.count=true;
 				 this.getXmProducts();
-			}, 
+			},
 			//获取列表 XmProduct 产品表
 			getXmProducts() {
 				let params = {
@@ -237,9 +237,9 @@
 				};
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
 					let orderBys=[];
-					for(var i=0;i<this.pageInfo.orderFields.length;i++){ 
+					for(var i=0;i<this.pageInfo.orderFields.length;i++){
 						orderBys.push(this.pageInfo.orderFields[i]+" "+this.pageInfo.orderDirs[i])
-					}  
+					}
 					params.orderBy= orderBys.join(",")
 				}
 				if(this.filters.key!==""){
@@ -250,7 +250,7 @@
 				if(this.selProject){
 					params.projectId=this.selProject.id
 				}
-				
+
 				if(this.xmIteration){
 					params.iterationId=this.xmIteration.id
 				}
@@ -262,7 +262,7 @@
 						return;
 					}
 					params.id=this.filters.id
-					
+
 				}
 				if(this.filters.queryScope=="branchId"){
 					params.branchId=this.userInfo.branchId
@@ -270,44 +270,44 @@
 				}
 				if(!this.selProject && !this.xmIteration && this.filters.queryScope!='productId'){
 					if(this.dateRanger&&this.dateRanger.length==2){
-						 
+
 						params.ctimeStart=this.dateRanger[0]
 						params.ctimeEnd=this.dateRanger[1]
-					} 
-				} 
+					}
+				}
 
 				this.load.list = true;
 				listXmProductWithState(params).then((res) => {
 					var tips=res.data.tips;
-					if(tips.isOk){ 
+					if(tips.isOk){
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false;
 						this.xmProducts = res.data.data;
 					}else{
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
-					} 
+					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
 			},
- 
+
 			//选择行xmProduct
 			selsChange: function (sels) {
 				this.sels = sels;
-			}, 
-			 
+			},
+
 			rowClick: function(row, event, column){
 				this.editForm=row
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
-			}, 
+			},
 			/**begin 自定义函数请在下面加**/
 			clearFiltersPmUser:function(){
 				 this.filters.pmUser=null;
 				  this.searchXmProducts();
-			},			
+			},
 			selectFiltersPmUser(){
 				this.selectFiltersPmUserVisible=true;
 			},
-			onFiltersPmUserSelected(users){ 
+			onFiltersPmUserSelected(users){
 				 if(users && users.length>0){
 					 this.filters.pmUser=users[0]
 				 }else{
@@ -319,8 +319,8 @@
 			setFiltersPmUserAsMySelf(){
 				this.filters.pmUser=this.userInfo;
 				this.searchXmProducts();
-			},	  
-			unDel: function (row,index) {  
+			},
+			unDel: function (row,index) {
 				this.$prompt('将同步恢复计划、组织、需求等，慎重起见，请输入产品代号:'+row.code, '提示', {
 					confirmButtonText: '确定',
 					cancelButtonText: '取消',
@@ -338,26 +338,26 @@
 							this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 						}).catch( err  => this.load.del=false );
 					 }else{
-						 this.$notify({position:'bottom-left',showClose:true,message: "产品代号不正确", type: 'error' }); 
+						 this.$notify({position:'bottom-left',showClose:true,message: "产品代号不正确", type: 'error' });
 					 }
-				}).catch(() => { 
-					return;    
-				}); 	
-			},  
+				}).catch(() => {
+					return;
+				});
+			},
 		},//end methods
-		components: {  
+		components: {
 			UsersSelect,
 		    //在下面添加其它组件
 		},
-		mounted() { 
-			this.$nextTick(() => { 
-				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
+		mounted() {
+			this.$nextTick(() => {
+				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);
 				this.getXmProducts();
-        	}); 
+        	});
 		}
 	}
 
-</script> 
+</script>
 <style scoped>
 
 
@@ -367,6 +367,6 @@
 	padding-top:5px;
 }
 .align-right{
-	float: right; 
+	float: right;
 }
 </style>

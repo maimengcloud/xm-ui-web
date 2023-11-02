@@ -1,48 +1,48 @@
 <template>
-	<section> 
-			<el-row> 
+	<section>
+			<el-row>
 				<el-col :span="24">
-					<el-row class="page-main padding-left">  
+					<el-row class="page-main padding-left">
 						<el-popover
 							placement="bottom"
 							width="500"
-							trigger="click"> 
+							trigger="click">
 							<xm-project-select v-if="ptype!=='1' && (!selProject||!selProject.id)" :auto-select="true"  :xm-iteration="xmIteration" :xm-product="xmProduct"  @row-click="onProjectRowClick" @clear="onProjectClear"></xm-project-select>
-								<el-link type="warning" slot="reference" v-if="ptype!=='1' && (!selProject||!selProject.id)"  icon="el-icon-search"><font style="font-size:14px;">{{filters.selProject?filters.selProject.name:'选择项目'}}</font></el-link> 
-						</el-popover> 
-						
+								<el-link type="warning" slot="reference" v-if="ptype!=='1' && (!selProject||!selProject.id)"  icon="el-icon-search"><font style="font-size:14px;">{{filters.selProject?filters.selProject.name:'选择项目'}}</font></el-link>
+						</el-popover>
+
 						<el-select v-model="filters.taskType" placeholder="请选择任务类型" clearable @change="changeTaskType">
 							<el-option class="showall" value="all"  label="全部类型">全部类型</el-option>
 							<el-option  v-for="(i,index) in dicts.taskType" :value="i.id" :label="i.name" :key="index">{{i.name}}</el-option>
-						</el-select>   
-						<el-input v-model="filters.key" style="width:20%;" placeholder="任务、需求名称模糊查询">  
+						</el-select>
+						<el-input v-model="filters.key" style="width:20%;" placeholder="任务、需求名称模糊查询">
 						</el-input>
-						<el-button @click="searchXmTasks" icon="el-icon-search">查询</el-button> 
+						<el-button @click="searchXmTasks" icon="el-icon-search">查询</el-button>
 						<el-button v-if="isMultiSelect" @click="selectedTasks" type="primary">确认选择</el-button>
 					</el-row>
 					<el-row  class="page-main">
 						<el-table
-							ref="taskTable"  
+							ref="taskTable"
 							 element-loading-text="努力加载中" element-loading-spinner="el-icon-loading"
 							:data="tasksTreeData"
 							@sort-change="sortChange"
 							v-loading="load.list"
 							@row-click="rowClick"
-							@selection-change="selsChange" 
+							@selection-change="selsChange"
 							highlight-current-row
 							stripe
 							fit
-							border 
+							border
 							row-key="id"
 							 :height="tableHeight"
 							>
 							<el-table-column v-show="isMultiSelect"  sortable width="70" type="selection"></el-table-column>
 							<el-table-column prop="name" label="任务名称"  min-width="260" show-overflow-tooltip>
 								<template slot-scope="scope">
-									
+
                   					<div    class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#409EFF'}">
 										<i :class="scope.row.ntype==='1'?'el-icon-time':'el-icon-s-operation'" ></i>
-									</div>  
+									</div>
 								<span>
 									{{ scope.row.sortLevel }}&nbsp;
 									<el-tag v-if="scope.row.level <= '2'" type="info"
@@ -54,39 +54,39 @@
 									<el-tag v-else-if="scope.row.level == '4'" type="danger"
 									>紧急</el-tag
 									>
-									<el-tag v-else type="danger">特急</el-tag> 
+									<el-tag v-else type="danger">特急</el-tag>
 									{{ scope.row.name }}
 									</span>
 								</template>
-							</el-table-column> 
+							</el-table-column>
 							<el-table-column prop="menuName" min-width="150" label="需求"  show-overflow-tooltip></el-table-column>
 							<el-table-column   prop="startTime" label="任务起止时间" min-width="260"  show-overflow-tooltip>
 								<template slot-scope="scope">
-									
+
 									<div  style="display:flex;align-items:center;">
 										<div>
-											<div>{{getDateString(scope.row.startTime)}}~{{getDateString(scope.row.endTime)}}</div> 
+											<div>{{getDateString(scope.row.startTime)}}~{{getDateString(scope.row.endTime)}}</div>
 										</div>
 										<div v-for="(item,index) in [calcTaskStateByTime(scope.row.startTime,scope.row.endTime,scope.row)]" :key="index ">
 											<el-tag :type="item.type">{{item.desc}}</el-tag>
-										</div> 
+										</div>
 									</div>
 
 								</template>
 							</el-table-column>
-							
+
 							<el-table-column   v-if="!isMultiSelect"  header-align="center" label="操作" fixed="right" width="100">
 								<template slot-scope="scope">
-									<el-button  :disabled="(checkScope=='plan' && scope.row.ntype!='1')||(checkScope=='task' && scope.row.ntype=='1')"  type="primary" @click.stop="selectedTask(scope.row)" >选择</el-button> 	
+									<el-button  :disabled="(checkScope=='plan' && scope.row.ntype!='1')||(checkScope=='task' && scope.row.ntype=='1')"  type="primary" @click.stop="selectedTask(scope.row)" >选择</el-button>
 								</template>
 							</el-table-column>
 						</el-table>
-						
+
 					</el-row>
-					<el-pagination layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
+					<el-pagination layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 
 				</el-col>
-			</el-row>  
+			</el-row>
 	</section>
 </template>
 
@@ -95,33 +95,33 @@
 	import util from '@/common/js/util';//全局公共库
 	import treeTool from '@/common/js/treeTool';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
-	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
-	import { getTask ,listXmTask,editXmTask,editRate, delXmTask, batchDelXmTask,batchImportTaskFromTemplate,batchSaveBudget } from '@/api/xm/core/xmTask'; 
-	import { mapGetters } from 'vuex';  
+
+	import { getTask ,listXmTask,editXmTask,editRate, delXmTask, batchDelXmTask,batchImportTaskFromTemplate,batchSaveBudget } from '@/api/xm/core/xmTask';
+	import { mapGetters } from 'vuex';
 	import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';
 
-	export default { 
+	export default {
 		computed: {
 			...mapGetters([
 				'userInfo','roles'
-			]),  
+			]),
 			tasksTreeData() {
-				 
+
 				 return this.xmTasks;
 			},
-			  
+
 		},
 		props: ["selProject",'isMultiSelect','xmProduct','xmIteration','checkScope'/**task/planTask/plan */,'queryScope'/**task/planTask/plan */,"ptype"],
 		watch: {
 			"selkey": function(val) {
 				// console.log("任务类型");
 			},
-			"selProject": function(oval,val) { 
+			"selProject": function(oval,val) {
 				this.filters.selProject=this.selProject
-				 this.changeSelKey("all"); 
-			}, 
-			"xmProduct":function(){ 
-				 this.changeSelKey("all"); 
+				 this.changeSelKey("all");
+			},
+			"xmProduct":function(){
+				 this.changeSelKey("all");
 			}
 		},
 		data() {
@@ -150,35 +150,35 @@
 					taskType:[],
 					planType:[],
 					priority:[],
-				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
-				
+				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
+
 				addFormVisible: false,//新增xmTask界面是否显示
 				//新增xmTask界面初始化数据
 				addForm: {
 					id:'',name:'',parentTaskid:'',parentTaskname:'',projectId:'',projectName:'',level:'',sortLevel:'',executorUserid:'',executorUsername:'',
 					preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',
-					rate:'',budgetAt:'',budgetWorkload:'',actAt:'',actWorkload:'',taskState:'',taskType:'',taskClass:'',toTaskCenter:'',actStartTime:'',actEndTime:'', 
+					rate:'',budgetAt:'',budgetWorkload:'',actAt:'',actWorkload:'',taskState:'',taskType:'',taskClass:'',toTaskCenter:'',actStartTime:'',actEndTime:'',
 				},
-				
+
 				editFormVisible: false,//编辑界面是否显示
 				//编辑xmTask界面初始化数据
 				editForm: {
 					id:'',name:'',parentTaskid:'',parentTaskname:'',projectId:'',projectName:'',level:'',sortLevel:'',executorUserid:'',executorUsername:'',
 					preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',
-					rate:'',budgetAt:'',budgetWorkload:'',actAt:'',actWorkload:'',taskState:'',taskType:'',taskClass:'',toTaskCenter:'',actStartTime:'',actEndTime:'', 
-				},  
+					rate:'',budgetAt:'',budgetWorkload:'',actAt:'',actWorkload:'',taskState:'',taskType:'',taskClass:'',toTaskCenter:'',actStartTime:'',actEndTime:'',
+				},
 
-				selkey: "all",   
- 				projectPhase: null,  
+				selkey: "all",
+ 				projectPhase: null,
 				tableHeight:300,
-				dateRanger: [ ],  
+				dateRanger: [ ],
 				pickerOptions:  util.getPickerOptions('datarange'),
       			maps:new Map(),
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
 		methods: {
-			 
+
 			changeSelKey(index){
 				this.selkey = index;
 				this.getXmTasks();
@@ -187,8 +187,8 @@
 				this.filters.taskType = index;
 				this.getXmTasks();
 			},
-			handleSizeChange(pageSize) { 
-				this.pageInfo.pageSize=pageSize; 
+			handleSizeChange(pageSize) {
+				this.pageInfo.pageSize=pageSize;
 				this.getXmTasks();
 			},
 			handleCurrentChange(pageNum) {
@@ -217,7 +217,7 @@
 				this.getXmTasks();
 			},
 			searchXmTasks(){
-				 this.pageInfo.count=true; 
+				 this.pageInfo.count=true;
 				 this.getXmTasks();
 			},
 			//获取列表 XmTask xm_task
@@ -230,25 +230,25 @@
 				};
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
 					let orderBys=[];
-					for(var i=0;i<this.pageInfo.orderFields.length;i++){ 
+					for(var i=0;i<this.pageInfo.orderFields.length;i++){
 						orderBys.push(this.pageInfo.orderFields[i]+" "+this.pageInfo.orderDirs[i])
-					}  
+					}
 					params.orderBy= orderBys.join(",")
 				}
-				
-				
-				params=this.getParams(params) 
-				if(this.queryScope=='planTask'){ 
+
+
+				params=this.getParams(params)
+				if(this.queryScope=='planTask'){
 					params.withParents="1"
-				}else if(this.queryScope=='plan'){ 
+				}else if(this.queryScope=='plan'){
 					params.withParents="1"
 					params.ntype="1"
 				}else if(this.queryScope=='task'){
 					params.ntype="0"
-				}else{ 
+				}else{
 					params.withParents="1"
 				}
-				if(this.ptype){ 
+				if(this.ptype){
 					params.ptype=this.ptype
 				}
 				if(params.ptype!=='1'){
@@ -264,20 +264,20 @@
 				}
 				getTask(params).then((res) => {
 					var tips=res.data.tips;
-					if(tips.isOk){ 
+					if(tips.isOk){
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false;
 						var xmTasks=res.data.data;
-						this.xmTasks=xmTasks;  
+						this.xmTasks=xmTasks;
 					}else{
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
 			},
-			
+
 			getParams(params) {
-			
+
 				if (this.dateRanger && this.dateRanger.length == 2) {
 					params.createTimeStart = this.dateRanger[0];
 					params.createTimeEnd = this.dateRanger[1];
@@ -311,7 +311,7 @@
 				if (this.filters.selProject) {
 					params.projectId = this.filters.selProject.id;
 				}
-				params.workexec = "true"; 
+				params.workexec = "true";
 				if (this.isMy == "1") {
 					params.userid = this.userInfo.userid;
 					params.isMy = "1";
@@ -352,14 +352,14 @@
 					params.ntype='1'
 				}
 				return params;
-			}, 
-			loadXmTaskLazy(tree, treeNode, resolve) {    
+			},
+			loadXmTaskLazy(tree, treeNode, resolve) {
 			this.maps.set(tree.id, { tree, treeNode, resolve }) //储存数据
 				var params={parentTaskid:tree.id}
 				params=this.getParams(params);
 				params.isTop=""
 				this.load.list = true;
-				var func=listXmTask 
+				var func=listXmTask
 				func(params).then(res=>{
 				this.load.list = false
 				var tips = res.data.tips;
@@ -367,23 +367,23 @@
 					var xmTasks=this.xmTasks.filter(i=>i.parentTaskid!=tree.id)
 					xmTasks.push(...res.data.data)
 					this.xmTasks=xmTasks;
-					resolve(res.data.data) 
+					resolve(res.data.data)
 				}else{
 					resolve([])
 				}
-				}).catch( err => this.load.list = false );   
-			
+				}).catch( err => this.load.list = false );
+
 			},
 			calcTaskStateByTime(startTime,endTime,row){
 				var obj={
-					type:'', 
+					type:'',
 					desc:''
 				}
 				if(startTime==null || startTime=="" || endTime==null || endTime ==""){
 					obj={
-						type:'info', 
+						type:'info',
 						desc:"未配置日期"
-					}  
+					}
 					return obj;
 				}
 				var curDate=new Date();
@@ -392,56 +392,56 @@
 				var rate=row.rate;
 				var isOver=row.rate>=100;
 				var days=this.getDaysBetween(curDate, start);
-				if(days<=0){ 
+				if(days<=0){
 					obj={
-						type:'info', 
+						type:'info',
 						desc:this.toFixed(this.getDaysBetween(start,curDate))+"天后开始"
-					}  
+					}
 					return obj;
-				}else if( this.getDaysBetween(curDate, start) > 0 &&  this.getDaysBetween(curDate, end) <= 0 ){ 
+				}else if( this.getDaysBetween(curDate, start) > 0 &&  this.getDaysBetween(curDate, end) <= 0 ){
 					obj={
-						type:'primary', 
+						type:'primary',
 						desc:this.toFixed(this.getDaysBetween(end, curDate))+"天后结束"
-					}  
+					}
 					return obj;
-				}else if( this.getDaysBetween(curDate, end) > 0 ){ 
+				}else if( this.getDaysBetween(curDate, end) > 0 ){
 					if(!isOver){
 						obj={
-							type:'danger', 
+							type:'danger',
 							desc:"逾期"+( this.toFixed(this.getDaysBetween(curDate, end)) )+"天"
 						}
 					}else{
 						obj={
-							type:'success', 
+							type:'success',
 							desc:"完工"+( this.toFixed(this.getDaysBetween(curDate, end)) )+"天"
-						}	
+						}
 					}
-					
+
 					return obj;
 				}
 			},
 			/**
 			 * 计算两个日期之间的天数
 			 * @param dateString1  开始日期 yyyy-MM-dd
-			 * @param dateString2  结束日期 yyyy-MM-dd 
+			 * @param dateString2  结束日期 yyyy-MM-dd
 			 */
-			  getDaysBetween(startDate,endDate){  
+			  getDaysBetween(startDate,endDate){
 				if (startDate==endDate){
 					return 0;
 				}
 				var days=(startDate - endDate )/(1*24*60*60*1000);
 				return  days;
 			},
- 
+
 			//选择行xmTask
 			selsChange: function (sels) {
 				this.sels = sels;
-			},  
+			},
 			rowClick: function(row){
 				this.editForm=row;
 				// this.$emit('row-click',row,);//  @row-click="rowClick"
 			},
-			  
+
 			isEmpty(str) {
 				return str == null || "" == str;
 			},
@@ -451,7 +451,7 @@
 
 			selectedTasks:function(){
 				this.$emit("tasks-selected", this.sels);
-			}, 
+			},
 			projectPhaseRowClick:function(projectPhase){
 				this.projectPhase=projectPhase
 				this.getXmTasks();
@@ -462,7 +462,7 @@
 				}else{
 					return dateStr.substr(0,10);
 				}
-			}, 
+			},
 			toFixed(floatValue,xsd){
 				if(floatValue ==null || floatValue=='' || floatValue == undefined){
 					return 0;
@@ -472,10 +472,10 @@
 					}else{
 						return parseFloat(floatValue).toFixed(0);
 					}
-					
+
 				}
-			}, 
-			 
+			},
+
 			getRowSum(row){
 				var budgetAt=this.getFloatValue(row.budgetAt);
 				if(row.taskOut=='1'){
@@ -486,11 +486,11 @@
 					 row.taskBudgetOuserAt=0
 					 row.taskBudgetIuserAt=budgetAt
 					 row.taskBudgetNouserAt=0;
-				} 
+				}
 				return budgetAt;
 			},
 			getFloatValue(value,digit){
-				
+
 				if(isNaN(value)){
 					return 0;
 				}
@@ -503,29 +503,29 @@
 				this.$refs.taskTable.toggleRowSelection(task)
 			},
 			onProjectRowClick:function(project){
-				this.filters.selProject=project 
+				this.filters.selProject=project
 				this.getXmTasks();
-			},  
+			},
 			onProjectClear(){
 				this.filters.selProject=null;
 				this.xmTasks=[];
 				this.searchXmTasks();
 			}
 		},//end methods
-		components: {   
+		components: {
 			 XmProjectSelect
 		    //在下面添加其它组件
 		},
 		mounted() {
 			this.filters.selProject=this.selProject
-			
-			this.$nextTick(()=>{  
-				this.tableHeight = util.calcTableMaxHeight(this.$refs.taskTable.$el); 
-				this.getXmTasks(); 
+
+			this.$nextTick(()=>{
+				this.tableHeight = util.calcTableMaxHeight(this.$refs.taskTable.$el);
+				this.getXmTasks();
 			});
 				initSimpleDicts('all',['planType','taskType','priority','priority']).then(res=>{
 					this.dicts=res.data.data;
-				})		
+				})
 		}
 	}
 
@@ -550,5 +550,5 @@
 }
 .xm-task>.el-menu-demo>.is-active{
 	background: transparent;
-} 
+}
 </style>

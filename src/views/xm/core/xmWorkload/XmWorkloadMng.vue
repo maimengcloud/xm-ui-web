@@ -250,7 +250,7 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import config from '@/common/config';//全局公共库
-	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
+
 	import { listXmWorkload, delXmWorkload, batchDelXmWorkload,batchSetSbillIdNull } from '@/api/xm/core/xmWorkload';
 	import  XmWorkloadEdit from './XmWorkloadEdit';//新增修改界面
 	import { mapGetters } from 'vuex'

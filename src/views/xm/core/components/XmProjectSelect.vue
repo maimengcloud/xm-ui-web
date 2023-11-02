@@ -13,7 +13,7 @@
           @click="refreshSelect"
           title="重新从后台刷新数据回来"
           >刷新</el-button
-        > 
+        >
 		<el-button
               @click="addProjectVisible = true"
               icon="el-icon-plus"
@@ -30,9 +30,9 @@
                         >关闭</el-button
                       >
                   <el-row>
-                    
+
 								<el-divider></el-divider>
-                
+
                     <el-row>
                       <font class="more-label-font"> 项目经理: </font>
                      <mdp-select-user-xm label="选择项目经理" v-model="filters" userid-key="pmUserid" username-key="pmUsername" :clearable="true"></mdp-select-user-xm>
@@ -42,7 +42,7 @@
                       <el-input
                         v-model="filters.id"
                         style="width: 200px;"
-                        placeholder="输入项目编号" 
+                        placeholder="输入项目编号"
                          clearable
                       >
                       </el-input>
@@ -83,7 +83,7 @@
                   <el-button
                     type="text"
                     slot="reference"
-                    @click="moreVisible = !moreVisible" 
+                    @click="moreVisible = !moreVisible"
                     icon="el-icon-search"
                     >更多条件</el-button
                   >
@@ -158,7 +158,7 @@
         >
           <el-table-column prop="name" label="项目名称">
             <template slot="header" slot-scope="scope">
-              项目名称 
+              项目名称
             </template>
             <template slot-scope="scope">
              <div class="icon" style="background-color:#ffd04b"><i class="el-icon-odometer" ></i></div><font>{{ scope.row.name }}</font>
@@ -182,22 +182,22 @@
         <slot name="reference" v-bind:project="editForm"
           >
              <span class="title">
-              <slot name="title" v-bind:project="editForm"> 
+              <slot name="title" v-bind:project="editForm">
               <el-link
               title="项目，点击选择、清除选择"
               type="warning"
               icon="el-icon-odometer"
-              >  
+              >
               <div class="res-text hidden-md-and-down">
               {{
                 editForm && editForm.id ? editForm.name: "选择项目"
-              }} 
+              }}
               </div>
-              
+
               <div class="res-text hidden-lg-and-up">
               {{
                editForm && editForm.id ? editForm.name: "选择项目"
-              }} 
+              }}
               </div>
               </el-link>
               <el-button type="text" size="mini" title="取消选中状态" circle plain v-if="editForm&&editForm.id" icon="el-icon-circle-close" @click.stop="clearSelect"></el-button>
@@ -205,8 +205,8 @@
               </span>
         </slot>
       </span>
-    </el-popover> 
-	
+    </el-popover>
+
         <el-dialog append-to-body :visible.sync="addProjectVisible" width="70%" top="20px">
           <xm-project-add
 		  	:op-type="'add'"
@@ -222,11 +222,11 @@
 <script>
 import util from "@/common/js/util"; //全局公共库
 //import Sticky from '@/components/Sticky' // 粘性header组件
-//import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
+
 import { listXmProject } from "@/api/xm/core/xmProject";
-import { mapGetters } from "vuex"; 
+import { mapGetters } from "vuex";
 const map = new Map();
- 
+
 import XmProjectAdd from "../xmProject/XmProjectEdit.vue";
 
 export default {
@@ -289,7 +289,7 @@ export default {
       pickerOptions: util.getPickerOptions("datarange"),
       projectVisible: false,
       moreVisible: false,
-      hadInit: false, 
+      hadInit: false,
 	  addProjectVisible:false,
     };
   }, //end data
@@ -363,14 +363,14 @@ export default {
           if (tips.isOk) {
             this.pageInfo.total = res.data.total;
             this.pageInfo.count = false;
-            this.xmProjects = res.data.data; 
-            
+            this.xmProjects = res.data.data;
+
             var key=""
 						if(this.linkIterationId){
-							key='xm-project-select-list-it-'+this.linkIterationId 
+							key='xm-project-select-list-it-'+this.linkIterationId
 							sessionStorage.setItem(key,JSON.stringify(this.xmProjects))
 						}else if(this.linkProductId){
-							key='xm-project-select-list-prd-'+this.linkProductId  
+							key='xm-project-select-list-prd-'+this.linkProductId
 							sessionStorage.setItem(key,JSON.stringify(this.xmProjects))
 						}
             if (
@@ -418,7 +418,7 @@ export default {
       this.$emit("selected", row);
       this.projectVisible = false;
       this.moreVisible = false;
-    }, 
+    },
 
     tableRowClassName({ row, rowIndex }) {
       if (row && this.editForm && row.id == this.editForm.id) {
@@ -433,7 +433,7 @@ export default {
       this.projectVisible = false;
       this.moreVisible = false;
     },
-	
+
     refreshSelect() {
       this.searchXmProjects();
       this.moreVisible = false;
@@ -445,17 +445,17 @@ export default {
     },
 
     initData() {
-      
+
       var key=""
       if(this.linkIterationId){
-        key='xm-project-select-list-it-'+this.linkIterationId 
+        key='xm-project-select-list-it-'+this.linkIterationId
       }else if(this.linkProductId){
-        key='xm-project-select-list-prd-'+this.linkProductId 
+        key='xm-project-select-list-prd-'+this.linkProductId
       }
 
       if(key){
         var xmProjectStr=sessionStorage.getItem(key);
-        if(xmProjectStr && xmProjectStr!='null' && xmProjectStr!='undefined'){   
+        if(xmProjectStr && xmProjectStr!='null' && xmProjectStr!='undefined'){
           this.xmProjects = JSON.parse(xmProjectStr);
           if (this.projectVisible == false) {
             if (this.autoSelect !== false && this.xmProjects.length > 0) {
@@ -466,7 +466,7 @@ export default {
           }
         } else {
           this.searchXmProjects();
-        } 
+        }
       } else {
         this.searchXmProjects();
       }
@@ -488,7 +488,7 @@ export default {
         }
       });
     },
-	
+
     afterAddSubmit(row) {
       this.xmProjects.push(row);
       if (this.iterationId) {
@@ -506,7 +506,7 @@ export default {
         this.rowClick(row);
       }
       this.addProjectVisible = false;
-    }, 
+    },
   }, //end methods
   components: {
     "mdp-select-user-xm":()=>import("./MdpSelectUserXm/index.vue"),XmProjectAdd,
@@ -526,16 +526,16 @@ export default {
   },
 };
 </script>
-<style scoped> 
+<style scoped>
 .align-right {
   float: right;
 }
-.title { 
+.title {
   height: 32px;
   line-height: 32px;
   text-align: left;
-  float: left; 
-  min-width: 100px;   
+  float: left;
+  min-width: 100px;
   cursor: pointer;
 }
 </style>

@@ -1,14 +1,14 @@
 <template>
 	<section class="page-container  padding border">
 		<el-row>
-			<!--新增界面 XmTaskExecuser xm_task_execuser--> 
+			<!--新增界面 XmTaskExecuser xm_task_execuser-->
 			<el-form :model="addForm"  label-width="120px" :rules="addFormRules" ref="addForm">
 				<!-- <el-form-item label="创建时间" prop="createTime">
 					<el-date-picker type="date" placeholder="选择日期" v-model="addForm.createTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
 				</el-form-item> -->
 				<el-form-item label="执行人姓名" prop="username">
 					  {{addForm.username}}<el-button v-if="execuserAddType!='join'" type="text" @click.native="showSelectUsers">选择执行人</el-button>
-				</el-form-item> 
+				</el-form-item>
 				<el-form-item label="报价工期" prop="quoteWeekday">
 					<div>
 						<el-input v-model="addForm.quoteWeekday" style="width:30%;" type="number" placeholder="报价工期（不包括周六日）" ></el-input>工作日
@@ -24,18 +24,18 @@
 							value-format="yyyy-MM-dd HH:mm:ss"
 							:default-time="['00:00:00','23:59:59']"
 							:picker-options="pickerOptions"
-						></el-date-picker> 
+						></el-date-picker>
 					</div>
-				</el-form-item>  
+				</el-form-item>
 				<el-form-item label="报价工作量" prop="quoteWorkload">
 					<el-input v-model="addForm.quoteWorkload" type="number" placeholder="报价工作量（人时）" ></el-input>
-				</el-form-item> 
+				</el-form-item>
 				<el-form-item label="报价金额" prop="quoteAmount">
 					<el-input v-model="addForm.quoteAmount" type="number" placeholder="报价金额" ></el-input>
-				</el-form-item> 
+				</el-form-item>
 				<el-form-item label="擅长技能" prop="skillRemark">
 					<el-input type="textarea" :row="3" v-model="addForm.skillRemark" placeholder="擅长技能" ></el-input>
-				</el-form-item> 
+				</el-form-item>
 				<el-form-item label="匹配指数" prop="matchScore">
 					<el-input v-model="addForm.matchScore" type="number" placeholder="匹配指数" ></el-input>
 				</el-form-item>
@@ -44,31 +44,31 @@
 				</el-form-item>
 				<el-form-item label="创建人姓名" prop="createUsername">
 					{{userInfo.username}}
-				</el-form-item> 
+				</el-form-item>
 				<el-form-item>
-					<el-col :span="24" :offset="6"> 
-						<el-button @click.native="handleCancel">取消</el-button>  
-						<el-button v-loading="load.add" type="primary" @click.native="addSubmit" :disabled="load.add==true">提交</el-button>  
+					<el-col :span="24" :offset="6">
+						<el-button @click.native="handleCancel">取消</el-button>
+						<el-button v-loading="load.add" type="primary" @click.native="addSubmit" :disabled="load.add==true">提交</el-button>
 					</el-col>
-				</el-form-item> 
+				</el-form-item>
 			</el-form>
 		</el-row>
-		
+
 		<el-drawer title="选择员工" :visible.sync="userSelectVisible" size="60%" append-to-body>
        		 <users-select  @confirm="onUserSelected" ref="usersSelect"></users-select>
-      	</el-drawer>	
+      	</el-drawer>
 
 	</section>
 </template>
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询 
+
 	import { addXmTaskExecuser } from '@/api/xm/core/xmTaskExecuser';
 	import { mapGetters } from 'vuex'
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
-	
-	export default { 
+
+	export default {
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -79,7 +79,7 @@
 	      'xmTaskExecuser':function( xmTaskExecuser ) {
 	        this.addForm = xmTaskExecuser;
 	      },
-	      'visible':function(visible) { 
+	      'visible':function(visible) {
 	      	if(visible==true){
  				this.setQuoteInfoByXmTask();
 				if(this.execuserAddType!="join"){
@@ -90,7 +90,7 @@
 				}
 	      		//从新打开页面时某些数据需要重新加载，可以在这里添加
 	      	}
-	      } 
+	      }
 	    },
 		data() {
 			const beginDate = new Date();
@@ -101,7 +101,7 @@
 					projectTaskExecuserStatus:[],
 					projectTaskSettleStatus:[],
 
-				},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
+				},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				addFormRules: {
 					id: [
@@ -114,7 +114,7 @@
 				},
 				userSelectVisible: false,
 				quoteDateRanger: [
-				],  
+				],
 				pickerOptions:  util.getPickerOptions('datarange'),
 				/**end 在上面加自定义属性**/
 			}//end return
@@ -129,7 +129,7 @@
 			addSubmit: function () {
 				if(!this.addForm.userid){
 					this.$notify.error("请选择一个人");
-					return 
+					return
 				}
 				const tf = this.execUserList.some(i=>{return i.userid == this.addForm.userid;});
 				const that = this;
@@ -141,9 +141,9 @@
 				else{
 					this.$refs.addForm.validate((valid) => {
 						if (valid) {
-							this.$confirm('确认提交吗？', '提示', {}).then(() => { 
+							this.$confirm('确认提交吗？', '提示', {}).then(() => {
 								this.load.add=true
-								let params = Object.assign({}, this.addForm); 
+								let params = Object.assign({}, this.addForm);
 								params.taskId = this.xmTask.id;
 								params.projectId=this.xmTask.projectId
 								params.phaseId=this.xmTask.phaseId
@@ -156,24 +156,24 @@
 								addXmTaskExecuser(params).then((res) => {
 									this.load.add=false
 									var tips=res.data.tips;
-									if(tips.isOk){ 
+									if(tips.isOk){
 										this.$emit('submit');//  @submit="afterAddSubmit"
 									}
-									this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
+									this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 								}).catch( err  => this.load.add=false);
 							});
 						}
 					});
-				} 
+				}
 			},
 			/**begin 在下面加自定义方法,记得补上面的一个逗号**/
 			showSelectUsers: function(){
 				this.userSelectVisible=true;
 			},
 			//选择接收人
-			onUserSelected: function(users) { 
+			onUserSelected: function(users) {
 				if(users.length>1){
-					this.$notify({position:'bottom-left',showClose:true,message: "只能选择一个人", type:'error' }); 
+					this.$notify({position:'bottom-left',showClose:true,message: "只能选择一个人", type:'error' });
 					return;
 				}
 				if(users==null || users.length ==0 ){
@@ -186,8 +186,8 @@
 					 this.addForm.username=u.username
 				});
 				this.userSelectVisible = false;
-			},	
-			
+			},
+
 			getWeekday(first, last) {
 				//计算工作日方法：遍历这两个日期区间的每一个日期，获取他的getDay()
 
@@ -218,14 +218,14 @@
 			}
 			}
 			/**end 在上面加自定义方法**/
-			
+
 		},//end method
-		components: {  
+		components: {
 			UsersSelect
 		    //在下面添加其它组件 'xm-task-execuser-edit':XmTaskExecuserEdit
 		},
 		mounted() {
-			this.addForm=Object.assign(this.addForm, this.xmTaskExecuser);  
+			this.addForm=Object.assign(this.addForm, this.xmTaskExecuser);
 			this.setQuoteInfoByXmTask();
 			if(this.execuserAddType!="join"){
 				this.showSelectUsers();
@@ -233,11 +233,11 @@
 				this.addForm.userid=this.userInfo.userid
 				this.addForm.username=this.userInfo.username
 			}
-			
+
 			/**在下面写其它函数***/
 			initSimpleDicts('all',['projectTaskExecuserStatus','projectTaskSettleStatus']).then(res=>{
 				this.dicts=res.data.data;
-			})	
+			})
 		}//end mounted
 	}
 

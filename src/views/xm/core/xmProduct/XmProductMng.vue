@@ -402,7 +402,7 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
-	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
+
 	import { listXmProduct,listXmProductWithState, delXmProduct, batchDelXmProduct,copyTo,createProductCode } from '@/api/xm/core/xmProduct';
 	import { addXmIterationLink,delXmIterationLink } from '@/api/xm/core/xmIterationLink';
 	import { loadTasksToXmProductState } from '@/api/xm/core/xmProductState';

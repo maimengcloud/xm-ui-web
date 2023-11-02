@@ -1,13 +1,13 @@
 <template>
-	<section class="page-container padding-left padding-top">  
+	<section class="page-container padding-left padding-top">
 		<el-row v-if="showType!='simple'">
 			<el-checkbox v-model="filters.isMy" false-label="" true-label="1">我的模板</el-checkbox>
 			<el-input style="width:300px;" v-model="filters.key" placeholder="模板名字"></el-input>
 			<el-button @click="searchXmProducts" icon="el-icon-search"></el-button>
 		</el-row>
-		<el-row v-if="showType=='simple'"> 
+		<el-row v-if="showType=='simple'">
 			<el-col :span="24">
-				<el-checkbox v-model="filters.isMy" false-label="0" true-label="1">我的模板</el-checkbox> 
+				<el-checkbox v-model="filters.isMy" false-label="0" true-label="1">我的模板</el-checkbox>
 			</el-col>
 			<el-col :span="18">
 				<el-input  v-model="filters.key" placeholder="模板名字"></el-input>
@@ -15,35 +15,35 @@
 			<el-col :span="6">
 			 &nbsp;&nbsp;<el-button @click="searchXmProducts" icon="el-icon-search"></el-button>
 			</el-col>
- 
+
 		</el-row>
 		<el-row  class="page-main" v-if="showType!='simple'">
 			<!--列表 XmProduct 产品表-->
 			<el-table ref="table"  :height="maxTableHeight" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list"  @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-  				
-				<el-table-column    label="序号" width="60" type="index"  v-if="showType!='simple'">  
-				</el-table-column> 
-				  <el-table-column prop="productName" label="产品模板(参考学习用)" min-width="150" sortable show-overflow-tooltip> 
+
+				<el-table-column    label="序号" width="60" type="index"  v-if="showType!='simple'">
+				</el-table-column>
+				  <el-table-column prop="productName" label="产品模板(参考学习用)" min-width="150" sortable show-overflow-tooltip>
 					<template slot-scope="scope">
 						<el-link  @click="intoInfo(scope.row)">{{scope.row.productName}}</el-link>
 					</template>
-				</el-table-column> 
-				<el-table-column prop="code" label="产品代号" min-width="100" sortable> 
 				</el-table-column>
-				<el-table-column prop="pstatus" label="状态" width="100" sortable :formatter="formatPstatus"> 
+				<el-table-column prop="code" label="产品代号" min-width="100" sortable>
+				</el-table-column>
+				<el-table-column prop="pstatus" label="状态" width="100" sortable :formatter="formatPstatus">
 				</el-table-column>
 				<el-table-column prop="finishRate" label="进度" width="100" sortable>
-					<template slot-scope="scope"> 
-						<font  ><el-tag :type="scope.row.finishRate>=100?'success':'warning'">{{scope.row.finishRate}}%</el-tag> 
+					<template slot-scope="scope">
+						<font  ><el-tag :type="scope.row.finishRate>=100?'success':'warning'">{{scope.row.finishRate}}%</el-tag>
 						</font>
 					</template>
 				</el-table-column>
 				<el-table-column prop="pmUsername" label="产品经理" width="120" sortable show-overflow-tooltip>
-					<template slot-scope="scope"> 						
-						<el-tag v-if="scope.row.pmUsername">{{scope.row.pmUsername}}</el-tag> 
+					<template slot-scope="scope">
+						<el-tag v-if="scope.row.pmUsername">{{scope.row.pmUsername}}</el-tag>
 					</template>
 				</el-table-column>
-				
+
 				<el-table-column label="工作量(人时)" width="200">
 					<el-table-column prop="budgetWorkload" label="预计" width="100"  show-overflow-tooltip sortable></el-table-column>
 					<el-table-column prop="actWorkload" label="实际" width="100"  show-overflow-tooltip sortable></el-table-column>
@@ -53,52 +53,52 @@
 						<el-button type="text" title="通过复制创建新的项目" @click="onCopyToBtnClick(scope.row)" :disabled="load.add" v-loading="load.add">复制</el-button>
 						<el-button type="text" title="删除该模板" @click="handleDel(scope.row)" :disabled="load.del" v-loading="load.del">删除</el-button>
 					</template>
-				</el-table-column> 
+				</el-table-column>
 			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
-		</el-row> 
-		 	
+		</el-row>
+
 		<el-row  class="page-main" v-else>
 			<!--列表 XmProduct 产品表-->
 			<el-table ref="table"  :height="maxTableHeight" :data="xmProducts" @sort-change="sortChange" highlight-current-row v-loading="load.list"  @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
-  				
-				<el-table-column    label="序号" width="60" type="index">  
-				</el-table-column> 
-				  <el-table-column prop="productName" label="产品模板(参考学习用)" sortable show-overflow-tooltip> 
+
+				<el-table-column    label="序号" width="60" type="index">
+				</el-table-column>
+				  <el-table-column prop="productName" label="产品模板(参考学习用)" sortable show-overflow-tooltip>
 					<template slot-scope="scope">
-						
+
 						<div v-if="isSelect===true">{{scope.row.productName}}</div>
 						<el-link v-else  @click="intoInfo(scope.row)">{{scope.row.productName}}</el-link>
 					</template>
-				</el-table-column>  
+				</el-table-column>
 				<el-table-column v-if="isSelect!==true"  label="操作" width="80" fixed="right">
 					<template slot-scope="scope">
-						<el-button type="text" title="通过复制创建新的项目" @click="onCopyToBtnClick(scope.row)" :disabled="load.add" v-loading="load.add">复制</el-button> 
+						<el-button type="text" title="通过复制创建新的项目" @click="onCopyToBtnClick(scope.row)" :disabled="load.add" v-loading="load.add">复制</el-button>
 					</template>
-				</el-table-column> 
+				</el-table-column>
 			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
-		</el-row>  
+		</el-row>
 			<el-drawer title="编辑产品" :visible.sync="editFormVisible"  size="50%" :with-header="false"  append-to-body   :close-on-click-modal="false">
 				  <xm-product-edit :xm-product="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-product-edit>
 			</el-drawer>
- 
+
 		<el-dialog
 			title="通过复制创建新的模板或者新的产品"
 			:visible.sync="copyToVisible"
-			width="500" > 
+			width="500" >
 			<el-form>
 			<el-form-item label="产品名称">
-				<el-input v-model="xmProductCopy.productName" placeholder="新的产品名称"></el-input> 
+				<el-input v-model="xmProductCopy.productName" placeholder="新的产品名称"></el-input>
 			</el-form-item>
-			<el-form-item  label="产品代号"> 
+			<el-form-item  label="产品代号">
 				<el-input v-model="xmProductCopy.code"  placeholder="新的产品代号">
-					
+
 							<template slot="append">
 								<el-button type="text" @click="createProductCode">自动生成</el-button>
 							</template>
 				</el-input>
-				
+
 						<font color="blue" style="font-size:10px;">产品代号为合同上的产品代号，甲乙方共享；产品内部编号为&nbsp;代号-四位随机码</font>
 			</el-form-item>
 			<el-form-item  label="目标">
@@ -106,10 +106,10 @@
 				<el-radio v-model="xmProductCopy.isTpl" label="0">复制为新的产品</el-radio>
 			</el-form-item>
 			<el-form-item label="附加任务">
-				<el-checkbox v-model="xmProductCopy.copyMenu" true-label="1" false-label="0">拷贝需求列表</el-checkbox>   
-				<el-checkbox v-model="xmProductCopy.copyPhase" true-label="1" false-label="0">拷贝计划</el-checkbox>  
-				<el-checkbox v-model="xmProductCopy.copyGroup" true-label="1" false-label="0">拷贝组织架构</el-checkbox>  
-				<el-checkbox v-model="xmProductCopy.copyGroupUser" true-label="1" false-label="0">拷贝产品组成员</el-checkbox>  
+				<el-checkbox v-model="xmProductCopy.copyMenu" true-label="1" false-label="0">拷贝需求列表</el-checkbox>
+				<el-checkbox v-model="xmProductCopy.copyPhase" true-label="1" false-label="0">拷贝计划</el-checkbox>
+				<el-checkbox v-model="xmProductCopy.copyGroup" true-label="1" false-label="0">拷贝组织架构</el-checkbox>
+				<el-checkbox v-model="xmProductCopy.copyGroupUser" true-label="1" false-label="0">拷贝产品组成员</el-checkbox>
 			</el-form-item>
 			</el-form>
 			<span slot="footer" class="dialog-footer">
@@ -123,14 +123,14 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
-	//import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
+
 	import { listXmProduct,listXmProductWithState, delXmProduct, batchDelXmProduct,copyTo,createProductCode } from '@/api/xm/core/xmProduct';
 	import { addXmIterationLink,delXmIterationLink } from '@/api/xm/core/xmIterationLink';
 	import { loadTasksToXmProductState } from '@/api/xm/core/xmProductState';
  	import  XmProductEdit from './XmProductEdit';//修改界面
 	import { mapGetters } from 'vuex'
- 
- 
+
+
 	export default {
 		props:['selProject','xmIteration','showType','isSelect'],
 		computed: {
@@ -138,7 +138,7 @@
 		      'userInfo','roles'
 		    ])
 		},
-		watch:{ 
+		watch:{
 		},
 		data() {
 			const beginDate = new Date();
@@ -180,13 +180,13 @@
 				iterationVisible:false,
 				iterationSelectVisible:false,
 				productStateVisible:false,
-				selectFiltersPmUserVisible:false, 
-				dateRanger: [ 
+				selectFiltersPmUserVisible:false,
+				dateRanger: [
 				],
 				pickerOptions:  util.getPickerOptions('datarange'),
 				projectVisible:false,
 				productSelectVisible:false,
-				xmProductCopy:{ 
+				xmProductCopy:{
 					id:'',productName:'',code:'',isTpl:'',copyMenu:'1',copyPhase:'1',copyGroup:'1',copyGroupUser:'0'
 				},
 				copyToVisible:false,
@@ -283,7 +283,7 @@
 				this.editForm = Object.assign({}, row);
 			},
 			//显示新增界面 XmProduct 产品表
-			showAdd: function () { 
+			showAdd: function () {
 				this.addFormVisible = true;
 				//this.addForm=Object.assign({}, this.editForm);
 			},
@@ -310,8 +310,8 @@
 			//选择行xmProduct
 			selsChange: function (sels) {
 				this.sels = sels;
-			}, 
-			handleDel: function (row,index) {  
+			},
+			handleDel: function (row,index) {
 				this.$prompt('将同步删除计划、组织、需求等，慎重起见，请输入产品代号:'+row.code, '提示', {
 					confirmButtonText: '确定',
 					cancelButtonText: '取消',
@@ -329,14 +329,14 @@
 							this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 						}).catch( err  => this.load.del=false );
 					 }else{
-						 this.$notify({position:'bottom-left',showClose:true,message: "产品代号不正确", type: 'error' }); 
+						 this.$notify({position:'bottom-left',showClose:true,message: "产品代号不正确", type: 'error' });
 					 }
-				}).catch(() => { 
-					return;    
-				}); 	
+				}).catch(() => {
+					return;
+				});
 			},
 			//批量删除xmProduct
-			batchDel: function () {   
+			batchDel: function () {
 				this.$confirm('确认删除选中记录吗？', '提示', {
 					type: 'warning'
 				}).then(() => {
@@ -428,11 +428,11 @@
 					})
 				})
 			},
-			
+
 			onCopyToBtnClick(row){
 				this.xmProductCopy.id=row.id;
 				this.xmProductCopy.productName=row.productName+"(复制)";
-				this.xmProductCopy.isTpl=row.isTpl; 
+				this.xmProductCopy.isTpl=row.isTpl;
 				this.copyToVisible=true;
 			},
 			onCopyToConfirm(){
@@ -440,43 +440,43 @@
 					this.$notify({position:'bottom-left',showClose:true,message: '产品代号不能为空', type: 'error' });
 					return;
 				}
-				
+
 				this.load.add=true;
-				copyTo(this.xmProductCopy).then(res=>{ 
+				copyTo(this.xmProductCopy).then(res=>{
 					this.load.add=false;
 					var tips = res.data.tips;
 					if(tips.isOk){
 						this.copyToVisible=false;
 						if(this.xmProductCopy.isTpl=='1'){
 							this.searchXmProducts()
-						}  
+						}
 						this.$emit("copy",res.data.data)
 					}
-					
+
 					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 
 				})
 			},
-			
+
 			createProductCode(){
 				createProductCode({}).then(res=>{
 					var tips=res.data.tips;
 					if(tips.isOk){
 						this.xmProductCopy.code=res.data.data
 					}
-					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
+					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 				})
 			},
 			/**end 自定义函数请在上面加**/
 
 		},//end methods
-		components: { 
-		    'xm-product-edit':XmProductEdit, 
+		components: {
+		    'xm-product-edit':XmProductEdit,
 		    //在下面添加其它组件
 		},
 		mounted() {
-			this.$nextTick(() => {   
-				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
+			this.$nextTick(() => {
+				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);
 				this.getXmProducts();
         	});
 		}

@@ -1,5 +1,5 @@
 <template>
-	<section class="page-container"> 
+	<section class="page-container">
 		<el-row v-if="showType!='simple'" class="padding">
 			<el-checkbox v-model="filters.isMy" false-label="" true-label="1">我的模板</el-checkbox>
 			<el-radio v-model="filters.tplType" label="1">全网公开模板</el-radio>
@@ -7,9 +7,9 @@
 			<el-input style="width:300px;" v-model="filters.key" placeholder="模板名字"></el-input>
 			<el-button @click="searchXmProjects" icon="el-icon-search"></el-button>
 		</el-row>
-		<el-row v-if="showType=='simple'" title="通过复制快速创建新的项目"> 
+		<el-row v-if="showType=='simple'" title="通过复制快速创建新的项目">
 					<el-col :span="24">
-					<el-checkbox v-model="filters.isMy" false-label="0" true-label="1">我的模板</el-checkbox>   
+					<el-checkbox v-model="filters.isMy" false-label="0" true-label="1">我的模板</el-checkbox>
 					<el-radio v-model="filters.tplType" label="1">全网公开模板</el-radio>
 					<el-radio v-model="filters.tplType" label="2">本企业模板</el-radio>
 					</el-col>
@@ -17,30 +17,30 @@
 					</el-col>
 					<el-col :span="8">
 					&nbsp;&nbsp;<el-button @click="searchXmProjects" icon="el-icon-search"></el-button>
-					</el-col> 
+					</el-col>
 		</el-row>
-		<el-row  class="page-main"> 
+		<el-row  class="page-main">
 			<!--列表 XmProject xm_project-->
 			<el-row  v-loading="load.list">
-				
+
 					<el-table :height="maxTableHeight" ref="table" v-cloak  stripe :data="ScreenData" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  						<el-table-column prop="name" label="项目模板(学习/参考)" min-width="200" >
 							<template slot-scope="scope">
 								<div v-if="isSelect===true">{{scope.row.name}}</div>
 								<el-link v-else @click.stop="intoInfo(scope.row)">{{scope.row.name}}</el-link>
 							</template>
-						</el-table-column>  
+						</el-table-column>
 						<el-table-column  label="" width="100" fixed="right" v-if="isSelect!==true">
-							<template slot-scope="scope"> 
-								<el-button type="text" title="通过复制创建新的项目" @click="onCopyToBtnClick(scope.row)" :disabled="load.add" v-loading="load.add">复制</el-button>								
+							<template slot-scope="scope">
+								<el-button type="text" title="通过复制创建新的项目" @click="onCopyToBtnClick(scope.row)" :disabled="load.add" v-loading="load.add">复制</el-button>
 								<el-button type="text" title="删除该模板" @click="handleDel(scope.row)" :disabled="load.del" v-loading="load.del">删除</el-button>
 							</template>
-						</el-table-column> 
+						</el-table-column>
 					</el-table>
 			</el-row>
- 
-			<el-pagination  layout="total,  prev, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total"  style="float:right;"></el-pagination> 
-		</el-row> 
+
+			<el-pagination  layout="total,  prev, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total"  style="float:right;"></el-pagination>
+		</el-row>
 		<el-drawer title="项目编辑" :visible.sync="editFormVisible" :with-header="false"  size="50%"  :close-on-click-modal="false" append-to-body>
 			<xm-project-edit :sel-project="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-project-edit>
 		</el-drawer>
@@ -51,13 +51,13 @@
 			title="通过复制创建新的模板或者新的项目"
 			:visible.sync="copyToVisible"
 			append-to-body
-			width="500" > 
+			width="500" >
 			<el-form>
 			<el-form-item label="项目名称">
-				<el-input v-model="xmProjectCopy.name" placeholder="新的项目名称"></el-input> 
+				<el-input v-model="xmProjectCopy.name" placeholder="新的项目名称"></el-input>
 			</el-form-item>
-			<el-form-item  label="项目代号"> 
-				<el-input v-model="xmProjectCopy.code"  placeholder="新的项目代号"> 
+			<el-form-item  label="项目代号">
+				<el-input v-model="xmProjectCopy.code"  placeholder="新的项目代号">
 					<template slot="append">
 						<el-button type="text" @click="createProjectCode">自动生成</el-button>
 					</template>
@@ -73,11 +73,11 @@
 				<el-radio v-model="xmProjectCopy.tplType" label="2">只向本企业公开</el-radio>
 			</el-form-item>
 			<el-form-item label="附加任务">
-				<el-checkbox v-model="xmProjectCopy.copyPhase" true-label="1" false-label="0">拷贝计划</el-checkbox> 
-				<el-checkbox v-model="xmProjectCopy.copyTask" true-label="1" false-label="0">拷贝任务</el-checkbox>  
-				<el-checkbox v-model="xmProjectCopy.copyGroup" true-label="1" false-label="0">拷贝项目组织架构</el-checkbox>  
-				<el-checkbox v-model="xmProjectCopy.copyGroupUser" true-label="1" false-label="0">拷贝项目组成员</el-checkbox>  
-				<el-checkbox v-model="xmProjectCopy.copyProduct" true-label="1" false-label="0">拷贝关联产品及需求明细</el-checkbox>  
+				<el-checkbox v-model="xmProjectCopy.copyPhase" true-label="1" false-label="0">拷贝计划</el-checkbox>
+				<el-checkbox v-model="xmProjectCopy.copyTask" true-label="1" false-label="0">拷贝任务</el-checkbox>
+				<el-checkbox v-model="xmProjectCopy.copyGroup" true-label="1" false-label="0">拷贝项目组织架构</el-checkbox>
+				<el-checkbox v-model="xmProjectCopy.copyGroupUser" true-label="1" false-label="0">拷贝项目组成员</el-checkbox>
+				<el-checkbox v-model="xmProjectCopy.copyProduct" true-label="1" false-label="0">拷贝关联产品及需求明细</el-checkbox>
 			</el-form-item>
 			</el-form>
 			<span slot="footer" class="dialog-footer">
@@ -85,7 +85,7 @@
 				<el-button type="primary" @click="onCopyToConfirm" :disabled="load.add" v-loading="load.add">确 定</el-button>
 			</span>
 		</el-dialog>
-	</section> 
+	</section>
 
 </template>
 
@@ -94,16 +94,16 @@
 	import util from '@/common/js/util';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 	import config from "@/common/config"; //全局公共库
-	//import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
-	import { listXmProject, editStatus, delXmProject, batchDelXmProject,copyTo,createProjectCode} from '@/api/xm/core/xmProject'; 
-	import { addUserFocus , delUserFocus } from '@/api/mdp/sys/userFocus'; 
- 	import { mapGetters } from 'vuex'  
 
-	 
-	
+	import { listXmProject, editStatus, delXmProject, batchDelXmProject,copyTo,createProjectCode} from '@/api/xm/core/xmProject';
+	import { addUserFocus , delUserFocus } from '@/api/mdp/sys/userFocus';
+ 	import { mapGetters } from 'vuex'
 
 
-	export default { 
+
+
+
+	export default {
 		props:['dataScope','showType','isSelect'],
 		computed: {
 			...mapGetters([
@@ -113,16 +113,16 @@
 				const key = this.menukey;
 				const userid = this.userInfo.userid;
 				return this.xmProjects;
-				 
+
 			},
 		},
-		watch: { 
+		watch: {
 			"finishFlag":function(val){
 				this.searchXmProjects();
 			}
 		},
 		data() {
-			
+
 			const beginDate = new Date();
 			const endDate = new Date();
 			beginDate.setTime(beginDate.getTime() - 3600 * 1000 * 24 * 7 * 4 * 12 );
@@ -144,39 +144,39 @@
 				},
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				sels: [],//列表选中数据
-				dicts:{},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
-				
+				dicts:{},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
+
 				addFormVisible: false,//新增xmProject界面是否显示
 				//新增xmProject界面初始化数据
 				addForm: {
 					id:'',code:'',name:'',xmType:'',startTime:'',endTime:'',urgent:'',priority:'',description:'',createUserid:'',createUsername:'',createTime:'',assess:'',assessRemarks:'',status:'',branchId:'',planTotalCost:'',bizProcInstId:'',bizFlowState:'',planNouserAt:'',planIuserAt:'',planOuserAt:'',locked:'',baseTime:'',baseRemark:'',baselineId:'',planWorkload:'',totalReceivables:'',budgetMarginRate:'',contractAmt:'',planIuserPrice:'',budgetOuserPrice:'',planOuserCnt:'',planIuserCnt:'',planWorkingHours:'',budgetCtrl:'0',
 				},
-				
+
 				editFormVisible: false,//编辑界面是否显示
 				//编辑xmProject界面初始化数据
 				editForm: {
 					id:'',code:'',name:'',xmType:'',startTime:'',endTime:'',urgent:'',priority:'',description:'',createUserid:'',createUsername:'',createTime:'',assess:'',assessRemarks:'',status:'',branchId:'',planTotalCost:'',bizProcInstId:'',bizFlowState:'',planNouserAt:'',planIuserAt:'',planOuserAt:'',locked:'',baseTime:'',baseRemark:'',baselineId:'',planWorkload:'',totalReceivables:'',budgetMarginRate:'',contractAmt:'',planIuserPrice:'',budgetOuserPrice:'',planOuserCnt:'',planIuserCnt:'',planWorkingHours:'',budgetCtrl:'0',
 				},
 				/**begin 自定义属性请在下面加 请加备注**/
-				menukey: "all", 
+				menukey: "all",
 				showInfo: false,
 				selectProject: null,
 				finishFlag: false,
 				xmRecordVisible: false,
 				productSelectVisible:false,
 				maxTableHeight:300,
-				dateRanger: [ ],  
+				dateRanger: [ ],
 				pickerOptions:  util.getPickerOptions('datarange'),
 				xmProjectCopy:{
 					id:'',name:'',code:'',isTpl:'',copyPhase:'1',copyTask:'1',copyGroup:'1',copyGroupUser:'0',copyProduct:'1',tplType:'2',
 				},
-				copyToVisible:false, 
+				copyToVisible:false,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
 		methods: {
-			handleSizeChange(pageSize) { 
-				this.pageInfo.pageSize=pageSize; 
+			handleSizeChange(pageSize) {
+				this.pageInfo.pageSize=pageSize;
 				this.getXmProjects();
 			},
 			handleCurrentChange(pageNum) {
@@ -198,7 +198,7 @@
 				this.getXmProjects();
 			},
 			searchXmProjects(){
-				 this.pageInfo.count=true; 
+				 this.pageInfo.count=true;
 				 this.getXmProjects();
 			},
 			//获取列表 XmProject xm_project
@@ -211,15 +211,15 @@
 				};
 				if(this.filters.key!==""){
 					 params.key='%'+this.filters.key+'%';
-				}  
+				}
 				params.isTpl="1"
 				params.tplType=this.filters.tplType
-				this.load.list = true; 
+				this.load.list = true;
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
 					let orderBys=[];
-					for(var i=0;i<this.pageInfo.orderFields.length;i++){ 
+					for(var i=0;i<this.pageInfo.orderFields.length;i++){
 						orderBys.push(this.pageInfo.orderFields[i]+" "+this.pageInfo.orderDirs[i])
-					}  
+					}
 					params.orderBy= orderBys.join(",")
 				}
 				if(this.finishFlag){
@@ -229,25 +229,25 @@
 				params = this.menuFilter(params);
 				if(this.filters.productId){
 					params.productId  = this.filters.productId
-				} 
+				}
 				params.createTimeStart=this.dateRanger[0]
 				params.createTimeEnd=this.dateRanger[1]
 				listXmProject(params).then((res) => {
 					var tips=res.data.tips;
-					if(tips.isOk){ 
+					if(tips.isOk){
 						console.log(res.data);
 						this.pageInfo.total = res.data.total;
-						this.pageInfo.count=false; 
+						this.pageInfo.count=false;
 						this.xmProjects = res.data.data;
 					}else{
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
-					} 
+					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
 			},
 
 			menuFilter(params) {
-				 
+
 				return params;
 			},
 
@@ -277,8 +277,8 @@
 			//选择行xmProject
 			selsChange: function (sels) {
 				this.sels = sels;
-			},  
-			handleDel: function (row,index) {  
+			},
+			handleDel: function (row,index) {
 				this.$prompt('将同步删除计划、组织、任务等，慎重起见，请输入项目代号:'+row.code, '提示', {
 					confirmButtonText: '确定',
 					cancelButtonText: '取消',
@@ -289,54 +289,54 @@
 						delXmProject(params).then((res) => {
 							this.load.del=false;
 							var tips=res.data.tips;
-							if(tips.isOk){ 
+							if(tips.isOk){
 								this.pageInfo.count=true;
 								this.getXmProjects();
 							}
-							this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
-						}).catch( err  => this.load.del=false ); 
+							this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
+						}).catch( err  => this.load.del=false );
 					 }else{
-						 this.$notify({position:'bottom-left',showClose:true,message: "项目代号不正确", type: 'error' }); 
+						 this.$notify({position:'bottom-left',showClose:true,message: "项目代号不正确", type: 'error' });
 					 }
-				}).catch(() => { 
-					return;    
+				}).catch(() => {
+					return;
 				});
- 
-					
+
+
 			},
 			//批量删除xmProject
 			batchDel: function () {
 				this.$confirm('确认删除选中记录吗？', '提示', {
 					type: 'warning'
-				}).then(() => { 
+				}).then(() => {
 					this.load.del=true;
 					batchDelXmProject(this.sels).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
-						if( tips.isOk ){ 
+						if( tips.isOk ){
 							this.pageInfo.count=true;
-							this.getXmProjects(); 
+							this.getXmProjects();
 						}
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
 				});
 			},
-			rowClick: function(row, event, column){ 
+			rowClick: function(row, event, column){
 				this.editForm=row
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
 			},
 			onCopyToBtnClick(row){
 				this.xmProjectCopy.id=row.id;
 				this.xmProjectCopy.name=row.name+"(复制)";
-				this.xmProjectCopy.isTpl=row.isTpl; 
+				this.xmProjectCopy.isTpl=row.isTpl;
 				this.copyToVisible=true;
 			},
-			onCopyToConfirm(){ 
+			onCopyToConfirm(){
 				if(!this.xmProjectCopy.code){
 					this.$notify({position:'bottom-left',showClose:true,message: '项目代号不能为空', type: 'error' });
 					return;
 				}
-				
+
 				copyTo(this.xmProjectCopy);
 				this.$notify({position:'bottom-left',showClose:true,message: "已提交拷贝任务，执行需要1-5分钟，请稍后刷新项目列表", type:  'success' });
 			},
@@ -346,11 +346,11 @@
 				return leader.some(i=>i.leadType=='负责人' && i.userid == this.userInfo.userid);
 			},
 
-			//进入info界面 
+			//进入info界面
 			intoInfo(row) {
 				this.selectProject = row;
 				this.$router.push({ name:'XmProjectInfoRoute', query: {id:row.id} })
-				localStorage.setItem("xm-project-info-route",JSON.stringify(row)) 
+				localStorage.setItem("xm-project-info-route",JSON.stringify(row))
 				//this.showInfo = true;
 			},
 
@@ -372,7 +372,7 @@
 						this.ScreenData[scope.$index].status = val;
 						this.status = val;
 					}
-					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
+					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 					this.load.edit = false;
 				}).catch( err => this.load.edut = false );
 			},
@@ -380,41 +380,41 @@
 				this.xmProjects = [];
 				this.getXmProjects();
 				this.showInfo = false;
-			}, 
+			},
 			showApprovaInfo:function(row){
 				var msgFields=[];
 				if(row.mainTitle!=null && row.mainTitle!=""){
 					msgFields.push("流程【"+row.mainTitle+"】");
 				}
-				
+
 				if(row.taskName!=null && row.taskName!=""){
 					msgFields.push("当前环节【"+row.taskName+"】");
 				}
-				
+
 				if(row.assigneeName!=null && row.assigneeName!=""){
 					msgFields.push("执行人【"+row.assigneeName+"】");
 				}
-				
+
 				if(row.commentMsg!=null && row.commentMsg!=""){
 					msgFields.push("审批意见【"+row.commentMsg+"】");
 				}
 				var msg=msgFields.join(",");
 				return msg;
 			},
-			
-			sendToProcessApprova:function(row,bizKey){   
+
+			sendToProcessApprova:function(row,bizKey){
 				if(row.bizFlowState=='1'){
 					this.$notify.error("审核中，不允许重新发起");
 					return;
 				}
-				
+
 				let extVars={projectId:row.id}
-				let jsonExtVars=JSON.stringify(extVars); 
+				let jsonExtVars=JSON.stringify(extVars);
 
 				var currDomain=window.location.protocol+"//"+window.location.host;
-				var fullPath=this.$route.fullPath;  
+				var fullPath=this.$route.fullPath;
 				var bizUrl=currDomain+'/'+process.env.CONTEXT+'/'+process.env.VERSION+'/#'+fullPath+'?extVars='+jsonExtVars
-					
+
 				var titleNames=row.name
 				var mainTitle=''
 				var mainContext=''
@@ -434,7 +434,7 @@
 					}
 					mainTitle='关于项目【'+titleNames+"】结项的审批"
 					mainContext=mainTitle;
-					
+
 				} else if(bizKey=='xm_project_restart_approva'){
 					if(row.status!='3'){
 						this.$notify.error("只有状态为暂停的项目可以进行重新启动操作");
@@ -466,9 +466,9 @@
 				} else{
 					this.$notify.error("暂不支持的业务审批");
 					return;
-				} 
+				}
 
-				let params={ 
+				let params={
 					mainContext:mainContext,
 					mainTitle:mainTitle,
 					bizKey:bizKey,
@@ -482,9 +482,9 @@
 					},
 				}
 				let jsonParmas=encodeURIComponent(JSON.stringify(params));//对方要 decodeURIComponent
-				this.$router.push({name:'ProcdefListForBizStart',params:jsonParmas}); 
-			}, 
-			handleCommand(command) { 
+				this.$router.push({name:'ProcdefListForBizStart',params:jsonParmas});
+			},
+			handleCommand(command) {
 				if(command.type=='sendToProcessApprova'){
 					this.sendToProcessApprova(command.row,command.bizKey);
 				} else if(command.type=='showEdit'){
@@ -496,21 +496,21 @@
 					delUserFocus({projectId:row.id,focusType:'project',userid:this.userInfo.userid,username:this.userInfo.username}).then(res=>{
 						var tips=res.data.tips;
 						if(tips.isOk){
-							this.getXmProjects(); 
-						} 
-						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
+							this.getXmProjects();
+						}
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 					})
 				}else{
 					addUserFocus({projectId:row.id,focusType:'project',projectName:row.name,userid:this.userInfo.userid,username:this.userInfo.username}).then(res=>{
 						var tips=res.data.tips;
-						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 					})
 				}
 			},
-			
+
 			onProductSelected:function(product){
 				this.filters.productId=product.id
-				this.filters.productName=product.productName  
+				this.filters.productName=product.productName
 				this.getXmProjects()
 				this.productSelectVisible=false;
 			},
@@ -518,33 +518,33 @@
 				this.filters.productId=''
 				this.filters.productName=''
 				this.getXmProjects()
-			}, 
+			},
 			createProjectCode(){
 				createProjectCode({}).then(res=>{
 					var tips=res.data.tips;
 					if(tips.isOk){
 						this.xmProjectCopy.code=res.data.data
 					}
-					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
+					this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 				})
 			}
 			/**end 自定义函数请在上面加**/
-			
+
 		},//end methods
-		components: {   
+		components: {
 		},
-		mounted() { 
+		mounted() {
 			if(this.$route.params){
 				this.filters.productId=this.$route.params.productId;
 				this.filters.productName=this.$route.params.productName;
 			}
-			this.$nextTick(() => {  
-				
-				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);  
+			this.$nextTick(() => {
+
+				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);
 				this.showInfo = false;
 				this.getXmProjects();
-			}); 
-		}, 
+			});
+		},
 	}
 
 </script>
@@ -684,7 +684,7 @@
 }
 .right-btn{
 	margin-top: 12px;
-} 
+}
 @media only screen and (max-height: 2400px) {
 	.project-box{
 		max-height: 1600x;

@@ -2,26 +2,26 @@
   <section class="page-container  padding border">
     <el-row >
       <el-row v-if="editVisible==false">
-        <el-col :span="10"> 
+        <el-col :span="10">
           <el-button type="primary" v-if="jump==true" @click="selectConfirm" icon="el-icon-finished">确认选择</el-button>
           <el-button  @click="getAllHrSkill" v-loading="sectionLoading" icon="el-icon-search">刷新标签</el-button>
-        </el-col> 
-        <el-col :span="14"> 
-           <el-button type="text"  @click="editVisible=true" icon="el-icon-edit">管理技能</el-button> 
+        </el-col>
+        <el-col :span="14">
+           <el-button type="text"  @click="editVisible=true" icon="el-icon-edit">管理技能</el-button>
           <el-tooltip content="黄色表示已经有的技能">
             <span class="addTagSquare"></span>
           </el-tooltip>
           <el-tooltip content="白色表示尚未拥有的技能">
             <span class="closeTagSquare"></span>
           </el-tooltip>
-        </el-col> 
+        </el-col>
       </el-row>
       <el-row v-else>
-        <el-col :span="10"> 
-          <el-button type="primary"  @click="editVisible=false" icon="el-icon-finished">确认</el-button> 
-        </el-col> 
+        <el-col :span="10">
+          <el-button type="primary"  @click="editVisible=false" icon="el-icon-finished">确认</el-button>
+        </el-col>
         <el-col :span="14">
-          <el-checkbox 
+          <el-checkbox
             v-model="isPub"
             true-label="1"
             false-label="0"
@@ -39,15 +39,15 @@
           <el-tooltip content="白色表示尚未拥有的技能">
             <span class="closeTagSquare"></span>
           </el-tooltip>
-        </el-col> 
+        </el-col>
       </el-row>
     </el-row>
     <el-row class="app-container page-height-70 overflow-auto" v-if="editVisible==false">
-      <el-row v-for="(item,index) in convertSkills" :key="item.categoryId" class="padding"> 
+      <el-row v-for="(item,index) in convertSkills" :key="item.categoryId" class="padding">
         <h3>
           <div>
-            {{item.categoryName+(item.pubc=='1'?'(公共)':'')}} 
-          </div> 
+            {{item.categoryName+(item.pubc=='1'?'(公共)':'')}}
+          </div>
         </h3>
         <el-col :span="24" style="margin-left:30px;display:flex;flex-wrap: wrap;width: 100%;">
           <div
@@ -56,20 +56,20 @@
             :key="valueIndex"
             @click="clickTagMethod(index,valueIndex)"
           >
-            {{v.skillName +(v.pubSkill=='1'?'':'')}} 
-          </div>  
+            {{v.skillName +(v.pubSkill=='1'?'':'')}}
+          </div>
         </el-col>
       </el-row>
     </el-row>
     <el-row class="app-container page-height-70  overflow-auto" v-else>
-      <el-row v-for="(item,index) in convertSkills" :key="item.categoryId" class="padding"> 
+      <el-row v-for="(item,index) in convertSkills" :key="item.categoryId" class="padding">
           <div>
             {{item.categoryName+(item.pubc=='1'?'(公共)':'')}}
             <i
               class="el-icon-close closeStyle"
               @click.stop="delTagCategoryMethod(item.categoryId,index)"
             ></i>:
-          </div> 
+          </div>
         <el-col :span="24" style="margin-left:30px;display:flex;flex-wrap: wrap;width: 100%;">
           <div
             :class="'copyButton'"
@@ -104,7 +104,7 @@
 <script>
 import util from "@/common/js/util"; //全局公共库
 //import Sticky from "@/components/Sticky"; // 粘性header组件
-//import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
+
 import {
   getAllHrSkill,
   delHrSkillCategory,
@@ -142,8 +142,8 @@ export default {
             }
           });
         }
-      } 
-    
+      }
+
     },
   },
   data() {
@@ -239,7 +239,7 @@ export default {
     },
     //添加技能分类的方法
     addTagCategorySubmitMethod() {
-      let that = this; 
+      let that = this;
 
       if (
         this.convertSkills.some(
@@ -296,7 +296,7 @@ export default {
         shopId: this.userInfo.shopId,
         branchId: this.userInfo.branchId,
         id: categoryId,
-      }; 
+      };
       this.$confirm(
         "此操作将永久删除该技能分类, 并连同该技能分类下面的技能也删除，是否继续?",
         "提示",
@@ -331,7 +331,7 @@ export default {
       this.convertSkills[index].showAddButtonVisible = true;
     },
     //添加技能的方法
-    addTagMethod(index) { 
+    addTagMethod(index) {
       if (
         this.convertSkills.some((i) => {
           return i.values.some(
@@ -399,7 +399,7 @@ export default {
     },
     //删除技能的方法
     delTagMethod(skillId, index, valueIndex) {
- 
+
       let that = this;
 
       let params = {
@@ -456,7 +456,7 @@ export default {
     },
   }, //end methods
   components: {
-    
+
     //在下面添加其它组件
   },
   mounted() {
@@ -466,7 +466,7 @@ export default {
     }else{
       this.getAllHrSkill();
     }
-    
+
     // this.$nextTick(() => {
     // 	this.getAllHrSkill();
     // });
@@ -567,5 +567,5 @@ export default {
     transform: rotate(360deg);
     box-shadow: 0px 0px 10px #fff;
   }
-} 
+}
 </style>

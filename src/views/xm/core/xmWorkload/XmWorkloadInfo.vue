@@ -4,15 +4,15 @@
       <xm-project-select style="display:inline;" ref="xmProjectSelect" :auto-select="false"  @row-click="onProjectConfirm" @clear="clearProject"></xm-project-select>
       <el-select  v-model="filters.wstatus" clearable @change="searchXmWorkloads" placeholder="请选择工时单状态">
         <el-option label="全部状态" value=""></el-option>
-        <el-option label="待确认" value="0"></el-option> 
-        <el-option label="已确认" value="1"></el-option> 
+        <el-option label="待确认" value="0"></el-option>
+        <el-option label="已确认" value="1"></el-option>
       </el-select>
       <!--
       <el-select  v-model="filters.sstatus" clearable @change="searchXmWorkloads" placeholder="请选择工时单状态">
         <el-option label="全部结算状态" value=""></el-option>
         <el-option label="无需结算" value="0"></el-option>
         <el-option label="待结算" value="1"></el-option>
-        <el-option label="已提交" value="2"></el-option> 
+        <el-option label="已提交" value="2"></el-option>
         <el-option label="已结算" value="4"></el-option>
       </el-select>
       -->
@@ -20,7 +20,7 @@
 			<el-input v-model="filters.userid" style="width: 150px;" clearable placeholder="员工编号"></el-input>
 			<el-input v-model="filters.taskId" style="width: 150px;" clearable placeholder="任务编号"></el-input>
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" @click="searchXmWorkloads" icon="el-icon-search">查询</el-button>
-      
+
       <span style="float:right;">
 <!--			<el-button type="primary" @click="showAdd" icon="el-icon-plus"> </el-button>-->
       <el-button type="warning" v-loading="load.edit" @click="batchSetSbillIdNull" :disabled="this.sels.length===0 || load.edit==true" icon="el-icon-setting">移出结算单</el-button>
@@ -53,8 +53,8 @@
                 v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;"  >
 				<el-table-column  type="selection" width="55" show-overflow-tooltip fixed="left"></el-table-column>
 				<el-table-column sortable type="index" width="55" show-overflow-tooltip fixed="left"></el-table-column>
- 				<el-table-column prop="username" label="姓名" min-width="120" show-overflow-tooltip  sortable  fixed="left"> 
-            <template slot-scope="scope"> 
+ 				<el-table-column prop="username" label="姓名" min-width="120" show-overflow-tooltip  sortable  fixed="left">
+            <template slot-scope="scope">
               <span class="cell-text">
                 {{scope.row.username}}
               </span>
@@ -68,7 +68,7 @@
         </el-table-column>
 				<el-table-column prop="taskId" label="任务" min-width="120" show-overflow-tooltip  sortable  fixed="left">
           <template slot-scope="scope">
-            
+
             <span class="cell-text">
                {{scope.row.taskName}}
             </span>
@@ -77,13 +77,13 @@
                    <xm-workload-simple-list :visible="scope.row.id==editForm.id" :xm-task="{id:scope.row.taskId,name:scope.row.taskName,projectName:scope.row.projectName,projectId:scope.row.projectId,budgetWorkload:scope.row.budgetWorkload,actWorkload:scope.row.actWorkload}"  ref="xmWorkloadSimpleList2"  @edit-some-fields="searchXmWorkloads"></xm-workload-simple-list>
                    <el-button slot="reference" icon="el-icon-search" style="display:inline;">所有工时记录</el-button>
               </el-popover>
-               
+
 						</span>
           </template>
-          
-        </el-table-column> 
-         <el-table-column prop="projectId" label="归属项目" min-width="120" show-overflow-tooltip sortable> 
-            <template slot-scope="scope"> 
+
+        </el-table-column>
+         <el-table-column prop="projectId" label="归属项目" min-width="120" show-overflow-tooltip sortable>
+            <template slot-scope="scope">
               <span class="cell-text">
                 {{scope.row.projectName}}
               </span>
@@ -93,18 +93,18 @@
             </template>
          </el-table-column>
         <el-table-column  prop="taskState" label="任务状态" width="120" show-overflow-tooltip  sortable >
-          <template slot-scope="scope"> 
+          <template slot-scope="scope">
               <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'taskState',scope.row.taskState)" :key="index" :type="item.className">{{item.name}}</el-tag>
-             
+
           </template>
-        </el-table-column>  
+        </el-table-column>
 				<el-table-column prop="workload" label="登记工时" width="120" show-overflow-tooltip  sortable>
           <template slot-scope="scope">
             {{scope.row.workload}}h
           </template>
         </el-table-column>
 				<el-table-column prop="toConfirmWorkload" label="待确认工时" width="120" show-overflow-tooltip  sortable>
-          <template slot-scope="scope"> 
+          <template slot-scope="scope">
               <el-popover title="当前任务所有待确认工时记录">
                    <xm-workload-simple-list :visible="scope.row.id==editForm.id" :wstatus="'0'" :xm-task="{id:scope.row.taskId,name:scope.row.taskName,projectName:scope.row.projectName,projectId:scope.row.projectId,budgetWorkload:scope.row.budgetWorkload,actWorkload:scope.row.actWorkload}"  ref="xmWorkloadSimpleList2"  @edit-some-fields="searchXmWorkloads"></xm-workload-simple-list>
                         <el-link slot="reference" style="display:inline;">{{scope.row.toConfirmWorkload}}h</el-link>
@@ -118,7 +118,7 @@
         </el-table-column>
         <!--
 				<el-table-column prop="sworkload" label="结算工时" width="120" show-overflow-tooltip  sortable>
-          <template slot-scope="scope"> 
+          <template slot-scope="scope">
             <span class="cell-text">
                {{scope.row.sworkload}}h
             </span>
@@ -128,7 +128,7 @@
           </template>
         </el-table-column>
 				<el-table-column prop="amt" label="标准金额" width="120" show-overflow-tooltip  sortable>
-          <template slot-scope="scope"> 
+          <template slot-scope="scope">
             <span class="cell-text">
               <span v-if="scope.row.amt">¥{{ scope.row.amt}}</span>
               <span v-else>-</span>
@@ -136,12 +136,12 @@
             <span class="cell-bar">
               <el-input type="number" style="display:inline;"  v-model="scope.row.amt"   placeholder="标准金额"  @change="editXmWorkloadSomeFields(scope.row,'amt',$event)"></el-input>
 						</span>
-          </template> 
+          </template>
         </el-table-column>
         -->
         <!--
-				<el-table-column prop="samt" label="结算金额" width="120" show-overflow-tooltip  sortable>  
-          <template slot-scope="scope"> 
+				<el-table-column prop="samt" label="结算金额" width="120" show-overflow-tooltip  sortable>
+          <template slot-scope="scope">
             <span class="cell-text">
               <span v-if="scope.row.samt">¥{{ scope.row.samt}}</span>
               <span v-else>-</span>
@@ -152,7 +152,7 @@
           </template>
         </el-table-column>
         <el-table-column v-if="sstatuses && sstatuses=='1'" prop="sbillId" label="结算单" width="120" show-overflow-tooltip  sortable>
-          <template slot-scope="scope"> 
+          <template slot-scope="scope">
             <span class="cell-text">
                {{scope.row.sbillId}}
             </span>
@@ -164,7 +164,7 @@
         -->
 <!--				<el-table-column prop="cuserid" label="创建人编号" width="120" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="bizDate" label="业务日期yyyy-MM-dd" width="120" show-overflow-tooltip></el-table-column>-->
-				 
+
 <!--				<el-table-column prop="ttype" label="任务类型-关联字典taskType" width="120" show-overflow-tooltip></el-table-column>-->
 <!--				<el-table-column prop="sbillId" label="结算单据编号" width="120" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="stime" label="结算提交时间" width="120" show-overflow-tooltip></el-table-column>-->
@@ -192,7 +192,7 @@
 			</el-drawer>
       <el-drawer title="选择员工" :visible.sync="selectFiltersPmUserVisible" size="60%" append-to-body>
         <users-select  @confirm="onFiltersPmUserSelected" ref="usersSelect"></users-select>
-      </el-drawer> 
+      </el-drawer>
 	    </el-row>
 	</section>
 </template>
@@ -200,7 +200,7 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import config from '@/common/config';//全局公共库
-	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
+
 	import { listXmWorkloadGroupByTaskIdAndUserid, delXmWorkload, batchDelXmWorkload,batchSetSbillIdNull,initDicts } from '@/api/xm/core/xmWorkload';
 	import  XmWorkloadEdit from './XmWorkloadEdit';//新增修改界面
 	import { mapGetters } from 'vuex'
@@ -354,7 +354,7 @@
         if(this.filters.sstatus){
           params.sstatuses = this.filters.sstatus;
         }
-        
+
         if(this.filters.userid){
           params.userid = this.filters.userid;
         }
@@ -372,7 +372,7 @@
           params.queryScope=this.queryScope
           params.userid=this.userInfo.userid
         }else{
-          params.queryScope="all" 
+          params.queryScope="all"
         }
         if(this.sbillId){
           params.sbillId=this.sbillId
@@ -459,7 +459,7 @@
 					}).catch( err  => this.load.edit=false );
 				});
 			},
-      
+
 			batchDel: function () {
 				if(this.sels.length<=0){
 				    return;
@@ -497,7 +497,7 @@
 			  this.selProject = null;
         this.getXmWorkloads();
       },
-      editXmWorkloadSomeFields(row,fieldName,$event){  
+      editXmWorkloadSomeFields(row,fieldName,$event){
         let params={
           ids:[row.id],
         };
@@ -506,27 +506,27 @@
             this.$notify({position:'bottom-left',showClose:true,message:'存在不同项目的工时单，请重新选择',type:'warning'})
             return;
           }
-          params.ids=this.sels.map(i=>i.id); 
+          params.ids=this.sels.map(i=>i.id);
         }else{
-          params.ids = [row.id]; 
+          params.ids = [row.id];
           params[fieldName]=$event
         }
         var func = editXmWorkloadSomeFields
         if(fieldName==='sbillId'){
           func = editWorkloadToSbill
           params.sbillId=$event.id
-        }else{ 
+        }else{
           params[fieldName]=$event
         }
         func(params).then(res=>{
-          let tips = res.data.tips; 
+          let tips = res.data.tips;
           this.getXmWorkloads();
           if(tips.isOk){
           }else{
             this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
           }
         })
-      }, 
+      },
       clearFiltersPmUser:function(){
         this.filters.pmUser=null;
         this.searchXmWorkloads();

@@ -406,7 +406,7 @@
 	import util from '@/common/js/util';//全局公共库
 	import treeTool from '@/common/js/treeTool';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
-	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
+
 	import { listXmMenu, delXmMenu,addXmMenu,  batchDelXmMenu,batchAddXmMenu,batchEditXmMenu,listXmMenuWithState,listXmMenuWithPlan,batchChangeParentMenu,editXmMenuSomeFields } from '@/api/xm/core/xmMenu';
 	import { batchRelTasksWithMenu } from '@/api/xm/core/xmTask';
 	import { loadTasksToXmMenuState} from '@/api/xm/core/xmMenuState';
@@ -1392,9 +1392,6 @@
 		    //在下面添加其它组件
 		},
 		mounted() {
-  			initSimpleDicts("all",['menuStatus','demandSource','demandLvl','demandType','priority','dclass']).then(res=>{
-				  Object.assign(this.dicts,res.data.data)
-			})
 			this.filters.product=this.xmProduct
 			if(this.xmProduct && this.xmProduct.id){
 				this.productVisible=false;

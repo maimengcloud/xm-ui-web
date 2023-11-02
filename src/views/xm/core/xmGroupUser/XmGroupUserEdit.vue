@@ -3,34 +3,34 @@
 	    <el-row class="page-header">
 	    </el-row>
 		<el-row class="page-main">
-		<!--编辑界面 XmGroupUser xm_group_user--> 
+		<!--编辑界面 XmGroupUser xm_group_user-->
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef">
-				
+
 				<el-form-item :label="editForm.pgClass=='1'?'产品编号':'项目编号'" prop="pgClass">
 					{{editForm.projectId?editForm.projectId:''}}{{editForm.productId?editForm.productId:''}}
-				</el-form-item> 
+				</el-form-item>
 				<el-form-item label="小组名称" prop="groupName">
 					<el-input v-model="editForm.groupName" placeholder="小组名称"></el-input>
-				</el-form-item>  
+				</el-form-item>
 				<el-form-item label="组员姓名" prop="username">
 					<el-input v-model="editForm.username" placeholder="组员姓名"></el-input>
-				</el-form-item> 
+				</el-form-item>
 				<el-form-item label="" prop="status">
 					<el-checkbox v-model="editForm.status" true-label="1" false-label="0" placeholder="当前状态">是否已加入</el-checkbox>
 					<el-checkbox v-model="editForm.isPri" true-label="1" false-label="0" placeholder="是否私人加入">是否私人加入</el-checkbox>
-				</el-form-item>  
+				</el-form-item>
 				<el-form-item label="排序号" prop="seqNo">
 					<el-input-number v-model="editForm.seqNo" :min="0" :max="200"></el-input-number>
-				</el-form-item>   
+				</el-form-item>
 				<el-form-item label="原归属机构名称" prop="obranchName">
 					<el-input v-model="editForm.obranchName" placeholder="原归属机构名称"></el-input>
-				</el-form-item>  
+				</el-form-item>
 				<el-form-item label="加入时间" prop="joinTime">
 					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.joinTime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
-				</el-form-item> 
+				</el-form-item>
 				<el-form-item label="离组时间" prop="outTime">
 					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.outTime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
-				</el-form-item> 
+				</el-form-item>
 			</el-form>
 		</el-row>
 
@@ -44,10 +44,10 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import config from "@/common/config"; //全局公共库import
-	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
+
 	import { addXmGroupUser,editXmGroupUser } from '@/api/xm/core/xmGroupUser';
 	import { mapGetters } from 'vuex'
-	
+
 	export default {
 	    name:'xmGroupUserEdit',
 	    components: {
@@ -66,11 +66,11 @@
 	        }
 
 	      },
-	      'visible':function(visible) { 
+	      'visible':function(visible) {
 	      	if(visible==true){
  	      		this.initData()
 	      	}
-	      } 
+	      }
 	    },
 		data() {
 			return {
@@ -98,7 +98,7 @@
 			saveSubmit: function () {
 				this.$refs.editFormRef.validate((valid) => {
 					if (valid) {
-						this.$confirm('确认提交吗？', '提示', {}).then(() => { 
+						this.$confirm('确认提交吗？', '提示', {}).then(() => {
 							this.load.edit=true
 							let params = Object.assign({}, this.editForm);
 							var func=addXmGroupUser

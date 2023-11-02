@@ -1,9 +1,9 @@
 <template>
-	<section> 
+	<section>
 		<el-row :gutter="10">
 			<el-col :span="7">
 				<xm-phase :xm-product="xmProduct" :sel-project="selProject" queryScope="plan" @row-click="onPhaseRowClick"></xm-phase>
-			</el-col> 
+			</el-col>
 			<el-col :span="17">
 				<xm-task-mng :xm-product="xmProduct" :sel-project="selProject" queryScope="task" :parent-task="parentTask"></xm-task-mng>
 			</el-col>
@@ -13,48 +13,48 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询  
-	import { mapGetters } from 'vuex'	 
-	
+
+	import { mapGetters } from 'vuex'
+
   	import  XmPhase from '@/views/xm/core/xmTask/XmPhase';//新增界面
  	import  XmTaskMng from '@/views/xm/core/xmTask/XmTaskMng';//新增界面
-	export default { 
-        
-		components: {   
+	export default {
+
+		components: {
 			XmPhase,XmTaskMng
 		},
         props:['xmProduct','selProject'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
-		    ]), 
-            
-			
-        }, 
-		watch: {  
-			 
+		    ]),
+
+
+        },
+		watch: {
+
 	    },
 		data() {
-			return { 
-				parentTask:null, 
-				dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
-				load:{ list: false, edit: false, del: false, add: false },//查询中...  
+			return {
+				parentTask:null,
+				dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
+				load:{ list: false, edit: false, del: false, add: false },//查询中...
 
 			}//end return
 		},//end data
-		methods: {  
+		methods: {
 			 onPhaseRowClick(task){
 				 this.parentTask=task
 			 }
 		},//end method
 		mounted() {
-			 
-			
+
+
 		}//end mounted
 	}
 
-</script> 
+</script>
 
-<style lang="less" scoped> 
- 
+<style lang="less" scoped>
+
 </style>

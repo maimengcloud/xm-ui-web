@@ -1,12 +1,12 @@
 <template>
 	<section class="page-container  padding border">
 		<el-row>
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
+			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectStates">查询</el-button>
 			<el-button type="primary" @click="showAdd">+项目指标日统计表</el-button>
-			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button> 
+			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button>
 		</el-row>
-		<el-row class="page-main "> 
+		<el-row class="page-main ">
 			<!--列表 XmProjectState 项目指标日统计表-->
 			<el-table :data="xmProjectStates" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column  type="selection" width="45"></el-table-column>
@@ -89,31 +89,31 @@
 					</template>
 				</el-table-column>
 			</el-table>
-			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
-		
+			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
+
 			<!--编辑 XmProjectState 项目指标日统计表界面-->
 			<el-drawer title="编辑项目指标日统计表" :visible.sync="editFormVisible"  size="50%"  append-to-body   :close-on-click-modal="false">
 				  <xm-project-state-edit :xm-project-state="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></xm-project-state-edit>
 			</el-drawer>
-	
+
 			<!--新增 XmProjectState 项目指标日统计表界面-->
 			<el-drawer title="新增项目指标日统计表" :visible.sync="addFormVisible"  size="50%"  append-to-body  :close-on-click-modal="false">
 				<xm-project-state-add :xm-project-state="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></xm-project-state-add>
-			</el-drawer> 
+			</el-drawer>
 		</el-row>
 	</section>
 </template>
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	import config from '@/common/config';//全局公共库 
-	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
+	import config from '@/common/config';//全局公共库
+
 	import { listXmProjectState, delXmProjectState, batchDelXmProjectState } from '@/api/xm/core/xmProjectState';
 	import  XmProjectStateAdd from './XmProjectStateAdd';//新增界面
 	import  XmProjectStateEdit from './XmProjectStateEdit';//修改界面
 	import { mapGetters } from 'vuex'
-	
-	export default { 
+
+	export default {
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
@@ -137,27 +137,27 @@
 				sels: [],//列表选中数据
 				dicts:{
 					//sex:[],
-				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
-				
+				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
+
 				addFormVisible: false,//新增xmProjectState界面是否显示
 				//新增xmProjectState界面初始化数据
 				addForm: {
 					projectId:'',bizDate:'',totalFileCnt:'',totalBugCnt:'',totalTaskCnt:'',totalBudgetNouserAmount:'',projectName:'',id:'',totalStaffCnt:'',calCtime:'',calStatus:'',totalCostNouserAmount:'',totalClosedBugCnt:'',totalResolvedBugCnt:'',totalCompleteTaskCnt:'',totalPhaseCnt:'',totalCompletePhaseCnt:'',totalNeedPayAmount:'',totalFinishPayAmount:'',totalNeedColAmount:'',totalFinishColAmount:'',totalCostUserAmount:'',totalBudgetIuserAmount:'',totalPlanWorkload:'',totalRiskCnt:'',totalCompleteRiskCnt:'',branchId:'',branchName:'',totalBudgetOuserAmount:'',totalCompleteWorkload:'',todayNewBugCnt:'',todayResolvedBugCnt:'',todayClosedBugCnt:'',todayNewTaskCnt:'',todayCompleteTaskCnt:'',todayNewPhaseCnt:'',todayCompletePhaseCnt:'',todayNewStaffCnt:'',todaySubStaffCnt:'',todayNewPlanWorkload:'',todayNewActWorkload:'',todayNeedColAmount:'',todayFinishColAmount:'',todayCostUserAmount:'',todayCostIuserAmount:'',todayCostOuserAmount:'',todayCostNouserAmount:'',totalCostIuserAmount:'',totalCostOuserAmount:'',todayNeedPayAmount:'',todayFinishPayAmount:'',todayNewRiskCnt:'',todayCompleteRiskCnt:'',todayNewFileCnt:'',finishRate:'',totalActiveBugCnt:'',totalConfirmedBugCnt:'',projectStatus:'',totalActWorkload:'',totalActOutWorkload:'',totalActInnerWorkload:'',totalTaskBudgetCostAt:'',totalTaskOutCnt:'',totalNeedPayCnt:'',totalFinishPayCnt:'',todayConfirmedBugCnt:'',todayActiveBugCnt:'',totalFinishPayUserCnt:'',totalNeedPayUserCnt:'',todayNeedPayUserCnt:'',todayFinishPayUserCnt:''
 				},
-				
+
 				editFormVisible: false,//编辑界面是否显示
 				//编辑xmProjectState界面初始化数据
 				editForm: {
 					projectId:'',bizDate:'',totalFileCnt:'',totalBugCnt:'',totalTaskCnt:'',totalBudgetNouserAmount:'',projectName:'',id:'',totalStaffCnt:'',calCtime:'',calStatus:'',totalCostNouserAmount:'',totalClosedBugCnt:'',totalResolvedBugCnt:'',totalCompleteTaskCnt:'',totalPhaseCnt:'',totalCompletePhaseCnt:'',totalNeedPayAmount:'',totalFinishPayAmount:'',totalNeedColAmount:'',totalFinishColAmount:'',totalCostUserAmount:'',totalBudgetIuserAmount:'',totalPlanWorkload:'',totalRiskCnt:'',totalCompleteRiskCnt:'',branchId:'',branchName:'',totalBudgetOuserAmount:'',totalCompleteWorkload:'',todayNewBugCnt:'',todayResolvedBugCnt:'',todayClosedBugCnt:'',todayNewTaskCnt:'',todayCompleteTaskCnt:'',todayNewPhaseCnt:'',todayCompletePhaseCnt:'',todayNewStaffCnt:'',todaySubStaffCnt:'',todayNewPlanWorkload:'',todayNewActWorkload:'',todayNeedColAmount:'',todayFinishColAmount:'',todayCostUserAmount:'',todayCostIuserAmount:'',todayCostOuserAmount:'',todayCostNouserAmount:'',totalCostIuserAmount:'',totalCostOuserAmount:'',todayNeedPayAmount:'',todayFinishPayAmount:'',todayNewRiskCnt:'',todayCompleteRiskCnt:'',todayNewFileCnt:'',finishRate:'',totalActiveBugCnt:'',totalConfirmedBugCnt:'',projectStatus:'',totalActWorkload:'',totalActOutWorkload:'',totalActInnerWorkload:'',totalTaskBudgetCostAt:'',totalTaskOutCnt:'',totalNeedPayCnt:'',totalFinishPayCnt:'',todayConfirmedBugCnt:'',todayActiveBugCnt:'',totalFinishPayUserCnt:'',totalNeedPayUserCnt:'',todayNeedPayUserCnt:'',todayFinishPayUserCnt:''
 				}
 				/**begin 自定义属性请在下面加 请加备注**/
-					
+
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
-		methods: { 
-			handleSizeChange(pageSize) { 
-				this.pageInfo.pageSize=pageSize; 
+		methods: {
+			handleSizeChange(pageSize) {
+				this.pageInfo.pageSize=pageSize;
 				this.getXmProjectStates();
 			},
 			handleCurrentChange(pageNum) {
@@ -179,7 +179,7 @@
 				this.getXmProjectStates();
 			},
 			searchXmProjectStates(){
-				 this.pageInfo.count=true; 
+				 this.pageInfo.count=true;
 				 this.getXmProjectStates();
 			},
 			//获取列表 XmProjectState 项目指标日统计表
@@ -192,9 +192,9 @@
 				};
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
 					let orderBys=[];
-					for(var i=0;i<this.pageInfo.orderFields.length;i++){ 
+					for(var i=0;i<this.pageInfo.orderFields.length;i++){
 						orderBys.push(this.pageInfo.orderFields[i]+" "+this.pageInfo.orderDirs[i])
-					}  
+					}
 					params.orderBy= orderBys.join(",")
 				}
 				if(this.filters.key!==""){
@@ -205,13 +205,13 @@
 				this.load.list = true;
 				listXmProjectState(params).then((res) => {
 					var tips=res.data.tips;
-					if(tips.isOk){ 
+					if(tips.isOk){
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false;
 						this.xmProjectStates = res.data.data;
 					}else{
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
-					} 
+					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
 			},
@@ -237,38 +237,38 @@
 			//选择行xmProjectState
 			selsChange: function (sels) {
 				this.sels = sels;
-			}, 
+			},
 			//删除xmProjectState
-			handleDel: function (row,index) { 
+			handleDel: function (row,index) {
 				this.$confirm('确认删除该记录吗?', '提示', {
 					type: 'warning'
-				}).then(() => { 
+				}).then(() => {
 					this.load.del=true;
 					let params = { id: row.id };
 					delXmProjectState(params).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
-						if(tips.isOk){ 
+						if(tips.isOk){
 							this.pageInfo.count=true;
 							this.getXmProjectStates();
 						}
-						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err  => this.load.del=false );
 				});
 			},
 			//批量删除xmProjectState
 			batchDel: function () {
-				
+
 				this.$confirm('确认删除选中记录吗？', '提示', {
 					type: 'warning'
-				}).then(() => { 
+				}).then(() => {
 					this.load.del=true;
 					batchDelXmProjectState(this.sels).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
-						if( tips.isOk ){ 
+						if( tips.isOk ){
 							this.pageInfo.count=true;
-							this.getXmProjectStates(); 
+							this.getXmProjectStates();
 						}
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
@@ -278,23 +278,23 @@
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
 			},
 			/**begin 自定义函数请在下面加**/
-			
-				
+
+
 			/**end 自定义函数请在上面加**/
-			
+
 		},//end methods
-		components: { 
+		components: {
 		    'xm-project-state-add':XmProjectStateAdd,
-		    'xm-project-state-edit':XmProjectStateEdit, 
+		    'xm-project-state-edit':XmProjectStateEdit,
 		    //在下面添加其它组件
 		},
-		mounted() { 
+		mounted() {
 			this.$nextTick(() => {
 				this.getXmProjectStates();
-        	}); 
+        	});
         	/** 举例，
     		initSimpleDicts( "all",["sex","grade"] ).then(res=>{
-				if(res.data.tips.isOk){ 
+				if(res.data.tips.isOk){
  					this.dicts=res.data.data
 				}
 			});

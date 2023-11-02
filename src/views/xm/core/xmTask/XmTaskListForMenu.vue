@@ -1,10 +1,10 @@
 <template>
 	<section>
-		<el-row class="xm-task"> 
+		<el-row class="xm-task">
 			<el-menu  active-text-color="#00abfc" :default-active="filters.taskType" @select="changeTaskType" class="el-menu-demo" mode="horizontal">
 				<el-menu-item index="all">全部任务类型</el-menu-item>
 				<el-menu-item v-for="(i,index) in dicts.taskType" :index="i.id" :key="index">{{i.name}}</el-menu-item>
-			</el-menu> 
+			</el-menu>
 			<el-row>
 				<el-col :span="24">
 					<el-table
@@ -13,7 +13,7 @@
 						@sort-change="sortChange"
 						v-loading="load.list"
 						@row-click="rowClick"
-						@selection-change="selsChange" 
+						@selection-change="selsChange"
 						highlight-current-row
 						stripe
 						fit
@@ -25,41 +25,41 @@
 						>
  						<el-table-column v-show="isMultiSelect" sortable width="60" type="selection"></el-table-column>
 						<el-table-column prop="name" label="任务名称"  min-width="260"  show-overflow-tooltip>
-							<template slot-scope="scope"> 
+							<template slot-scope="scope">
 								<div    class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#409EFF'}">
 									<i :class="scope.row.ntype==='1'?'el-icon-time':'el-icon-s-operation'" ></i>
-								</div>  
+								</div>
 								{{scope.row.sortLevel}}&nbsp;{{scope.row.name}}
 							</template>
-						</el-table-column> 
+						</el-table-column>
 						<el-table-column    prop="menuName" label="需求名"  min-width="160"  show-overflow-tooltip> </el-table-column>
-						<el-table-column    prop="projectName" label="项目名称"  min-width="160"  show-overflow-tooltip> 
-						</el-table-column>  
-						 
+						<el-table-column    prop="projectName" label="项目名称"  min-width="160"  show-overflow-tooltip>
+						</el-table-column>
+
 						<el-table-column label="预算" prop="budgetAt" width="120" >
 							<template slot-scope="scope">
 								<el-tag  type= 'info' >{{parseFloat(scope.row.budgetAt/10000).toFixed(2)}}万,{{scope.row.budgetWorkload}}人时</el-tag>
 							</template>
 						</el-table-column>
-						<el-table-column label="执行人" prop="exeUsernames" min-width="120" > 
+						<el-table-column label="执行人" prop="exeUsernames" min-width="120" >
 						</el-table-column>
 						<el-table-column prop="rate" label="进度" width="100">
 							<template slot-scope="scope">
 								 <div>
-								 <el-tag style="border-radius:30px;"> {{ (scope.row.rate!=null?scope.row.rate:0)+'%'}} </el-tag>  
+								 <el-tag style="border-radius:30px;"> {{ (scope.row.rate!=null?scope.row.rate:0)+'%'}} </el-tag>
 								</div>
 							</template>
 						</el-table-column>
 						<el-table-column   prop="startTime" label="任务起止时间" width="300"  show-overflow-tooltip>
 							<template slot-scope="scope">
-									
+
 									<div  style="display:flex;align-items:center;">
 										<div>
-											<div>{{getDateString(scope.row.startTime)}}~{{getDateString(scope.row.endTime)}}</div> 
+											<div>{{getDateString(scope.row.startTime)}}~{{getDateString(scope.row.endTime)}}</div>
 										</div>
 										<div v-for="(item,index) in [calcTaskStateByTime(scope.row.startTime,scope.row.endTime,scope.row)]" :key="index ">
 											<el-tag :type="item.type">{{item.desc}}</el-tag>
-										</div> 
+										</div>
 									</div>
 
 								</template>
@@ -67,24 +67,24 @@
 						<!--
 						<el-table-column label="外购" prop="taskOut" width="80">
 							<template slot-scope="scope">
-								<el-checkbox  :disabled="true" v-model="scope.row.taskOut" :false-label="0" :true-label="1"  ></el-checkbox> 
+								<el-checkbox  :disabled="true" v-model="scope.row.taskOut" :false-label="0" :true-label="1"  ></el-checkbox>
 							</template>
-						</el-table-column>   
-						<el-table-column label="结算方案" prop="settleSchemel" width="120" :formatter="formatterOption"> 
-						</el-table-column>  
+						</el-table-column>
+						<el-table-column label="结算方案" prop="settleSchemel" width="120" :formatter="formatterOption">
+						</el-table-column>
 						-->
-						<el-table-column label="任务技能需求" prop="taskSkillNames" min-width="120"  show-overflow-tooltip> 
+						<el-table-column label="任务技能需求" prop="taskSkillNames" min-width="120"  show-overflow-tooltip>
 						</el-table-column>
 						<el-table-column   v-if="isMultiSelect==false"  header-align="center" label="操作" fixed="right" width="100">
 							<template slot-scope="scope">
-								<el-button  :disabled="scope.row.ntype=='1'"  type="primary" @click.stop="selectedTask(scope.row)" >选择</el-button> 	
+								<el-button  :disabled="scope.row.ntype=='1'"  type="primary" @click.stop="selectedTask(scope.row)" >选择</el-button>
 							</template>
 						</el-table-column>
 					</el-table>
-					
+
 				</el-col>
-			</el-row> 
-			<el-pagination layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
+			</el-row>
+			<el-pagination layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 
 		</el-row>
 	</section>
@@ -94,22 +94,22 @@
 	import Vue from 'vue'
 	import util from '@/common/js/util';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
-	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
-	import { getTask ,listXmTask,editXmTask,editRate, delXmTask, batchDelXmTask,batchImportTaskFromTemplate,batchSaveBudget } from '@/api/xm/core/xmTask'; 
-	import { mapGetters } from 'vuex'; 
- 	export default { 
+
+	import { getTask ,listXmTask,editXmTask,editRate, delXmTask, batchDelXmTask,batchImportTaskFromTemplate,batchSaveBudget } from '@/api/xm/core/xmTask';
+	import { mapGetters } from 'vuex';
+ 	export default {
 		computed: {
 			...mapGetters([
 				'userInfo','roles'
-			]), 
-			 
+			]),
+
 			tasksTreeData() {
 				 return this.xmTasks;
 			},
-			  
+
 		},
 		props: ["menuId",'isMultiSelect'],
-		watch: { 
+		watch: {
 			menuId:function(menuId){
 				this.getXmTasks()
 			}
@@ -135,32 +135,32 @@
 					taskType:[],
 					planType:[],
 					priority:[],
-				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
-				
+				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
+
 				addFormVisible: false,//新增xmTask界面是否显示
 				//新增xmTask界面初始化数据
 				addForm: {
 					id:'',name:'',parentTaskid:'',parentTaskname:'',projectId:'',projectName:'',level:'',sortLevel:'',executorUserid:'',executorUsername:'',
 					preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',
-					rate:'',budgetAt:'',budgetWorkload:'',actAt:'',actWorkload:'',taskState:'',taskType:'',taskClass:'',toTaskCenter:'',actStartTime:'',actEndTime:'', 
+					rate:'',budgetAt:'',budgetWorkload:'',actAt:'',actWorkload:'',taskState:'',taskType:'',taskClass:'',toTaskCenter:'',actStartTime:'',actEndTime:'',
 				},
-				
+
 				editFormVisible: false,//编辑界面是否显示
 				//编辑xmTask界面初始化数据
 				editForm: {
 					id:'',name:'',parentTaskid:'',parentTaskname:'',projectId:'',projectName:'',level:'',sortLevel:'',executorUserid:'',executorUsername:'',
 					preTaskid:'',preTaskname:'',startTime:'',endTime:'',milestone:'',description:'',remarks:'',createUserid:'',createUsername:'',createTime:'',
-					rate:'',budgetAt:'',budgetWorkload:'',actAt:'',actWorkload:'',taskState:'',taskType:'',taskClass:'',toTaskCenter:'',actStartTime:'',actEndTime:'', 
-				},  
+					rate:'',budgetAt:'',budgetWorkload:'',actAt:'',actWorkload:'',taskState:'',taskType:'',taskClass:'',toTaskCenter:'',actStartTime:'',actEndTime:'',
+				},
 
-				selkey: "all",       
+				selkey: "all",
  				pickerOptions:  util.getPickerOptions(),
 				tableHeight:300,
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
 		methods: {
-			 
+
 			changeSelKey(index){
 				this.selkey = index;
 				this.getXmTasks();
@@ -169,8 +169,8 @@
 				this.filters.taskType = index;
 				this.getXmTasks();
 			},
-			handleSizeChange(pageSize) { 
-				this.pageInfo.pageSize=pageSize; 
+			handleSizeChange(pageSize) {
+				this.pageInfo.pageSize=pageSize;
 				this.getXmTasks();
 			},
 			handleCurrentChange(pageNum) {
@@ -192,7 +192,7 @@
 				this.getXmTasks();
 			},
 			searchXmTasks(){
-				 this.pageInfo.count=true; 
+				 this.pageInfo.count=true;
 				 this.getXmTasks();
 			},
 			//获取列表 XmTask xm_task
@@ -205,9 +205,9 @@
 				};
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
 					let orderBys=[];
-					for(var i=0;i<this.pageInfo.orderFields.length;i++){ 
+					for(var i=0;i<this.pageInfo.orderFields.length;i++){
 						orderBys.push(this.pageInfo.orderFields[i]+" "+this.pageInfo.orderDirs[i])
-					}  
+					}
 					params.orderBy= orderBys.join(",")
 				}
 
@@ -216,23 +216,23 @@
 				}
 				if(this.filters.taskType!="all" && this.filters.taskType!="" && this.filters.taskType!=null){
 					params.taskType=this.filters.taskType
-				} 
-				this.load.list = true;  
+				}
+				this.load.list = true;
 				if(this.isMy=='1'){
 					params.userid=this.userInfo.userid
 					params.isMy="1"
 				}
 				params.menuId=this.menuId
-				
+
 				params.ntype="0"
 				//params.withParents="1"
 				getTask(params).then((res) => {
 					var tips=res.data.tips;
-					if(tips.isOk){ 
+					if(tips.isOk){
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false;
 						var xmTasks=res.data.data;
-						this.xmTasks=xmTasks;  
+						this.xmTasks=xmTasks;
 					}else{
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
 					}
@@ -241,14 +241,14 @@
 			},
 			calcTaskStateByTime(startTime,endTime,row){
 				var obj={
-					type:'', 
+					type:'',
 					desc:''
 				}
 				if(startTime==null || startTime=="" || endTime==null || endTime ==""){
 					obj={
-						type:'info', 
+						type:'info',
 						desc:"未配置日期"
-					}  
+					}
 					return obj;
 				}
 				var curDate=new Date();
@@ -257,60 +257,60 @@
 				var rate=row.rate;
 				var isOver=row.rate>=100;
 				var days=this.getDaysBetween(curDate, start);
-				if(days<=0){ 
+				if(days<=0){
 					obj={
-						type:'info', 
+						type:'info',
 						desc:this.toFixed(this.getDaysBetween(start,curDate))+"天后开始"
-					}  
+					}
 					return obj;
-				}else if( this.getDaysBetween(curDate, start) > 0 &&  this.getDaysBetween(curDate, end) <= 0 ){ 
+				}else if( this.getDaysBetween(curDate, start) > 0 &&  this.getDaysBetween(curDate, end) <= 0 ){
 					obj={
-						type:'primary', 
+						type:'primary',
 						desc:this.toFixed(this.getDaysBetween(end, curDate))+"天后结束"
-					}  
+					}
 					return obj;
-				}else if( this.getDaysBetween(curDate, end) > 0 ){ 
+				}else if( this.getDaysBetween(curDate, end) > 0 ){
 					if(!isOver){
 						obj={
-							type:'danger', 
+							type:'danger',
 							desc:"逾期"+( this.toFixed(this.getDaysBetween(curDate, end)) )+"天"
 						}
 					}else{
 						obj={
-							type:'success', 
+							type:'success',
 							desc:"完工"+( this.toFixed(this.getDaysBetween(curDate, end)) )+"天"
-						}	
+						}
 					}
-					
+
 					return obj;
 				}
 			},
 			/**
 			 * 计算两个日期之间的天数
 			 * @param dateString1  开始日期 yyyy-MM-dd
-			 * @param dateString2  结束日期 yyyy-MM-dd 
+			 * @param dateString2  结束日期 yyyy-MM-dd
 			 */
-			  getDaysBetween(startDate,endDate){  
+			  getDaysBetween(startDate,endDate){
 				if (startDate==endDate){
 					return 0;
 				}
 				var days=(startDate - endDate )/(1*24*60*60*1000);
 				return  days;
 			},
- 
+
 			//选择行xmTask
 			selsChange: function (sels) {
 				this.sels = sels;
-			},  
+			},
 			rowClick: function(row){
 				this.editForm=row;
 				// this.$emit('row-click',row,);//  @row-click="rowClick"
 			},
-			  
+
 			isEmpty(str) {
 				return str == null || "" == str;
 			},
-			translateDataToTree(data2) { 
+			translateDataToTree(data2) {
 				var data=JSON.parse(JSON.stringify(data2));
 
 				let parents = data.filter(value =>{
@@ -326,15 +326,15 @@
 					}else {
 						return true
 					}
-				 
-				}) 
+
+				})
 				let children = data.filter(value =>{
 					if(data.some(i=>value.parentTaskid==i.id)){
 						return true;
 					}else{
 						return false;
-					} 
-				})  
+					}
+				})
 				let translator = (parents, children) => {
 					parents.forEach((parent) => {
 						children.forEach((current, index) => {
@@ -360,7 +360,7 @@
 				}else{
 					return dateStr.substr(0,10);
 				}
-			}, 
+			},
 			toFixed(floatValue,xsd){
 				if(floatValue ==null || floatValue=='' || floatValue == undefined){
 					return 0;
@@ -370,10 +370,10 @@
 					}else{
 						return parseFloat(floatValue).toFixed(0);
 					}
-					
+
 				}
-			}, 
-			 
+			},
+
 			getRowSum(row){
 				var budgetAt=this.getFloatValue(row.budgetAt);
 				if(row.taskOut=='1'){
@@ -384,11 +384,11 @@
 					 row.taskBudgetOuserAt=0
 					 row.taskBudgetIuserAt=budgetAt
 					 row.taskBudgetNouserAt=0;
-				} 
+				}
 				return budgetAt;
 			},
 			getFloatValue(value,digit){
-				
+
 				if(isNaN(value)){
 					return 0;
 				}
@@ -398,20 +398,20 @@
 				return parseFloat(value);
 			},
 			/**end 自定义函数请在上面加**/
-			
+
 		},//end methods
-		components: {  
-			  
+		components: {
+
 		    //在下面添加其它组件
 		},
 		mounted() {
-			this.$nextTick(()=>{  
-				this.tableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
-				this.getXmTasks(); 
+			this.$nextTick(()=>{
+				this.tableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);
+				this.getXmTasks();
 			});
 				initSimpleDicts('all',['planType','taskType','priority','priority']).then(res=>{
 					this.dicts=res.data.data;
-				})		
+				})
 		}
 	}
 
@@ -436,5 +436,5 @@
 }
 .xm-task>.el-menu-demo>.is-active{
 	background: transparent;
-} 
+}
 </style>

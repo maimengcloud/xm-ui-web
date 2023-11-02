@@ -1,11 +1,11 @@
 <template>
 	<section class="padding border">
 		<el-row v-if="!simple">
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input> 
+			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>
 			<span v-if="!objType"><el-radio  v-model="filters.objType" v-for="i in objTypeOptions" :label="i.key" :key="i.key">{{i.name}}</el-radio></span>
-			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmRecords">查询</el-button>  
+			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmRecords">查询</el-button>
 		</el-row>
-		<el-row class="page-main"> 
+		<el-row class="page-main">
 			<!--列表 XmRecord xm_record-->
 			<el-table ref="table" :height="tableHeight" :data="xmRecords" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				<el-table-column sortable type="index" width="40"></el-table-column>
@@ -13,67 +13,67 @@
 					<template slot-scope="scope">
 						{{scope.row.productId?scope.row.productId:scope.row.projectId}}
 					</template>
-				</el-table-column>   
-				<el-table-column prop="bizId" label="对象主键" v-if="!simple" min-width="80" show-overflow-tooltip ></el-table-column> 
-				<el-table-column prop="action" label="操作" min-width="80"></el-table-column> 
+				</el-table-column>
+				<el-table-column prop="bizId" label="对象主键" v-if="!simple" min-width="80" show-overflow-tooltip ></el-table-column>
+				<el-table-column prop="action" label="操作" min-width="80"></el-table-column>
 				<el-table-column prop="operUsername" label="操作人名字" min-width="80" ></el-table-column>
 				<el-table-column prop="operTime" label="操作时间" min-width="80" ></el-table-column>
 				<el-table-column prop="objType" label="对象类型" min-width="80" :formatter="formatObjType"></el-table-column>
 				<el-table-column prop="ip" label="ip" min-width="80"></el-table-column>
 				<el-table-column prop="reqNo" label="请求号" min-width="80"  show-overflow-tooltip></el-table-column>
-				<el-table-column prop="remarks" label="备注" min-width="80"  show-overflow-tooltip></el-table-column>  
+				<el-table-column prop="remarks" label="备注" min-width="80"  show-overflow-tooltip></el-table-column>
 				<el-table-column type="expand">
 					<template slot-scope="props">
-						<el-form label-position="left"  inline class="demo-table-expand">    
+						<el-form label-position="left"  inline class="demo-table-expand">
 							<el-form-item label="历史值" prop="oldValue">
 								{{props.row.oldValue}}
-							</el-form-item> 
+							</el-form-item>
 							<el-form-item label="新值" prop="newValue">
 								{{props.row.newValue}}
-							</el-form-item>  
+							</el-form-item>
 							<el-form-item label="对象主键编号" prop="taskId">
 								{{props.row.taskId}}
-							</el-form-item> 
+							</el-form-item>
 							<el-form-item label="请求编号，用于跟踪日志" prop="reqNo">
 								{{props.row.reqNo}}
-							</el-form-item> 
+							</el-form-item>
 							<el-form-item label="机构编号" prop="branchId">
 								{{props.row.branchId}}
-							</el-form-item> 
+							</el-form-item>
 							<el-form-item label="ip地址" prop="ip">
 								{{props.row.ip}}
-							</el-form-item> 
+							</el-form-item>
 						</el-form>
 					</template>
-				</el-table-column> 
-			</el-table> 
+				</el-table-column>
+			</el-table>
 		</el-row>
-		<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
+		<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
 	</section>
 </template>
 
 <script>
 	import util from '@/common/js/util';//全局公共库
 	//import Sticky from '@/components/Sticky' // 粘性header组件
-	//import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
-	import { listXmRecord, delXmRecord, batchDelXmRecord } from '@/api/xm/core/xmRecord'; 
+
+	import { listXmRecord, delXmRecord, batchDelXmRecord } from '@/api/xm/core/xmRecord';
 	import { mapGetters } from 'vuex'
-	
-	export default { 
+
+	export default {
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
 		    ])
 		},
 		props:["projectId",'productId',"objType","bizId","simple" ,"visible"],
-		watch:{ 
+		watch:{
 			visible:function(visible){
-				if( visible ==true ){ 
+				if( visible ==true ){
 					this.searchXmRecords();
 				}
 			},
-			bizId:function(bizId){ 
-				this.searchXmRecords(); 
+			bizId:function(bizId){
+				this.searchXmRecords();
 			}
 		},
 		data() {
@@ -93,14 +93,14 @@
 				},
 				load:{ list: false, edit: false, del: false, add: false },//查询中...
 				sels: [],//列表选中数据
-				dicts:{},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
-				
+				dicts:{},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
+
 				addFormVisible: false,//新增xmRecord界面是否显示
 				//新增xmRecord界面初始化数据
 				addForm: {
 					id:'',projectId:'',operUserid:'',operUsername:'',operTime:'',objType:'',action:'',oldValue:'',newValue:'',remarks:'',taskId:'',reqNo:'',branchId:'',ip:''
 				},
-				
+
 				editFormVisible: false,//编辑界面是否显示
 				//编辑xmRecord界面初始化数据
 				editForm: {
@@ -112,9 +112,9 @@
 				/**end 自定义属性请在上面加 请加备注**/
 			}
 		},//end data
-		methods: { 
-			handleSizeChange(pageSize) { 
-				this.pageInfo.pageSize=pageSize; 
+		methods: {
+			handleSizeChange(pageSize) {
+				this.pageInfo.pageSize=pageSize;
 				this.getXmRecords();
 			},
 			handleCurrentChange(pageNum) {
@@ -136,7 +136,7 @@
 				this.getXmRecords();
 			},
 			searchXmRecords(){
-				 this.pageInfo.count=true; 
+				 this.pageInfo.count=true;
 				 this.getXmRecords();
 			},
 			//获取列表 XmRecord xm_record
@@ -149,33 +149,33 @@
 				};
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
 					let orderBys=[];
-					for(var i=0;i<this.pageInfo.orderFields.length;i++){ 
+					for(var i=0;i<this.pageInfo.orderFields.length;i++){
 						orderBys.push(this.pageInfo.orderFields[i]+" "+this.pageInfo.orderDirs[i])
-					}  
+					}
 					params.orderBy= orderBys.join(",")
 				}
 				if(this.filters.objType!=="" && this.filters.objType!=="all"){
 					 params.objType=this.filters.objType
-				} 
+				}
 				if(this.projectId){
 					params.projectId=this.projectId;
-				} 
+				}
 				if(this.productId){
 					params.productId=this.productId;
-				} 
+				}
 				if(this.bizId){
 					params.bizId=this.bizId;
-				} 
+				}
 				this.load.list = true;
 				listXmRecord(params).then((res) => {
 					var tips=res.data.tips;
-					if(tips.isOk){ 
+					if(tips.isOk){
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false;
 						this.xmRecords = res.data.data;
 					}else{
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: 'error' });
-					} 
+					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
 			},
@@ -201,38 +201,38 @@
 			//选择行xmRecord
 			selsChange: function (sels) {
 				this.sels = sels;
-			}, 
+			},
 			//删除xmRecord
-			handleDel: function (row,index) { 
+			handleDel: function (row,index) {
 				this.$confirm('确认删除该记录吗?', '提示', {
 					type: 'warning'
-				}).then(() => { 
+				}).then(() => {
 					this.load.del=true;
 					let params = { id: row.id };
 					delXmRecord(params).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
-						if(tips.isOk){ 
+						if(tips.isOk){
 							this.pageInfo.count=true;
 							this.getXmRecords();
 						}
-						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err  => this.load.del=false );
 				});
 			},
 			//批量删除xmRecord
 			batchDel: function () {
-				
+
 				this.$confirm('确认删除选中记录吗？', '提示', {
 					type: 'warning'
-				}).then(() => { 
+				}).then(() => {
 					this.load.del=true;
 					batchDelXmRecord(this.sels).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
-						if( tips.isOk ){ 
+						if( tips.isOk ){
 							this.pageInfo.count=true;
-							this.getXmRecords(); 
+							this.getXmRecords();
 						}
 						this.$notify({position:'bottom-left',showClose:true,message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
@@ -252,23 +252,23 @@
 					return cellValue;
 				}
 			}
-				
+
 			/**end 自定义函数请在上面加**/
-			
+
 		},//end methods
-		components: {  
-		    
+		components: {
+
 		    //在下面添加其它组件
 		},
-		mounted() { 
+		mounted() {
 			if(this.objType){
 				this.filters.objType=this.objType
 			}
-			
-			this.$nextTick(() => { 
-				this.tableHeight =  util.calcTableMaxHeight(this.$refs.table.$el); 
+
+			this.$nextTick(() => {
+				this.tableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);
 				this.getXmRecords();
-        	}); 
+        	});
 		}
 	}
 

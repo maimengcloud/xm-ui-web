@@ -6,9 +6,9 @@
         class="padding-left"
         :class="{ 'flex-box': displayType == 'agil' }"
       >
-        <el-row>  
+        <el-row>
 					<el-select style="width: 100px" v-model="filters.taskState" placeholder="状态" clearable>
-									<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.taskState" :key="index"></el-option> 
+									<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.taskState" :key="index"></el-option>
           </el-select>
           <el-select
             v-model="selkey"
@@ -31,7 +31,7 @@
             >
             <el-option value="myExecuserStatus1" label="我执行"
               >我执行</el-option
-            > 
+            >
             <el-option value="myExecuserStatus7" label="我放弃的"
               >我放弃的</el-option
             >
@@ -54,7 +54,7 @@
               :key="index"
               >{{ i.name }}</el-option
             >
-          </el-select> 
+          </el-select>
           <el-button
             class="hidden-md-and-down"
             v-if="!filters.skillTags || filters.skillTags.length == 0"
@@ -71,7 +71,7 @@
             @close="skillTagClear(skill)"
             >{{ skill.skillName }}</el-tag
           >
-          <el-button 
+          <el-button
             style="margin-top: 10px;"
             v-if="!filters.tags || filters.tags.length == 0"
             @click.native="$refs.tagDialog.open()"
@@ -90,18 +90,18 @@
             style="width: 10em"
             v-model="filters.key"
             placeholder="计划/任务名称"
-          > 
+          >
           </el-input>
-          
-        <el-input v-model="filters.projectId" style="width: 10em;" placeholder="项目编号" clearable></el-input> 
-        <el-input class="hidden-md-and-down" v-model="filters.cbranchId" style="width: 10em;" placeholder="项目公司编号" clearable></el-input> 
+
+        <el-input v-model="filters.projectId" style="width: 10em;" placeholder="项目编号" clearable></el-input>
+        <el-input class="hidden-md-and-down" v-model="filters.cbranchId" style="width: 10em;" placeholder="项目公司编号" clearable></el-input>
           <el-button
             @click="searchXmTasks"
             type="primary"
             icon="el-icon-search"
             v-loading="load.list"
           ></el-button>
-           
+
         <span>
           <el-popover
             placement="top-start"
@@ -109,15 +109,15 @@
             width="500"
             trigger="click"
           >
-            <el-row>  
-              <el-col :span="24" style="padding-top: 5px"> 
-                <el-button 
+            <el-row>
+              <el-col :span="24" style="padding-top: 5px">
+                <el-button
                   @click="setFiltersCreateUserAsMySelf"
                   >我是责任人</el-button
                 >
               </el-col>
               <el-col :span="24" style="padding-top: 5px">
-                 <el-button 
+                 <el-button
                   @click="setFiltersExecutorAsMySelf"
                   >我是执行人</el-button
                 >
@@ -163,7 +163,7 @@
                   >查询</el-button
                 >
               </el-col>
-            </el-row> 
+            </el-row>
             <el-button style="margin-top: 10px;" slot="reference">更多</el-button>
           </el-popover>
 
@@ -192,7 +192,7 @@
               @submit="afterEditSubmit"
             ></xm-task-agile-kanban>
             <el-table class="task-table"
-              v-else 
+              v-else
               :data="tasksTreeData"
               @sort-change="sortChange"
               v-loading="load.list"
@@ -208,7 +208,7 @@
               :tree-props="{ children: 'children'  }"
               row-key="id"
               ref="table"
-              
+
             >
               <el-table-column
                 label="全选"
@@ -216,7 +216,7 @@
                 width="50"
                 fixed="left"
               >
-              </el-table-column> 
+              </el-table-column>
               <el-table-column
                 sortable
                 prop="name"
@@ -228,26 +228,26 @@
                 <template slot-scope="scope">
                   <div    class="icon" :style="{backgroundColor:  scope.row.ntype==='1'?'#E6A23C':'#409EFF'}">
 									<i :class="scope.row.ntype==='1'?'el-icon-time':'el-icon-s-operation'" ></i>
-									</div>  
+									</div>
                   <span class="vlink"   type="primary" @click.stop="showDrawer(scope.row)">
                     {{ scope.row.sortLevel }}&nbsp;  {{ scope.row.name }}
                     </span>
-                  
+
 									<div class="tool-bar">
-                    <span class="u-btn">  
-                      <el-tooltip  v-if="scope.row.ntype==='0'" :content=" '编辑任务'">    
-                          <el-button    @click="showDrawer( scope.row,scope.$index)" icon="el-icon-edit" title="编辑任务" circle plain > </el-button>     
-                      </el-tooltip> 
+                    <span class="u-btn">
+                      <el-tooltip  v-if="scope.row.ntype==='0'" :content=" '编辑任务'">
+                          <el-button    @click="showDrawer( scope.row,scope.$index)" icon="el-icon-edit" title="编辑任务" circle plain > </el-button>
+                      </el-tooltip>
                     </span>
 									</div>
                 </template>
               </el-table-column>
-              
+
               <el-table-column
                 label="状态"
                 type="taskState"
                 width="100"
-              >  
+              >
 								<template slot-scope="scope">
 									<div class="cell-text">
 										<el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in formatterTaskStateDicts(scope.row.taskState)" :key="index">{{item.name}}</el-button>
@@ -259,12 +259,12 @@
 									</span>
 								</template>
               </el-table-column>
-              
+
               <el-table-column
                 label="优先级"
                 type="level"
                 width="100"
-              >  
+              >
 								<template slot-scope="scope">
 									<div class="cell-text">
 										<el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in formatterPriorityDicts(scope.row.level)" :key="index">{{item.name}}</el-button>
@@ -306,7 +306,7 @@
 
               <el-table-column sortable prop="tagNames" label="标签" width="100" show-overflow-tooltip>
 								<template slot-scope="scope">
-									<div class="cell-text"> 
+									<div class="cell-text">
 										{{scope.row.tagNames}}
 									</div>
 									<span class="cell-bar">
@@ -324,7 +324,7 @@
 								<template slot-scope="scope">
 									<div>
 										{{scope.row.createUsername}}
-									</div> 
+									</div>
 								</template>
               </el-table-column>
               <el-table-column
@@ -375,13 +375,13 @@
                 label="需求"
                 width="120"
                 show-overflow-tooltip
-              > 
+              >
 								<template slot-scope="scope">
-									<div class="cell-text"> 
+									<div class="cell-text">
                     <el-link @click.stop="toMenu(scope.row)">{{ scope.row.menuName ? scope.row.menuName : ""  }}</el-link>
-									</div> 
-								</template> 
-              </el-table-column> 
+									</div>
+								</template>
+              </el-table-column>
             </el-table>
             <el-pagination
               ref="pagination"
@@ -402,7 +402,7 @@
           ></xm-gantt>
         </el-row>
       </el-col>
-    </el-row> 
+    </el-row>
     <el-drawer
       v-if="timeVisible == true"
       :size="600"
@@ -489,17 +489,17 @@
               :picker-options="pickerOptions"
             ></el-date-picker>
             <el-button @click="editTime(editForm)">保存时间</el-button>
-          </div> 
+          </div>
         </el-row>
 
         <div
           v-if="drawerkey == '1' && timeVisible == true"
           style="overflow-x: hidden"
-        > 
+        >
         </div>
       </el-row>
-    </el-drawer> 
-    
+    </el-drawer>
+
     <!--编辑 XmTask xm_task界面-->
     <el-dialog
       :title="'【'+editForm.name+'】登记工时'"
@@ -509,14 +509,14 @@
       append-to-body
       :close-on-click-modal="false"
     >
-      <xm-workload-edit 
+      <xm-workload-edit
         :xm-task="editForm"
-        :visible="taskWorkloadVisible" 
+        :visible="taskWorkloadVisible"
         op-type="add"
         @cancel="taskWorkloadVisible=false"
         @submit="onTaskWorkloadSubmit"
       ></xm-workload-edit>
-    </el-dialog> 
+    </el-dialog>
 
  			<tag-dialog ref="tagDialog"   @select-confirm="onTagSelected">
 			</tag-dialog>
@@ -531,7 +531,7 @@
       append-to-body
       :close-on-click-modal="false"
     >
-      <xm-task-edit 
+      <xm-task-edit
         :xm-task="editForm"
         :visible="editFormVisible"
         @cancel="editFormVisible = false"
@@ -584,7 +584,7 @@
         :jump="true"
         @select-confirm="onTaskSkillsSearchSelected"
       ></skill-mng>
-    </el-drawer> 
+    </el-drawer>
     <el-drawer
       append-to-body
       title="需求明细"
@@ -597,7 +597,7 @@
         :reload="true"
         :xm-menu="{ menuId: editForm.menuId, menuName: editForm.menuName }"
       ></xm-menu-rich-detail>
-    </el-drawer>   
+    </el-drawer>
   </section>
 </template>
 
@@ -606,9 +606,9 @@ import Vue from "vue";
 import util from "@/common/js/util"; //全局公共库
 import treeTool from "@/common/js/treeTool"; //全局公共库
 //import Sticky from '@/components/Sticky' // 粘性header组件
-import { initSimpleDicts } from '@/api/mdp/meta/item'; //下拉框数据查询
+
 import {
-  getOutTask, 
+  getOutTask,
   editXmTaskSomeFields,
 } from "@/api/xm/core/xmTask";
  import XmTaskEdit from "../xmTask/XmTaskEdit"; //修改界面
@@ -617,24 +617,24 @@ import { mapGetters } from "vuex";
 import xmExecuserMng from "../xmTaskExecuser/XmTaskExecuserForTask";
 import xmSkillMng from "../xmTaskSkill/XmTaskSkillMng";
 import skillMng from "@/views/xm/core/skill/skillMng";
-import { batchAddSkill } from "@/api/xm/core/xmTaskSkill"; 
-import xmTaskTemplateMng from "../xmTaskTemplate/XmTaskTemplateMng"; 
+import { batchAddSkill } from "@/api/xm/core/xmTaskSkill";
+import xmTaskTemplateMng from "../xmTaskTemplate/XmTaskTemplateMng";
 
-import { addUserFocus, delUserFocus } from "@/api/mdp/sys/userFocus"; 
+import { addUserFocus, delUserFocus } from "@/api/mdp/sys/userFocus";
 
-import XmMenuRichDetail from "../xmMenu/XmMenuRichDetail"; 
+import XmMenuRichDetail from "../xmMenu/XmMenuRichDetail";
 import TagMng from "@/views/mdp/arc/tag/TagMng";
 
-import XmGantt from "../components/xm-gantt";  
- 
-	import  XmTableConfig from '@/views/xm/core/components/XmTableConfig';//修改界面 
-  
+import XmGantt from "../components/xm-gantt";
+
+	import  XmTableConfig from '@/views/xm/core/components/XmTableConfig';//修改界面
+
   	import TagDialog from "@/views/mdp/arc/tag/TagDialog";
   	import XmWorkloadEdit from "@/views/xm/core/xmWorkload/XmWorkloadEdit";
 
 export default {
   computed: {
-    ...mapGetters(["userInfo", "roles"]), 
+    ...mapGetters(["userInfo", "roles"]),
     taskTime() {
       if (this.budgetDateRanger.length > 1) {
         const s = new Date(this.budgetDateRanger[0]);
@@ -660,11 +660,11 @@ export default {
     },
 
   },
-  props: [ 
-    "isMy",    
+  props: [
+    "isMy",
      "source" //来源 "GZT:工作台"
   ],
-  watch: {    
+  watch: {
   },
   data() {
     const beginDate = new Date();
@@ -784,27 +784,27 @@ export default {
       taskStateList: ["待领取", "已领取执行中", "已完工", "已结算"],
 
       selkey: "",
-      timeVisible: false, 
+      timeVisible: false,
       isChild: false,
       oldrate: "",
       drawerkey: "",
- 
+
       currTaskId: "",
       currTaskName: "",
 
       skillVisible: false,
       skillIds: [],
-      taskSkills: [], 
-      menuDetailVisible: false, 
-      displayType: "table", 
+      taskSkills: [],
+      menuDetailVisible: false,
+      displayType: "table",
       showSkillSearchVisible: false, //按技能查询
-      tableHeight: 300, 
+      tableHeight: 300,
       dateRanger: [],
       pickerOptions: util.getPickerOptions("datarange"),
 
       budgetDateRanger: [],
-      actDateRanger: [],  
-      taskWorkloadVisible:false, 
+      actDateRanger: [],
+      taskWorkloadVisible:false,
       execUserVisible:false,
     };
   }, //end data
@@ -824,7 +824,7 @@ export default {
     handleCurrentChange(pageNum) {
       this.pageInfo.pageNum = pageNum;
       this.getXmTasks();
-    }, 
+    },
     clearFiltersCreateUser() {
       this.filters.createUserid = null;
       this.searchXmTasks();
@@ -832,7 +832,7 @@ export default {
     clearFiltersExecutor() {
       this.filters.executorUserid = null;
       this.searchXmTasks();
-    }, 
+    },
     // 表格排序 obj.order=ascending/descending,需转化为 asc/desc ; obj.prop=表格中的排序字段,字段驼峰命名
     sortChange(obj) {
       if (obj.order == null) {
@@ -876,7 +876,7 @@ export default {
         }
         params.orderBy = orderBys.join(",");
       }
-      params=this.getParams(params) 
+      params=this.getParams(params)
       //params.ptype=this.ptype
 
         getOutTask(params)
@@ -905,7 +905,7 @@ export default {
           this.load.list = false;
         })
         .catch((err) => (this.load.list = false));
-    }, 
+    },
     /**
      * 计算两个日期之间的天数
      * @param dateString1  开始日期 yyyy-MM-dd
@@ -918,7 +918,7 @@ export default {
       var days = (startDate - endDate) / (1 * 24 * 60 * 60 * 1000);
       return days;
     },
- 
+
 
     afterExecEditSubmit() {
       var row=this.editForm
@@ -931,7 +931,7 @@ export default {
     //选择行xmTask
     selsChange: function (sels) {
       this.sels = sels;
-    }, 
+    },
     rowClick: function (row) {
       this.editForm = row;
       if (row.startTime && row.endTime) {
@@ -957,7 +957,7 @@ export default {
 
     isEmpty(str) {
       return str == null || "" == str;
-    }, 
+    },
 
     showSkill(row) {
       this.editForm = row;
@@ -965,13 +965,13 @@ export default {
     },
     showSkillSelect() {
       this.showSkillSearchVisible = true;
-    }, 
+    },
     skillTagClear(skill) {
       this.filters.skillTags = this.filters.skillTags.filter(
         (i) => i.skillId != skill.skillId
       );
       this.searchXmTasks();
-    }, 
+    },
     onTaskSkillsSearchSelected(skills) {
       this.showSkillSearchVisible = false;
       this.filters.skillTags = skills;
@@ -1000,7 +1000,7 @@ export default {
           });
         })
         .catch((err) => (this.load.add = false));
-    }, 
+    },
     getDateString(dateStr) {
       if (dateStr == null || dateStr == "" || dateStr == undefined) {
         return "";
@@ -1060,7 +1060,7 @@ export default {
           return parseFloat(floatValue).toFixed(0);
         }
       }
-    }, 
+    },
 
     focusOrUnfocus: function (row) {
       if (this.selkey == "myFocus") {
@@ -1100,7 +1100,7 @@ export default {
           });
         });
       }
-    },  
+    },
     getFloatValue(value, digit) {
       if (isNaN(value)) {
         return 0;
@@ -1114,12 +1114,12 @@ export default {
     clearProduct() {
       this.filters.productId = "";
       this.searchXmTasks();
-    },  
+    },
     onProjectClear(){
-      this.filters.projectId=""; 
+      this.filters.projectId="";
       this.xmTasks=[]
       this.searchXmTasks();
-    }, 
+    },
     afterExecuserSubmit() {
 
       var row=this.editForm
@@ -1138,7 +1138,7 @@ export default {
       this.$nextTick(() => {
         this.$refs.execuserMng.toJoin();
       });
-    }, 
+    },
     setFiltersCreateUserAsMySelf() {
       this.filters.createUserid = this.userInfo.id;
       this.searchXmTasks();
@@ -1194,12 +1194,12 @@ export default {
           return amount + "元";
         }
       }
-    }, 
+    },
     clearFiltersTag(tag){
       var index=this.filters.tags.findIndex(i=>i.tagId==tag.tagId)
       this.filters.tags.splice(index,1);
       this.searchXmTasks();
-    }, 
+    },
     onTagSelected(tags,option){
 				if(option && option.action=='editTagIds'){
 					this.editXmTaskSomeFields(option.data,"tagIds",tags)
@@ -1255,7 +1255,7 @@ export default {
       }
       if (this.filters.menuId) {
         params.menuId = this.filters.menuId;
-      } 
+      }
       if (this.filters.skillTags && this.filters.skillTags.length > 0) {
         params.skillIds = this.filters.skillTags.map((i) => i.skillId);
       }
@@ -1270,11 +1270,11 @@ export default {
       }
       if (this.filters.executorUserid) {
         params.executorUserid = this.filters.executorUserid;
-      } 
+      }
       if (this.filters.tags && this.filters.tags.length>0) {
         params.tagIdList = this.filters.tags.map(i=>i.tagId);
       }
-      
+
       if (this.filters.cbranchId) {
         params.cbranchId = this.filters.cbranchId;
       }
@@ -1282,8 +1282,8 @@ export default {
       params.crowd="1"
       params.ntype="0"
       return params;
-    }, 
-    
+    },
+
 			editXmTaskSomeFields(row,fieldName,$event){
 				var params={ids:[row.id]};
 				if(this.sels.length>0){
@@ -1336,11 +1336,11 @@ export default {
 					}
 				})
 			},
-     
+
     initData(){
-       
+
     },
-    
+
 			formatterPriorityDicts(cellValue){
 				if(!cellValue && cellValue!=='0'){
 					return []
@@ -1398,7 +1398,7 @@ export default {
 					return [{id:cellValue,name:cellValue,className:'primary'}]
 				}
 
-			}, 
+			},
       showExecusers(row) {
         this.editForm = row;
         this.execUserVisible = true;
@@ -1423,24 +1423,24 @@ export default {
        },
     /**end 自定义函数请在上面加**/
   }, //end methods
-  components: {  
+  components: {
     xmExecuserMng,
     xmSkillMng,
     XmTaskEdit,
-    skillMng,   
+    skillMng,
     XmMenuRichDetail,
-    XmGantt,   
+    XmGantt,
     XmTaskAgileKanban,
-    TagMng, 
-    TagDialog, 
+    TagMng,
+    TagDialog,
     XmTableConfig,
     XmWorkloadEdit,
     //在下面添加其它组件
   },
   mounted() {
     this.initData();
-    this.$nextTick(() => { 
-      this.getXmTasks(); 
+    this.$nextTick(() => {
+      this.getXmTasks();
       this.tableHeight = this.source == 'GZT' ? this.tableHeight : util.calcTableMaxHeight(this.$refs.table.$el);
       initSimpleDicts( "all", ["planType","taskType","priority","xmTaskSettleSchemel","priority","taskState" ]).then((res) => {
         this.dicts = res.data.data;
@@ -1492,5 +1492,5 @@ export default {
   overflow-x: auto;
   overflow-y: hidden;
 }
-  
+
 </style>
