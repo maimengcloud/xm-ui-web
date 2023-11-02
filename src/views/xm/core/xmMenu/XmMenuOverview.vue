@@ -6,7 +6,7 @@
           <div>
             <el-row style="padding:10px">
               <el-steps :active="calcMenuCurrStep" finish-status="success" align-center>
-                <el-step :title="item.name" v-for="(item,index) in dicts['menuStatus']" :key="index"></el-step> 
+                <el-step :title="item.name" v-for="(item,index) in dicts['menuStatus']" :key="index"></el-step>
               </el-steps>
             </el-row>
           </div>
@@ -23,7 +23,7 @@
                 <span>需求管理员</span> <span v-text="this.xmMenu.mmUsername"></span>
               </el-row>
               <el-row>
-               
+
               </el-row>
             </el-row>
             <el-row style="margin-bottom:18px">
@@ -274,7 +274,7 @@
       workloadProgress:function (){
         return Math.round(this.xmMenu.actWorkload/this.xmMenu.budgetWorkload*100);
       },
-      deviation:function (){ 
+      deviation:function (){
           return this.xmMenuCpd.actWorkload-this.estimateWorkload;
       },
       deviationRate:function (){
@@ -283,7 +283,7 @@
       remainWorkload:function (){
         return this.xmMenu.budgetWorkload - this.xmMenu.actWorkload;
       },
-      planProgress:function (){ 
+      planProgress:function (){
          return Math.round(this.xmMenuCpd.estimateWorkload/this.budgetWorkload *100);
       },
       realProgress:function (){
@@ -296,7 +296,7 @@
       xmMenuCpd(){
         return this.xmMenu
       },
-      
+
 			calcMenuCurrStep(){
 				var menuStatus= this.dicts.menuStatus
 				if(!menuStatus){
@@ -539,10 +539,8 @@
     },
 
     mounted() {
-      
- 			initSimpleDicts('all',['demandSource','demandLvl','demandType','priority','menuStatus'] ).then(res=>{
-				this.dicts=res.data.data;
-			})
+
+
       this.$nextTick(() => {
       });
       this.drawAllBar();

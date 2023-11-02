@@ -581,9 +581,7 @@ XmEpicFeatures,
 		},
 		mounted() {
 
-  			initSimpleDicts("all",['menuStatus','demandSource','demandLvl','demandType','priority']).then(res=>{
-				this.dicts=res.data.data;
-			})
+
 			this.$nextTick(() => {
 
 				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el)-40;

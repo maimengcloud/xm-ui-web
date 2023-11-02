@@ -1,6 +1,6 @@
-<template> 
+<template>
 			<el-row :gutter="5" >
-				<el-col :span="showParams?23:24">  
+				<el-col :span="showParams?23:24">
 					<el-row class="rpt-box">
 						<el-row v-if="isRptCfg">
 							<el-row class="row-box padding-top">
@@ -19,57 +19,57 @@
 								<span class="remark">{{remark}}</span>
 							</el-row>
 						</el-row>
-					</el-row> 
-					<el-row> 
-							<div class="echart-box" :id="this.id"></div> 
+					</el-row>
+					<el-row>
+							<div class="echart-box" :id="this.id"></div>
 						</el-row>
 				</el-col>
-				
-				<el-col :span="showParams?1:0" v-if="showParams"> 
+
+				<el-col :span="showParams?1:0" v-if="showParams">
 					 <el-popover   trigger="manual" v-model="filterVisible" style="float:right;" width="500">
-						<el-button slot="reference" style="margin-top:10px;margin-right:10px;z-index: 99999;" icon="el-icon-more" @click="filterVisible=!filterVisible"></el-button> 
+						<el-button slot="reference" style="margin-top:10px;margin-right:10px;z-index: 99999;" icon="el-icon-more" @click="filterVisible=!filterVisible"></el-button>
 						<el-row>
 							<el-button type="danger" icon="el-icon-delete" @click="$emit('delete',cfg)">从报告移出该报表</el-button>
 							<el-button icon="el-icon-close" style="float:right;" @click="filterVisible=false">关闭</el-button>
 						</el-row>
 						<el-row>
 							<el-form :model="params" class="padding"   :style="{width:'100%',overflow: 'auto'}" ref="filtersRef">
-								 
+
 								<el-form-item label="日期区间">
 									<br>
 										<mdp-date-range v-model="params" value-format="yyyy-MM-dd" start-key="startBizDate" end-key="endBizDate"></mdp-date-range>
-								</el-form-item>    
-								
-									
+								</el-form-item>
+
+
 								<el-form-item>
 									<el-button type="primary"  style="float:right;" icon="el-icon-search" @click="listXmBranchStateHis">查询</el-button>
-								</el-form-item>  
+								</el-form-item>
 							</el-form>
 						</el-row>
 					 </el-popover>
-					
+
 				</el-col>
-			</el-row>  
+			</el-row>
 </template>
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询  
-	import { mapGetters } from 'vuex'	 
-	
+	import { initSimpleDicts } from '@/api/mdp/meta/item';//下拉框数据查询
+	import { mapGetters } from 'vuex'
+
 	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//产品选择界面
 	import  XmIterationSelect from '@/views/xm/core/components/XmIterationSelect';//迭代选择界面
 	import { listXmBranchStateHis } from '@/api/xm/core/xmBranchStateHis';
-	export default { 
-        
-		components: {  
+	export default {
+
+		components: {
 			XmIterationSelect,XmProductSelect,
 		},
         props:['id','cfg','category','showToolBar','showParams','isRptCfg','rptDatas','xmProduct','xmProject','xmIteration'],
 		computed: {
 		    ...mapGetters([
 		      'userInfo','roles'
-		    ]),  
+		    ]),
 			dataSetCpd(){
 				return [
 					['日期',...this.rawDatas.map(i=>i.bizDate)],
@@ -81,10 +81,10 @@
 					['已关缺陷',...this.rawDatas.map(i=>i.closedBugs)]
 				]
 			},
- 
+
 			titleCpd(){
 				return "企业工作项每日趋势图"
-				
+
 			},
 			xmProductCpd(){
 				if(this.xmIteration && this.xmIteration.id){
@@ -98,53 +98,53 @@
 				}
 				return null;
 			}
-			
-        }, 
-		watch: {  
-			dataSetCpd(){ 
+
+        },
+		watch: {
+			dataSetCpd(){
 				this.$nextTick(()=>{
 					this.drawCharts();
 				})
-				
+
 			}
 	    },
 		data() {
 			return {
                 filterVisible:false,
 				filters:{
-                    category:'', 
-                    product:null, 
+                    category:'',
+                    product:null,
                     project:null,
 					testPlan:null,
 					iteration:null,
 					testCasedb:null,
 					startBizDate:'',
 					endBizDate:'',
-                }, 
+                },
 				params:{
 
 				},
 				title:'',//报表配置项
 				remark:'', //报表配置项
-				
-				dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
-				load:{ list: false, edit: false, del: false, add: false },//查询中... 
-				dateRanger:[], 
-                maxTableHeight:300, 
+
+				dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
+				load:{ list: false, edit: false, del: false, add: false },//查询中...
+				dateRanger:[],
+                maxTableHeight:300,
                 visible:false,
 				rawDatas:[],
 
 			}//end return
 		},//end data
-		methods: {  
-			listXmBranchStateHis(){ 
-				
+		methods: {
+			listXmBranchStateHis(){
+
 				if(this.rptDatas){
 					this.rawDatas=this.rptDatas
 					return;
 				}
 				var params=this.params
-				listXmBranchStateHis(params).then(res=>{ 
+				listXmBranchStateHis(params).then(res=>{
 					this.rawDatas=res.data.tips.isOk?res.data.data:this.rawDatas;
 				})
 			},
@@ -154,54 +154,25 @@
 				this.filters.product=this.xmProduct
 				this.filters.project=this.xmProject
 				this.filters.iteration=this.xmIteration
-				this.filters.testCasedb=this.xmTestCasedb 
+				this.filters.testCasedb=this.xmTestCasedb
 
 				if( this.filters.testPlan && this.filters.testPlan.id){
 					this.params.planId= this.filters.testPlan.id
-				} 
-				 
-				if( this.filters.product && this.filters.product.id){
-					this.params.productId= this.filters.product.id
 				}
-				 
-				if( this.filters.project && this.filters.project.id){
-					this.params.projectId= this.filters.project.id
-				}
-				 
-				if( this.filters.iteration && this.filters.iteration.id){
-					this.params.iterationId= this.filters.iteration.id
-				}
-				 
-				 
-				if( this.filters.testCasedb && this.filters.testCasedb.id){
-					this.params.casedbId= this.filters.testCasedb.id
-				}
-				if(this.cfg && this.cfg.id){
-					this.params=this.cfg.params
-					this.title=this.cfg.title
-					this.remark=this.cfg.remark
-				}
-				if(this.showToolBar && !this.title){
-					this.title="企业工作项每日趋势图"
-				} 
 
-				if( this.filters.testPlan && this.filters.testPlan.id){
-					this.params.planId= this.filters.testPlan.id
-				} 
-				 
 				if( this.filters.product && this.filters.product.id){
 					this.params.productId= this.filters.product.id
 				}
-				 
+
 				if( this.filters.project && this.filters.project.id){
 					this.params.projectId= this.filters.project.id
 				}
-				 
+
 				if( this.filters.iteration && this.filters.iteration.id){
 					this.params.iterationId= this.filters.iteration.id
 				}
-				 
-				 
+
+
 				if( this.filters.testCasedb && this.filters.testCasedb.id){
 					this.params.casedbId= this.filters.testCasedb.id
 				}
@@ -213,15 +184,44 @@
 				if(this.showToolBar && !this.title){
 					this.title="企业工作项每日趋势图"
 				}
-				
+
+				if( this.filters.testPlan && this.filters.testPlan.id){
+					this.params.planId= this.filters.testPlan.id
+				}
+
+				if( this.filters.product && this.filters.product.id){
+					this.params.productId= this.filters.product.id
+				}
+
+				if( this.filters.project && this.filters.project.id){
+					this.params.projectId= this.filters.project.id
+				}
+
+				if( this.filters.iteration && this.filters.iteration.id){
+					this.params.iterationId= this.filters.iteration.id
+				}
+
+
+				if( this.filters.testCasedb && this.filters.testCasedb.id){
+					this.params.casedbId= this.filters.testCasedb.id
+				}
+				if(this.cfg && this.cfg.id){
+					this.params=this.cfg.params
+					this.title=this.cfg.title
+					this.remark=this.cfg.remark
+				}
+				if(this.showToolBar && !this.title){
+					this.title="企业工作项每日趋势图"
+				}
+
 				if(this.$refs['xmProductSelect'])this.$refs['xmProductSelect'].clearSelect();
 				if(this.$refs['xmIterationSelect'])this.$refs['xmIterationSelect'].clearSelect();
 				this.$nextTick(()=>{
 					this.listXmBranchStateHis();
 				})
-				
-			}, 
-			drawCharts() { 
+
+			},
+			drawCharts() {
 				this.myChart = this.$echarts.init(document.getElementById(this.id));
 				var that=this;
 				this.myChart.on('updateAxisPointer', function (event) {
@@ -243,14 +243,14 @@
 					}
 				});
 				this.myChart.setOption({
-						
+
 					title: {
-						text: this.titleCpd, 
+						text: this.titleCpd,
 						left: 'center'
-					}, 
-					
+					},
+
 					tooltip: {
-						trigger: 'axis', 
+						trigger: 'axis',
 					},
 					barMaxWidth: 100,
 					toolbox: {
@@ -260,13 +260,13 @@
 						feature: {
 						dataView: { show: true, readOnly: false },
 						magicType: { show: true, type: ['line', 'bar'] },
-						
+
 						saveAsImage: { show: true }
 						}
 					},
 
 					calculable: true,
-					legend: { 
+					legend: {
 							bottom: 'bottom',
 					},
 
@@ -274,7 +274,7 @@
 						source:  this.dataSetCpd
 					},
 					xAxis: {
-						type: 'category', 
+						type: 'category',
 					},
 					yAxis: { gridIndex: 0 },
     				grid: { top: '55%' },
@@ -282,40 +282,40 @@
 						{ 	name:'未关故事',
 							type: 'line',
         					seriesLayoutBy: 'row',
-							smooth:true, 
-        					emphasis: { focus: 'series' }, 
+							smooth:true,
+        					emphasis: { focus: 'series' },
 						},
 						{ 	name:'已关故事',
 							type: 'line',
         					seriesLayoutBy: 'row',
-							smooth:true, 
-        					emphasis: { focus: 'series' }, 
+							smooth:true,
+        					emphasis: { focus: 'series' },
 						},
-						{ 
+						{
 							name:'未关任务',
 							type: 'line',
         					seriesLayoutBy: 'row',
 							smooth:true,
-        					emphasis: { focus: 'series' }, 
+        					emphasis: { focus: 'series' },
 						},
-						{ 
+						{
 							name:'已关任务',
 							type: 'line',
         					seriesLayoutBy: 'row',
 							smooth:true,
-        					emphasis: { focus: 'series' }, 
+        					emphasis: { focus: 'series' },
 						},
 						{ 	name:'未关缺陷',
 							type: 'line',
         					seriesLayoutBy: 'row',
 							smooth:true,
-        					emphasis: { focus: 'series' },  
+        					emphasis: { focus: 'series' },
 						},
 						{ 	name:'已关缺陷',
 							type: 'line',
         					seriesLayoutBy: 'row',
 							smooth:true,
-        					emphasis: { focus: 'series' },  
+        					emphasis: { focus: 'series' },
 						},
 						{
 							type: 'pie',
@@ -335,61 +335,59 @@
 							}
 						}
 					]
-				}); 
+				});
 			},
-			
+
 			onProductSelected(product){
-				this.filters.product=product 
+				this.filters.product=product
 			},
-			
+
 			onProductClear(){
-				this.filters.product=null  
+				this.filters.product=null
 			},
-			
+
 			onIterationSelected(iteration){
 				this.filters.iteration=iteration
 			},
-			
+
 			onIterationClear(){
 				this.filters.iteration=null
 			}
 		},//end method
 		mounted() {
 			/**
- 			initSimpleDicts('all',['demandSource','demandLvl','demandType','priority','menuStatus'] ).then(res=>{
-				this.dicts=res.data.data;
-			}) 
+
              */
             this.maxTableHeight = this.$refs.filtersRef?util.calcTableMaxHeight(this.$refs.filtersRef.$el):this.maxTableHeight;
-			//this.charts(); 
+			//this.charts();
 			this.open();
-			
+
 		}//end mounted
 	}
 
 </script>
 
-<style lang="less" scoped> 
+<style lang="less" scoped>
    .image {
     width: 100%;
     display: block;
   }
-  .row-box{     
+  .row-box{
 	.title{
 		font-weight: 600;
 		font-size: large;
 		visibility: visible;
-	} 
+	}
 	.remark{
 		font-size:medium;
 		visibility: visible;
-	} 
+	}
 	.input {
 		visibility: hidden;
-		z-index: 10000;  
-		top: 0%; 
-		left:0%;  
-		position:absolute;  
+		z-index: 10000;
+		top: 0%;
+		left:0%;
+		position:absolute;
 	}
   }
   .row-box:hover{
@@ -398,11 +396,11 @@
 	}
 	.remark{
 		display:none;
-	} 
+	}
 	.input{
 		visibility: visible;
 	}
-  } 
+  }
   .rpt-box{
 	margin-left: 10px;
 	margin-right: 10px;

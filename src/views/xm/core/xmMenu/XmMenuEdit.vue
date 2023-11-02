@@ -696,9 +696,7 @@ import CommentArea from '../xmMenuComment/comment-area.vue';
 		mounted() {
 
 
- 			initSimpleDicts('all',['demandSource','demandLvl','demandType','priority','menuStatus'] ).then(res=>{
-				this.dicts=res.data.data;
-			})
+
 			this.editForm=Object.assign(this.editForm, this.xmMenu);
 			this.editFormBak=Object.assign({},this.editForm)
 			if(this.reload==true){
