@@ -397,9 +397,6 @@ export default {
   }, //end method
   mounted() {
     this.$nextTick(() => {
-      initSimpleDicts("all", ["bizFlowState"]).then(
-        (res) => (this.dicts = res.data.data)
-      );
       this.initData();
     });
   },

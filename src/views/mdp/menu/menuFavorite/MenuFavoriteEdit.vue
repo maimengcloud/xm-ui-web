@@ -3,53 +3,53 @@
 	    <el-row class="page-header">
 	    </el-row>
 		<el-row class="page-main">
-		<!--编辑界面 MenuFavorite 菜单收藏夹--> 
+		<!--编辑界面 MenuFavorite 菜单收藏夹-->
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef">
 				<el-form-item label="菜单收藏夹ID" prop="favoriteid">
 					<el-input v-model="editForm.favoriteid" placeholder="菜单收藏夹ID"></el-input>
-				</el-form-item> 
+				</el-form-item>
 				<el-form-item label="部门-岗位-用户ID（暂时不用）" prop="deptPostUserid">
 					<el-input v-model="editForm.deptPostUserid" placeholder="部门-岗位-用户ID（暂时不用）"></el-input>
-				</el-form-item> 
+				</el-form-item>
 				<el-form-item label="部门ID（暂时不用）" prop="deptid">
 					<el-input v-model="editForm.deptid" placeholder="部门ID（暂时不用）"></el-input>
-				</el-form-item> 
+				</el-form-item>
 				<el-form-item label="岗位ID（暂时不用）" prop="postid">
 					<el-input v-model="editForm.postid" placeholder="岗位ID（暂时不用）"></el-input>
-				</el-form-item> 
+				</el-form-item>
 				<el-form-item label="用户ID（暂时不用）" prop="userid">
 					<el-input v-model="editForm.userid" placeholder="用户ID（暂时不用）"></el-input>
-				</el-form-item> 
+				</el-form-item>
 				<el-form-item label="菜单ID（暂时不用）" prop="menuid">
 					<el-input v-model="editForm.menuid" placeholder="菜单ID（暂时不用）"></el-input>
-				</el-form-item> 
+				</el-form-item>
 				<el-form-item label="菜单名称" prop="menuname">
 					<el-input v-model="editForm.menuname" placeholder="菜单名称"></el-input>
-				</el-form-item> 
+				</el-form-item>
 				<el-form-item label="排序" prop="sort">
 					<el-input v-model="editForm.sort" placeholder="排序"></el-input>
-				</el-form-item> 
+				</el-form-item>
 				<el-form-item label="云用户机构编号" prop="branchId">
 					<el-input v-model="editForm.branchId" placeholder="云用户机构编号"></el-input>
-				</el-form-item> 
+				</el-form-item>
 				<el-form-item label="创建人" prop="cuserid">
 					<el-input v-model="editForm.cuserid" placeholder="创建人"></el-input>
-				</el-form-item> 
+				</el-form-item>
 				<el-form-item label="创建时间" prop="cdate">
 					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.cdate"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
-				</el-form-item> 
+				</el-form-item>
 				<el-form-item label="最后操作人" prop="lopuserid">
 					<el-input v-model="editForm.lopuserid" placeholder="最后操作人"></el-input>
-				</el-form-item> 
+				</el-form-item>
 				<el-form-item label="最后操作时间" prop="lopcreate">
 					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.lopcreate"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
-				</el-form-item> 
+				</el-form-item>
 				<el-form-item label="访问路径" prop="accUrl">
 					<el-input v-model="editForm.accUrl" placeholder="访问路径"></el-input>
-				</el-form-item> 
+				</el-form-item>
 				<el-form-item label="菜单图标" prop="icon">
 					<el-input v-model="editForm.icon" placeholder="菜单图标"></el-input>
-				</el-form-item> 
+				</el-form-item>
 			</el-form>
 		</el-row>
 
@@ -65,7 +65,7 @@
 	import { getDicts,initSimpleDicts,initComplexDicts } from '@/api/mdp/meta/item';//字典表
 	import { addMenuFavorite,editMenuFavorite } from '@/api/mdp/menu/menuFavorite';
 	import { mapGetters } from 'vuex'
-	
+
 	export default {
 	    components: {
             //MenuFavoriteEdit,
@@ -83,12 +83,12 @@
 	        }
 
 	      },
-	      'visible':function(visible) { 
+	      'visible':function(visible) {
 	      	if(visible==true){
 	      		//从新打开页面时某些数据需要重新加载，可以在这里添加
 	      		this.initData()
 	      	}
-	      } 
+	      }
 	    },
 		data() {
 			return {
@@ -119,7 +119,7 @@
 			saveSubmit: function () {
 				this.$refs.editFormRef.validate((valid) => {
 					if (valid) {
-						this.$confirm('确认提交吗？', '提示', {}).then(() => { 
+						this.$confirm('确认提交吗？', '提示', {}).then(() => {
 							this.load.edit=true
 							let params = Object.assign({}, this.editForm);
 							if(this.currOpType=='edit'){
@@ -165,7 +165,7 @@
 		},//end method
 		mounted() {
 		    this.$nextTick(() => {
-                //initSimpleDicts('all',['sex','gradeLvl']).then(res=>this.dicts=res.data.data);
+
                 this.initData()
             });
 		}

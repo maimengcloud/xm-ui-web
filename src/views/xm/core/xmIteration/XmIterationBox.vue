@@ -487,11 +487,7 @@ import XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue'
         	});
           // console.log(this.dateRanger,this.dateRangerOnline);
         	/** 举例，
-    		initSimpleDicts( "all",["sex","grade"] ).then(res=>{
-				if(res.data.tips.isOk){
- 					this.dicts=res.data.data
-				}
-			});
+
 			**/
 		}
 	}

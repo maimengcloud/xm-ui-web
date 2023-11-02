@@ -341,9 +341,7 @@ export default {
   mounted() {
     this.initData();
 
-  		initSimpleDicts("all",['menuStatus','demandSource','demandLvl','demandType','priority']).then(res=>{
-				this.dicts=res.data.data;
-			})
+
   },
 };
 </script>

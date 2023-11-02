@@ -295,7 +295,7 @@
 		},//end method
 		mounted() {
 		    this.$nextTick(() => {
-                //initSimpleDicts('all',['sex','gradeLvl']).then(res=>this.dicts=res.data.data);
+
                 this.initData()
                 this.maxTableHeight = util.calcTableMaxHeight(this.$refs.table.$el)
             });

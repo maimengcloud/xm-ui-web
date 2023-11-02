@@ -977,9 +977,7 @@ export default {
       this.maxTableHeight=util.calcMaxHeight(this.$refs.table.$el)
     });
 
-			initSimpleDicts('all',['projectType','priority','projectStatus']).then(res=>{
-				this.dicts=res.data.data;
-			})
+
     this.drawAllBar();
     this.drawMenuPie();
     this.drawTask();

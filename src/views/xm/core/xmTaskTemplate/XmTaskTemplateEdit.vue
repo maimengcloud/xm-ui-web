@@ -268,9 +268,7 @@
 			this.fileVisible = this.visible;
 			this.editForm=Object.assign(this.editForm, this.xmTaskTemplate);
 			//this.editForm.id = sn();
-			initSimpleDicts('all',['planType','taskType']).then(res=>{
-				this.dicts=res.data.data;
-			})
+
 			/**在下面写其它函数***/
 
 		}//end mounted

@@ -398,17 +398,6 @@
 		},
 		mounted() {
 			this.addForm.id=sn();
-				initSimpleDicts('all',['projectType','priority','projectStatus']).then(res=>{
-					this.dicts['projectType']=res.data.data.projectType
-					this.dicts['priority']=res.data.data.priority
-					this.dicts['priority']=res.data.data.priority
-					this.dicts['projectStatus']=res.data.data.projectStatus
-
-					this.addForm.xmType=this.dicts['projectType'][0].id
-					this.addForm.urgent=this.dicts['priority'][0].id
-					this.addForm.priority=this.dicts['priority'][0].id
-				})
-
 		}
 	}
 

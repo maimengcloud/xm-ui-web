@@ -621,7 +621,7 @@
     },//end methods
 		mounted() {
 			this.$nextTick(() => {
-			    //initSimpleDicts('all',['sex','gradeLvl']).then(res=>this.dicts=res.data.data);
+
 			    this.initData()
 				  this.searchXmWorkloads();
           this.maxTableHeight = util.calcTableMaxHeight(this.$refs.xmWorkloadTable.$el)

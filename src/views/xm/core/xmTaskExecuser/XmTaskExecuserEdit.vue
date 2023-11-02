@@ -148,9 +148,7 @@
 			this.editForm=Object.assign(this.editForm, this.xmTaskExecuser);
 			this.execUser.userid = this.editForm.userid;
 			this.execUser.username = this.editForm.username;
-			initSimpleDicts('all',['projectTaskExecuserStatus','projectTaskSettleStatus']).then(res=>{
-				this.dicts=res.data.data;
-			})
+
 		}
 	}
 

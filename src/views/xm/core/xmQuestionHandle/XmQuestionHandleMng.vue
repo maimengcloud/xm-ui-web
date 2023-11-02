@@ -232,11 +232,7 @@
 		mounted() {
 			this.$nextTick(() => {
 
-			initSimpleDicts('all',[ 'bugStatus' ]).then(res=>{
-				if(res.data.tips.isOk){
-					 this.dicts=res.data.data
-				}
-			});
+
 				this.tableHeight = util.calcTableMaxHeight(this.$refs.table.$el)-50;
 				this.getXmQuestionHandles();
         	});

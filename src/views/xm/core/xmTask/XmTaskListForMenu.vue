@@ -409,9 +409,7 @@
 				this.tableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);
 				this.getXmTasks();
 			});
-				initSimpleDicts('all',['planType','taskType','priority','priority']).then(res=>{
-					this.dicts=res.data.data;
-				})
+
 		}
 	}
 

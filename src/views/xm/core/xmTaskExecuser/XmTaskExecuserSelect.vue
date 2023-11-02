@@ -259,9 +259,7 @@
 				this.getXmTaskExecusers();
 				});
 
-			initSimpleDicts('all',['projectTaskExecuserStatus','projectTaskSettleStatus','taskState']).then(res=>{
-				this.dicts=res.data.data;
-			})
+
 		}
 	}
 

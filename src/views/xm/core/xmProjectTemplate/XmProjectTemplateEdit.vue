@@ -414,13 +414,6 @@
 		mounted() {
 			 	this.editForm=Object.assign({},this.selProjectTemplate);
 
-				initSimpleDicts('all',['projectType','priority','projectStatus']).then(res=>{
-					this.dicts['projectType']=res.data.data.projectType
-					this.dicts['priority']=res.data.data.priority
-					this.dicts['priority']=res.data.data.priority
-					this.dicts['projectStatus']=res.data.data.projectStatus
-				})
-
 		}
 	}
 

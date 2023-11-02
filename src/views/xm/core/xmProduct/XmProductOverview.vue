@@ -964,9 +964,7 @@ export default {
 
 
 
-			initSimpleDicts('all',['xmProductPstatus']).then(res=>{
-				this.dicts=res.data.data;
-			})
+
     this.drawAllBar();
     this.drawMenuPie();
     this.drawTask();

@@ -246,11 +246,7 @@
 				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);
         	});
         	/** 举例，
-    		initSimpleDicts( "all",["sex","grade"] ).then(res=>{
-				if(res.data.tips.isOk){
- 					this.dicts=res.data.data
-				}
-			});
+
 			**/
 		}
 	}

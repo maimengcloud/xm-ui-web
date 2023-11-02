@@ -556,9 +556,7 @@ export default {
   mounted() {
     this.initData();
 
-      initSimpleDicts( "all", ["planType","taskType","priority","xmTaskSettleSchemel","priority","taskState" ]).then((res) => {
-        this.dicts = res.data.data;
-      });
+
   },
 };
 </script>

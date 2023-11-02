@@ -293,11 +293,7 @@
 				this.getXmProjectStates();
         	});
         	/** 举例，
-    		initSimpleDicts( "all",["sex","grade"] ).then(res=>{
-				if(res.data.tips.isOk){
- 					this.dicts=res.data.data
-				}
-			});
+
 			**/
 		}
 	}

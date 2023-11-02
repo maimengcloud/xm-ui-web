@@ -283,7 +283,7 @@
 		    //在下面添加其它组件
 		},
 		mounted() {
-			initSimpleDicts('all',['costType','amountType','productType','contractStatus']).then(res=>this.dicts=res.data.data);
+
 			this.$nextTick(() => {
 				this.tableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);
 				this.getXmContracts();

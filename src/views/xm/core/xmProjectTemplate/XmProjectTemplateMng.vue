@@ -260,17 +260,10 @@
 			this.$nextTick(() => {
                 this.maxTableHeight = util.calcTableMaxHeight(this.$refs.table.$el);
 				this.getXmProjectTemplates();
-				initSimpleDicts( 'all' ['projectType'] ).then(res=>{
-						this.dicts=res.data.data
-				});
 			});
 
         	/** 举例，
-    		initSimpleDicts( "all",["sex","grade"] ).then(res=>{
-				if(res.data.tips.isOk){
- 					this.dicts=res.data.data
-				}
-			});
+
 			**/
 		}
 	}

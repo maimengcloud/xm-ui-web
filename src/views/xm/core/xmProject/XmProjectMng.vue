@@ -956,9 +956,7 @@
 				this.filters.productName=this.$route.params.productName;
 			}
 			this.$nextTick(() => {
-				initSimpleDicts('all',['projectType','priority','projectStatus','bizFlowState']).then(res=>{
-					this.dicts=res.data.data;
-				})
+
                 this.maxTableHeight = this.source == 'GZT' ?  this.maxTableHeight : util.calcTableMaxHeight(this.$refs.table1.$el);
 				this.showInfo = false;
 				this.getXmProjects(this.guiderStart);

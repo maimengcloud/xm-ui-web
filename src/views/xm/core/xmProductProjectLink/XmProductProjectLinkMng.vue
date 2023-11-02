@@ -324,11 +324,7 @@ import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect.vue'
                 this.maxTableHeight =  util.calcTableMaxHeight(".el-table")
         	});
         	/** 举例，
-    		initSimpleDicts( "all",["sex","grade"] ).then(res=>{
-				if(res.data.tips.isOk){
- 					this.dicts=res.data.data
-				}
-			});
+
 			**/
 		}
 	}

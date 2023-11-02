@@ -1111,11 +1111,6 @@
 				this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.table.$el);
 				this.getXmQuestions();
 			});
-				initSimpleDicts('all',['bugSeverity','bugSolution','bugStatus','bugType','priority','bugRepRate']).then(res=>{
-					if(res.data.tips.isOk){
-						this.dicts=res.data.data;
-					}
-				});
 		}
 	}
 

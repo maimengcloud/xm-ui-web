@@ -516,7 +516,6 @@
 		},//end methods
 		mounted() {
 			this.$nextTick(() => {
-			    initSimpleDicts('all',['bizFlowState']).then(res=>this.dicts=res.data.data);
 			    this.initData()
 				this.searchXmTaskSbills();
 				if(this.$refs.xmTaskSbillTable){

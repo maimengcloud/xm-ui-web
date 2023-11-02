@@ -551,7 +551,7 @@
     },//end methods
 		mounted() {
 			this.$nextTick(() => {
-			    //initSimpleDicts('all',['sex','gradeLvl']).then(res=>this.dicts=res.data.data);
+
           initDicts(this);
 			    this.initData()
 				  this.searchXmWorkloads();

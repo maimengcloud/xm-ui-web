@@ -859,11 +859,6 @@
 		},
 		mounted() {
 
-			initSimpleDicts('all',['xmProductPstatus'] ).then(res=>{
-				if(res.data.tips.isOk){
-					this.dicts['xmProductPstatus']=res.data.data.xmProductPstatus
-				}
-			});
 			this.$nextTick(() => {
 				this.maxTableHeight = this.source == 'GZT' ? this.maxTableHeight : util.calcTableMaxHeight(this.$refs.table1.$el);
 				this.getXmProducts(this.guiderStart);

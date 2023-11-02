@@ -25,29 +25,29 @@
 		<el-row class="padding-top">
 			<!--列表 Item 数据项定义-->
 			<el-table ref="item" :data="items" :height="maxTableHeight" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
- 				<el-table-column sortable type="index" width="40"></el-table-column> 
+ 				<el-table-column sortable type="index" width="40"></el-table-column>
 				<el-table-column prop="itemName" label="字典名称" min-width="100" >
 				</el-table-column><el-table-column prop="itemCode" label="字典代码" min-width="100" ></el-table-column>
 				<el-table-column prop="categoryName" label="分类" min-width="80" ></el-table-column>
 				<el-table-column prop="itemType" label="输入类型" min-width="80" >
-					<template slot-scope="scope"> 
+					<template slot-scope="scope">
 						<div v-for=" (it,idxx) in itemTypeList" :key="idxx">
-							<div v-if="scope.row.itemType==it.id">{{it.name}}</div> 
-						</div> 
+							<div v-if="scope.row.itemType==it.id">{{it.name}}</div>
+						</div>
 					</template>
-				</el-table-column>  
-				<el-table-column prop="dvalues" label="值" min-width="80" show-overflow-tooltip></el-table-column> 
+				</el-table-column>
+				<el-table-column prop="dvalues" label="值" min-width="80" show-overflow-tooltip></el-table-column>
 
 				<el-table-column prop="optionList" label="列表" min-width="80" show-overflow-tooltip :formatter="formatteroptionList"></el-table-column>
 				<!--
 				<el-table-column prop="dnames" label="默认值" min-width="80" ></el-table-column>
-				
+
  				<el-table-column prop="required" label="必须" min-width="80" ></el-table-column>
 				<el-table-column prop="seq" label="顺序" min-width="80" ></el-table-column>
  				<el-table-column prop="show" label="显示" min-width="80" ></el-table-column>
-				<el-table-column prop="qx" label="权限" min-width="80" ></el-table-column> 
+				<el-table-column prop="qx" label="权限" min-width="80" ></el-table-column>
 				-->
-				<el-table-column prop="remark" label="备注" min-width="80" show-overflow-tooltip></el-table-column> 
+				<el-table-column prop="remark" label="备注" min-width="80" show-overflow-tooltip></el-table-column>
 				<el-table-column label="操作" width="120" fixed="right">
 				    <template slot="header">
                         <el-button @click="showAdd" icon="el-icon-plus" circle> </el-button>
@@ -58,13 +58,13 @@
 					</template>
 				</el-table-column>
 			</el-table>
-			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination> 
-		
+			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
+
 			<!--编辑 Item 数据项定义界面-->
 			<el-drawer title="编辑数据项定义" :visible.sync="editFormVisible"  size="60%"  append-to-body   :close-on-click-modal="false">
 				  <item-edit :item="editForm" :visible="editFormVisible" @cancel="editFormVisible=false" @submit="afterEditSubmit"></item-edit>
 			</el-drawer>
-	
+
 			<!--新增 Item 数据项定义界面-->
 			<el-drawer title="新增数据项定义" :visible.sync="addFormVisible"  size="60%"  append-to-body  :close-on-click-modal="false">
 				<item-add :item="addForm" :visible="addFormVisible" @cancel="addFormVisible=false" @submit="afterAddSubmit"></item-add>
@@ -75,14 +75,14 @@
 
 <script>
 	import util from '@/common/js/util';//全局公共库
-	import config from '@/common/config';//全局公共库  
-	
+	import config from '@/common/config';//全局公共库
+
 	import { listItem, delItem, batchDelItem,initSimpleDicts } from '@/api/mdp/meta/item';
 	import  ItemAdd from './ItemAdd';//新增界面
 	import  ItemEdit from './ItemEdit';//修改界面
-	import { mapGetters } from 'vuex' 
+	import { mapGetters } from 'vuex'
 	import { listCategory } from '@/api/mdp/meta/category';
-	export default {  
+	export default {
 		props:['categoryId'],
 		computed: {
 		    ...mapGetters([
@@ -111,14 +111,14 @@
 				dicts:{
 					meta_push_target:{options:[]}
 					//sex:[],
-				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]} 
-				
+				},//下拉选择框的所有静态数据 params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
+
 				addFormVisible: false,//新增item界面是否显示
 				//新增item界面初始化数据
 				addForm: {
 					id:'',itemCode:'',itemName:'',remark:'',categoryId:'',itemSize:'50',itemType:'',branchId:'',deptid:'',cmenu:'',dvalues:'',dnames:'',optionList:'',inputFormat:'请输入',required:'0',seq:'999',tableName:'',isShow:'1',qx:''
 				},
-				
+
 				editFormVisible: false,//编辑界面是否显示
 				//编辑item界面初始化数据
 				editForm: {
@@ -143,9 +143,9 @@
 				]
 			}
 		},//end data
-		methods: { 
-			handleSizeChange(pageSize) { 
-				this.pageInfo.pageSize=pageSize; 
+		methods: {
+			handleSizeChange(pageSize) {
+				this.pageInfo.pageSize=pageSize;
 				this.getItems();
 			},
 			handleCurrentChange(pageNum) {
@@ -156,7 +156,7 @@
 			sortChange( obj ){
 				if(obj.order==null){
 					this.pageInfo.orderFields=[];
-					this.pageInfo.orderDirs=[]; 
+					this.pageInfo.orderDirs=[];
 				}else{
 					var dir='asc';
 					if(obj.order=='ascending'){
@@ -164,14 +164,14 @@
 					}else{
 						dir='desc';
 					}
-					 
-					this.pageInfo.orderFields=[util.toLine(obj.prop)]; 
+
+					this.pageInfo.orderFields=[util.toLine(obj.prop)];
 					this.pageInfo.orderDirs=[dir];
 				}
 				this.getItems();
 			},
 			searchItems(){
-				 this.pageInfo.count=true; 
+				 this.pageInfo.count=true;
 				 this.getItems();
 			},
 			//获取列表 Item 数据项定义
@@ -184,13 +184,13 @@
 				};
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){
 					let orderBys=[];
-					for(var i=0;i<this.pageInfo.orderFields.length;i++){ 
+					for(var i=0;i<this.pageInfo.orderFields.length;i++){
 						orderBys.push(this.pageInfo.orderFields[i]+" "+this.pageInfo.orderDirs[i])
-					}  
+					}
 					params.orderBy= orderBys.join(",")
 				}
 				if(this.filters.key){
-					params.key= this.filters.key 
+					params.key= this.filters.key
 				}
 				if(this.filters.categoryId){
 					params.categoryId=this.filters.categoryId
@@ -201,13 +201,13 @@
 				this.load.list = true;
 				listItem(params).then((res) => {
 					var tips=res.data.tips;
-					if(tips.isOk){ 
+					if(tips.isOk){
 						this.pageInfo.total = res.data.total;
 						this.pageInfo.count=false;
 						this.items = res.data.data;
 					}else{
 						this.$notify({ message: tips.msg, type: 'error' });
-					} 
+					}
 					this.load.list = false;
 				}).catch( err => this.load.list = false );
 			},
@@ -234,38 +234,38 @@
 			//选择行item
 			selsChange: function (sels) {
 				this.sels = sels;
-			}, 
+			},
 			//删除item
-			handleDel: function (row,index) { 
+			handleDel: function (row,index) {
 				this.$confirm('确认删除该记录吗?', '提示', {
 					type: 'warning'
-				}).then(() => { 
+				}).then(() => {
 					this.load.del=true;
 					let params = { id: row.id };
 					delItem(params).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
-						if(tips.isOk){ 
+						if(tips.isOk){
 							this.pageInfo.count=true;
 							this.getItems();
 						}
-						this.$notify({ message: tips.msg, type: tips.isOk?'success':'error' }); 
+						this.$notify({ message: tips.msg, type: tips.isOk?'success':'error' });
 					}).catch( err  => this.load.del=false );
 				});
 			},
 			//批量删除item
 			batchDel: function () {
-				
+
 				this.$confirm('确认删除选中记录吗？', '提示', {
 					type: 'warning'
-				}).then(() => { 
+				}).then(() => {
 					this.load.del=true;
 					batchDelItem(this.sels).then((res) => {
 						this.load.del=false;
 						var tips=res.data.tips;
-						if( tips.isOk ){ 
+						if( tips.isOk ){
 							this.pageInfo.count=true;
-							this.getItems(); 
+							this.getItems();
 						}
 						this.$notify({ message: tips.msg, type: tips.isOk?'success':'error'});
 					}).catch( err  => this.load.del=false );
@@ -278,19 +278,19 @@
 			//获取列表 Category 元数据分类
 			getCategorys() {
 				let params = {
-				 
-				}; 
+
+				};
 				this.load.list = true;
 				listCategory(params).then((res) => {
 					var tips=res.data.tips;
-					if(tips.isOk){  
+					if(tips.isOk){
 						this.categorys = res.data.data;
 					}else{
 						this.$notify({ message: tips.msg, type: 'error' });
-					} 
+					}
 					this.load.list = false;
 				}).catch(() => {
-					this.load.list = false; 
+					this.load.list = false;
 				});
 			},
 			formatteroptionList(row,colum,cellValue,index){
@@ -302,14 +302,14 @@
 				}
 			}
 			/**end 自定义函数请在上面加**/
-			
+
 		},//end methods
-		components: { 
+		components: {
 		    'item-add':ItemAdd,
 		    'item-edit':ItemEdit,
 		},
-		mounted() {  
-			initSimpleDicts('all','meta_push_target').then(res=>this.dicts=res.data.data)
+		mounted() {
+
 			if(this.categoryId){
 				this.filters.categoryId=this.categoryId
 				this.addForm.categoryId=this.categoryId
@@ -320,8 +320,8 @@
                  var clientRect=this.$refs.item.$el.getBoundingClientRect();
                 var subHeight=70/1000 * window.innerHeight;
                 this.maxTableHeight =  window.innerHeight -clientRect.y - this.$refs.item.$el.offsetTop-subHeight;
-				
-        	});  
+
+        	});
 		}
 	}
 

@@ -235,9 +235,7 @@
 			}
 
 			/**在下面写其它函数***/
-			initSimpleDicts('all',['projectTaskExecuserStatus','projectTaskSettleStatus']).then(res=>{
-				this.dicts=res.data.data;
-			})
+
 		}//end mounted
 	}
 

@@ -680,11 +680,7 @@
 			this.initData();
 			this.maxTableHeight =  util.calcTableMaxHeight(this.$refs.editRef.$el)-200;
 
-			initSimpleDicts('all',['bugSeverity','bugSolution','bugStatus','bugType','priority','bugRepRate','bugReason']).then(res=>{
-				if(res.data.tips.isOk){
-					 this.dicts=res.data.data
-				}
-			});
+
 			//this.getXmQuestionHandle();
 			/**在下面写其它函数***/
 
