@@ -29,7 +29,7 @@
 
 					<el-col :span="8">
 
-						<mdp-date-x label="创建日期" v-model="editForm.ctime"  @change="editSomeFields(editForm,'ctime',$event)"></mdp-date-x>
+						<mdp-date show-style="x" label="创建日期" v-model="editForm.ctime"  @change="editSomeFields(editForm,'ctime',$event)"></mdp-date>
 					</el-col>
 				</el-row>
 			</el-form>

@@ -77,7 +77,7 @@
 									</el-col>
 
 									<el-col :span="6">
-												<mdp-date-x label="结束时间" style="max-width:100%;" value-format="yyyy-MM-dd HH:mm:ss" v-model="editForm.endTime" @change="editXmQuestionSomeFields(editForm,'endTime',$event)"></mdp-date-x>
+												<mdp-date show-style="x" label="结束时间" style="max-width:100%;" value-format="yyyy-MM-dd HH:mm:ss" v-model="editForm.endTime" @change="editXmQuestionSomeFields(editForm,'endTime',$event)"></mdp-date>
  									</el-col>
 								</el-row>
 								<el-tabs v-model="activateTabPaneName" ref="editRef">

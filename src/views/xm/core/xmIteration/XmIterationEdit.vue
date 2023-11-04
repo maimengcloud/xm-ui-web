@@ -17,7 +17,7 @@
 
 					<el-col :span="12">
 						<el-form-item prop="onlineTime" label-width="0px">
-							<mdp-date-x label="上线时间"  type="date" placeholder="选择日期" v-model="editForm.onlineTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" @change="editSomeFields(editForm,'onlineTime',$event)"></mdp-date-x>
+							<mdp-date show-style="x" label="上线时间"  type="date" placeholder="选择日期" v-model="editForm.onlineTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" @change="editSomeFields(editForm,'onlineTime',$event)"></mdp-date>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
