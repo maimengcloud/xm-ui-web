@@ -50,7 +50,7 @@
 									<mdp-select-user-xm  label="负责人" v-model="addForm" userid-key="createUserid" username-key="createUsername" :project-id="addForm.projectId?addForm.projectId:(xmProjectCpd?xmProjectCpd.id:null)" @change="editXmTaskSomeFields(addForm,'createUserid',$event)"></mdp-select-user-xm>
  							</el-col>
 							<el-col :span="8">
-										<mdp-date-range-x
+										<mdp-date-range
 											:style-obj="{maxWidth:'100%'}"
 											v-model="addForm"
 											start-key="startTime"
@@ -65,7 +65,7 @@
 											value-format="yyyy-MM-dd HH:mm:ss"
 											:default-time="['00:00:00','23:59:59']"
 											:picker-options="pickerOptions"
-										></mdp-date-range-x>
+										></mdp-date-range>
 							</el-col>
 
 						</el-row>

@@ -139,7 +139,7 @@
 								</mdp-field-x>
 							</el-col>
 							<el-col :span="8">
- 										<mdp-date-range-x label="起止时间" type="daterange" :style-obj="{maxWidth:'100%'}" :auto-default="false"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" v-model="editForm" start-key="startTime" end-key="endTime"  @change="editXmMenuSomeFields(editForm,'startTime',editForm)"></mdp-date-range-x>
+ 										<mdp-date-range label="起止时间" type="daterange" :style-obj="{maxWidth:'100%'}" :auto-default="false"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" v-model="editForm" start-key="startTime" end-key="endTime"  @change="editXmMenuSomeFields(editForm,'startTime',editForm)"></mdp-date-range>
 
  							</el-col>
 						</el-row>
