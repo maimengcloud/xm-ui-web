@@ -247,6 +247,7 @@ export default {
         //this.comps.forEach(k=>k.id=k.id?k.id:k.compId) 
        
         this.$nextTick(()=>{
+            debugger
             this.maxTableHeight = util.calcMaxHeight(this.$refs.table.$el)
             if(this.category){
                 this.filters.category=this.category

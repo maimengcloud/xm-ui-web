@@ -17,12 +17,12 @@ export default {
    * 通过字典值获取其名称
    * 界面上可以
    * {{formatDicts(dicts,'xxx',scope.row.xxx)}}
-   * @param {*} dicts 
-   * @param {*} itemCode 
-   * @param {*} cellValue 
-   * @returns 
+   * @param {*} dicts
+   * @param {*} itemCode
+   * @param {*} cellValue
+   * @returns
    */
-  formatDicts: function(dicts,itemCode,cellValue){ 
+  formatDicts: function(dicts,itemCode,cellValue){
     let key=itemCode;
     if( dicts[key]==undefined ||  dicts[key]==null ||  dicts[key].length==0   ){
       return cellValue;
@@ -32,22 +32,22 @@ export default {
       return dict.name
     }else{
       return cellValue
-    } 
-  }, 
+    }
+  },
 
   /**
    * 通过字典值获取其名称，返回根值相同的字典,并自动计算其对应显示样式
    * 界面上可以类似使用
    * 显示：
       <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'xxxx',scope.row.xxxx)" :key="index" :type="item.className">{{item.name}}</el-tag>
-   
+
    * 下拉框：
       <el-select v-model="editForm.xxxx" @change="editSomeFields(editForm,'xxxx',$event)">
         <el-option style="margin-top:5px;" v-for="(item,index) in dicts['xxxx']" :key="index" :value="item.id" :label="item.name">
-           <span :style="{backgroundColor:item.color}"> 
+           <span :style="{backgroundColor:item.color}">
               <i  v-if="item.icon" :class="item.icon"></i>
               {{item.name}}
-           </span> 
+           </span>
         </el-option>
       </el-select>
 
@@ -61,15 +61,15 @@ export default {
       7|xx|#ff8c00
       8|xx|#c7158577
       9|xx|#ffd700
-   * 
-   * @param {*} dicts 
-   * @param {*} itemCode 
-   * @param {*} cellValue 
+   *
+   * @param {*} dicts
+   * @param {*} itemCode
+   * @param {*} cellValue
    * @returns [{id:'',name:'',className:'',color:'',icon:''}]
-   */ 
-  formatDictsWithClass: function(dicts,itemCode,cellValue){ 
-    
-    var classNames=['info','primary','success','warning','danger']; 
+   */
+  formatDictsWithClass: function(dicts,itemCode,cellValue){
+
+    var classNames=['info','primary','success','warning','danger'];
     var colors=['#909399','#409EFF','#67C23A','#E6A23C','#F56C6C','#00ced1','#c71585','#ff8c00','#c7158577','#ffd700'];
 
     let key=itemCode;
@@ -89,30 +89,30 @@ export default {
         typeIndex=1
       }
     if(dicts[key]==undefined || dicts[key]==null || dicts[key].length==0   ){
-      
+
       return [{id:cellValue,name:cellValue,className:classNames[typeIndex],color:colors[colorIndex]}];
     }
-    let data=dicts[key].find(i=>i.id===cellValue) 
-    if(data){ 
+    let data=dicts[key].find(i=>i.id===cellValue)
+    if(data){
       data['className']=classNames[typeIndex]
       if(!data.color){
         data.color=colors[colorIndex]
-      } 
+      }
       return [data];
     }else{
       return [{id:cellValue,name:cellValue,className:classNames[typeIndex],color:colors[colorIndex]}]
     }
 
-  },  
+  },
 
-  getColor(cellValue){ 
+  getColor(cellValue){
     var colors=['#909399','#409EFF','#67C23A','#E6A23C','#F56C6C','#00ced1','#c71585','#ff8c00','#c7158577','#ffd700'];
     if(!cellValue){
       return colors[0]
-    } 
+    }
     var cellValueInt=parseInt(cellValue)
       if( isNaN(cellValueInt) ){
-        
+
         if(cellValue instanceof String && cellValue.length>0){
           cellValueInt=cellValue.charCodeAt(cellValue.length-1)
         }else if(cellValue instanceof Object){
@@ -121,11 +121,11 @@ export default {
           }else{
             cellValueInt=0;
           }
-          
+
         }else{
           cellValueInt=0;
         }
-       
+
       }
       var colorIndex=cellValueInt % 10
       if(cellValueInt > 0 && colorIndex==0){
@@ -134,8 +134,8 @@ export default {
       return  colors[colorIndex]
   },
 
-  getType(cellValue){ 
-    var classNames=['info','primary','success','warning','danger']; 
+  getType(cellValue){
+    var classNames=['info','primary','success','warning','danger'];
 
     if(!cellValue){
       return classNames[0]
@@ -143,30 +143,44 @@ export default {
     var cellValueInt=parseInt(cellValue)
       if( isNaN(cellValueInt) ){
         cellValueInt=cellValue.charCodeAt(cellValue.length-1)
-      } 
+      }
       var typeIndex=cellValueInt % 5
       if(cellValueInt > 0 && typeIndex==0){
         typeIndex=1
       }
       return classNames[typeIndex]
   },
+  
+  calcMaxHeight(cssSelector) {     
+    debugger;
+    var table=cssSelector;
+    if(typeof cssSelector == 'string'){
+      table=document.querySelector(cssSelector);
+    }  
+    var innerHeight=window.innerHeight   
+    var top=150; 
+
+    
+    if(table!=null){  
+      var rect=table.getBoundingClientRect()     
+
+      if(rect && rect.top){ 
+        top=rect.top;
+      }  
+    } 
+    var maxTableHeight =innerHeight-top;  
+    return maxTableHeight;
+  }, 
   calcTableMaxHeight(cssSelector) {     
     var table=cssSelector;
     if(typeof cssSelector == 'string'){
       table=document.querySelector(cssSelector);
-    } 
+    }  
     var innerHeight=window.innerHeight  
-    var defaultInnerHeight=616;  
-    var pageHeight=32/defaultInnerHeight*innerHeight 
-    var top=150/defaultInnerHeight*innerHeight;
-    var bottomHeight=36/defaultInnerHeight*innerHeight
-    if(innerHeight>=916){
-      bottomHeight=20/defaultInnerHeight*innerHeight
-    }else if(innerHeight>=800){
-      bottomHeight=26/defaultInnerHeight*innerHeight
-    }else if(innerHeight>=700){
-      bottomHeight=32/defaultInnerHeight*innerHeight
-    }
+    var pageHeight=32 
+    var top=150;
+    var bottomHeight=24
+
     
     if(table!=null){  
       var rect=table.getBoundingClientRect()    
@@ -177,13 +191,13 @@ export default {
     var maxTableHeight =innerHeight-top-pageHeight-bottomHeight;  
     return maxTableHeight;
   }, 
-  getPositionTop(node) { 
+  getPositionTop(node) {
 
       if(!node){
         return 0;
-      } 
-      var rect=node.getBoundingClientRect() 
-      var top=rect.top; 
+      }
+      var rect=node.getBoundingClientRect()
+      var top=rect.top;
       if(top==0){
         return 0;
       }
@@ -300,7 +314,7 @@ export default {
    */
   toLine(name) {
     return name.replace(/([A-Z])/g, "_$1").toLowerCase();
-  }, 
+  },
   formatDate: function(date, pattern) {
       pattern = pattern || DEFAULT_PATTERN
       return pattern.replace(SIGN_REGEXP, function($0) {
@@ -356,7 +370,7 @@ export default {
         return _date
       }
       return null
-    }, 
+    },
 
   //type date/daterange
   getPickerOptions: function(type) {

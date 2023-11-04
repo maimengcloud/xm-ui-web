@@ -398,5 +398,46 @@ export default {
     // 防止反复添加
     if(!document.getElementById(id)) document.body.appendChild(a);
     a.click();
-  }
+  },
+
+  calcMaxHeight:function(cssSelector) {
+    debugger;
+    var table=cssSelector;
+    if(typeof cssSelector == 'string'){
+      table=document.querySelector(cssSelector);
+    }
+    var innerHeight=window.innerHeight
+    var top=150;
+
+
+    if(table!=null){
+      var rect=table.getBoundingClientRect()
+
+      if(rect && rect.top){
+        top=rect.top;
+      }
+    }
+    var maxTableHeight =innerHeight-top;
+    return maxTableHeight;
+  },
+  calcTableMaxHeight:function(cssSelector) {
+    var table=cssSelector;
+    if(typeof cssSelector == 'string'){
+      table=document.querySelector(cssSelector);
+    }
+    var innerHeight=window.innerHeight
+    var pageHeight=32
+    var top=150;
+    var bottomHeight=24
+
+
+    if(table!=null){
+      var rect=table.getBoundingClientRect()
+      if(rect && rect.top!=0){
+        top=rect.top;
+      }
+    }
+    var maxTableHeight =innerHeight-top-pageHeight-bottomHeight;
+    return maxTableHeight;
+  }, 
 }
