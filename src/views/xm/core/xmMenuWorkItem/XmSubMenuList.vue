@@ -57,7 +57,7 @@
 							</el-table-column>
 							<el-table-column prop="mmUsername" label="跟进人"  width="150" show-overflow-tooltip  sortable>
 								<template slot-scope="scope">
-									 <mdp-select-user show-style="tag" @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.mmUserid" @change="editXmMenuSomeFields(scope.row,'mmUserid',$enent)"></mdp-select-user>
+									 <mdp-select-user show-style="tag" @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.mmUserid" :init-name="scope.row.mmUsername" @change2="editXmMenuSomeFields(scope.row,'mmUserid',$enent)"></mdp-select-user>
 								</template>
 							</el-table-column>
         </el-table>

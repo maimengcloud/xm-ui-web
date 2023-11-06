@@ -68,7 +68,7 @@
                 show-overflow-tooltip
               >
 								<template slot-scope="scope">
-                  <mdp-select-user show-style="tag" @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.creatorUserid" @change2="editXmTaskSomeFields(scope.row,'creatorUserid',$event)"></mdp-select-user>
+                  <mdp-select-user show-style="tag" @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.creatorUserid" :init-name="scope.row.createUsername" @change2="editXmTaskSomeFields(scope.row,'creatorUserid',$event)"></mdp-select-user>
 
 								</template>
               </el-table-column>
@@ -80,7 +80,7 @@
                 show-overflow-tooltip
               >
 								<template slot-scope="scope">
-                  <mdp-select-user show-style="tag" @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.executorUserid" @change2="selectExecUserConfirm(scope.row,'executorUserid',$event)"></mdp-select-user>
+                  <mdp-select-user show-style="tag" @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.executorUserid" :init-name="scope.row.executorUsername" @change2="selectExecUserConfirm(scope.row,'executorUserid',$event)"></mdp-select-user>
 								</template>
               </el-table-column>
         </el-table>

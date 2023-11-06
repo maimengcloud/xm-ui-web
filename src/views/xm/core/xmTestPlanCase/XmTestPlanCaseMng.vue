@@ -56,7 +56,7 @@
                             </el-table-column>
                             <el-table-column prop="execUsername" label="执行人姓名" min-width="120" >
                                 <template slot-scope="scope">
-                                    <mdp-select-user show-style="tag" @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.execUserid"  @change2="editSomeFields(scope.row,'execUserid',$event)">
+                                    <mdp-select-user show-style="tag" @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.execUserid" :init-name="scope.row.execUsername"  @change2="editSomeFields(scope.row,'execUserid',$event)">
                                     </mdp-select-user>
                                 </template>
                             </el-table-column>

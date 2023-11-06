@@ -51,7 +51,7 @@
 					</el-table-column>
 					<el-table-column prop="handlerUsername" label="负责人"  width="100" show-overflow-tooltip>
 						<template slot-scope="scope">
-								<mdp-select-user show-style="tag" @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.handlerUserid" @change="editXmTaskSomeFields(scope.row,'handlerUserid',$event)"></mdp-select-user>
+								<mdp-select-user show-style="tag" @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.handlerUserid" :init-name="scope.row.handlerUsername" @change="editXmTaskSomeFields(scope.row,'handlerUserid',$event)"></mdp-select-user>
 
 						</template>
 					</el-table-column>

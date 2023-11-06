@@ -430,7 +430,7 @@
                 show-overflow-tooltip
               >
 								<template slot-scope="scope">
-                    <mdp-select-user show-style="tag" size="mini" v-model="scope.row.createUserid" @visible-change="selectVisible(scope.row,$event)" @change2="editXmTaskSomeFields(scope.row,'createUserid',$event)"></mdp-select-user>
+                    <mdp-select-user show-style="tag" size="mini" v-model="scope.row.createUserid" :init-name="scope.row.createUsername" @visible-change="selectVisible(scope.row,$event)"  @change2="editXmTaskSomeFields(scope.row,'createUserid',$event)"></mdp-select-user>
  								</template>
               </el-table-column>
               <el-table-column
@@ -441,7 +441,7 @@
                 show-overflow-tooltip
               >
 								<template slot-scope="scope">
-                    <mdp-select-user show-style="tag" size="mini" :key="scope.row.id" v-model="scope.row.executorUserid" @visible-change="selectVisible(scope.row,$event)" @change="editXmTaskSomeFields(scope.row,'executorUserid',$event)"></mdp-select-user>
+                    <mdp-select-user show-style="tag" size="mini" :key="scope.row.id" v-model="scope.row.executorUserid" :init-name="scope.row.executorUsername" @visible-change="selectVisible(scope.row,$event)" @change2="editXmTaskSomeFields(scope.row,'executorUserid',$event)"></mdp-select-user>
  								</template>
               </el-table-column>
               <el-table-column
