@@ -556,6 +556,7 @@ export const MdpSelectMixin = {
           * @returns 
           */
          initOptionsByInitName(myVal,myName){ 
+            debugger
             this.initOptions=myVal.map((v,idx)=>{
                 var option={}
                 option[this.props['id']]=v
@@ -612,7 +613,7 @@ export const MdpSelectMixin = {
             }else{
                 this.myVal=val+''
                 if(initName){
-                    this.initOptionsByInitName(this.myVal,[initName])
+                    this.initOptionsByInitName([this.myVal],[initName])
                 }
             }
             
