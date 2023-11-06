@@ -38,19 +38,19 @@
 							<el-row class="padding">
 								<el-col :span="8">
 							<el-form-item  prop="admUserid" label-width="0px">
-								<mdp-select-user-x label=" 项目总控" userid-key="admUserid" username-key="admUsername" v-model="editForm" @change="editXmProjectSomeFields(editForm,'admUserid',$event)"></mdp-select-user-x>
+								<mdp-select-user show-style="x" label=" 项目总控" userid-key="admUserid" username-key="admUsername" v-model="editForm" @change="editXmProjectSomeFields(editForm,'admUserid',$event)"></mdp-select-user>
 							</el-form-item>
 								</el-col>
 								<el-col :span="8">
 
 							<el-form-item prop="pmUserid" label-width="0px">
-								<mdp-select-user-x label=" 项目经理" userid-key="pmUserid" username-key="pmUsername" v-model="editForm" @change="editXmProjectSomeFields(editForm,'pmUserid',$event)"></mdp-select-user-x>
+								<mdp-select-user show-style="x" label=" 项目经理" userid-key="pmUserid" username-key="pmUsername" v-model="editForm" @change="editXmProjectSomeFields(editForm,'pmUserid',$event)"></mdp-select-user>
 
 							</el-form-item>
 								</el-col>
 								<el-col :span="8">
 							<el-form-item  prop="assUserid" label-width="0px">
-								<mdp-select-user-x label=" 副经理、助理" userid-key="assUserid" username-key="assUsername" v-model="editForm" @change="editXmProjectSomeFields(editForm,'assUserid',$event)"></mdp-select-user-x>
+								<mdp-select-user show-style="x" label=" 副经理、助理" userid-key="assUserid" username-key="assUsername" v-model="editForm" @change="editXmProjectSomeFields(editForm,'assUserid',$event)"></mdp-select-user>
 
 							</el-form-item>
 								</el-col>
