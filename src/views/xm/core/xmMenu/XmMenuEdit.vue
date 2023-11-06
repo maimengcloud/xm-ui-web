@@ -99,11 +99,11 @@
 								</el-form-item>
 						<el-row class="padding">
 								<el-col :span="8">
-									<mdp-field-x v-if="!editForm.pmenuId" v-model="editForm.pmenuId" :disabled="true" label="上级需求">
+									<mdp-field show-style="x" v-if="!editForm.pmenuId" v-model="editForm.pmenuId" :disabled="true" label="上级需求">
 
-									</mdp-field-x>
+									</mdp-field>
 
-									<mdp-field-x v-else v-model="editForm.pmenuId" :label="editForm.dclass==='3'?'归属特性':(editForm.dclass==='2'?'归属史诗':'归属')" :icon="editForm.dclass==='2'?'el-icon-s-promotion':'el-icon-s-flag'" :color="editForm.dclass==='2'?'rgb(255, 153, 51)':'rgb(0, 153, 51)'">
+									<mdp-field show-style="x" v-else v-model="editForm.pmenuId" :label="editForm.dclass==='3'?'归属特性':(editForm.dclass==='2'?'归属史诗':'归属')" :icon="editForm.dclass==='2'?'el-icon-s-promotion':'el-icon-s-flag'" :color="editForm.dclass==='2'?'rgb(255, 153, 51)':'rgb(0, 153, 51)'">
 										<div slot="oper">
 										<el-button
 											@click="pmenuFormVisible=true"
@@ -115,7 +115,7 @@
 											title="更换上级"
 											icon="el-icon-upload2"> 更换上级</el-button>
 											</div>
-									</mdp-field-x>
+									</mdp-field>
 								</el-col>
 								<el-col  :span="8">
                   <mdp-select-user show-style="x" label="负责人" v-model="editForm.mmUserid"  @change2="editXmMenuSomeFields(editForm,'mmUserid',$event)"></mdp-select-user>
@@ -132,11 +132,11 @@
 							</el-col>
 
 							<el-col :span="8">
-								<mdp-field-x v-model="editForm.finishRate" label="进度">
+								<mdp-field show-style="x" v-model="editForm.finishRate" label="进度">
 									<div slot="value" style="min-width:150px;"><el-progress  :percentage="editForm.finishRate?editForm.finishRate:0"></el-progress>
 									</div>
 									<div slot="oper"><el-button  @click="activateTabPaneName='51'" type="primary">查看工时</el-button><el-button  @click="activateTabPaneName='6'" type="primary">查看子工作项</el-button></div>
-								</mdp-field-x>
+								</mdp-field>
 							</el-col>
 							<el-col :span="8">
  										<mdp-date-range label="起止时间" type="daterange" :style-obj="{maxWidth:'100%'}" :auto-default="false"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" v-model="editForm" start-key="startTime" end-key="endTime"  @change="editXmMenuSomeFields(editForm,'startTime',editForm)"></mdp-date-range>

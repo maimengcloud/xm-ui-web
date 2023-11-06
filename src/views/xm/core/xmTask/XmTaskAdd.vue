@@ -26,13 +26,13 @@
 
 						<el-row class="padding-left padding-right">
 							<el-col :span="8">
-								<mdp-field-x v-model="addForm.parentTaskname" label="上级计划" icon="el-icon-time" color="#E6A23C">
+								<mdp-field show-style="x" v-model="addForm.parentTaskname" label="上级计划" icon="el-icon-time" color="#E6A23C">
 									<el-button slot="oper"
 										@click="toSelectParent"
 										title="更换任务的上级，实现任务搬家功能"
 										icon="el-icon-upload2"
 									> 选择新的上级</el-button>
-								</mdp-field-x>
+								</mdp-field>
 							</el-col>
 
 							<el-col :span="8">

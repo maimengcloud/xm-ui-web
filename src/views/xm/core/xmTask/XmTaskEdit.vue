@@ -126,7 +126,7 @@
 
 						<el-row class="padding-left padding-right">
 							<el-col :span="8">
-								<mdp-field-x v-model="editForm.parentTaskname" label="上级计划" icon="el-icon-time" color="#E6A23C">
+								<mdp-field show-style="x" v-model="editForm.parentTaskname" label="上级计划" icon="el-icon-time" color="#E6A23C">
 									<div slot="oper">
 										<el-button
 											@click="selectParentPlanVisible=true"
@@ -140,7 +140,7 @@
 											icon="el-icon-upload2"
 										> 查看上级计划</el-button>
 									</div>
-								</mdp-field-x>
+								</mdp-field>
 							</el-col>
 							<el-col :span="8">
 									<mdp-select-user show-style="x"  label="负责人" v-model="editForm.createUserid" @change2="editXmTaskSomeFields(editForm,'createUserid',$event)"></mdp-select-user>
@@ -158,10 +158,10 @@
  									<mdp-select  show-style="x"  :label="editForm.ntype=='0'?'任务状态':'计划状态'" item-code="taskState" v-model="editForm.taskState" @change="editXmTaskSomeFields(editForm,'taskState',$event)"></mdp-select>
 							</el-col>
 							<el-col :span="8">
-								<mdp-field-x v-model="editForm.rate" label="进度">
+								<mdp-field show-style="x" v-model="editForm.rate" label="进度">
 									<div slot="value" style="min-width:150px;"><el-progress  :percentage="editForm.rate?editForm.rate:0"></el-progress></div>
 									<el-button slot="oper" @click="activateTabPaneName='5'" type="primary">去填写工时</el-button>
-								</mdp-field-x>
+								</mdp-field>
 							</el-col>
 
 
