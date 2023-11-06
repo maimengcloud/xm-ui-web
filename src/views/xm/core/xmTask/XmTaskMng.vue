@@ -80,11 +80,11 @@
               </el-descriptions-item>
               <el-descriptions-item>
                   <template slot="label">责任人</template>
-                  <mdp-select-user-xm label="选择责任人" v-model="filters.createUser" :clearable="true"></mdp-select-user-xm>
+                  <mdp-select-user label="选择责任人" v-model="filters.createUserid" :clearable="true"></mdp-select-user>
                 </el-descriptions-item>
                 <el-descriptions-item>
                   <template slot="label">执行人</template>
-                  <mdp-select-user-xm label="选择执行人" v-model="filters.executor" :clearable="true"></mdp-select-user-xm>
+                  <mdp-select-user label="选择执行人" v-model="filters.executorUserid" :clearable="true"></mdp-select-user>
               </el-descriptions-item>
               <el-descriptions-item>
                 <template slot="label">产品</template>
@@ -430,7 +430,7 @@
                 show-overflow-tooltip
               >
 								<template slot-scope="scope">
-                    <mdp-select-user-xm size="mini" v-model="scope.row" userid-key="createUserid" @visible-change="selectVisible(scope.row,$event)" username-key="createUsername" :project-id="scope.row.projectId" @change="editXmTaskSomeFields(scope.row,'createUserid',$event)"></mdp-select-user-xm>
+                    <mdp-select-user show-style="tag" size="mini" v-model="scope.row.createUserid" @visible-change="selectVisible(scope.row,$event)" @change2="editXmTaskSomeFields(scope.row,'createUserid',$event)"></mdp-select-user>
  								</template>
               </el-table-column>
               <el-table-column
@@ -441,7 +441,7 @@
                 show-overflow-tooltip
               >
 								<template slot-scope="scope">
-                    <mdp-select-user-xm size="mini" :key="scope.row.id" v-model="scope.row" userid-key="executorUserid" @visible-change="selectVisible(scope.row,$event)" username-key="executorUsername" :project-id="scope.row.projectId" @change="editXmTaskSomeFields(scope.row,'executorUserid',$event)"></mdp-select-user-xm>
+                    <mdp-select-user show-style="tag" size="mini" :key="scope.row.id" v-model="scope.row.executorUserid" @visible-change="selectVisible(scope.row,$event)" @change="editXmTaskSomeFields(scope.row,'executorUserid',$event)"></mdp-select-user>
  								</template>
               </el-table-column>
               <el-table-column
@@ -2032,11 +2032,11 @@ export default {
       if (this.filters.taskOut) {
         params.taskOut = this.filters.taskOut;
       }
-      if (this.filters.createUser) {
-        params.createUserid = this.filters.createUser.userid;
+      if (this.filters.createUserid) {
+        params.createUserid = this.filters.createUserid;
       }
-      if (this.filters.executor) {
-        params.executorUserid = this.filters.executor.userid;
+      if (this.filters.executorUserid) {
+        params.executorUserid = this.filters.executorUserid;
       }
       if (this.filters.product) {
         params.productId = this.filters.product.id;
@@ -2109,11 +2109,11 @@ export default {
 						this.$notify({position:'bottom-left',showClose:true,message:'外包任务不允许直接设置执行人，请到执行人管理中选择',type:'error'})
             return;
           }
-					params.executorUserid=$event[0].userid
-					params.executorUsername=$event[0].username
+					params.executorUserid=$event.userid
+					params.executorUsername=$event.username
 				}else if(fieldName==='createUserid'){
-					params.createUserid=$event[0].userid
-					params.createUsername=$event[0].username
+					params.createUserid=$event.userid
+					params.createUsername=$event.username
 				}else if(fieldName==='startTime'){
 					params.startTime=$event.startTime
 					params.endTime=$event.endTime

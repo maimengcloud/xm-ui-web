@@ -59,11 +59,11 @@
 						</el-form-item>
 								<el-row class="padding">
 									<el-col :span="6">
-											<mdp-select-user-xm :project-id="editForm.projectId" :product-id="editForm.productId" label="责任人" v-model="editForm" userid-key="handlerUserid" username-key="handlerUsername" @change="editXmQuestionSomeFields(editForm,'handlerUserid',$event)">
+											<mdp-select-user label="责任人" v-model="editForm.handlerUserid" @change="editXmQuestionSomeFields(editForm,'handlerUserid',$event)">
 												<el-row slot="extOper" style="margin-left:20px;">
 														指派给 <el-button type="text" @click="sendToAsk"> 提出人</el-button>  <el-button type="text"  @click="sendToCreater"> 创建人</el-button>
 												</el-row>
-											</mdp-select-user-xm>
+											</mdp-select-user>
 
 
 									</el-col>
@@ -96,7 +96,7 @@
 
 												<el-col :span="8">
 													<el-form-item label="提出人" prop="askUsername">
-														<mdp-select-user-xm :project-id="editForm.projectId" :product-id="editForm.productId" label="提出人" v-model="editForm" userid-key="askUserid" username-key="askUsername" @change="editXmQuestionSomeFields(editForm,'askUserid',$event)"></mdp-select-user-xm>
+														<mdp-select-user label="提出人" v-model="editForm.askUserid" @change2="editXmQuestionSomeFields(editForm,'askUserid',$event)"></mdp-select-user>
  													</el-form-item>
 												</el-col>
 												<el-col :span="8">
@@ -486,15 +486,15 @@
 				var params={ids:[row.id]};
 				if(fieldName==='handlerUserid'){
 					if($event){
-						params[fieldName]=$event[0].userid;
-						params.handlerUsername=$event[0].username
+						params[fieldName]=$event.userid;
+						params.handlerUsername=$event.username
 					}else{
 						return;
 					}
 				}else if(fieldName==='askUserid'){
 					if($event){
-						params[fieldName]=$event[0].userid;
-						params.askUsername=$event[0].username
+						params[fieldName]=$event.userid;
+						params.askUsername=$event.username
 					}else{
 						return;
 					}

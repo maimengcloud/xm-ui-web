@@ -47,7 +47,7 @@
 						<el-row class="padding">
 
 							<el-col :span="8">
-									<mdp-select-user-xm  label="负责人" v-model="addForm" userid-key="createUserid" username-key="createUsername" :project-id="addForm.projectId?addForm.projectId:(xmProjectCpd?xmProjectCpd.id:null)" @change="editXmTaskSomeFields(addForm,'createUserid',$event)"></mdp-select-user-xm>
+									<mdp-select-user  label="负责人" v-model="addForm.createUserid" @change2="editXmTaskSomeFields(addForm,'createUserid',$event)"></mdp-select-user>
  							</el-col>
 							<el-col :span="8">
 										<mdp-date-range

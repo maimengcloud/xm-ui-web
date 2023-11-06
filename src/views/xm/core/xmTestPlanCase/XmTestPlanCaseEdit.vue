@@ -47,7 +47,7 @@
 							</el-row>
 							<el-row class="padding">
 								<el-col :span="6">
-									<mdp-select-user-xm label="执行人" userid-key="execUserid" username-key="execUsername" v-model="editForm" @change="editSomeFields(editForm,'execUserid',$event)"></mdp-select-user-xm>
+									<mdp-select-user label="执行人" v-model="editForm.execUserid" @change="editSomeFields(editForm,'execUserid',$event)"></mdp-select-user>
 								</el-col>
 								<el-col :span="6">
 									<mdp-select  show-style="x" label="优先级" item-code="priority" v-model="editForm.priority"  @change="editSomeFields(editForm,'priority',$event)"></mdp-select>
@@ -507,8 +507,8 @@ import JsonViewer from 'vue-json-viewer'
                 params['pkList']=[row].map(i=>{ return { caseId:i.caseId,  planId:i.planId}})
 
 				if(fieldName=='execUserid'){
-					params.execUserid=$event[0].userid
-					params.execUsername=$event[0].username
+					params.execUserid=$event.userid
+					params.execUsername=$event.username
 				}else{
 					params[fieldName]=$event
 				}

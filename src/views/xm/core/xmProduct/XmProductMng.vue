@@ -209,8 +209,8 @@
 								</div>
 								<div class="project-footer">
 									<div class="project-type" title="产品经理">
-											<mdp-select-user-xm v-if="p.pmUserid" :value="p" userid-key="pmUserid" username-key="pmUsername" :disabled="true"></mdp-select-user-xm>
-											<mdp-select-user-xm v-else-if="p.admUserid" :value="p" userid-key="admUserid" username-key="admUsername" :disabled="true"></mdp-select-user-xm>
+											<mdp-select-user show-style="tag" v-if="p.pmUserid" :value="p.pmUserid"  :disabled="true"></mdp-select-user>
+											<mdp-select-user show-style="tag" v-else-if="p.admUserid" :value="p.admUserid"  :disabled="true"></mdp-select-user>
 										</div>
 										<div class="project-period">{{p.startTime?p.startTime.substr(0,10):''}} ~{{p.endTime?p.endTime.substr(0,10):''}}</div>
 									<!--<div class="project-period">{{p.startTime.substr(0,10)}} ~{{p.endTime.substr(0,10)}}</div>-->
@@ -284,7 +284,7 @@
 						</el-table-column>
 						<el-table-column prop="pmUsername" label="产品经理" width="150" sortable show-overflow-tooltip>
 							<template slot-scope="scope">
-								<mdp-select-user-xm v-model="scope.row" userid-key="pmUserid" username-key="pmUsername" :disabled="true"></mdp-select-user-xm>
+								<mdp-select-user v-model="scope.row.pmUserid" :disabled="true"></mdp-select-user>
 							</template>
 						</el-table-column>
 

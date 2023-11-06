@@ -31,7 +31,7 @@
 
 						<el-row>
 							<font class="more-label-font"> 迭代管理员: </font>
-							<mdp-select-user-xm label="选择迭代管理员" v-model="filters" userid-key="adminUserid" username-key="adminUsername" :project-id="linkProjectId" :clearable="true"></mdp-select-user-xm>
+              <mdp-select-user label="选择迭代管理员" v-model="filters.adminUserid" :params="{relyType:'1',relyId:linkProjectId}"></mdp-select-user>
 						</el-row>
 						<el-row>
 							<font class="more-label-font">迭代编号:</font><el-input  v-model="filters.id"  style="width:200px;"  placeholder="输入迭代编号" clearable>

@@ -35,14 +35,14 @@
 									<i class="el-icon-user"></i>
 									创建者
 								</template>
-								<mdp-select-user-xm label="选择创建者" v-model="filters.createUser" :clearable="true"></mdp-select-user-xm>
+								<mdp-select-user label="选择创建者" v-model="filters.createUserid" :clearable="true"></mdp-select-user>
 							</el-descriptions-item>
 							<el-descriptions-item>
 								<template slot="label">
 									<i class="el-icon-user"></i>
 									指派给
 								</template>
-								<mdp-select-user-xm label="选择负责人" v-model="filters.handlerUser" :clearable="true"></mdp-select-user-xm>
+								<mdp-select-user label="选择负责人" v-model="filters.handlerUserid" :clearable="true"></mdp-select-user>
 							</el-descriptions-item>
 							<el-descriptions-item>
 								<template slot="label">
@@ -204,7 +204,7 @@
 					-->
 					<el-table-column prop="handlerUsername" label="负责人"  width="100" show-overflow-tooltip>
 						<template slot-scope="scope">
-							<mdp-select-user-xm @visible-change="selectVisible(scope.row,$event)" :key="scope.row.id" v-model="scope.row" userid-key="handlerUserid" username-key="handlerUsername" :project-id="scope.row.projectId" @change="editXmQuestionSomeFields(scope.row,'handlerUserid',$event)"></mdp-select-user-xm>
+							<mdp-select-user show-style="tag" @visible-change="selectVisible(scope.row,$event)" :key="scope.row.id" v-model="scope.row.handlerUserid" @change2="editXmQuestionSomeFields(scope.row,'handlerUserid',$event)"></mdp-select-user>
 						</template>
 					</el-table-column>
 					<el-table-column prop="tagNames" label="标签"  width="100" show-overflow-tooltip>
@@ -1000,8 +1000,8 @@
 				}
 				if(fieldName==='handlerUserid'){
 					if($event){
-						params[fieldName]=$event[0].userid;
-						params.handlerUsername=$event[0].username
+						params[fieldName]=$event.userid;
+						params.handlerUsername=$event.username
 					}else{
 						return;
 					}

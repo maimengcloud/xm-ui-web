@@ -13,7 +13,7 @@
 				  </el-form-item>
 				<el-row class="padding-bottom">
 					<el-col :span="6">
-						<mdp-select-user-xm label="负责人" userid-key="cuserid" username-key="cusername" v-model="editForm" :project-id="editForm.projectId" :product-id="editForm.productId" @change="editSomeFields(editForm,'cuserid',$event)"></mdp-select-user-xm>
+						<mdp-select-user label="负责人" v-model="editForm.cuserid" @change2="editSomeFields(editForm,'cuserid',$event)"></mdp-select-user>
 					</el-col>
 					<el-col :span="6">
 						<mdp-select  show-style="x" label="状态" item-code="testPlanStatus" v-model="editForm.status"  @change="editSomeFields(editForm,'status',$event)"></mdp-select>
@@ -181,8 +181,8 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 					params[fieldName]=$event.stime
 					params.etime=$event.etime
 				}else if(fieldName=='cuserid'){
-					params[fieldName]=$event[0].userid
-					params.cusername=$event[0].username
+					params[fieldName]=$event.userid
+					params.cusername=$event.username
 				}else{
 					params[fieldName]=$event
 				}

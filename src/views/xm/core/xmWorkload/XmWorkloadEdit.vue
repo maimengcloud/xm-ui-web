@@ -54,7 +54,7 @@
 
 					<el-col :span="12">
 						<el-form-item label="工时归属" prop="username">
-							<mdp-select-user-xm label="工时归属" v-model="editForm" userid-key="userid" username-key="username" :project-id="val.projectId"></mdp-select-user-xm>
+							<mdp-select-user label="工时归属" v-model="editForm.userid"></mdp-select-user>
  						</el-form-item>
 					</el-col>
 				</el-row>

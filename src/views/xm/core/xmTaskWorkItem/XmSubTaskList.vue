@@ -68,7 +68,7 @@
                 show-overflow-tooltip
               >
 								<template slot-scope="scope">
-                  <mdp-select-user-xm @visible-change="selectVisible(scope.row,$event)" userid-key="creatorUserid" username-key="creatorUsername" :project-id="scope.row.projectId" v-model="scope.row" @change="editXmTaskSomeFields(scope.row,'creatorUserid',$event)"></mdp-select-user-xm>
+                  <mdp-select-user show-style="tag" @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.creatorUserid" @change2="editXmTaskSomeFields(scope.row,'creatorUserid',$event)"></mdp-select-user>
 
 								</template>
               </el-table-column>
@@ -80,7 +80,7 @@
                 show-overflow-tooltip
               >
 								<template slot-scope="scope">
-                  <mdp-select-user-xm @visible-change="selectVisible(scope.row,$event)" userid-key="executorUserid" username-key="executorUsername" :project-id="scope.row.projectId" v-model="scope.row" @change="selectExecUserConfirm(scope.row,'executorUserid',$event)"></mdp-select-user-xm>
+                  <mdp-select-user show-style="tag" @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.executorUserid" @change2="selectExecUserConfirm(scope.row,'executorUserid',$event)"></mdp-select-user>
 								</template>
               </el-table-column>
         </el-table>
@@ -330,9 +330,7 @@ export default {
     },
 
     //查询时选择责任人
-    selectExecUserConfirm(row,fieldName,users) {
-
-        var user= users[0];
+    selectExecUserConfirm(row,fieldName,user) {
         var params={}
         params.taskId = row.id;
         params.projectId=row.projectId
@@ -386,11 +384,11 @@ export default {
 				}else if(fieldName==='workload'){
 					params={...params,...$event}
 				}else if(fieldName==='executorUserid'){
-					params.executorUserid=$event[0].userid
-					params.executorUsername=$event[0].username
+					params.executorUserid=$event.userid
+					params.executorUsername=$event.username
 				}else if(fieldName==='createUserid'){
-					params.createUserid=$event[0].userid
-					params.createUsername=$event[0].username
+					params.createUserid=$event.userid
+					params.createUsername=$event.username
 				}else{
 					params[fieldName]=$event
 				}

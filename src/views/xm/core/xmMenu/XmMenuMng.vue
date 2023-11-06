@@ -47,7 +47,7 @@
 									<i class="el-icon-user"></i>
 									责任人
 								</template>
-								<mdp-select-user-xm style="max-width:180px;" label="选择责任人" v-model="filters.mmUser" :clearable="true"></mdp-select-user-xm>
+								<mdp-select-user style="max-width:180px;" label="选择责任人" v-model="filters.mmUserid" :clearable="true"></mdp-select-user>
 							</el-descriptions-item>
 							<el-descriptions-item>
 								<template slot="label">
@@ -247,7 +247,7 @@
 						<template>
 						<el-table-column prop="mmUsername" label="跟进人"  min-width="100" show-overflow-tooltip  sortable>
 							<template slot-scope="scope">
-								<mdp-select-user-xm size="mini" @visible-change="selectVisible(scope.row,$event)" :value="scope.row" userid-key="mmUserid" username-key="mmUsername" :project-id="scope.row.projectId" @change="editXmMenuSomeFields(scope.row,'mmUserid',$event)"></mdp-select-user-xm>
+								<mdp-select-user size="mini" @visible-change="selectVisible(scope.row,$event)" @change="editXmMenuSomeFields(scope.row,'mmUserid',$event)"></mdp-select-user>
 							</template>
 						</el-table-column>
 						<el-table-column prop="productId" label="产品" width="100" show-overflow-tooltip sortable>
@@ -1248,8 +1248,8 @@
 				}else if(fieldName==='workload'){
 					params={...params,...$event}
 				}else if(fieldName==='mmUserid'){
-					params.mmUserid=$event[0].userid
-					params.mmUsername=$event[0].username
+					params.mmUserid=$event.userid
+					params.mmUsername=$event.username
 				}else{
 					params[fieldName]=$event
 				}

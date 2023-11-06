@@ -30,8 +30,8 @@
 				<el-row>
 					<el-col :span="12">
 						<el-form-item prop="adminUserid" label-width="0px">
-							<mdp-select-user-xm label="负责人姓名" v-model="editForm" userid-key="adminUserid" username-key="adminUsername"  @change="editSomeFields(editForm,'adminUserid',$event)"></mdp-select-user-xm>
-						</el-form-item>
+              <mdp-select-user label="负责人姓名" v-model="editForm.adminUserid" @change2="editSomeFields(editForm,'adminUserid',$event)"></mdp-select-user>
+ 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
 						<el-form-item  prop="istatus" label-width="0px">
@@ -175,8 +175,8 @@
 						let params={};
 						params['ids']=[row].map(i=>i.id)
 						if(fieldName=='adminUserid'){
-							params['adminUserid']=$event[0].userid
-							params['adminUsername']=$event[0].username
+							params['adminUserid']=$event.userid
+							params['adminUsername']=$event.username
 						}else if(fieldName=='startTime'){
 							params['startTime']=row.startTime
 							params['endTime']=row.endTime

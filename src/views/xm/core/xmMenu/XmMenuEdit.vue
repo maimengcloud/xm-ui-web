@@ -118,11 +118,11 @@
 									</mdp-field-x>
 								</el-col>
 								<el-col  :span="8">
-									<mdp-select-user-xm  label="负责人" v-model="editForm" userid-key="mmUserid" username-key="mmUsername" @change="editXmMenuSomeFields(editForm,'mmUserid',$event)"></mdp-select-user-xm>
-								</el-col>
+                  <mdp-select-user label="负责人" v-model="editForm.mmUserid"  @change2="editXmMenuSomeFields(editForm,'mmUserid',$event)"></mdp-select-user>
+ 								</el-col>
 								<el-col  :span="8">
-									<mdp-select-user-xm  label="提出人" v-model="editForm" userid-key="proposerId" username-key="proposerName" @change="editXmMenuSomeFields(editForm,'proposerId',$event)"></mdp-select-user-xm>
-								</el-col>
+                  <mdp-select-user label="提出人" v-model="editForm.proposerId"  @change2="editXmMenuSomeFields(editForm,'proposerId',$event)"></mdp-select-user>
+ 								</el-col>
 						</el-row>
 
 						<el-row class="padding">
@@ -555,11 +555,11 @@ import CommentArea from '../xmMenuComment/comment-area.vue';
 				}else if(fieldName==='workload'){
 					params={...params,...$event}
 				}else if(fieldName==='mmUserid'){
-					params.mmUserid=$event[0].userid
-					params.mmUsername=$event[0].username
+					params.mmUserid=$event.userid
+					params.mmUsername=$event.username
 				}else if(fieldName==='proposerId'){
-					params.proposerId=$event[0].userid
-					params.proposerName=$event[0].username
+					params.proposerId=$event.userid
+					params.proposerName=$event.username
 				}else if(fieldName==='startTime'){
 					params.startTime=$event.startTime
 					params.endTime=$event.endTime

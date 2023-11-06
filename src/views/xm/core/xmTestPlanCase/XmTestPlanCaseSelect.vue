@@ -44,8 +44,8 @@
                         </el-table-column>
                         <el-table-column prop="execUsername" label="执行人姓名" min-width="120" >
                             <template slot-scope="scope">
-                                <mdp-select-user-xm  userid-key="execUserid" username-key="execUsername" v-model="scope.row" :disabled="true">
-                                </mdp-select-user-xm>
+                                <mdp-select-user v-model="scope.row.execUserid" :disabled="true">
+                                </mdp-select-user>
                             </template>
                         </el-table-column>
                         <el-table-column prop="priority" label="优先级" width="120" >

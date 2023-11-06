@@ -49,7 +49,7 @@
 									<mdp-select  show-style="x" label="状态" item-code="testCaseStatus" v-model="editForm.caseStatus"  @change="editSomeFields(editForm,'caseStatus',$event)"></mdp-select>
 								</el-col>
 								<el-col :span="6">
-									 <mdp-select-user-xm label="责任人" userid-key="cuserid" username-key="cusername" v-model="editForm" @change="editSomeFields(editForm,'cuserid',$event)" :product-id="editForm.productId"></mdp-select-user-xm>
+									 <mdp-select-user label="责任人" v-model="editForm.cuserid" @change2="editSomeFields(editForm,'cuserid',$event)"></mdp-select-user>
 
 								</el-col>
 								<el-col :span="6">
@@ -644,12 +644,12 @@ import JsonViewer from 'vue-json-viewer'
 					 params[fieldName]=$event.menuId
 					 params['menuName']=$event.menuName
 				}else if(fieldName=='cuserid'){
-					 params[fieldName]=$event[0].userid
-					 params['cusername']=$event[0].username
+					 params[fieldName]=$event.userid
+					 params['cusername']=$event.username
 					 params['cbranchId']=$event[0].branchId
 				}else if(fieldName=='luserid'){
-					 params[fieldName]=$event[0].userid
-					 params['lusername']=$event[0].username
+					 params[fieldName]=$event.userid
+					 params['lusername']=$event.username
 				}else{
 					 params[fieldName]=$event
 				}

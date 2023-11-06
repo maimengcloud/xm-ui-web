@@ -35,8 +35,8 @@
 
             <el-row>
               <font class="more-label-font"> 产品经理: </font>
-              <mdp-select-user-xm label="选择产品经理" v-model="filters" userid-key="pmUserid" username-key="pmUsername" :project-id="linkProjectId" :clearable="true"></mdp-select-user-xm>
-            </el-row>
+              <mdp-select-user label="选择产品经理" v-model="filters.pmUserid"></mdp-select-user>
+             </el-row>
             <el-row>
               <font class="more-label-font">产品编号:</font>
               <el-input

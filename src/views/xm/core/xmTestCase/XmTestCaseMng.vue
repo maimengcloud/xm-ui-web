@@ -59,8 +59,8 @@
                         </el-table-column>
                         <el-table-column prop="cusername" label="负责人姓名" min-width="120" show-overflow-tooltip>
                             <template slot-scope="scope">
-                                <mdp-select-user-xm @visible-change="selectVisible(scope.row,$event)"  userid-key="cuserid" username-key="cusername" :product-id="xmProductCpd?xmProductCpd.id:null" v-model="scope.row"  @change="editSomeFields(scope.row,'cuserid',$event)">
-                                </mdp-select-user-xm>
+                                <mdp-select-user show-style="tag" @visible-change="selectVisible(scope.row,$event)"  v-model="scope.row.cuserid"  @change2="editSomeFields(scope.row,'cuserid',$event)">
+                                </mdp-select-user>
                             </template>
                         </el-table-column>
 
@@ -327,8 +327,8 @@ export default {
             params['ids']=[row].map(i=>i.id)
         }
         if(fieldName=='cuserid'){
-            params.cuserid=$event[0].userid
-            params.cusername=$event[0].username
+            params.cuserid=$event.userid
+            params.cusername=$event.username
         }else{
             params[fieldName]=$event
         }

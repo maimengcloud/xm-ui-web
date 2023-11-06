@@ -18,7 +18,7 @@
 				<el-row class="padding">
 					<el-col :span="8">
 						<el-form-item prop="cuserid" label-width="0px">
-							<mdp-select-user-xm label="负责人" userid-key="cuserid" username-key="cusername" v-model="editForm" @change="editSomeFields(editForm,'cuserid',$event)" :product-id="editForm.productId" :project-id="selProject?selProject.id:null"></mdp-select-user-xm>
+							<mdp-select-user label="负责人" v-model="editForm.cuserid" @change2="editSomeFields(editForm,'cuserid',$event)"></mdp-select-user>
 						</el-form-item>
 					</el-col>
 					<el-col :span="8">
@@ -162,8 +162,8 @@ import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//修�
                 let params={};
                 params['ids']=[row].map(i=>i.id)
 				if(fieldName=='cuserid'){
-					params.cuserid=$event[0].userid
-					params.cusername=$event[0].username
+					params.cuserid=$event.userid
+					params.cusername=$event.username
 				}else{
 					params[fieldName]=$event
 				}

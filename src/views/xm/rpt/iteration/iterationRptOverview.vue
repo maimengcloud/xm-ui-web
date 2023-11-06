@@ -45,8 +45,7 @@
 			</el-row>
 				<el-row class="padding">
 					<el-col :span="8">
-						<mdp-select-user-xm label="负责人" userid-key="adminUserid" username-key="adminUsername" v-model="rawDatas"></mdp-select-user-xm>
-
+            <mdp-select-user label="负责人" v-model="rawDatas.adminUserid" @change2="(u)=>{rawDatas.adminUsername=u.username}"></mdp-select-user>
 					</el-col>
 					<el-col :span="8">
 						<mdp-select  show-style="x" label="状态" item-code="iterationStatus" v-model="rawDatas.istatus"></mdp-select>

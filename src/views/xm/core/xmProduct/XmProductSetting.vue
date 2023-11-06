@@ -276,14 +276,14 @@ export default {
       let params = {};
       params["ids"] = [row].map((i) => i.id);
       if (fieldName == "admUserid") {
-        params["admUserid"] = $event[0].userid;
-        params["admUsername"] = $event[0].username;
+        params["admUserid"] = $event.userid;
+        params["admUsername"] = $event.username;
       } else if (fieldName == "assUserid") {
-        params["assUserid"] = $event[0].userid;
-        params["assUsername"] = $event[0].username;
+        params["assUserid"] = $event.userid;
+        params["assUsername"] = $event.username;
       } else if (fieldName == "pmUserid") {
-        params["pmUserid"] = $event[0].userid;
-        params["pmUsername"] = $event[0].username;
+        params["pmUserid"] = $event.userid;
+        params["pmUsername"] = $event.username;
       } if (fieldName == "groupScope"||fieldName == "groupTransmit"||fieldName == "testScope"||fieldName=="testTransmit"||fieldName == "menuScope"||fieldName=="menuTransmit"||fieldName == "iterationScope"||fieldName=="iterationTransmit") {
         params["qxCode"] = [this.qxCode.groupScope,this.qxCode.groupTransmit,this.qxCode.testScope,this.qxCode.testTransmit,this.qxCode.menuScope,this.qxCode.menuTransmit,this.qxCode.iterationScope,this.qxCode.iterationTransmit].join(",")
       } else {

@@ -1311,11 +1311,11 @@ export default {
 				}else if(fieldName==='workload'){
 					params={...params,...$event}
 				}else if(fieldName==='executorUserid'){
-					params.executorUserid=$event[0].userid
-					params.executorUsername=$event[0].username
+					params.executorUserid=$event.userid
+					params.executorUsername=$event.username
 				}else if(fieldName==='createUserid'){
-					params.createUserid=$event[0].userid
-					params.createUsername=$event[0].username
+					params.createUserid=$event.userid
+					params.createUsername=$event.username
 				}else{
 					params[fieldName]=$event
 				}

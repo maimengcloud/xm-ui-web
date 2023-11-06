@@ -35,8 +35,8 @@
 				</el-table-column>
                 <el-table-column prop="cusername" label="负责人" min-width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
-                        <mdp-select-user-xm  userid-key="cuserid" username-key="cusername" v-model="scope.row" :disabled="true">
-                                    </mdp-select-user-xm>
+                        <mdp-select-user v-model="scope.row.cuserid" :disabled="true">
+                                    </mdp-select-user>
                     </template>
 				</el-table-column>
                 <el-table-column prop="totalCases" label="用例数" width="120" show-overflow-tooltip>

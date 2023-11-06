@@ -56,8 +56,8 @@
                             </el-table-column>
                             <el-table-column prop="execUsername" label="执行人姓名" min-width="120" >
                                 <template slot-scope="scope">
-                                    <mdp-select-user-xm @visible-change="selectVisible(scope.row,$event)" :product-id="xmProductCpd?xmProductCpd.id:null" :project-id="xmProject?xmProject.id:null"  userid-key="execUserid" username-key="execUsername" v-model="scope.row"  @change="editSomeFields(scope.row,'execUserid',$event)">
-                                    </mdp-select-user-xm>
+                                    <mdp-select-user @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.execUserid"  @change2="editSomeFields(scope.row,'execUserid',$event)">
+                                    </mdp-select-user>
                                 </template>
                             </el-table-column>
                             <el-table-column prop="priority" label="优先级" width="120" >
@@ -364,8 +364,8 @@ export default {
             params['pkList']=[row].map(i=>{ return { caseId:i.caseId,  planId:i.planId}})
         }
         if(fieldName=='execUserid'){
-            params.execUserid=$event[0].userid
-            params.execUsername=$event[0].username
+            params.execUserid=$event.userid
+            params.execUsername=$event.username
         }else{
             params[fieldName]=$event
         }

@@ -42,7 +42,7 @@
 				</el-table-column>
 				<el-table-column prop="username" label="姓名" min-width="150" >
 						 <template slot-scope="scope">
-							<mdp-select-user-xm :key="scope.row.id" v-model="scope.row" userid-key="userid" username-key="username" :project-id="scope.row.projectId" :disabled="true"></mdp-select-user-xm>
+							<mdp-select-user :key="scope.row.id" v-model="scope.row.userid" :disabled="true"></mdp-select-user>
 						 </template>
 				</el-table-column>
 
@@ -77,7 +77,7 @@
 				<el-form :model="quotePriceForm" label-width="100px" ref="quotePriceForm">
 					<el-form-item label="候选人名称">
 						 <template slot-scope="scope">
-							<mdp-select-user-xm v-model="quotePriceForm" userid-key="userid" username-key="username" :disabled="true"></mdp-select-user-xm>
+							<mdp-select-user v-model="quotePriceForm.userid" :disabled="true"></mdp-select-user>
 						 </template>
 					</el-form-item>
 					<el-form-item label="报价工期" prop="quoteWeekday">

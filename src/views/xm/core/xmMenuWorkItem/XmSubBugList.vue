@@ -51,7 +51,7 @@
 					</el-table-column>
 					<el-table-column prop="handlerUsername" label="负责人"  width="100" show-overflow-tooltip>
 						<template slot-scope="scope">
-								<mdp-select-user-xm @visible-change="selectVisible(scope.row,$event)" userid-key="handlerUserid" username-key="handlerUsername" :project-id="scope.row.projectId" v-model="scope.row" @change="editXmTaskSomeFields(scope.row,'handlerUserid',$event)"></mdp-select-user-xm>
+								<mdp-select-user @visible-change="selectVisible(scope.row,$event)" v-model="scope.row.handlerUserid" @change="editXmTaskSomeFields(scope.row,'handlerUserid',$event)"></mdp-select-user>
 
 						</template>
 					</el-table-column>
@@ -256,8 +256,8 @@ export default {
 				}
 				if(fieldName==='handlerUserid'){
 					if($event){
-						params[fieldName]=$event[0].userid;
-						params.handlerUsername=$event[0].username
+						params[fieldName]=$event.userid;
+						params.handlerUsername=$event.username
 					}else{
 						return;
 					}

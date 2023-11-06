@@ -24,7 +24,7 @@
             ></xm-project-select>
           </el-form-item>
           <el-form-item label="人员编号" v-if="queryScope !== 'my'">
-              <mdp-select-user-xm :clearable="true" label="选择人员" v-model="filters" userid-key="userid" username-key="username" :project-id="filters.project?filters.project.id:null"></mdp-select-user-xm>
+              <mdp-select-user :clearable="true" label="选择人员" v-model="filters.userid"></mdp-select-user>
           </el-form-item>
 
           <el-form-item label="任务编号编号">

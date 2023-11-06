@@ -42,7 +42,7 @@
 			<el-form :model="rawDatas"  label-width="120px" :rules="rawDatasRules" ref="rawDatasRef" label-position="left">
 				<el-row class="padding">
 					<el-col :span="8">
-						<mdp-select-user-xm label="负责人" userid-key="cuserid" username-key="cusername" v-model="rawDatas"></mdp-select-user-xm>
+						<mdp-select-user label="负责人" v-model="rawDatas.cuserid"></mdp-select-user>
 					</el-col>
 					<el-col :span="8">
 						<mdp-select  show-style="x" label="状态" item-code="testPlanStatus" v-model="rawDatas.status"></mdp-select>
@@ -223,8 +223,8 @@ import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修�
 					params[fieldName]=$event.stime
 					params.etime=$event.etime
 				}else if(fieldName=='cuserid'){
-					params[fieldName]=$event[0].userid
-					params.cusername=$event[0].username
+					params[fieldName]=$event.userid
+					params.cusername=$event.username
 				}else{
 					params[fieldName]=$event
 				}
