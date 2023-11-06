@@ -49,7 +49,7 @@
 									<mdp-select  show-style="x" label="状态" item-code="testCaseStatus" v-model="editForm.caseStatus"  @change="editSomeFields(editForm,'caseStatus',$event)"></mdp-select>
 								</el-col>
 								<el-col :span="6">
-									 <mdp-select-user label="责任人" v-model="editForm.cuserid" @change2="editSomeFields(editForm,'cuserid',$event)"></mdp-select-user>
+									 <mdp-select-user show-style="x" label="责任人" v-model="editForm.cuserid" :init-name="editForm.cusername" @change2="editSomeFields(editForm,'cuserid',$event)"></mdp-select-user>
 
 								</el-col>
 								<el-col :span="6">

@@ -35,7 +35,7 @@
 				</el-table-column>
                 <el-table-column prop="cusername" label="负责人" min-width="120" show-overflow-tooltip>
 				    <template slot-scope="scope">
-                        <mdp-select-user v-model="scope.row.cuserid" :disabled="true">
+                        <mdp-select-user show-style="tag" v-model="scope.row.cuserid" :init-name="scope.row.cusername" :disabled="true">
                                     </mdp-select-user>
                     </template>
 				</el-table-column>

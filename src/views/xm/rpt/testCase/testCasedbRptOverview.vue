@@ -14,7 +14,7 @@
 			</el-row>
 				<el-row class="padding">
 					<el-col :span="6">
-						<mdp-select-user label="负责人" v-model="rawDatas.cuserid"></mdp-select-user>
+						<mdp-select-user show-style="x" label="负责人" v-model="rawDatas.cuserid" :init-name="rawDatas.cusername"></mdp-select-user>
 					</el-col>
 					<el-col :span="6">
 						<mdp-select  show-style="x" label="状态" item-code="casedbStatus" v-model="rawDatas.status"></mdp-select>

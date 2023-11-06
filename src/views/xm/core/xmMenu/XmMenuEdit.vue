@@ -118,10 +118,10 @@
 									</mdp-field-x>
 								</el-col>
 								<el-col  :span="8">
-                  <mdp-select-user label="负责人" v-model="editForm.mmUserid"  @change2="editXmMenuSomeFields(editForm,'mmUserid',$event)"></mdp-select-user>
+                  <mdp-select-user show-style="x" label="负责人" v-model="editForm.mmUserid"  @change2="editXmMenuSomeFields(editForm,'mmUserid',$event)"></mdp-select-user>
  								</el-col>
 								<el-col  :span="8">
-                  <mdp-select-user label="提出人" v-model="editForm.proposerId"  @change2="editXmMenuSomeFields(editForm,'proposerId',$event)"></mdp-select-user>
+                  <mdp-select-user show-style="x" label="提出人" v-model="editForm.proposerId"  @change2="editXmMenuSomeFields(editForm,'proposerId',$event)"></mdp-select-user>
  								</el-col>
 						</el-row>
 

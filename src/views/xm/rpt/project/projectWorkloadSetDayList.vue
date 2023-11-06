@@ -30,7 +30,7 @@
 									<span v-else>{{xmProject.id}} <span v-if="xmProject.name"><br/>{{  xmProject.name  }} </span> </span>
 								</el-form-item>
 								<el-form-item label="人员编号">
-									<mdp-select-user label="选择人员" :clearable="true" v-model="params.userid"></mdp-select-user>
+									<mdp-select-user label="选择人员" :clearable="true" v-model="params.userid" :init-name="params.username"></mdp-select-user>
 
 								</el-form-item>
 

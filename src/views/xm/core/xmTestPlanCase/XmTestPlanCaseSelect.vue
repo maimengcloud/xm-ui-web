@@ -44,7 +44,7 @@
                         </el-table-column>
                         <el-table-column prop="execUsername" label="执行人姓名" min-width="120" >
                             <template slot-scope="scope">
-                                <mdp-select-user v-model="scope.row.execUserid" :disabled="true">
+                                <mdp-select-user show-style="tag" v-model="scope.row.execUserid" :init-name="scope.row.execUsername" :disabled="true">
                                 </mdp-select-user>
                             </template>
                         </el-table-column>

@@ -47,7 +47,7 @@
 							</el-row>
 							<el-row class="padding">
 								<el-col :span="6">
-									<mdp-select-user label="执行人" v-model="editForm.execUserid" @change="editSomeFields(editForm,'execUserid',$event)"></mdp-select-user>
+									<mdp-select-user show-style="x" label="执行人" v-model="editForm.execUserid" :init-name="editForm.execUsername" @change="editSomeFields(editForm,'execUserid',$event)"></mdp-select-user>
 								</el-col>
 								<el-col :span="6">
 									<mdp-select  show-style="x" label="优先级" item-code="priority" v-model="editForm.priority"  @change="editSomeFields(editForm,'priority',$event)"></mdp-select>

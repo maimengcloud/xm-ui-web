@@ -284,7 +284,7 @@
 						</el-table-column>
 						<el-table-column prop="pmUsername" label="产品经理" width="150" sortable show-overflow-tooltip>
 							<template slot-scope="scope">
-								<mdp-select-user v-model="scope.row.pmUserid" :disabled="true"></mdp-select-user>
+								<mdp-select-user show-style="tag" v-model="scope.row.pmUserid" :disabled="true"></mdp-select-user>
 							</template>
 						</el-table-column>
 

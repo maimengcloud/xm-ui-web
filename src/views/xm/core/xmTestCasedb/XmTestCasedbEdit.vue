@@ -18,7 +18,7 @@
 				<el-row class="padding">
 					<el-col :span="8">
 						<el-form-item prop="cuserid" label-width="0px">
-							<mdp-select-user label="负责人" v-model="editForm.cuserid" @change2="editSomeFields(editForm,'cuserid',$event)"></mdp-select-user>
+							<mdp-select-user show-style="x" label="负责人" v-model="editForm.cuserid" :init-name="editForm.cusername" @change2="editSomeFields(editForm,'cuserid',$event)"></mdp-select-user>
 						</el-form-item>
 					</el-col>
 					<el-col :span="8">

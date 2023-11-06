@@ -45,13 +45,13 @@
 			</el-row>
 				<el-row class="padding">
 					<el-col :span="6">
-						<mdp-select-user label="主管领导" v-model="rawDatas.admUserid"></mdp-select-user>
+						<mdp-select-user show-style="x" label="主管领导" v-model="rawDatas.admUserid" :init-name="rawDatas.admUsername"></mdp-select-user>
 					</el-col>
 					<el-col :span="6">
-						<mdp-select-user label="负责人" v-model="rawDatas.pmUserid"></mdp-select-user>
+						<mdp-select-user show-style="x" label="负责人" v-model="rawDatas.pmUserid" :init-name="rawDatas.pmUsername"></mdp-select-user>
 					</el-col>
 					<el-col :span="6">
-						<mdp-select-user label="助理" v-model="rawDatas.assUserid"></mdp-select-user>
+						<mdp-select-user show-style="x" label="助理" v-model="rawDatas.assUserid" :init-name="rawDatas.assUsername"></mdp-select-user>
 					</el-col>
 					<el-col :span="6">
 						<mdp-select  show-style="x" label="状态" item-code="xmProductPstatus" v-model="rawDatas.pstatus"></mdp-select>

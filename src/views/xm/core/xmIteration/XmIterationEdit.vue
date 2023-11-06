@@ -30,7 +30,7 @@
 				<el-row>
 					<el-col :span="12">
 						<el-form-item prop="adminUserid" label-width="0px">
-              <mdp-select-user label="负责人姓名" v-model="editForm.adminUserid" @change2="editSomeFields(editForm,'adminUserid',$event)"></mdp-select-user>
+              <mdp-select-user show-style="x" label="负责人姓名" v-model="editForm.adminUserid" @change2="editSomeFields(editForm,'adminUserid',$event)"></mdp-select-user>
  						</el-form-item>
 					</el-col>
 					<el-col :span="12">

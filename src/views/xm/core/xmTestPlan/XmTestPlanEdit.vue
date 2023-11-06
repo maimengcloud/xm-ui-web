@@ -13,7 +13,7 @@
 				  </el-form-item>
 				<el-row class="padding-bottom">
 					<el-col :span="6">
-						<mdp-select-user label="负责人" v-model="editForm.cuserid" @change2="editSomeFields(editForm,'cuserid',$event)"></mdp-select-user>
+						<mdp-select-user show-style="x" label="负责人" v-model="editForm.cuserid" :init-name="editForm.cusername" @change2="editSomeFields(editForm,'cuserid',$event)"></mdp-select-user>
 					</el-col>
 					<el-col :span="6">
 						<mdp-select  show-style="x" label="状态" item-code="testPlanStatus" v-model="editForm.status"  @change="editSomeFields(editForm,'status',$event)"></mdp-select>

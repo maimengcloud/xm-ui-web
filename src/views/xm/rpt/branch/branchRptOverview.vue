@@ -39,7 +39,7 @@
 			<el-form :model="rawDatas"  label-width="120px" :rules="rawDatasRules" ref="rawDatasRef" label-position="left">
 				<el-row class="padding">
 					<el-col :span="8">
-						<mdp-select-user label="负责人" v-model="rawDatas.cuserid"></mdp-select-user>
+						<mdp-select-user label="负责人" v-model="rawDatas.cuserid" :init-name="rawDatas.cusername"></mdp-select-user>
 					</el-col>
 					<el-col :span="8">
 						<mdp-select  show-style="x" label="状态" item-code="testPlanStatus" v-model="rawDatas.status"></mdp-select>

@@ -22,7 +22,7 @@
 				</el-table-column>
 					 <el-table-column prop="username" label="用户姓名"  width="150" sortable  show-overflow-tooltip fixed="left">
 						 <template slot-scope="scope">
-							<mdp-select-user :key="scope.row.id" v-model="scope.row.userid" :disabled="true"></mdp-select-user>
+							<mdp-select-user show-style="tag" :key="scope.row.id" v-model="scope.row.userid" :init-name="scope.row.username" :disabled="true"></mdp-select-user>
 						 </template>
 					</el-table-column>
 					<el-table-column prop="execUserBranchId" label="用户归属公司" width="150" sortable  show-overflow-tooltip fixed="left">
