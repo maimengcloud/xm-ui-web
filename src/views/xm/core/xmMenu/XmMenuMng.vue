@@ -247,7 +247,7 @@
 						<template>
 						<el-table-column prop="mmUsername" label="跟进人"  min-width="100" show-overflow-tooltip  sortable>
 							<template slot-scope="scope">
-								<mdp-select-user size="mini" @visible-change="selectVisible(scope.row,$event)" @change="editXmMenuSomeFields(scope.row,'mmUserid',$event)"></mdp-select-user>
+								<mdp-select-user show-style="tag" size="mini" @visible-change="selectVisible(scope.row,$event)" @change="editXmMenuSomeFields(scope.row,'mmUserid',$event)"></mdp-select-user>
 							</template>
 						</el-table-column>
 						<el-table-column prop="productId" label="产品" width="100" show-overflow-tooltip sortable>
