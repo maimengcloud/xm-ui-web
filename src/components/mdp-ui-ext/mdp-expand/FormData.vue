@@ -127,7 +127,7 @@ import treeTool from '@/components/mdp-ui/js/treeTool.js'
 			editSubmit: function () {
 				this.$refs.editForm.validate((valid) => {
 					if (valid) { 
-						debugger
+						
 							this.editLoading = true;  
 							let params = Object.assign({}, this.editForm);  
 							if(this.isExtInfosCpd){

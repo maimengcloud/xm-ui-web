@@ -198,7 +198,7 @@
 		    	this.$emit('current-change',data, node);
 		    },
 		    handleNodeClick(data, node, comp) {
-				debugger;
+				
 				this.currentImageCategory=Object.assign({},data)
 				this.$emit('node-click',data, node, comp);
 			},

@@ -265,7 +265,7 @@ export default {
           //页面数据加载完后需要对数据进行加工处理的
           afterList(datas,isOk,apiName){
 			if(datas){
-				debugger;
+				
 				var dataType=this.$route.params.dataType
 				var dataField=this.$route.params.dataField
 				var camelDf=this.$mdp.toCamel(dataField)

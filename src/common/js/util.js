@@ -152,7 +152,7 @@ export default {
   },
   
   calcMaxHeight(cssSelector) {     
-    debugger;
+    
     var table=cssSelector;
     if(typeof cssSelector == 'string'){
       table=document.querySelector(cssSelector);

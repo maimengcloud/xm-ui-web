@@ -149,7 +149,7 @@ export default {
             }    
          }, 
          initCurrData(){
-            debugger
+            
             var val=this.value
             if(!val){
                 this.myVal=val

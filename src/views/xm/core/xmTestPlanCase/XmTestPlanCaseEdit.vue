@@ -477,7 +477,7 @@ import JsonViewer from 'vue-json-viewer'
 						this.editSomeFields(this.editForm,'execStatus',res.status==200?"2":"4")
 					}
 				}).catch(res=>{
-					debugger;
+					
 					var func=new Function('res','env',autoStepObj.expectResult)
 					var result=func(res,env)
 					if(result==true){

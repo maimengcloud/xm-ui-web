@@ -592,7 +592,7 @@ export default {
 		}
 	},
 	hasChild(id){
-		debugger
+		
 		return this.hasMyChild(id,this.selectedFields)
 	},
 	hasMyChild(id,children){

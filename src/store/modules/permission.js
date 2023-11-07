@@ -80,7 +80,7 @@ function filterAsyncRouter(asyncRouterMap, roles,menus) {
     return false
   })
 
-  debugger
+  
   return accessedRouters
 }
 function filterAsyncRouterWithParentRoute(proute, roles,menus) {

@@ -438,7 +438,7 @@
 
 
 			this.$nextTick(() => {
-				debugger;
+				
 				initDicts(this)
 				//this.maxTableHeight = util.calcTableMaxHeight(this.$refs.pageBody.$el);
 

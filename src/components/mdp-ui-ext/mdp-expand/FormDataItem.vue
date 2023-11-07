@@ -208,7 +208,7 @@
 			},
 			
 			onFieldChange(val){  
-				debugger;  
+				
 				this.$emit('input',this.editForm)
 				this.$emit('change',this.editForm,this.field) 
 				

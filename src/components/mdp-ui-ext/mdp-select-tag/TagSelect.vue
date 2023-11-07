@@ -139,7 +139,7 @@ data() {
 methods: {
      //页面初始化需要配置的特殊逻辑写这里
       initCurrData(){
-		debugger
+		
          this.searchTableDatas();
       },
 

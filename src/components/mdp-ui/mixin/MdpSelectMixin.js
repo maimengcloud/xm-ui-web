@@ -556,7 +556,7 @@ export const MdpSelectMixin = {
           * @returns 
           */
          initOptionsByInitName(myVal,myName){ 
-            debugger
+            
             this.initOptions=myVal.map((v,idx)=>{
                 var option={}
                 option[this.props['id']]=v
