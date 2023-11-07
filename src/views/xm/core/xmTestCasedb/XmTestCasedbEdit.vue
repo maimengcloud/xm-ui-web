@@ -18,18 +18,18 @@
 				<el-row class="padding">
 					<el-col :span="8">
 						<el-form-item prop="cuserid" label-width="0px">
-							<mdp-select-user show-style="x" label="负责人" v-model="editForm.cuserid" :init-name="editForm.cusername" @change2="editSomeFields(editForm,'cuserid',$event)"></mdp-select-user>
+							<mdp-select-user show-style="x" size="medium" label="负责人" v-model="editForm.cuserid" :init-name="editForm.cusername" @change2="editSomeFields(editForm,'cuserid',$event)"></mdp-select-user>
 						</el-form-item>
 					</el-col>
 					<el-col :span="8">
 
-						<mdp-select  show-style="x" label="状态" item-code="casedbStatus" v-model="editForm.status"  @change="editSomeFields(editForm,'status',$event)"></mdp-select>
+						<mdp-select  show-style="x" size="medium" label="状态" item-code="casedbStatus" v-model="editForm.status"  @change="editSomeFields(editForm,'status',$event)"></mdp-select>
 
 					</el-col>
 
 					<el-col :span="8">
 
-						<mdp-date show-style="x" label="创建日期" v-model="editForm.ctime"  @change="editSomeFields(editForm,'ctime',$event)"></mdp-date>
+						<mdp-date show-style="x" size="medium" label="创建日期" v-model="editForm.ctime"  @change="editSomeFields(editForm,'ctime',$event)"></mdp-date>
 					</el-col>
 				</el-row>
 			</el-form>

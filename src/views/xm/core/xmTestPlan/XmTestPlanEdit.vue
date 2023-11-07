@@ -13,17 +13,17 @@
 				  </el-form-item>
 				<el-row class="padding-bottom">
 					<el-col :span="6">
-						<mdp-select-user show-style="x" label="负责人" v-model="editForm.cuserid" :init-name="editForm.cusername" @change2="editSomeFields(editForm,'cuserid',$event)"></mdp-select-user>
+						<mdp-select-user show-style="x" size="medium" label="负责人" v-model="editForm.cuserid" :init-name="editForm.cusername" @change2="editSomeFields(editForm,'cuserid',$event)"></mdp-select-user>
 					</el-col>
 					<el-col :span="6">
-						<mdp-select  show-style="x" label="状态" item-code="testPlanStatus" v-model="editForm.status"  @change="editSomeFields(editForm,'status',$event)"></mdp-select>
+						<mdp-select  show-style="x" size="medium" label="状态" item-code="testPlanStatus" v-model="editForm.status"  @change="editSomeFields(editForm,'status',$event)"></mdp-select>
 					</el-col>
 
 					<el-col :span="6">
-						<mdp-select  show-style="x" label="测试方式" item-code="testType" v-model="editForm.testType"  @change="editSomeFields(editForm,'testType',$event)"></mdp-select>
+						<mdp-select  show-style="x" size="medium" label="测试方式" item-code="testType" v-model="editForm.testType"  @change="editSomeFields(editForm,'testType',$event)"></mdp-select>
 					</el-col>
 					<el-col :span="6">
-						<mdp-select  show-style="x" label="测试结果" item-code="testPlanTcode" v-model="editForm.tcode"  @change="editSomeFields(editForm,'tcode',$event)"></mdp-select>
+						<mdp-select  show-style="x" size="medium" label="测试结果" item-code="testPlanTcode" v-model="editForm.tcode"  @change="editSomeFields(editForm,'tcode',$event)"></mdp-select>
 					</el-col>
 				</el-row>
 

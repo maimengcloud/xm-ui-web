@@ -14,10 +14,10 @@
 			</el-row>
 				<el-row class="padding">
 					<el-col :span="6">
-						<mdp-select-user show-style="x" label="负责人" v-model="rawDatas.cuserid" :init-name="rawDatas.cusername"></mdp-select-user>
+						<mdp-select-user show-style="x" size="medium" label="负责人" v-model="rawDatas.cuserid" :init-name="rawDatas.cusername"></mdp-select-user>
 					</el-col>
 					<el-col :span="6">
-						<mdp-select  show-style="x" label="状态" item-code="casedbStatus" v-model="rawDatas.status"></mdp-select>
+						<mdp-select  show-style="x" size="medium" label="状态" item-code="casedbStatus" v-model="rawDatas.status"></mdp-select>
 					</el-col>
 				</el-row>
 		<el-row class="padding-top padding-left padding-right">

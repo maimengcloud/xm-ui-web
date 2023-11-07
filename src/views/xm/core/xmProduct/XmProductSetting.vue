@@ -27,7 +27,7 @@
 
           <el-col :span="8">
             <el-form-item prop="admUserid" label-width="0px">
-              <mdp-select-user show-style="x"
+              <mdp-select-user show-style="x" size="medium"
                 label=" 产品总控"
                 userid-key="admUserid"
                 username-key="admUsername"
@@ -38,7 +38,7 @@
           </el-col>
           <el-col :span="8">
             <el-form-item prop="pmUserid" label-width="0px">
-              <mdp-select-user show-style="x"
+              <mdp-select-user show-style="x" size="medium"
                 label=" 产品经理"
                 userid-key="pmUserid"
                 username-key="pmUsername"
@@ -49,7 +49,7 @@
           </el-col>
           <el-col :span="8">
             <el-form-item prop="assUserid" label-width="0px">
-              <mdp-select-user show-style="x"
+              <mdp-select-user show-style="x" size="medium"
                 label=" 副经理、助理"
                 userid-key="assUserid"
                 username-key="assUsername"

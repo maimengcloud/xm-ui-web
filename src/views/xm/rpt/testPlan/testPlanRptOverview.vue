@@ -42,14 +42,14 @@
 			<el-form :model="rawDatas"  label-width="120px" :rules="rawDatasRules" ref="rawDatasRef" label-position="left">
 				<el-row class="padding">
 					<el-col :span="8">
-						<mdp-select-user show-style="x" label="负责人" v-model="rawDatas.cuserid" :init-name="rawDatas.cusername"></mdp-select-user>
+						<mdp-select-user show-style="x" size="medium" label="负责人" v-model="rawDatas.cuserid" :init-name="rawDatas.cusername"></mdp-select-user>
 					</el-col>
 					<el-col :span="8">
-						<mdp-select  show-style="x" label="状态" item-code="testPlanStatus" v-model="rawDatas.status"></mdp-select>
+						<mdp-select  show-style="x" size="medium" label="状态" item-code="testPlanStatus" v-model="rawDatas.status"></mdp-select>
 					</el-col>
 
 					<el-col :span="8">
-						<mdp-select  show-style="x" label="测试结果" item-code="testPlanTcode" v-model="rawDatas.tcode"></mdp-select>
+						<mdp-select  show-style="x" size="medium" label="测试结果" item-code="testPlanTcode" v-model="rawDatas.tcode"></mdp-select>
 					</el-col>
 				</el-row>
  				<el-form-item label="归属测试库" prop="casedbName">

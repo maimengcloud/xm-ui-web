@@ -17,7 +17,7 @@
 
 					<el-col :span="12">
 						<el-form-item prop="onlineTime" label-width="0px">
-							<mdp-date show-style="x" label="上线时间"  type="date" placeholder="选择日期" v-model="editForm.onlineTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" @change="editSomeFields(editForm,'onlineTime',$event)"></mdp-date>
+							<mdp-date show-style="x" size="medium" label="上线时间"  type="date" placeholder="选择日期" v-model="editForm.onlineTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" @change="editSomeFields(editForm,'onlineTime',$event)"></mdp-date>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
@@ -30,12 +30,12 @@
 				<el-row>
 					<el-col :span="12">
 						<el-form-item prop="adminUserid" label-width="0px">
-              <mdp-select-user show-style="x" label="负责人姓名" v-model="editForm.adminUserid" @change2="editSomeFields(editForm,'adminUserid',$event)"></mdp-select-user>
+              <mdp-select-user show-style="x" size="medium" label="负责人姓名" v-model="editForm.adminUserid" @change2="editSomeFields(editForm,'adminUserid',$event)"></mdp-select-user>
  						</el-form-item>
 					</el-col>
 					<el-col :span="12">
 						<el-form-item  prop="istatus" label-width="0px">
-							<mdp-select  show-style="x" label="状态" item-code="iterationStatus" v-model="editForm.istatus" @change="editSomeFields(editForm,'istatus',$event)"></mdp-select>
+							<mdp-select  show-style="x" size="medium" label="状态" item-code="iterationStatus" v-model="editForm.istatus" @change="editSomeFields(editForm,'istatus',$event)"></mdp-select>
 
 						</el-form-item>
 					</el-col>

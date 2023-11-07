@@ -35,7 +35,7 @@
 							<my-input class="padding-right" v-model="item.aresult" clearable placeholder="步骤结果"></my-input>
 						</el-col>
 						<el-col :span="3">
-								<mdp-select  show-style="x" label="结果"  item-code="testStepTcode" v-model="item.tcode" :get-icon="getExecStatusIcon"></mdp-select>
+								<mdp-select  show-style="x" size="medium" label="结果"  item-code="testStepTcode" v-model="item.tcode" :get-icon="getExecStatusIcon"></mdp-select>
  						</el-col>
 						<el-col :span="1">
 							<slot name="addBug">

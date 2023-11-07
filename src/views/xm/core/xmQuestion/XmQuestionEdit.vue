@@ -59,7 +59,7 @@
 						</el-form-item>
 								<el-row class="padding">
 									<el-col :span="6">
-											<mdp-select-user show-style="x" label="责任人" v-model="editForm.handlerUserid" @change="editXmQuestionSomeFields(editForm,'handlerUserid',$event)">
+											<mdp-select-user show-style="x" size="medium" label="责任人" v-model="editForm.handlerUserid" @change="editXmQuestionSomeFields(editForm,'handlerUserid',$event)">
 												<el-row slot="extOper" style="margin-left:20px;">
 														指派给 <el-button type="text" @click="sendToAsk"> 提出人</el-button>  <el-button type="text"  @click="sendToCreater"> 创建人</el-button>
 												</el-row>
@@ -69,15 +69,15 @@
 									</el-col>
 
 									<el-col :span="6">
-										<mdp-select  show-style="x" label="状态" item-code="bugStatus" v-model="editForm.bugStatus" @change="editXmQuestionSomeFields(editForm,'bugStatus',$event)"></mdp-select>
+										<mdp-select  show-style="x" size="medium" label="状态" item-code="bugStatus" v-model="editForm.bugStatus" @change="editXmQuestionSomeFields(editForm,'bugStatus',$event)"></mdp-select>
 									</el-col>
 
 									<el-col :span="6">
-										<mdp-select  show-style="x" label="优先级" item-code="priority" v-model="editForm.priority" @change="editXmQuestionSomeFields(editForm,'priority',$event)"></mdp-select>
+										<mdp-select  show-style="x" size="medium" label="优先级" item-code="priority" v-model="editForm.priority" @change="editXmQuestionSomeFields(editForm,'priority',$event)"></mdp-select>
 									</el-col>
 
 									<el-col :span="6">
-												<mdp-date show-style="x" label="结束时间" style="max-width:100%;" value-format="yyyy-MM-dd HH:mm:ss" v-model="editForm.endTime" @change="editXmQuestionSomeFields(editForm,'endTime',$event)"></mdp-date>
+												<mdp-date show-style="x" size="medium" label="结束时间" style="max-width:100%;" value-format="yyyy-MM-dd HH:mm:ss" v-model="editForm.endTime" @change="editXmQuestionSomeFields(editForm,'endTime',$event)"></mdp-date>
  									</el-col>
 								</el-row>
 								<el-tabs v-model="activateTabPaneName" ref="editRef">

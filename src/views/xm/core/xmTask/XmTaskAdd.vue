@@ -26,7 +26,7 @@
 
 						<el-row class="padding-left padding-right">
 							<el-col :span="8">
-								<mdp-field show-style="x" v-model="addForm.parentTaskname" label="上级计划" icon="el-icon-time" color="#E6A23C">
+								<mdp-field show-style="x" size="medium" v-model="addForm.parentTaskname" label="上级计划" icon="el-icon-time" color="#E6A23C">
 									<el-button slot="oper"
 										@click="toSelectParent"
 										title="更换任务的上级，实现任务搬家功能"
@@ -36,18 +36,18 @@
 							</el-col>
 
 							<el-col :span="8">
- 									<mdp-select  show-style="x"  :label="addForm.ntype=='0'?'任务状态':'计划状态'" item-code="taskState" v-model="addForm.taskState" @change="editXmTaskSomeFields(addForm,'taskState',$event)"></mdp-select>
+ 									<mdp-select  show-style="x" size="medium"  :label="addForm.ntype=='0'?'任务状态':'计划状态'" item-code="taskState" v-model="addForm.taskState" @change="editXmTaskSomeFields(addForm,'taskState',$event)"></mdp-select>
 							</el-col>
 
 							<el-col :span="8">
- 									<mdp-select  show-style="x" label="优先级别" item-code="priority" v-model="addForm.level" @change="editXmTaskSomeFields(addForm,'level',$event)"></mdp-select>
+ 									<mdp-select  show-style="x" size="medium" label="优先级别" item-code="priority" v-model="addForm.level" @change="editXmTaskSomeFields(addForm,'level',$event)"></mdp-select>
 							</el-col>
 
 						</el-row>
 						<el-row class="padding">
 
 							<el-col :span="8">
-									<mdp-select-user show-style="x"  label="负责人" v-model="addForm.createUserid" @change2="editXmTaskSomeFields(addForm,'createUserid',$event)"></mdp-select-user>
+									<mdp-select-user show-style="x" size="medium"  label="负责人" v-model="addForm.createUserid" @change2="editXmTaskSomeFields(addForm,'createUserid',$event)"></mdp-select-user>
  							</el-col>
 							<el-col :span="8">
 										<mdp-date-range

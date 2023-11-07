@@ -17,13 +17,13 @@
 								</el-form-item>
 						<el-row class="padding-bottom">
 								<el-col :span="8" v-if="xmMenu.dclass!='1'">
-									<mdp-field show-style="x" v-if="(!parentMenu || !parentMenu.menuId) && (!xmMenu || !xmMenu.pmenuId) " v-model="addForm.pmenuName" :label="addForm.dclass==='3'?'归属特性':(addForm.dclass==='2'?'归属史诗':'归属')" :icon="addForm.dclass==='2'?'el-icon-s-promotion':'el-icon-s-flag'" :color="addForm.dclass==='2'?'rgb(255, 153, 51)':'rgb(0, 153, 51)'">
+									<mdp-field show-style="x" size="medium" v-if="(!parentMenu || !parentMenu.menuId) && (!xmMenu || !xmMenu.pmenuId) " v-model="addForm.pmenuName" :label="addForm.dclass==='3'?'归属特性':(addForm.dclass==='2'?'归属史诗':'归属')" :icon="addForm.dclass==='2'?'el-icon-s-promotion':'el-icon-s-flag'" :color="addForm.dclass==='2'?'rgb(255, 153, 51)':'rgb(0, 153, 51)'">
 										<el-button slot="oper"
 											@click="parentMenuSelectVisible=true"
 											title="选择上级"
 											icon="el-icon-upload2"> 选择上级</el-button>
 									</mdp-field>
-									<mdp-field show-style="x" v-else v-model="addForm.pmenuName" :label="addForm.dclass==='3'?'归属特性':(addForm.dclass==='2'?'归属史诗':'归属')" :icon="addForm.dclass==='2'?'el-icon-s-promotion':'el-icon-s-flag'" :color="addForm.dclass==='2'?'rgb(255, 153, 51)':'rgb(0, 153, 51)'">
+									<mdp-field show-style="x" size="medium" v-else v-model="addForm.pmenuName" :label="addForm.dclass==='3'?'归属特性':(addForm.dclass==='2'?'归属史诗':'归属')" :icon="addForm.dclass==='2'?'el-icon-s-promotion':'el-icon-s-flag'" :color="addForm.dclass==='2'?'rgb(255, 153, 51)':'rgb(0, 153, 51)'">
 										<el-button slot="oper"
 											@click="pmenuFormVisible=true"
 											title="查看上级"
@@ -31,10 +31,10 @@
 									</mdp-field>
 								</el-col>
 								<el-col  :span="8">
-                  <mdp-select-user show-style="x" label="负责人" v-model="editForm.mmUserid"></mdp-select-user>
+                  <mdp-select-user show-style="x" size="medium" label="负责人" v-model="editForm.mmUserid"></mdp-select-user>
  								</el-col>
 								<el-col  :span="8">
-                  <mdp-select-user show-style="x" label="提出人" v-model="editForm.proposerId"></mdp-select-user>
+                  <mdp-select-user show-style="x" size="medium" label="提出人" v-model="editForm.proposerId"></mdp-select-user>
 								</el-col>
 						</el-row>
 						<el-row class="padding-top">

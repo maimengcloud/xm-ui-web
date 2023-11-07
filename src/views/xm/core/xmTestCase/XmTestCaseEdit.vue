@@ -46,17 +46,17 @@
  						<el-row class="padding">
 
 								<el-col :span="6">
-									<mdp-select  show-style="x" label="状态" item-code="testCaseStatus" v-model="editForm.caseStatus"  @change="editSomeFields(editForm,'caseStatus',$event)"></mdp-select>
+									<mdp-select  show-style="x" size="medium" label="状态" item-code="testCaseStatus" v-model="editForm.caseStatus"  @change="editSomeFields(editForm,'caseStatus',$event)"></mdp-select>
 								</el-col>
 								<el-col :span="6">
-									 <mdp-select-user show-style="x" label="责任人" v-model="editForm.cuserid" :init-name="editForm.cusername" @change2="editSomeFields(editForm,'cuserid',$event)"></mdp-select-user>
+									 <mdp-select-user show-style="x" size="medium" label="责任人" v-model="editForm.cuserid" :init-name="editForm.cusername" @change2="editSomeFields(editForm,'cuserid',$event)"></mdp-select-user>
 
 								</el-col>
 								<el-col :span="6">
-									<mdp-select  show-style="x" label="用例类型" item-code="caseType" v-model="editForm.caseType"  @change="editSomeFields(editForm,'caseType',$event)"></mdp-select>
+									<mdp-select  show-style="x" size="medium" label="用例类型" item-code="caseType" v-model="editForm.caseType"  @change="editSomeFields(editForm,'caseType',$event)"></mdp-select>
 								</el-col>
 								<el-col :span="6">
-									<mdp-select  show-style="x" label="优先级" item-code="priority" v-model="editForm.cpriority"  @change="editSomeFields(editForm,'cpriority',$event)"></mdp-select>
+									<mdp-select  show-style="x" size="medium" label="优先级" item-code="priority" v-model="editForm.cpriority"  @change="editSomeFields(editForm,'cpriority',$event)"></mdp-select>
 								</el-col>
 							</el-row>
 						<el-tabs v-model="activeTab">
@@ -145,7 +145,7 @@
 								</el-row>
  							</el-tab-pane>
 							<el-tab-pane name="13" label="Body"  v-if="editForm.testType=='1'">
-								<mdp-select  show-style="x" style="margin-bottom:10px;" class="padding" label="参数格式" v-model="autoStep.bodyType" :dict="dicts.autoTestBodyType"></mdp-select>
+								<mdp-select  show-style="x" size="medium" style="margin-bottom:10px;" class="padding" label="参数格式" v-model="autoStep.bodyType" :dict="dicts.autoTestBodyType"></mdp-select>
 								<el-input v-if="autoStep.bodyType=='json'" type="textarea" :rows="10" v-model="autoStep.body"></el-input>
 								<el-input v-if="autoStep.bodyType=='xml'" type="textarea" :rows="10" v-model="autoStep.body"></el-input>
 
@@ -259,7 +259,7 @@
  							</el-tab-pane>
 							<el-tab-pane name="16" label="Auth"  v-if="editForm.testType=='1'">
 
-								<mdp-select  show-style="x" style="margin-bottom:10px;" class="padding" label="授权方式" v-model="autoStep.authType" :dict="dicts.autoTestAuthType"></mdp-select>
+								<mdp-select  show-style="x" size="medium" style="margin-bottom:10px;" class="padding" label="授权方式" v-model="autoStep.authType" :dict="dicts.autoTestAuthType"></mdp-select>
 
 
 								<el-row v-if="autoStep.authType=='basic-auth'">
