@@ -1,50 +1,55 @@
 <template> 
-                  <el-date-picker v-if="showStyle=='origin'||showStyle==''||!showStyle" :type="type" :style="styleObj"  v-model="dateRange" :value-format="valueFormat" :format="format" 
-                      unlink-panels 
-                      :range-separator="rangeSepaSrator"
-                      :start-placeholder="startPlaceholder"
-                      :end-placeholder="endPlaceholder"
-                      :default-range="[-30,0]"
-                      @change="onDateRangeChange"
-                      :picker-options="pickerOptions"   
-                      ></el-date-picker>    
-<span v-else :class="showStyle=='x'?{'field-box-x':true}:{'field-box':true}" >  
-							<el-avatar v-if="showAvater!=false" class="field-avater" :class="{'dashed-circle':avaterCpd.isNull,disabled:disabled===true,enabled:disabled!==true}"  :icon="avaterCpd.icon" :style="{backgroundColor:avaterCpd.color}">{{avaterCpd.innerText}}</el-avatar> 
-							
-              <span class="field-info"  :class="{disabled:disabled===true,enabled:disabled!==true}">
-                <slot name="field-info" :value="dateRange">
-
-
-                <span v-if="showStyle=='x'">
-                  <span class="field-value" v-if="!avaterCpd.isNull">{{avaterCpd.innerText}} </span> 
-								   <span class="field-value" v-else><span class="label-font-color">无</span></span> 
-                <slot name="label">
-								  <span class="field-label">{{label||'请选择日期'}}</span>
-                  
-                  
-                </slot>
-                  </span>
-                    <span v-else>
-                      <slot name="value" :value="myVal" :field="{label:label,color:color,icon:icon,disabled:disabled,clearable:clearable}">
-                        <span  v-if="!avaterCpd.isNull">{{avaterCpd.innerText}}</span> 
-                        <span v-else class="label-font-color">无</span>
-                      </slot> 
-                    </span>
-                </slot>
-							</span>   
-              <span v-if="disabled!==true" class="field-oper"  :class="{disabled:disabled===true,enabled:disabled!==true}">
-                    
-                  <el-date-picker :type="type" :style="styleObj"  v-model="dateRange" :value-format="valueFormat" :format="format" 
-                      unlink-panels 
-                      :range-separator="rangeSepaSrator"
-                      :start-placeholder="startPlaceholder"
-                      :end-placeholder="endPlaceholder"
-                      :default-range="[-30,0]"
-                      @change="onDateRangeChange"
-                      :picker-options="pickerOptions"   
-                      ></el-date-picker>  
-              </span>
-						</span>  
+<span>
+  <span v-if="showStyle=='origin'||showStyle==''||!showStyle">
+    <el-date-picker :type="type" :style="styleObj"  v-model="dateRange" :value-format="valueFormat" :format="format" 
+      unlink-panels 
+      :range-separator="rangeSepaSrator"
+      :start-placeholder="startPlaceholder"
+      :end-placeholder="endPlaceholder"
+      :default-range="[-30,0]"
+      @change="onDateRangeChange"
+      :picker-options="pickerOptions"   
+      ></el-date-picker>    
+  </span>
+  <span v-else :class="showStyle=='x'?{'field-box-x':true}:{'field-box':true}" >  
+    <slot class="field-avater" name="avater">
+      <el-avatar :size="size"  :class="{'dashed-circle':avaterCpd.isNull,disabled:disabled===true,enabled:disabled!==true}"  :icon="avaterCpd.icon" :style="{backgroundColor:avaterCpd.color}">{{avaterCpd.innerText}}</el-avatar> 
+    </slot> 
+    <span class="field-info"  :class="{disabled:disabled===true,enabled:disabled!==true}">
+      <slot name="info" :value="dateRange" > 
+        <span v-if="showStyle=='x'">
+          <div class="field-value">
+            <slot name="value"> 
+              <div  v-if="!avaterCpd.isNull">{{avaterCpd.innerText}}</div> 
+              <div v-else class="label-font-color">无</div>
+            </slot> 
+          </div> 
+          <div class="field-label">
+              <slot name="label">{{label||'请选择日期'}}</slot>
+          </div>  
+        </span>
+        <span v-else class="field-value">
+          <slot name="value" :value="myVal" :field="{label:label,color:color,icon:icon,disabled:disabled,clearable:clearable}">
+            <div  v-if="!avaterCpd.isNull">{{avaterCpd.innerText}}</div> 
+            <div v-else class="label-font-color">无</div>
+          </slot> 
+        </span> 
+      </slot>  
+    </span>   
+    <span v-if="disabled!==true" class="field-oper"  :class="{disabled:disabled===true,enabled:disabled!==true}">
+          
+        <el-date-picker :type="type" :style="styleObj"  v-model="dateRange" :value-format="valueFormat" :format="format" 
+            unlink-panels 
+            :range-separator="rangeSepaSrator"
+            :start-placeholder="startPlaceholder"
+            :end-placeholder="endPlaceholder"
+            :default-range="[-30,0]"
+            @change="onDateRangeChange"
+            :picker-options="pickerOptions"   
+            ></el-date-picker>  
+    </span>
+  </span>  
+</span>
 </template>
 
 <script> 

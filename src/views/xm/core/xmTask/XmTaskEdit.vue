@@ -149,7 +149,7 @@
 									<mdp-select-user show-style="x" v-if="editForm.crowd=='1'"  label="执行人" v-model="editForm.executorUserid">
 										<el-button slot="oper" @click="activateTabPaneName='42'">去管理竞标人</el-button>
 									</mdp-select-user>
-									<mdp-select-user v-if="editForm.crowd!='1'" label="执行人" v-model="editForm.executorUserid" @change2="editXmTaskSomeFields(editForm,'executorUserid',$event)"></mdp-select-user>
+									<mdp-select-user show-style="x"  v-if="editForm.crowd!='1'" label="执行人" v-model="editForm.executorUserid" @change2="editXmTaskSomeFields(editForm,'executorUserid',$event)"></mdp-select-user>
  							</el-col>
 
 						</el-row>
@@ -166,8 +166,7 @@
 
 
 							<el-col :span="8">
-										<mdp-date-range
-											:style-obj="{maxWidth:'100%'}"
+										<mdp-date-range show-style="x"
 											v-model="editForm"
 											start-key="startTime"
 											end-key="endTime"

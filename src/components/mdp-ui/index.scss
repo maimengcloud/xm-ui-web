@@ -99,11 +99,8 @@
   display: inline;
 }
 
-.dashed-circle {
-  width: 40px;
-  height: 40px;
-  border: 2px dashed #000000;
-  border-radius: 40px/40px;
+.dashed-circle { 
+  border: 2px dashed #000000; 
 }
 .field-box:hover .dashed-circle {
   border: 2px dashed #409eff;
