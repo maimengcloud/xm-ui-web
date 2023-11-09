@@ -11,11 +11,9 @@
 
   .field-info { 
     align-items: center;
-    display:inline-flex;
-    margin-left: 10px;  
+    display:inline-flex; 
   }
-  .field-oper { 
-    margin-left: 5px;
+  .field-oper {  
     margin-right: 5px; 
     display: none;
   }
@@ -35,8 +33,7 @@
     background-color: #ff9f73;
   }
 
-  .field-info { 
-    margin-left: 10px;
+  .field-info {  
     display:inline-flex;
     align-items: center;
     align-content: center;
@@ -50,8 +47,7 @@
       color: #c0c4cc;
     }
   }
-  .field-oper { 
-    margin-left: 5px;
+  .field-oper {  
     margin-right: 5px; 
     display: none;
   }

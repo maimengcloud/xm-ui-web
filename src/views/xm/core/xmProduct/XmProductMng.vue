@@ -141,8 +141,9 @@
 							<el-card @click.native="intoInfo(p,i)"  shadow="always">
 								<div   slot="header" style="display:flex;justify-content: space-between;">
 									<div class="project-name">
-										<el-tag title="产品状态" v-for="(item,index) in formatDictsWithClass(dicts,'xmProductPstatus',p.pstatus)" :key="index" :type="item.className">{{item.name}}</el-tag>
+ 										<mdp-select  title="产品状态" item-code="xmProductPstatus" show-style="tag" v-model="p.pstatus" :disabled="true"/>
 										{{p.productName}}
+										
 									</div>
 									<el-popover
 										placement="top-start"
@@ -209,8 +210,8 @@
 								</div>
 								<div class="project-footer">
 									<div class="project-type" title="产品经理">
-											<mdp-select-user show-style="tag" v-if="p.pmUserid" :value="p.pmUserid"  :disabled="true"></mdp-select-user>
-											<mdp-select-user show-style="tag" v-else-if="p.admUserid" :value="p.admUserid"  :disabled="true"></mdp-select-user>
+											<mdp-select-user show-style="tag" v-if="p.pmUserid" :value="p.pmUserid" :init-name="p.pmUsername"  :disabled="true"></mdp-select-user>
+											<mdp-select-user show-style="tag" v-else-if="p.admUserid" :value="p.admUserid" :init-name="p.admUsername"  :disabled="true"></mdp-select-user>
 										</div>
 										<div class="project-period">{{p.startTime?p.startTime.substr(0,10):''}} ~{{p.endTime?p.endTime.substr(0,10):''}}</div>
 									<!--<div class="project-period">{{p.startTime.substr(0,10)}} ~{{p.endTime.substr(0,10)}}</div>-->
@@ -284,7 +285,7 @@
 						</el-table-column>
 						<el-table-column prop="pmUsername" label="产品经理" width="150" sortable show-overflow-tooltip>
 							<template slot-scope="scope">
-								<mdp-select-user show-style="tag" v-model="scope.row.pmUserid" :disabled="true"></mdp-select-user>
+								<mdp-select-user show-style="tag" v-model="scope.row.pmUserid" :init-name="scope.row.pmUsername" :disabled="true"></mdp-select-user>
 							</template>
 						</el-table-column>
 

@@ -182,8 +182,8 @@
 							</div>
 							<div class="project-footer">
 								<div class="project-type" title="项目经理">
-									<mdp-select-user v-if="p.pmUserid" :value="p.pmUserid" :disabled="true"></mdp-select-user>
-									<mdp-select-user v-else-if="p.createUserid" :value="p.pmUserid" :disabled="true"></mdp-select-user>
+									<mdp-select-user show-style="tag" v-if="p.pmUserid" :value="p.pmUserid" :init-name="p.pmUsername" :disabled="true"></mdp-select-user>
+									<mdp-select-user show-style="tag" v-else-if="p.createUserid" :value="p.createUserid" :init-name="p.createUsername" :disabled="true"></mdp-select-user>
 
 								</div>
 								<div class="project-period">{{p.startTime?p.startTime.substr(0,10):''}} ~{{p.endTime?p.endTime.substr(0,10):''}}</div>

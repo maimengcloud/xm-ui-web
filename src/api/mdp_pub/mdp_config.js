@@ -50,11 +50,11 @@ export default {
   },
   //模块订单
   getMoContext(){
-    return 'lcode'
+    return 'sys'
   },
   // 系统管理api路径
   getSysContext: function() {
-    return 'lcode'
+    return 'sys'
   },
   getTpaContext: function(){
     return 'tpa'
