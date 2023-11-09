@@ -1,7 +1,7 @@
 <template>
 	<section>
 
-			<el-row :gutter="5" >
+			<el-row>
 				<el-col :span="showParams?23:24">
 					<el-row :class="{'row-box':true,'cfg':isRptCfg}">
 						<div class="title">{{ title?title:(isRptCfg?'标题':'') }}</div>
@@ -12,7 +12,7 @@
 						<el-input class="input" v-model="remark" placeholder="说明"/>
 					</el-row>
 					<el-row>
-						<div class="echart-box" :id="this.id"></div>
+						<div class="echart-box" :id="id"></div>
 					</el-row>
 				</el-col>
 				<el-col :span="showParams?1:0" v-if="showParams">
@@ -33,29 +33,24 @@
 									</el-col>
 									<el-col :span="9">
 										<el-form-item label="任务状态" prop="taskState">
-											<el-select style="width:100px;" size="small"   v-model="params.taskState"  @change="onXmTaskSomeFieldsChange('taskState',$event)" clearable>
-												<el-option v-for="i in this.dicts.taskState" :label="i.name" :key="i.id" :value="i.id"></el-option>
-											</el-select>
+											<mdp-select item-code="taskState" style="width:100px;" size="small"   v-model="params.taskState"  @change="onXmTaskSomeFieldsChange('taskState',$event)" clearable>
+ 											</mdp-select>
 										</el-form-item>
 										<el-form-item  label="任务类型" prop="taskType" >
-											<el-select style="width:100px;" size="small" v-model="params.taskType"  @change="onXmTaskSomeFieldsChange('taskType',$event)" clearable>
-												<el-option v-for="i in this.dicts.taskType" :label="i.name" :key="i.id" :value="i.id"></el-option>
-											</el-select>
+											<mdp-select item-code="taskType" style="width:100px;" size="small" v-model="params.taskType"  @change="onXmTaskSomeFieldsChange('taskType',$event)" clearable>
+ 											</mdp-select>
 										</el-form-item>
 										<el-form-item  label="任务来源" prop="planType">
-											<el-select style="width:100px;" size="small" v-model="params.planType"  @change="onXmTaskSomeFieldsChange('planType',$event)" clearable>
-												<el-option v-for="i in this.dicts.planType" :label="i.name" :key="i.id" :value="i.id"></el-option>
-											</el-select>
+											<mdp-select item-code="planType" style="width:100px;" size="small" v-model="params.planType"  @change="onXmTaskSomeFieldsChange('planType',$event)" clearable>
+ 											</mdp-select>
 										</el-form-item>
 										<el-form-item  label="任务层次" prop="settleSchemel" >
-											<el-select style="width:100px;" size="small" v-model="params.settleSchemel"  @change="onXmTaskSomeFieldsChange('settleSchemel',$event)" clearable>
-												<el-option v-for="i in this.dicts.xmTaskSettleSchemel" :label="i.name" :key="i.id" :value="i.id"></el-option>
-											</el-select>
+											<mdp-select item-code="xmTaskSettleSchemel" style="width:100px;" size="small" v-model="params.settleSchemel"  @change="onXmTaskSomeFieldsChange('settleSchemel',$event)" clearable>
+ 											</mdp-select>
 										</el-form-item>
 										<el-form-item  label="优先级别" prop="priority" >
-											<el-select style="width:100px;" size="small" v-model="params.priority" @change="onXmTaskSomeFieldsChange('priority',$event)" clearable>
-													<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option>
-											</el-select>
+											<mdp-select item-code="priority" style="width:100px;" size="small" v-model="params.priority" @change="onXmTaskSomeFieldsChange('priority',$event)" clearable>
+ 											</mdp-select>
 										</el-form-item>
 									</el-col>
 								</el-row>
@@ -146,6 +141,7 @@
         },
 		watch: {
 			rawDatasCpd(){
+				debugger;
 				this.drawCharts();
 			}
 	    },
@@ -293,6 +289,7 @@
 				var params={...this.params}
 				params.ntype='0'
 				getXmTaskAgeDist(params).then(res=>{
+					debugger;
 					this.rawDatas=res.data.data
 				})
 

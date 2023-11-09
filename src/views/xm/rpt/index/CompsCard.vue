@@ -438,6 +438,7 @@ export default {
         this.$nextTick(() => {
             this.initData();
             this.maxTableHeight = util.calcMaxHeight(this.$refs.table.$el)
+            //debugger
         })
     },
 
