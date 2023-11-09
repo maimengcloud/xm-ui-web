@@ -421,3 +421,10 @@ table tr.hover-row{
       }
   }
 }
+.echart-box{  
+  min-height: calc(60vh);
+  max-height: calc(80vh);   
+  overflow-y: 'hidden';
+  width:100%; 
+  padding:10px;
+} 
