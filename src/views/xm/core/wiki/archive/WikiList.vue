@@ -78,7 +78,7 @@
 							<el-table-column type="index" width="40"></el-table-column>
 							<el-table-column prop="archiveType" label="主题" width="100">
 								<template slot-scope="scope">
-								 <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'categoryType',scope.row.archiveType)" :key="index" :type="item.className">{{item.name}}</el-tag>
+ 									<mdp-select show-style="tag" item-code="categoryType" v-model="scope.row.archiveType" :disabled="true"/>
 								</template>
 							</el-table-column>
 							<el-table-column prop="archiveTitle" label="标题" min-width="150" show-overflow-tooltip>
@@ -89,8 +89,8 @@
 							<el-table-column prop="authorName" label="作者" min-width="80" show-overflow-tooltip></el-table-column> 
 							<el-table-column prop="status" label="状态" min-width="80" show-overflow-tooltip>
 								<template slot-scope="scope">
-									<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'archiveStatus',scope.row.status)" :key="index" :type="item.className">{{item.name}}</el-tag>
-								</template>
+									<mdp-select show-style="tag" item-code="archiveStatus" v-model="scope.row.status" :disabled="true"/> 
+ 								</template>
 							</el-table-column>
 							<!-- <el-table-column prop="categoryId" label="分类" min-width="80" show-overflow-tooltip :formatter="formatterCategoryid"></el-table-column> -->
 							<el-table-column prop="tagNames" label="标签" min-width="80" show-overflow-tooltip></el-table-column> 
@@ -542,7 +542,6 @@
 		mounted() { 
 			
 			this.$nextTick(() => {
-				initDicts(this)
 				this.tableHeight = util.calcTableMaxHeight(this.$refs.table.$el)
 				this.getArchives();
 				

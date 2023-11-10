@@ -1072,9 +1072,16 @@
 			"v-region":RegionGroup ,
 			//在下面添加其它组件 'xm-task-edit':XmTaskEdit
 		},
-		mounted() {
-			this.$nextTick(()=>{
-				initDicts(this);
+		mounted() { 
+			this.$mdp.ajaxGetDictOptions('bidStep').then(res=>{
+				this.dicts['bidStep']=res.data.options
+			})
+			
+			this.$mdp.ajaxGetDictOptions('taskState').then(res=>{
+				this.dicts['taskState']=res.data.options
+			})
+			this.$nextTick(()=>{ 
+
 				this.editForm=Object.assign(this.editForm, this.xmTask);
 				this.editFormBak=Object.assign({},this.editForm)
 				this.supRequires=this.editForm.supRequires?this.editForm.supRequires.split(","):[]

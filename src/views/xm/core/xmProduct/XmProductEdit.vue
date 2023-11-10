@@ -53,10 +53,9 @@
           <el-col :span="8">
             <el-form-item prop="admUserid" label-width="0px">
               <mdp-select-user show-style="x" size="medium"
-                label=" 产品总控"
-                userid-key="admUserid"
-                username-key="admUsername"
-                v-model="editForm"
+                label=" 产品总控" 
+                v-model="editForm.admUserid"
+                :init-name="editForm.admUsername"
                 @change="editSomeFields(editForm, 'admUserid', $event)"
               ></mdp-select-user>
             </el-form-item>
@@ -64,10 +63,9 @@
           <el-col :span="8">
             <el-form-item prop="pmUserid" label-width="0px">
               <mdp-select-user show-style="x" size="medium"
-                label=" 产品经理"
-                userid-key="pmUserid"
-                username-key="pmUsername"
-                v-model="editForm"
+                label=" 产品经理" 
+                v-model="editForm.pmUserid"
+                :init-name="editForm.pmUsername"
                 @change="editSomeFields(editForm, 'pmUserid', $event)"
               ></mdp-select-user>
             </el-form-item>
@@ -75,10 +73,9 @@
           <el-col :span="8">
             <el-form-item prop="assUserid" label-width="0px">
               <mdp-select-user show-style="x" size="medium"
-                label=" 副经理、助理"
-                userid-key="assUserid"
-                username-key="assUsername"
-                v-model="editForm"
+                label=" 副经理、助理" 
+                v-model="editForm.assUserid"
+                :init-name="editForm.assUsername"
                 @change="editSomeFields(editForm, 'assUserid', $event)"
               ></mdp-select-user>
             </el-form-item>

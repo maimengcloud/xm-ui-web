@@ -139,7 +139,7 @@
 								</mdp-field>
 							</el-col>
 							<el-col :span="8">
- 										<mdp-date-range label="起止时间" type="daterange" :style-obj="{maxWidth:'100%'}" :auto-default="false"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" v-model="editForm" start-key="startTime" end-key="endTime"  @change="editXmMenuSomeFields(editForm,'startTime',editForm)"></mdp-date-range>
+ 										<mdp-date-range show-style="tag" label="起止时间" type="daterange" :style-obj="{maxWidth:'100%'}" :auto-default="false"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd" v-model="editForm" start-key="startTime" end-key="endTime"  @change="editXmMenuSomeFields(editForm,'startTime',editForm)"></mdp-date-range>
 
  							</el-col>
 						</el-row>
@@ -693,10 +693,10 @@ import CommentArea from '../xmMenuComment/comment-area.vue';
 			CommentArea,
 			XmFuncSelect,
 		},
-		mounted() {
-
-
-
+		mounted() { 
+			this.$mdp.ajaxGetDictOptions('menuStatus').then(res=>{
+				this.dicts['menuStatus']=res.data.options
+			})
 			this.editForm=Object.assign(this.editForm, this.xmMenu);
 			this.editFormBak=Object.assign({},this.editForm)
 			if(this.reload==true){

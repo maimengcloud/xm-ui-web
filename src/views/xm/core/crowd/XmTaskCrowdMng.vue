@@ -248,15 +248,8 @@
                 type="taskState"
                 width="100"
               >
-								<template slot-scope="scope">
-									<div class="cell-text">
-										<el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in formatterTaskStateDicts(scope.row.taskState)" :key="index">{{item.name}}</el-button>
-									</div>
-									<span class="cell-bar">
-										 <el-select  v-model="scope.row.taskState" placeholder="任务状态"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'taskState',$event)">
-												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.taskState" :key="index"></el-option>
-										 </el-select>
-									</span>
+								<template slot-scope="scope"> 
+                  <mdp-select show-style="tag" item-code="taskState" v-model="scope.row.taskState" @change="editXmTaskSomeFields(scope.row,'taskState',$event)"/>
 								</template>
               </el-table-column>
 
@@ -265,15 +258,8 @@
                 type="level"
                 width="100"
               >
-								<template slot-scope="scope">
-									<div class="cell-text">
-										<el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in formatterPriorityDicts(scope.row.level)" :key="index">{{item.name}}</el-button>
-									</div>
-									<span class="cell-bar">
-										 <el-select  v-model="scope.row.level" placeholder="优先级"  style="display:block;"  @change="editXmTaskSomeFields(scope.row,'level',$event)">
-												<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.priority" :key="index"></el-option>
-										 </el-select>
-									</span>
+								<template slot-scope="scope"> 
+                  <mdp-select show-style="tag" item-code="priority" v-model="scope.row.level" @change="editXmTaskSomeFields(scope.row,'level',$event)"/>
 								</template>
               </el-table-column>
               <el-table-column

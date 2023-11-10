@@ -144,8 +144,7 @@
 		},
 		mounted() { 
 			  
-			this.$nextTick(() => {
-				initDicts(this);
+			this.$nextTick(() => { 
 				this.initData()   
 			});
 			  
