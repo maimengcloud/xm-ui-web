@@ -96,7 +96,7 @@
 
 												<el-col :span="8">
 													<el-form-item label="提出人" prop="askUsername">
-														<mdp-select-user label="提出人" v-model="editForm.askUserid" @change2="editXmQuestionSomeFields(editForm,'askUserid',$event)"></mdp-select-user>
+														<mdp-select-user show-style="tag" label="提出人" v-model="editForm.askUserid" :init-name="editForm.askUsername" @change2="editXmQuestionSomeFields(editForm,'askUserid',$event)"></mdp-select-user>
  													</el-form-item>
 												</el-col>
 												<el-col :span="8">

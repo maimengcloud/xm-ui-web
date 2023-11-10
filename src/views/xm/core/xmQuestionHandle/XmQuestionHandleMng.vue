@@ -6,8 +6,8 @@
 
 				<el-table-column prop="handleStatus" label="bug状态" width="100" >
 					<template slot-scope="scope">
-						<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'bugStatus',scope.row.handleStatus)" :key="index" :type="item.className">{{item.name}}</el-tag>
-					</template>
+						<mdp-select show-style="tag" item-code="bugStatus" v-model="scope.row.handleStatus" :disabled="true" />
+ 					</template>
 				</el-table-column>
 				<el-table-column prop="receiptMessage" label="处理意见" min-width="150" >
 					<template slot-scope="scope">
