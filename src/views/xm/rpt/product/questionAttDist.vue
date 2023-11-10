@@ -458,10 +458,35 @@
 				this.filters.testPlan=null
 			},
 		},//end method
-		mounted() {
+		mounted() {  
 
-			            //this.maxTableHeight = util.calcTableMaxHeight(this.$refs.filtersRef.$el)
-			//this.charts();
+			this.$mdp.ajaxGetDictOptions('bugSeverity').then(res=>{
+				this.dicts['bugSeverity']=res.data.options
+			})
+			
+			this.$mdp.ajaxGetDictOptions('bugSolution').then(res=>{
+				this.dicts['bugSolution']=res.data.options
+			})
+			
+			this.$mdp.ajaxGetDictOptions('bugStatus').then(res=>{
+				this.dicts['bugStatus']=res.data.options
+			})
+			
+			this.$mdp.ajaxGetDictOptions('bugType').then(res=>{
+				this.dicts['bugType']=res.data.options
+			})
+			
+			this.$mdp.ajaxGetDictOptions('priority').then(res=>{
+				this.dicts['priority']=res.data.options
+			})
+			
+			this.$mdp.ajaxGetDictOptions('bugRepRate').then(res=>{
+				this.dicts['bugRepRate']=res.data.options
+			})
+			
+			this.$mdp.ajaxGetDictOptions('bugReason').then(res=>{
+				this.dicts['bugReason']=res.data.options
+			}) 
 			this.open();
 
 		}//end mounted

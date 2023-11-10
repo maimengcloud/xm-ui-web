@@ -357,11 +357,11 @@
 				this.searchXmTestPlanCaseUserDist();
 			}
 		},//end method
-		mounted() {
-
-			this.initData();
-            //this.maxTableHeight = util.calcTableMaxHeight(this.$refs.filtersRef.$el)
-			//this.charts();
+		mounted() { 
+			this.initData(); 
+			this.$mdp.ajaxGetDictOptions('testPlanTcode').then(res=>{
+				this.dicts['testPlanTcode']=res.data.options
+			}) 
 			this.open();
 
 		}//end mounted

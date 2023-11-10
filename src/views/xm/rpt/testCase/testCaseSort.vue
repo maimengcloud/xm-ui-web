@@ -201,17 +201,7 @@
 
 			}//end return
 		},//end data
-		methods: {
-			formatDict(itemId,val){
-				var dict=this.dicts[itemId]
-				if(dict){
-					var item=dict.find(i=>i.id==val)
-					if(item){
-						return item.name
-					}
-				}
-				return val;
-			},
+		methods: { 
 			drawCharts() {
 				this.myChart = this.$echarts.init(document.getElementById(this.id));
 				this.myChart.setOption(
@@ -359,9 +349,8 @@
 		},//end method
 		mounted() {
 
-			this.initData();
-            //this.maxTableHeight = util.calcTableMaxHeight(this.$refs.filtersRef.$el)
-			//this.charts();
+			this.initData(); 
+			 
 			this.open();
 
 		}//end mounted

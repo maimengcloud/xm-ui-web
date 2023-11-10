@@ -360,8 +360,11 @@
 		mounted() {
 
 			this.initData();
-            //this.maxTableHeight = util.calcTableMaxHeight(this.$refs.filtersRef.$el)
-			//this.charts();
+			
+			this.$mdp.ajaxGetDictOptions('testStepTcode').then(res=>{
+				this.dicts['testStepTcode']=res.data.options
+			}) 
+			 
 			this.open();
 
 		}//end mounted

@@ -394,10 +394,26 @@
 				this.filters.iteration=null
 			}
 		},//end method
-		mounted() {
-
-			//this.maxTableHeight = util.calcTableMaxHeight(this.$refs.filtersRef.$el)
-			//this.charts();
+		mounted() { 
+			this.$mdp.ajaxGetDictOptions('menuStatus').then(res=>{
+				this.dicts['menuStatus']=res.data.options
+			})
+			
+			this.$mdp.ajaxGetDictOptions('demandLvl').then(res=>{
+				this.dicts['demandLvl']=res.data.options
+			})
+			
+			this.$mdp.ajaxGetDictOptions('demandType').then(res=>{
+				this.dicts['demandType']=res.data.options
+			})
+			
+			this.$mdp.ajaxGetDictOptions('priority').then(res=>{
+				this.dicts['priority']=res.data.options
+			})
+			
+			this.$mdp.ajaxGetDictOptions('demandSource').then(res=>{
+				this.dicts['demandSource']=res.data.options
+			})
 			this.open();
 
 		}//end mounted
