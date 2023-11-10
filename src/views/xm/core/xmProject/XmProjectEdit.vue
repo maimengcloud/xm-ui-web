@@ -20,13 +20,14 @@
 							<el-row class="padding-left padding-right padding-top">
 								<el-col :span="8">
 									<el-form-item prop="xmType" label-width="0px">
-										<mdp-select  show-style="x" size="medium" label="项目类型" item-code="projectType" v-model="editForm.xmType" @change="editXmProjectSomeFields(editForm,'xmType',$event)"></mdp-select>
+										<mdp-select show-style="x" size="medium" label="项目类型" item-code="projectType" v-model="editForm.xmType" @change="editXmProjectSomeFields(editForm,'xmType',$event)"></mdp-select>
 									</el-form-item>
 								</el-col>
 								<el-col :span="8">
 
-									<el-form-item prop="status" label-width="0px">
+									<el-form-item prop="status" label-width="0px"> 
 										<mdp-select  show-style="x" size="medium" label="项目状态" item-code="projectStatus" v-model="editForm.status" @change="editXmProjectSomeFields(editForm,'status',$event)"></mdp-select>
+ 
 									</el-form-item>
 								</el-col>
 								<el-col :span="8">
