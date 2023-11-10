@@ -203,9 +203,8 @@
 
                         </el-popover>
                   <el-button type="text" size="mini" circle plain v-if="editForm&&editForm.id==scope.row.id" @click.stop="unselectRow()" title="取消选中状态" icon="el-icon-circle-close"></el-button>
-
-                  <el-tag style="float: right;" class="hidden-md-and-down" v-for="(item,index) in formatDictsWithClass(dicts,'taskState',scope.row.taskState)" :key="index" :type="item.className">{{item.name}}</el-tag>
-
+                  <mdp-select show-style="tag" style="float: right;" class="hidden-md-and-down" item-code="taskState"  v-model="scope.row.taskState" :disabled="true"/>
+ 
                   <el-link
                     style="float: right;line-height: 24px;height: 24px;"
                     :type="scope.row.rate >= 100 ? 'success' : 'warning'"

@@ -137,9 +137,8 @@
  								<el-button type="text" slot="reference" icon="el-icon-setting" size="mini" circle plain></el-button>
 							</el-popover>
 						 <el-button type="text" size="mini" circle plain v-if="editForm&&editForm.menuId==scope.row.menuId" @click.stop="unselectRow()" title="取消选中状态" icon="el-icon-circle-close"></el-button>
-
-						<el-tag style="float:right;" class="hidden-md-and-down" v-for="(item,index) in formatDictsWithClass(dicts,'menuStatus',scope.row.status)" :key="index" :type="item.className">{{item.name}}</el-tag>
-						<span
+						<mdp-select show-style="tag" style="float:right;" class="hidden-md-and-down" item-code="menuStatus" v-model="scope.row.status" :disabled="true"/>
+ 						<span
 							:style="{borderRadius: '30px',color:scope.row.finishRate >= 100 ? 'green' : 'blue',float:'right'}"
 						>
 							{{ (scope.row.finishRate != null ? scope.row.finishRate : 0) + "%" }}
