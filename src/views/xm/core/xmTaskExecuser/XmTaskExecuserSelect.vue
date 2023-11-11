@@ -8,12 +8,10 @@
 				<el-input v-model="filters.branchId" style="width: 10em;" placeholder="项目公司编号" clearable></el-input>
 			</span>
 			<el-input v-model="filters.execUserBranchId" style="width: 10em;" placeholder="用户公司编号" clearable></el-input>
- 			<el-select v-model="filters.status" style="width:6em;"  placeholder="候选状态" clearable>
-				 <el-option v-for="(item,index) in dicts.projectTaskExecuserStatus" :value="item.id" :label="item.name" :key="index"></el-option>
-			 </el-select>
- 			<el-select v-model="filters.taskState" style="width:6em;"  placeholder="任务状态" clearable>
-				 <el-option v-for="(item,index) in dicts.taskState" :value="item.id" :label="item.name" :key="index"></el-option>
-			 </el-select>
+ 			<mdp-select item-code="projectTaskExecuserStatus" v-model="filters.status" style="width:6em;"  placeholder="候选状态" clearable>
+ 			 </mdp-select>
+ 			<mdp-select item-code="taskState" v-model="filters.taskState" style="width:6em;"  placeholder="任务状态" clearable>
+ 			 </mdp-select>
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmTaskExecusers">查询</el-button>
 			<span style="float:right;">
 			<el-button  type="primary" @click="select">确认选择</el-button>
@@ -28,27 +26,24 @@
 				</el-table-column>
 				 <el-table-column  label="序号" type="index" width="60"  fixed="left">
 				</el-table-column>
-					 <el-table-column prop="username" label="用户姓名"  width="150" sortable  show-overflow-tooltip fixed="left">
+					 <el-table-column prop="bidUsername" label="用户姓名"  width="150" sortable  show-overflow-tooltip fixed="left">
 						 <template slot-scope="scope">
-							<mdp-select-user show-style="tag" :key="scope.row.id" v-model="scope.row.userid" :init-name="scope.row.username" :disabled="true"></mdp-select-user>
+							<mdp-select-user show-style="tag" :key="scope.row.id" v-model="scope.row.bidUserid" :init-name="scope.row.bidUsername" :disabled="true"></mdp-select-user>
 						 </template>
 					</el-table-column>
-					<el-table-column prop="execUserBranchId" label="用户归属公司" width="150" sortable  show-overflow-tooltip fixed="left">
+					<el-table-column prop="bidBranchId" label="用户归属公司" width="150" sortable  show-overflow-tooltip fixed="left">
 					</el-table-column>
 					<el-table-column prop="status" label="候选状态"  width="100" sortable fixed="left">
-						<template slot-scope="scope">
-							<el-link type="primary" v-if="scope.row.status=='0'">候选中</el-link>
-							<el-link type="success" v-else-if="scope.row.status=='1'">执行中 </el-link>
-							<el-link type="info" v-else-if="scope.row.status=='7'">已放弃  </el-link>
-							<el-link type="danger" v-else-if="scope.row.status=='8'">黑名单 </el-link>
+						<template slot-scope="scope"> 
+							<mdp-select item-code="projectTaskExecuserStatus" v-model="scope.row.status" placeholder="候选状态" show-style="tag" :disabled="true"></mdp-select>
 						</template>
 					</el-table-column>
 					<el-table-column prop="taskName" label="任务名称" width="150" sortable  show-overflow-tooltip fixed="left">
 					</el-table-column>
-					<el-table-column prop="taskName" label="任务状态" width="100" sortable  show-overflow-tooltip >
+					<el-table-column prop="taskState" label="任务状态" width="100" sortable  show-overflow-tooltip >
 						<template slot-scope="scope">
-							<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'taskState',scope.row.taskState)" :key="index" :type="item.className">{{item.name}}</el-tag>
- 						</template>
+							<mdp-select item-code="taskState" v-model="scope.row.taskState" show-style="tag" :disabled="true"/>
+  						</template>
 					</el-table-column>
 					<el-table-column prop="projectId" label="项目编号" width="100" sortable show-overflow-tooltip>
 					</el-table-column>
