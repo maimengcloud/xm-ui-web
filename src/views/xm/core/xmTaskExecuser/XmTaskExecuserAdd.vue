@@ -6,8 +6,8 @@
 				<!-- <el-form-item label="创建时间" prop="createTime">
 					<el-date-picker type="date" placeholder="选择日期" v-model="addForm.createTime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd"></el-date-picker>
 				</el-form-item> -->
-				<el-form-item label="执行人姓名" prop="username">
-					  {{addForm.username}}<el-button v-if="execuserAddType!='join'" type="text" @click.native="showSelectUsers">选择执行人</el-button>
+				<el-form-item label="执行人姓名" prop="bidUserid">
+ 					  <mdp-select-user v-model="addForm.bidUserid" :init-name="addForm.bidUsername" @change2="(e)=>{addForm.bidUsername=e.username;addForm.bidBranchId=e.branchId}"/>
 				</el-form-item>
 				<el-form-item label="报价工期" prop="quoteWeekday">
 					<div>
@@ -54,10 +54,6 @@
 			</el-form>
 		</el-row>
 
-		<el-drawer title="选择员工" :visible.sync="userSelectVisible" size="60%" append-to-body>
-       		 <users-select  @confirm="onUserSelected" ref="usersSelect"></users-select>
-      	</el-drawer>
-
 	</section>
 </template>
 
@@ -74,7 +70,7 @@
 		      'userInfo','roles'
 		    ])
 		},
-		props:['xmTaskExecuser','visible',"execUserList","xmTask",'execuserAddType'],
+		props:['xmTaskExecuser','visible',"xmTask",'execuserAddType'],
 		watch: {
 	      'xmTaskExecuser':function( xmTaskExecuser ) {
 	        this.addForm = xmTaskExecuser;
@@ -85,8 +81,9 @@
 				if(this.execuserAddType!="join"){
 					this.showSelectUsers();
 				}else{
-					this.addForm.userid=this.userInfo.userid
-					this.addForm.username=this.userInfo.username
+					this.addForm.bidUserid=this.userInfo.userid
+					this.addForm.bidUsername=this.userInfo.username
+					this.addForm.bidBranchId=this.userInfo.branchId
 				}
 	      		//从新打开页面时某些数据需要重新加载，可以在这里添加
 	      	}
@@ -110,7 +107,7 @@
 				},
 				//新增界面数据 xm_task_execuse
 				addForm: {
-					createTime:'',id:'',taskId:'',userid:'',startTime:'',endTime:'',status:'',remarks:'',settleAmount:'',settleWorkload:'',settleStatus:'',settleTime:'',createUserid:'',createUsername:'',username:'',matchScore:'',quoteWeekday:'',quoteAmount:'',quoteTime:'',bizProcInstId:'',bizFlowState:'',projectId:'',phaseId:'',skillRemark:'',quoteWorkload:'',quoteStartTime:'',quoteEndTime:'',branchId:'',projectPhaseName:'',taskName:''
+					createTime:'',id:'',taskId:'',bidUserid:'',startTime:'',endTime:'',status:'',remarks:'',settleAmount:'',settleWorkload:'',settleStatus:'',settleTime:'',createUserid:'',createUsername:'',bidUsername:'',matchScore:'',quoteWeekday:'',quoteAmount:'',quoteTime:'',bizProcInstId:'',bizFlowState:'',projectId:'',phaseId:'',skillRemark:'',quoteWorkload:'',quoteStartTime:'',quoteEndTime:'',branchId:'',projectPhaseName:'',taskName:''
 				},
 				userSelectVisible: false,
 				quoteDateRanger: [
@@ -127,17 +124,10 @@
 			},
 			//新增提交XmTaskExecuser xm_task_execuser 父组件监听@submit="afterAddSubmit"
 			addSubmit: function () {
-				if(!this.addForm.userid){
+				if(!this.addForm.bidUserid){
 					this.$notify.error("请选择一个人");
 					return
-				}
-				const tf = this.execUserList.some(i=>{return i.userid == this.addForm.userid;});
-				const that = this;
-				if(tf){
-					this.$notify.error(this.addForm.username+"已在任务中");
-					return;
-
-				}
+				} 
 				else{
 					this.$refs.addForm.validate((valid) => {
 						if (valid) {
@@ -169,24 +159,7 @@
 			/**begin 在下面加自定义方法,记得补上面的一个逗号**/
 			showSelectUsers: function(){
 				this.userSelectVisible=true;
-			},
-			//选择接收人
-			onUserSelected: function(users) {
-				if(users.length>1){
-					this.$notify({position:'bottom-left',showClose:true,message: "只能选择一个人", type:'error' });
-					return;
-				}
-				if(users==null || users.length ==0 ){
-					this.addForm.userid='';
-					this.addForm.username="";
-					return;
-				}
-				users.forEach(u => {
-					 this.addForm.userid=u.userid
-					 this.addForm.username=u.username
-				});
-				this.userSelectVisible = false;
-			},
+			}, 
 
 			getWeekday(first, last) {
 				//计算工作日方法：遍历这两个日期区间的每一个日期，获取他的getDay()
@@ -230,8 +203,9 @@
 			if(this.execuserAddType!="join"){
 				this.showSelectUsers();
 			}else{
-				this.addForm.userid=this.userInfo.userid
-				this.addForm.username=this.userInfo.username
+				this.addForm.bidUserid=this.userInfo.userid
+				this.addForm.bidUsername=this.userInfo.username
+				this.addForm.bidBranchId=this.userInfo.branchId
 			}
 
 			/**在下面写其它函数***/

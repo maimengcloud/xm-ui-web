@@ -3,25 +3,13 @@
 		<el-row  class="padding border">
 		<!--编辑界面 XmTaskExecuser xm_task_execuser-->
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editForm">
-				<el-form-item label="执行人姓名" prop="username">
-					<el-select style="width:100%;" placeholder="选择执行人" v-model="execUser" value-key="userid">
-						<el-option
-							v-for="(item,i) in execUserList"
-							:key="i"
-							:label="item.username"
-							:value="item">
-						</el-option>
-					</el-select>
+				<el-form-item label="执行人姓名" prop="bidUserid"> 
+					<mdp-select-user v-model="editForm.bidUserid" :init-name="editForm.bidUsername" show-style="tag" @change2="u=>{editForm.bidUsername=u.username;editForm.bidBranchId=u.branchId}"/>
 				</el-form-item>
 				<el-form-item label="执行人状态" prop="status">
-					<el-select :disabled="editForm.status == '2'" style="width:100%;" placeholder="选择状态" v-model="editForm.status">
-						<el-option
-							v-for="(item,i) in dicts.projectTaskExecuserStatus"
-							:key="i"
-							:label="item.name"
-							:value="item.id">
-						</el-option>
-					</el-select>
+					<mdp-select item-code="projectTaskExecuserStatus" :disabled="editForm.status == '2'"  placeholder="选择状态" v-model="editForm.status"> 
+					</mdp-select>
+				
 				</el-form-item>
 				<el-form-item label="加入时间" prop="startTime">
 					<el-date-picker type="datetime" placeholder="选择日期" v-model="editForm.startTime" :clearable="false" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
@@ -39,14 +27,8 @@
 					<el-input v-model="editForm.settleHour" type="number" placeholder="结算工时"></el-input>
 				</el-form-item>
 				<el-form-item label="结算状态" prop="settleStatus">
-					<el-select style="width:100%;" placeholder="选择结算状态" v-model="editForm.settleStatus">
-						<el-option
-							v-for="(item,i) in dicts.projectTaskSettleStatus"
-							:key="i"
-							:label="item.name"
-							:value="item.id">
-						</el-option>
-					</el-select>
+					<mdp-select show-style="tag" item-code="projectTaskSettleStatus" style="width:100%;" placeholder="选择结算状态" v-model="editForm.settleStatus"> 
+					</mdp-select>
 				</el-form-item>
 				<el-form-item label="结算时间" prop="settleTime">
 					<el-date-picker type="datetime" placeholder="选择日期" v-model="editForm.settleTime"  value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd HH:mm:ss"></el-date-picker>
@@ -80,17 +62,12 @@
 		      'userInfo','roles'
 		    ])
 		},
-		props:['xmTaskExecuser','visible',"execUserList","xmTask"],
+		props:['xmTaskExecuser','visible',"xmTask"],
 		watch: {
 	      'xmTaskExecuser':function( xmTaskExecuser ) {
 	        this.editForm = xmTaskExecuser;
 	      },
-	      'visible':function(visible) {
-	      	if(visible==true){
-						this.execUser.userid = this.editForm.userid;
-						this.execUser.username = this.editForm.username;
-	      		//从新打开页面时某些数据需要重新加载，可以在这里添加
-	      	}
+	      'visible':function(visible) { 
 	      }
 	    },
 		data() {
@@ -145,9 +122,7 @@
 		    //在下面添加其它组件 'xm-task-execuser-edit':XmTaskExecuserEdit
 		},
 		mounted() {
-			this.editForm=Object.assign(this.editForm, this.xmTaskExecuser);
-			this.execUser.userid = this.editForm.userid;
-			this.execUser.username = this.editForm.username;
+			this.editForm=Object.assign(this.editForm, this.xmTaskExecuser); 
 
 		}
 	}

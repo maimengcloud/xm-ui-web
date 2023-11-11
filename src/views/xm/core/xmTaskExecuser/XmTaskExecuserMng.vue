@@ -20,12 +20,12 @@
 			<el-table ref="table" height="100px" v-adaptive="{bottomOffset:50}" :data="xmTaskExecusers" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 				 <el-table-column  label="序号" type="index" width="60"  fixed="left">
 				</el-table-column>
-					 <el-table-column prop="username" label="用户姓名"  width="150" sortable  show-overflow-tooltip fixed="left">
+					 <el-table-column prop="bidUsername" label="用户姓名"  width="150" sortable  show-overflow-tooltip fixed="left">
 						 <template slot-scope="scope">
-							<mdp-select-user show-style="tag" :key="scope.row.id" v-model="scope.row.userid" :init-name="scope.row.username" :disabled="true"></mdp-select-user>
+							<mdp-select-user show-style="tag" :key="scope.row.id" v-model="scope.row.bidUserid" :init-name="scope.row.bidUsername" :disabled="true"></mdp-select-user>
 						 </template>
 					</el-table-column>
-					<el-table-column prop="execUserBranchId" label="用户归属公司" width="150" sortable  show-overflow-tooltip fixed="left">
+					<el-table-column prop="bidBranchId" label="用户归属公司" width="150" sortable  show-overflow-tooltip fixed="left">
 					</el-table-column>
 					<el-table-column prop="status" label="候选状态"  width="100" sortable fixed="left">
 						<template slot-scope="scope">
@@ -67,8 +67,8 @@
 					</el-table-column>
 					<el-table-column prop="taskName" label="任务状态" width="100" sortable  show-overflow-tooltip >
 						<template slot-scope="scope">
-							<el-button style="display:block;" :type="item.className" plain round v-for="(item,index) in formatterTaskStateDicts(scope.row.taskState)" :key="index">{{item.name}}</el-button>
-						</template>
+							<mdp-select item-code="taskState" v-model="scope.row.taskState" :disabled="true" show-style="tag"/> 
+ 						</template>
 					</el-table-column>
 					<el-table-column prop="projectId" label="项目编号" width="100" sortable show-overflow-tooltip>
 					</el-table-column>
@@ -100,7 +100,7 @@
 			<el-drawer append-to-body title="报价" :visible.sync="quotePriceVisible" size="60%" :close-on-click-modal="false">
 				<el-form :model="quotePriceForm" label-width="100px" ref="quotePriceForm">
 					<el-form-item label="候选人名称">
-						<span>{{ quotePriceForm.username }}</span>
+						<span>{{ quotePriceForm.bidUsername }}</span>
 					</el-form-item>
 					<el-form-item label="报价工期" prop="quoteWeekday">
 						<div>
@@ -240,7 +240,7 @@
 				editFormVisible: false,//编辑界面是否显示
 				//编辑xmTaskExecuser界面初始化数据
 				editForm: {
-					createTime:'',id:'',taskId:'',userid:'',startTime:'',endTime:'',status:'',remarks:'',settleAmount:'',settleWorkload:'',settleStatus:'',settleTime:'',createUserid:'',createUsername:'',username:'',matchScore:'',quoteWeekday:'',quoteAmount:'',quoteTime:'',bizProcInstId:'',bizFlowState:'',projectId:'',phaseId:'',skillRemark:'',quoteWorkload:'',quoteStartTime:'',quoteEndTime:'',branchId:'',projectPhaseName:'',taskName:''
+					createTime:'',id:'',taskId:'',bidUserid:'',startTime:'',endTime:'',status:'',remarks:'',settleAmount:'',settleWorkload:'',settleStatus:'',settleTime:'',createUserid:'',createUsername:'',username:'',matchScore:'',quoteWeekday:'',quoteAmount:'',quoteTime:'',bizProcInstId:'',bizFlowState:'',projectId:'',phaseId:'',skillRemark:'',quoteWorkload:'',quoteStartTime:'',quoteEndTime:'',branchId:'',projectPhaseName:'',taskName:''
 				},
 				/**begin 自定义属性请在下面加 请加备注**/
 
@@ -250,7 +250,7 @@
 				},
 				settleListVisible:false,
 				quotePriceForm: {
-					quoteAmount: '',quoteWorkload: '', skillRemark: '',quoteStartTime:'',quoteEndTime:'',id:'',userid:'',usernane:'',taskId:'',
+					quoteAmount: '',quoteWorkload: '', skillRemark: '',quoteStartTime:'',quoteEndTime:'',id:'',bidUserid:'',bidUsernane:'',taskId:'',
 				},
 				quotePriceVisible:false,
 				readyAdd: [],
@@ -677,12 +677,12 @@
 						data:{
 							projectId:projectId,
 							taskId:taskId,
-							userid:row.userid,
+							bidUserid:row.userid,
 							settleAmount:this.settleForm.settleAmount,
 							settleWorkload:this.settleForm.settleWorkload,
 							id:row.id,
 							branchId:branchId,
-							username:row.username
+							bidUsername:row.username
 						}
 					},
 				}

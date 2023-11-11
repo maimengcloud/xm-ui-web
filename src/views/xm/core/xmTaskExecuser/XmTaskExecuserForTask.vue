@@ -40,9 +40,9 @@
 						</el-form>
 					</template>
 				</el-table-column>
-				<el-table-column prop="username" label="姓名" min-width="150" >
+				<el-table-column prop="bidUsername" label="姓名" min-width="150" >
 						 <template slot-scope="scope">
-							<mdp-select-user show-style="tag" :key="scope.row.id" v-model="scope.row.userid" :init-name="scope.row.username" :disabled="true"></mdp-select-user>
+							<mdp-select-user show-style="tag" :key="scope.row.id" v-model="scope.row.bidUserid" :init-name="scope.row.bidUsername" :disabled="true"></mdp-select-user>
 						 </template>
 				</el-table-column>
 
@@ -54,8 +54,8 @@
 
 				<el-table-column prop="status" label="状态" width="100" >
 					<template slot-scope="scope">
-						 <el-tag v-for="(item,index) in formatDictsWithClass(dicts,'projectTaskExecuserStatus',scope.row.status)" :key="index" :type="item.className">{{item.name}}</el-tag>
-					</template>
+						<mdp-select item-code="projectTaskExecuserStatus" v-model="scope.row.status" :disabled="true" show-style="tag"/> 
+ 					</template>
 				</el-table-column>
 
 				<el-table-column  label="操作"   width="350" >
@@ -77,7 +77,7 @@
 				<el-form :model="quotePriceForm" label-width="100px" ref="quotePriceForm">
 					<el-form-item label="候选人名称">
 						 <template slot-scope="scope">
-							<mdp-select-user v-model="quotePriceForm.userid" :init-name="quotePriceForm.username" :disabled="true"></mdp-select-user>
+							<mdp-select-user v-model="quotePriceForm.bidUserid" :init-name="quotePriceForm.bidUsername" :disabled="true"></mdp-select-user>
 						 </template>
 					</el-form-item>
 					<el-form-item label="报价工期" prop="quoteWeekday">

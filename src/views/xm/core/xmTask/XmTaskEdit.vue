@@ -215,16 +215,14 @@
 							</el-col>
 							<el-col :span="12">
 								<el-form-item  label="优先级别" prop="level">
-									<el-select v-model="editForm.level" @change="editXmTaskSomeFields(editForm,'level',$event)">
-											<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option>
-									</el-select>
+									<mdp-select item-code="priority" v-model="editForm.level" @change="editXmTaskSomeFields(editForm,'level',$event)"> 
+									</mdp-select>
 								</el-form-item>
 							</el-col>
 							<el-col :span="12"  prop="planType">
 								<el-form-item label="工期类型">
-								<el-select v-model=" editForm.planType" @change="editXmTaskSomeFields(editForm,'planType',$event)">
-									<el-option v-for="i in this.dicts.planType" :label="i.name" :key="i.id" :value="i.id"></el-option>
-								</el-select>
+								<mdp-select item-code="planType" v-model=" editForm.planType" @change="editXmTaskSomeFields(editForm,'planType',$event)">
+ 								</mdp-select>
 								</el-form-item>
 							</el-col>
 						</el-row>
@@ -238,9 +236,8 @@
 							</el-col>
 							<el-col :span="12">
 								<el-form-item  :label="editForm.ntype=='0'?'任务类型':'计划类型'" prop="taskType">
-									<el-select v-model="editForm.taskType" @change="editXmTaskSomeFields(editForm,'taskType',$event)">
-										<el-option v-for="i in this.dicts.taskType" :label="i.name" :key="i.id" :value="i.id"></el-option>
-									</el-select>
+									<mdp-select item-code="taskType" v-model="editForm.taskType" @change="editXmTaskSomeFields(editForm,'taskType',$event)">
+ 									</mdp-select>
 								</el-form-item>
 							</el-col>
 						</el-row>
@@ -296,9 +293,8 @@
 							<el-checkbox v-model="editForm.taskClass" true-label="1" false-label="0"  @change="editXmTaskSomeFields(editForm,'taskClass',$event)">是否需要结算</el-checkbox>
 						</el-form-item>
 						<el-form-item v-if="editForm.taskClass=='1'" label="结算方案" prop="settlSchemel">
-							<el-select v-model=" editForm.settleSchemel"  @change="editXmTaskSomeFields(editForm,'settleSchemel',$event)">
-								<el-option v-for="i in dicts.xmTaskSettleSchemel" :label="i.name" :key="i.id" :value="i.id"></el-option>
-							</el-select>
+							<mdp-select item-code="xmTaskSettleSchemel" v-model=" editForm.settleSchemel"  @change="editXmTaskSomeFields(editForm,'settleSchemel',$event)">
+ 							</mdp-select>
 						</el-form-item>
 					</el-tab-pane>
 					<el-tab-pane label="众包、互联网访问" name="8" v-if="editForm.ntype!='1'">
@@ -314,32 +310,28 @@
 						<el-row>
 							<el-col :span="12">
 								<el-form-item label="交易模式" prop="tranMode"  v-if="editForm.crowd==='1'">
-									<el-select v-model="editForm.tranMode" @change="editXmTaskSomeFields(editForm,'tranMode',$event)">
-										<el-option v-for="(item,index) in dicts['tranMode']" :key="index" :value="item.id" :label="item.name"></el-option>
-									</el-select>
+									<mdp-select item-code="tranMode" v-model="editForm.tranMode" @change="editXmTaskSomeFields(editForm,'tranMode',$event)">
+ 									</mdp-select>
 								</el-form-item>
 							</el-col>
 							<el-col :span="12">
 								<el-form-item label="最低能力等级" prop="capaLvls"  v-if="editForm.crowd==='1'">
-									<el-select v-model="editForm.capaLvls" @change="editXmTaskSomeFields(editForm,'capaLvls',$event)">
-										<el-option v-for="(item,index) in dicts['capaLvl']" :key="index" :value="item.id" :label="item.name"></el-option>
-									</el-select>
+									<mdp-select item-code="capaLvl" v-model="editForm.capaLvls" @change="editXmTaskSomeFields(editForm,'capaLvls',$event)">
+ 									</mdp-select>
 								</el-form-item>
 							</el-col>
 						</el-row>
 						<el-row>
 							<el-col :span="12">
 								<el-form-item label="服务保障" prop="supRequires"  v-if="editForm.crowd==='1'">
-									<el-select v-model="supRequires" @change="editXmTaskSomeFields(editForm,'supRequires',$event)" multiple>
-										<el-option v-for="(item,index) in dicts['supRequire']" :key="index" :value="item.id" :label="item.name"></el-option>
-									</el-select>
+									<mdp-select item-code="supRequire" v-model="supRequires" @change="editXmTaskSomeFields(editForm,'supRequires',$event)" multiple>
+ 									</mdp-select>
 								</el-form-item>
 							</el-col>
 							<el-col :span="12">
 								<el-form-item label="最低会员等级" prop="interestLvls"  v-if="editForm.crowd==='1'">
-									<el-select v-model="editForm.interestLvls" @change="editXmTaskSomeFields(editForm,'interestLvls',$event)">
-										<el-option v-for="(item,index) in dicts['memInterestLvl']" :key="index" :value="item.id" :label="item.name"></el-option>
-									</el-select>
+									<mdp-select item-code="memInterestLvl" v-model="editForm.interestLvls" @change="editXmTaskSomeFields(editForm,'interestLvls',$event)">
+ 									</mdp-select>
 								</el-form-item>
 							</el-col>
 
@@ -347,9 +339,8 @@
 						<el-row>
 							<el-col :span="12">
 								<el-form-item label="地区限制" prop="regionType"  v-if="editForm.crowd==='1'">
-									<el-select v-model="editForm.regionType" @change="editXmTaskSomeFields(editForm,'regionType',$event)" >
-										<el-option v-for="(item,index) in dicts['regionType']" :key="index" :value="item.id" :label="item.name"></el-option>
-									</el-select>
+									<mdp-select item-code="regionType" v-model="editForm.regionType" @change="editXmTaskSomeFields(editForm,'regionType',$event)" >
+ 									</mdp-select>
 								</el-form-item>
 							</el-col>
 							<el-col :span="12">
@@ -366,8 +357,8 @@
 								<el-row>
 									<el-col :span="6">
 										<el-form-item label="托管资金" prop="estate"  v-if="editForm.taskOut==='1'">
-											<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'estate',editForm.estate)" :key="index" :type="item.className">{{item.name}}</el-tag>
-											<span v-if="editForm.efunds>0 && (editForm.estate=='2'||editForm.estate=='3')">{{editForm.efunds}}元</span>
+											<mdp-select item-code="estate" v-model="editForm.estate" show-style="tag" :disabled="true"/>
+ 											<span v-if="editForm.efunds>0 && (editForm.estate=='2'||editForm.estate=='3')">{{editForm.efunds}}元</span>
 										</el-form-item>
 									</el-col>
 									<el-col :span="6">
@@ -418,8 +409,8 @@
 									<el-col :span="6">
 										<el-form-item label="分享赚" prop="oshare"  v-if="editForm.taskOut==='1'">
 											<el-checkbox v-model="editForm.oshare" v-if="editForm.oshare!='2'" true-label="1" false-label="0" id="oshare" @change="editXmTaskSomeFields(editForm,'oshare',$event)">分享赚</el-checkbox>
-											<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'marketState',editForm.oshare)" :key="index" :type="item.className">{{item.name}}</el-tag>
-										</el-form-item>
+ 
+ 										</el-form-item>
 									</el-col>
 									<el-col :span="18">
 										<el-form-item label="分享佣金" prop="shareFee" v-if="editForm.oshare==='1' && editForm.taskOut==='1'">
@@ -432,9 +423,8 @@
 									<el-col :span="6">
 										<el-form-item label="热门" prop="hot"  v-if="editForm.taskOut==='1'">
 										 	<el-checkbox v-model="editForm.hot" v-if="editForm.hot!='2'" true-label="1" false-label="0" id="hot" @change="editXmTaskSomeFields(editForm,'hot',$event)">热门</el-checkbox>
-											<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'marketState',editForm.hot)" :key="index" :type="item.className">{{item.name}}</el-tag>
-										</el-form-item>
-									</el-col>
+ 										</el-form-item>	
+									</el-col>	 
 									<el-col :span="18">
 										<el-form-item label="热门费用" prop="hotFee" v-if="editForm.hot==='1' && editForm.taskOut==='1'">
 											 {{needPayMarketAt.hotFee}}&nbsp;元
@@ -445,8 +435,7 @@
 									<el-col :span="6">
 										<el-form-item label="置顶" prop="top"  v-if="editForm.taskOut==='1'">
 											<el-checkbox v-model="editForm.top" v-if="editForm.top!='2'" true-label="1" false-label="0" id="hot" @change="editXmTaskSomeFields(editForm,'top',$event)">置顶</el-checkbox>
-											<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'marketState',editForm.top)" :key="index" :type="item.className">{{item.name}}</el-tag>
-										</el-form-item>
+ 										</el-form-item>
 									</el-col>
 									<el-col :span="18">
 										<el-form-item label="置顶费用" prop="topFee" v-if="editForm.top==='1' && editForm.taskOut==='1'">
@@ -458,7 +447,7 @@
 									<el-col :span="6">
 										<el-form-item label="加急" prop="urgent"  v-if="editForm.taskOut==='1'">
 											<el-checkbox v-model="editForm.urgent" v-if="editForm.urgent!='2'" true-label="1" false-label="0" id="urgent" @change="editXmTaskSomeFields(editForm,'urgent',$event)">加急</el-checkbox>
-											<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'marketState',editForm.urgent)" :key="index" :type="item.className">{{item.name}}</el-tag>
+ 
 										</el-form-item>
 									</el-col>
 									<el-col :span="18">
@@ -471,7 +460,7 @@
 									<el-col :span="6">
 										<el-form-item label="客服包办" prop="crmSup"  v-if="editForm.taskOut==='1'">
 											<el-checkbox v-model="editForm.crmSup" v-if="editForm.crmSup!='2'" true-label="1" false-label="0" id="hot" @change="editXmTaskSomeFields(editForm,'crmSup',$event)">客服包办</el-checkbox>
-											<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'marketState',editForm.crmSup)" :key="index" :type="item.className">{{item.name}}</el-tag>
+ 
 										</el-form-item>
 									</el-col>
 									<el-col :span="18">
