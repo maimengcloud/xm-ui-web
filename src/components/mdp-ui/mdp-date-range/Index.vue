@@ -1,7 +1,6 @@
 <template> 
-<span>
-  <span v-if="showStyle=='origin'||showStyle==''||!showStyle">
-    <el-date-picker :type="type" :style="styleObj"  v-model="dateRange" :value-format="valueFormat" :format="format" 
+
+     <el-date-picker v-if="showStyle=='origin'||showStyle==''||!showStyle" :type="type" :style="styleObj"  v-model="dateRange" :value-format="valueFormat" :format="format" 
       unlink-panels 
       :range-separator="rangeSepaSrator"
       :start-placeholder="startPlaceholder"
@@ -10,8 +9,7 @@
       @change="onDateRangeChange"
       :picker-options="pickerOptions"   
       ></el-date-picker>    
-  </span>
-  <span v-else :class="showStyle=='x'?{'field-box-x':true}:{'field-box':true}" >  
+   <span v-else :class="showStyle=='x'?{'field-box-x':true}:{'field-box':true}" >  
     <slot class="field-avater" name="avater">
       <el-avatar :size="size"  :class="{'dashed-circle':avaterCpd.isNull,disabled:disabled===true,enabled:disabled!==true}"  :icon="avaterCpd.icon" :style="{backgroundColor:avaterCpd.color}">{{avaterCpd.innerText}}</el-avatar> 
     </slot> 
@@ -49,7 +47,6 @@
             ></el-date-picker>  
     </span>
   </span>  
-</span>
 </template>
 
 <script> 

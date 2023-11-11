@@ -223,7 +223,7 @@
               </el-descriptions-item>
               <el-descriptions-item>
                   <template slot="label">实际结束时间</template>
-                <mdp-date-range
+                <mdp-date-range style="max-width:120px;"
                   v-model="filters"
                   type="daterange"
                   start-key="actEndTimeStart"
