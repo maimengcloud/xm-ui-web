@@ -38,9 +38,8 @@
 									</el-col>
 									<el-col :span="9">
 										<el-form-item label="任务状态" prop="taskState">
-											<mdp-select item-code="" style="width:100px;" size="small"   v-model="params.taskState"  @change="onXmTaskSomeFieldsChange('taskState',$event)" clearable>
-												<el-option v-for="i in this.dicts.taskState" :label="i.name" :key="i.id" :value="i.id"></el-option>
-											</mdp-select>
+											<mdp-select item-code="taskState" style="width:100px;" size="small"   v-model="params.taskState"  @change="onXmTaskSomeFieldsChange('taskState',$event)" clearable>
+ 											</mdp-select>
 										</el-form-item>
 										<el-form-item  label="任务类型" prop="taskType" >
 											<mdp-select item-code="taskType" style="width:100px;" size="small" v-model="params.taskType"  @change="onXmTaskSomeFieldsChange('taskType',$event)" clearable>
