@@ -508,8 +508,7 @@ export default {
       this.addProjectVisible = false;
     },
   }, //end methods
-  components: {
-    "mdp-select-user-xm":()=>import("./MdpSelectUserXm/index.vue"),XmProjectAdd,
+  components: { XmProjectAdd,
     //在下面添加其它组件
   },
   mounted() {

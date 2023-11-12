@@ -109,13 +109,13 @@ import util from '@/common/js/util';//全局公共库
 import config from '@/common/config';//全局公共库
 import { initDicts,listXmTestPlan, delXmTestPlan, batchDelXmTestPlan,editSomeFieldsXmTestPlan,calcXmTestPlan } from '@/api/xm/core/xmTestPlan';
 import  XmTestPlanEdit from './XmTestPlanEdit';//新增修改界面
-import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修改界面
+
 import { mapGetters } from 'vuex'
 
 export default {
     name:'xmTestPlanMng',
     components: {
-        XmTestPlanEdit,MdpSelectUserXm,
+        XmTestPlanEdit,
     },
     props:['visible','xmTestCasedb'],
     computed: {

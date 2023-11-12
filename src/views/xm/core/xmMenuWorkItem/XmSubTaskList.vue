@@ -152,7 +152,7 @@ import XmWorkloadRecordDialog from '../xmWorkload/XmWorkloadRecordDialog.vue';
 	import XmPhaseSelect from "../xmTask/XmPhaseSelect.vue";
 	import { addXmTaskExecuser } from '@/api/xm/core/xmTaskExecuser';
 
-	import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm/index';//修改界面
+
 export default {
   computed: {
     ...mapGetters(["userInfo", "roles"]),
@@ -547,7 +547,7 @@ export default {
 			}
   }, //end methods
   components: {
-    XmWorkloadRecordDialog,XmGroupDialog,'xm-task-edit':()=>import('../xmTask/XmTaskEdit'),XmPhaseSelect,MdpSelectUserXm,
+    XmWorkloadRecordDialog,XmGroupDialog,'xm-task-edit':()=>import('../xmTask/XmTaskEdit'),XmPhaseSelect,
   },
   mounted() {
     this.initData();

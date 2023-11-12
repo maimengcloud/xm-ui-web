@@ -215,7 +215,7 @@
 	import XmMyDoFocus from '@/views/myWork/my/components/DoFocus';
 
 	import XmFuncSelect from '../xmFunc/XmFuncSelect'
-	import MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm/index'
+
 	import TestStepConfig from '../xmTestCase/TestStepConfig.vue';
 	import TestStepResult from '../xmTestPlanCase/TestStepResult.vue';
 	import XmProductSelect from '@/views/xm/core/components/XmProductSelect'
@@ -672,7 +672,7 @@
 		components: {
 				//在下面添加其它组件 'xm-question-edit':XmQuestionEdit
 				'upload': AttachmentUpload,VueEditor,xmMenuSelect,XmQuestionHandleMng,TagMng,XmProjectSelect,XmProductSelect,
-			XmMyDoFocus,XmFuncSelect,MdpSelectUserXm,TestStepConfig,TestStepResult,
+			XmMyDoFocus,XmFuncSelect,TestStepConfig,TestStepResult,
 			xmTestPlanCaseMng:()=>import('../xmTestPlanCase/XmTestPlanCaseSelect'),
 			'xm-workload-record':()=>import("../xmWorkload/XmWorkloadRecord"),
 		},

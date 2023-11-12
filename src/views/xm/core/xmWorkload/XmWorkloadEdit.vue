@@ -90,13 +90,12 @@
 
 	import { addXmWorkload,editXmWorkload } from '@/api/xm/core/xmWorkload';
 	import { listXmTaskExecuser  } from '@/api/xm/core/xmTaskExecuser';
-	import MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';
+
 	import { mapGetters } from 'vuex'
 
 	export default {
 	    name:'xmWorkloadEdit',
-	    components: {
-			MdpSelectUserXm
+	    components: { 
         },
 		computed: {
 		    ...mapGetters([ 'userInfo'  ]),

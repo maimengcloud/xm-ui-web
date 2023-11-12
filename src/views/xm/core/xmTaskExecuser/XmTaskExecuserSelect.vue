@@ -81,7 +81,7 @@
 <script>
 	import util from '@/common/js/util';//全局公共库
 	import config from "@/common/config"; //全局公共库
-	import MdpSelectUserXm from "@/views/xm/core/components/MdpSelectUserXm/index";
+
 	//import Sticky from '@/components/Sticky' // 粘性header组件
 
 	import { listXmTaskExecuserWithTask,editXmTaskExecuser,leaveTask,beExecutor,settleExec, delXmTaskExecuser, batchDelXmTaskExecuser,quotePrice,becomeCandidate,toTest,testSuccess,testFail } from '@/api/xm/core/xmTaskExecuser';
@@ -244,9 +244,7 @@
 				this.$emit('select',this.sels);//  @row-click="rowClick"
 			},
 		},//end methods
-		components: {
-		    //在下面添加其它组件
-			MdpSelectUserXm
+		components: { 
 		},
 		mounted() {
 			this.$nextTick(() => {

@@ -91,7 +91,7 @@ import treeTool from "@/common/js/treeTool"; //全局公共库
 
 	import XmGroupDialog from '../xmGroup/XmGroupDialog';
 	import { mapGetters } from 'vuex'
-	import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm/index';//修改界面
+
 
 export default {
   computed: {
@@ -331,7 +331,7 @@ export default {
 			}
   }, //end methods
   components: {
-    XmGroupDialog,'xm-question-edit':()=>import('../xmQuestion/XmQuestionEdit'),MdpSelectUserXm,
+    XmGroupDialog,'xm-question-edit':()=>import('../xmQuestion/XmQuestionEdit'),
   },
   mounted() {
     this.initData();

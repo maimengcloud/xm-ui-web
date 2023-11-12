@@ -406,7 +406,7 @@
 	import xmTaskMng from '../xmTask/XmTaskMng';
 	import XmProjectTplMng from './XmProjectTplMng';
 	import XmProductSelect from '@/views/xm/core/components/XmProductSelect';
-	import MdpSelectUserXm from "@/views/xm/core/components/MdpSelectUserXm/index";
+
 
 		import store from '@/store'
 
@@ -947,7 +947,7 @@
 		    'xm-project-edit':XmProjectEdit,
 			XmProductSelect,
 			xmTaskMng,
-			XmProjectTplMng,MdpSelectUserXm
+			XmProjectTplMng
 		    //在下面添加其它组件
 		},
 		mounted() {

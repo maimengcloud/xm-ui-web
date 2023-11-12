@@ -83,11 +83,11 @@
 	import { mapGetters } from 'vuex'
 	import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';
 
-import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修改界面
+
 	export default {
 	    name:'productRptOverview',
 	    components: {
-			XmProjectSelect,MdpSelectUserXm,
+			XmProjectSelect,
         },
 		computed: {
 		    ...mapGetters([ 'userInfo'  ]),

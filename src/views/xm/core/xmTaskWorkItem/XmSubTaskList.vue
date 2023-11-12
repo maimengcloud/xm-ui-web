@@ -138,7 +138,7 @@ import treeTool from "@/common/js/treeTool"; //全局公共库
 import XmWorkloadRecordDialog from '../xmWorkload/XmWorkloadRecordDialog.vue';
 
 	import { addXmTaskExecuser } from '@/api/xm/core/xmTaskExecuser';
-	import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm/index';//修改界面
+
 
 export default {
   computed: {
@@ -549,7 +549,7 @@ export default {
 			}
   }, //end methods
   components: {
-    XmWorkloadRecordDialog,XmGroupDialog,'xm-task-edit':()=>import('../xmTask/XmTaskEdit'),MdpSelectUserXm,
+    XmWorkloadRecordDialog,XmGroupDialog,'xm-task-edit':()=>import('../xmTask/XmTaskEdit'),
   },
   mounted() {
     this.initData();

@@ -165,7 +165,7 @@
 
 	import { mapGetters } from 'vuex'
 
-	import MdpSelectUserXm from "@/views/xm/core/components/MdpSelectUserXm/index";
+
 	import XmIterationAdd from "../xmIteration/XmIterationEdit.vue";
 
 	export default {
@@ -436,7 +436,7 @@
 			},
 		},//end methods
 		components: {
-			MdpSelectUserXm,
+			
 			XmIterationAdd,
 		    //在下面添加其它组件
 		},

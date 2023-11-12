@@ -255,7 +255,7 @@ export default {
   components: {
     XmProjectSelect,
     XmWorkloadSimpleListForBizDate,
-    "mdp-select-user-xm":()=>import("@/views/xm/core/components/MdpSelectUserXm/index")
+
   },
   props: ["xmProduct", "xmProject", "queryScope",'user'],
   computed: {

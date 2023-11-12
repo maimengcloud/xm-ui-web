@@ -243,7 +243,7 @@
 	import xmMenuSelect from '../xmMenu/XmMenuSelect';
 	import XmPhaseSelect from './XmPhaseSelect';
 	import XmTaskList from '../xmTask/XmTaskList';
- 	import MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm'
+
 	import XmProjectSelect from "@/views/xm/core/components/XmProjectSelect";
 	export default {
 		computed: {
@@ -673,7 +673,7 @@
 		},//end method
 		components: {
  			xmSkillMng,
-			skillMng,xmMenuSelect,XmTaskList,MdpSelectUserXm,XmPhaseSelect,XmProjectSelect
+			skillMng,xmMenuSelect,XmTaskList,XmPhaseSelect,XmProjectSelect
 			//在下面添加其它组件 'xm-task-edit':XmTaskEdit
 		},
 		mounted() {

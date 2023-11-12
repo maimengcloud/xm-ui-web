@@ -118,7 +118,7 @@ import { initDicts,listXmTestPlanCase, delXmTestPlanCase, batchDelXmTestPlanCase
 import  XmTestPlanCaseEdit from './XmTestPlanCaseEdit';//新增修改界面
 import  XmTestCaseSelect from '../xmTestCase/XmTestCaseSelect';//新增修改界面
 import  XmFuncSelect from '../xmFunc/XmFuncSelect';//新增修改界面
-import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修改界面
+
 import {autoStepToAxios,initEnvVars} from '@/api/xm/core/XmTestAutoStep.js';//全局公共库
 
 import { mapGetters } from 'vuex'
@@ -127,7 +127,7 @@ import axios from 'axios'//免登录访问
 export default {
     name:'xmTestPlanCaseMng',
     components: {
-        XmTestPlanCaseEdit,XmTestCaseSelect,XmFuncSelect,MdpSelectUserXm,
+        XmTestPlanCaseEdit,XmTestCaseSelect,XmFuncSelect,
     },
     props:['visible','xmTestPlan','xmTestCasedb','xmTestCase','xmProduct','xmProject','select'],
     computed: {

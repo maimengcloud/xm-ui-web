@@ -319,7 +319,7 @@
 	import XmFuncSelect from '../xmFunc/XmFuncSelect'
 
 	import XmEpicFeaturesSelect from "../xmMenu/XmEpicFeaturesSelect";
-	import MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm'
+
 import CommentArea from '../xmMenuComment/comment-area.vue';
 	export default {
 		computed: {
@@ -681,7 +681,7 @@ import CommentArea from '../xmMenuComment/comment-area.vue';
 			XmRecord,
 			XmMyDoFocus,
 			ArchiveEdit,
-			XmTestCaseMng,MdpSelectUserXm,
+			XmTestCaseMng,
 			'xm-menu-edit':()=>import("./XmMenuDetail"),
 			'xm-workload-record':()=>import("../xmWorkload/XmWorkloadRecord"),
 			XmEpicFeaturesSelect,

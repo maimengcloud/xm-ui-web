@@ -224,7 +224,7 @@ import util from "@/common/js/util"; //全局公共库
 
 import { listXmProductWithState } from "@/api/xm/core/xmProduct";
 import { mapGetters } from "vuex";
-import MdpSelectUserXm from "@/views/xm/core/components/MdpSelectUserXm/index";
+
 import XmProductAdd from "../xmProduct/XmProductEdit.vue";
 const map = new Map();
 
@@ -509,7 +509,7 @@ export default {
     },
   }, //end methods
   components: {
-    MdpSelectUserXm,
+    
     XmProductAdd,
     //在下面添加其它组件
   },

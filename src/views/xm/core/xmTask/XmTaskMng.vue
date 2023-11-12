@@ -891,7 +891,7 @@ import XmGantt from "../components/xm-gantt";
 
 import XmPhaseSelect from "./XmPhaseSelect.vue";
 	import { addTaskExecuser } from '@/api/xm/core/xmTaskExecuser';
-import MdpSelectUserXm from "@/views/xm/core/components/MdpSelectUserXm/index";
+
 
 export default {
   computed: {
@@ -2263,7 +2263,7 @@ export default {
     XmWorkloadEdit,
     XmWorkloadInit,
     XmPhaseSelect,
-    MdpSelectUserXm,
+    
     //在下面添加其它组件
   },
   mounted() {

@@ -432,7 +432,7 @@
 	import {sn} from '@/common/js/sequence'
 
 	import { mapGetters } from 'vuex'
-	import MdpSelectUserXm from "@/views/xm/core/components/MdpSelectUserXm/index";
+
 
 	export default {
 		props:[ 'xmIteration','xmProduct','disabledMng','parentMenu','selProject'],
@@ -1383,7 +1383,7 @@
 			XmTableConfig,
 			XmGroupDialog,
 			XmIterationSelect,
-			MdpSelectUserXm,
+			
 			XmMenuAgileKanbanUser,
 			XmFuncSelect,
 		    //在下面添加其它组件

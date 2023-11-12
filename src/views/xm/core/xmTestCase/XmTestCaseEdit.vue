@@ -378,7 +378,7 @@ import  XmQuestionMng from '@/views/xm/core/xmQuestion/XmQuestionMng';//修改�
 import  XmTestPlanCaseMng from '@/views/xm/core/xmTestPlanCase/XmTestPlanCaseMng';//修改界面
  	import MyInput from '@/components/MDinput/index';
 
-import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修改界面
+
 
 import axios from 'axios'//免登录访问
 import JsonViewer from 'vue-json-viewer'
@@ -386,7 +386,7 @@ import JsonViewer from 'vue-json-viewer'
 	export default {
 	    name:'xmTestCaseEdit',
 	    components: {
-			XmMenuSelect,XmFuncSelect,MyInput,TestStepConfig,XmQuestionMng,XmTestPlanCaseMng,MdpSelectUserXm,
+			XmMenuSelect,XmFuncSelect,MyInput,TestStepConfig,XmQuestionMng,XmTestPlanCaseMng,
 			XmMenuEdit:()=>import("../xmMenu/XmMenuDetail"),
 			XmTestCasedbMng:()=>import('../xmTestCasedb/XmTestCasedbMng'),
 			'xm-workload-record':()=>import("../xmWorkload/XmWorkloadRecord"),

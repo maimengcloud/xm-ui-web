@@ -143,7 +143,7 @@
 	import { mapGetters } from 'vuex'
 	import html2canvas from 'html2canvas'
 	import { uploadBase64 } from '@/api/mdp/arc/image';
-	import MdpSelectUserXm from "@/views/xm/core/components/MdpSelectUserXm/index";
+
 
 	export default {
 		computed: {
@@ -739,7 +739,7 @@
 		components: {
 		    'xm-task-execuser-add':XmTaskExecuserAdd,
 		    'xm-task-execuser-edit':XmTaskExecuserEdit,
-			MdpSelectUserXm,
+			
 		    //在下面添加其它组件
 		},
 		mounted() {

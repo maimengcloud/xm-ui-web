@@ -180,7 +180,7 @@
 	import html2canvas from 'html2canvas'
 	import { uploadBase64 } from '@/api/mdp/arc/image';
   	import XmWorkloadEdit from "@/views/xm/core/xmWorkload/XmWorkloadEdit";
-	import MdpSelectUserXm from "@/views/xm/core/components/MdpSelectUserXm/index";
+
 
 	export default {
 		computed: {
@@ -828,7 +828,7 @@
 		},//end methods
 		components: {
 		    'xm-task-execuser-add':XmTaskExecuserAdd,
-		    'xm-task-execuser-edit':XmTaskExecuserEdit, XmWorkloadEdit,MdpSelectUserXm
+		    'xm-task-execuser-edit':XmTaskExecuserEdit, XmWorkloadEdit
 		    //在下面添加其它组件
 		},
 		mounted() {

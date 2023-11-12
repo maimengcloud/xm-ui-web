@@ -80,13 +80,13 @@ import { initDicts,listXmTestCasedb, delXmTestCasedb, batchDelXmTestCasedb,editS
 import  XmTestCasedbEdit from './XmTestCasedbEdit';//新增修改界面
 import { mapGetters } from 'vuex'
 import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//修改界面
-import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修改界面
+
 import store from '@/store'
 
 export default {
     name:'xmTestCasedbMng',
     components: {
-        XmTestCasedbEdit,XmProductSelect,MdpSelectUserXm
+        XmTestCasedbEdit,XmProductSelect
     },
     props:['visible','xmProduct','selProject','select'],
     computed: {

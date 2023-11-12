@@ -121,7 +121,7 @@
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
 
 	import XmFuncSelect from '../xmFunc/XmFuncSelect'
-	import MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm'
+
 
 	export default {
 		computed: {
@@ -312,7 +312,7 @@
 		},//end method
 		components: {
 			//在下面添加其它组件 'xm-menu-edit':XmMenuEdit
-			MdpSelectUserXm,
+			
 			'xm-menu-edit':()=>import("./XmMenuDetail"),
 			'xm-epic-features-select':()=>import("./XmEpicFeaturesSelect"),
 			XmFuncSelect,

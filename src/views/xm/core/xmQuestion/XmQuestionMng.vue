@@ -254,7 +254,7 @@
 	import xmMenuSelect from '../xmMenu/XmMenuSelect';
 	import XmGroupDialog from '../xmGroup/XmGroupDialog';
 	import XmProjectSelect from '@/views/xm/core/components/XmProjectSelect';
-	import MdpSelectUserXm from "@/views/xm/core/components/MdpSelectUserXm/index";
+
 
 	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//修改界面
  	import TagDialog from '@/views/mdp/arc/tag/TagDialog.vue';
@@ -1090,7 +1090,7 @@
 		components: {
 				'xm-question-add':XmQuestionAdd,
 				'xm-question-edit':XmQuestionEdit,
-				XmGroupDialog,XmProjectSelect,xmMenuSelect,XmProductSelect, TagDialog,MdpSelectUserXm,
+				XmGroupDialog,XmProjectSelect,xmMenuSelect,XmProductSelect, TagDialog,
 				//在下面添加其它组件
 		},
 		mounted() {

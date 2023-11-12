@@ -72,13 +72,13 @@ import util from '@/common/js/util';//全局公共库
 import config from '@/common/config';//全局公共库
 import { initDicts,listXmTestPlanCase, delXmTestPlanCase, batchDelXmTestPlanCase,editSomeFieldsXmTestPlanCase,importFromTestCase } from '@/api/xm/core/xmTestPlanCase';
   import  XmFuncSelect from '../xmFunc/XmFuncSelect';//新增修改界面
-import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修改界面
+
 import { mapGetters } from 'vuex'
 
 export default {
     name:'xmTestPlanCaseSelect',
     components: {
-        XmFuncSelect,MdpSelectUserXm,
+        XmFuncSelect,
     },
     props:['visible','xmTestPlan','xmTestCasedb','xmTestCase','xmProduct','select','xmProject'],
     computed: {

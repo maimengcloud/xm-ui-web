@@ -554,7 +554,7 @@
 	import XmMenuRichDetail from '../xmMenu/XmMenuRichDetail';
 	import TagMng from "@/views/mdp/arc/tag/TagMng";
 	import XmRecord from '../xmRecord/XmRecord'
-	import MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm'
+
 	import XmSubWorkItem from "@/views/xm/core/xmTaskWorkItem/XmSubWorkItem";
 	import xmQuestionMng from "@/views/xm/core/xmQuestion/XmQuestionMng";
 	import XmWorkloadRecord from "../xmWorkload/XmWorkloadRecord"
@@ -1056,7 +1056,7 @@
 		components: {
  			xmSkillMng,
 			skillMng,xmMenuSelect,XmTaskList,XmExecuserMng,XmMenuRichDetail,TagMng,XmSubWorkItem,XmWorkloadRecord,XmMenuEdit,
-			XmRecord,xmQuestionMng,XmMyDoFocus,XmTaskExecuserForTask,XmPhaseSelect,ToPay,MdpSelectUserXm,'xm-task-edit':()=>import("./XmTaskDetail"),
+			XmRecord,xmQuestionMng,XmMyDoFocus,XmTaskExecuserForTask,XmPhaseSelect,ToPay,'xm-task-edit':()=>import("./XmTaskDetail"),
 			'xm-workload-record':()=>import("../xmWorkload/XmWorkloadRecord"),
 			"v-region":RegionGroup ,
 			//在下面添加其它组件 'xm-task-edit':XmTaskEdit

@@ -418,7 +418,7 @@
 	import XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue';
 	import XmProductSelect from '@/views/xm/core/components/XmProductSelect.vue';
 	import { addUserFocus , delUserFocus } from '@/api/mdp/sys/userFocus';
-	import MdpSelectUserXm from "@/views/xm/core/components/MdpSelectUserXm/index";
+
 
 	import Guider from '@/components/Guider/Index.js';
 	import store from '@/store'
@@ -855,7 +855,7 @@
 			XmIterationSelect,
 			XmProductSelect,
 			XmProductTplMng,
-			MdpSelectUserXm,
+			
 		    //在下面添加其它组件
 		},
 		mounted() {

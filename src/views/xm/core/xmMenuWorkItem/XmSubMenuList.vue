@@ -100,7 +100,7 @@ import treeTool from "@/common/js/treeTool"; //全局公共库
 	import  XmMenuWorkload from '@/views/xm/core/components/XmMenuWorkload';//修改界面
  	import  XmGroupDialog from '@/views/xm/core/xmGroup/XmGroupDialog';//修改界面
 	import  XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue';//修改界面
-	import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm/index';//修改界面
+
    	import TagDialog from "@/views/mdp/arc/tag/TagDialog";
 	import { mapGetters } from 'vuex'
 
@@ -335,7 +335,7 @@ export default {
 		  TagDialog,
 			XmMenuWorkload,
 			XmIterationSelect,
-			MdpSelectUserXm,
+			
 			'xm-menu-edit':()=>import('../xmMenu/XmMenuEdit')
   },
   mounted() {

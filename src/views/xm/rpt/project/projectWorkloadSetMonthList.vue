@@ -66,7 +66,7 @@
 
 		components: {
 			XmProjectSelect,
-    		"mdp-select-user-xm":()=>import("@/views/xm/core/components/MdpSelectUserXm/index"),
+
 		},
         props:['id','cfg','category','showToolBar','showParams','isRptCfg','rptDatas','xmProduct','xmProject'],
 		computed: {

@@ -92,13 +92,13 @@ import config from '@/common/config';//全局公共库
 import { initDicts,listXmTestCase, delXmTestCase, batchDelXmTestCase,editSomeFieldsXmTestCase,addXmTestCase } from '@/api/xm/core/xmTestCase';
 import  XmTestCaseEdit from './XmTestCaseEdit';//新增修改界面
 import  XmFuncSelect from '../xmFunc/XmFuncSelect';//新增修改界面
-import  MdpSelectUserXm from '@/views/xm/core/components/MdpSelectUserXm';//修改界面
+
 import { mapGetters } from 'vuex'
 
 export default {
     name:'xmTestCaseMng',
     components: {
-        XmTestCaseEdit,XmFuncSelect,MdpSelectUserXm
+        XmTestCaseEdit,XmFuncSelect
     },
     props:['visible','xmTestCasedb','scene','xmMenu','xmProduct'],
     computed: {
