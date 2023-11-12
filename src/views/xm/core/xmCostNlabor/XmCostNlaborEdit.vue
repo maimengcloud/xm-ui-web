@@ -18,14 +18,8 @@
 					<el-input v-model="editForm.budgetAt" placeholder="实际金额" :maxlength="10"></el-input>
 				</el-form-item> 
 				<el-form-item label="成本科目" prop="subjectId">
-					<el-select   placeholder="科目编号" v-model="editForm.subjectId">
-						<el-option
-							v-for="(item,i) in dicts.projectSubject"
-							:key="i"
-							:label="item.name"
-							:value="item.id">
-						</el-option>
-					</el-select>
+					<mdp-select item-code="projectSubject" placeholder="科目编号" v-model="editForm.subjectId"> 
+					</mdp-select>
 				</el-form-item>    
 				<el-form-item label="发生日期" prop="bizDate">
 					<el-date-picker 

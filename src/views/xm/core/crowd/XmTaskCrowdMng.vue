@@ -7,9 +7,8 @@
         :class="{ 'flex-box': displayType == 'agil' }"
       >
         <el-row>
-					<el-select style="width: 100px" v-model="filters.taskState" placeholder="状态" clearable>
-									<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.taskState" :key="index"></el-option>
-          </el-select>
+					<mdp-select item-code="taskState" style="width: 100px" v-model="filters.taskState" placeholder="状态" clearable>
+           </mdp-select>
           <el-select
             v-model="selkey"
             placeholder="场景"

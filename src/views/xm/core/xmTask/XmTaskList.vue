@@ -11,10 +11,8 @@
 								<el-link type="warning" slot="reference" v-if="ptype!=='1' && (!selProject||!selProject.id)"  icon="el-icon-search"><font style="font-size:14px;">{{filters.selProject?filters.selProject.name:'选择项目'}}</font></el-link>
 						</el-popover>
 
-						<el-select v-model="filters.taskType" placeholder="请选择任务类型" clearable @change="changeTaskType">
-							<el-option class="showall" value="all"  label="全部类型">全部类型</el-option>
-							<el-option  v-for="(i,index) in dicts.taskType" :value="i.id" :label="i.name" :key="index">{{i.name}}</el-option>
-						</el-select>
+						<mdp-select item-code="taskType" v-model="filters.taskType" placeholder="请选择任务类型" clearable @change="changeTaskType">
+  						</mdp-select>
 						<el-input v-model="filters.key" style="width:20%;" placeholder="任务、需求名称模糊查询">
 						</el-input>
 						<el-button @click="searchXmTasks" icon="el-icon-search">查询</el-button>

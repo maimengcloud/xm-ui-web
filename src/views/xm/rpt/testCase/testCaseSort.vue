@@ -28,7 +28,7 @@
 								<el-row>
 									<el-col :span="15">
 										<el-form-item label="分组属性">
-											<el-select style="width:100px;" size="small"   v-model="params.groupBy">
+											<el-select item-code="" style="width:100px;" size="small"   v-model="params.groupBy">
 												<el-option v-for="i in this.groupBys" :label="i.name" :key="i.id" :value="i.id"></el-option>
 											</el-select>
 										</el-form-item>
@@ -54,24 +54,20 @@
 									</el-col>
 									<el-col :span="9">
 										<el-form-item label="用例状态" prop="caseStatus">
-											<el-select style="width:100px;" size="small"   v-model="params.caseStatus" clearable>
-												<el-option v-for="i in this.dicts.testCaseStatus" :label="i.name" :key="i.id" :value="i.id"></el-option>
-											</el-select>
+											<mdp-select item-code="testCaseStatus" style="width:100px;" size="small"   v-model="params.caseStatus" clearable>
+ 											</mdp-select>
 										</el-form-item>
 										<el-form-item  label="用例类型" prop="caseType" >
-											<el-select style="width:100px;" size="small" v-model="params.bugType" clearable>
-												<el-option v-for="i in this.dicts.bugType" :label="i.name" :key="i.id" :value="i.id"></el-option>
-											</el-select>
+											<mdp-select item-code="bugType" style="width:100px;" size="small" v-model="params.bugType" clearable>
+ 											</mdp-select>
 										</el-form-item>
 										<el-form-item  label="测试方式" prop="testType">
-											<el-select style="width:100px;" size="small" v-model="params.testType" clearable>
-												<el-option v-for="i in this.dicts.testType" :label="i.name" :key="i.id" :value="i.id"></el-option>
-											</el-select>
+											<mdp-select item-code="testType" style="width:100px;" size="small" v-model="params.testType" clearable>
+ 											</mdp-select>
 										</el-form-item>
 										<el-form-item  label="优先级别" prop="cpriority" >
-											<el-select style="width:100px;" size="small" v-model="params.cpriority" clearable>
-													<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option>
-											</el-select>
+											<mdp-select item-code="priority" style="width:100px;" size="small" v-model="params.cpriority" clearable>
+ 											</mdp-select>
 										</el-form-item>
 									</el-col>
 								</el-row>

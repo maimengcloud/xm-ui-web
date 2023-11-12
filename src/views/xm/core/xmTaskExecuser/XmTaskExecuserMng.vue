@@ -6,12 +6,10 @@
 			<el-input v-model="filters.projectId" style="width: 10em;;" placeholder="项目编号" clearable></el-input>
  			<el-input v-model="filters.execUserBranchId" style="width: 10em;;" placeholder="用户公司编号" clearable></el-input>
  			<el-input v-model="filters.branchId" style="width: 10em;;" placeholder="项目公司编号" clearable></el-input>
- 			<el-select v-model="filters.status" style="width:6em;"  placeholder="候选状态" clearable>
-				 <el-option v-for="(item,index) in dicts.projectTaskExecuserStatus" :value="item.id" :label="item.name" :key="index"></el-option>
-			 </el-select>
- 			<el-select v-model="filters.taskState" style="width:6em;"  placeholder="任务状态" clearable>
-				 <el-option v-for="(item,index) in dicts.taskState" :value="item.id" :label="item.name" :key="index"></el-option>
-			 </el-select>
+ 			<mdp-select item-code="projectTaskExecuserStatus" v-model="filters.status" style="width:6em;"  placeholder="候选状态" clearable>
+ 			 </mdp-select>
+ 			<mdp-select item-code="taskState" v-model="filters.taskState" style="width:6em;"  placeholder="任务状态" clearable>
+ 			 </mdp-select>
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmTaskExecusers">查询</el-button>
 			<!-- <el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true">批量删除</el-button>  -->
 		</el-row>

@@ -90,42 +90,37 @@
 								<font class="more-label-font">
 									需求层次:
 								</font>
-								<el-select v-model="filters.dlvl" placeholder="需求层次"  clearable>
-									<el-option v-for="i in this.dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
-								</el-select>
+								<mdp-select item-code="demandLvl" v-model="filters.dlvl" placeholder="需求层次"  clearable>
+ 								</mdp-select>
 							</el-col>
 							<el-col  :span="24"  style="padding-top:5px;" class="hidden-log-and-up">
 								<font class="more-label-font">
 									需求类型:
 								</font>
-								<el-select v-model="filters.dtype" clearable placeholder="需求类型" style="width: 100px;">
-									<el-option v-for="i in this.dicts.demandType" :label="i.name" :key="i.id" :value="i.id"></el-option>
-								</el-select>
+								<mdp-select item-code="demandType" v-model="filters.dtype" clearable placeholder="需求类型" style="width: 100px;">
+ 								</mdp-select>
 							</el-col>
 							<el-col  :span="24"  style="padding-top:5px;" class="hidden-log-and-up">
 								<font class="more-label-font">
 									需求来源:
 								</font>
 
-								<el-select v-model="filters.source" placeholder="需求来源"  clearable style="width: 100px;">
-									<el-option v-for="i in this.dicts.demandSource" :label="i.name" :key="i.id" :value="i.id"></el-option>
-								</el-select>
+								<mdp-select item-code="demandSource" v-model="filters.source" placeholder="需求来源"  clearable style="width: 100px;">
+ 								</mdp-select>
 							</el-col>
 							<el-col  :span="24"  style="padding-top:5px;" class="hidden-log-and-up">
 								<font class="more-label-font">
 									需求层次:
 								</font>
-								<el-select v-model="filters.dlvl" placeholder="需求层次"  clearable class="hidden-md-and-down" style="width: 100px;">
-									<el-option v-for="i in this.dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
-								</el-select>
+								<mdp-select item-code="demandLvl" v-model="filters.dlvl" placeholder="需求层次"  clearable class="hidden-md-and-down" style="width: 100px;">
+ 								</mdp-select>
 							</el-col>
 							<el-col  :span="24"  style="padding-top:5px;" class="hidden-log-and-up">
 								<font class="more-label-font">
 									需求层次:
 								</font>
-								<el-select v-model="filters.dlvl" placeholder="需求层次"  clearable>
-									<el-option v-for="i in this.dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
-								</el-select>
+								<mdp-select  item-code="demandLvl" v-model="filters.dlvl" placeholder="需求层次"  clearable>
+ 								</mdp-select>
 							</el-col>
 							<el-col  :span="24"  style="padding-top:5px;">
 								<el-button type="primary"  @click="searchXmMenus" icon="el-icon-search">查询</el-button>

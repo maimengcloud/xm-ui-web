@@ -40,23 +40,20 @@
 						<el-row class="padding-top">
 							<el-col :span="8">
 								<el-form-item  label="需求类型" prop="dtype" >
-									<el-select v-model="addForm.dtype">
-										<el-option v-for="i in this.dicts.demandType" :label="i.name" :key="i.id" :value="i.id"></el-option>
-									</el-select>
+									<mdp-select item-code="demandType" v-model="addForm.dtype">
+ 									</mdp-select>
 								</el-form-item>
 							</el-col>
 							<el-col :span="8">
 								<el-form-item  label="需求来源" prop="source">
-									<el-select v-model="addForm.source">
-										<el-option v-for="i in this.dicts.demandSource" :label="i.name" :key="i.id" :value="i.id"></el-option>
-									</el-select>
+									<mdp-select item-code="demandSource" v-model="addForm.source">
+ 									</mdp-select>
 								</el-form-item>
 							</el-col>
 							<el-col :span="8">
 								<el-form-item  label="需求层次" prop="dlvl" >
-									<el-select v-model="addForm.dlvl">
-										<el-option v-for="i in this.dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
-									</el-select>
+									<mdp-select item-code="demandLvl" v-model="addForm.dlvl">
+ 									</mdp-select>
 								</el-form-item>
 							</el-col>
 						</el-row>

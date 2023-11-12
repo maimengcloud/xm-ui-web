@@ -42,15 +42,9 @@
 				</el-table-column>
 				<el-table-column label="结算信息">
 					<el-table-column  prop="sstatus" label="结算状态" width="120" show-overflow-tooltip  sortable>
-						<template slot-scope="scope">
-							<div class="cell-text">
-								<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'sstatus',scope.row.sstatus)" :key="index" :type="item.className">{{item.name}}</el-tag>
-							</div>
-							<span class="cell-bar">
-								<el-select  v-model="scope.row.sstatus" placeholder="结算状态"  style="display:block;"  @change="editSomeFields(scope.row,'sstatus',$event)">
-									<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.sstatus" :key="index"></el-option>
-								</el-select>
-							</span>
+						<template slot-scope="scope"> 
+								<mdp-select show-style="tag" item-code="sstatus" v-model="scope.row.sstatus" placeholder="结算状态"  style="display:block;"  @change="editSomeFields(scope.row,'sstatus',$event)">
+ 								</mdp-select> 
 						</template>
 					</el-table-column>
 					<el-table-column prop="sschemel" label="结算方案" min-width="120" show-overflow-tooltip>

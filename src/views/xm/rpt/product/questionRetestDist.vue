@@ -64,40 +64,33 @@
 									</el-col>
 									<el-col :span="9">
 										<el-form-item label="缺陷状态" prop="bugStatus">
-											<el-select style="width:100px;" size="small"   v-model="params.bugStatus"  @change="onXmQuestionSomeFieldsChange('bugStatus',$event)" clearable>
-												<el-option v-for="i in this.dicts.bugStatus" :label="i.name" :key="i.id" :value="i.id"></el-option>
-											</el-select>
+											<mdp-select item-code="bugStatus" style="width:100px;" size="small"   v-model="params.bugStatus"  @change="onXmQuestionSomeFieldsChange('bugStatus',$event)" clearable>
+ 											</mdp-select>
 										</el-form-item>
 										<el-form-item  label="缺陷类型" prop="bugType" >
-											<el-select style="width:100px;" size="small" v-model="params.bugType"  @change="onXmQuestionSomeFieldsChange('bugType',$event)" clearable>
-												<el-option v-for="i in this.dicts.bugType" :label="i.name" :key="i.id" :value="i.id"></el-option>
-											</el-select>
+											<mdp-select item-code="bugType" style="width:100px;" size="small" v-model="params.bugType"  @change="onXmQuestionSomeFieldsChange('bugType',$event)" clearable>
+ 											</mdp-select>
 										</el-form-item>
 										<el-form-item  label="缺陷原因" prop="bugReason">
-											<el-select style="width:100px;" size="small" v-model="params.bugReason"  @change="onXmQuestionSomeFieldsChange('bugReason',$event)" clearable>
-												<el-option v-for="i in this.dicts.bugReason" :label="i.name" :key="i.id" :value="i.id"></el-option>
-											</el-select>
+											<mdp-select item-code="bugReason" style="width:100px;" size="small" v-model="params.bugReason"  @change="onXmQuestionSomeFieldsChange('bugReason',$event)" clearable>
+ 											</mdp-select>
 										</el-form-item>
 										<el-form-item  label="严重程度" prop="bugSeverity" >
-											<el-select style="width:100px;" size="small" v-model="params.bugSeverity"  @change="onXmQuestionSomeFieldsChange('bugSeverity',$event)" clearable>
-												<el-option v-for="i in this.dicts.bugSeverity" :label="i.name" :key="i.id" :value="i.id"></el-option>
-											</el-select>
+											<mdp-select item-code="bugSeverity" style="width:100px;" size="small" v-model="params.bugSeverity"  @change="onXmQuestionSomeFieldsChange('bugSeverity',$event)" clearable>
+ 											</mdp-select>
 										</el-form-item>
 										<el-form-item  label="优先级别" prop="priority" >
-											<el-select style="width:100px;" size="small" v-model="params.priority" @change="onXmQuestionSomeFieldsChange('priority',$event)" clearable>
-													<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option>
-											</el-select>
+											<mdp-select item-code="priority" style="width:100px;" size="small" v-model="params.priority" @change="onXmQuestionSomeFieldsChange('priority',$event)" clearable>
+ 											</mdp-select>
 										</el-form-item>
 										<el-form-item  label="解决方案" prop="solution" >
-											<el-select style="width:100px;" size="small" v-model="params.solution" @change="onXmQuestionSomeFieldsChange('solution',$event)" clearable>
-													<el-option v-for="i in dicts.bugSolution" :label="i.name" :key="i.id" :value="i.id"></el-option>
-											</el-select>
+											<mdp-select item-code="bugSolution" style="width:100px;" size="small" v-model="params.solution" @change="onXmQuestionSomeFieldsChange('solution',$event)" clearable>
+ 											</mdp-select>
 										</el-form-item>
 
 										<el-form-item  label="重现频率" prop="repRate" >
-											<el-select style="width:100px;" size="small" v-model="params.repRate" @change="onXmQuestionSomeFieldsChange('repRate',$event)" clearable>
-													<el-option v-for="i in dicts.bugRepRate" :label="i.name" :key="i.id" :value="i.id"></el-option>
-											</el-select>
+											<mdp-select item-code="bugRepRate" style="width:100px;" size="small" v-model="params.repRate" @change="onXmQuestionSomeFieldsChange('repRate',$event)" clearable>
+ 											</mdp-select>
 										</el-form-item>
 									</el-col>
 								</el-row>

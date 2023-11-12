@@ -45,29 +45,24 @@
 									</el-col>
 									<el-col :span="9">
 										<el-form-item label="需求状态" prop="status">
-											<el-select style="width:100px;" size="small"   v-model="params.status"  @change="onXmMenuSomeFieldsChange('status',$event)" clearable>
-												<el-option v-for="i in this.dicts.menuStatus" :label="i.name" :key="i.id" :value="i.id"></el-option>
-											</el-select>
+											<mdp-select item-code="menuStatus" style="width:100px;" size="small"   v-model="params.status"  @change="onXmMenuSomeFieldsChange('status',$event)" clearable>
+ 											</mdp-select>
 										</el-form-item>
 										<el-form-item  label="需求类型" prop="dtype" >
-											<el-select style="width:100px;" size="small" v-model="params.dtype"  @change="onXmMenuSomeFieldsChange('dtype',$event)" clearable>
-												<el-option v-for="i in this.dicts.demandType" :label="i.name" :key="i.id" :value="i.id"></el-option>
-											</el-select>
+											<mdp-select item-code="demandType" style="width:100px;" size="small" v-model="params.dtype"  @change="onXmMenuSomeFieldsChange('dtype',$event)" clearable>
+ 											</mdp-select>
 										</el-form-item>
 										<el-form-item  label="需求来源" prop="source">
-											<el-select style="width:100px;" size="small" v-model="params.source"  @change="onXmMenuSomeFieldsChange('source',$event)" clearable>
-												<el-option v-for="i in this.dicts.demandSource" :label="i.name" :key="i.id" :value="i.id"></el-option>
-											</el-select>
+											<mdp-select item-code="demandSource" style="width:100px;" size="small" v-model="params.source"  @change="onXmMenuSomeFieldsChange('source',$event)" clearable>
+ 											</mdp-select>
 										</el-form-item>
 										<el-form-item  label="需求层次" prop="dlvl" >
-											<el-select style="width:100px;" size="small" v-model="params.dlvl"  @change="onXmMenuSomeFieldsChange('dlvl',$event)" clearable>
-												<el-option v-for="i in this.dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
-											</el-select>
+											<mdp-select item-code="demandLvl" style="width:100px;" size="small" v-model="params.dlvl"  @change="onXmMenuSomeFieldsChange('dlvl',$event)" clearable>
+ 											</mdp-select>
 										</el-form-item>
 										<el-form-item  label="优先级别" prop="priority" >
-											<el-select style="width:100px;" size="small" v-model="params.priority" @change="onXmMenuSomeFieldsChange('priority',$event)" clearable>
-													<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option>
-											</el-select>
+											<mdp-select item-code="priority" style="width:100px;" size="small" v-model="params.priority" @change="onXmMenuSomeFieldsChange('priority',$event)" clearable>
+ 											</mdp-select>
 										</el-form-item>
 									</el-col>
 								</el-row>

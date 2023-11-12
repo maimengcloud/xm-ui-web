@@ -177,30 +177,26 @@
 							</el-col>
 							<el-col :span="12">
 								<el-form-item  label="需求类型" prop="dtype" >
-									<el-select v-model="editForm.dtype"  @change="editXmMenuSomeFields(editForm,'dtype',$event)">
-										<el-option v-for="i in this.dicts.demandType" :label="i.name" :key="i.id" :value="i.id"></el-option>
-									</el-select>
+									<mdp-select item-code="demandType" v-model="editForm.dtype"  @change="editXmMenuSomeFields(editForm,'dtype',$event)">
+ 									</mdp-select>
 								</el-form-item>
 							</el-col>
 							<el-col :span="12">
 								<el-form-item  label="需求来源" prop="source">
-									<el-select v-model="editForm.source"  @change="editXmMenuSomeFields(editForm,'source',$event)">
-										<el-option v-for="i in this.dicts.demandSource" :label="i.name" :key="i.id" :value="i.id"></el-option>
-									</el-select>
+									<mdp-select item-code="demandSource" v-model="editForm.source"  @change="editXmMenuSomeFields(editForm,'source',$event)">
+ 									</mdp-select>
 								</el-form-item>
 							</el-col>
 							<el-col :span="12">
 								<el-form-item  label="需求层次" prop="dlvl" >
-									<el-select v-model="editForm.dlvl"  @change="editXmMenuSomeFields(editForm,'dlvl',$event)">
-										<el-option v-for="i in this.dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
-									</el-select>
+									<mdp-select item-code="demandLvl" v-model="editForm.dlvl"  @change="editXmMenuSomeFields(editForm,'dlvl',$event)">
+ 									</mdp-select>
 								</el-form-item>
 							</el-col>
 							<el-col :span="12">
 								<el-form-item  label="优先级" prop="priority" >
-									<el-select v-model="editForm.priority" @change="editXmMenuSomeFields(editForm,'priority',$event)">
-											<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option>
-									</el-select>
+									<mdp-select item-code="priority" v-model="editForm.priority" @change="editXmMenuSomeFields(editForm,'priority',$event)">
+ 									</mdp-select>
 								</el-form-item>
 							</el-col>
 						</el-row>

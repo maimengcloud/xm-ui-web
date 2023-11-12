@@ -2,9 +2,8 @@
 	<section class="page-container padding border">
 		<el-row>
 			<el-input v-model="filters.key" style="width: 20%;" placeholder="项目模板名称查询"></el-input>
-			<el-select v-model="filters.xmType" @change="searchXmProjectTemplates">
-				<el-option v-for="i in this.dicts.projectType" :label="i.name" :key="i.id" :value="i.id"></el-option>
-			</el-select>
+			<mdp-select item-code="projectType" v-model="filters.xmType" @change="searchXmProjectTemplates">
+ 			</mdp-select>
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectTemplates">查询</el-button>
   		</el-row>
 		<el-row class="page-main">

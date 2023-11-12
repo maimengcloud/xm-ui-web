@@ -27,7 +27,7 @@
 								<el-row>
 									<el-col :span="15">
 										<el-form-item label="分组属性">
-											<el-select style="width:100px;" size="small"   v-model="params.groupBy"  @change="onXmTaskSomeFieldsChange('groupBy',$event)" clearable>
+											<el-select item-code="" style="width:100px;" size="small"   v-model="params.groupBy"  @change="onXmTaskSomeFieldsChange('groupBy',$event)" clearable>
 												<el-option v-for="i in this.groupBys" :label="i.name" :key="i.id" :value="i.id"></el-option>
 											</el-select>
 										</el-form-item>
@@ -38,29 +38,24 @@
 									</el-col>
 									<el-col :span="9">
 										<el-form-item label="任务状态" prop="taskState">
-											<el-select style="width:100px;" size="small"   v-model="params.taskState"  @change="onXmTaskSomeFieldsChange('taskState',$event)" clearable>
-												<el-option v-for="i in this.dicts.taskState" :label="i.name" :key="i.id" :value="i.id"></el-option>
-											</el-select>
+											<mdp-select item-code="taskState" style="width:100px;" size="small"   v-model="params.taskState"  @change="onXmTaskSomeFieldsChange('taskState',$event)" clearable>
+ 											</mdp-select>
 										</el-form-item>
 										<el-form-item  label="任务类型" prop="taskType" >
-											<el-select style="width:100px;" size="small" v-model="params.taskType"  @change="onXmTaskSomeFieldsChange('taskType',$event)" clearable>
-												<el-option v-for="i in this.dicts.taskType" :label="i.name" :key="i.id" :value="i.id"></el-option>
-											</el-select>
+											<mdp-select item-code="taskType" style="width:100px;" size="small" v-model="params.taskType"  @change="onXmTaskSomeFieldsChange('taskType',$event)" clearable>
+ 											</mdp-select>
 										</el-form-item>
 										<el-form-item  label="任务来源" prop="planType">
-											<el-select style="width:100px;" size="small" v-model="params.planType"  @change="onXmTaskSomeFieldsChange('planType',$event)" clearable>
-												<el-option v-for="i in this.dicts.planType" :label="i.name" :key="i.id" :value="i.id"></el-option>
-											</el-select>
+											<mdp-select item-code="planType" style="width:100px;" size="small" v-model="params.planType"  @change="onXmTaskSomeFieldsChange('planType',$event)" clearable>
+ 											</mdp-select>
 										</el-form-item>
 										<el-form-item  label="任务层次" prop="settleSchemel" >
-											<el-select style="width:100px;" size="small" v-model="params.settleSchemel"  @change="onXmTaskSomeFieldsChange('settleSchemel',$event)" clearable>
-												<el-option v-for="i in this.dicts.xmTaskSettleSchemel" :label="i.name" :key="i.id" :value="i.id"></el-option>
-											</el-select>
+											<mdp-select item-code="xmTaskSettleSchemel" style="width:100px;" size="small" v-model="params.settleSchemel"  @change="onXmTaskSomeFieldsChange('settleSchemel',$event)" clearable>
+ 											</mdp-select>
 										</el-form-item>
 										<el-form-item  label="优先级别" prop="priority" >
-											<el-select style="width:100px;" size="small" v-model="params.priority" @change="onXmTaskSomeFieldsChange('priority',$event)" clearable>
-													<el-option v-for="i in dicts.priority" :label="i.name" :key="i.id" :value="i.id"></el-option>
-											</el-select>
+											<mdp-select item-code="priority" style="width:100px;" size="small" v-model="params.priority" @change="onXmTaskSomeFieldsChange('priority',$event)" clearable>
+ 											</mdp-select>
 										</el-form-item>
 									</el-col>
 								</el-row>

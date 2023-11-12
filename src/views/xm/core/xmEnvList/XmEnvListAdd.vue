@@ -65,16 +65,14 @@
 					</el-col>
 					<el-col :span="8">
 						<el-form-item label="浏览权限" prop="readQx">
-							<el-select v-model="addForm.readQx">
-								<el-option v-for="(item,index) in dicts['readQx']" :key="index" :value="item.id" :label="item.name"></el-option>
-							</el-select>
+							<mdp-select item-code="readQx" v-model="addForm.readQx">
+ 							</mdp-select>
 						</el-form-item>
 					</el-col>
 					<el-col :span="8">
 					<el-form-item label="修改权限" prop="writeQx">
-						<el-select v-model="addForm.writeQx">
-							<el-option v-for="(item,index) in dicts['writeQx']" :key="index" :value="item.id" :label="item.name"></el-option>
-						</el-select>
+						<mdp-select item-code="writeQx" v-model="addForm.writeQx">
+ 						</mdp-select>
 					</el-form-item>
 				</el-col>
 				</el-row>

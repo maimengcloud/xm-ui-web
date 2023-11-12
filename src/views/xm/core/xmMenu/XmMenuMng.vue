@@ -101,9 +101,8 @@
 									<i class="el-icon-document"></i>
 									需求类型
 								</template>
-								<el-select  v-model="filters.dtype" clearable placeholder="需求类型">
-									<el-option v-for="i in this.dicts.demandType" :label="i.name" :key="i.id" :value="i.id"></el-option>
-								</el-select>
+								<mdp-select item-code="demandType" v-model="filters.dtype" clearable placeholder="需求类型">
+ 								</mdp-select>
 							</el-descriptions-item>
 							<el-descriptions-item>
 								<template slot="label">
@@ -111,18 +110,16 @@
 									需求来源
 								</template>
 
-								<el-select  v-model="filters.source" placeholder="需求来源"  clearable >
-											<el-option v-for="i in this.dicts.demandSource" :label="i.name" :key="i.id" :value="i.id"></el-option>
-										</el-select>
+								<mdp-select item-code="demandSource" v-model="filters.source" placeholder="需求来源"  clearable >
+ 										</mdp-select>
 							</el-descriptions-item>
 							<el-descriptions-item>
 								<template slot="label">
 									<i class="el-icon-document"></i>
 									需求层次
 								</template>
-										<el-select  v-model="filters.dlvl" placeholder="需求层次"  clearable >
-											<el-option v-for="i in this.dicts.demandLvl" :label="i.name" :key="i.id" :value="i.id"></el-option>
-										</el-select>
+										<mdp-select item-code="demandLvl" v-model="filters.dlvl" placeholder="需求层次"  clearable >
+ 										</mdp-select>
 							</el-descriptions-item>
 							<el-descriptions-item :span="2">
 								<template slot="label">

@@ -43,15 +43,9 @@
                     </template>
 				</el-table-column>
 				<el-table-column prop="subjectId" label="成本科目" min-width="80" show-overflow-tooltip>
-                    <template slot-scope="scope">
-						<div class="cell-text">
-							{{formatDicts(dicts,'projectSubject',scope.row.subjectId)}}
-						</div>
-						<span class="cell-bar">
-							<el-select  v-model="scope.row.subjectId" placeholder="成本科目"  style="display:block;" @change="editSomeFields(scope.row,'subjectId',$event)">
-								<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.projectSubject" :key="index"></el-option>
-							</el-select>
-						</span>
+                    <template slot-scope="scope"> 
+							<mdp-select item-code="projectSubject" show-style="tag" v-model="scope.row.subjectId" placeholder="成本科目"  style="display:block;" @change="editSomeFields(scope.row,'subjectId',$event)">
+ 							</mdp-select> 
                     </template>
 				</el-table-column>
 				<el-table-column prop="bizMonth" label="费用月份" min-width="80" show-overflow-tooltip>

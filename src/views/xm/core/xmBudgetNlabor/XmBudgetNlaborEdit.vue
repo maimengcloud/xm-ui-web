@@ -15,14 +15,8 @@
 					<el-input v-model="editForm.remark" placeholder="备注" ></el-input>
 				</el-form-item>  
 				<el-form-item label="预算科目" prop="subjectId">
-					<el-select   placeholder="预算科目编号" v-model="editForm.subjectId">
-						<el-option
-							v-for="(item,i) in dicts.projectSubject"
-							:key="i"
-							:label="item.name"
-							:value="item.id">
-						</el-option>
-					</el-select>
+					<mdp-select item-code="projectSubject" placeholder="预算科目编号" v-model="editForm.subjectId"> 
+					</mdp-select>
 				</el-form-item>    
 				<el-form-item label="预算月份" prop="bizMonth">
 					<el-date-picker 

@@ -24,9 +24,8 @@
 					</el-col>
 					<el-col :span="12">
 						<el-form-item label="工作类型" prop="ttype">
-							<el-select v-model="editForm.ttype">
-								<el-option v-for="i in this.dicts.taskType" :label="i.name" :key="i.id" :value="i.id"></el-option>
-							</el-select>
+							<mdp-select item-code="taskType" v-model="editForm.ttype">
+ 							</mdp-select>
 						</el-form-item>
 					</el-col>
 				</el-row>

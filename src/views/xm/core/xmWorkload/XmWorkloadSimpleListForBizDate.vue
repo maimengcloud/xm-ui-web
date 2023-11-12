@@ -11,15 +11,9 @@
 				<el-table-column prop="bizDate" label="登记日期" width="120" show-overflow-tooltip></el-table-column>
 				<el-table-column prop="workload" label="登记工时" width="120" show-overflow-tooltip></el-table-column>
  				<el-table-column prop="wstatus" label="确认状态" width="120" show-overflow-tooltip>
-					 <template slot-scope="scope">
-						<div class="cell-text">
-							<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'wstatus',scope.row.wstatus)" :key="index" :type="item.className">{{item.name}}</el-tag>
-						</div>
-						<span class="cell-bar">
-							<el-select  v-model="scope.row.wstatus" placeholder="工时状态"  style="display:block;"  @change="editXmWorkloadSomeFields(scope.row,'wstatus',$event)">
-								<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.wstatus" :key="index"></el-option>
-							</el-select>
-						</span>
+					 <template slot-scope="scope"> 
+							<mdp-select item-code="wstatus" show-style="tag" v-model="scope.row.wstatus" placeholder="工时状态"  style="display:block;"  @change="editXmWorkloadSomeFields(scope.row,'wstatus',$event)">
+ 							</mdp-select> 
 					 </template>
 				 </el-table-column>
  				<el-table-column prop="sstatus" label="结算状态" width="120" show-overflow-tooltip>
@@ -28,9 +22,8 @@
 							<el-tag v-for="(item,index) in formatDictsWithClass(dicts,'sstatus',scope.row.sstatus)" :key="index" :type="item.className">{{item.name}}</el-tag>
 						</div>
 						<span class="cell-bar">
-							<el-select  v-model="scope.row.sstatus" placeholder="结算状态"  style="display:block;"  @change="editXmWorkloadSomeFields(scope.row,'sstatus',$event)">
-								<el-option :value="item.id" :label="item.name" v-for="(item,index) in dicts.sstatus" :key="index"></el-option>
-							</el-select>
+							<mdp-select item-code="sstatus" show-style="tag" v-model="scope.row.sstatus" placeholder="结算状态"  style="display:block;"  @change="editXmWorkloadSomeFields(scope.row,'sstatus',$event)">
+ 							</mdp-select>
 						</span>
 					 </template>
 				 </el-table-column>

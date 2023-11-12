@@ -100,9 +100,8 @@
 							</el-col>
 							<el-col :span="12">
 								<el-form-item label="工期类型">
-								<el-select v-model=" addForm.planType">
-									<el-option v-for="i in this.dicts.planType" :label="i.name" :key="i.id" :value="i.id"></el-option>
-								</el-select>
+								<mdp-select item-code="planType" v-model=" addForm.planType">
+ 								</mdp-select>
 								</el-form-item>
 							</el-col>
 						</el-row>
@@ -116,9 +115,8 @@
 							</el-col>
 							<el-col :span="12">
 								<el-form-item  :label="addForm.ntype=='0'?'任务类型':'计划类型'" prop="taskType">
-									<el-select v-model="addForm.taskType">
-										<el-option v-for="i in this.dicts.taskType" :label="i.name" :key="i.id" :value="i.id"></el-option>
-									</el-select>
+									<mdp-select item-code="taskType" v-model="addForm.taskType">
+ 									</mdp-select>
 								</el-form-item>
 							</el-col>
 						</el-row>
@@ -174,9 +172,8 @@
 							<el-checkbox v-model="addForm.taskClass" true-label="1" false-label="0">是否需要结算</el-checkbox>
 						</el-form-item>
 						<el-form-item v-if="addForm.taskClass=='1'" label="结算方案" prop="settlSchemel">
-							<el-select v-model=" addForm.settleSchemel">
-								<el-option v-for="i in dicts.xmTaskSettleSchemel" :label="i.name" :key="i.id" :value="i.id"></el-option>
-							</el-select>
+							<mdp-select item-code="xmTaskSettleSchemel" v-model=" addForm.settleSchemel">
+ 							</mdp-select>
 						</el-form-item>
 					</el-tab-pane>
 					<el-tab-pane label="外包、众包、互联网" name="8" v-if="addForm.ntype!='1' ">
