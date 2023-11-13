@@ -13,14 +13,12 @@
  					<div v-else>{{editForm.productName}}</div>
 				</el-form-item>
 				<el-form-item label="用例库名称" prop="name">
-					<my-input v-model="editForm.name" placeholder="用例库名称" :maxlength="255" @change="editSomeFields(editForm,'name',$event)"></my-input>
+					<el-input v-model="editForm.name" placeholder="用例库名称" :maxlength="255" @change="editSomeFields(editForm,'name',$event)"></el-input>
 				</el-form-item>
 				<el-row class="padding">
 					<el-col :span="8">
-						<el-form-item prop="cuserid" label-width="0px">
-							<mdp-select-user show-style="x" size="medium" label="负责人" v-model="editForm.cuserid" :init-name="editForm.cusername" @change2="editSomeFields(editForm,'cuserid',$event)"></mdp-select-user>
-						</el-form-item>
-					</el-col>
+ 							<mdp-select-user show-style="x" size="medium" label="负责人" v-model="editForm.cuserid" :init-name="editForm.cusername" @change2="editSomeFields(editForm,'cuserid',$event)"></mdp-select-user>
+ 					</el-col>
 					<el-col :span="8">
 
 						<mdp-select  show-style="x" size="medium" label="状态" item-code="casedbStatus" v-model="editForm.status"  @change="editSomeFields(editForm,'status',$event)"></mdp-select>

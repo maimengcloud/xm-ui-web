@@ -31,10 +31,10 @@
 									</mdp-field>
 								</el-col>
 								<el-col  :span="8">
-                  <mdp-select-user show-style="x" size="medium" label="负责人" v-model="editForm.mmUserid"></mdp-select-user>
+                  <mdp-select-user show-style="x" size="medium" label="负责人" v-model="addForm.mmUserid" :init-name="addForm.mmUsername"></mdp-select-user>
  								</el-col>
 								<el-col  :span="8">
-                  <mdp-select-user show-style="x" size="medium" label="提出人" v-model="editForm.proposerId"></mdp-select-user>
+                  <mdp-select-user show-style="x" size="medium" label="提出人" v-model="addForm.proposerId" :init-name="addForm.proposerName"></mdp-select-user>
 								</el-col>
 						</el-row>
 						<el-row class="padding-top">
