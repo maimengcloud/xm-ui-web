@@ -36,7 +36,11 @@
 					</template>
 				</el-table-column>
 				<el-table-column prop="remark" label="报工备注" width="120" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="ttype" label="任务类型" min-width="80" show-overflow-tooltip :formatter="formatterOption"></el-table-column>
+				<el-table-column prop="ttype" label="任务类型" min-width="80" show-overflow-tooltip> 
+					<template slot-scope="scope">
+						<mdp-select show-style="tag" :disabled="true" v-model="scope.row.ttype" item-code="taskType"></mdp-select>
+					</template>
+				</el-table-column>
 
 			</el-table>
 			<el-pagination  layout="total, sizes, prev, pager, next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
@@ -201,28 +205,7 @@
 				userWorkloadDayListVisible:false,
 			}
 		},//end data
-		methods: {
-
-			formatterOption: function (row, column, cellValue, index) {
-				var columnName = column.property;
-				var key = columnName;
-				if(columnName==='ttype'){
-					key="taskType"
-				}
-				if (
-					this.dicts[key] == undefined ||
-					this.dicts[key] == null ||
-					this.dicts[key].length == 0
-				) {
-					return cellValue;
-				}
-				var list = this.dicts[key].filter((i) => i.id == cellValue);
-				if (list.length > 0) {
-					return list[0].name;
-				} else {
-					return cellValue;
-				}
-			},
+		methods: { 
 			handleSizeChange(pageSize) {
 				this.pageInfo.pageSize=pageSize;
 				this.getXmWorkloads();
