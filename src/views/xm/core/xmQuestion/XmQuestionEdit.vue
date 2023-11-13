@@ -31,15 +31,12 @@
 						</el-row>
 
 						<el-row class="padding border">
-							<el-form-item label="最新意见" prop="remarks" class="field">
-								<div class="field-text">
-									{{editForm.remarks||'暂无'}}
-								</div>
-								<div class="field-bar">
-									<el-input type="textarea" :rows="3"  v-model="editForm.remarks" placeholder="处理意见" @change="editXmQuestionSomeFields(editForm,'remarks',$event)"></el-input>
-								</div>
-							</el-form-item>
-
+							<el-form-item label="最新意见" prop="remarks" class="field"> 
+									<div>{{editForm.remarks||'暂无最新意见'}}</div>
+  							</el-form-item> 
+							<el-form-item label="我的意见" prop="remarks2" class="field"> 
+ 									<mdp-input  type="textarea" :rows="3"  v-model="editForm.remarks2" placeholder="处理意见" @change="editXmQuestionSomeFields(editForm,'remarks',$event)"></mdp-input>
+ 							</el-form-item> 
 						</el-row>
 						</el-col>
 					<el-col :span="18" class="border padding">
@@ -533,6 +530,10 @@
 				editXmQuestionSomeFields(params).then(res=>{
 					var tips = res.data.tips;
 					if(tips.isOk){
+						 if(fieldName=='remarks'){
+							this.editForm.remarks=$event
+							this.editForm.remarks2=""
+						 }
 						 this.editFormBak={...this.editForm}
 						 this.$emit('edit-fields',this.editForm)
 					}else{
