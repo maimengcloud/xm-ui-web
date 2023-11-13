@@ -159,17 +159,7 @@
   .el-row {
     padding-top: 10px;
   }
-}
-/**
-  修改弹出框关闭按钮，放大，原来的太小
-**/
-.el-dialog__headerbtn {
-  top: 8px !important; 
-  background-size: cover;
- }
- .el-dialog__headerbtn i { 
-  font-size: 32px; 
- }
+} 
 
 
 .more-label-font {
@@ -365,8 +355,7 @@ table tr.hover-row{
     max-width:80vw;
   }
 }
-.el-dialog {
-  max-height: 96%; 
+.el-dialog { 
   display: flex;
   flex-direction: column;
   margin: 0 !important;
