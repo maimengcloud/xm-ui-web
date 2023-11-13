@@ -27,13 +27,13 @@
 		  </el-table-column>
           <el-table-column prop="status" label="状态"  width="100"  sortable>
 								<template slot-scope="scope">
-										 <mdp-select show-style="tag"  @visible-change="selectVisible(scope.row,$event)" :dict="dicts.menuStatus"  v-model="scope.row.status" placeholder="需求状态"  style="display:block;"  @change="editXmMenuSomeFields(scope.row,'status',$event)">
+										 <mdp-select show-style="tag"  @visible-change="selectVisible(scope.row,$event)" item-code="menuStatus"  v-model="scope.row.status" placeholder="需求状态"  style="display:block;"  @change="editXmMenuSomeFields(scope.row,'status',$event)">
  										 </mdp-select>
 								</template>
 							</el-table-column>
 							<el-table-column prop="priority"  label="优先级" width="100" sortable>
 								<template slot-scope="scope">
-										 <mdp-select show-style="tag"  @visible-change="selectVisible(scope.row,$event)" :dict="dicts.priority"  v-model="scope.row.priority" placeholder="优先级"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'priority',$event)">
+										 <mdp-select show-style="tag"  @visible-change="selectVisible(scope.row,$event)" item-code="priority"  v-model="scope.row.priority" placeholder="优先级"  style="display:block;" @change="editXmMenuSomeFields(scope.row,'priority',$event)">
  										 </mdp-select>
 								</template>
 							</el-table-column>

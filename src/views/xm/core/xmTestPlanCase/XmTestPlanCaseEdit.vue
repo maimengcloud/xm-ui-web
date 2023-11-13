@@ -39,7 +39,7 @@
 							</el-row>
 							<el-row v-if="editForm.testType=='1'" class="padding-bottom">
 								<div style="display:flex;">
-									<mdp-select show-style="tag" label="请求方法" v-model="autoStep.method" :dict="dicts.autoTestMethod" :disabled="true"></mdp-select>
+									<mdp-select show-style="tag" label="请求方法" v-model="autoStep.method" item-code="autoTestMethod" :disabled="true"></mdp-select>
 									<span>{{ autoStep.url }}</span>
 									<el-button style="margin-left:10px;" type="primary" @click="sendMsgForTestSetting" title="执行用例">执行用例</el-button>
 
@@ -164,7 +164,7 @@
 						</el-table>
 					</el-tab-pane>
 					<el-tab-pane name="13" label="Body"  v-if="editForm.testType=='1'">
-						<mdp-select  show-style="x" size="medium" style="margin-bottom:10px;" class="padding" label="参数格式" v-model="autoStep.bodyType" :dict="dicts.autoTestBodyType" :disabled="true"></mdp-select>
+						<mdp-select  show-style="x" size="medium" style="margin-bottom:10px;" class="padding" label="参数格式" v-model="autoStep.bodyType" item-code="autoTestBodyType" :disabled="true"></mdp-select>
 						<el-input v-if="autoStep.bodyType=='json'" type="textarea" :rows="10" v-model="autoStep.body" readonly></el-input>
 						<el-input v-if="autoStep.bodyType=='xml'" type="textarea" :rows="10" v-model="autoStep.body" readonly></el-input>
 
@@ -218,7 +218,7 @@
 					</el-tab-pane>
 					<el-tab-pane name="16" label="Auth"  v-if="editForm.testType=='1'">
 
-						<mdp-select  show-style="x" size="medium" style="margin-bottom:10px;" class="padding" label="授权方式" v-model="autoStep.authType" :dict="dicts.autoTestAuthType" :disabled="true"></mdp-select>
+						<mdp-select  show-style="x" size="medium" style="margin-bottom:10px;" class="padding" label="授权方式" v-model="autoStep.authType" item-code="autoTestAuthType" :disabled="true"></mdp-select>
 
 
 						<el-row v-if="autoStep.authType=='basic-auth'">

@@ -38,7 +38,7 @@
 						</el-form-item>
 						<el-form-item label="接口地址" prop="url">
 							<div style="display:flex;">
-								<mdp-select show-style="tag" label="请求方法" v-model="autoStep.method" :dict="dicts.autoTestMethod" ></mdp-select>
+								<mdp-select show-style="tag" label="请求方法" v-model="autoStep.method" item-code="autoTestMethod" ></mdp-select>
 									<el-input  v-model="autoStep.url" placeholder="url 如#{baseApi}/user/list,支持通过 #{变量名}引用环境变量"></el-input>
 								<el-button style="margin-left:10px;" type="primary" @click="sendMsgForTestSetting" title="执行用例">发送</el-button>
 							</div>
@@ -99,7 +99,7 @@
 									</div>
 								</el-form-item>
 								<el-form-item label="请求方法">
-									<mdp-select show-style="tag" label="请求方法" v-model="autoStep.method" :dict="dicts.autoTestMethod"></mdp-select>
+									<mdp-select show-style="tag" label="请求方法" v-model="autoStep.method" item-code="autoTestMethod"></mdp-select>
 								</el-form-item>
  								<el-form-item label="查询参数"   class="field">
 									<div class="field-text">
@@ -145,7 +145,7 @@
 								</el-row>
  							</el-tab-pane>
 							<el-tab-pane name="13" label="Body"  v-if="editForm.testType=='1'">
-								<mdp-select  show-style="x" size="medium" style="margin-bottom:10px;" class="padding" label="参数格式" v-model="autoStep.bodyType" :dict="dicts.autoTestBodyType"></mdp-select>
+								<mdp-select  show-style="x" size="medium" style="margin-bottom:10px;" class="padding" label="参数格式" v-model="autoStep.bodyType" item-code="autoTestBodyType"></mdp-select>
 								<el-input v-if="autoStep.bodyType=='json'" type="textarea" :rows="10" v-model="autoStep.body"></el-input>
 								<el-input v-if="autoStep.bodyType=='xml'" type="textarea" :rows="10" v-model="autoStep.body"></el-input>
 
@@ -259,7 +259,7 @@
  							</el-tab-pane>
 							<el-tab-pane name="16" label="Auth"  v-if="editForm.testType=='1'">
 
-								<mdp-select  show-style="x" size="medium" style="margin-bottom:10px;" class="padding" label="授权方式" v-model="autoStep.authType" :dict="dicts.autoTestAuthType"></mdp-select>
+								<mdp-select  show-style="x" size="medium" style="margin-bottom:10px;" class="padding" label="授权方式" v-model="autoStep.authType" item-code="autoTestAuthType"></mdp-select>
 
 
 								<el-row v-if="autoStep.authType=='basic-auth'">
