@@ -31,7 +31,7 @@
                 
                 <div class="oper">
                     <a @click="isRestPwd = true">忘记密码</a>
-                    <a @click="loginByShowAccount">演示账户登录</a>
+                    <a @click="$refs['starDialog'].open({action:loginByShowAccount})">演示账户登录</a>
                     <a v-if="loginForm.authType == 'password_display_userid' " @click="loginForm.authType = 'sms'">手机号登录</a>
                     <a v-if="loginForm.authType == 'sms' " @click="loginForm.authType = 'password_display_userid' ">密码登录</a>
                 </div>
@@ -40,7 +40,7 @@
                 <el-divider content-position="center">第三方登录方式</el-divider>
                 <div class="other"> 
                     <el-popover trigger="manual" v-model="wxLoginCodeVisible" placement="top-start"> <div id="login_container"></div>
-                        <img  slot="reference"  src="@/assets/image/module/weixin.png" @click="weixinLogin">
+                        <img  slot="reference"  src="@/assets/image/module/weixin.png" @click="$refs['starDialog'].open({action:weixinLogin})">
                         <el-button type="text" @click="wxLoginCodeVisible=false" icon="el-icon-close">关闭</el-button><el-button type="text" @click="weixinLogin" icon="el-icon-refresh">刷新二维码</el-button>
                     </el-popover> 
                 </div>
@@ -76,7 +76,16 @@
                 </el-button>
             </div>
         </div>
-       
+       <mdp-dialog ref="starDialog" width="600px" title="hi~同学，来支持一下【唛盟开源项目】吧，为项目点个Star!">
+             <el-row>
+                <el-link href="https://gitee.com/qingqinkj218/collections/375320" target="_blank" type="primary" icon="el-icon-star-off">唛盟项目</el-link> 
+            </el-row>
+             <template #footer="{visible,data,dialog}">
+                <el-row slot="footer">
+                    <el-button @click="dialog.close()">取消</el-button><el-button type="primary" @click="doLoginByAction(data.action)">已点赞，继续登陆</el-button>
+                </el-row>
+            </template>
+       </mdp-dialog>
     </div>
 
 </template>
@@ -247,7 +256,7 @@ export default {
 
         handleLogin() {
             this.$refs.loginForm.validate(valid => {
-                if (valid) {
+                if (valid) { 
                     this.loading = true
                     let params={
                             displayUserid:this.loginForm.displayUserid,
@@ -258,46 +267,45 @@ export default {
                         smsCode:this.loginForm.smsCode,
                         branchId:this.userBranchId,
                     }
-                var loginParams={ }
-                if(params.authType=='password_display_userid'){
-                    loginParams.userloginid=params.displayUserid
-                    loginParams.password=params.password
-                    loginParams.grantType="password"
-                    loginParams.authType='password_display_userid' 
-                    //loginParams.deptid=params.deptid
-                    loginParams.branchId=params.branchId
-                }else if(params.authType=='sms'){
-                    loginParams.userloginid=params.phoneno
-                    loginParams.password=params.smsCode
-                    loginParams.grantType="password"
-                    loginParams.authType="sms"
-                    //loginParams.deptid=params.deptid
-                    loginParams.branchId=params.branchId
-                }
-                this.$store.dispatch("LoginByUserloginid",loginParams).then(res => {
-                
-                    this.loading = false 
-                    if(res.data.tips.isOk==true){
-                        this.loading = true;
-                        this.$store.dispatch('GetUserInfo').then((res2)=>{  
-                            this.loading = false
-                            if(res2.data.tips.isOk==true){ 
-                                this.userDeptid=res2.data.userInfo.deptid
-                                this.rolesChecked(); 
-                            }else{
-                                this.$notify.error(res2.data.tips.msg);
-                            }
-                            
-                        }).catch(err=>{
-                            console.log(err); 
-                            this.loading = false
-                        }); 
-                    }else{
-                        this.$notify.error(res.data.tips.msg);
-                    } 
-                }).catch((e) => {
-                    this.loading = false
-                })
+                    var loginParams={ }
+                    if(params.authType=='password_display_userid'){
+                        loginParams.userloginid=params.displayUserid
+                        loginParams.password=params.password
+                        loginParams.grantType="password"
+                        loginParams.authType='password_display_userid' 
+                        //loginParams.deptid=params.deptid
+                        loginParams.branchId=params.branchId
+                    }else if(params.authType=='sms'){
+                        loginParams.userloginid=params.phoneno
+                        loginParams.password=params.smsCode
+                        loginParams.grantType="password"
+                        loginParams.authType="sms"
+                        //loginParams.deptid=params.deptid
+                        loginParams.branchId=params.branchId
+                    }
+                    this.$store.dispatch("LoginByUserloginid",loginParams).then(res => { 
+                        this.loading = false 
+                        if(res.data.tips.isOk==true){
+                            this.loading = true;
+                            this.$store.dispatch('GetUserInfo').then((res2)=>{  
+                                this.loading = false
+                                if(res2.data.tips.isOk==true){ 
+                                    this.userDeptid=res2.data.userInfo.deptid   
+                                    this.rolesChecked(); 
+                                }else{
+                                    this.$notify.error(res2.data.tips.msg);
+                                }
+                                
+                            }).catch(err=>{
+                                console.log(err); 
+                                this.loading = false
+                            }); 
+                        }else{
+                            this.$notify.error(res.data.tips.msg);
+                        } 
+                    }).catch((e) => {
+                        this.loading = false
+                    })
                 } else {
                     return false
                 }
@@ -337,7 +345,7 @@ export default {
             this.addBranchFormVisible=false;
             this.handleLogin();
         },
-        weixinLogin(){
+        weixinLogin(){ 
             var curlDomain=window.location.protocol+"//"+window.location.host; //  
             var mdpRedirectUri=curlDomain+"/"+process.env.CONTEXT+"/"+process.env.VERSION+"/"
             var tpaContext=this.$mdp.getTpaContext();
@@ -363,7 +371,10 @@ export default {
             })
            
         },
-
+        doLoginByAction(action){
+            this.$refs['starDialog'].close();
+            action();
+        },
         afterQRScan() {
             // const hash = window.location.hash.slice(1)
             // const hashObj = getQueryObject(hash)
@@ -381,38 +392,39 @@ export default {
             //     this.$router.push({ path: '/' })
             //   })
             // }
-        },
-        loginByShowAccount(){ 
-                this.loading = true 
-                var loginParams={ } 
-                loginParams.userloginid="demo-branch-01"
-                loginParams.password=md5("888888")
-                loginParams.grantType="password"
-                loginParams.authType='password_display_userid'  
-                this.$store.dispatch("LoginByUserloginid",loginParams).then(res => {
-                
-                    this.loading = false 
-                    if(res.data.tips.isOk==true){
-                        this.loading = true;
-                        this.$store.dispatch('GetUserInfo').then((res2)=>{  
-                            this.loading = false
-                            if(res2.data.tips.isOk==true){ 
-                                this.userDeptid=res2.data.userInfo.deptid
-                                this.rolesChecked(); 
-                            }else{
-                                this.$notify.error(res2.data.tips.msg);
-                            }
-                            
-                        }).catch(err=>{
-                            console.log(err); 
-                            this.loading = false
-                        }); 
-                    }else{
-                        this.$notify.error(res.data.tips.msg);
-                    } 
-                }).catch((e) => {
-                    this.loading = false
-                }) 
+        }, 
+        loginByShowAccount(){      
+
+            this.loading = true 
+            var loginParams={ } 
+            loginParams.userloginid="demo-branch-01"
+            loginParams.password=md5("888888")
+            loginParams.grantType="password"
+            loginParams.authType='password_display_userid'  
+            this.$store.dispatch("LoginByUserloginid",loginParams).then(res => {
+            
+                this.loading = false 
+                if(res.data.tips.isOk==true){
+                    this.loading = true;
+                    this.$store.dispatch('GetUserInfo').then((res2)=>{  
+                        this.loading = false
+                        if(res2.data.tips.isOk==true){ 
+                            this.userDeptid=res2.data.userInfo.deptid
+                            this.rolesChecked(); 
+                        }else{
+                            this.$notify.error(res2.data.tips.msg);
+                        }
+                        
+                    }).catch(err=>{
+                        console.log(err); 
+                        this.loading = false
+                    }); 
+                }else{
+                    this.$notify.error(res.data.tips.msg);
+                } 
+            }).catch((e) => {
+                this.loading = false
+            }) 
         }
     },
     created() {

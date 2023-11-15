@@ -1,10 +1,10 @@
 <template>     
-    <el-dialog :title="myTitle" append-to-body modal-append-to-body :visible.sync="visible" :fullscreen="fullscreen" :width="width?width:'70%'" :close-on-click-modal="closeOnClickModal">
-       <slot :visible="visible" :title="myTitle" :data="this.data?this.data:{}" :dialog="that">
+    <el-dialog :title="myTitle||title" append-to-body modal-append-to-body :visible.sync="visible" :fullscreen="fullscreen" :width="width?width:'70%'" :close-on-click-modal="closeOnClickModal">
+       <slot :visible="visible" :title="myTitle||title" :data="this.data?this.data:{}" :dialog="that">
           
        </slot>
        <template slot="footer" >
-            <slot name="footer" :visible="visible" :title="myTitle" :data="this.data?this.data:{}" :dialog="that" >
+            <slot name="footer" :visible="visible" :title="myTitle||title" :data="this.data?this.data:{}" :dialog="that" >
   
             </slot>
           </template>
@@ -54,6 +54,8 @@
       this.data=data
       if(data && data.title){
         this.myTitle=data.title
+      }else{
+        this.myTitle=this.title
       }
     },
     close(){
