@@ -419,8 +419,7 @@
 	import XmTaskMng from '../xmTask/XmTaskMng';
 	import XmTaskListForMenu from '../xmTask/XmTaskListForMenu';
 	import  XmIterationSelect from '@/views/xm/core/components/XmIterationSelect.vue';//修改界面
-	import  XmMenuWorkload from '@/views/xm/core/components/XmMenuWorkload';//修改界面
-	import  XmTableConfig from '@/views/xm/core/components/XmTableConfig';//修改界面
+	import  XmMenuWorkload from '@/views/xm/core/components/XmMenuWorkload';//修改界面 
 	import  XmGroupDialog from '@/views/xm/core/xmGroup/XmGroupDialog';//修改界面
 	import UsersSelect from "@/views/mdp/sys/user/UsersSelect";
 	import XmFuncSelect from '../xmFunc/XmFuncSelect'
@@ -1379,8 +1378,7 @@
 			UsersSelect,
 		    TagDialog,
 			XmEpicFeaturesSelect,
-			XmMenuWorkload,
-			XmTableConfig,
+			XmMenuWorkload, 
 			XmGroupDialog,
 			XmIterationSelect,
 			

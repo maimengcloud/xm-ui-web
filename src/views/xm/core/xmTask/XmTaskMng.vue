@@ -880,9 +880,7 @@ import XmMenuRichDetail from "../xmMenu/XmMenuRichDetail";
 import TagMng from "@/views/mdp/arc/tag/TagMng";
 
 import XmGantt from "../components/xm-gantt";
-	import XmTaskList from '../xmTask/XmTaskList';
-
-	import  XmTableConfig from '@/views/xm/core/components/XmTableConfig';//修改界面
+	import XmTaskList from '../xmTask/XmTaskList'; 
 	import  XmGroupDialog from '@/views/xm/core/xmGroup/XmGroupDialog';//修改界面
 
   	import TagDialog from "@/views/mdp/arc/tag/TagDialog";
@@ -2258,8 +2256,7 @@ export default {
     TagMng,
     XmTaskList,
     TagDialog,
-    XmGroupDialog,
-    XmTableConfig,
+    XmGroupDialog, 
     XmWorkloadEdit,
     XmWorkloadInit,
     XmPhaseSelect,

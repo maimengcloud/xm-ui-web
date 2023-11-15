@@ -610,9 +610,7 @@ import { addUserFocus, delUserFocus } from "@/api/mdp/sys/userFocus";
 import XmMenuRichDetail from "../xmMenu/XmMenuRichDetail";
 import TagMng from "@/views/mdp/arc/tag/TagMng";
 
-import XmGantt from "../components/xm-gantt";
-
-	import  XmTableConfig from '@/views/xm/core/components/XmTableConfig';//修改界面
+import XmGantt from "../components/xm-gantt"; 
 
   	import TagDialog from "@/views/mdp/arc/tag/TagDialog";
   	import XmWorkloadEdit from "@/views/xm/core/xmWorkload/XmWorkloadEdit";
@@ -1417,8 +1415,7 @@ export default {
     XmGantt,
     XmTaskAgileKanban,
     TagMng,
-    TagDialog,
-    XmTableConfig,
+    TagDialog, 
     XmWorkloadEdit,
     //在下面添加其它组件
   },

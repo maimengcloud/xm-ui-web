@@ -344,8 +344,7 @@ import XmProductSelect from "@/views/xm/core/components/XmProductSelect";
 
 
 import XmPhaseSelect from "./XmPhaseSelect.vue";
-
-	import  XmTableConfig from '@/views/xm/core/components/XmTableConfig';//修改界面
+ 
 	import  XmGroupDialog from '@/views/xm/core/xmGroup/XmGroupDialog';//修改界面
 
   	import TagDialog from "@/views/mdp/arc/tag/TagDialog";
@@ -1110,8 +1109,7 @@ export default {
     XmProjectSelect,
     XmProductSelect,
     TagDialog,
-    XmGroupDialog,
-    XmTableConfig,
+    XmGroupDialog, 
     XmPhaseSelect,
     XmEpicFeaturesSelect,
     //在下面添加其它组件
