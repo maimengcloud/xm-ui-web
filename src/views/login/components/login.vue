@@ -76,7 +76,7 @@
                 </el-button>
             </div>
         </div>
-       <mdp-dialog ref="starDialog" width="600px" title="hi~同学，来支持一下【唛盟开源项目】吧，为项目点个Star!">
+       <mdp-dialog ref="starDialog" width="600px" title="hi~同学，来支持一下【唛盟开源】吧，为项目点个Star!">
              <el-row class="center">
                 <el-button size="large" @click="toStar" target="_blank" type="warning" icon="el-icon-star-off">唛盟项目</el-button> 
             </el-row>
