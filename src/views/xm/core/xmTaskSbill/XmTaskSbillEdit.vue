@@ -51,7 +51,7 @@
             <el-form-item label="结算项目" prop="projectId">
               <!--          <el-button v-if="!editForm.projectId" type="primary" @click="projSelVisible=true" round>选择项目</el-button>-->
               <div v-if="!editForm.projectId">
-                <xm-project-select
+                <xm-project-select show-style="tag"
                   style="display: inline"
                   :auto-select="false"
                   @change2="onProjectRowClick(arguments)"

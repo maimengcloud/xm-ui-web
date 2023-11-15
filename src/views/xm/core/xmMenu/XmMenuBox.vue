@@ -4,7 +4,7 @@
 			<el-col :span="7">
 				<!--
 				<el-row class="padding-left padding-right" v-if="!xmProduct||!xmProduct.id" >
-						<xm-product-select ref="xmProductSelect1" style="display:inline;"  :auto-select="true" :link-project-id="selProject?selProject.id:null" @change2="onProductSelected" @clear="onProductClearSelect" ></xm-product-select>
+						<xm-product-select show-style="tag" ref="xmProductSelect1" style="display:inline;"  :auto-select="true" :link-project-id="selProject?selProject.id:null" @change2="onProductSelected" @clear="onProductClearSelect" ></xm-product-select>
 				</el-row>
 				-->
 				<xm-epic-features :xm-product="xmProductCpd" :sel-project="selProject"  @row-click="onEpicFeaturesRowClick"  @product-selected="onProductSelected" @product-clear="onProductClearSelect"></xm-epic-features>

@@ -10,7 +10,7 @@
 					</el-row>
 				</el-form-item>
 				<el-form-item label="归属产品" prop="seqNo" v-if="opType==='add'">
-					<xm-product-select v-if=" (!xmProduct||!xmProduct.id)" ref="xmProductSelect" :auto-select="true" :link-project-id="selProject?selProject.id:null"   @row-click="onProductRowClick" @clear="onProductClearSelect"></xm-product-select>
+					<xm-product-select show-style="tag" v-if=" (!xmProduct||!xmProduct.id)" ref="xmProductSelect" :auto-select="true" :link-project-id="selProject?selProject.id:null"   @row-click="onProductRowClick" @clear="onProductClearSelect"></xm-product-select>
 					{{ xmProduct && xmProduct.id?xmProduct.productName||xmProduct.id:''}}
 				</el-form-item>
 				<el-row>

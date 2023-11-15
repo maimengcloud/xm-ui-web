@@ -1,7 +1,7 @@
 <template>
 	<section class="padding">
 		<el-row class="padding-left padding-right">
-			<xm-product-select class="hidden-md-and-down" :auto-select="false" @change2="onProductSelected" @clear="onProductClose"></xm-product-select>
+			<xm-product-select show-style="tag" class="hidden-md-and-down" :auto-select="false" @change2="onProductSelected" @clear="onProductClose"></xm-product-select>
 			<el-select v-model="menukey" @change="handleSelect" clearable style="width:10em;">
 				<el-option value="all" label="全部"></el-option>
 				<el-option value="compete"  label="我参与"></el-option>
@@ -41,7 +41,7 @@
 									<i class="el-icon-document"></i>
 									选择产品
 								</template>
-								<xm-product-select style="display:inline;"  :auto-select="false" @change2="onProductSelected" @clear="onProductClose"></xm-product-select>
+								<xm-product-select show-style="tag" style="display:inline;"  :auto-select="false" @change2="onProductSelected" @clear="onProductClose"></xm-product-select>
 
 							</el-descriptions-item>
 							<el-descriptions-item :span="2">

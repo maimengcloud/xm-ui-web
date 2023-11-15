@@ -6,7 +6,7 @@
         :class="{ 'flex-box': displayType == 'agil' }"
       >
         <el-row>
-           <xm-project-select style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="isTaskCenter?false:true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @change2="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
+           <xm-project-select show-style="tag" style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="isTaskCenter?false:true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @change2="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
 
 
           <el-select
@@ -88,7 +88,7 @@
               </el-descriptions-item>
               <el-descriptions-item>
                 <template slot="label">产品</template>
-                <xm-product-select :auto-select="false" :link-project-id="filters.selProject && filters.selProject.id?filters.selProject.id:null" @change2="onProductSelected" @clear="onProductClearSelect"></xm-product-select>
+                <xm-product-select show-style="tag" :auto-select="false" :link-project-id="filters.selProject && filters.selProject.id?filters.selProject.id:null" @change2="onProductSelected" @clear="onProductClearSelect"></xm-product-select>
 
               </el-descriptions-item>
               <el-descriptions-item>

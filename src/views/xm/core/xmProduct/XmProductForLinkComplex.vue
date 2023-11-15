@@ -3,7 +3,7 @@
     <el-row>
       <el-col :xl="4" :lg="4" :md="5" :sm="5" :xs="5" class="padding">  
         <el-row class="padding">
-            <xm-product-select
+            <xm-product-select show-style="tag"
               ref="xmProductSelect"
               :auto-select="false"
               :link-project-id="projectInfo ? projectInfo.id : null"

@@ -1,7 +1,7 @@
 <template>
 	<section>
 				<el-row>
-					<xm-product-select ref="xmProductSelect1" style="display:inline;" v-if="(!xmProduct||!xmProduct.id)&&(!xmIteration||!xmIteration.id)"   :auto-select="false" :link-project-id="selProject?selProject.id:null" @change2="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClearSelect"></xm-product-select>
+					<xm-product-select show-style="tag" ref="xmProductSelect1" style="display:inline;" v-if="(!xmProduct||!xmProduct.id)&&(!xmIteration||!xmIteration.id)"   :auto-select="false" :link-project-id="selProject?selProject.id:null" @change2="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClearSelect"></xm-product-select>
 
 					<mdp-select v-model="filters.priority" placeholder="优先级"  clearable style="width: 6em;" item-code="priority">
 					</mdp-select>
@@ -68,7 +68,7 @@
 									<i class="el-icon-connection"></i>
 									归属迭代
 								</template>
-								<xm-iteration-select v-if="!xmIteration || !xmIteration.id" style="display:inline;" :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="selProject?selProject.id:null"   placeholder="迭代"  @change2="onIterationSelected" @clear="onIterationClearSelect">
+								<xm-iteration-select show-style="tag" v-if="!xmIteration || !xmIteration.id" style="display:inline;" :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="selProject?selProject.id:null"   placeholder="迭代"  @change2="onIterationSelected" @clear="onIterationClearSelect">
 										</xm-iteration-select>
 							</el-descriptions-item>
 							<el-descriptions-item>
@@ -295,7 +295,7 @@
 									{{scope.row.iterationName}}
 								</div>
 								<span class="cell-bar">
-										<xm-iteration-select v-if="scope.row.dclass==='3'" style="display:inline;" :auto-select="false"  :product-id="scope.row.productId"    placeholder="迭代"  @change2="editXmMenuSomeFields(scope.row,'iterationId',$event)"></xm-iteration-select>
+										<xm-iteration-select show-style="tag" v-if="scope.row.dclass==='3'" style="display:inline;" :auto-select="false"  :product-id="scope.row.productId"    placeholder="迭代"  @change2="editXmMenuSomeFields(scope.row,'iterationId',$event)"></xm-iteration-select>
 								</span>
 							</template>
 						</el-table-column>

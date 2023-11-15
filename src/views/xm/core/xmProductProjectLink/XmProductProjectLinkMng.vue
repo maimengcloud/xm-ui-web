@@ -2,9 +2,9 @@
 	<section>
 		<el-row>
 			<div style="float:right;padding-right:40px;">
-				<xm-product-select placeholder="选择更多产品加入项目" @change2="onProductSelect" :autoSelect="false" v-if="selProject && selProject.id">
+				<xm-product-select show-style="tag" placeholder="选择更多产品加入项目" @change2="onProductSelect" :autoSelect="false" v-if="selProject && selProject.id">
  				</xm-product-select>
- 				<xm-project-select placeholder="选择更多产品加入项目" :autoSelect="false" @change2="onProjectSelect" v-if="xmProduct && xmProduct.id">
+ 				<xm-project-select show-style="tag" placeholder="选择更多产品加入项目" :autoSelect="false" @change2="onProjectSelect" v-if="xmProduct && xmProduct.id">
 					  
 				</xm-project-select>
  			</div>

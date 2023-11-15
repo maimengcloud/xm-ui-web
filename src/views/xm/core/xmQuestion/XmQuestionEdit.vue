@@ -11,7 +11,7 @@
 							<el-form-item label="归属产品" prop="productId">
 								<span v-if="editForm.productId">{{editForm.productId}}</span>
 								<span v-if="!xmProductCpd || !xmProductCpd.id">
-									<xm-product-select ref="xmProductSelect1"   style="display:inline;"  :auto-select="false" :link-project-id="selProject?selProject.id:null" @change2="onProductSelected" @clear="onProductClearSelect" ></xm-product-select>
+									<xm-product-select show-style="tag" ref="xmProductSelect1"   style="display:inline;"  :auto-select="false" :link-project-id="selProject?selProject.id:null" @change2="onProductSelected" @clear="onProductClearSelect" ></xm-product-select>
 								</span>
 							</el-form-item>
 							<span v-if="editForm.productId">

@@ -2,7 +2,7 @@
   <section>
         <el-row v-show="!batchVisible">
           <div style="display:flex;justify-content: space-between;">
-               <xm-project-select style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="isTaskCenter?false:true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @change2="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
+               <xm-project-select show-style="tag" style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="isTaskCenter?false:true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @change2="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
               <el-input v-else v-model="filters.key" placeholder="名称模糊查询"  clearable @keyup.enter.native="searchXmTasks()"></el-input>
              <span style="display:flex;">
              <el-popover

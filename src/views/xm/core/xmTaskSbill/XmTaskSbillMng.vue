@@ -1,7 +1,7 @@
 <template>
 	<section class="page-container border padding">
 		<el-row>
-      <xm-project-select style="display:inline;" ref="xmProjectSelect" :auto-select="false"  @change2="onProjectConfirm" @clear="clearProject"></xm-project-select>
+      <xm-project-select show-style="tag" style="display:inline;" ref="xmProjectSelect" :auto-select="false"  @change2="onProjectConfirm" @clear="clearProject"></xm-project-select>
       <el-select v-model="filters.status" clearable @change="searchXmTaskSbills" placeholder="请选择结算单状态">
         <el-option label="全部状态" value=""></el-option>
         <el-option label="结算待提交" value="0"></el-option>

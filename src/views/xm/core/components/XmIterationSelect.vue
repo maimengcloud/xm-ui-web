@@ -1,6 +1,6 @@
 <template> 
   <span>
-     <mdp-select-table v-model="myVal" ref="selectTableRef" :init-name="initName" :show-style="showStyle" :placeholder="placeholder" :props="{id:'id',name:'iterationName'}" :load-fun="listXmIterationWithState" :params="{linkProjectId:linkProjectId}" @change2="onChange2" @clear="onClear" @change="onChange" @click="onRowClick" :disabled="disabled">
+     <mdp-select-table v-model="myVal" ref="selectTableRef" :init-name="initName" :show-style="showStyle" :placeholder="placeholder" :props="{id:'id',name:'iterationName'}" :load-fun="listXmIterationWithState" :params="{linkProjectId:linkProjectId,productId:productId}" @change2="onChange2" @clear="onClear" @change="onChange" @click="onRowClick" :disabled="disabled">
         <el-row slot="toolbar"><el-button size="mini" icon="el-icon-plus" @click="$refs['addDialog'].open()">创建迭代</el-button><el-button size="mini" icon="el-icon-search" @click="$refs['selectTableRef'].$refs['tableDialog'].open()">更多迭代</el-button></el-row>
      </mdp-select-table> 
      
@@ -28,10 +28,14 @@
       /**
        * 项目编号
        */
-        linkProjectId:{
+      linkProjectId:{
         type:String,
         default:null,
       }, 
+      productId:{
+        type:String,
+        default:null,
+      },
       placeholder:{
         type:String,
         default:"选择/创建迭代"

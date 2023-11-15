@@ -6,11 +6,11 @@
 			</el-input>
 			<el-button @click="searchXmProjects" icon="el-icon-search" v-if="!xmIteration && !xmProduct"></el-button>
 			<div style="text-align:right;padding-right:40px;">
-				<xm-project-select v-if="xmProduct && xmProduct.id" @change2="onXmProjectSelect" :auto-select="false" :link-product-id="xmProduct.id">
+				<xm-project-select show-style="tag" v-if="xmProduct && xmProduct.id" @change2="onXmProjectSelect" :auto-select="false" :link-product-id="xmProduct.id">
 					<el-link type="primary" slot="title">添加更多项目到产品中</el-link>
 				</xm-project-select>
 
-				<xm-project-select v-if="xmIteration && xmIteration.id"  @change2="onXmProjectSelect" :auto-select="false" :link-iteration-id="xmIteration.id">
+				<xm-project-select show-style="tag" v-if="xmIteration && xmIteration.id"  @change2="onXmProjectSelect" :auto-select="false" :link-iteration-id="xmIteration.id">
 					<el-link type="primary" slot="title">添加更多项目到产品中</el-link>
 				</xm-project-select>
 			</div>

@@ -360,7 +360,7 @@
 						<xm-project-list  @select="onProjectSelected"></xm-project-list>
 					</el-drawer>
 					<el-drawer title="迭代报告" :visible.sync="iterationSelectVisible" fullscreen  append-to-body  :close-on-click-modal="false">
-						<xm-iteration-select @change2="onXmIterationSelect"></xm-iteration-select>
+						<xm-iteration-select show-style="tag" @change2="onXmIterationSelect"></xm-iteration-select>
 					</el-drawer>
 					<el-dialog
 						title="通过复制创建新的模板或者新的产品"

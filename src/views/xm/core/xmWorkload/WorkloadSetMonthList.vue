@@ -13,7 +13,7 @@
       <el-col :span="6" class="border padding">
         <el-form :model="filters">
           <el-form-item label="归属项目" v-if="!xmProject">
-            <xm-project-select
+            <xm-project-select show-style="tag"
               v-if="!xmProject"
               ref="xmProjectSelect"
               style="display: inline"

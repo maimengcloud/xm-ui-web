@@ -3,7 +3,7 @@
     <el-row>
       <el-col :xl="4" :lg="4" :md="5" :sm="5" :xs="5" class="padding">
            <el-row class="padding" v-if="    (xmProduct&&xmProduct.id) || (xmIteration && xmIteration.id)"> 
-              <xm-project-select
+              <xm-project-select show-style="tag"
                 ref="xmProjectSelect"
                 :auto-select="false "
                 :link-iteration-id="xmIteration ? xmIteration.id : null"

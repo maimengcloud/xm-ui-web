@@ -7,7 +7,7 @@
 							placement="bottom"
 							width="500"
 							trigger="click">
-							<xm-project-select v-if="ptype!=='1' && (!selProject||!selProject.id)" :auto-select="true"  :xm-iteration="xmIteration" :xm-product="xmProduct"  @change2="onProjectRowClick" @clear="onProjectClear"></xm-project-select>
+							<xm-project-select show-style="tag" v-if="ptype!=='1' && (!selProject||!selProject.id)" :auto-select="true"  :xm-iteration="xmIteration" :xm-product="xmProduct"  @change2="onProjectRowClick" @clear="onProjectClear"></xm-project-select>
 								<el-link type="warning" slot="reference" v-if="ptype!=='1' && (!selProject||!selProject.id)"  icon="el-icon-search"><font style="font-size:14px;">{{filters.selProject?filters.selProject.name:'选择项目'}}</font></el-link>
 						</el-popover>
 

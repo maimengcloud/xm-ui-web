@@ -55,7 +55,7 @@
 				<el-form-item label="归属项目" prop="projectId">
 
 					<span v-if="opType=='add'">
-					 	<xm-project-select v-if="!selProject || !selProject.id" ref="xmProjectSelect" :link-product-id="xmTestCasedb? xmTestCasedb.productId:null"  @row-click="onPorjectConfirm" :auto-select="false">
+					 	<xm-project-select show-style="tag" v-if="!selProject || !selProject.id" ref="xmProjectSelect" :link-product-id="xmTestCasedb? xmTestCasedb.productId:null"  @row-click="onPorjectConfirm" :auto-select="false">
 							<span slot="title">选择项目</span>
 						</xm-project-select>
 						<div v-else>{{rawDatas.projectName}}</div>

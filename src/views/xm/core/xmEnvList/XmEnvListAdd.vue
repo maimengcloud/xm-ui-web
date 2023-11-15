@@ -7,7 +7,7 @@
 					<el-input v-model="addForm.name" placeholder="名称" ></el-input>
 					<el-row class="label-font-color"> <span v-if="addForm.projectName">归属项目：{{ addForm.projectName}} <el-divider direction="vertical"></el-divider></span>
 
-						 <xm-project-select style="display:inline;" v-if="!xmProject||!xmProject.id" :auto-select="false"   :link-product-id="xmProduct?xmProduct.id:null"  @change2="onProjectRowClick" @clear="onProjectClear" >
+						 <xm-project-select show-style="tag" style="display:inline;" v-if="!xmProject||!xmProject.id" :auto-select="false"   :link-product-id="xmProduct?xmProduct.id:null"  @change2="onProjectRowClick" @clear="onProjectClear" >
 							<div slot="title">选择项目</div>
 						</xm-project-select>
 					</el-row>

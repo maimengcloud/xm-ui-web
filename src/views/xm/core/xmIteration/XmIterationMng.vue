@@ -1,7 +1,7 @@
 <template>
   <section :class="{'padding':!xmProduct&&!selProject}">
     <el-row>
-      <xm-product-select
+      <xm-product-select show-style="tag"
         v-if="!xmProduct || !xmProduct.id"
         ref="xmProductSelect1"
         style="display: inline"

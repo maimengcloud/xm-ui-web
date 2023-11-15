@@ -2,7 +2,7 @@
 	<section>
 		<el-row v-show="!batchVisible">
 				<div style="display:flex;justify-content: space-between;">
-				<xm-product-select v-if=" !xmProduct || !xmProduct.id" ref="xmProductSelect1" style="display:inline;"  :auto-select="true" :link-project-id="selProject?selProject.id:null" @change2="onProductSelected" @clear="onProductClearSelect" ></xm-product-select>
+				<xm-product-select show-style="tag" v-if=" !xmProduct || !xmProduct.id" ref="xmProductSelect1" style="display:inline;"  :auto-select="true" :link-project-id="selProject?selProject.id:null" @change2="onProductSelected" @clear="onProductClearSelect" ></xm-product-select>
 				<el-input v-else v-model="filters.key"  placeholder="名称模糊查询"  clearable></el-input>
 				<span style="display:flex;">
  					<el-popover
