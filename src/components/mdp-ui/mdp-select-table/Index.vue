@@ -1,10 +1,12 @@
 <template> 
   <span> 
     <span v-if="showStyle=='origin'" :title="title||placeholder||emptyText">
-      <el-select :size="size" :multiple="multiple" :placeholder="placeholder" :disabled="disabled" :style="{width:width?width+'':'auto'}" class="my-select" ref="selectRef" v-model="myVal" @change="onChange" :clearable="clearable" @visible-change="$emit('visible-change',$event)" @focus="$emit('focus',$event)" @blur="$emit('blur',$event)" @clear="$emit('blur',$event)" @click="$emit('click',$event)">
+      <el-select :size="size" :multiple="multiple" :placeholder="placeholder" :disabled="disabled" :style="{width:width?width+'':'auto'}" class="my-select" ref="selectRef" v-model="myVal" @change="onChange" :clearable="clearable" @visible-change="$emit('visible-change',$event)" @focus="$emit('focus',$event)" @blur="$emit('blur',$event)" @clear="$emit('clear',$event)" @click="$emit('click',$event)">
           <slot> 
               <el-option disabled value="" style="margin-bottom:5px;">
-                <el-row><el-button @click.stop="$refs['tableDialog'].open()" icon="el-icon-search">更多数据</el-button> </el-row>
+                <slot name="toolbar">
+                    <el-row><el-button @click.stop="$refs['tableDialog'].open()" icon="el-icon-search">更多数据</el-button> </el-row>
+                </slot>
               </el-option>
               <el-option class="avatar-container" v-for="(option,index) in optionsCpd" :key="index" :value="option[props['id']]" :label="option[props['name']]">  
               
@@ -72,11 +74,13 @@
         </span>
         <span class="field-oper" :class="{disabled:disabled===true,enabled:disabled!==true,hidden:true}">
           <slot name="oper">
-            <el-select  :multiple="multiple" :size="size" :style="{width:width?width+'':'auto'}" class="my-select" ref="selectRef" v-model="myVal" @change="onChange" :clearable="clearable" @visible-change="$emit('visible-change',$event)" @focus="$emit('focus',$event)" @blur="$emit('blur',$event)" @clear="$emit('blur',$event)" @click="$emit('click',$event)">
+            <el-select  :multiple="multiple" :size="size" :style="{width:width?width+'':'auto'}" class="my-select" ref="selectRef" v-model="myVal" @change="onChange" :clearable="clearable" @visible-change="$emit('visible-change',$event)" @focus="$emit('focus',$event)" @blur="$emit('blur',$event)" @clear="$emit('clear',$event)" @click="$emit('click',$event)">
                 <slot>
                     <el-option disabled value="" style="margin-bottom:5px;">
-                      <el-row><el-button @click.stop="$refs['tableDialog'].open()" icon="el-icon-search">更多数据</el-button> </el-row>
-                    </el-option> 
+                      <slot name="toolbar">
+                          <el-row><el-button @click.stop="$refs['tableDialog'].open()" icon="el-icon-search">更多数据</el-button> </el-row>
+                      </slot>
+                     </el-option> 
                     <el-option class="avatar-container" v-for="(option,index) in optionsCpd" :key="index" :value="option[props['id']]" :label="option[props['name']]">  
                     
                       <div class="avatar-wrapper">
@@ -94,7 +98,7 @@
     </span> 
     <mdp-dialog ref="tableDialog" title="选择数据" width="80%">
         <template v-slot="{visible,data,dialog}">
-           <mdp-table :multiple="multiple" sub-op-type="select" :visible="visible" :crud-apis="{list:loadFun}" :props="props" :column-cfgs="columnConfigs" @select="onTableDataSelect"> 
+           <mdp-table :multiple="multiple" sub-op-type="select" :params="params" :visible="visible" :crud-apis="{list:loadFun}" :props="props" :column-cfgs="columnConfigs" @select="onTableDataSelect"> 
           </mdp-table>
         </template>
       </mdp-dialog>
@@ -130,7 +134,7 @@
       columnCfgs:{
         type:Array,
         default:null,
-      }
+      },
     },
     data(){
       return { 
@@ -151,7 +155,13 @@
         if(!tableDataCacheList){
           tableDataCacheList=[] 
         }
-        var notExists=datas.filter(d=>!tableDataCacheList.some(c=>c[this.props['id']]==d[this.props['id']]))
+        var dataArr=[]
+        if(!datas instanceof Array){
+          dataArr=datas
+        }else{
+          dataArr=[datas]
+        }
+        var notExists=dataArr.filter(d=>!tableDataCacheList.some(c=>c[this.props['id']]==d[this.props['id']]))
         tableDataCacheList.push(...notExists)
         tableDataCacheMap.set(this.codeKey,tableDataCacheList)
       },
@@ -180,6 +190,7 @@
             var notExistsVals=mVals.filter(v=>!this.item.options.some(k=>k[this.props['id']]==v))
             if(notExistsVals && notExistsVals.length>0){
               var params={pageSize:10,pageNum:1}
+              Object.assign(params,this.params)
               params[this.props['id']]="$IN"+notExistsVals.join(",")
               this.loadFun(params).then(res=>{
                 var tips = res.data.tips
@@ -189,6 +200,16 @@
                 }
               })
             }
+        }else{
+          var params={pageSize:10,pageNum:1}
+          Object.assign(params,this.params)
+           this.loadFun(params).then(res=>{
+            var tips = res.data.tips
+            if(tips.isOk && res.data.data.length>0){
+              this.item.options.push(...res.data.data)
+              this.setCacheList(res.data.data)
+            }
+          })
         }
       },
       onTableDataSelect(tableDatas){
