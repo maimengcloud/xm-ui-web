@@ -179,7 +179,7 @@
           }else{
             this.item={itemType:'4',options:[]}
           }
-        }
+        } 
         if(this.value){
           var mVals=[]
             if(this.value instanceof Array){

@@ -237,7 +237,10 @@ export const MdpTableMixin = {
           * 此函数由组件扩展,给defaultFilters添加其它的额外默认参数
           */
          initDefaultFilters(){
-
+            debugger
+            if(this.params){
+                Object.assign(this.defaultFilters,this.params)
+            }
          },
         /**
          * 检查参数是否满足调用后台接口的条件
