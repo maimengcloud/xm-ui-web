@@ -101,7 +101,7 @@
 			</el-drawer>
 
 			<el-drawer title="迭代报告" :visible.sync="iterationSelectVisible" fullscreen  append-to-body  :close-on-click-modal="false">
-				<xm-iteration-select @row-click="onXmIterationSelect"></xm-iteration-select>
+				<xm-iteration-select @change2="onXmIterationSelect"></xm-iteration-select>
 			</el-drawer>
 		</el-row>
 	</section>

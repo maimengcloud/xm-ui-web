@@ -43,7 +43,7 @@
 										{{scope.row.iterationName}}
 									</div>
 									<span class="cell-bar">
-										 <xm-iteration-select v-if="scope.row.dclass==='3'" style="display:inline;" :auto-select="false"  :product-id="scope.row.productId"    placeholder="迭代"  @row-click="editXmMenuSomeFields(scope.row,'iterationId',$event)"></xm-iteration-select>
+										 <xm-iteration-select v-if="scope.row.dclass==='3'" style="display:inline;" :auto-select="false"  :product-id="scope.row.productId"    placeholder="迭代"  @change2="editXmMenuSomeFields(scope.row,'iterationId',$event)"></xm-iteration-select>
 									</span>
 								</template>
 							</el-table-column>
