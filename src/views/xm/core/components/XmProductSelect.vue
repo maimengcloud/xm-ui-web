@@ -1,6 +1,6 @@
 <template> 
 <span>
-   <mdp-select-table v-model="myVal" ref="selectTableRef" :init-name="initName" show-style="showStyle" :placeholder="placeholder" :props="{id:'id',name:'productName'}" :load-fun="listXmProductWithState" :params="{linkProjectId:linkProjectId}" @change2="onChange2" @clear="onClear" @change="onChange" @click="onRowClick" :disabled="disabled">
+   <mdp-select-table v-model="myVal" ref="selectTableRef" :init-name="initName" :show-style="showStyle" :placeholder="placeholder" :props="{id:'id',name:'productName'}" :load-fun="listXmProductWithState" :params="{linkProjectId:linkProjectId}" @change2="onChange2" @clear="onClear" @change="onChange" @click="onRowClick" :disabled="disabled">
       <el-row slot="toolbar"><el-button size="mini" icon="el-icon-plus" @click="$refs['addDialog'].open()">创建产品</el-button><el-button size="mini" icon="el-icon-search" @click="$refs['selectTableRef'].$refs['tableDialog'].open()">更多产品</el-button></el-row>
    </mdp-select-table> 
    
