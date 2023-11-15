@@ -3,7 +3,7 @@
 		<el-row>
 
 			<div style="display:flex;">
-			<xm-product-select ref="xmProductSelect1" style="display:inline;" v-if="!xmProduct || !xmProduct.id"   :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClearSelect"></xm-product-select>
+			<xm-product-select ref="xmProductSelect1" style="display:inline;" v-if="!xmProduct || !xmProduct.id"   :auto-select="false" :link-project-id="selProject?selProject.id:null" @change2="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClearSelect"></xm-product-select>
 
 			<el-input v-else v-model="filters.key" placeholder="名称模糊查询"  clearable></el-input>
 			<el-button style="margin-left:5px;" icon="el-icon-search" @click="searchXmMenus()">查询</el-button>

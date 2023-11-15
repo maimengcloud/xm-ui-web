@@ -19,7 +19,7 @@
               style="display: inline"
               :auto-select="false"
               :link-project-id="xmProject ? xmProject.id : null"
-              @row-click="onProjectSelected"
+              @change2="onProjectSelected"
               @clear="onProjectClear"
             ></xm-project-select>
           </el-form-item>

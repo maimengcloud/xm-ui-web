@@ -7,7 +7,7 @@
 
 				<el-form-item label="归属产品" prop="productName">
 					<span v-if="opType=='add'">
-					 	<xm-product-select v-if="!xmProduct" style="display:inline;" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" @clear="clearProduct"></xm-product-select>
+					 	<xm-product-select v-if="!xmProduct" style="display:inline;" :auto-select="false" :link-project-id="selProject?selProject.id:null" @change2="onProductSelected" @clear="clearProduct"></xm-product-select>
 						<div v-else>{{editForm.productName}}</div>
 					</span>
  					<div v-else>{{editForm.productName}}</div>

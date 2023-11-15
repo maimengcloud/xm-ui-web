@@ -9,7 +9,7 @@
                 :auto-select="false "
                 :link-iteration-id="xmIteration ? xmIteration.id : null"
                 :link-product-id="xmProduct ? xmProduct.id : null"
-                @row-click="onProjectRowClick"
+                @change2="onProjectRowClick"
                 @clear="onProjectClearSelect"
               >
               <template v-slot:title="{project}">

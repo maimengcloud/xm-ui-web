@@ -5,7 +5,7 @@
 						placement="bottom"
 						width="500"
 						trigger="click">
-						<xm-project-tpl-mng :auto-select="true" :isSelect="true" showType="simple"  @row-click="onProjectRowClick" @clear="onProjectClearSelect"></xm-project-tpl-mng>
+						<xm-project-tpl-mng :auto-select="true" :isSelect="true" showType="simple"  @change2="onProjectRowClick" @clear="onProjectClearSelect"></xm-project-tpl-mng>
 							<el-link type="warning" slot="reference" icon="el-icon-search"><font style="font-size:14px;">{{filters.project?filters.project.name:'选择项目模板'}}</font></el-link>
 					</el-popover>
 

@@ -2,10 +2,10 @@
 	<section>
 		<el-row>
 			<div style="float:right;padding-right:40px;">
-				<xm-product-select @row-click="onProductSelect" :autoSelect="false" v-if="selProject && selProject.id">
+				<xm-product-select @change2="onProductSelect" :autoSelect="false" v-if="selProject && selProject.id">
 					<el-link type="primary" slot="title">选择更多产品加入项目</el-link>
 				</xm-product-select>
- 				<xm-project-select :autoSelect="false" @row-click="onProjectSelect" v-if="xmProduct && xmProduct.id">
+ 				<xm-project-select :autoSelect="false" @change2="onProjectSelect" v-if="xmProduct && xmProduct.id">
 					 <el-link type="primary" slot="title">
 						 选择更多项目加入产品
 					 </el-link>

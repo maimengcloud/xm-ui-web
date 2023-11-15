@@ -1,8 +1,8 @@
 <template>
 	<section>
 			<el-row>
-				<xm-product-select v-if="!xmProduct&&!xmIteration" style="display:inline;" :auto-select="false" :link-project-id="selProject?selProject.id:null" @row-click="onProductSelected" @clear="clearProduct"></xm-product-select>
-			  	<xm-project-select v-if="!selProject" style="display:inline;" ref="xmProjectSelect" :auto-select="false" :link-product-id="xmProduct?xmProduct.id:null" @row-click="onProjectConfirm" @clear="clearProject"></xm-project-select>
+				<xm-product-select v-if="!xmProduct&&!xmIteration" style="display:inline;" :auto-select="false" :link-project-id="selProject?selProject.id:null" @change2="onProductSelected" @clear="clearProduct"></xm-product-select>
+			  	<xm-project-select v-if="!selProject" style="display:inline;" ref="xmProjectSelect" :auto-select="false" :link-product-id="xmProduct?xmProduct.id:null" @change2="onProjectConfirm" @clear="clearProject"></xm-project-select>
 
 				<mdp-select v-model="filters.bugStatus" placeholder="状态" style="width:120px;"  clearable item-code="bugStatus"/>
 
@@ -124,7 +124,7 @@
 				</el-popover>
 				<span style="float:right;">
    					<el-button v-if="filters.selProject && filters.selProject.id"  type="primary" icon="el-icon-plus"  @click="showAdd"  round> </el-button>
-					<xm-project-select v-else style="display:inline;"  :auto-select="false" :link-product-id="xmProduct?xmProduct.id:null" @row-click="showAddAfterProjectSelect" >
+					<xm-project-select v-else style="display:inline;"  :auto-select="false" :link-product-id="xmProduct?xmProduct.id:null" @change2="showAddAfterProjectSelect" >
 						  <el-button slot="reference"  type="primary" icon="el-icon-plus"    round> </el-button>
 					</xm-project-select>
 					<el-button @click="batchDel" type="danger" icon="el-icon-delete"></el-button>

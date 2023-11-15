@@ -7,7 +7,7 @@
         style="display: inline"
         :auto-select="false"
         :link-project-id="selProject ? selProject.id : null"
-        @row-click="onProductSelected"
+        @change2="onProductSelected"
         @clear="onProductClearSelect"
       ></xm-product-select>
       <el-input

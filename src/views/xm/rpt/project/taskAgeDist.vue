@@ -27,7 +27,7 @@
 								<el-row>
 									<el-col :span="15">
 										<el-form-item label="归属项目" >
-											<xm-project-select v-if="!xmProject || !xmProject.id" ref="xmProjectSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @row-click="onProjectSelected"   @clear="onProjectClear"></xm-project-select>
+											<xm-project-select v-if="!xmProject || !xmProject.id" ref="xmProjectSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @change2="onProjectSelected"   @clear="onProjectClear"></xm-project-select>
 											<span v-else>{{xmProject.id}} <span v-if="xmProject.name"><br/>{{  xmProject.name  }} </span> </span>
 										</el-form-item>
 									</el-col>

@@ -18,7 +18,7 @@
 							</span>
 
 							<span class="label-font-color" v-if="!xmProjectCpd || !xmProjectCpd.id">
-								<span>归属项目：</span><xm-project-select style="display:inline;"  :auto-select="false"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @row-click="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
+								<span>归属项目：</span><xm-project-select style="display:inline;"  :auto-select="false"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @change2="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
 								<span v-if="addForm.productId">归属产品：{{addForm.productId?addForm.productId:''}}  </span>
 							</span>
 					</el-form-item>

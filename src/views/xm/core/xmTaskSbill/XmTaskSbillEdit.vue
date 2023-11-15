@@ -54,7 +54,7 @@
                 <xm-project-select
                   style="display: inline"
                   :auto-select="false"
-                  @row-click="onProjectRowClick(arguments)"
+                  @change2="onProjectRowClick(arguments)"
                   @clear="onProjectClear"
                 ></xm-project-select>
               </div>
