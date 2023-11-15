@@ -134,6 +134,10 @@ export default {
    */
   getSupportComponents:function(){
     return ['myFocus']
+  },
+  
+  getOpenSourceLink:function(){
+    return "https://gitee.com/qingqinkj218/collections/375320"
   }
 
 }
