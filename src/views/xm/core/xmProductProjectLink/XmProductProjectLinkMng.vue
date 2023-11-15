@@ -2,13 +2,10 @@
 	<section>
 		<el-row>
 			<div style="float:right;padding-right:40px;">
-				<xm-product-select @change2="onProductSelect" :autoSelect="false" v-if="selProject && selProject.id">
-					<el-link type="primary" slot="title">选择更多产品加入项目</el-link>
-				</xm-product-select>
- 				<xm-project-select :autoSelect="false" @change2="onProjectSelect" v-if="xmProduct && xmProduct.id">
-					 <el-link type="primary" slot="title">
-						 选择更多项目加入产品
-					 </el-link>
+				<xm-product-select placeholder="选择更多产品加入项目" @change2="onProductSelect" :autoSelect="false" v-if="selProject && selProject.id">
+ 				</xm-product-select>
+ 				<xm-project-select placeholder="选择更多产品加入项目" :autoSelect="false" @change2="onProjectSelect" v-if="xmProduct && xmProduct.id">
+					  
 				</xm-project-select>
  			</div>
 		</el-row>
@@ -17,12 +14,12 @@
 			<el-table ref="xmProductProjectLink" :data="xmProductProjectLinks" height="100px" v-adaptive="{bottomOffset:50}" @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
  				<el-table-column prop="name" v-if="xmProduct" label="包含的项目名称" min-width="150" >
 					<template scope="scope">
-						<el-link type="primary" @click="goToProject(scope.row,scope.$index)">{{scope.row.name}}</el-link>
+						<xm-project-select show-style="tag" v-model="scope.row.projectId" :disabled="true"/>
 					</template>
 				</el-table-column>
 				<el-table-column prop="productName" v-if="selProject" label="包含的产品名称" min-width="150" >
 					<template scope="scope">
-						<el-link type="primary" @click="goToProduct(scope.row,scope.$index)">{{scope.row.productName}}</el-link>
+						<xm-product-select show-style="tag" v-model="scope.row.productId" :disabled="true"/>
 					</template>
 				</el-table-column>
 				<el-table-column prop="seq" label="顺序" min-width="80" sortable>

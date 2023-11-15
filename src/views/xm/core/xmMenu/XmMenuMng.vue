@@ -212,8 +212,7 @@
 					<el-button class="hidden-md-and-down" @click="showParentMenu" icon="el-icon-top" title="更换上级"></el-button>
 					<el-button class="hidden-md-and-down"  v-if="!disabledMng "  type="danger" @click="batchDel" icon="el-icon-delete" title="删除"></el-button>
 
-					<xm-table-config class="hidden-lg-and-down" ref="tableConfig" style="display:inline;" :table="$refs.table"></xm-table-config>
-
+ 
 					</span>
 					</el-row>
 					<el-row v-if="displayType=='table'" class="padding-top">

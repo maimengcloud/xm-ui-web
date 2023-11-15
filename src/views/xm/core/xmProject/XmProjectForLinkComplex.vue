@@ -2,8 +2,7 @@
   <section>
     <el-row>
       <el-col :xl="4" :lg="4" :md="5" :sm="5" :xs="5" class="padding">
-        <div class="border">
-          <el-row v-if="    (xmProduct&&xmProduct.id) || (xmIteration && xmIteration.id)"> 
+           <el-row class="padding" v-if="    (xmProduct&&xmProduct.id) || (xmIteration && xmIteration.id)"> 
               <xm-project-select
                 ref="xmProjectSelect"
                 :auto-select="false "
@@ -11,11 +10,7 @@
                 :link-product-id="xmProduct ? xmProduct.id : null"
                 @change2="onProjectRowClick"
                 @clear="onProjectClearSelect"
-              >
-              <template v-slot:title="{project}">
-                <h4 href="#"><div style="max-width:15vw;" class="res-text hidden-md-and-down"><i style="font-size:16px;" class="el-icon-sort"></i> {{project && project.id?project.name:'请选择一个项目'}}</div></h4>
-                <h4 href="#"><div style="max-width:19vw;" class="res-text hidden-lg-and-up"><i style="font-size:16px;" class="el-icon-sort"></i> {{project && project.id ?project.name:'请选择一个项目'}}</div></h4>
-              </template>
+              > 
             </xm-project-select> 
           </el-row> 
           <el-row
@@ -139,9 +134,7 @@
           </el-row>
         </el-step>
         </el-steps>
-          </el-row>
-        
-        </div>
+          </el-row> 
       </el-col>
       <el-col :xl="20" :lg="20" :md="19" :sm="19" :xs="19" class="padding-left padding-right">
         <el-tabs :value="showPanel" @tab-click="tabClick" v-if="selProject && selProject.id">

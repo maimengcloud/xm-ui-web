@@ -1,6 +1,6 @@
 <template> 
 <span>
-   <mdp-select-table v-model="myVal" ref="selectTableRef" show-style="tag" placeholder="选择产品" :props="{id:'id',name:'productName'}" :load-fun="listXmProductWithState" :params="{linkProjectId:linkProjectId}" @change2="onChange2" @clear="onClear" @change="onChange" @click="onRowClick">
+   <mdp-select-table v-model="myVal" ref="selectTableRef" :init-name="initName" show-style="showStyle" :placeholder="placeholder" :props="{id:'id',name:'productName'}" :load-fun="listXmProductWithState" :params="{linkProjectId:linkProjectId}" @change2="onChange2" @clear="onClear" @change="onChange" @click="onRowClick" :disabled="disabled">
       <el-row slot="toolbar"><el-button size="mini" icon="el-icon-plus" @click="$refs['addDialog'].open()">创建产品</el-button><el-button size="mini" icon="el-icon-search" @click="$refs['selectTableRef'].$refs['tableDialog'].open()">更多产品</el-button></el-row>
    </mdp-select-table> 
    
@@ -24,7 +24,7 @@ import XmProductAdd from "../xmProduct/XmProductEdit.vue";
 export default {
   components: { XmProductAdd },
   name: 'xm-product-select',
-    props:{ 
+  props:{ 
     /**
      * 项目编号
      */
@@ -32,6 +32,26 @@ export default {
       type:String,
       default:null,
     }, 
+    placeholder:{
+      type:String,
+      default:"选择/创建产品"
+    },
+    value:{
+      type:String,
+      default:null,
+    },
+    initName:{
+      type:String,
+      default:null
+    },
+    disabled:{
+      type:Boolean,
+      default:false
+    },
+    showStyle:{
+      type:String,
+      default:'origin'
+    }
   },
   data(){
     return { 
@@ -60,7 +80,7 @@ export default {
     }
   },
   mounted(){
-       
+       this.myVal=this.value
   }, 
 }
 </script>

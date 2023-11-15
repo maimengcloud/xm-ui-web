@@ -1,22 +1,16 @@
 <template>
   <section>
     <el-row>
-      <el-col :xl="4" :lg="4" :md="5" :sm="5" :xs="5" class="padding"> 
-        <div class="border">
-        <el-row>
+      <el-col :xl="4" :lg="4" :md="5" :sm="5" :xs="5" class="padding">  
+        <el-row class="padding">
             <xm-product-select
               ref="xmProductSelect"
               :auto-select="false"
               :link-project-id="projectInfo ? projectInfo.id : null"
               :iterationId="xmIteration ? xmIteration.id : null"
-              @row-click="onProductRowClick"
+              @change2="onProductRowClick"
               @clear="onProductClearSelect"
-            >
-            <template v-slot:title="{product}">
-               <h4 href="#"><div style="max-width:15vw;" class="res-text hidden-md-and-down"><i style="font-size:16px;" class="el-icon-sort"></i> {{product && product.id?product.productName:'请选择一个产品'}}</div></h4>
-               <h4 href="#"><div style="max-width:19vw;" class="res-text hidden-lg-and-up"><i style="font-size:16px;" class="el-icon-sort"></i> {{product && product.id?product.productName:'请选择一个产品'}}</div></h4>
-            </template>
-           
+            >  
           </xm-product-select> 
           </el-row>
         <el-row
@@ -130,8 +124,7 @@
               </el-row>
             </el-step>
           </el-steps>
-        </el-row>
-        </div>
+        </el-row> 
       </el-col>
       <el-col :xl="20" :lg="20" :md="19" :sm="19" :xs="19" class="padding-left padding-right">
         <el-tabs :value="showPanel" @tab-click="tabClick" v-if="xmProduct && xmProduct.id"> 

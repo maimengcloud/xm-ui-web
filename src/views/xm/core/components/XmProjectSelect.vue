@@ -1,6 +1,6 @@
 <template> 
 <span>
-   <mdp-select-table v-model="myVal" ref="selectTableRef" show-style="tag" placeholder="选择项目" :props="{id:'id',name:'projectName'}" :load-fun="listXmProject" :params="{linkProductId:linkProductId}" @change2="onChange2" @clear="onClear" @change="onChange" @click="onRowClick">
+   <mdp-select-table v-model="myVal" ref="selectTableRef" show-style="tag" :placeholder="placeholder" :props="{id:'id',name:'projectName'}" :load-fun="listXmProject" :params="{linkProductId:linkProductId}" @change2="onChange2" @clear="onClear" @change="onChange" @click="onRowClick">
       <el-row slot="toolbar"><el-button size="mini" icon="el-icon-plus" @click="$refs['addDialog'].open()">创建项目</el-button><el-button size="mini" icon="el-icon-search" @click="$refs['selectTableRef'].$refs['tableDialog'].open()">更多项目</el-button></el-row>
    </mdp-select-table> 
    
@@ -35,6 +35,10 @@ export default {
       type:String,
       default:null,
     }, 
+    placeholder:{
+      type:String,
+      default:"选择项目"
+    }
   },
   data(){
     return { 
