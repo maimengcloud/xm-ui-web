@@ -193,17 +193,18 @@
 								<el-button   @click="showAdd('2')">新建特性</el-button>
 							</el-row>
 							-->
-							<el-row>
+							<el-row class="padding-bottom">
 
 								<div  class="icon" style="background-color:  rgb(79, 140, 255);">
 								<i class="el-icon-document"></i>
 								</div>
 								<el-button   @click="showAdd('3')"  >新建用户故事</el-button>
-							</el-row>
-
-
-							<el-row>
-								<el-button  @click="showImportFromMenuTemplate()" icon="el-icon-upload2">由模板快速导入需求</el-button>
+							</el-row>  
+							<el-row class="padding-bottom"> 
+								<div  class="icon" style="background-color:  rgb(79, 140, 255);">
+								<i class="el-icon-upload2"></i>
+								</div>
+								<el-button  @click="showImportFromMenuTemplate()">由模板快速导入需求</el-button>
 							</el-row>
 						</el-row>
 						<el-button type="primary" v-if="!disabledMng"  round  slot="reference" icon="el-icon-plus"></el-button>

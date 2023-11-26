@@ -277,7 +277,7 @@
 
 									<el-tag v-if="getPlanRealProgress(scope.row)>0" type="warning" effect="dark">超前{{ getPlanRealProgress(scope.row) }}%</el-tag>
 									<el-tag v-else-if="getPlanRealProgress(scope.row)<0" type="danger" effect="dark">落后{{ 0-getPlanRealProgress(scope.row) }}%</el-tag>
-									<el-tag v-else-if="getProgress(p)>0" effect="dark" type="success" class="el-icon-check"> </el-tag>
+									<el-tag v-else-if="getProgress(scope.row)>0" effect="dark" type="success" class="el-icon-check"> </el-tag>
 									<el-tag v-else-if="getProgress(scope.row)==0" effect="dark" type="info">未开始 </el-tag>
 								</div>
 

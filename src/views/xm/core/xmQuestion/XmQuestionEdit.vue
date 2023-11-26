@@ -81,7 +81,7 @@
 
 									<el-tab-pane label="缺陷描述" name="12" >
 										<el-form-item label="" prop="description" label-width="0px">
-												<vue-editor height="100px" v-adaptive="{bottomOffset:50}" v-if="visible && activateTabPaneName=='12'" class="rich-context" :id="'description_'+editForm.id" :branch-id="userInfo.branchId" v-model="editForm.description"></vue-editor>
+												<vue-editor :height="100" v-adaptive="{bottomOffset:50}" v-if="visible && activateTabPaneName=='12'" class="rich-context" :id="'description_'+editForm.id" :branch-id="userInfo.branchId" v-model="editForm.description"></vue-editor>
 										</el-form-item>
 										<el-row style="float:right;" v-if="opType!=='add'">
 												<el-button @click.native="handleCancel">取消</el-button>
@@ -558,8 +558,7 @@
 				}
 			},
 			initData(){
-				if(this.$refs['xmProductSelect1'])this.$refs['xmProductSelect1'].selectedProduct(null)
-				this.editForm=Object.assign(this.editForm,this.editFormInit)
+ 				this.editForm=Object.assign(this.editForm,this.editFormInit)
 				this.editForm=Object.assign(this.editForm, this.xmQuestion);
 				if(this.opType==='add'){
 					this.editForm.askUserid=this.userInfo.userid

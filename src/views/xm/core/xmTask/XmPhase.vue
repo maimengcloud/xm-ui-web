@@ -13,7 +13,7 @@
               trigger="click"
             >
               <el-row>
-                <el-row>
+                <el-row class="padding-bottom">
 
                   <div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
                     <i :class=" 'el-icon-time' " ></i>
@@ -24,7 +24,7 @@
                     >由史诗特性快速创建计划 (推荐)</el-button
                   >
                 </el-row>
-                <el-row>
+                <el-row class="padding-bottom">
 
                   <div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
                     <i :class=" 'el-icon-time' " ></i>
@@ -35,7 +35,7 @@
                     >从模板快速导入计划 </el-button
                   >
                 </el-row>
-                <el-row>
+                <el-row class="padding-bottom">
 
                   <div    class="icon" :style="{backgroundColor:   '#E6A23C'}">
                     <i :class=" 'el-icon-time' " ></i>

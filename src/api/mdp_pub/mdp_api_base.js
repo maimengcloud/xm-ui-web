@@ -148,7 +148,7 @@ ajaxGetDictOptions:function(itemCode, params)
       if(lock){
         setTimeout(()=>{
           func();
-        },2000)
+        },1000)
       }else{
         func();
       }

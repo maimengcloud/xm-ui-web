@@ -11,7 +11,7 @@
 						width="250"
 						trigger="click" >
 						<el-row>
-							<el-row>
+							<el-row class="padding-bottom">
 								<div   class="icon" style="background-color:  rgb(255, 153, 51);">
 									<i class="el-icon-s-promotion"></i>
 								</div>
@@ -33,7 +33,7 @@
 							</el-row>
 							-->
 
-							<el-row>
+							<el-row class="padding-bottom">
 								<el-button  @click="showImportFromMenuTemplate()" icon="el-icon-upload2">由模板快速导入需求</el-button>
 							</el-row>
 						</el-row>

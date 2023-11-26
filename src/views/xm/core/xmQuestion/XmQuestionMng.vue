@@ -123,10 +123,7 @@
 					<el-button  slot="reference" icon="el-icon-more" @click="moreVisible=!moreVisible"></el-button>
 				</el-popover>
 				<span style="float:right;">
-   					<el-button v-if="filters.selProject && filters.selProject.id"  type="primary" icon="el-icon-plus"  @click="showAdd"  round> </el-button>
-					<xm-project-select show-style="tag" v-else style="display:inline;"  :auto-select="false" :link-product-id="xmProduct?xmProduct.id:null" @change2="showAddAfterProjectSelect" >
-						  <el-button slot="reference"  type="primary" icon="el-icon-plus"    round> </el-button>
-					</xm-project-select>
+   					<el-button type="primary" icon="el-icon-plus"  @click="showAdd"  round> </el-button>
 					<el-button @click="batchDel" type="danger" icon="el-icon-delete"></el-button>
 				</span>
 			 </el-row>
