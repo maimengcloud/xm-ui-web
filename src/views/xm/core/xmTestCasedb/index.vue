@@ -39,6 +39,7 @@ export default {
     if(!this.testCasedb||this.testCasedb.id!=this.$route.query.casedbId){
       listXmTestCasedb({id:this.$route.query.casedbId}).then(res=>{
         var tips = res.data.tips;
+        debugger
         if(tips.isOk ){
           if( res.data.data.length==1){
             store.dispatch('setTestCasedb',res.data.data[0])

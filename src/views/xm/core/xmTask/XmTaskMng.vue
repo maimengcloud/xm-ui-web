@@ -256,7 +256,7 @@
             trigger="hover"
           >
             <el-row>
-              <el-row>
+              <el-row class="padding-bottom">
                 <div    class="icon" :style="{backgroundColor:   '#409EFF'}">
                   <i :class=" 'el-icon-s-operation' " ></i>
                 </div>
@@ -267,7 +267,7 @@
                   >由用户故事快速创建任务(推荐)</el-button
                 >
               </el-row>
-              <el-row>
+              <el-row class="padding-bottom">
 
                 <div    class="icon" :style="{backgroundColor:   '#409EFF'}">
                   <i :class=" 'el-icon-s-operation' " ></i>
@@ -278,7 +278,7 @@
                   >从模板快速导入任务</el-button
                 >
               </el-row>
-              <el-row>
+              <el-row class="padding-bottom">
 
                 <div    class="icon" :style="{backgroundColor:   '#409EFF'}">
                   <i :class=" 'el-icon-s-operation' " ></i>

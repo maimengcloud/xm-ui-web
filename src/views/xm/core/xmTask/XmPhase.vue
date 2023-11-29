@@ -4,7 +4,7 @@
           <div style="display:flex;justify-content: space-between;">
                <xm-project-select show-style="tag" style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="isTaskCenter?false:true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @change2="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
               <el-input v-else v-model="filters.key" placeholder="名称模糊查询"  clearable @keyup.enter.native="searchXmTasks()"></el-input>
-             <span style="display:flex;">
+             <span style="display:flex;" v-show="filters.selProject && filters.selProject.id">
              <el-popover
               style="margin-left:5px;"
               placement="top-start"
@@ -115,7 +115,7 @@
                     v-loading="load.edit"
                   > 更换上级</el-button>
         </el-row>
-        <el-row class="padding-top">
+        <el-row class="padding-top" v-show="filters.selProject && filters.selProject.id">
             <el-table
              element-loading-text="努力加载中" element-loading-spinner="el-icon-loading"
               :data="tasksTreeData"
@@ -174,7 +174,7 @@
                           trigger="hover"
                         >
                           <el-row>
-                            <el-row>
+                            <el-row class="padding-bottom">
 
                               <el-button
                                 @click="showEpicFeaturesForCreateSubTask(scope.row)"
@@ -182,7 +182,7 @@
                                 >由史诗特性快速创建子计划 (推荐)</el-button
                               >
                             </el-row>
-                            <el-row>
+                            <el-row class="padding-bottom">
 
                               <el-button
                                 @click="showTaskTemplate"
@@ -190,12 +190,12 @@
                                 >从模板快速导入子计划 </el-button
                               >
                             </el-row>
-                            <el-row>
+                            <el-row class="padding-bottom">
 
-                              <el-button type="primary"  @click.stop="showSubAdd( scope.row,scope.$index,'1')" icon="el-icon-plus" title="新建子计划">直接创建子计划 </el-button>
+                              <el-button @click.stop="showSubAdd( scope.row,scope.$index,'1')" icon="el-icon-plus" title="新建子计划">直接创建子计划 </el-button>
                            </el-row>
                           </el-row>
-                          <el-row>
+                          <el-row class="padding-bottom">
 
                             <el-button      @click.stop="showEdit( scope.row,scope.$index)" icon="el-icon-edit" title="编辑"  > 编辑计划</el-button>
                           </el-row>
@@ -217,7 +217,6 @@
                 </template>
               </el-table-column>
             </el-table>
-        </el-row>
             <el-pagination
               ref="pagination"
               layout="total, sizes, prev, pager, next"
@@ -229,6 +228,8 @@
               :total="pageInfo.total"
               style="float: right;"
             ></el-pagination>
+        </el-row>
+
     <!--编辑 XmTask xm_task界面-->
     <el-dialog
       title="编辑计划"

@@ -4,7 +4,7 @@
 				<div style="display:flex;justify-content: space-between;">
 				<xm-product-select show-style="tag" v-if=" !xmProduct || !xmProduct.id" ref="xmProductSelect1" style="display:inline;"  :auto-select="true" :link-project-id="selProject?selProject.id:null" @change2="onProductSelected" @clear="onProductClearSelect" ></xm-product-select>
 				<el-input v-else v-model="filters.key"  placeholder="名称模糊查询"  clearable></el-input>
-				<span style="display:flex;">
+				<span style="display:flex;" v-show="filters.product && filters.product.id">
  					<el-popover
 						style="margin-left:5px;"
 						placement="top-start"
@@ -34,7 +34,10 @@
 							-->
 
 							<el-row class="padding-bottom">
-								<el-button  @click="showImportFromMenuTemplate()" icon="el-icon-upload2">由模板快速导入需求</el-button>
+								<div   class="icon" style="background-color:  rgb(255, 153, 51);">
+									<i class="el-icon-upload2"></i>
+								</div>
+								<el-button  @click="showImportFromMenuTemplate()">由模板快速导入需求</el-button>
 							</el-row>
 						</el-row>
 						<el-button type="primary" v-if="!disabledMng" circle plain  slot="reference" icon="el-icon-plus"></el-button>
@@ -93,7 +96,7 @@
 				<el-button type="primary"  @click="showParentMenu" icon="el-icon-top" title="更换上级">更换上级</el-button>
 			</div>
 			</el-row>
-		<el-row class="padding-top">
+		<el-row class="padding-top" v-show="filters.product && filters.product.id">
 			<el-table ref="table" :row-style="{height:'46px'}" :cell-style="cellStyleCalc" :expand-row-keys="expandRowKeysCpd" :header-cell-style="cellStyleCalc"    stripe fit border  height="100px" v-adaptive="{bottomOffset:50}" :data="xmMenusTreeData" current-row-key="menuId" row-key="menuId" :tree-props="{children: 'children'}" @sort-change="sortChange" highlight-current-row v-loading="load.list" @selection-change="selsChange" @row-click="rowClick"
 				element-loading-text="努力加载中"
 				element-loading-spinner="el-icon-loading"
@@ -146,9 +149,10 @@
 					</template>
 				</el-table-column>
 			</el-table>
-		</el-row>
-		<el-row>
-			<el-pagination  layout="total, sizes, prev,  next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
+			
+			<el-row>
+				<el-pagination  layout="total, sizes, prev,  next" @current-change="handleCurrentChange" @size-change="handleSizeChange" :page-sizes="[10,20, 50, 100, 500]" :current-page="pageInfo.pageNum" :page-size="pageInfo.pageSize"  :total="pageInfo.total" style="float:right;"></el-pagination>
+			</el-row>
 		</el-row>
 		<!--编辑 XmMenu xm_project_menu界面-->
 		<el-dialog :title="'编辑'+(editForm&&editForm.dclass=='1'?'史诗':'特性')" :visible.sync="editFormVisible"  width="90%" top="20px"    append-to-body   :close-on-click-modal="false" >
