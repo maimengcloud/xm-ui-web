@@ -9,48 +9,39 @@
 </p>
 
 <p align="center">
-	<a target="_blank" href="https://gitee.com/qingqinkj/mdp-lcode-ui-web">
+	<a target="_blank" href="https://gitee.com/maimengcloud/xm-ui-web">
         <img src='https://gitee.com/maimengcloud/xm-ui-web/badge/star.svg?theme=gvp' alt='gitee star'/>
     </a> 
 </p>
 <p align="center">
-	👉 <a target="_blank" href="https://maimengcloud.com/xm/m1">https://maimengcloud.com</a>  👈
+	👉 <a target="_blank" href="https://maimengcloud.com/xm/m1/">https://maimengcloud.com</a>  👈
 </p>
 
-## 快速导航 
-- [唛盟-后端开发底座](https://gitee.com/qingqinkj/mdp-core) 
-- [前端组件](https://e.gitee.com/qingqinkj/repos/qingqinkj/mdp-lcode-ui-web/sources)
-- [后端服务](https://e.gitee.com/qingqinkj/repos/qingqinkj/mdp-lcode-backend/sources)  
-- [体验环境](https://maimengcloud.com/lcode/m1/) 
+## 快速导航
+- [前端组件](https://gitee.com/maimengcloud/xm-ui-web)
+- [后端服务](https://gitee.com/maimengcloud/xm-backend)
+- [体验环境](https://maimengcloud.com/xm/m1/)
   登陆界面上选择演示账号登陆或者直接扫码登陆，无须注册
 
-## 📢 简介[唛盟低代码开发平台mdp-lcode](/)
-唛盟低代码开发平台简称唛盟或者mdp. 
-唛盟旨在为企业开发业务系统提供一整套解决方案，唛盟具有高效率、低代码、功能丰富等特点。企业可以在唛盟工程之上，加入更多其它业务功能；也可以以唛盟作为模板，创建新的工程，用于开发其它业务。使用唛盟构建应用，您不用考虑多租户、登录、统一认证中心、权限、菜单管理、系统管理、公共组件、公共api、代码冗余、数据字典、图片库、文件库、智能表单、工作流、微服务互相调用、全局跟踪定位bug、多主键crud,复杂sql查询等各种问题，这些问题的解决方案都作为扩展功能内置唛盟工程中了。  
-💪给你一个使用唛盟的理由：代码大量减少、开发so easy、前后端MIT协议、全部开源、永久免费
-
-### 唛盟主体工程
-唛盟属于前后端严格分离的一套系统，分为前端工程、后端工程两部分
-- [mdp-lcode-ui-web](https://gitee.com/qingqinkj/mdp-lcode-ui-web)
-唛盟的前端工程,以vue.js为主
-- [mdp-lcode-backend](https://gitee.com/qingqinkj/mdp-lcode-backend)
-唛盟的后端工程，java语言为主  
+## 📢 简介[唛盟企业级研发管理系统-xm](/)
+唛盟企业级研发管理系统简称唛盟xm,以研发管理为核心，涵盖项目规划、需求管理、开发迭代、版本控制、缺陷跟踪、测试管理、工时管理、效能分析等环节，实现全过程、全方位的研发管理。通过该系统，企业能够优化研发流程，提高研发效率，降低研发成本，提高市场竞争力。
+### 唛盟xm主体工程
+唛盟xm属于前后端严格分离的一套系统，分为前端工程、后端工程两部分
+- [xm-ui-web](https://gitee.com/maimengcloud/xm-ui-web)
+  唛盟的前端工程,以vue.js为主
+- [xm-backend](https://gitee.com/maimengcloud/xm-backend)
+  唛盟的后端工程，java语言为主
 
 ### 配套工程
-- [mdp-code-generator](https://gitee.com/qingqinkj/mdp-code-generator) 代码生成器  
-生成代码两种方式，  
-一、使用代码生成器本地工程，好处是代码可以直接覆盖到本地业务工程，避免复制黏贴出错。  
-二、如果不需要本地生成代码，也可以在低代码平台在线生成。[在线生成代码](https://maimengcloud.com/lcode/m1/#/mdp/lcode/gen)  
-- [mdp-sys-backend](https://gitee.com/qingqinkj/mdp-sys-backend)   
-  登陆、角色管理、权限管理、组织、人员、菜单、部门、元数据等管理功能的服务接口，默认打包合并到mdp-lcode-backend中，如果不涉及改动，无须关注该工程
-  
-- [mdp-core](https://gitee.com/qingqinkj/mdp-core)   
+- [mdp-code-generator](https://gitee.com/maimengcloud/mdp-code-generator) 代码生成器  
+  生成代码两种方式，  
+  一、使用代码生成器本地工程，好处是代码可以直接覆盖到本地业务工程，避免复制黏贴出错。  
+  二、如果不需要本地生成代码，也可以在低代码平台在线生成。[在线生成代码](https://maimengcloud.com/lcode/m1/#/mdp/lcode/gen)
+
+- [mdp-core](https://gitee.com/maimengcloud/mdp-core)   
   该工程作为所有后端的公共封装，不包含任何的业务功能，仅作为后端系统的技术底座，包含一些公共工具、服务类抽象、dao层抽象等。  
-  默认打包进mdp-lcode-backend中，一般无须理会  
-
-
->⚠️注意：企业可以单独使用mdp-lcode-ui-web作为前端，单独开发后端系统；也可以使用**唛盟团队** 配套开源的后端系统[mdp-lcode-backend](https://gitee.com/qingqinkj/mdp-lcode-backend)作为后端服务。  
-
+  默认打包进xm-backend中，一般无须理会
+  
 
 ## 😭 日常开发中，您是否有以下痛点？
 
@@ -69,7 +60,7 @@
 - 缺乏项目管理工具，项目计划、任务委派、质量管理、需求管理、持续集成等完全没概念
 - **让 唛盟-mdp 来帮你解决这些痛点吧！然而，这些只是 唛盟-mdp 解决的最基础的功能。**
 
-## 😁 为什么要使用 [唛盟-mdp](https://gitee.com/qingqinkj/mdp-core)
+## 😁 为什么要使用 [唛盟-mdp](https://gitee.com/maimengcloud/mdp-core)
 
 - 完全开源、永久免费的企业级开发底座
   1. 使用mdp能够带来开发效率的大幅提升，代码行数大幅减少，质量提升明显
@@ -189,13 +180,13 @@
 	├── 代码生成器                 => 在线生成crud的前端页面代码(表单、表格、api)，后端代码（控制层、服务层、dao层代码），前后端0修改即可正常运行
 ```
 
-## 组件库[mdp-ui](/src/components/mdp-ui)  
+## 组件库[mdp-ui](/src/components/mdp-ui)
 
 mdp封装了几十个ui组件,使用mdp-ui与不使用mdp-ui的区别：写100行代码还是写1行代码的区别，代码量的减少立竿见影
 - [mdp-ui](/src/components/mdp-ui)  
-mdp的核心组件，该组件库为纯前端页面组件，无须配置任何后端api接口即可正确运行
+  mdp的核心组件，该组件库为纯前端页面组件，无须配置任何后端api接口即可正确运行
 - [mdp-ui-ext](/src/components/mdp-ui-ext)  
-基于mdp-ui扩展的带有对接后台api业务加载能力的业务组件
+  基于mdp-ui扩展的带有对接后台api业务加载能力的业务组件
 
 >⚠️注意：先行体验一把[mdp-ui组件效果预览](https://maimengcloud.com/lcode/m1/#/mdp/lcode/index)
 
@@ -216,104 +207,104 @@ Vue.prototype.$mdp = mdp;
 
 ```
 
-### [mdp-dialog](/src/components/mdp-ui/mdp-dialog)  
-弹框，可以把任意页面装配成弹框，无须定义多余的变量及函数  
+### [mdp-dialog](/src/components/mdp-ui/mdp-dialog)
+弹框，可以把任意页面装配成弹框，无须定义多余的变量及函数
 - 相对于el-dialog来说，要使用弹窗，事情还真不少。需要定义visible变量，定义showDialog,closeDialog两个函数，最关键一点是如果要父页面传递参数到窗口内组件，还得在父页面定义一个变量，通过props属性传递。相当麻烦。如果某个功能弹窗特别多，会有一堆的控制弹窗的变量及函数，非常恶心。mdp-dialog则完全解决上述问题。
 
-### [mdp-table](/src/components/mdp-ui/mdp-table)  
+### [mdp-table](/src/components/mdp-ui/mdp-table)
 表格，内置了增、删、改、查、高级查询、重置查询、导出、列配置、分页、批量编辑等功能、内置了对按钮权限的控制机制  
 功能非常强大，懂的都懂。
 
 - 综合管理  
-![综合管理表格](/docs/images/ui-components/table-mng.jpg)  
+  ![综合管理表格](/docs/images/ui-components/table-mng.jpg)
 - 可编辑表格    
-![可编辑表格](/docs/images/ui-components/edit-table.jpg)  
+  ![可编辑表格](/docs/images/ui-components/edit-table.jpg)
 - 可编辑-树状表格    
-![可编辑-树状表格](/docs/images/ui-components/left-right-tree-table.jpg)  
+  ![可编辑-树状表格](/docs/images/ui-components/left-right-tree-table.jpg)
 
-### [mdp-select](/src/components/mdp-ui/mdp-select)  
+### [mdp-select](/src/components/mdp-ui/mdp-select)
 下拉列表，支持对数据字典、元数据的引用，支持对任意小表表格数据的引用，支持参数化加载后台数据，对后台加载的数据进行缓存   
-![mdp-select](/docs/images/ui-components/select-origin.jpg)  
+![mdp-select](/docs/images/ui-components/select-origin.jpg)
 
-### [mdp-select-table](/src/components/mdp-ui/mdp-select-table)  
+### [mdp-select-table](/src/components/mdp-ui/mdp-select-table)
 超大表格下拉列表，与mdp-select相比，该组件具有分页查询功能   
-![分页选择表格数据](/docs/images/ui-components/big-table-select.jpg)  
+![分页选择表格数据](/docs/images/ui-components/big-table-select.jpg)
 
-### [mdp-select-user](/src/components/mdp-ui-ext/mdp-select-user)  
+### [mdp-select-user](/src/components/mdp-ui-ext/mdp-select-user)
 用户选择下拉列表，与mdp-select-table组件类似，仅仅针对用户的头像做了特殊处理  
-![用户选择](/docs/images/ui-components/select-user.jpg)  
+![用户选择](/docs/images/ui-components/select-user.jpg)
 
-### [mdp-input](/src/components/mdp-ui/mdp-input)  
+### [mdp-input](/src/components/mdp-ui/mdp-input)
 输入框
 
-### [mdp-date](/src/components/mdp-ui/mdp-date)  
+### [mdp-date](/src/components/mdp-ui/mdp-date)
 日期
 
-### [mdp-date-range](/src/components/mdp-ui/mdp-date-range)  
+### [mdp-date-range](/src/components/mdp-ui/mdp-date-range)
 区间日期
 
-### [mdp-number](/src/components/mdp-ui/mdp-number)  
+### [mdp-number](/src/components/mdp-ui/mdp-number)
 数字输入
 
-### [mdp-hi-query](/src/components/mdp-ui/mdp-hi-query)  
+### [mdp-hi-query](/src/components/mdp-ui/mdp-hi-query)
 高级查询，可以由用户自定义任意复杂的查询条件  
-![高级查询](/docs/images/ui-components/hi-query.jpg)  
+![高级查询](/docs/images/ui-components/hi-query.jpg)
 
-### [mdp-table-configs](/src/components/mdp-ui/mdp-table-configs)  
+### [mdp-table-configs](/src/components/mdp-ui/mdp-table-configs)
 表格配置，用于控制表格的列显示与否  
-![表格配置列显示隐藏](/docs/images/ui-components/table-column-configs.jpg)  
+![表格配置列显示隐藏](/docs/images/ui-components/table-column-configs.jpg)
 
-### [mdp-transfer](/src/components/mdp-ui/mdp-transfer)  
+### [mdp-transfer](/src/components/mdp-ui/mdp-transfer)
 穿梭框
 
-### [mdp-cate-tree](/src/components/mdp-ui-ext/mdp-cate-tree)  
+### [mdp-cate-tree](/src/components/mdp-ui-ext/mdp-cate-tree)
 文档、文章目录树
 
-### [mdp-expand](/src/components/mdp-ui-ext/mdp-expand)  
+### [mdp-expand](/src/components/mdp-ui-ext/mdp-expand)
 智能表单相关组件
 
-### [mdp-ext-infos](/src/components/mdp-ui-ext/mdp-ext-infos)  
+### [mdp-ext-infos](/src/components/mdp-ui-ext/mdp-ext-infos)
 自动扩展字段信息
 
 
-### [mdp-image](/src/components/mdp-ui-ext/mdp-image)  
+### [mdp-image](/src/components/mdp-ui-ext/mdp-image)
 图片库，图片的增删改查、上传、下载
 
-### [mdp-select-image](/src/components/mdp-ui-ext/mdp-select-image)  
+### [mdp-select-image](/src/components/mdp-ui-ext/mdp-select-image)
 图片选择器,支持图片的上传下载、上传后的统一管理、共享
 
-### [mdp-select-dept](/src/components/mdp-ui-ext/mdp-select-dept)  
+### [mdp-select-dept](/src/components/mdp-ui-ext/mdp-select-dept)
 部门选择，支持树状机构，异步加载，支持分页查询，任意大数据量
 
-### [mdp-select-att](/src/components/mdp-ui-ext/mdp-select-att)  
+### [mdp-select-att](/src/components/mdp-ui-ext/mdp-select-att)
 附件库,支持附件的上传下载、上传后的统一管理、共享
 
-### [mdp-select-cate](/src/components/mdp-ui-ext/mdp-select-cate)  
+### [mdp-select-cate](/src/components/mdp-ui-ext/mdp-select-cate)
 文档、文章目录树选择器
 
-### [mdp-select-tag](/src/components/mdp-ui-ext/mdp-select-tag)  
+### [mdp-select-tag](/src/components/mdp-ui-ext/mdp-select-tag)
 标签库,支持标签的统一管理、共享
 
 
-### [mdp-meta-item](/src/components/mdp-ui-ext/[mdp-meta-item)  
+### [mdp-meta-item](/src/components/mdp-ui-ext/[mdp-meta-item)
 元数据管理库、支持元数据的crud
 
-### [mdp-meta-option](/src/components/mdp-ui-ext/mdp-meta-option)  
+### [mdp-meta-option](/src/components/mdp-ui-ext/mdp-meta-option)
 元数据管理库-列表数据组件、支持列表数据的crud
 
-### [mdp-rich-text](/src/components/mdp-ui-ext/mdp-rich-text)  
+### [mdp-rich-text](/src/components/mdp-ui-ext/mdp-rich-text)
 富文本编辑器，整合了mdp-select-image作为插件
 
 ## 🔃 api
 - [api](/src/api/)  
-业务api，哪里用到哪里就单独引入
-### [api/mdp_pub/index.js](/src/api/mdp_pub/index.js)  
-公共api总入口,注册到vue全局函数中，可以在页面中任意地方直接使用,公共api总入口，如需要添加公共api,请在此文件添加  
-### [mdp_api_base.js](/src/api/mdp_pub/mdp_api_base.js)  
+  业务api，哪里用到哪里就单独引入
+### [api/mdp_pub/index.js](/src/api/mdp_pub/index.js)
+公共api总入口,注册到vue全局函数中，可以在页面中任意地方直接使用,公共api总入口，如需要添加公共api,请在此文件添加
+### [mdp_api_base.js](/src/api/mdp_pub/mdp_api_base.js)
 为mdp框架核心的与后端交互的api,自动注册为全局公共函数，可通过$mdp.xxx调用，可改，但不要新增，删除任何一个api.
-### [mdp_api_ext.js](/src/api/mdp_pub/mdp_api_ext.js)  
+### [mdp_api_ext.js](/src/api/mdp_pub/mdp_api_ext.js)
 为mdp扩展的组件与后端交互的api,自动注册为全局公共函数，可通过$mdp.xxx调用，可改，但不要新增，删除任何一个api.
-### [mdp_api_biz.js](/src/api/mdp_pub/mdp_api_biz.js)  
+### [mdp_api_biz.js](/src/api/mdp_pub/mdp_api_biz.js)
 为mdp扩展的组件与后端交互的api,自动注册为全局公共函数，可通过$mdp.xxx调用，可改,可新增必要的api.
 
 ```html
@@ -323,11 +314,11 @@ Vue.prototype.$mdp = mdp;
   this.$mdp.xxxApi()
 ```
 - [login](/src/api/login.js)  
-登录相关api 
+  登录相关api
 
 ## ↕️ 指令
-- [v-adaptive](./directive/el-table/index.js) 
-让表格自动适应，表格底部始终保持距离视窗底部一定距离(默认 30px)
+- [v-adaptive](./directive/el-table/index.js)
+  让表格自动适应，表格底部始终保持距离视窗底部一定距离(默认 30px)
 ```
 <el-table v-adaptive="{bottomOffset:30}"/>
 ```
@@ -348,20 +339,20 @@ vue全家桶 + element-ui + axios
 
 ## ⚙ 快速开始
 
->⚠️注意：该项目使用 element-ui@2.3.0+ 版本，所以最低兼容 vue@2.5.0+
+>⚠️注意：该项目使用 element-ui@2.3.0+ 版本，所以最低兼容 vue@2.5.0+ nodejs版本v14.16.1
 
 ### 前序准备
 
 - 你的本地环境需要安装 [node](http://nodejs.org/) 和 [git](https://git-scm.com/)。我们的技术栈基于 [ES2015+](http://es6.ruanyifeng.com/)、[vue](https://cn.vuejs.org/index.html)、[vuex](https://vuex.vuejs.org/zh-cn/)、[vue-router](https://router.vuejs.org/zh-cn/) and [element-ui](https://github.com/ElemeFE/element)，提前了解和学习这些知识会对使用本项目有很大的帮助。
 
-- 该项目属于网页版前端项目，所有api由 [mdp-lcode-backend](https://gitee.com/qingqinkj/mdp-lcode-backend)提供，请下载该项目
+- 该项目属于网页版前端项目，所有api由 [xm-backend](https://gitee.com/maimengcloud/xm-backend)提供，请下载该项目
 
-- 代码生成器下载 [mdp-code-generator](https://gitee.com/qingqinkj/mdp-code-generator) 也可以在低代码平台在线生成
+- 代码生成器下载 [mdp-code-generator](https://gitee.com/maimengcloud/mdp-code-generator) 也可以在低代码平台在线生成
 
 ### 开发
 ```bash
 # 克隆项目
-git clone https://gitee.com/qingqinkj/mdp-lcode-ui-web.git
+git clone https://gitee.com/maimengcloud/xm-ui-web.git
 
 # 安装依赖
 npm install
@@ -375,15 +366,15 @@ npm run dev
 浏览器访问 http://localhost:8015
 
 #### 登录相关
-登录api，对接后台接口有两种方式，分别为对接统一认证中心、对接mdp-lcode-backend
-默认对接mdp-lcode-backend中的登录模块，如果想切换，更改[mdp_config.js中的getOauth2LoginContext函数即可](src/api/mdp_pub/mdp_config.js) 
+登录api，对接后台接口有两种方式，分别为对接统一认证中心、对接xm-backend
+默认对接xm-backend中的登录模块，如果想切换，更改[mdp_config.js中的getOauth2LoginContext函数即可](src/api/mdp_pub/mdp_config.js)
 - 对接统一认证中心进行登录
 ```js
   getOauth2LoginContext:function(){
     return "oauth2client"
   }
 ```
-- 对接mdp-lcode-backend进行登录
+- 对接xm-backend进行登录
 ```js
   getOauth2LoginContext:function(){
     return "lcode"
@@ -404,62 +395,62 @@ mdp 3.0 版本已经开始规划更新了，尽请期待新版本的诞生吧
 
 ### 🗒️ 版本更新日志
 
-升级前必看：[CHANGELOG.md](/docs/CHANGELOG.md) 
+升级前必看：[CHANGELOG.md](/docs/CHANGELOG.md)
 
 
 ## 🚀 基于mdp框架拓展的开源项目
 >⚠️ 注意：以下拓展的框架或者子系统，由mdp开源团队基于项目经验进行总结抽取，可用可不用，可以以jar包方式合并到现有工程进行发布，也可单独发布成单体应用、微服务应用
 
 - 第三方支付框架,整合了微信支付、支付宝支付、paypal支付
-  1. [mdp-tpa-pay-backend](https://gitee.com/qingqinkj/mdp-tpa-pay-backend) 后端
+  1. [mdp-tpa-pay-backend](https://gitee.com/maimengcloud/mdp-tpa-pay-backend) 后端
 
 - 即时通讯框架
-  1. [mdp-im-uniapp](https://gitee.com/qingqinkj/mdp-im-uniapp) 前端app
-  2. [mdp-im-web](https://gitee.com/qingqinkj/mdp-im-web) 前端浏览器
-  3. [mdp-im-backend](https://gitee.com/qingqinkj/mdp-im-backend) 后端
+  1. [mdp-im-uniapp](https://gitee.com/maimengcloud/mdp-im-uniapp) 前端app
+  2. [mdp-im-web](https://gitee.com/maimengcloud/mdp-im-web) 前端浏览器
+  3. [mdp-im-backend](https://gitee.com/maimengcloud/mdp-im-backend) 后端
 
 - 统一认证中心框架
-  2. [mdp-oauth2-backend](https://gitee.com/qingqinkj/mdp-oauth2-backend) 后端
+  2. [mdp-oauth2-backend](https://gitee.com/maimengcloud/mdp-oauth2-backend) 后端
 
 - 微服务框架
-  1. [mdp-cloud-backend](https://gitee.com/qingqinkj/mdp-cloud-backend) 后端
+  1. [mdp-cloud-backend](https://gitee.com/maimengcloud/mdp-cloud-backend) 后端
 
 - 工作流管理子系统
-  1. [mdp-workflow-ui-web](https://gitee.com/qingqinkj/mdp-workflow-ui-web) 前端 
-  2. [mdp-workflow-backend](https://gitee.com/qingqinkj/mdp-workflow-backend) 后端
+  1. [mdp-workflow-ui-web](https://gitee.com/maimengcloud/mdp-workflow-ui-web) 前端
+  2. [mdp-workflow-backend](https://gitee.com/maimengcloud/mdp-workflow-backend) 后端
 
 - 低代码平台
-  1. [mdp-lcode-ui-web](https://gitee.com/qingqinkj/mdp-lcode-ui-web) 前端 
-  2. [mdp-lcode-backend](https://gitee.com/qingqinkj/mdp-lcode-backend) 后端
+  1. [xm-ui-web](https://gitee.com/maimengcloud/xm-ui-web) 前端
+  2. [xm-backend](https://gitee.com/maimengcloud/xm-backend) 后端
 
 - 内容管理子系统
-  1. [mdp-arc-ui-web](https://gitee.com/qingqinkj/mdp-arc-ui-web) 前端
-  2. [mdp-arc-backend](https://gitee.com/qingqinkj/mdp-arc-backend) 后端
+  1. [mdp-arc-ui-web](https://gitee.com/maimengcloud/mdp-arc-ui-web) 前端
+  2. [mdp-arc-backend](https://gitee.com/maimengcloud/mdp-arc-backend) 后端
 
 - 短信子系统
-  1. [mdp-sms-ui-web](https://gitee.com/qingqinkj/mdp-sms-ui-web) 前端
-  2. [mdp-sms-backend](https://gitee.com/qingqinkj/mdp-sms-backend) 后端
+  1. [mdp-sms-ui-web](https://gitee.com/maimengcloud/mdp-sms-ui-web) 前端
+  2. [mdp-sms-backend](https://gitee.com/maimengcloud/mdp-sms-backend) 后端
 
 - 项目管理子系统
-  1. [xm-crowd-ui-web](https://gitee.com/qingqinkj/xm-crowd-ui-web) 前端众包 
-  2. [xm-ui-web](https://gitee.com/qingqinkj/xm-ui-web) 前端管理端
-  3. [xm-backend](https://gitee.com/qingqinkj/xm-backend) 后端
+  1. [xm-crowd-ui-web](https://gitee.com/maimengcloud/xm-crowd-ui-web) 前端众包
+  2. [xm-ui-web](https://gitee.com/maimengcloud/xm-ui-web) 前端管理端
+  3. [xm-backend](https://gitee.com/maimengcloud/xm-backend) 后端
 
 - 财务管理子系统
-  1. [ac-core-ui-web](https://gitee.com/qingqinkj/ac-core-ui-web) 前端管理端
-  2. [ac-backend](https://gitee.com/qingqinkj/ac-backend) 后端
+  1. [ac-core-ui-web](https://gitee.com/maimengcloud/ac-core-ui-web) 前端管理端
+  2. [ac-backend](https://gitee.com/maimengcloud/ac-backend) 后端
 
 
-## 📝 常见问题、操作说明 
-- [FQA](https://maimengcloud.com/#/openCommunity/fqa) 
+## 📝 常见问题、操作说明
+- [FQA](https://maimengcloud.com/#/openCommunity/fqa)
 
 ## 💯 实践案例
 
 1. [低代码平台](https://maimengcloud.com/lcode/m1/)
 1. [系统管理](https://maimengcloud.com/sys/m1/)
 2. [协同办公](https://maimengcloud.com/oa/m1/)
-3. [唛盟众包-网页](https://maimengcloud.com) 
-3. [项目管理-网页](https://maimengcloud.com/xm/m1/) 
+3. [唛盟众包-网页](https://maimengcloud.com)
+3. [项目管理-网页](https://maimengcloud.com/xm/m1/)
 4. 项目管理-小程序   
    <img src="https://maimengcloud.com/img/77639c6907935d3b699f.png" alt="drawing" width="200"/>
 5. [流程管理](https://maimengcloud.com/workflow/m1/)
@@ -472,7 +463,7 @@ mdp 作为开源项目，离不开社区的支持，欢迎任何人修改和提�
 
 为了保证项目代码的质量与规范，以及帮助你更快的了解项目的结构，请在贡献之前阅读：
 
-- [mdp 贡献说明](https://gitee.com/qingqinkj/mdp-core/blob/master/docs/CONTRIBUTE.md)
+- [mdp 贡献说明](https://gitee.com/maimengcloud/mdp-core/blob/master/docs/CONTRIBUTE.md)
 
 ### 贡献步骤
 
@@ -485,7 +476,7 @@ mdp 作为开源项目，离不开社区的支持，欢迎任何人修改和提�
    如果是贡献代码，分支名填 `dev`；如果是贡献文档，分支名填 `docs`
 
    ```bash
-   git clone -b 分支名 https://gitee.com/用户名/mdp-lcode-ui-web.git
+   git clone -b 分支名 https://gitee.com/用户名/xm-ui-web.git
    ```
 
 3. 修改代码/文档，修改后提交上来。
@@ -511,27 +502,27 @@ mdp 作为开源项目，离不开社区的支持，欢迎任何人修改和提�
 
 ## 🐞 交流讨论 、反馈 BUG、提出建议等
 
-1. 快扫描下方左侧微信二维码和我们一起交流讨论吧！（备注 唛盟-mdp 进群） 
-<img src="https://maimengcloud.com/img/5ff0a747a4a1f14cf6a5.png" alt="drawing" width="200"/>
+1. 快扫描下方左侧微信二维码和我们一起交流讨论吧！（备注 唛盟-mdp 进群）
+   <img src="https://maimengcloud.com/img/5ff0a747a4a1f14cf6a5.png" alt="drawing" width="200"/>
 
 2. 唛盟微信公众号查看一些基础教程  
-<img src="https://maimengcloud.com/img/f3f91bac3a3735264a66.png" alt="drawing" width="200"/>
+   <img src="https://maimengcloud.com/img/f3f91bac3a3735264a66.png" alt="drawing" width="200"/>
 
-3. 反馈 BUG、提出建议，欢迎新建：[issues](https://gitee.com/qingqinkj/mdp-lcode-ui-web/issues)，开发人员会不定时查看回复。
+3. 反馈 BUG、提出建议，欢迎新建：[issues](https://gitee.com/maimengcloud/xm-ui-web/issues)，开发人员会不定时查看回复。
 4. 参与贡献，请查看[贡献指南](#🔨贡献指南)。
 
 ## 💲 打赏
- **感谢所有赞赏以及参与贡献的小伙伴，你们的支持是我们不断更新前进的动力！微信扫一扫，赏杯咖啡呗！**    
- <img src="https://maimengcloud.com/img/97094cc1553fe0b0046c.jpg" alt="drawing" width="300"/>
+**感谢所有赞赏以及参与贡献的小伙伴，你们的支持是我们不断更新前进的动力！微信扫一扫，赏杯咖啡呗！**    
+<img src="https://maimengcloud.com/img/97094cc1553fe0b0046c.jpg" alt="drawing" width="300"/>
 
-## 🔔商务合作 
+## 🔔商务合作
 
 序号|合作项目| 详细介绍 | 费用说明|
 ----------------------|------------|----------------------|-----|
 1.| 打赏获得赞助商名额| 在赞助商列表展示（添加微信沟通） |不限额度|
-2.| 新组件开发| 提供组件扩展、优化服务 |500元/每个组件起步，视复杂程度而定|
-3.| 开发问题解答|如果使用该产品遇到棘手问题需要解决，添加微信进行沟通解决 |250元/一次 限一个小时的工作时长，超过1个小时无法解决，退款一半或者延时1个小时，还不能解决，全额退款|
-4.| 开发培训|提供开发流程介绍、技术介绍、功能介绍、部署流程介绍，仅限线上培训 |500元/课程 时长2小时
-5.| 扩展问题解答|如果需要使用该产品进行自有业务系统研发，需要我方提供意见建议，我方收取一定费用后提供相应服务 |2000元/一次 限8小时的工作时长，超出8个小时双方无法达成一致意见，退500元，如需加时处理按250/小时计算加时费用。|
+2.| 新组件开发| 提供组件扩展、优化服务 |视复杂程度而定|
+3.| 开发问题解答|如果使用该产品遇到棘手问题需要解决，添加微信进行沟通解决 |免费|
+4.| 开发培训|提供开发流程介绍、技术介绍、功能介绍、部署流程介绍，仅限线上培训 |加微信详聊|
+5.| 扩展问题解答|如果需要使用该产品进行自有业务系统研发，需要我方提供意见建议，我方收取一定费用后提供相应服务 |加微信详聊|
 6.| 广告合作|广告位(精品项目推荐、赞助商展位) |加微信沟通|
 
