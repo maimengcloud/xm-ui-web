@@ -4,16 +4,17 @@
 	</a>
 </p>
 <p align="center">
-	<strong>唛盟(mdp-lcode)：多功能、高效率、低代码的前后端一体化、智能化的开发工具</strong>
+	<strong>唛盟企业级研发管理系统(xm)：涵盖项目规划、需求管理、开发迭代、版本控制、缺陷跟踪、测试管理、工时管理、效能分析等环
+节，实现项目全过程、全方位管理的一站式devOps解决方案</strong>
 </p>
 
 <p align="center">
 	<a target="_blank" href="https://gitee.com/qingqinkj/mdp-lcode-ui-web">
-        <img src='https://gitee.com/qingqinkj/mdp-lcode-ui-web/badge/star.svg?theme=gvp' alt='gitee star'/>
+        <img src='https://gitee.com/maimengcloud/xm-ui-web/badge/star.svg?theme=gvp' alt='gitee star'/>
     </a> 
 </p>
 <p align="center">
-	👉 <a target="_blank" href="https://maimengcloud.com">https://maimengcloud.com</a>  👈
+	👉 <a target="_blank" href="https://maimengcloud.com/xm/m1">https://maimengcloud.com</a>  👈
 </p>
 
 ## 快速导航 
