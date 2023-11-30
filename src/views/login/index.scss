@@ -19,10 +19,10 @@
     .left {
         flex: 1;
         background-image: url('@/assets/image/login_bg.png');
-        background-position: -28px -48px;
-        background-size: 1100px 700px; 
+        background-position:13px center; 
+        background-size: 1000px 100%; 
         border-radius: 30px;
-        background-repeat: repeat-y;
+        background-repeat: no-repeat;
     }
     .right {
         flex: 1;
