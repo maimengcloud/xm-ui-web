@@ -193,7 +193,7 @@
 ![项目立项](/docs/images/xm-zs/xm-zs-18-gzxfb.png)
 
 ### 任务年龄分布
-![项目立项](/docs/images/xm-zs/xm-19-rwnlfb.png)
+![项目立项](/docs/images/xm-zs/xm-zs-19-rwnlfb.png)
 
 ### 任务排行棒
 ![项目立项](/docs/images/xm-zs/xm-zs-20-rwphb.png)
