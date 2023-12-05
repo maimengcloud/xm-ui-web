@@ -326,10 +326,10 @@ export default {
             }
         },
         //角色身份验证
-        rolesChecked(){ 
+        rolesChecked(){  
             var indexPath=sessionStorage.getItem("index-path");
             if(!indexPath){
-                indexPath="/"
+                indexPath=""
             }
             if(this.userInfo.isSuperAdmin){  
                     location.replace(indexPath)
