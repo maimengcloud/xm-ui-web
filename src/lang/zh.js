@@ -59,8 +59,8 @@ export default {
   },
   login: {
     mainTitle:'唛盟云',
-    subTitle:'唛盟低代码平台',
-    title: '唛盟低代码平台',
+    subTitle:'唛盟研发管理',
+    title: '唛盟研发管理',
     logIn: '登录',
     username: '账号',
     password: '密码',
