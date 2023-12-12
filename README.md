@@ -45,7 +45,10 @@
 - [mdp-core](https://gitee.com/maimengcloud/mdp-core)   
   该工程作为所有后端的公共封装，不包含任何的业务功能，仅作为后端系统的技术底座，包含一些公共工具、服务类抽象、dao层抽象等。  
   默认打包进xm-backend中，一般无须理会
-  
+  - [mdp-cloud-backend](https://gitee.com/maimengcloud/mdp-cloud-backend)   
+  该工程作为spring cloud的扩展工程，如果需要将系统发布到spring cloud环境，需要下载该工程重新打包，不包含任何的业务功能，仅作为后端接入cloud环境使用
+  - [mdp-oauth2-backend](https://gitee.com/maimengcloud/mdp-oauth2-backend)   
+  该工程为统一认证中心，作为spring oauth2的扩展工程，如果需要将系统接入oauth2环境，需要下载该工程重新打包，该工程实现分布式单点登陆；支持微信、支付宝、短信、账户密码等多种登陆方式 
 
 ## 😭 日常项目管理中，您是否有以下痛点？
 ### 需求管控困难
