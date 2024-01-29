@@ -47,6 +47,7 @@
 										<el-radio label="3">本部门、上级部门、下属部门可见</el-radio>
 										<el-radio label="4">本部门、上级部门可见</el-radio>
 										<el-radio label="5">本部门、下级部门可见、上级不可见</el-radio>
+            							<el-radio label="6">本部门可见</el-radio>
 										<el-radio label="9">任何人可见</el-radio>
 									</el-radio-group>
 								</el-row>  
