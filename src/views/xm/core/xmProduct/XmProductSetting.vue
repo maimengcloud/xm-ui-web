@@ -59,6 +59,22 @@
         </el-row>
 		</el-form-item>
 
+                 
+							
+    <el-form-item label="项目对外开放程度"> 
+      <!--是否对外公开0-完全不可见，1-仅本司人员可见，2-关联人员可见（众包-外包-招投标）,3-本部门及下属部门可见,9-不区分-->
+      <el-row> 
+        <el-radio-group v-model="editForm.showOut" @change="editSomeFields(editForm,'showOut',$event)"> 
+            <el-radio label="0">完全不可见</el-radio>
+            <el-radio label="1">仅本司人员可见</el-radio>
+            <el-radio label="2">关联人员可见（众包-外包-招投标）</el-radio>
+            <el-radio label="3">本部门、上级部门、下属部门可见</el-radio>
+            <el-radio label="4">本部门、上级部门可见</el-radio>
+            <el-radio label="5">本部门、下级部门可见、上级不可见</el-radio>
+            <el-radio label="9">任何人可见</el-radio>
+        </el-radio-group>
+      </el-row>  
+    </el-form-item> 
                  <el-form-item label="团队相关:小组crud、加减人、小组组长管理等">
                    <el-row>
                      <el-radio-group v-model="qxCode.groupScope" @change="editSomeFields(editForm,'groupScope',$event)">
@@ -196,6 +212,7 @@ export default {
         locked: "",
         del: "",
         ltime: "",
+        showOut:'1'
       },
       editFormBak: {
         id: "",
@@ -231,6 +248,7 @@ export default {
         locked: "",
         del: "",
         ltime: "",
+        showOut:'1'
       },
  				/**
         权限码0,1,2,3,4,5,67,8,9，逗号分割

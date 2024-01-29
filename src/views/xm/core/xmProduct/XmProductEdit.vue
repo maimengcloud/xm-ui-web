@@ -46,7 +46,14 @@
             content="产品代号用于签订合同等甲乙方共享的场景;产品编号为内部编号，用于内部流转，生成规则:产品代号+四位随机码 "
             ><i class="el-icon-question"></i
           ></el-tooltip>
-        </el-form-item>
+        </el-form-item> 
+        <el-form-item label="归属部门" prop="deptid">
+          <mdp-select-dept
+            v-model="editForm.deptid"  
+            placeholder="归属部门"
+            @change2="editSomeFields(editForm, 'deptid', $event)"
+          ></mdp-select-dept>
+        </el-form-item> 
 		 <el-form-item label="管理成员">
         <el-row class="padding padding-top">
 
@@ -341,6 +348,9 @@ export default {
         params["endTime"] = row.endTime;
       } else if (fieldName == "groupScope"||fieldName == "groupTransmit"||fieldName == "testScope"||fieldName=="testTransmit"||fieldName == "menuScope"||fieldName=="menuTransmit"||fieldName == "iterationScope"||fieldName=="iterationTransmit") {
         params["qxCode"] = [,this.qxCode.groupScope,this.qxCode.groupTransmit,this.qxCode.testScope,this.qxCode.testTransmit,this.qxCode.menuScope,this.qxCode.menuTransmit,this.qxCode.iterationScope,this.qxCode.iterationTransmit].join(",")
+      }else if(fieldName=='deptid'){
+        params["deptid"] = $event.deptid;
+        params["deptidPath"] = $event.idPath;
       } else {
         params[fieldName] = $event;
       }

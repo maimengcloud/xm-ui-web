@@ -17,6 +17,14 @@
 								<el-button  @click.native="createProjectCode">自动生成</el-button>
 								 <el-tooltip content="项目代号用于签订合同等甲乙方共享的场景;项目编号为内部编号，用于内部流转，生成规则:项目代号+四位随机码 "><i class="el-icon-question"></i></el-tooltip>
 							</el-form-item>
+							
+							<el-form-item label="归属部门" prop="deptid">
+								<mdp-select-dept
+									v-model="editForm.deptid"  
+									placeholder="归属部门"
+									@change2="editXmProjectSomeFields(editForm, 'deptid', $event)"
+								></mdp-select-dept>
+							</el-form-item>
 							<el-row class="padding-left padding-right padding-top">
 								<el-col :span="8">
 									<el-form-item prop="xmType" label-width="0px">
@@ -863,6 +871,7 @@
 
 
 			editXmProjectSomeFields(row,fieldName,$event){
+				debugger;
 				if(this.opType=='add'){
 					return;
 				}
@@ -886,7 +895,7 @@
 				}
 				var params={ids:[row.id]};
 
-
+				debugger;
 
 				if (fieldName == "admUserid") {
 					params["admUserid"] = $event.userid;
@@ -897,7 +906,10 @@
 				} else if (fieldName == "pmUserid") {
 					params["pmUserid"] = $event.userid;
 					params["pmUsername"] = $event.username;
-				} else{
+				}else if(fieldName=='deptid'){
+					params["deptid"] = $event.deptid;
+					params["deptidPath"] = $event.idPath;
+				}  else{
 					params[fieldName]=$event
 				}
 				if(fieldName=='description'){
