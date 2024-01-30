@@ -877,7 +877,7 @@
 			},
 			afterEditExecSubmit(execForm){
 
-				listXmTask({ids:[this.editForm.id]}).then(res=>{
+				listXmTask({id:this.editForm.id}).then(res=>{
 						Object.assign(this.editForm,res.data.data[0])
 						this.editFormBak={...this.editForm}
 						this.$emit("after-edit-submit",execForm);
