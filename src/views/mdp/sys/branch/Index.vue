@@ -233,7 +233,7 @@ export default {
                 UserTpaInviteApi.createInviteId(params).then(res=>{
  					var tips = res.data.tips;
 					if(tips.isOk){ 
-                        this.$router.push({path:"/mdp/tpa/invite/code/"+res.data.data.inviteId})
+                        this.$router.push({path:"/invite/code/"+res.data.data.inviteId})
                     }else{
                         this.$notify.error(tips.msg)
                     }

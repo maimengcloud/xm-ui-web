@@ -11,17 +11,18 @@ NProgress.configure({ showSpinner: false })// NProgress Configuration
 function hasPermission(roles, permissionRoles) {
   if (!permissionRoles) return true
   if (roles.some(role => role.roleid==='superAdmin')) return true // admin permission passed directly
-  return roles.some(role => permissionRoles.indexOf(role.roleid) >= 0)
+  return roles.some(role => permissionRoles.indexOf(role) >= 0)
 }
 
 const whiteList = ['/login', '/authredirect','/changeEmailStepOne','/changeEmailStepTwo','/error']// no redirect whitelist
-const scanCodeLoginPath='/mdp/tpa/invite/code/'
+const scanCodeLoginPath='/invite/code/'
 
 var curlDomain=window.location.protocol+"//"+window.location.host; //  
 var baseUrl=`${curlDomain}/${process.env.CONTEXT}/${process.env.VERSION}/`
 
 router.beforeEach((to, from, next) => {
-  NProgress.start() // start progress bar 
+  NProgress.start() // start progress bar
+
   var outUrl="";
   if(to.meta.openTab==true && to.meta.outUrl){
 	outUrl=to.meta.outUrl;
@@ -76,7 +77,6 @@ router.beforeEach((to, from, next) => {
 			              next({ path: '/login' })
 			            })
     			}else{
-					
     				store.dispatch('GenerateRoutes', {roles:store.getters.roles ,menus:store.getters.myMenus} ).then(() => { // 根据roles权限生成可访问的路由表
 			              router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
 			              next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
@@ -150,13 +150,22 @@ function getQueryVariable(variable,url){
 }
 
 
-function setIndexPath() {   
+function setIndexPath() { 
 	var indexPath=null
 	var url=window.location.href;
 	if(url.indexOf("/login")<=0){ 
 		indexPath=url
 		sessionStorage.setItem("index-path",url); 
-	} 
+	}else{
+		var idxPath=sessionStorage.getItem("index-path");
+		if(idxPath && idxPath!='null'){
+			indexPath=idxPath
+		}else{
+			indexPath=url.substring(0,url.indexOf('/login'))
+			sessionStorage.setItem("index-path",indexPath); 
+		}
+		
+	}
 	return indexPath
 } 
 var indexPath=setIndexPath();
@@ -186,7 +195,7 @@ function getInfo(){
 				  router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
 				  var inviteId=queryParams['inviteId']
 				  if(inviteId && !inviteId.startsWith('login')){ 
-					location.replace(getIndexPathUrl(`${baseUrl}#/mdp/tpa/invite/success`,queryParams))
+					location.replace(getIndexPathUrl(`${baseUrl}#/invite/success`,queryParams))
 				  }else{
 					location.replace(getIndexPathUrl(indexPath,{}))
 				  } 
@@ -207,7 +216,7 @@ function getIndexPathUrl(indexPath,queryParams2){
 	}
 	var queryParams=queryParams2?{...queryParams2}:{}
 	delete queryParams.accessToken
-	//router.push({path:'/mdp/tpa/invite/success',query:queryParams}) 
+	//router.push({path:'/invite/success',query:queryParams}) 
 	var indexQua=indexPath.indexOf("?")
 	var indexUri="";
 	if(indexQua<0){

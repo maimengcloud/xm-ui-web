@@ -280,7 +280,7 @@ import logoSrc from "@/assets/image/logo_cicle.png"
 				window.location.host +
 				"/"+process.env.CONTEXT+"/" +
 				process.env.VERSION +
-				"/#/mdp/tpa/invite/code/"+this.inviteId+'?r='+remark;
+				"/#/invite/code/"+this.inviteId+'?r='+remark;
 
 				this.$copyText(href).then(e => {
 					this.$message.success("分享链接已复制，您可直接黏贴到微信、浏览器地址栏等")
