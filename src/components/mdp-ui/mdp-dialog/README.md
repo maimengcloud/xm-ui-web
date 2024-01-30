@@ -13,7 +13,7 @@
         <item-form ref="xxForm" :show-btn="false" :sub-op-type="data.subOpType" :form-data="data.formData" :visible="visible" :parent-op-type="currOpType" @close="dialog.close()" @submit="afterFormSubmit"></item-form>
     </template>
 </mdp-dialog>
-``` 
+```
 ```js 
 // 打开弹框
 this.$refs['xxFormDialog'].open({subOpType:'add',formData:this.formData})
@@ -31,8 +31,22 @@ this.$refs['xxFormDialog'].close()
          </el-row>
     </template>
 </mdp-dialog>
-``` 
+```
 ```js 
 //打开弹框
 this.$refs['xxFormDialog'].open({subOpType:'add',formData:this.formData})
 ```
+
+
+
+#### `Attributes`
+
+| 参数                 | 说明                                            | 类型    | 可选值 | 默认值 |
+| -------------------- | ----------------------------------------------- | ------- | ------ | ------ |
+| title                | Dialog 的标题，也可通过具名 slot （见下表）传入 | string  | —      | ''     |
+| width                | Dialog 的宽度                                   | string  | —      | 70%    |
+| fullscreen           | 是否为全屏 Dialog                               | boolean | —      | false  |
+| close-on-click-modal | 是否可以通过点击 modal 关闭 Dialog              | boolean | —      | False  |
+
+
+
