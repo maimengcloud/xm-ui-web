@@ -311,6 +311,14 @@ export const MdpFormMixin = {
             }
             return isMatch;
         },
+        editSomeFieldQxCheck(){
+            if(this.currOpType=='add' || this.currOpType=='subAdd' || this.currOpType=='detail'){
+                return false;
+            }else{
+
+                return true;
+            }
+        },
         /**
          * 对修改的字段进行判断，返回false ,将取消更新数据库,由组件扩展
          * @param {*} row 当前选中的行
@@ -320,16 +328,12 @@ export const MdpFormMixin = {
          * @returns true/false 返回false ,将取消更新数据库
          */
         editSomeFieldsCheck(row,fieldName,$event,params){
-            if(this.currOpType=='add'){
-                return false;
-            }
             params[fieldName]=$event
             return true;
         },
         editSomeFields(row,fieldName,$event){ 
-            if(this.currOpType=='add' || this.currOpType=='detail'){
-                return;
-            }
+
+            
             var params={};
             var that=this;
             var sels=[row] 
@@ -342,6 +346,9 @@ export const MdpFormMixin = {
                 }
                 return;
             }
+            if(!this.editSomeFieldQxCheck()){
+                return;
+            }
             this.setPks(sels,params); 
             var apiName="apis.editSomeFields"
             if(!this.apiCheck(this.apis.editSomeFields,apiName)){
@@ -349,22 +356,33 @@ export const MdpFormMixin = {
             }   
             this.load.editSomeFields=true; 
             var func = this.apis.editSomeFields; 
-            func(params).then(res=>{
-                var tips = res.data.tips;
-                if(tips.isOk){ 
-                    Object.assign(row,params)
-                    that.afterEditSomeFields(res,tips.isOk,params,row)
-                    that.dataBak=Object.assign({},this.editForm)
-                }else{ 
-                    if(this.dataBak && this.justPkIsMatch(row,this.dataBak)){
-                        Object.assign(row,this.dataBak)
-                    } 
-                    that.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+            var form=this.$refs['editFormRef'];
+            if(!form){ 
+                form=this.$refs['editForm'];
+            } 
+            form.validateField(fieldName,(valid) => {
+                if (!valid) {
+                    func(params).then(res=>{
+                        var tips = res.data.tips;
+                        if(tips.isOk){ 
+                            Object.assign(row,params)
+                            that.afterEditSomeFields(res,tips.isOk,params,row)
+                            that.dataBak=Object.assign({},this.editForm)
+                        }else{ 
+                            if(this.dataBak && this.justPkIsMatch(row,this.dataBak)){
+                                Object.assign(row,this.dataBak)
+                            } 
+                            that.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})
+                        }
+                        
+                    }).catch(err=>{
+                        this.load.editSomeFields=false; 
+                    });
+                }else{
+                    this.$notify({ showClose:true, message: "表单验证不通过，请修改表单数据再提交.", type: 'error' });
                 }
-                
-            }).catch(err=>{
-                this.load.editSomeFields=false; 
             });
+            
         }, 
         afterSubmit(res,isOk,currOpType){ 
             if(isOk && currOpType=='add'){
