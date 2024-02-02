@@ -28,6 +28,59 @@
   </script>
 ```
 
+#### 通过props定义编号及名称，通过params传递后台查询参赛
+```html  
+<mdp-select-table ref="selectTableRef" :load-fun="loadFun" :props="propsCfgs" :params="{relType:'1'}"> 
+</mdp-select-table>
+``` 
+```js 
+  <script>
+    export default {
+      data() {
+        return { 
+            //从后台加载数据的api
+            loadFun:this.$mdp.listBranch,  
+            propsCfgs:{ 
+              id:'branchId',//取api返回值中的branchId属性的值当成编号
+              name:'branchName',//取api返回值中的branchName属性的值当成名称
+            }
+        }
+      }
+    }
+  </script>
+```
+
+#### 通过props定义编号及名称，通过params传递后台查询参赛,通过插槽定义工具条
+```html  
+<mdp-select-table :load-fun="loadFun" :props="propsCfgs" :params="{relType:'1'}"> 
+  <el-row  slot="toolbar">
+    <el-button @click="addBranch">新增机构 </el-button>
+    <el-button @click="$refs['selectTableRef'].$refs['tableDialog'].open()">更多数据</el-button>
+  </el-row>
+</mdp-select-table>
+``` 
+```js 
+  <script>
+    export default {
+      data() {
+        return { 
+            //从后台加载数据的api
+            loadFun:this.$mdp.listBranch,  
+            propsCfgs:{ 
+              id:'branchId',//取api返回值中的branchId属性的值当成编号
+              name:'branchName',//取api返回值中的branchName属性的值当成名称
+            }
+        }
+      },
+      method:{
+        addBranch(){
+          //调起新增机构页面
+        }
+      }
+    }
+  </script>
+```
+
 #### 通过属性columnCfgs传入表格字段列表，mdp框架将解析出表头内容，用于配置显示列，排序，高级查询等
 ```html  
 <mdp-select-table show-style="origin" :load-fun="loadFun" :column-cfgs="columnCfgs"> 
@@ -83,11 +136,32 @@
 |参数|说明|类型|可选值|默认值|
 |--------|------|--------|-----------------|----------------|
 |loadFun|查询数据的接口函数|Promise|-| -
+|params|提交给查询数据的接口的参赛，loadFun(params)|object|-|{}
 |multiple|是否多选|boolean|—|false
 |show-hi-query|是否显示高级查询|boolean|—|true
 |show-common-query|是否显示常规查询|boolean|—|true 
 |column-cfgs|表头列配置项列表|Array|-|-
-|props|简化版的column-cfgs，如果配置了column-cfgs则该属性不起作用，只有两列编号及名称|Object|-|{id:'id',name:'name'}
+|props|简化版的column-cfgs，如果配置了column-cfgs则该属性不起作用，只有两列编号及名称|Object|-|{id:'id',name:'name'} 
+|show-type|组件分类|string|select / checkbox / radio| select
+|show-style|展示风格|string|origin / tag / x| origin 
+|split|多选的时候，如果要返回字符串时的分隔符，如果设置了值，v-mode传入传出的值将是被该分隔符分割的字符串,如v-model="1,2,3,4"|string| , |
+|filterFun|从后台返回的数据进行过滤后再装载到下拉列表,filterFun(option,options),返回true\false,false则过滤掉|function| | 
+|options|直接指定列表数据|Array
+|plusOptions|在原有列表上添加额外的列表项 
+|⚠️注意：|以上为mdp-ui对element-ui的改造，后面的属于element-ui的原有属性
+|value / v-model|绑定值|boolean / string / number|—|—
+|multiple|是否多选|boolean|—|false
+|disabled|是否禁用|boolean|—|false
+|value-key|作为 value 唯一标识的键名，绑定值为对象类型时必填|string|—|value
+|size|输入框尺寸|string|medium/small/mini|—
+|clearable|是否可以清空选项|boolean|—|false
+|collapse-tags|多选时是否将选中值按文字的形式展示|boolean|—|false
+|multiple-limit|多选时用户最多可以选择的项目数，为 0 则不限制|number|—|0
+|name|select input 的 name 属性|string|—|—
+|autocomplete|select input 的 autocomplete 属性|string|—|off 
+|placeholder|占位符|string|—|请选择 
+|no-match-text|搜索条件无匹配时显示的文字，也可以使用slot="empty"设置|string|—|无匹配数据
+|no-data-text|选项为空时显示的文字，也可以使用slot="empty"设置|string|—|无数据 
 
 
 
@@ -105,7 +179,7 @@ focus|当 input 获得焦点时触发|(event: Event)
 ### slot
 |name|说明|
 |--------|------|
-—|Option 组件列表
+toolbar|下拉列表第一行工具条，默认为更多数据，可通过slot更改
 info|鼠标未进入时展示的内容，showStyle=tag\x时有效
 oper|鼠标进入后展示的内容，showStyle=tag\x时有效
 ~~prefix|Select 组件头部内容~~

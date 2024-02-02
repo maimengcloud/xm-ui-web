@@ -107,7 +107,7 @@
   
   <script> 
   import {MdpSelectMixin } from "../../mdp-ui/mixin/MdpSelectMixin.js"
-   var tableDataCacheMap=new Map();
+   const tableDataCacheMap=new Map();
   export default {
     components: {  },
     name: 'mdp-select-table',
@@ -141,7 +141,7 @@
       }
     },
     methods:{
-      getCacheList(){
+      getCacheList(){ 
         var tableDataCacheList=tableDataCacheMap.get(this.codeKey)
         if(!tableDataCacheList){
           tableDataCacheList=[]
@@ -170,15 +170,8 @@
         var tableDataCacheList=this.getCacheList();
         if(tableDataCacheList && tableDataCacheList.length>0){
           this.item={itemType:'4',options:tableDataCacheList}
-        }else{
-          var tableDatasStr=localStorage.getItem(this.codeKey)
-          if(tableDatasStr){
-            var tableDatas=JSON.parse(tableDatasStr)
-            this.item={itemType:'4',options:tableDatas}
-            this.setCacheList(tableDatas)
-          }else{
-            this.item={itemType:'4',options:[]}
-          }
+        }else{ 
+          this.item={itemType:'4',options:[]} 
         } 
         if(this.value){
           var mVals=[]
@@ -233,9 +226,7 @@
         this.onClose();
         this.$refs['tableDialog'].close();
       },
-      onClose(){
-        var tableDataCacheList=this.getCacheList();
-        localStorage.setItem(this.codeKey,JSON.stringify(tableDataCacheList));
+      onClose(){ 
       },
        
     },
@@ -244,12 +235,7 @@
         this.initItemOptions();
         
         
-    },
-    
-    beforeDestroy(){ 
-      var tableDataCacheList=this.getCacheList();
-      localStorage.setItem(this.codeKey,JSON.stringify(tableDataCacheList));
-    }
+    }, 
   }
   </script>
   <style lang="scss" scoped>  

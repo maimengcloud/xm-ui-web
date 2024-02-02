@@ -405,8 +405,8 @@ export const MdpTableMixin = {
                 }  
                 params.$orderBy= orderBys.join(",")
             }
-            if(this.params && this.params.filters){
-                Object.assign(this.filters,this.params.filters)
+            if(this.params){
+                Object.assign(this.filters,this.params)
             }
             Object.assign(params,this.filters)
             this.encodeHiQueryParams(params)
