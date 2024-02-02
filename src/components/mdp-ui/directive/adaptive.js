@@ -2,7 +2,7 @@
 const doResize = async (el, binding, vnode) => {
 
   // 获取表格Dom对象 
-  if(vnode.$table){
+  if(vnode.componentInstance){ 
     const {
       componentInstance: $table
     } = await vnode
@@ -50,6 +50,7 @@ export default {
     window.addEventListener('resize', el.resizeListener)
   },
   update(el, binding, vnode) {
+    debugger;
     doResize(el, binding, vnode)
   },
   // 绑定默认高度
