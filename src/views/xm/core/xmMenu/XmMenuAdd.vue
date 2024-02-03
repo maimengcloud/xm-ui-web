@@ -37,28 +37,22 @@
                   <mdp-select-user show-style="x" size="medium" label="提出人" v-model="addForm.proposerId" :init-name="addForm.proposerName"></mdp-select-user>
 								</el-col>
 						</el-row>
-						<el-row class="padding-top">
-							<el-col :span="8">
-								<el-form-item  label="需求类型" prop="dtype" >
-									<mdp-select item-code="demandType" v-model="addForm.dtype">
- 									</mdp-select>
-								</el-form-item>
+						<el-row class="padding-top padding-bottom">
+							<el-col :span="8"> 
+									<mdp-select size="medium" show-style="x" placeholder="需求类型"  item-code="demandType" v-model="addForm.dtype">
+ 									</mdp-select> 
 							</el-col>
-							<el-col :span="8">
-								<el-form-item  label="需求来源" prop="source">
-									<mdp-select item-code="demandSource" v-model="addForm.source">
- 									</mdp-select>
-								</el-form-item>
+							<el-col :span="8"> 
+									<mdp-select size="medium" show-style="x" placeholder="需求来源"   item-code="demandSource" v-model="addForm.source">
+ 									</mdp-select> 
 							</el-col>
-							<el-col :span="8">
-								<el-form-item  label="需求层次" prop="dlvl" >
-									<mdp-select item-code="demandLvl" v-model="addForm.dlvl">
- 									</mdp-select>
-								</el-form-item>
+							<el-col :span="8"> 
+									<mdp-select size="medium" show-style="x"  placeholder="需求层次"   item-code="demandLvl" v-model="addForm.dlvl">
+ 									</mdp-select> 
 							</el-col>
 						</el-row>
 
-						<el-row>
+						<el-row class="padding-top">
 							<el-col :span="12">
 								<el-form-item label="排序序号" prop="seqNo">
 									 <el-input style="max-width:90%;" v-model="addForm.seqNo" placeholder="请输入排序序号">
@@ -94,7 +88,7 @@
 			</el-form>
 
 		</el-row>
-		<el-row class="padding">
+		<el-row class="padding" style="float:right;``">
 			<el-button @click.native="handleCancel">关闭</el-button>
 			<el-button v-loading="load.add" type="primary" @click.native="addSubmit(1)" :disabled="load.add==true">提交(关闭窗口)</el-button>
 			<el-button v-loading="load.add" type="primary" @click.native="addSubmit(2)" :disabled="load.add==true">提交(继续新增)</el-button>
