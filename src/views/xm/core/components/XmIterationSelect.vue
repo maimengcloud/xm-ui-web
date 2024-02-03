@@ -8,6 +8,7 @@
       <template v-slot="visible,data,dialog">
         <xm-iteration-add op-type="add"
           :sel-project="{ id: linkProjectId, name: '' }"
+          :xm-product="productId?{id:productId,name:''}:null"
           @cancel="dialog.close()"
           @submit="afterAddSubmit"
         >

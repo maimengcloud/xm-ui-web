@@ -7,7 +7,7 @@
      <mdp-dialog ref="addDialog">
       <template v-slot="visible,data,dialog">
         <xm-project-add op-type="add"
-          :sel-project="{ id: linkProductId, name: '' }"
+          :xm-product="{ id: linkProductId, name: '' }"
           @cancel="dialog.close()"
           @submit="afterAddSubmit"
         >
