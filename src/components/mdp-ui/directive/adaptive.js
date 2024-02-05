@@ -2,7 +2,7 @@
 const doResize = async (el, binding, vnode) => {
 
   // 获取表格Dom对象 
-  if(vnode.componentInstance){ 
+  if(vnode.componentInstance && vnode.componentInstance.doLayout){  
     const {
       componentInstance: $table
     } = await vnode
@@ -23,6 +23,7 @@ const doResize = async (el, binding, vnode) => {
     $table.layout.setHeight(height)
     $table.doLayout()
   }else{ 
+    debugger;
     //要起作用，请先给容器添加一个默认高度，否则不起作用
     // 获取调用传递过来的数据 
     const {
