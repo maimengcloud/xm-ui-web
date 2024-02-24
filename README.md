@@ -274,15 +274,15 @@ npm run dev
 浏览器访问 http://localhost:8067
 
 #### 登录相关
-登录api，对接后台接口有两种方式，分别为对接统一认证中心、对接xm-backend
-默认对接xm-backend中的登录模块，如果想切换，更改[mdp_config.js中的getOauth2LoginContext函数即可](src/api/mdp_pub/mdp_config.js)
+登录api，对接后台接口有两种方式，分别为对接统一认证中心、对接mdp-lcode-backend
+默认对接mdp-lcode-backend中的登录模块，如果想切换，更改[mdp_config.js中的getOauth2LoginContext函数即可](src/api/mdp_pub/mdp_config.js)
 - 对接统一认证中心进行登录
 ```js
   getOauth2LoginContext:function(){
     return "oauth2client"
   }
 ```
-- 对接xm-backend进行登录
+- 对接mdp-lcode-backend进行登录
 ```js
   getOauth2LoginContext:function(){
     return "lcode"
