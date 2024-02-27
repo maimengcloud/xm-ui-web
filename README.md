@@ -24,7 +24,7 @@
   登陆界面上选择演示账号登陆(账号密码：demo-branch-01 888888)或者直接扫码登陆，无须注册
 
 ## 📢 简介[唛盟xm](/)
-唛盟企业级研发管理系统简称唛盟xm,属于唛盟生态的专业子系统之一，以研发管理为核心，涵盖项目规划、需求管理、开发迭代、版本控制、缺陷跟踪、测试管理、工时管理、效能分析等环节，实现全过程、全方位的研发管理。通过该系统，企业能够优化研发流程，提高研发效率，降低研发成本，提高市场竞争力。
+唛盟企业级研发管理系统简称唛盟xm,属于唛盟生态的专业子系统之一，以研发管理为核心，涵盖项目规划、需求管理、开发迭代、版本控制、缺陷跟踪、测试管理、工时管理、效能分析等环节，实现全过程、全方位的研发管理。通过该系统，企业能够优化研发流程，提高研发效率，降低研发成本，提高市场竞争力。   
 💪唛盟生态遵循 <strong>“一个底座+N个专业子系统”</strong> 的架构，基于同一个底座的各个专业子系统可以任意组合形成一个大的业务系统  
 一个底座： [mdp-core](https://gitee.com/maimengcloud/mdp-core)  
 N个专业子系统： [低代码mdp-lcode](https://gitee.com/maimengcloud/mdp-lcode-ui-web)、
@@ -264,7 +264,7 @@ git clone https://gitee.com/maimengcloud/xm-ui-web.git
 npm install
    
 # 建议不要用cnpm安装 会有各种诡异的bug 可以通过如下操作解决 npm 下载速度慢的问题
-npm install --registry=https://registry.npm.taobao.org
+# npm install --registry=https://registry.npm.taobao.org
 
 # 启动服务
 npm run dev
