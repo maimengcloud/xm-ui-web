@@ -27,8 +27,8 @@
 唛盟企业级研发管理系统简称唛盟xm,属于唛盟生态的专业子系统之一，以研发管理为核心，涵盖项目规划、需求管理、开发迭代、版本控制、缺陷跟踪、测试管理、工时管理、效能分析等环节，实现全过程、全方位的研发管理。通过该系统，企业能够优化研发流程，提高研发效率，降低研发成本，提高市场竞争力。   
 💪唛盟生态遵循 <strong>“一个底座+N个专业子系统”</strong> 的架构，基于同一个底座的各个专业子系统可以任意组合形成一个大的业务系统  
 一个底座： [mdp-core](https://gitee.com/maimengcloud/mdp-core)  
-N个专业子系统： [低代码mdp-lcode](https://gitee.com/maimengcloud/mdp-lcode-ui-web)、
-[系统及账户管理mdp-sys](https://gitee.com/maimengcloud/mdp-sys-backend)、
+N个专业子系统： [低代码mdp-lcode](https://gitee.com/maimengcloud/mdp-lcode-ui-web)、 
+[账户、权限、组织管理mdp-sys](https://gitee.com/maimengcloud/mdp-lcode-backend/tree/master/mdp-sys)、
 [第三方支付登录等mdp-tpa](https://gitee.com/maimengcloud/mdp-tpa-backend)、
 [统一认证中心mdp-oauth2](https://gitee.com/maimengcloud/mdp-oauth2-backend)、
 [内容管理mdp-arc](https://gitee.com/maimengcloud/mdp-arc-ui-web)、
@@ -42,29 +42,29 @@ N个专业子系统： [低代码mdp-lcode](https://gitee.com/maimengcloud/mdp-l
 上述专业子系统全部开源
 
 
-### 唛盟xm主体工程-必须
+### 唛盟xm主体工程
 唛盟xm使用[唛盟低代码开发平台](https://gitee.com/maimengcloud/mdp-lcode-ui-web)开发，属于前后端严格分离的一套系统，分为前端工程、后端工程两部分
-- [xm-ui-web](https://gitee.com/maimengcloud/xm-ui-web)
+- [xm-ui-web 必须](https://gitee.com/maimengcloud/xm-ui-web)
   唛盟的前端工程,以vue.js为主
-- [xm-backend](https://gitee.com/maimengcloud/xm-backend)
+- [xm-backend 必须](https://gitee.com/maimengcloud/xm-backend)
   唛盟的后端工程，java语言为主
   
-### 唛盟账号管理工程-必须
+### 唛盟账号管理工程
 唛盟xm的账户管理、组织管理、菜单管理等沿用唛盟低代码的功能
-- [mdp-lcode-ui-web](https://gitee.com/maimengcloud/mdp-lcode-ui-web)
+- [mdp-lcode-ui-web 必须](https://gitee.com/maimengcloud/mdp-lcode-ui-web)
 唛盟低代码的前端工程,以vue.js为主
-- [mdp-lcode-backend](https://gitee.com/maimengcloud/mdp-lcode-backend)
+- [mdp-lcode-backend 必须](https://gitee.com/maimengcloud/mdp-lcode-backend)
 唛盟低代码的后端工程，java语言为主  
 
-### 高级配套工程-非必须
-- [mdp-cloud-backend](https://gitee.com/maimengcloud/mdp-cloud-backend)   
+### 高级配套工程
+- [mdp-cloud-backend 非必须](https://gitee.com/maimengcloud/mdp-cloud-backend)   
   该工程作为spring cloud的扩展工程，如果需要将系统发布到spring cloud环境，需要下载该工程重新打包，不包含任何的业务功能，仅作为后端接入cloud环境使用
 
-- [mdp-oauth2-backend](https://gitee.com/maimengcloud/mdp-oauth2-backend)   
+- [mdp-oauth2-backend 非必须](https://gitee.com/maimengcloud/mdp-oauth2-backend)   
   该工程为统一认证中心，作为spring oauth2的扩展工程，如果需要将系统接入oauth2环境，需要下载该工程重新打包，该工程实现分布式单点登陆；支持微信、支付宝、短信、账户密码等多种登陆方式
 
-### 开发辅助工具-非必须
-- [mdp-code-generator](https://gitee.com/maimengcloud/mdp-code-generator) 代码生成器  
+### 开发辅助工具
+- [mdp-code-generator 非必须](https://gitee.com/maimengcloud/mdp-code-generator) 代码生成器  
   生成代码两种方式，  
   一、使用代码生成器本地工程，好处是代码可以直接覆盖到本地业务工程，避免复制黏贴出错。  
   二、如果不需要本地生成代码，也可以在低代码平台在线生成。[在线生成代码](https://maimengcloud.com/lcode/m1/#/mdp/lcode/gen)
