@@ -1009,8 +1009,8 @@ export default {
     listXmBranchState({id:this.userInfo.branchId}).then(res=>{
             this.load.list=false;
             var tips = res.data.tips;
-            if(tips.isOk){
-              this.xmBranch=res.data.data[0]
+            if(tips.isOk ){
+              this.xmBranch=res.data.data&& res.data.data.length>0?res.data.data[0]:{}
 
               this.drawAllBar();
               this.drawMenuPie();
