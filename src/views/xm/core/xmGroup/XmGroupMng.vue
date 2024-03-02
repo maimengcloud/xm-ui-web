@@ -199,7 +199,9 @@ import { listXmGroup, delXmGroup, batchDelXmGroup,getGroups } from '@/api/xm/cor
 import  XmGroupEdit from './XmGroupEdit';//新增修改界面
 import { mapGetters } from 'vuex'
 import {VueOkrTree} from 'vue-okr-tree';
-import 'vue-okr-tree/dist/vue-okr-tree.css'
+//如果样式有问题，尝试按以下方法之一引入样式，采用哪种取决于vue-okr-tree.css是存放在根目录还是dist目录下
+//import 'vue-okr-tree/dist/vue-okr-tree.css' 
+//import 'vue-okr-tree/vue-okr-tree.css'
 import { listImGroup} from '@/api/mdp/im/group/imGroup';
 import { publishMessage} from '@/api/mdp/im/imPush';
 
