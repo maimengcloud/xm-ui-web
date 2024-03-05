@@ -298,11 +298,6 @@ npm run build:sit
 npm run build:prod
 ```
 
-### 常见问题
-#### 开发部署类常见问题
-答复：此类问题请参考[唛盟低代码开发平台-常见问题](https://gitee.com/maimengcloud/mdp-lcode-ui-web/blob/master/README.md#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98)
-#### 研发管理相关的业务问题
-答复：待补充
 
 ### 🔔️ 特别提醒
 
@@ -312,6 +307,11 @@ mdp 3.0 版本已经开始规划更新了，尽请期待新版本的诞生吧
 
 升级前必看：[CHANGELOG.md](/docs/CHANGELOG.md)
 
+## 📝 常见问题  
+#### 开发部署类常见问题
+答复：此类问题请参考[唛盟低代码开发平台-常见问题](https://gitee.com/maimengcloud/mdp-lcode-ui-web/blob/master/README.md#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98)
+#### 研发管理相关的业务问题
+答复：待补充
 
 ## 💯 实践案例
 
