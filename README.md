@@ -246,7 +246,7 @@ vue全家桶 + element-ui + axios
 
 >⚠️注意：该项目使用 element-ui@2.3.0+ 版本，所以最低兼容 vue@2.5.0+ nodejs版本v14.16.1
 
->⚠️注意：该项目基于唛盟低代码开发平台构建，开发前请仔细阅读[唛盟低代码开发平台的readme](https://gitee.com/maimengcloud/mdp-lcode-ui-web/blob/master/README.md)有助于您更好的运行本项目
+>⚠️注意：该项目基于唛盟低代码开发平台构建，开发前请仔细阅读[唛盟低代码开发平台的readme](https://gitee.com/maimengcloud/mdp-lcode-ui-web/blob/master/README.md)有助于您更好的运行本项目，共性的流程或者操作步骤说明请查看[唛盟低代码开发平台前端readme](https://gitee.com/maimengcloud/mdp-lcode-ui-web/blob/master/README.md)、[唛盟低代码开发平台后端readme](https://gitee.com/maimengcloud/mdp-lcode-backend/blob/master/README.md)
 ### 前序准备
 
 - 你的本地环境需要安装 [node](http://nodejs.org/) 和 [git](https://git-scm.com/)。我们的技术栈基于 [ES2015+](http://es6.ruanyifeng.com/)、[vue](https://cn.vuejs.org/index.html)、[vuex](https://vuex.vuejs.org/zh-cn/)、[vue-router](https://router.vuejs.org/zh-cn/) and [element-ui](https://github.com/ElemeFE/element)，提前了解和学习这些知识会对使用本项目有很大的帮助。
