@@ -32,5 +32,8 @@ export const editModel = params => { return axios.post(`${base}/mdp/workflow/de/
 //新增一条act_de_model
 export const addModel = params => { return axios.post(`${base}/mdp/workflow/de/model/add`, params); };
 
+//部署
+export const deployModel = params => { return axios.post(`${base}/mdp/workflow/de/model/deploy`, params); };
+
 //批量修改某些字段
 export const editSomeFieldsModel = params => { return axios.post(`${base}/mdp/workflow/de/model/editSomeFields`, params); };
