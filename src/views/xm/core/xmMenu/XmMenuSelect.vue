@@ -24,7 +24,7 @@
  					</mdp-select>
 					<mdp-select  v-model="filters.status" placeholder="需求状态" class="hidden-md-and-down" clearable style="width: 90px;" item-code="menuStatus">
  					</mdp-select>
-					<el-input v-model="filters.key" style="width: 100px;" placeholder="需求名称查询" clearable>
+					<el-input v-model="filters.menuName" style="width: 100px;" placeholder="需求名称查询" clearable>
 					</el-input>
 					<el-button  v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search">查询</el-button>
 
@@ -265,7 +265,7 @@ import XmEpicFeatures from './XmEpicFeaturesSelect.vue';
 			return {
 				maps:new Map(),
 				filters: {
-					key: '',
+					menuName: '',
 					product:null,
 					iterationFilterType:'',////join,not-join,''
 					mmUser:null,
@@ -337,8 +337,8 @@ import XmEpicFeatures from './XmEpicFeaturesSelect.vue';
 			},
 			getParams(params){
 
-				if( this.filters.key){
-					params.key="%"+this.filters.key+"%"
+				if( this.filters.menuName){
+					params.menuName=this.filters.menuName
 				}
 
 				if(this.filters.mmUser){

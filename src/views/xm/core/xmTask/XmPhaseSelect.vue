@@ -3,7 +3,7 @@
         <el-row class="padding-bottom">
           <div style="display:flex;justify-content: space-between;">
              <xm-project-select show-style="tag" style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="isTaskCenter?false:true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @change2="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
-           <el-input v-else v-model="filters.key" placeholder="名称模糊查询" clearable></el-input>
+           <el-input v-else v-model="filters.name" placeholder="名称模糊查询" clearable></el-input>
            <el-button style="margin-left:10px;" icon="el-icon-search" @click="searchXmTasks()">查询</el-button>
           </div>
         </el-row>
@@ -39,7 +39,7 @@
 									<div style="display:flex;">
 										<div style="width:50%;text-align: left;line-height: 32px;">计划名称</div>
                      <div style="line-height: 32px;width:50%;display: flex;justify-content: right;">
-                       <el-input v-if="!selProject||!selProject.id"  v-model="filters.key" size="mini" style="margin-left:5px;"  placeholder="名称模糊查询"  clearable></el-input>
+                       <el-input v-if="!selProject||!selProject.id"  v-model="filters.name" size="mini" style="margin-left:5px;"  placeholder="名称模糊查询"  clearable></el-input>
                     </div>
 
                   </div>
@@ -123,8 +123,8 @@ export default {
     ...mapGetters(["userInfo", "roles"]),
     tasksTreeData() {
       let xmTasks = JSON.parse(JSON.stringify(this.xmTasks || []));
-      if(this.filters.key){
-        xmTasks=xmTasks.filter(k=>k.name.indexOf(this.filters.key)>=0)
+      if(this.filters.name){
+        xmTasks=xmTasks.filter(k=>k.name.indexOf(this.filters.name)>=0)
       }
       const tasksTreeData = treeTool.translateDataToTree(xmTasks,"parentTaskid","id");
       return tasksTreeData;
@@ -172,7 +172,7 @@ export default {
   data() {
     return {
       filters: {
-        key: "",
+        name: "",
         isMyTask: "0", //0不区分我的，1 时我的任务
         selProject: null,
         skillTags: [],

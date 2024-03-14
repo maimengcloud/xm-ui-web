@@ -14,7 +14,7 @@
 				<el-button v-if="!filters.tags||filters.tags.length==0" @click.native="$refs.tagDialog.open()">标签</el-button>
 				<el-tag v-else @click="$refs.tagDialog.open()"   closable @close="clearFiltersTag(filters.tags[0])">{{filters.tags[0].tagName.substr(0,5)}}等({{filters.tags.length}})个</el-tag>
 
-				<el-input style="width:200px;" v-model="filters.key" placeholder="缺陷名称" clearable>
+				<el-input style="width:200px;" v-model="filters.name" placeholder="缺陷名称" clearable>
 				</el-input>
 
 				<el-button @click="searchXmQuestions" type="primary" icon="el-icon-search"></el-button>
@@ -286,7 +286,7 @@
 			return {
 				batchOper:false,
 				filters: {
-					key: '',
+					name: '',
 					bugStatus:'',
 					priority:'',
 					solution:'',
@@ -519,8 +519,8 @@
 					params.menuId=this.xmMenu.menuId
 				}
 
-				if(this.filters.key){
-					params.key='%'+this.filters.key+'%'
+				if(this.filters.name){
+					params.name= this.filters.name
 				}
 				if(this.filters.tags && this.filters.tags.length>0){
 					params.tagIdList=this.filters.tags.map(i=>i.tagId)

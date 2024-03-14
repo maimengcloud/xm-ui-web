@@ -7,7 +7,7 @@
             </el-col>
             <el-col :span="18">
                 <el-row>
-                    <el-input v-model="filters.key" style="width: 20%;" placeholder="名称 按回车" @keyup.enter.native="searchXmTestCases" clearable></el-input>
+                    <el-input v-model="filters.caseName" style="width: 20%;" placeholder="名称 按回车" @keyup.enter.native="searchXmTestCases" clearable></el-input>
 
                     <mdp-select placeholder="用例状态" style="width:15%;" clearable item-code="testCaseStatus" v-model="filters.caseStatus" effect="dark"></mdp-select>
                     <mdp-select placeholder="测试方式" style="width:15%;" clearable item-code="testType" v-model="filters.testType" effect="dark"></mdp-select>
@@ -127,7 +127,7 @@ export default {
     data() {
         return {
             filters: {
-                key: '',
+                caseName: '',
                 xmFunc:null,
                 caseStatus:'',
                 testType:'',
@@ -208,8 +208,8 @@ export default {
                 }
                 params.orderBy= orderBys.join(",")
             }
-            if(this.filters.key){
-                params.key=this.filters.key
+            if(this.filters.caseName){
+                params.caseName=this.filters.caseName
             }
 
             if(this.filters.caseStatus){

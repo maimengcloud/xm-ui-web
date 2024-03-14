@@ -48,7 +48,7 @@
 															<font class="more-label-font">
 																结算单标题:
 															</font>
-															<el-input   v-model="filters.key" style="width:100%;"  placeholder="输入结算单标题关键字">
+															<el-input   v-model="filters.title" style="width:100%;"  placeholder="输入结算单标题关键字">
 															</el-input>
 														</el-col>
 														<el-col  :span="24"  style="padding-top:5px;">
@@ -108,7 +108,7 @@ export default {
     beginDate.setTime(beginDate.getTime() - 3600 * 1000 * 24 * 7 * 4 * 12 );
     return {
       filters: {
-        key: '',
+        title: '',
         id:'',
         pmUser:null,//创建人
       },
@@ -183,8 +183,8 @@ export default {
         }
         params.orderBy= orderBys.join(",")
       }
-      if(this.filters.key){
-        params.key= "%"+ this.filters.key + "%"
+      if(this.filters.title){
+        params.title=  this.filters.title 
       }
       if(this.filters.id){
         params.id = this.filters.id;

@@ -5,7 +5,7 @@
 			<div style="display:flex;">
 			<xm-product-select show-style="tag" ref="xmProductSelect1" style="display:inline;" v-if="!xmProduct || !xmProduct.id"   :auto-select="false" :link-project-id="selProject?selProject.id:null" @change2="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClearSelect"></xm-product-select>
 
-			<el-input v-else v-model="filters.key" placeholder="名称模糊查询"  clearable></el-input>
+			<el-input v-else v-model="filters.menuName" placeholder="名称模糊查询"  clearable></el-input>
 			<el-button style="margin-left:5px;" icon="el-icon-search" @click="searchXmMenus()">查询</el-button>
 			<el-button style="margin-left:5px;" v-if="showSelect!==false && multi===true" type="primary" @click="selectConfirm()">确认选择</el-button>
 			</div>
@@ -18,7 +18,7 @@
 				</template>
 				<el-table-column prop="menuName" label="史诗、特性名称" min-width="150" >
 					<template slot="header">史诗、特性
-						<el-input v-if="!xmProduct || !xmProduct.id" style="width:10em;" v-model="filters.key" placeholder="名称模糊查询"  clearable></el-input>
+						<el-input v-if="!xmProduct || !xmProduct.id" style="width:10em;" v-model="filters.menuName" placeholder="名称模糊查询"  clearable></el-input>
 					</template>
 					<template slot-scope="scope">
 						<div  v-if="scope.row.dclass=='1'" class="icon" style="background-color:  rgb(255, 153, 51);">
@@ -76,8 +76,8 @@
 
       		xmMenusTreeData() {
 				let xmMenus = JSON.parse(JSON.stringify(this.xmMenus || []));
-				if(this.filters.key){
-					xmMenus=xmMenus.filter(k=>k.menuName.indexOf(this.filters.key)>=0)
+				if(this.filters.menuName){
+					xmMenus=xmMenus.filter(k=>k.menuName.indexOf(this.filters.menuName)>=0)
 				}
 				let xmMenusTreeData = treeTool.translateDataToTree(xmMenus,"pmenuId","menuId");
 				 return xmMenusTreeData;
@@ -118,7 +118,7 @@
 			return {
 				columnsConfig:[/**{label:'',property:'',isShow:true} */],
 				filters: {
-					key: '',
+					menuName: '',
 					product:null,
 					mmUser:null,
 					iterationFilterType:'',//join、not-join、''

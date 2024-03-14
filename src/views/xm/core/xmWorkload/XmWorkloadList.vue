@@ -1,7 +1,9 @@
 <template>
 	<section>
 		<el-row>
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>
+			<el-input v-model="filters.username" style="width: 10%;" placeholder="用户名称"></el-input> 
+			<el-input v-model="filters.bizName" style="width: 10%;" placeholder="任务名称"></el-input>
+			<el-input v-model="filters.remark" style="width: 10%;" placeholder="备注说明"></el-input>
 			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmWorkloads" icon="el-icon-search">已登记工时查询</el-button>
 			<span style="float:right;">
 			<el-button type="primary" @click="showAdd" icon="el-icon-plus" v-if="bizType!='5'"> 登记工时</el-button>
@@ -167,7 +169,9 @@
 		data() {
 			return {
 				filters: {
-					key: ''
+					username: '',
+					bizName:'',
+					remark:'',
 				},
 				xmWorkloads: [],//查询结果
 				pageInfo:{//分页数据
@@ -251,8 +255,14 @@
 					}
 					params.orderBy= orderBys.join(",")
 				}
-				if(this.filters.key){
-					params.key=this.filters.key
+				if(this.filters.username){
+					params.username=this.filters.username
+				}
+				if(this.filters.bizName){
+					params.bizName=this.filters.bizName
+				}
+				if(this.filters.remark){
+					params.remark=this.filters.remark
 				}
 				if( this.xmTask && this.xmTask.id){
 					params.taskId=this.xmTask.id

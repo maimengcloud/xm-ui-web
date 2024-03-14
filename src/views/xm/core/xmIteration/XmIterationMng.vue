@@ -18,7 +18,7 @@
         @keyup.enter.native="searchXmProducts"
       >
       </el-input>
-      <el-input v-model="filters.key" style="width: 15%" placeholder="模糊查询">
+      <el-input v-model="filters.iterationName" style="width: 15%" placeholder="模糊查询">
       </el-input>
       <el-button
         type="primary"
@@ -85,7 +85,7 @@
 											<i class="el-icon-document"></i>
 											迭代名称
 										</template>
-										<el-input v-model="filters.key" clearable ></el-input>
+										<el-input v-model="filters.groupName" clearable ></el-input>
 									</el-descriptions-item>
 
 									<el-descriptions-item>
@@ -337,7 +337,7 @@ export default {
     endDate.setTime(endDate.getTime() + 3600 * 1000 * 24 * 7 * 4 * 12);
     return {
       filters: {
-        key: "",
+        iterationName: "",
         queryScope: "", //迭代查询范围 iterationId\branchId\compete\''
         id: "", //迭代编号
 		    xmProduct:null,
@@ -502,8 +502,8 @@ export default {
         }
         params.orderBy = orderBys.join(",");
       }
-      if (this.filters.key) {
-        params.key = "%" + this.filters.key + "%";
+      if (this.filters.iterationName) {
+        params.iterationName =   this.filters.iterationName
       }
       if (this.filters.xmProduct) {
         params.productId = this.filters.xmProduct.id;

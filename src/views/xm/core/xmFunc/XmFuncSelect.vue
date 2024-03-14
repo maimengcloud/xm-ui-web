@@ -1,7 +1,7 @@
 <template>
 	<section>
 		<el-row>
-			<el-input v-model="filters.key" style="width:50%;" placeholder="模块名称"   clearable></el-input> 
+			<el-input v-model="filters.name" style="width:50%;" placeholder="模块名称"   clearable></el-input> 
             <el-button  @click="searchXmFuncs" icon="el-icon-search" title="查询"> </el-button>
 			<span style="float:right;">  
                     <el-button  @click="showAdd" icon="el-icon-plus" title="添加顶级模块">  </el-button> 
@@ -78,8 +78,8 @@ export default {
 
         xmFuncsTreeData() {
             let xmFuncs = JSON.parse(JSON.stringify(this.xmFuncs || []));
-            if(this.filters.key){
-                xmFuncs=xmFuncs.filter(k=>k.name.indexOf(this.filters.key)>=0)
+            if(this.filters.name){
+                xmFuncs=xmFuncs.filter(k=>k.name.indexOf(this.filters.name)>=0)
             } 
             let xmFuncsTreeData = treeTool.translateDataToTree(xmFuncs,"pid","id");
                 return xmFuncsTreeData;
@@ -96,7 +96,7 @@ export default {
     data() {
         return {
             filters: {
-                key: ''
+                name: ''
             },
             xmFuncs: [],//查询结果
             pageInfo:{//分页数据

@@ -1,7 +1,7 @@
 <template>
 	<section class="padding">
 		<el-row>
-			 <el-input v-model="filters.key" style="width:60%;" placeholder="项目名称模糊查询">
+			 <el-input v-model="filters.name" style="width:60%;" placeholder="项目名称模糊查询">
 			</el-input>
 			<el-button @click="searchXmProjects" icon="el-icon-search"></el-button>
 		</el-row>
@@ -60,7 +60,7 @@
 		data() {
 			return {
 				filters: {
-					key: ''
+					name: ''
 				},
 				xmProjects: [],//查询结果
 				pageInfo:{//分页数据
@@ -130,8 +130,8 @@
 					count:this.pageInfo.count,
 				};
 
-				if(this.filters.key){
-					params.key='%'+this.filters.key+'%'
+				if(this.filters.name){
+					params.name=this.filters.name
 				}
 				this.load.list = true;
 				if(this.pageInfo.orderFields!=null && this.pageInfo.orderFields.length>0){

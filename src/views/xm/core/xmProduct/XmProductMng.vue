@@ -9,7 +9,7 @@
 					<mdp-select placeholder="状态" item-code="xmProductPstatus" v-model="filters.pstatus"></mdp-select>
 					<el-input v-if="filters.queryScope=='productId'" style="width:20%;"  v-model="filters.id"  placeholder="输入产品编号" @keyup.enter.native="searchXmProducts" clearable>
 					</el-input>
-					<el-input v-if="filters.queryScope!='productId'" v-model="filters.key" style="width: 20%;" placeholder="名称查询" clearable>
+					<el-input v-if="filters.queryScope!='productId'" v-model="filters.productName" style="width: 20%;" placeholder="名称查询" clearable>
 					</el-input>
 					<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProducts" icon="el-icon-search">查询</el-button>
 
@@ -98,7 +98,7 @@
 											<i class="el-icon-document"></i>
 											产品名称
 										</template>
-										<el-input v-model="filters.key" clearable style="width:100%;"></el-input>
+										<el-input v-model="filters.productName" clearable style="width:100%;"></el-input>
 									</el-descriptions-item>
 
 									<el-descriptions-item>
@@ -444,7 +444,7 @@
 			beginDate.setTime(beginDate.getTime() - 3600 * 1000 * 24 * 7 * 4 * 12 );
 			return {
 				filters: {
-					key: '',
+					productName: '',
 					queryScope:'compete',//compete/branchId/''/productId
 					id:'',//产品编号
 					pmUser:null,//产品经理
@@ -573,8 +573,8 @@
 				if(this.xmIteration){
 					 params.iterationId=this.xmIteration.id
 				}
-				if(this.filters.key!==""){
-					params.key="%"+this.filters.key+"%"
+				if(this.filters.productName!==""){
+					params.productName=this.filters.productName
 				}
 				if(this.selProject){
 					params.projectId=this.selProject.id

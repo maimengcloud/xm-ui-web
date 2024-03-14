@@ -13,7 +13,7 @@
 
 						<mdp-select item-code="taskType" v-model="filters.taskType" placeholder="请选择任务类型" clearable @change="changeTaskType">
   						</mdp-select>
-						<el-input v-model="filters.key" style="width:20%;" placeholder="任务、需求名称模糊查询">
+						<el-input v-model="filters.name" style="width:20%;" placeholder="任务、需求名称模糊查询">
 						</el-input>
 						<el-button @click="searchXmTasks" icon="el-icon-search">查询</el-button>
 						<el-button v-if="isMultiSelect" @click="selectedTasks" type="primary">确认选择</el-button>
@@ -128,7 +128,7 @@
 			beginDate.setTime(beginDate.getTime() - 3600 * 1000 * 24 * 7 * 4 * 12 );
 			return {
 				filters: {
-					key: '',
+					name: '',
 					taskType:'all',
 					isMyTask: '0',//0不区分我的，1 时我的任务
 					selProject:null,
@@ -325,8 +325,8 @@
 				if (this.filters.skillTags && this.filters.skillTags.length > 0) {
 					params.skillIds = this.filters.skillTags.map((i) => i.skillId);
 				}
-				if (this.filters.key) {
-					params.key = "%" + this.filters.key + "%";
+				if (this.filters.name) {
+					params.name = this.filters.name 
 				}
 				if (this.filters.taskOut) {
 					params.taskOut = this.filters.taskOut;

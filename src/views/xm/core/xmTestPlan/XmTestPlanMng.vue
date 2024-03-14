@@ -1,7 +1,7 @@
 <template>
 	<section>
 		<el-row>
-			<el-input v-model="filters.key" style="width: 15%;" placeholder="模糊查询"  clearable></el-input>
+			<el-input v-model="filters.name" style="width: 15%;" placeholder="模糊查询"  clearable></el-input>
             <mdp-select style="width:15%;" clearable placeholder="状态" item-code="testPlanStatus" v-model="filters.status" effect="dark"></mdp-select>
 
             <mdp-select style="width:15%;" clearable placeholder="结果" item-code="testPlanTcode" v-model="filters.tcode" effect="dark" ></mdp-select>
@@ -133,7 +133,7 @@ export default {
     data() {
         return {
             filters: {
-                key: '',
+                name: '',
                 status:'',
                 tcode:'',
                 testType:'',
@@ -214,8 +214,8 @@ export default {
                 }
                 params.orderBy= orderBys.join(",")
             }
-            if(this.filters.key){
-                params.key=this.filters.key
+            if(this.filters.name){
+                params.name=this.filters.name
             }
             if(this.filters.tcode){
                 params.tcode=this.filters.tcode

@@ -1,7 +1,7 @@
 <template>
 	<section class="page-container padding border">
 		<el-row>
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="项目模板名称查询"></el-input>
+			<el-input v-model="filters.name" style="width: 20%;" placeholder="项目模板名称查询"></el-input>
 			<mdp-select item-code="projectType" v-model="filters.xmType" @change="searchXmProjectTemplates">
  			</mdp-select>
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmProjectTemplates">查询</el-button>
@@ -62,7 +62,7 @@
 		data() {
 			return {
 				filters: {
-					key: '',
+					name: '',
 					xmType:''
 				},
 				xmProjectTemplates: [],//查询结果

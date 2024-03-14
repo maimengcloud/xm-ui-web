@@ -3,7 +3,7 @@
         <el-row v-show="!batchVisible">
           <div style="display:flex;justify-content: space-between;">
                <xm-project-select show-style="tag" style="display:inline;" v-if="!selProject||!selProject.id" :auto-select="isTaskCenter?false:true"  :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @change2="onProjectRowClick" @clear="onProjectClear" ></xm-project-select>
-              <el-input v-else v-model="filters.key" placeholder="名称模糊查询"  clearable @keyup.enter.native="searchXmTasks()"></el-input>
+              <el-input v-else v-model="filters.name" placeholder="名称模糊查询"  clearable @keyup.enter.native="searchXmTasks()"></el-input>
              <span style="display:flex;" v-show="filters.selProject && filters.selProject.id">
              <el-popover
               style="margin-left:5px;"
@@ -152,7 +152,7 @@
 										<div style="width:40%;text-align: left;line-height: 32px;">计划名称</div>
                      <div style="line-height: 32px;width:60%;display: flex;justify-content: right;">
                       <el-checkbox title="您可以批量删除、批量更换上级等操作" v-model="batchVisible"><span style="color:#C0C4CC;">批量</span></el-checkbox>
-                      <el-input v-if="!selProject||!selProject.id"  v-model="filters.key" size="mini" style="margin-left:5px;"  placeholder="名称模糊查询"  clearable></el-input>
+                      <el-input v-if="!selProject||!selProject.id"  v-model="filters.name" size="mini" style="margin-left:5px;"  placeholder="名称模糊查询"  clearable></el-input>
                     </div>
 
                   </div>
@@ -357,8 +357,8 @@ export default {
     ...mapGetters(["userInfo", "roles"]),
     tasksTreeData() {
       let xmTasks = JSON.parse(JSON.stringify(this.xmTasks || []));
-      if(this.filters.key){
-        xmTasks=xmTasks.filter(k=>k.name.indexOf(this.filters.key)>=0)
+      if(this.filters.name){
+        xmTasks=xmTasks.filter(k=>k.name.indexOf(this.filters.name)>=0)
       }
       const tasksTreeData = treeTool.translateDataToTree(xmTasks,"parentTaskid","id");
       return tasksTreeData;
@@ -414,7 +414,7 @@ export default {
     return {
       batchVisible:false,
       filters: {
-        key: "",
+        name: "",
         isMyTask: "0", //0不区分我的，1 时我的任务
         selProject: null,
         skillTags: [],

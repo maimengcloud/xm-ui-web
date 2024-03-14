@@ -9,7 +9,7 @@ var sysName="唛盟智能开发";//系统名称，用于展示
 export default {
   //登录相关
   getOauth2LoginContext:function(){
-    return "lcode"
+    return "oauth2client"
   },
   //短信相关
   getSmsContext: function() {

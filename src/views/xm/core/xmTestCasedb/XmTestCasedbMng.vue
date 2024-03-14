@@ -2,7 +2,7 @@
 	<section>
 		<el-row>
             <xm-product-select show-style="tag" v-if="!xmProduct" style="display:inline;" :auto-select="false" :link-project-id="selProject?selProject.id:null" @change2="onProductSelected" @clear="clearProduct"></xm-product-select>
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询" clearable></el-input>
+			<el-input v-model="filters.name" style="width: 20%;" placeholder="模糊查询" clearable></el-input>
 			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestCasedbs" icon="el-icon-search">查询</el-button>
 			<span style="float:right;">
 			    <el-button type="primary" @click="showAdd" icon="el-icon-plus">添加用例库 </el-button>
@@ -104,7 +104,7 @@ export default {
     data() {
         return {
             filters: {
-                key: '',
+                name: '',
                 xmProduct:null,
             },
             xmTestCasedbs: [],//查询结果
@@ -182,8 +182,8 @@ export default {
                 }
                 params.orderBy= orderBys.join(",")
             }
-            if(this.filters.key){
-                params.key=this.filters.key
+            if(this.filters.name){
+                params.name=this.filters.name
             }
             if(this.filters.xmProduct && this.filters.xmProduct.id){
                 params.productId=this.filters.xmProduct.id

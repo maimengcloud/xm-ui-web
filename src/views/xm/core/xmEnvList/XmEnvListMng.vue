@@ -1,7 +1,7 @@
 <template>
 	<section class="page-container  padding border">
 		<el-row>
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询" clearable></el-input>
+			<el-input v-model="filters.name" style="width: 20%;" placeholder="模糊查询" clearable></el-input>
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmEnvLists">查询</el-button>
 			<span style="float:right;">
 			<el-button type="primary" @click="showAdd" icon="el-icon-plus">添加环境清单</el-button>
@@ -67,7 +67,7 @@
 		data() {
 			return {
 				filters: {
-					key: ''
+					name: ''
 				},
 				xmEnvLists: [],//查询结果
 				pageInfo:{//分页数据
@@ -155,8 +155,8 @@
 					}
 					params.orderBy= orderBys.join(",")
 				}
-				if(this.filters.key!==""){
-					params.fuzzy = '%'+this.filters.key+'%';
+				if(this.filters.name!==""){
+					params.name = this.filters.name;
 					//params.xxx=this.filters.key
 				}
 				if(this.projectInfo && this.projectInfo.id){

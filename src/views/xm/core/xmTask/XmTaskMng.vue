@@ -40,7 +40,7 @@
 
           <el-input
             style="width: 15em;"
-            v-model="filters.key" clearable
+            v-model="filters.name" clearable
             placeholder="任务名称"
           >
           </el-input>
@@ -995,7 +995,7 @@ export default {
     beginDate.setTime(beginDate.getTime() - 3600 * 1000 * 24 * 7 * 4 * 12);
     return {
       filters: {
-        key: "",
+        name: "",
         isMyTask: "0", //0不区分我的，1 时我的任务
         selProject: null,
         skillTags: [],
@@ -2024,8 +2024,8 @@ export default {
       if (this.filters.skillTags && this.filters.skillTags.length > 0) {
         params.skillIds = this.filters.skillTags.map((i) => i.skillId);
       }
-      if (this.filters.key) {
-        params.key = "%" + this.filters.key + "%";
+      if (this.filters.name) {
+        params.name =  this.filters.name;
       }
       if (this.filters.taskOut) {
         params.taskOut = this.filters.taskOut;

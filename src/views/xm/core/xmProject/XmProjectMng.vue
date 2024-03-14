@@ -15,7 +15,7 @@
 			</el-select>
 			<mdp-select label="项目状态" placeholder="状态" style="width:10em;" item-code="projectStatus" v-model="filters.status"></mdp-select>
 
-			<el-input v-model="filters.key" style="width:10em;" placeholder="名称查询" clearable >
+			<el-input v-model="filters.name" style="width:10em;" placeholder="名称查询" clearable >
 			</el-input>
 			<el-button  type="primary" icon="el-icon-search" @click="searchXmProjects">查询</el-button>
 				<el-popover
@@ -438,7 +438,7 @@
 		data() {
 			return {
 				filters: {
-					key: '',
+					name: '',
 					productId:'',
 					productName:'',
 					id:'',//项目编号
@@ -598,8 +598,8 @@
 				if(this.filters.id){
 					params.id=this.filters.id
 				}
-				if(this.filters.key){
-					params.key=this.filters.key
+				if(this.filters.name){
+					params.name=this.filters.name
 				}
 				return params;
 			},

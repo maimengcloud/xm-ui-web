@@ -2,7 +2,7 @@
 
 	<section class="padding" ref="xmTestPlanTable">
  		<el-row>
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"  clearable></el-input>
+			<el-input v-model="filters.name" style="width: 20%;" placeholder="模糊查询"  clearable></el-input>
 			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmTestPlans" icon="el-icon-search">查询</el-button>
 
 		</el-row>
@@ -81,7 +81,7 @@ export default {
         return {
             visible:false,
             filters: {
-                key: ''
+                name: ''
             },
             xmTestPlans: [],//查询结果
             pageInfo:{//分页数据
@@ -159,8 +159,8 @@ export default {
                 }
                 params.orderBy= orderBys.join(",")
             }
-            if(this.filters.key){
-                params.key=this.filters.key
+            if(this.filters.name){
+                params.name=this.filters.name
             }
 
             if(this.projectInfo && this.projectInfo.id){

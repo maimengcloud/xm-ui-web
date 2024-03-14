@@ -2,7 +2,7 @@
 	<section class="padding-left padding-right">
 		<el-row>
 
-			 <el-input v-model="filters.key" style="width:30%;" placeholder="请输入关键字进行查找项目" v-if="!xmIteration && !xmProduct">
+			 <el-input v-model="filters.name" style="width:30%;" placeholder="请输入关键字进行查找项目" v-if="!xmIteration && !xmProduct">
 			</el-input>
 			<el-button @click="searchXmProjects" icon="el-icon-search" v-if="!xmIteration && !xmProduct"></el-button>
 			<div style="text-align:right;padding-right:40px;">
@@ -77,7 +77,7 @@
 		data() {
 			return {
 				filters: {
-					key: ''
+					name: ''
 				},
 				xmProjects: [],//查询结果
 				pageInfo:{//分页数据
@@ -152,8 +152,8 @@
 				if(this.xmIteration){
 					params.linkIterationId=this.xmIteration.id
 				}
-				if(this.filters.key){
-					params.key='%'+this.filters.key+'%'
+				if(this.filters.name){
+					params.name=this.filters.name
 				}
 				if( !params.linkIterationId && !params.linkProductId){
 					return;

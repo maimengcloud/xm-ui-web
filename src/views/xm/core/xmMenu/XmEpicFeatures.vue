@@ -3,7 +3,7 @@
 		<el-row v-show="!batchVisible">
 				<div style="display:flex;justify-content: space-between;">
 				<xm-product-select show-style="tag" v-if=" !xmProduct || !xmProduct.id" ref="xmProductSelect1" style="display:inline;"  :auto-select="true" :link-project-id="selProject?selProject.id:null" @change2="onProductSelected" @clear="onProductClearSelect" ></xm-product-select>
-				<el-input v-else v-model="filters.key"  placeholder="名称模糊查询"  clearable></el-input>
+				<el-input v-else v-model="filters.menuName"  placeholder="名称模糊查询"  clearable></el-input>
 				<span style="display:flex;" v-show="filters.product && filters.product.id">
  					<el-popover
 						style="margin-left:5px;"
@@ -84,7 +84,7 @@
 			</el-row>
 			<el-row  v-show="batchVisible">
 				<div style="display:flex;">
-				<el-input v-if=" xmProduct  && xmProduct.id" v-model="filters.key"  placeholder="名称模糊查询"  clearable></el-input>
+				<el-input v-if=" xmProduct  && xmProduct.id" v-model="filters.menuName"  placeholder="名称模糊查询"  clearable></el-input>
 
 				<el-button type="danger"
 					style="margin-left:5px;"
@@ -112,7 +112,7 @@
 							</div>
 							<div style="line-height: 32px;display:flex;justify-content: right;width:60%;">
 								<el-checkbox v-if="!disabledMng" title="您可以批量删除、批量更换上级等操作" v-model="batchVisible"><span style="color:#C0C4CC;">批量</span></el-checkbox>
-								<el-input size="mini" v-if=" !xmProduct || !xmProduct.id" v-model="filters.key"   placeholder="名称模糊查询"  clearable></el-input>
+								<el-input size="mini" v-if=" !xmProduct || !xmProduct.id" v-model="filters.menuName"   placeholder="名称模糊查询"  clearable></el-input>
 							</div>
 						</div>
 					</template>
@@ -206,8 +206,8 @@
 
       		xmMenusTreeData() {
 				let xmMenus = JSON.parse(JSON.stringify(this.xmMenus || []));
-				if(this.filters.key){
-					xmMenus=xmMenus.filter(k=>k.menuName.indexOf(this.filters.key)>=0)
+				if(this.filters.menuName){
+					xmMenus=xmMenus.filter(k=>k.menuName.indexOf(this.filters.menuName)>=0)
 				}
 				let xmMenusTreeData = treeTool.translateDataToTree(xmMenus,"pmenuId","menuId");
 				 return xmMenusTreeData;
@@ -224,7 +224,7 @@
 				batchVisible:false,
 				columnsConfig:[/**{label:'',property:'',isShow:true} */],
 				filters: {
-					key: '',
+					menuName: '',
 					product:null,
 					dclasss:['1','2'],
 					productId:'',//产品编号

@@ -8,7 +8,7 @@
 				<el-row>
 					<el-col :span="24">
 						<el-row>
-							<el-input v-model="filters.key" style="width: 60%;" placeholder="模糊查询" clearable>
+							<el-input v-model="filters.menuName" style="width: 60%;" placeholder="模糊查询" clearable>
 							</el-input>
 							<el-button v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmIterationMenus" icon="el-icon-search"></el-button>
 
@@ -20,7 +20,7 @@
 						</el-row>
 						<el-row class="padding-top">
 							<!--列表 XmIterationMenu 迭代定义-->
-							<el-table ref="table" height="100px" v-adaptive="{bottomOffset:50}" :data="xmIterationMenusTreeData"  row-key="menuId"   @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
+							<el-table ref="table" height="100px" v-adaptive="{bottomOffset:50}" :data="xmIterationMenusTreeData"  row-menuName="menuId"   @sort-change="sortChange" highlight-current-row v-loading="load.list" border @selection-change="selsChange" @row-click="rowClick" style="width: 100%;">
 								<el-table-column  type="selection" width="45"></el-table-column>
 
 								<el-table-column prop="menuName" label="已加入迭代的用户故事" min-width="140" >
@@ -103,7 +103,7 @@
 		data() {
 			return {
 				filters: {
-					key: '',
+					menuName: '',
 					pmenuId:'',
 				},
 				xmIterationMenus: [],//查询结果
@@ -191,8 +191,8 @@
 					}
 					params.orderBy= orderBys.join(",")
 				}
-				if(this.filters.key){
-					params.key='%'+this.filters.key+'%'
+				if(this.filters.menuName){
+					params.menuName=this.filters.menuName
 				}
 				if(this.iteration){
 					params.iterationId=this.iteration.id

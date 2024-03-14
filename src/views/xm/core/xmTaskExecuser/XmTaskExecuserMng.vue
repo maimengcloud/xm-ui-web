@@ -1,7 +1,7 @@
 <template>
 	<section class="padding">
 		<el-row>
-			<el-input v-model="filters.key" style="width: 10em;" placeholder="任务名称" clearable></el-input>
+			<el-input v-model="filters.taskName" style="width: 10em;" placeholder="任务名称" clearable></el-input>
 			<el-input v-model="filters.taskId" style="width:10em;;" placeholder="任务编号" clearable></el-input>
 			<el-input v-model="filters.projectId" style="width: 10em;;" placeholder="项目编号" clearable></el-input>
  			<el-input v-model="filters.execUserBranchId" style="width: 10em;;" placeholder="用户公司编号" clearable></el-input>
@@ -205,7 +205,7 @@
 		data() {
 			return {
 				filters: {
-					key: '',
+					taskName: '',
 					execUserBranchId:'',
 					taskId:'',
 					projectId:'',
@@ -304,8 +304,8 @@
 					}
 					params.orderBy= orderBys.join(",")
 				}
-				if(this.filters.key!==""){
-					 params.key=this.filters.key
+				if(this.filters.taskName!==""){
+					 params.taskName=this.filters.taskName
 				}
 				if(this.isMy=='1'){
 					params.isMy='1'

@@ -3,7 +3,7 @@
  
  					<el-row class="padding">
 						<el-row>   
-							<el-input v-model="filters.key" style="width:20%;"  clearable  placeholder="按 标题 摘要 作者 模糊查询"> 
+							<el-input v-model="filters.archiveTitle" style="width:20%;"  clearable  placeholder="按 标题 摘要 作者 模糊查询"> 
 							</el-input> 
 							<!--
 							<el-select v-if="!archiveType" v-model="filters.categoryType"  placeholder="请选择主题" clearable>
@@ -175,7 +175,7 @@
 		data() { 
 			return {
 				filters: {
-					key: '', 
+					archiveTitle: '', 
 					isMy:'',
 					categoryType:'',
 					categoryTreeNodes:[], 
@@ -270,10 +270,10 @@
 					}  
 					params.orderBy= orderBys.join(",")
 				}
-				if(this.filters.key){
-					params.key= this.filters.key;
-					//params.archiveAbstract='%'+this.filters.key+'%';
-					//params.archiveContext='%'+this.filters.key+'%';
+				if(this.filters.archiveTitle){
+					params.archiveTitle= this.filters.archiveTitle;
+					//params.archiveAbstract='%'+this.filters.archiveTitle+'%';
+					//params.archiveContext='%'+this.filters.archiveTitle+'%';
 				}
 				if(this.categorys!=null && this.categorys.length>0){
 					params.categoryIds=this.categorys.map(i=>i.id)
@@ -409,8 +409,8 @@
 				this.$emit('row-click',row, event, column);//  @row-click="rowClick"
 			},  
 			handleFiltersTagClose:function(tag,paramsName){
-				if(paramsName=='key'){
-					this.filters.key=null;
+				if(paramsName=='archiveTitle'){
+					this.filters.archiveTitle=null;
 				}else if(paramsName=='categoryTreeNodes'){
 					this.categorys=this.categorys.filter(i=>i.id!=tag.id);
 					this.$refs.categoryTree.$refs.nodeTree.setChecked(tag.id,false,false);

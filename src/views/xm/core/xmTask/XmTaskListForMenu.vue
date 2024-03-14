@@ -117,7 +117,7 @@
 		data() {
 			return {
 				filters: {
-					key: '',
+					name: '',
 					isMyTask: '0',//0不区分我的，1 时我的任务
 				},
 				xmTasks: [],//查询结果
@@ -211,8 +211,8 @@
 					params.orderBy= orderBys.join(",")
 				}
 
-				if(this.filters.key){
-					params.key='%'+this.filters.key+'%'
+				if(this.filters.name){
+					params.name=this.filters.name
 				}
 				if(this.filters.taskType!="all" && this.filters.taskType!="" && this.filters.taskType!=null){
 					params.taskType=this.filters.taskType

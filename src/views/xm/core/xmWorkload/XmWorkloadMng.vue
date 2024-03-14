@@ -14,7 +14,7 @@
         <el-option label="已通过" value="3"></el-option>
         <el-option label="已结算" value="4"></el-option>
       </el-select>
-			<el-input v-model="filters.key" style="width: 150px;" clearable placeholder="模糊查询员工名称"></el-input>
+			<el-input v-model="filters.username" style="width: 150px;" clearable placeholder="员工名称"></el-input>
 			<el-input v-model="filters.userid" style="width: 150px;" clearable placeholder="员工编号"></el-input>
 			<el-input v-model="filters.taskId" style="width: 150px;" clearable placeholder="任务编号"></el-input>
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" @click="searchXmWorkloads" icon="el-icon-search">查询</el-button>
@@ -292,7 +292,7 @@
       beginDate.setTime(beginDate.getTime() - 3600 * 1000 * 24 * 7 * 4 * 12 );
 			return {
 				filters: {
-					key: '',
+					username: '',
           wstatus:'',
           sstatus:'',
           pmUser:'',
@@ -381,8 +381,8 @@
 					}
 					params.orderBy= orderBys.join(",")
 				}
-				if(this.filters.key){
-					params.key= "%" + this.filters.key + "%"
+				if(this.filters.username){
+					params.username= this.filters.username
 				}
         if(this.selProject){
           params.projectId= this.selProject;

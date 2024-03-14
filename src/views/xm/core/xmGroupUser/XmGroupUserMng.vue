@@ -1,9 +1,10 @@
 <template>
 	<section class="page-container border padding">
 		<el-row>
- 			<el-input v-model="filters.groupNameKey" style="width:15%;" clearable placeholder="小组名称查询"></el-input>
-			<el-input v-model="filters.mngUsernamekey" style="width:15%;" clearable placeholder="组长、副组长名称查询"></el-input>
-			<el-input v-model="filters.groupUsernameKey" style="width:15%;" clearable placeholder="组员名称查询"></el-input>
+ 			<el-input v-model="filters.groupName" style="width:15%;" clearable placeholder="小组名称查询"></el-input>
+			<el-input v-model="filters.leaderUsername" style="width:15%;" clearable placeholder="组长名称查询"></el-input>
+			<el-input v-model="filters.assUsername" style="width:15%;" clearable placeholder="副组长名称查询"></el-input>
+			<el-input v-model="filters.username" style="width:15%;" clearable placeholder="组员名称查询"></el-input>
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" @click="searchXmGroupUsers" icon="el-icon-search">查询</el-button>
  			<el-button type="danger" v-loading="load.del" @click="batchDel" :disabled="this.sels.length===0 || load.del==true" icon="el-icon-delete"></el-button>
 		</el-row>
@@ -84,10 +85,11 @@
 		data() {
 			return {
 				filters: {
-					key: '',
-					groupNameKey:'',
-					mngUsernamekey:'',
-					groupUsernameKey:'',
+					groupName: '',
+					groupName:'',
+					leaderUsername:'',
+					assUsername:'',
+					username:'',
 				},
 				xmGroupUsers: [],//查询结果
 				pageInfo:{//分页数据
@@ -161,18 +163,18 @@
 					}
 					params.orderBy= orderBys.join(",")
 				}
-				if(this.filters.key){
-					params.key=this.filters.key
-				}
 
-				if(this.filters.groupNameKey){
-					params.groupNameKey=this.filters.groupNameKey
+				if(this.filters.groupName){
+					params.groupName=this.filters.groupName
 				}
-				if(this.filters.groupUsernameKey){
-					params.groupUsernameKey=this.filters.groupUsernameKey
+				if(this.filters.username){
+					params.username=this.filters.username
 				}
-				if(this.filters.mngUsernamekey){
-					params.mngUsernamekey=this.filters.mngUsernamekey
+				if(this.filters.leaderUsername){
+					params.leaderUsername=this.filters.leaderUsername
+				}
+				if(this.filters.assUsername){
+					params.assUsername=this.filters.assUsername
 				}
 				if(this.xmGroup){
 					params.groupId=this.xmGroup.id

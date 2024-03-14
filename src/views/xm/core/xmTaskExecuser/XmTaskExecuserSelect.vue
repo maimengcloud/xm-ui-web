@@ -1,7 +1,7 @@
 <template>
 	<section class="padding">
 		<el-row>
-			<el-input v-model="filters.key" style="width: 10em;" placeholder="任务名称" clearable></el-input>
+			<el-input v-model="filters.name" style="width: 10em;" placeholder="任务名称" clearable></el-input>
 			<el-input v-model="filters.taskId" style="width:10em;" placeholder="任务编号" clearable></el-input>
 			<span v-if="!selProject || !selProject.id">
 				<el-input  v-model="filters.projectId" style="width: 10em;" placeholder="项目编号" clearable></el-input>
@@ -109,7 +109,7 @@
 		data() {
 			return {
 				filters: {
-					key: '',
+					name: '',
 					execUserBranchId:'',
 					taskId:'',
 					projectId:'',
@@ -194,8 +194,8 @@
 					}
 					params.orderBy= orderBys.join(",")
 				}
-				if(this.filters.key!==""){
-					 params.key=this.filters.key
+				if(this.filters.name!==""){
+					 params.name=this.filters.name
 				}
 				this.load.list = true;
 				if(this.filters.taskId){

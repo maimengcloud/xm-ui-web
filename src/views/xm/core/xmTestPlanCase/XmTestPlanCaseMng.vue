@@ -7,7 +7,7 @@
             </el-col>
             <el-col :span="!xmTestCase||!xmTestCase.id?18:24">
                 <el-row>
-                    <el-input v-model="filters.key" style="width: 15%;" placeholder="模糊查询"  clearable></el-input>
+                    <el-input v-model="filters.name" style="width: 15%;" placeholder="模糊查询"  clearable></el-input>
                     <mdp-select style="width:15%;" placeholder="用例状态" clearable item-code="testCaseStatus" v-model="filters.caseStatus" effect="dark"></mdp-select>
                     <mdp-select placeholder="测试方式" style="width:15%;" clearable item-code="testType" v-model="filters.testType" effect="dark"></mdp-select>
 
@@ -159,7 +159,7 @@ export default {
     data() {
         return {
             filters: {
-                key: '',
+                name: '',
                 xmFunc:null,
                 testType:'',
                 caseStatus:'',
@@ -247,8 +247,8 @@ export default {
                 }
                 params.orderBy= orderBys.join(",")
             }
-            if(this.filters.key){
-                params.key=this.filters.key
+            if(this.filters.name){
+                params.name=this.filters.name
             }
             if(this.filters.caseStatus){
                 params.caseStatus=this.filters.caseStatus

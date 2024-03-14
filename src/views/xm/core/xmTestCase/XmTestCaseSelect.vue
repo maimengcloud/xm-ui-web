@@ -11,7 +11,7 @@
                 <el-row>
 
                     <el-checkbox v-if="xmTestPlan && xmTestPlan.id" true-label="1" false-label="" v-model="filters.notJoinPlan" :title="'查询未曾加入计划【'+xmTestPlan.name+'】的测试用例'"> 未加入 </el-checkbox>
-                    <el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>
+                    <el-input v-model="filters.caseName" style="width: 20%;" placeholder="模糊查询"></el-input>
                     <mdp-select label="状态" style="width:15%;" clearable placeholder="用例状态" item-code="testCaseStatus" v-model="filters.caseStatus"></mdp-select>
                     <mdp-select placeholder="测试方式" style="width:15%;" clearable  item-code="testType" v-model="filters.testType" effect="dark"></mdp-select>
 
@@ -112,7 +112,7 @@ export default {
     data() {
         return {
             filters: {
-                key: '',
+                caseName: '',
                 notJoinPlan:'',
                 xmFunc:null,
                 caseStatus:'',
@@ -194,8 +194,8 @@ export default {
                 }
                 params.orderBy= orderBys.join(",")
             }
-            if(this.filters.key){
-                params.key=this.filters.key
+            if(this.filters.caseName){
+                params.caseName=this.filters.caseName
             }
             if(this.filters.caseStatus){
                 params.caseStatus=this.filters.caseStatus

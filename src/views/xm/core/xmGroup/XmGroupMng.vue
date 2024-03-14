@@ -3,7 +3,7 @@
 		<el-row>
 			<xm-project-select show-style="tag" style="display:inline;" v-if="!selProject&&!xmProduct" :auto-select="true"   :link-iteration-id="xmIteration?xmIteration.id:null" :link-product-id="xmProduct?xmProduct.id:null"  @selected="onProjectRowClick" @clear="onProjectClearSelect"></xm-project-select>
 
-			<el-input v-model="filters.key" style="width:15%;" clearable placeholder="名称过滤"></el-input>
+			<el-input v-model="filters.groupName" style="width:15%;" clearable placeholder="名称过滤"></el-input>
 			<el-button  type="primary" @click="searchXmGroups" icon="el-icon-search">刷新</el-button>
 			<el-button  type="plain" @click="showGroupState" icon="el-icon-s-data">小组进度</el-button>
 			<el-button class="hidden-lg-and-down" type="plain" @click="xmRecordVisible=true" icon="el-icon-document">变化日志</el-button>
@@ -25,7 +25,7 @@
 		<el-row ref="table" :style="{overflowX:'auto',height:maxTableHeight+'px'}">
 			<vue-okr-tree :data="okrTreeData" v-loading="load.list" ref="tree"
 				show-collapsable
-				node-key="id"
+				node-groupName="id"
 				default-expand-all
 				current-lable-class-name="crrentClass"
 				:render-content="renderContent"
@@ -200,7 +200,7 @@ import  XmGroupEdit from './XmGroupEdit';//新增修改界面
 import { mapGetters } from 'vuex'
 import {VueOkrTree} from 'vue-okr-tree';
 //如果样式有问题，尝试按以下方法之一引入样式，采用哪种取决于vue-okr-tree.css是存放在根目录还是dist目录下
-//import 'vue-okr-tree/dist/vue-okr-tree.css' 
+import 'vue-okr-tree/dist/vue-okr-tree.css' 
 //import 'vue-okr-tree/vue-okr-tree.css'
 import { listImGroup} from '@/api/mdp/im/group/imGroup';
 import { publishMessage} from '@/api/mdp/im/imPush';
@@ -310,17 +310,14 @@ XmTaskExecuserSelect,
 			xmProduct(){
 				this.getXmGroup();
 			},
-			"filters.key":function(val) {
+			"filters.groupName":function(val) {
 				this.$refs.tree.filter(val);
 			},
 		},
 		data() {
 			return {
 				filters: {
-					key: '',
-					groupNameKey:'',
-					mngUsernamekey:'',
-					groupUsernameKey:'',
+					groupName: '',
 					selProject:null,
 				},
 				xmGroups: [],//查询结果
@@ -455,8 +452,8 @@ XmTaskExecuserSelect,
 				if(this.xmProduct && this.xmProduct.id){
 					params.productId=this.xmProduct.id
 				}
-				if(this.filters.key){
-					params.key=this.filters.key
+				if(this.filters.groupName){
+					params.groupName=this.filters.groupName
 				}
 				if(this.filters.groupNameKey){
 					params.groupNameKey=this.filters.groupNameKey
@@ -464,7 +461,7 @@ XmTaskExecuserSelect,
 				if(this.filters.groupUsernameKey){
 					params.groupUsernameKey=this.filters.groupUsernameKey
 				}
-				if(this.filters.mngUsernamekey){
+				if(this.filters.mngUsernamegroupName){
 					params.mngUsernamekey=this.filters.mngUsernamekey
 				}
 				var func=getGroups

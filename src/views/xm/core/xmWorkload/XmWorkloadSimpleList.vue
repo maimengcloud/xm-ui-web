@@ -128,7 +128,7 @@
 		data() {
 			return {
 				filters: {
-					key: ''
+					username: ''
 				},
 				xmWorkloads: [],//查询结果
 				pageInfo:{//分页数据
@@ -239,8 +239,8 @@
 					}
 					params.orderBy= orderBys.join(",")
 				}
-				if(this.filters.key){
-					params.key=this.filters.key
+				if(this.filters.username){
+					params.username=this.filters.username
 				}
 				if(!this.xmTask || !this.xmTask.id){
 					return;

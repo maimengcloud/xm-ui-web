@@ -1,7 +1,7 @@
 <template>
 	<section class="border padding">
 		<el-row>
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>
+			<el-input v-model="filters.name" style="width: 20%;" placeholder="模糊查询"></el-input>
 			<el-button v-loading="load.list" :disabled="load.list==true" @click="searchXmFuncs" icon="el-icon-search">查询</el-button>
 			<span style="float:right;">
 			    <el-button type="primary" @click="showAdd" icon="el-icon-plus"> </el-button>
@@ -102,7 +102,7 @@ export default {
     data() {
         return {
             filters: {
-                key: ''
+                name: ''
             },
             xmFuncs: [],//查询结果
             pageInfo:{//分页数据
@@ -179,8 +179,8 @@ export default {
                 }
                 params.orderBy= orderBys.join(",")
             }
-            if(this.filters.key){
-                params.key=this.filters.key
+            if(this.filters.name){
+                params.name=this.filters.name
             }
 
             this.load.list = true;

@@ -7,7 +7,7 @@
 					</mdp-select>
 					<mdp-select v-model="filters.status" placeholder="状态" clearable style="width: 6em;" item-code="menuStatus">
 					</mdp-select>
-					<el-input v-model="filters.key" style="max-width: 15em;" placeholder="需求名称查询" clearable>
+					<el-input v-model="filters.menuName" style="max-width: 15em;" placeholder="需求名称查询" clearable>
 					</el-input>
 					<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search"></el-button>
 
@@ -520,6 +520,7 @@
 					planStartTimeEnd:'',
 					planEndTimeStart:'',
 					planEndTimeEnd:'',
+					menuName:'',
 				},
 				xmMenus: [],//查询结果
 				pageInfo:{//分页数据
@@ -707,6 +708,9 @@
 				}
 				if(this.filters.menuId){
 					params.menuId=this.filters.menuId
+				}
+				if(this.filters.menuName){
+					params.menuName=this.filters.menuName
 				}
 				if(this.filters.productId){
 					params.productId=this.filters.productId

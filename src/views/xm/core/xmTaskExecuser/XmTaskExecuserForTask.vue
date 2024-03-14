@@ -1,7 +1,8 @@
 <template>
 	<section class="padding">
 		<el-row>
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询"></el-input>
+			<el-input v-model="filters.bidUsername" style="width: 15%;" placeholder="候选人查询"></el-input>
+			<el-input v-model="filters.prjUsername" style="width: 15%;" placeholder="执行人查询"></el-input>
 			<el-button type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmTaskExecusers">查询</el-button>
 			<el-button type="primary"  @click="toJoin">我要加入</el-button>
 			<el-button type="primary"  @click="showAdd">邀请他人加入</el-button>
@@ -163,7 +164,8 @@
 		data() {
 			return {
 				filters: {
-					key: ''
+					bidUsername: '',
+					prjUsername:'',
 				},
 				xmTaskExecusers: [],//查询结果
 				pageInfo:{//分页数据
@@ -255,11 +257,12 @@
 					}
 					params.orderBy= orderBys.join(",")
 				}
-				if(this.filters.key!==""){
-					params.fuzzy = '%'+this.filters.key+'%';
-					//params.xxx=this.filters.key
-				}else{
-					//params.xxx=xxxxx
+				if(this.filters.bidUsername!==""){
+					params.bidUsername = this.filters.bidUsername; 
+				}
+				
+				if(this.filters.prjUsername!==""){
+					params.prjUsername = this.filters.prjUsername; 
 				}
 				if(this.isMy=='1'){
 					params.isMy='1'

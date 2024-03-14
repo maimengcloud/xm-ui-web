@@ -2,7 +2,7 @@
 	<section class="page-container  padding border">
 		<el-row>
       <el-checkbox v-model="gstcVisible"  >甘特图</el-checkbox>
-			<el-input v-model="filters.key" style="width: 20%;" placeholder="模糊查询">
+			<el-input v-model="filters.menuName" style="width: 20%;" placeholder="模糊查询">
 				<template slot="append">
 					<el-button   type="primary" v-loading="load.list" :disabled="load.list==true" v-on:click="searchXmMenus" icon="el-icon-search"></el-button>
 				</template>
@@ -204,7 +204,7 @@
 		data() {
 			return {
 				filters: {
-					key: '',
+					menuName: '',
 				},
 				xmMenus: [],//查询结果
 				pageInfo:{//分页数据
@@ -291,8 +291,8 @@
 					params.branchId=this.userInfo.branchId
 				}
 
-				if( this.filters.key){
-					params.key="%"+this.filters.key+"%"
+				if( this.filters.menuName){
+					params.menuName=this.filters.menuName
 				}
 
 				if(this.filters.mmUser){
@@ -320,7 +320,7 @@
 					params.ctimeStart=this.dateRanger[0]
 					params.ctimeEnd=this.dateRanger[1]
 				}
-				if(!(params.ctimeStart||params.pmenuId||params.projectId||params.iterationId||params.iterationFilterType||params.mmUserid||params.key||params.taskFilterType)){
+				if(!(params.ctimeStart||params.pmenuId||params.projectId||params.iterationId||params.iterationFilterType||params.mmUserid||params.menuName||params.taskFilterType)){
 					params.isTop="1"
 				}
 				return params;
