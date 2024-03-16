@@ -298,12 +298,12 @@ npm run build:sit
 npm run build:prod
 ```
 
-### 商业版本与社区版
+## 商业版本与社区版
 唛盟研发管理系统分社区版与商业版
 商业版在服务与功能范围上与社区版有所区别
-#### 服务项目及报价
+### 服务项目及报价
 ![服务报价](./docs/images/xm-price/service-price.png)
-#### 模块范围及报价
+### 模块范围及报价
 ![模块报价](./docs/images/xm-price/module-price.png)
 
 ### 🔔️ 特别提醒
