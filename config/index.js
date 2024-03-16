@@ -19,6 +19,7 @@ module.exports = {
           }
     },
        **/
+      /** 
     	'/api/m1/xm': {
             target: 'http://localhost:7067',
             changeOrigin: true,
@@ -26,6 +27,7 @@ module.exports = {
               '^/api/m1/xm': '/xm'
             }
       },
+      */
        /**
     	'/api/m1/lcode': {
             target: 'http://localhost:7014',
