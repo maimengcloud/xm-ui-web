@@ -158,10 +158,10 @@ function setIndexPath() {
 		sessionStorage.setItem("index-path",url); 
 	}else{
 		var idxPath=sessionStorage.getItem("index-path");
-		if(idxPath && idxPath!='null'){
+		indexPath=url.substring(0,url.indexOf('/login'))
+		if(idxPath && idxPath!='null' && idxPath.indexOf(indexPath)>=0){
 			indexPath=idxPath
 		}else{
-			indexPath=url.substring(0,url.indexOf('/login'))
 			sessionStorage.setItem("index-path",indexPath); 
 		}
 		
