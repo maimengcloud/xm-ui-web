@@ -156,7 +156,7 @@ import Sticky from "@/components/Sticky"; // 粘性header组件
 import { mapGetters } from "vuex";
 import CategoryTree from "@/views/mdp/arc/category/CategoryTree"; //修改界面
 import TagMng from "@/views/mdp/arc/tag/TagMng";
-import BizModelMng from "@/views/mdp/workflow/biz/bizModel/BizModelMng";
+import BizModelMng from "@/views/mdp/workflow/biz/bizModel/Index";
 import { batchInsertOrDeleteTags } from "@/api/mdp/workflow/re/procdefTag";
 
 export default {
