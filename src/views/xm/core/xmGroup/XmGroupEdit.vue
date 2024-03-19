@@ -16,7 +16,7 @@
 					</el-form-item>
 					<el-form-item label="副组长" prop="assUsername">
 						<el-input v-model="editForm.assUsername" placeholder="副组长姓名" @click.native="showUserSelect('ass')"></el-input>
-						<font color="blue">如果没用副组长可以设置为项目助理、小组助理等，具有组长同等权限</font>
+						<font color="blue">如果没有副组长可以设置为项目助理、小组助理等，具有组长同等权限</font>
 					</el-form-item>
 				</el-form-item>
 				<el-form-item label="企业协作" prop="isCrow">
