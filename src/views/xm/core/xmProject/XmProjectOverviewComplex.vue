@@ -214,8 +214,8 @@ import XmProjectDetail from './XmProjectDetail.vue';
 import XmProjectSetting from './XmProjectSetting.vue';
 import XmProductProjectLinkMng from '../xmProductProjectLink/XmProductProjectLinkMng.vue'; 
 
-import TaskMng from '@/views/mdp/workflow/ru/task/TaskMng'; 
-import ProcinstMng from '@/views//mdp/workflow/hi/procinst/ProcinstMng';
+import TaskMng from '@/views/mdp/workflow/ru/task/TaskListAssigneeToMe'; 
+import ProcinstMng from '@/views/mdp/workflow/hi/procinst/ProcinstListAll';
 import {  loadTasksToXmProjectState , loadTasksSettleToXmProjectState} from '@/api/xm/core/xmProjectState';
 import { listXmProject} from '@/api/xm/core/xmProject'; 
 

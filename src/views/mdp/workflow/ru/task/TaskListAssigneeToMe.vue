@@ -1,6 +1,6 @@
 <template>
 	<section>
-		<task-mng :assigneeToMe="true" :source="source"></task-mng>
+		<task-mng :assigneeToMe="true" :biz-parent-pkid="bizParentPkid" :biz-pkid="bizPkid" :source="source"></task-mng>
 	</section>
 </template>
 
@@ -9,6 +9,8 @@
 	
 	export default {
 		name:'TaskListAssigneeToMe',
+		props: ['source',"bizParentPkid","bizPkid"], 
+
 		props: ['source'],
 		data() {
 			return {

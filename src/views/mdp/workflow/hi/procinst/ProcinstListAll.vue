@@ -1,6 +1,6 @@
 <template>
 	<section>
-		<procinst-mng isAll="true"></procinst-mng>
+		<procinst-mng isAll="true" :biz-parent-pkid="bizParentPkid" :biz-pkid="bizPkid" :proc-inst-ids="procInstIds"></procinst-mng>
 	</section>
 </template>
 
@@ -9,6 +9,8 @@
 	import  ProcinstMng from './Index';//
 	
 	export default {
+		
+		props: ['bizParentPkid','bizPkid','procInstIds'], 
 		name:'ProcinstListAll',
 		data() {
 			return {
