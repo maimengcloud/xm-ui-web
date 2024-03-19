@@ -46,7 +46,7 @@
 					bizId:this.bizId,
 					focusType:this.focusType
 				};
-				 
+				 debugger
 
 				this.load.list = true;
 				this.$mdp.listUserFocus(params).then((res) => {

@@ -15,6 +15,9 @@ addUserJoinBranchRequire: params => { return axios.post(`${sysBase}/mdp/sys/user
 //查询登陆日志  
 listUserLoginRecord: params => { return axios.get(`${sysBase}/mdp/sys/userLoginRecord/list`, { params: params }); },
 
+//查关注列表
+listUserFocus: params => {  return axios.get(`${sysBase}/mdp/sys/userFocus/list`, { params: params });},
+
 //取消关注
 delUserFocus: params => { return axios.post(`${sysBase}/mdp/sys/userFocus/del`,params); },
  
