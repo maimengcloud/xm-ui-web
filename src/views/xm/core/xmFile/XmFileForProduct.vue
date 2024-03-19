@@ -1,13 +1,12 @@
 <template>
 	<section>
-		 <xm-file-mng :xm-product="xmProduct"></xm-file-mng>
+		 <mdp-select-att archive-type="0" crely-type="xm-product" :crely-id="xmProduct.id"></mdp-select-att>
 	</section>
 </template>
 
 <script> 
 	  
-	import { mapGetters } from 'vuex'; 
-	import XmFileMng from './XmFileMng'
+	import { mapGetters } from 'vuex';  
 
 	export default {  
 		computed: {
@@ -25,8 +24,7 @@
 		methods: {  
 			
 		},//end methods
-		components: {  
-			XmFileMng,
+		components: {   
 			//在下面添加其它组件
 		}, 
 		activated(){ 
