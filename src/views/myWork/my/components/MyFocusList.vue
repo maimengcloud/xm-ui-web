@@ -152,8 +152,7 @@ export default {
                     this.pageInfo.total = res.data.total;
                     this.pageInfo.count=false;
                     this.userFocuss = res.data.data;
-                    localStorage.setItem('mdp-sys-user-focus-list',JSON.stringify( this.userFocuss ))
-                }else{
+                 }else{
                     this.$notify({ position:'bottom-left',showClose:true, message: tips.msg, type: 'error' });
                 }
                 this.load.list = false;
@@ -163,7 +162,76 @@ export default {
             bizObj.objType=bizObj.focusType
             if(bizObj.url){
                 this.$mdp.openWin(bizObj.url)
-            } 
+            }else{
+                
+                var curlDomain=window.location.protocol+"//"+window.location.host; //  
+                var baseUrl=`${curlDomain}/${process.env.CONTEXT}/${process.env.VERSION}/`
+                var xmContext=this.$mdp.getXmContext();
+                if(bizObj.focusType=='1'){//项目 
+                    var path="/xm/core/project/overview"
+                    if(xmContext==process.env.CONTEXT){
+                        this.$router.push({path:path,query:{projectId:bizObj.bizId}})
+                    }else{
+                        baseUrl=`${curlDomain}/${xmContext}/${process.env.VERSION}/${path}?projectId=${bizObj.bizId}`
+                        this.$mdp.openWin(url)
+                    }
+                    
+                }else if(bizObj.focusType=='2'){//任务
+                    var path="/xm/core/task/detail"
+                    if(xmContext==process.env.CONTEXT){
+                        this.$router.push({path:path,query:{id:bizObj.bizId}})
+                    }else{
+                        baseUrl=`${curlDomain}/${xmContext}/${process.env.VERSION}/${path}?id=${bizObj.bizId}`
+                        this.$mdp.openWin(url)
+                    }
+                }else if(bizObj.focusType=='3'){//产品
+                    var path="/xm/core/product/overview"
+                    if(xmContext==process.env.CONTEXT){
+                        this.$router.push({path:path,query:{productId:bizObj.bizId}})
+                    }else{
+                        baseUrl=`${curlDomain}/${xmContext}/${process.env.VERSION}/${path}?productId=${bizObj.bizId}`
+                        this.$mdp.openWin(url)
+                    }
+                }else if(bizObj.focusType=='4'){//需求
+                    var path="/xm/core/menu/detail"
+                    if(xmContext==process.env.CONTEXT){
+                        this.$router.push({path:path,query:{menuId:bizObj.bizId}})
+                    }else{
+                        baseUrl=`${curlDomain}/${xmContext}/${process.env.VERSION}/${path}?menuId=${bizObj.bizId}`
+                        this.$mdp.openWin(url)
+                    }
+                }else if(bizObj.focusType=='5'){//bug
+                    var path="/xm/core/question/detail"
+                    if(xmContext==process.env.CONTEXT){
+                        this.$router.push({path:path,query:{id:bizObj.bizId}})
+                    }else{
+                        baseUrl=`${curlDomain}/${xmContext}/${process.env.VERSION}/${path}?id=${bizObj.bizId}`
+                        this.$mdp.openWin(url)
+                    }
+                }else if(bizObj.focusType=='6'){//迭代
+                    var path="/xm/core/iteration/overview"
+                    if(xmContext==process.env.CONTEXT){
+                        this.$router.push({path:path,query:{iterationId:bizObj.bizId}})
+                    }else{
+                        baseUrl=`${curlDomain}/${xmContext}/${process.env.VERSION}/${path}?iterationId=${bizObj.bizId}`
+                        this.$mdp.openWin(url)
+                    }
+                }else if(bizObj.focusType=='7'){//团队
+                    var path="/xm/core/project/group"
+                    if(xmContext==process.env.CONTEXT){
+                        this.$router.push({path:path,query:{projectId:bizObj.bizId}})
+                    }else{
+                        baseUrl=`${curlDomain}/${xmContext}/${process.env.VERSION}/${path}?projectId=${bizObj.bizId}`
+                        this.$mdp.openWin(url)
+                    }  
+                }else if(bizObj.focusType=='8'){//组织
+                     //待完善
+                }else if(bizObj.focusType=='9'){//个人
+                    //待完善
+                }else if(bizObj.focusType=='H'){//合同
+                     //待完善
+                }
+            }
         },   
         //删除userFocus
         handleDel: function (row,index) { 
@@ -192,14 +260,8 @@ export default {
     },//end methods
     mounted() {
         this.$nextTick(() => {
-            this.initData()
-            var myFocusList=localStorage.getItem('mdp-sys-user-focus-list')
-            
-            if(myFocusList){
-                this.userFocuss=JSON.parse(myFocusList)
-            }else{
-                this.searchUserFocuss();
-            }
+            this.initData() 
+            this.searchUserFocuss(); 
              
 
         });
