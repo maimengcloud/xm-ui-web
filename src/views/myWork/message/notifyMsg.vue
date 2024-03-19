@@ -43,9 +43,6 @@ export default {
   props:['msgClass'],
   computed: {
       ...mapGetters(['userInfo']),
-      noticeMsg() {
-        return this.$store.getters.noticeMsg
-      },
   },
   data() {
     return {  
@@ -109,6 +106,9 @@ export default {
         this.notifyMsgs=res.data.data;
         this.pageInfo.total=res.data.total
         this.pageInfo.count=false;
+        if(this.filters.hadRead=='0'){ 
+           this.$store.dispatch("setNoticeMsg",res.data)
+        }
       })
     },
     /**
@@ -117,9 +117,10 @@ export default {
      */
     goToPage(item){
       if(item.hadRead!='1'){
-        this.$mdp.editSomeFieldsNotifyMsg({ids:[item.id],hadRead:'1'}).then(res=>{
+        this.$mdp.editSomeFieldsNotifyMsg({$pks:[item.id],hadRead:'1'}).then(res=>{
           item.hadRead="1"
-          this.$store.dispatch("setNoticeMsg",this.notifyMsgs)
+          var storeTotal=this.$store.getters.notifyMsg.total
+          this.$store.dispatch("setNoticeMsg",{data:this.notifyMsgs,total:storeTotal>0?storeTotal-1:storeTotal})
         })
       }
       if(item.url){
@@ -131,7 +132,7 @@ export default {
       if(ids.length<=0){
         return;
       }
-      this.$mdp.editSomeFieldsNotifyMsg({ids:ids,hadRead:'1'}).then(res=>{ 
+      this.$mdp.editSomeFieldsNotifyMsg({$pks:ids,hadRead:'1'}).then(res=>{ 
         var tips = res.data.tips
         this.searchNoticeMsg(); 
         this.$notify({position:'bottom-left',showClose:true,message:tips.msg,type:tips.isOk?'success':'error'})

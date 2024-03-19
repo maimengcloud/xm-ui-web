@@ -87,6 +87,9 @@ export default {
          initCurrData(){
 
          },
+         editSomeFields(row,fieldName,$event){
+
+         },
         /**
          * 检查参数是否满足调用后台接口的条件
          * @returns true / false

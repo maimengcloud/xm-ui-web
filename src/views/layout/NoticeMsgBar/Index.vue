@@ -31,11 +31,12 @@ export default {
       return this.$store.getters.noticeMsg
     },
     unreadMsgCount(){
+      debugger
       var msgs=this.$store.getters.noticeMsg
       if(!msgs){
         return 0;
       } 
-       return msgs.filter(k=>k.hadRead!='1').length;
+       return msgs.total;
     }
   },
   watch:{
@@ -51,7 +52,7 @@ export default {
           }
         })
       }else if(count==1){
-        var msgObj=this.noticeMsg.filter(k=>k.hadRead!='1')[0]
+        var msgObj=this.noticeMsg.data.filters(k=>k.hadRead!='1')[0]
          that.$notify.warning({title:'未读消息',message:msgObj.msg,showClose:true,position:'bottom-right',
           onClick:function(){
             that.goToPage(msgObj);
@@ -71,20 +72,21 @@ export default {
     },  
     goToPage(item){
       if(item.hadRead!='1'){
-        this.$mdp.editSomeFieldsNotifyMsg({ids:[item.id],hadRead:'1'}).then(res=>{
+        this.$mdp.editSomeFieldsNotifyMsg({$pks:[item.id],hadRead:'1'}).then(res=>{
           item.hadRead="1"
-          this.$store.dispatch("setNoticeMsg",this.notifyMsgs)
+          this.$store.dispatch("setNoticeMsg",this.notifyMsg)
         })
       }
       if(item.url)this.$mdp.openWin(item.url)
     },
     doGetNoticeMsgNoRead(){
+      debugger;
       this.load.list=true;
       this.$mdp.listNotifyMsg({hadRead:'0',pageSize:20,pageNum:1,count:false,$orderBy:'oper_time desc'}).then(res=>{
          this.load.list=false;
            var tips = res.data.tips;
-           if(tips.isOk&&res.data.data.length>0){
-             this.$store.dispatch("setNoticeMsg",res.data.data)
+           if(tips.isOk){
+             this.$store.dispatch("setNoticeMsg",res.data)
            }else if(!tips.isOk){
              this.$message.error(tips.msg)
            }
@@ -92,6 +94,8 @@ export default {
     }, 
   },
   mounted(){
+    debugger;
+    this.doGetNoticeMsgNoRead();
     setInterval(this.doGetNoticeMsgNoRead, 60000 * 5);
     //setInterval(this.doGetNoticeMsgNoRead, 5000);
   }
