@@ -31,7 +31,7 @@
             <img src="../img/xqgl.png" alt="">
             <span>需求管理</span>
           </div>
-           <div class="m_right_menu" @click="gotolink('xm','/xm/core/project/mng')">
+           <div class="m_right_menu" @click="gotolink('xm','/xm/core/project/mng/me')">
             <img src="../img/xmgl.png" alt="">
             <span>项目管理</span>
           </div>
@@ -39,11 +39,11 @@
             <img src="../img/tdgl.png" alt="">
             <span>团队管理</span>
           </div>
-           <div class="m_right_menu" @click="gotolink('xm','/xm/core/task/mng')">
+           <div class="m_right_menu" @click="gotolink('xm','/xm/core/task/center/me')">
             <img src="../img/kfrw.png" alt="">
             <span>开发任务</span>
           </div>
-           <div class="m_right_menu" @click="gotolink('xm','/xm/core/question/mng')">
+           <div class="m_right_menu" @click="gotolink('xm','/xm/core/question/mng/me')">
             <img src="../img/qx.png" alt="">
             <span>缺陷管理</span>
           </div>
