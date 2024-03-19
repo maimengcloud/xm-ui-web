@@ -5,7 +5,7 @@
 			<el-form :model="editForm"  label-width="120px" :rules="editFormRules" ref="editFormRef" label-position="left">
 				 <el-form-item prop="name" label-width="0px">
 				  <el-row class="padding-bottom">
-					<my-input v-model="editForm.name" placeholder="计划名称" :maxlength="255" @change="editSomeFields(editForm,'name',$event)"></my-input>
+					<mdp-input v-model="editForm.name" placeholder="计划名称,选中项目后自动生成" :maxlength="255" @change="editSomeFields(editForm,'name',$event)"></mdp-input>
  				  </el-row>
 				   <el-row v-if="opType!='add'">
 					 <span class="label-font-color padding-left">测试计划编号:{{ editForm.id }}</span>
@@ -33,7 +33,7 @@
 				<el-form-item label="归属项目" prop="projectId" >
 
 					 <span v-if="opType=='add'">
-						  <xm-project-select show-style="tag" v-if="!selProject || !selProject.id" ref="xmProjectSelect" :link-product-id="xmTestCasedb? xmTestCasedb.productId:null"  @row-click="onPorjectConfirm" :auto-select="false">
+						  <xm-project-select show-style="tag" v-if="!selProject || !selProject.id" ref="xmProjectSelect" :link-product-id="xmTestCasedb? xmTestCasedb.productId:null"  @change2="onPorjectConfirm" :auto-select="false">
 
 						 </xm-project-select>
 					 </span>
@@ -146,6 +146,7 @@
                                     this.initData()
                                     this.currOpType="edit";
                                     this.$emit('submit');//  @submit="afterAddSubmit"
+									this.$emit('cancel');
                                 }
                                 this.$notify({ position:'bottom-left',showClose:true, message: tips.msg, type: tips.isOk?'success':'error' });
                             }).catch( err =>this.load.edit=false);
