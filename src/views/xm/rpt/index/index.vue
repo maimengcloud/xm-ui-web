@@ -1,15 +1,7 @@
 <template> 
 <section> 
   <el-row>
-    <div class="padding">商业版功能，请联系客服！ 
-    </div> 
-    <div class="padding"> 
-      欢迎扫描下方左侧微信二维码和我们进一步沟通！（备注 唛盟研发商业合作） 
-    </div> 
-    <div class="padding">  
-      <img src="https://maimengcloud.com/img/5ff0a747a4a1f14cf6a5.png" alt="drawing" width="200"/>
-    </div> 
-
+     <comps-card ref="compsCard" :category="category" :xm-test-plan="xmTestPlan" :xm-product="xmProduct" :xm-project="xmProject" :xm-iteration="xmIteration" :xm-test-casedb="xmTestCasedb"/>  
   </el-row>
 </section>     
 </template>

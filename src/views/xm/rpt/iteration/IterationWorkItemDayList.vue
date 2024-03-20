@@ -1,0 +1,377 @@
+<template>
+	<section>
+			<el-row :gutter="5" >
+				<el-col :span="showParams?23:24">
+					<el-row :class="{'row-box':true,'cfg':isRptCfg}">
+						<div class="title">{{ title?title:(isRptCfg?'标题':'') }}</div>
+						<el-input class="input" v-model="title" placeholder="标题"/>
+					</el-row>
+					<el-row :class="{'row-box':true,'cfg':isRptCfg}">
+						<div class="remark">{{ remark?remark:(isRptCfg?'详细说明':'') }}</div>
+						<el-input class="input" v-model="remark" placeholder="说明"/>
+					</el-row>
+					<el-row>
+						<div class="echart-box" :id="this.id"></div>
+					</el-row>
+				</el-col>
+
+				<el-col :span="showParams?1:0" v-if="showParams">
+					 <el-popover   trigger="manual" v-model="filterVisible" style="float:right;" width="500">
+						<el-button slot="reference" style="margin-top:10px;margin-right:10px;z-index: 99999;" icon="el-icon-more" @click="filterVisible=!filterVisible"></el-button>
+						<el-row>
+							<el-button type="danger" icon="el-icon-delete" @click="$emit('delete',cfg)">从报告移出该报表</el-button>
+							<el-button icon="el-icon-close" style="float:right;" @click="filterVisible=false">关闭</el-button>
+						</el-row>
+						<el-row>
+							<el-form :model="params" class="padding"   :style="{width:'100%',overflow: 'auto'}" ref="filtersRef">
+								<el-form-item label="归属产品">
+									<xm-product-select show-style="tag" v-if="!xmProductCpd || !xmProductCpd.id"  ref="xmProductSelect" style="display:inline;"  :auto-select="false" :link-project-id="xmProject?xmProject.id:null" @change2="onProductSelected"  :iterationId="xmIteration?xmIteration.id:null"  @clear="onProductClear"></xm-product-select>
+									<span v-else>{{xmProductCpd.id}} <span v-if="xmProductCpd.productName"><br/>{{  xmProductCpd.productName  }} </span> </span>
+								</el-form-item>
+								<el-form-item label="归属迭代" v-if="xmIteration && xmIteration.id">
+									<span>  {{xmIteration.id}}
+										<span v-if="xmIteration.iterationName"><br/>{{ xmIteration.iterationName  }} </span>
+									</span>
+								</el-form-item>
+								<el-form-item label="归属迭代" v-else-if="filters.product && filters.product.id">
+									<xm-iteration-select show-style="tag"  ref="xmIterationSelect"  :auto-select="false"  :product-id="filters.product?filters.product.id:null" :link-project-id="xmProject?xmProject.id:null"   placeholder="迭代"  @change2="onIterationSelected" @clear="onIterationClear"></xm-iteration-select>
+								</el-form-item>
+								<el-form-item label="日期区间">
+									<br>
+										<mdp-date-range v-model="params" value-format="yyyy-MM-dd" start-key="startBizDate" end-key="endBizDate"></mdp-date-range>
+								</el-form-item>
+
+
+								<el-form-item>
+									<el-button type="primary"  style="float:right;" icon="el-icon-search" @click="listXmIterationStateHis">查询</el-button>
+								</el-form-item>
+							</el-form>
+						</el-row>
+					 </el-popover>
+
+				</el-col>
+			</el-row>
+	</section>
+</template>
+
+<script>
+	import util from '@/common/js/util';//全局公共库
+
+	import { mapGetters } from 'vuex'
+
+	import  XmProductSelect from '@/views/xm/core/components/XmProductSelect';//产品选择界面
+	import  XmIterationSelect from '@/views/xm/core/components/XmIterationSelect';//迭代选择界面
+	import { listXmIterationStateHis } from '@/api/xm/core/xmIterationStateHis';
+	export default {
+
+		components: {
+			XmIterationSelect,XmProductSelect,
+		},
+        props:['id','cfg','category','showToolBar','showParams','isRptCfg','rptDatas','xmProduct','xmProject','xmIteration'],
+		computed: {
+		    ...mapGetters([
+		      'userInfo','roles'
+		    ]),
+			dataSetCpd(){
+				return [
+					['日期',...this.rawDatas.map(i=>i.bizDate)],
+					['未关故事',...this.rawDatas.map(i=>i.menuCnt-i.menuCloseCnt)],
+					['已关故事',...this.rawDatas.map(i=>i.menuCloseCnt)],
+					['未关任务',...this.rawDatas.map(i=>i.taskCnt-i.taskCloseCnt)],
+					['已关任务',...this.rawDatas.map(i=>i.taskCloseCnt)],
+					['未关缺陷',...this.rawDatas.map(i=>i.bugCnt-i.closedBugs)],
+					['已关缺陷',...this.rawDatas.map(i=>i.closedBugs)]
+				]
+			},
+			titleCpd(){
+
+				var preName=""
+				if(this.filters.testPlan && this.filters.testPlan.id){
+					preName=`测试计划【${this.filters.testPlan.name}】`
+				}else if(this.filters.testCasedb && this.filters.testCasedb.id){
+					preName=`测试库【${this.filters.testCasedb.name}】`
+				}else if(this.filters.iteration && this.filters.iteration.id){
+					preName=`迭代【${this.filters.iteration.iterationName}】`
+				}else if(this.filters.product && this.filters.product.id){
+					if(this.filters.product.productName){
+						preName=`产品【${this.filters.product.productName}】`
+					}else{
+						preName=`产品【${this.filters.product.id}】`
+					}
+
+				}else if(this.filters.project && this.filters.project.id){
+					if(this.filters.project.name){
+						preName=`项目【${this.filters.project.name}】`
+					}else{
+						preName=`项目【${this.filters.project.id}】`
+					}
+				}
+				return  preName+"迭代工作项每日趋势图"
+
+			},
+			xmProductCpd(){
+				if(this.xmIteration && this.xmIteration.id){
+					return {id:this.xmIteration.productId,productName:this.xmIteration.productName}
+				}
+				if(this.xmProduct && this.xmProduct.id){
+					return this.xmProduct
+				}
+				return null;
+			}
+
+        },
+		watch: {
+			dataSetCpd(){
+				this.$nextTick(()=>{
+					this.drawCharts();
+				})
+
+			}
+	    },
+		data() {
+			return {
+
+                filterVisible:false,
+				filters:{
+                    category:'',
+                    product:null,
+                    project:null,
+					testPlan:null,
+					iteration:null,
+					testCasedb:null,
+					startBizDate:'',
+					endBizDate:'',
+                },
+				params:{
+
+				},
+				title:'',//报表配置项
+				remark:'', //报表配置项
+				dicts:{},//下拉选择框的所有静态数据  params=[{categoryId:'0001',itemCode:'sex'}] 返回结果 {'sex':[{optionValue:'1',optionName:'男',seqOrder:'1',fp:'',isDefault:'0'},{optionValue:'2',optionName:'女',seqOrder:'2',fp:'',isDefault:'0'}]}
+				load:{ list: false, edit: false, del: false, add: false },//查询中...
+				dateRanger:[],
+                maxTableHeight:300,
+                visible:false,
+				rawDatas:[],
+
+			}//end return
+		},//end data
+		methods: {
+			listXmIterationStateHis(){
+				if(this.rptDatas){
+					this.rawDatas=this.rptDatas
+					return;
+				}
+				if(!this.filters.product){
+					this.$notify({position:'bottom-left',showClose:true,message:'请先选中产品',type:'warning'})
+					return;
+				}
+
+				if(!this.filters.iteration){
+					this.$notify({position:'bottom-left',showClose:true,message:'请先选中迭代',type:'warning'})
+					return;
+				}
+
+				var params={...this.params,orderBy:'biz_date asc'}
+				listXmIterationStateHis(params).then(res=>{
+					this.rawDatas=res.data.tips.isOk?res.data.data:this.rawDatas;
+				})
+			},
+			open(){
+				this.visible=true;
+				this.filters.testPlan=this.xmTestPlan
+				this.filters.product=this.xmProduct
+				this.filters.project=this.xmProject
+				this.filters.iteration=this.xmIteration
+				this.filters.testCasedb=this.xmTestCasedb
+
+				if( this.filters.testPlan && this.filters.testPlan.id){
+					this.params.planId= this.filters.testPlan.id
+				}
+
+				if( this.filters.product && this.filters.product.id){
+					this.params.productId= this.filters.product.id
+				}
+
+				if( this.filters.project && this.filters.project.id){
+					this.params.projectId= this.filters.project.id
+				}
+
+				if( this.filters.iteration && this.filters.iteration.id){
+					this.params.iterationId= this.filters.iteration.id
+				}
+
+
+				if( this.filters.testCasedb && this.filters.testCasedb.id){
+					this.params.casedbId= this.filters.testCasedb.id
+				}
+				if(this.cfg && this.cfg.id){
+					this.params=this.cfg.params
+					this.title=this.cfg.title
+					this.remark=this.cfg.remark
+				}
+				if(this.showToolBar && !this.title){
+					this.title="企业工作项每日趋势图"
+				}
+
+				if(this.$refs['xmProductSelect'])this.$refs['xmProductSelect'].clearSelect();
+				if(this.$refs['xmIterationSelect'])this.$refs['xmIterationSelect'].clearSelect();
+				this.$nextTick(()=>{
+					this.listXmIterationStateHis();
+				})
+
+			},
+			drawCharts() {
+				this.myChart = this.$echarts.init(document.getElementById(this.id));
+				var that=this;
+				this.myChart.on('updateAxisPointer', function (event) {
+					const xAxisInfo = event.axesInfo[0];
+					if (xAxisInfo) {
+					const dimension = xAxisInfo.value + 1;
+					that.myChart.setOption({
+						series: {
+						id: 'pie',
+						label: {
+							formatter: '{b}: {@[' + dimension + ']} ({d}%)'
+						},
+						encode: {
+							value: dimension,
+							tooltip: dimension
+						}
+						}
+					});
+					}
+				});
+				this.myChart.setOption({
+
+					title: {
+						text: this.titleCpd,
+						left: 'center'
+					},
+
+					tooltip: {
+						trigger: 'axis'
+					},
+					barMaxWidth: 100,
+					toolbox: {
+						show: this.showToolBar,
+						top:"5%",
+						right:"10px",
+						feature: {
+						dataView: { show: true, readOnly: false },
+						magicType: { show: true, type: ['line', 'bar'] },
+
+						saveAsImage: { show: true }
+						}
+					},
+
+					calculable: true,
+					legend: {
+							bottom: 'bottom',
+					},
+
+					dataset: {
+						source:  this.dataSetCpd
+					},
+					xAxis: {
+						type: 'category',
+					},
+					yAxis: { gridIndex: 0 },
+    				grid: { top: '55%' },
+					series: [
+						{ 	name:'未关故事',
+							type: 'line',
+        					seriesLayoutBy: 'row',
+							smooth:true,
+        					emphasis: { focus: 'series' },
+						},
+						{ 	name:'已关故事',
+							type: 'line',
+        					seriesLayoutBy: 'row',
+							smooth:true,
+        					emphasis: { focus: 'series' },
+						},
+						{
+							name:'未关任务',
+							type: 'line',
+        					seriesLayoutBy: 'row',
+							smooth:true,
+        					emphasis: { focus: 'series' },
+						},
+						{
+							name:'已关任务',
+							type: 'line',
+        					seriesLayoutBy: 'row',
+							smooth:true,
+        					emphasis: { focus: 'series' },
+						},
+						{ 	name:'未关缺陷',
+							type: 'line',
+        					seriesLayoutBy: 'row',
+							smooth:true,
+        					emphasis: { focus: 'series' },
+						},
+						{ 	name:'已关缺陷',
+							type: 'line',
+        					seriesLayoutBy: 'row',
+							smooth:true,
+        					emphasis: { focus: 'series' },
+						},
+						{
+							type: 'pie',
+							id: 'pie',
+							radius: '30%',
+							center: ['50%', '30%'],
+							emphasis: {
+								focus: 'self'
+							},
+							label: {
+								formatter: '{b}: {@日期} ({d}%)'
+							},
+							encode: {
+								itemName: '日期',
+								value:this.dataSetCpd[0][this.dataSetCpd[0].length-1],
+								tooltip: '日期'
+							}
+						}
+					]
+				});
+
+				this.myChart.resize();
+			},
+
+			onProductSelected(product){
+				this.filters.product=product
+			},
+
+			onProductClear(){
+				this.filters.product=null
+			},
+
+			onIterationSelected(iteration){
+				this.filters.iteration=iteration
+			},
+
+			onIterationClear(){
+				this.filters.iteration=null
+			}
+		},//end method
+		mounted() {
+			/**
+
+             */
+			            //this.maxTableHeight = util.calcTableMaxHeight(this.$refs.filtersRef.$el)
+			//this.charts();
+			this.open();
+
+		}//end mounted
+	}
+
+</script>
+
+<style scoped>
+   .image {
+    width: 100%;
+    display: block;
+  }
+</style>

@@ -1,6 +1,5 @@
 
 export default { 
-    /**
     xmMenuDayTrend:()=>import("../product/menuDayTrend.vue"),   
     xmMenuDayAccumulate:()=>import("../product/menuDayTrend.vue"),  
     xmMenuAttDist:()=>import("../product/menuAttDist"),
@@ -68,7 +67,6 @@ export default {
     xmBranchQuestionDayAccumulate:()=>import("../branch/questionDayAccumulate.vue"),
     xmBranchMenuDayTrend:()=>import("../branch/menuDayTrend.vue"),
     xmBranchMenuDayAccumulate:()=>import("../branch/menuDayAccumulate.vue"),
-     */
 };
  
 
