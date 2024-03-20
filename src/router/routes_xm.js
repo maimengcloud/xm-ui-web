@@ -110,6 +110,17 @@ export default {
           hidden:true
         },
         {
+          path: 'milestone',
+          component: _import('xm/core/xmTask/XmMilestoneForProject'),
+          name: 'projectMilestone',
+          iconCls: 'fa el-icon-menu',
+          meta: {
+            title: '项目-里程碑计划',
+            icon: 'project',roles:["user"]
+          },
+          hidden:true
+        },
+        {
           path: 'plan',
           component: _import('xm/core/xmTask/XmPlanForProject'),
           name: 'projectPlan',
@@ -120,6 +131,7 @@ export default {
           },
           hidden:true
         },
+        
         {
           path: 'task',
           component: _import('xm/core/xmTask/XmTaskListForProject'),

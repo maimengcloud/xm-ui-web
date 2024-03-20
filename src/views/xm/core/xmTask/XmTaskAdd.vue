@@ -657,6 +657,9 @@
 
 				this.addForm.id=null;
 				this.activateTabPaneName="1"
+				if(this.xmTask){
+					this.addForm.milestone=this.xmTask.milestone
+				}
 			},
 			toMenu(){
 				this.menuDetailVisible=true

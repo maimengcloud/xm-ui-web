@@ -60,6 +60,7 @@
 			   </el-row>
                <el-row v-else-if="i.id=='3'"><!--实施中-->
 			   		<span v-if="projectInfo.status==i.id">
+						<el-button class="step-btn" type="warning"    plain @click="jumpTo('projectMilestone')">里程碑</el-button>
 						<el-button class="step-btn" type="warning"    plain @click="jumpTo('projectIteration')">迭代管理</el-button>
 						<el-button class="step-btn" type="warning"    plain @click="jumpTo('projectPlan')">任务管理</el-button>
 						<el-button class="step-btn" type="warning"    plain @click="jumpTo('projectQuestion')">缺陷管理</el-button>
@@ -72,6 +73,7 @@
 						<el-button class="step-btn" type="danger" icon="el-icon-d-caret"    plain @click="editXmProjectSomeFields(projectInfo,'status','5')">设为结项中</el-button>
 					</span>
 					<span v-if="projectInfo.status!=i.id">
+						<el-button class="step-btn" type="warning"    plain @click="jumpTo('projectMilestone')">里程碑</el-button>
 						<el-button class="step-btn" type="warning"    plain @click="jumpTo('projectIteration')">迭代管理</el-button>
 						<el-button class="step-btn" type="warning"    plain @click="jumpTo('projectPlan')">任务管理</el-button>
 						<el-button class="step-btn" type="warning"    plain @click="jumpTo('projectQuestion')">缺陷管理</el-button>

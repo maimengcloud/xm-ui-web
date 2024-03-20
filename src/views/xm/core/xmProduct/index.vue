@@ -37,7 +37,7 @@ export default {
       this.$router.back(-1)
     }
     if(!this.xmProduct||this.xmProduct.id!=this.$route.query.productId){
-      listXmProductWithState({id:this.$route.query.productId}).then(res=>{
+      listXmProductWithState({id:this.$route.query.productId,isTpl:this.$route.query.isTpl}).then(res=>{
         var tips = res.data.tips;
         if(tips.isOk ){
           if( res.data.data.length==1){

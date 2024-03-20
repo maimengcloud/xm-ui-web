@@ -115,7 +115,77 @@
                     v-loading="load.edit"
                   > 更换上级</el-button>
         </el-row>
-        <el-row class="padding-top" v-show="filters.selProject && filters.selProject.id">
+        <el-row class="padding-top" v-show="filters.selProject && filters.selProject.id" v-if="milestone=='1'">
+          <div class="block">
+            <el-timeline >
+              <el-timeline-item  @click.native="onMilestoneRowClick(item)" size="large" :icon="item.mileston=='1'?'el-icon-s-flag':''" :timestamp="item.endTime" placement="top" v-for="(item,idx) in tasksTreeData" :key="idx">
+                <el-card>
+                  <el-row>
+                    <el-col :span="20"> 
+                      <h4>{{item.name}}</h4>
+                      <p class="padding-top"><mdp-select show-style="tag" item-code="taskState"  v-model="item.taskState" :disabled="true"/> 
+                        <el-link
+                        style="line-height: 24px;height: 24px;"
+                        :type="item.rate >= 100 ? 'success' : 'warning'"
+                        @click.stop="calcProgress(item)"
+                        class="el-icon-refresh"
+                      >
+                        {{ (item.rate != null ? item.rate : 0) + "%" }}
+                      </el-link>
+                        
+                        {{item.createUsername}} 提交于 {{item.actEndTime}}
+                      
+                      </p>
+                    </el-col>
+
+                    <el-col :span="4">
+                       <el-row>
+                      <el-popover class="hidden-bar" @click.stop style="float: right;"
+                          placement="top-start"
+                          :open-delay=500
+                          trigger="hover"
+                        >
+                          <el-row>
+                            <el-row class="padding-bottom">
+
+                              <el-button
+                                @click="showEpicFeaturesForCreateSubTask(item)"
+                                icon="el-icon-plus"
+                                >由史诗特性快速创建子计划 (推荐)</el-button
+                              >
+                            </el-row>
+                            <el-row class="padding-bottom">
+
+                              <el-button
+                                @click="showTaskTemplate"
+                                icon="el-icon-plus"
+                                >从模板快速导入子计划 </el-button
+                              >
+                            </el-row>
+                            <el-row class="padding-bottom">
+
+                              <el-button @click.stop="showSubAdd( item,idx,'1')" icon="el-icon-plus" title="新建子计划">直接创建子计划 </el-button>
+                           </el-row>
+                          </el-row>
+                          <el-row class="padding-bottom">
+
+                            <el-button      @click.stop="showEdit( item,idx)" icon="el-icon-edit" title="编辑"  > 编辑计划</el-button>
+                          </el-row>
+                          <el-button   slot="reference" icon="el-icon-setting" ></el-button>
+
+                        </el-popover>
+                       </el-row>
+                       <el-row v-if="editForm&&editForm.id==item.id" class="padding-top">
+                        <el-button  style="float: right;"  @click.stop="unselectRow()" title="取消选中状态" icon="el-icon-circle-close"></el-button>
+                       </el-row>
+                      </el-col>
+                  </el-row> 
+                </el-card>
+              </el-timeline-item> 
+            </el-timeline>
+          </div>
+        </el-row>
+        <el-row class="padding-top" v-show="filters.selProject && filters.selProject.id" v-if="milestone!='1'">
             <el-table
              element-loading-text="努力加载中" element-loading-spinner="el-icon-loading"
               :data="tasksTreeData"
@@ -241,7 +311,7 @@
     >
       <xm-task-edit
         :xm-project="filters.selProject"
-        :xm-task="editForm"
+        :xm-task="editForm"  
         :visible="editFormVisible"
         @cancel="editFormVisible = false"
         @after-add-submit="afterExecEditSubmit"
@@ -266,7 +336,7 @@
         :xm-project="filters.selProject"
         :xm-product="xmProduct"
         :xm-task="addForm"
-        :parent-task="parentTask"
+        :parent-task="parentTask"  
         :ptype="ptype"
         :visible="addFormVisible"
         @cancel="addFormVisible = false"
@@ -386,6 +456,7 @@ export default {
     }
   },
   props: [
+    "milestone",
     "selProject",
     "isTaskCenter",
     "isMy",
@@ -648,7 +719,10 @@ export default {
         })
         .catch((err) => (this.load.list = false));
     },
-
+    onMilestoneRowClick(row){
+      this.editForm=row
+      this.$emit("row-click",row)
+    },
     showEpicFeaturesForCreateSubTask: function (parentTask) {
       if(!this.checkCanAdd(parentTask)){
         return;
@@ -679,7 +753,9 @@ export default {
       this.epicFeaturesForImportTaskVisible = false;
     },
     unselectRow(){
-      this.$refs.table.setCurrentRow();
+      if( this.$refs.table){
+        this.$refs.table.setCurrentRow();
+      } 
       this.editForm=null;
       this.$emit("row-click",null)
     },
@@ -687,12 +763,15 @@ export default {
     showEdit: function (row, index) {
 
       if(this.editForm && row.id!=this.editForm.id){
-        this.$refs.table.setCurrentRow(row);
+        if(this.$refs.table){
+          this.$refs.table.setCurrentRow(row);
+        }  
         this.$emit("row-click",row)
       }
       this.editForm=row
       this.editFormVisible = true;
-    },
+    }, 
+    
     showTaskTemplate: function (row) {
       if(!this.checkCanAdd(row)){
         return;
@@ -745,7 +824,9 @@ export default {
         return;
       }
       if(this.editForm && row.id!=this.editForm.id){
-        this.$refs.table.setCurrentRow(row);
+        if(this.$refs.table){
+          this.$refs.table.setCurrentRow(row);
+        } 
         this.$emit("row-click",row)
       }
       this.parentTask = row;
@@ -892,6 +973,7 @@ export default {
         i.settleSchemel = i.settleSchemel ? i.settleSchemel : "1";
         i.createUserid = this.userInfo.userid;
         i.createUsername = this.userInfo.username;
+        i.milestone=this.milestone=='1'?'1':'0'
         const createTime = new Date();
         var startTime = new Date();
         const endTime = new Date();
@@ -1001,6 +1083,9 @@ export default {
       if(this.filters.lvls.length>0){
         params.lvls=this.filters.lvls
       }
+      if(this.milestone){
+        params.milestone=this.milestone
+      }
       return params;
     },
     showParentTaskList(){
@@ -1065,6 +1150,9 @@ export default {
       if (this.xmProduct) {
         this.filters.product = this.xmProduct;
       }
+      if(this.milestone=='1'){
+        this.addForm.milestone='1'
+      }
     },
 
       onProductClearSelect(){
@@ -1077,7 +1165,7 @@ export default {
          if(!this.filters.selProject || !this.filters.selProject.id){
            return;
          }
-         var key="xm_phase_cache_"+this.filters.selProject.id
+         var key="xm_phase_cache_"+this.milestone+"_"+this.filters.selProject.id
          var dataStr=sessionStorage.getItem(key)
          if(dataStr && dataStr!='null' && dataStr!='undefined'){
            this.xmTasks=JSON.parse(dataStr)
@@ -1092,7 +1180,7 @@ export default {
          if(!this.filters.selProject || !this.filters.selProject.id){
            return;
          }
-         var key="xm_phase_cache_"+this.filters.selProject.id
+         var key="xm_phase_cache_"+this.milestone+"_"+this.filters.selProject.id
          if(!datas || datas.length==0){
            sessionStorage.removeItem(key)
          }else{

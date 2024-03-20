@@ -68,6 +68,7 @@
           </el-row>
           <el-row v-else-if="i.id=='3'"><!--实施中-->
               <span v-if="selProject.status==i.id"> 
+                <el-button class="step-btn" type="warning"    plain @click="showPanel='milestone'">里程碑</el-button>
                 <el-button class="step-btn" type="warning"    plain @click="showPanel='tasks'">任务管理</el-button>
                 <el-button class="step-btn" type="warning"    plain @click="showPanel='bugs'">缺陷管理</el-button> 
                 <el-popconfirm @confirm="editXmProjectSomeFields(selProject, 'status', '4')" title="将项目状态改为暂停中，暂停中的项目不允许进行操作，恢复状态后才可以继续?">

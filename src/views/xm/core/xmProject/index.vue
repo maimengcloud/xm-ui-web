@@ -36,7 +36,7 @@ export default {
       this.$router.back(-1)
     }
     if(!this.projectInfo||this.projectInfo.id!=this.$route.query.projectId){
-      listXmProject({id:this.$route.query.projectId}).then(res=>{
+      listXmProject( {id:this.$route.query.projectId,isTpl:this.$route.query.isTpl}).then(res=>{
         var tips = res.data.tips;
         if(tips.isOk ){
           if( res.data.data.length==1){

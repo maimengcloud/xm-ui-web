@@ -349,7 +349,7 @@
 			//进入info界面
 			intoInfo(row) {
 				this.selectProject = row;
-				this.$router.push({ name:'XmProjectInfoRoute', query: {id:row.id} })
+				this.$router.push({ name:'projectOverview', query: {projectId:row.id,isTpl:"1"} })
 				localStorage.setItem("xm-project-info-route",JSON.stringify(row))
 				//this.showInfo = true;
 			},

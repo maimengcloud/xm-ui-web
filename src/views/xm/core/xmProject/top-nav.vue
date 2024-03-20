@@ -35,6 +35,9 @@
           <span slot="title"><i class="el-icon-connection"></i>迭代</span>
         </el-menu-item>
 
+        <el-menu-item :index="'/xm/core/project/milestone?projectId='+projectInfo.id">
+          <span slot="title"><i class="el-icon-time"></i>里程碑</span>
+        </el-menu-item>
         <el-menu-item :index="'/xm/core/project/plan?projectId='+projectInfo.id">
           <span slot="title"><i class="el-icon-time"></i>任务</span>
         </el-menu-item>
