@@ -151,14 +151,15 @@ function getQueryVariable(variable,url){
 
 
 function setIndexPath() { 
+	debugger
 	var indexPath=null
 	var url=window.location.href;
-	if(url.indexOf("/login")<=0){ 
+	if(url.indexOf("#/login")<=0){ 
 		indexPath=url
 		sessionStorage.setItem("index-path",url); 
 	}else{
 		var idxPath=sessionStorage.getItem("index-path");
-		indexPath=url.substring(0,url.indexOf('/login'))
+		indexPath=url.substring(0,url.indexOf('#/login'))
 		if(idxPath && idxPath!='null' && idxPath.indexOf(indexPath)>=0){
 			indexPath=idxPath
 		}else{
