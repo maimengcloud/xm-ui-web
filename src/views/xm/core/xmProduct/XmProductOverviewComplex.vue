@@ -256,8 +256,8 @@ import XmProductProjectLinkMng from '../xmProductProjectLink/XmProductProjectLin
 import { loadTasksToXmProductState } from '@/api/xm/core/xmProductState';
 import { listXmProductWithState } from '@/api/xm/core/xmProduct';
 import { loadTasksToXmMenuState} from '@/api/xm/core/xmMenuState'; 
-import TaskMng from '@/views/mdp/workflow/ru/task/TaskMng'; 
-import ProcinstMng from '@/views//mdp/workflow/hi/procinst/ProcinstMng';
+import TaskMng from '@/views/mdp/workflow/ru/task/TaskListAssigneeToMe'; 
+import ProcinstMng from '@/views/mdp/workflow/hi/procinst/ProcinstListAll';
 
 import { initDicts,editXmProductSomeFields } from "@/api/xm/core/xmProduct";
 import store from '@/store'

@@ -399,6 +399,7 @@ export default {
            * @returns true / false
            */
           preQueryParamCheck(params){
+            debugger;
             if(this.bizParentPkid){
               params.bizParentPkid=this.bizParentPkid
             }

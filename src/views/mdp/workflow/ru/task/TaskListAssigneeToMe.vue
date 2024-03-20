@@ -10,8 +10,6 @@
 	export default {
 		name:'TaskListAssigneeToMe',
 		props: ['source',"bizParentPkid","bizPkid"], 
-
-		props: ['source'],
 		data() {
 			return {
 				filters: {
