@@ -11,7 +11,7 @@
                 <el-input show-style="origin" v-model="editForm.bizName" placeholder="业务名称" :maxlength="255" @change="editSomeFields(editForm,'bizName',$event)" :disabled="disabledJudge('bizName')"/>
             </el-form-item>
             <el-form-item label="业务编码" prop="bizKey">
-                <el-input show-style="origin" v-model="editForm.bizKey" placeholder="业务编码" :maxlength="255" @change="editSomeFields(editForm,'bizKey',$event)" :disabled="disabledJudge('bizKey')"/>
+                <el-input show-style="origin" v-model="editForm.bizKey" placeholder="业务编码" :maxlength="255" @change="editSomeFields(editForm,'bizKey',$event)" :disabled="disabledJudge('bizKey')||bizKey"/>
             </el-form-item>
             <el-form-item label="模型编码" prop="modelKey">
                 <el-input show-style="origin" v-model="editForm.modelKey" placeholder="模型编码" :maxlength="255" @change="editSomeFields(editForm,'modelKey',$event)" :disabled="disabledJudge('modelKey')" readonly>
@@ -48,15 +48,19 @@ import { mapGetters } from 'vuex'
 import { MdpFormMixin } from '@/components/mdp-ui/mixin/MdpFormMixin.js'; 
 export default {
     name:'bizModelForm',
+    props:{
+        bizKey:String,
+    },
     mixins:[MdpFormMixin],
     components: {
        "procdef-list":()=>import('@/views/mdp/workflow/re/procdef/Index.vue')
     },
     computed: {
-    },
-    props:{
-    },
+    }, 
     watch: {
+        bizKey(){
+            this.editForm.bizKey=this.bizKey
+        }
     },
     data() {
         return {
@@ -85,7 +89,9 @@ export default {
     methods: {
          //由组件扩展添加其它的初始页面的逻辑(mounted+onOpen都会调用此函数，建议只添加公共逻辑)
          initCurrData(){
-
+            if(this.bizKey){
+                this.editForm.bizKey=this.bizKey
+            }
          },
          editSomeFields(row,fieldName,$event){
 

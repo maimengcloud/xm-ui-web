@@ -19,7 +19,7 @@
 		</el-row>
 		<el-row> 
         <mdp-hi-query :column-configs="columnConfigs" v-model="hiQueryParams" @change="onHiQueryParamsChange"/>
-        <el-button type="text" icon="el-icon-zoom-out" @click="searchReset()">重置查询</el-button>&nbsp;&nbsp;&nbsp; 
+        <el-button type="text" icon="el-icon-zoom-out" @click="searchReset()">重置查询</el-button>&nbsp;&nbsp;&nbsp; <el-button type="text" icon="el-icon-attract" @click="toBindFlowModel()" v-if="bizKey">绑定流程模型</el-button>
 		</el-row>
 		<el-row>
 			<!--列表 Procdef act_re_procdef-->
@@ -202,12 +202,28 @@
             >
             <template v-slot="{visible,data,dialog}">
               <biz-model-mng
+                :biz-key="bizKey"
                 :model-key="data.key"
                 :model-name="data.name"
                 :visible="visible"
                 @cancel="dialog.close()"
                 @submit="dialog.close()"
               ></biz-model-mng>
+            </template>
+            </mdp-dialog>
+            
+            <mdp-dialog ref="bizModelFormDialog"
+              title="绑定流程"
+              width="80%"
+            >
+            <template v-slot="{visible,data,dialog}">
+              <biz-model-form
+                :biz-key="bizKey"  
+                :visible="visible"
+                sub-op-type="add"
+                @cancel="dialog.close()"
+                @submit="dialog.close()"
+              ></biz-model-form>
             </template>
             </mdp-dialog>
  	    </el-row>
@@ -223,11 +239,15 @@ import {  listCategorys  } from "@/api/mdp/workflow/re/procdef";
 
 import ProcdefParamesSet from "../procdefParames/ProcdefParamesSet";
 import BizModelMng from "@/views/mdp/workflow/biz/bizModel/Index";
+import BizModelForm from "@/views/mdp/workflow/biz/bizModel/Form";
 
 export default {
     name:'procdefMng',
     mixins:[MdpTableMixin],
-    components: {   ProcdefParamesSet,         BizModelMng
+    props:{
+      bizKey:String,
+    },
+    components: {   ProcdefParamesSet,         BizModelMng,BizModelForm
     },
     computed: {
     },
@@ -278,6 +298,10 @@ export default {
            * @returns true / false
            */
           preQueryParamCheck(params){
+            if(this.bizKey){
+              params.bizKey=this.bizKey
+            }
+           
               return true;
           },
 
@@ -366,6 +390,9 @@ export default {
         .catch(() => {
           this.load.list = false;
         });
+    },
+    toBindFlowModel(){
+      this.$refs.bizModelFormDialog.open({});
     },
     //激活挂起
     handleSuspend: function(row, index) {

@@ -9,7 +9,11 @@
             :checkSource="true"
             :useRealTime="useRealTime" 
 						:treeProps="{children: 'children', hasChildren: 'hasChildren',pid:'parentTaskid', pre: 'preTaskid',startDate:'startTime',endDate:'endTime',realStartDate:'actStartTime',realEndDate:'actEndTime'}"
- 
+            @preChange="preChange"
+            @timeChange="timeChange"
+            @nameChange="nameChange"
+            @taskAdd="taskAdd"
+            @taskRemove="taskRemove"
             row-key="id">
             <!-- <el-table-column prop="name" label="计划名称" min-width="160" > 
               <template slot-scope="scope">
@@ -28,6 +32,16 @@ import util from '@/common/js/util'; //全局公共库
 import {mapGetters} from 'vuex';   
 import wlGantt from 'wl-gantt' 
 import "wl-gantt/lib/wl-gantt.css" 
+import { 
+getTask,
+delXmTask,
+batchDelXmTask,
+batchImportTaskFromTemplate,
+batchChangeParentTask,
+editXmTaskSomeFields,
+calcProgress,
+calcProjectProgress,
+} from "@/api/xm/core/xmTask";
 Vue.use(wlGantt)
  export default {
   props: {
@@ -74,6 +88,22 @@ Vue.use(wlGantt)
     };
   },
   methods: {
+    taskRemove(row){
+
+    },
+    taskAdd(row){
+
+    },
+    preChange(row){
+
+    },
+    timeChange(row){
+      debugger;
+
+    },
+    nameChange(row){
+      debugger;
+    }
      
   },
   mounted() {
